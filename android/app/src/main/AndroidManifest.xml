@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.verygoodcore.givt_app">
+    package="net.givtapp.droid">
    <application
         android:label="givt_app"
         android:name="${applicationName}"

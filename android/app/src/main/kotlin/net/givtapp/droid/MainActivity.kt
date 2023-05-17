@@ -1,4 +1,4 @@
-package com.example.verygoodcore.givt_app
+package net.givtapp.droid
 
 import io.flutter.embedding.android.FlutterActivity
 
