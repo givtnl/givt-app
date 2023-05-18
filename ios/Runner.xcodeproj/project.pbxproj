@@ -291,14 +291,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "Givt App";
+				FLAVOR_APP_NAME = "Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -422,14 +423,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "Givt App";
+				FLAVOR_APP_NAME = "Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -445,14 +447,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "Givt App";
+				FLAVOR_APP_NAME = "Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -523,14 +526,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] Givt App";
+				FLAVOR_APP_NAME = "[DEV] Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -599,14 +603,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] Givt App";
+				FLAVOR_APP_NAME = "[DEV] Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -672,14 +677,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-dev";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[DEV] Givt App";
+				FLAVOR_APP_NAME = "[DEV] Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -750,14 +756,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-stg";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] Givt App";
+				FLAVOR_APP_NAME = "[STG] Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2.stg;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios.stg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -826,14 +833,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-stg";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] Givt App";
+				FLAVOR_APP_NAME = "[STG] Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2.stg;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios.stg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -899,14 +907,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-stg";
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = YDSA4AY496;
 				ENABLE_BITCODE = NO;
-				FLAVOR_APP_NAME = "[STG] Givt App";
+				FLAVOR_APP_NAME = "[STG] Givt";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.droid2.stg;
+				PRODUCT_BUNDLE_IDENTIFIER = net.givtapp.ios.stg;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
