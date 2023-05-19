@@ -1,9 +1,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.givtapp.droid">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!-- Always include this permission -->
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+   <queries>
+       <!-- tel:<phone-number> -->
+       <intent>
+           <action android:name="android.intent.action.DIAL" />
+           <data android:scheme="tel" />
+       </intent>
+       <!-- mailto:<email>?subject=<subject-email>&body=<email-body> -->
+       <intent>
+           <action android:name="android.intent.action.SEND" />
+           <data android:mimeType="*/*" />
+       </intent>
+   </queries>
+   <!-- Include only if your app benefits from precise location access. -->
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
-        android:label="givt_app"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:label="${appName}"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -19,7 +38,7 @@
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
-              />            
+              />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
