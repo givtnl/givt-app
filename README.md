@@ -60,7 +60,7 @@ This project relies on [flutter_localizations][flutter_localizations_link] and f
 
 ### Adding Strings
 
-1. To add a new localizable string, open the `app_en.arb` file at `lib/l10n/arb/app_en.arb`.
+1. To add a new string, open the `app_en.arb` file at `lib/l10n/arb/app_en.arb`.
 
 ```arb
 {
