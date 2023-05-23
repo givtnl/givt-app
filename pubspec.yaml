@@ -9,11 +9,13 @@ environment:
 dependencies:
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_localizations:
     sdk: flutter
+  get_it: ^7.6.0
   http: ^0.13.6
   http_interceptor: ^1.0.2
   intl: ^0.18.0
