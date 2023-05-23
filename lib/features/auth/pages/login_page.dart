@@ -4,6 +4,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class LoginPage extends StatelessWidget {
@@ -51,10 +53,11 @@ class _LoginPageViewState extends State<LoginPageView> {
     if (_formKey.currentState!.validate()) {
       toggleLoader(true);
       try {
-        // await Future.delayed(const Duration(seconds: 2));
-        // Navigator.of(context).pop();
+        await context.read<AuthCubit>().login(
+              email: _emailController.text,
+              password: _passwordController.text,
+            );
       } catch (e) {
-        toggleLoader(false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -62,6 +65,7 @@ class _LoginPageViewState extends State<LoginPageView> {
         );
       }
     }
+    toggleLoader(false);
   }
 
   @override

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/auth/pages/email_signup.dart';
+import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 

@@ -18,7 +18,9 @@ dependencies:
   get_it: ^7.6.0
   http: ^0.13.6
   http_interceptor: ^1.0.2
+  internet_connection_checker: ^1.0.0+1
   intl: ^0.18.0
+  shared_preferences: ^2.1.1
 
 dev_dependencies:
   bloc_test: ^9.1.1
