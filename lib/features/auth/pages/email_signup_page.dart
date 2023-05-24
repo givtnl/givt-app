@@ -2,7 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
+import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class EmailSignupPage extends StatelessWidget {
@@ -65,7 +67,7 @@ class _InputPageState extends State<InputPage> {
               ),
               const SizedBox(height: 12),
               Text(locals.weWontSendAnySpam),
-              SizedBox(height: size.height * 0.19),
+              const Spacer(),
               TextFormField(
                 controller: _emailController,
                 onChanged: (value) {
@@ -77,18 +79,29 @@ class _InputPageState extends State<InputPage> {
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
-                  // if (value.isEmpty) {
-                  //   return 'Please enter your email';
-                  // }
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.contains('@') == false) {
+                    return AppLocalizations.of(context).invalidEmail;
+                  }
                   return null;
                 },
               ),
-              const SizedBox(height: 24),
-              Expanded(child: Container()),
+              const Spacer(),
               GestureDetector(
-                onTap: () {
-                  ///todo display terms and conditions
-                },
+                onTap: () => showModalBottomSheet<void>(
+                  context: context,
+                  showDragHandle: true,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  builder: (BuildContext context) =>
+                      const TermsAndConditionsDialog(
+                    typeOfTerms: TypeOfTerms.termsAndConditions,
+                  ),
+                ),
                 child: Column(
                   children: [
                     Row(
@@ -114,11 +127,8 @@ class _InputPageState extends State<InputPage> {
                     ),
                   ),
                 ),
-                onPressed: _emailController.value.text.isNotEmpty
-                    ? () {
-                      
-                    }
-                    : null,
+                onPressed:
+                    _emailController.value.text.isNotEmpty ? () {} : null,
                 child: Text(locals.continueText),
               ),
               GestureDetector(
@@ -148,6 +158,9 @@ class _InputPageState extends State<InputPage> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: Row(
+        children: [],
       ),
     );
   }
