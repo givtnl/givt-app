@@ -59,125 +59,159 @@ class _InputPageState extends State<InputPage> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Text(
-                locals.toGiveWeNeedYourEmailAddress,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Text(locals.weWontSendAnySpam),
-              const Spacer(),
-              TextFormField(
-                controller: _emailController,
-                onChanged: (value) {
-                  setState(() {});
-                },
-                decoration: InputDecoration(
-                  hintText: locals.email,
-                  border: const OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.contains('@') == false) {
-                    return AppLocalizations.of(context).invalidEmail;
-                  }
-                  return null;
-                },
-              ),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  showDragHandle: true,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  builder: (BuildContext context) =>
-                      const TermsAndConditionsDialog(
-                    typeOfTerms: TypeOfTerms.termsAndConditions,
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          locals.acceptTerms,
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                        const Icon(Icons.info_outline_rounded),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              if (_isLoading)
-                const Center(child: CircularProgressIndicator())
-              else
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    minimumSize: const Size.fromHeight(40),
-                    shape: const ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
+      body: BlocListener<AuthCubit, AuthState>(
+        listenWhen: (previous, current) => previous != current,
+        listener: (context, state) {
+          if (state is AuthTempAccountWarning) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => CupertinoAlertDialog(
+                title: Text(locals.temporaryAccount),
+                content: Text(locals.tempAccountLogin),
+                actions: [
+                  CupertinoDialogAction(
+                    child: Text(locals.continueText),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                      LoginPage.route(
+                        email: _emailController.text,
                       ),
                     ),
                   ),
-                  onPressed: _emailController.value.text.isNotEmpty
-                      ? () async {
-                          toggleLoading();
-                          if (_formKey.currentState!.validate()) {
-                            await context.read<AuthCubit>().register(
-                                  email: _emailController.value.text.trim(),
-                                  locale: Localizations.localeOf(context)
-                                      .languageCode,
-                                );
-                          }
-                          toggleLoading();
-                        }
-                      : null,
-                  child: Text(locals.continueText),
-                ),
-              GestureDetector(
-                onTap: () => Navigator.of(context).push(LoginPage.route()),
-                child: RichText(
+                ],
+              ),
+            );
+          }
+          if (state is AuthLoginRedirect) {
+            Navigator.of(context).push(
+              LoginPage.route(
+                email: _emailController.text,
+              ),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Text(
+                  locals.toGiveWeNeedYourEmailAddress,
                   textAlign: TextAlign.center,
-                  text: TextSpan(
-                    style: Theme.of(context).textTheme.titleSmall,
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: locals.alreadyAnAccount,
-                        style:
-                            Theme.of(context).textTheme.titleSmall?.copyWith(),
-                      ),
-                      const TextSpan(text: ' '),
-                      TextSpan(
-                        text: locals.login,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w800,
-                              decoration: TextDecoration.underline,
-                            ),
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(locals.weWontSendAnySpam),
+                const Spacer(),
+                TextFormField(
+                  controller: _emailController,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    hintText: locals.email,
+                    border: const OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.contains('@') == false) {
+                      return AppLocalizations.of(context).invalidEmail;
+                    }
+                    return null;
+                  },
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () => showModalBottomSheet<void>(
+                    context: context,
+                    showDragHandle: true,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    builder: (BuildContext context) =>
+                        const TermsAndConditionsDialog(
+                      typeOfTerms: TypeOfTerms.termsAndConditions,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            locals.acceptTerms,
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          const Icon(Icons.info_outline_rounded),
+                        ],
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                if (_isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      minimumSize: const Size.fromHeight(40),
+                      shape: const ContinuousRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                    ),
+                    onPressed: _emailController.value.text.isNotEmpty
+                        ? () async {
+                            toggleLoading();
+                            if (_formKey.currentState!.validate()) {
+                              await context.read<AuthCubit>().register(
+                                    email: _emailController.value.text.trim(),
+                                    locale: Localizations.localeOf(context)
+                                        .languageCode,
+                                  );
+                            }
+                            toggleLoading();
+                          }
+                        : null,
+                    child: Text(locals.continueText),
+                  ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).push(LoginPage.route()),
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      style: Theme.of(context).textTheme.titleSmall,
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: locals.alreadyAnAccount,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall
+                              ?.copyWith(),
+                        ),
+                        const TextSpan(text: ' '),
+                        TextSpan(
+                          text: locals.login,
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

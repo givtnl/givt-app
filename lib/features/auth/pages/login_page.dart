@@ -1,30 +1,38 @@
-// Suggestions:
-// 1. Use a StatefulWidget to handle the login state
-// 2. Use a Form widget to handle form validation and submission
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  const LoginPage({
+    super.key,
+    this.email = '',
+  });
 
-  static MaterialPageRoute<dynamic> route() {
+  final String email;
+
+  static MaterialPageRoute<dynamic> route({String email = ''}) {
     return MaterialPageRoute(
       fullscreenDialog: true,
-      builder: (_) => const LoginPage(),
+      builder: (_) => LoginPage(
+        email: email,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return LoginPageView();
+    return LoginPageView(
+      email: email,
+    );
   }
 }
 
 class LoginPageView extends StatefulWidget {
+  const LoginPageView({super.key, this.email = ''});
+
+  final String email;
+
   @override
   _LoginPageViewState createState() => _LoginPageViewState();
 }
@@ -39,7 +47,7 @@ class _LoginPageViewState extends State<LoginPageView> {
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
+    _emailController = TextEditingController(text: widget.email);
     _passwordController = TextEditingController();
   }
 

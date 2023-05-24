@@ -59,10 +59,16 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       // check email
-      if (await _authRepositoy.checkEmail(email)) {
-        emit(AuthFailure());
+      final result = await _authRepositoy.checkEmail(email);
+      if (result.contains('temp')) {
+        emit(AuthTempAccountWarning(email));
         return;
       }
+      if (result.contains('true')) {
+        emit(AuthLoginRedirect(email));
+        return;
+      }
+
       // register temp user
       final unRegisteredUserExt =
           await _authRepositoy.registerTempUser(email, locale);

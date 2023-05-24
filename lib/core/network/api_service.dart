@@ -83,10 +83,9 @@ class APIService {
     return jsonDecode(body) as String == 'true';
   }
 
-  Future<bool> checkEmail(String email) async {
+  Future<String> checkEmail(String email) async {
     final url = Uri.https(apiURL, '/api/v2/Users/check', {'email': email});
-    final body = (await client.get(url)).body;
-    return jsonDecode(body) as String == 'true';
+    return (await client.get(url)).body;
   }
 
   Future<String> registerTempUser(Map<String, dynamic> body) async {

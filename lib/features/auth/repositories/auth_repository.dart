@@ -91,7 +91,8 @@ class AuthRepositoy {
 
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
 
-  Future<bool> checkEmail(String email) async => _apiService.checkEmail(email);
+  Future<String> checkEmail(String email) async =>
+      _apiService.checkEmail(email);
 
   Future<UserExt> registerTempUser(String email, String locale) async {
     final countryIso = await FlutterSimCountryCode.simCountryCode;
