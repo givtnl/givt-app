@@ -1,7 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/auth/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -82,7 +87,44 @@ class AuthRepositoy {
     );
   }
 
-  Future<bool> logout() {
-    return _prefs.remove(Session.tag);
+  Future<bool> logout() async => _prefs.remove(Session.tag);
+
+  Future<bool> checkTld(String email) async => _apiService.checktld(email);
+
+  Future<bool> checkEmail(String email) async => _apiService.checkEmail(email);
+
+  Future<UserExt> registerTempUser(String email, String locale) async {
+    final countryIso = await FlutterSimCountryCode.simCountryCode;
+
+    final tempUser = TempUser.prefilled(
+      email: email,
+      country: countryIso ?? 'NL',
+      appLanguage: locale,
+      timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
+      amountLimit: countryIso?.toUpperCase() == 'US' ? 4999 : 499,
+    );
+
+    /// register user
+    final userGUID = await _apiService.registerTempUser(tempUser.toJson());
+
+    /// create session
+    await login(
+      email,
+      tempUser.password,
+    );
+
+    final userExt = UserExt(
+      email: email,
+      guid: userGUID,
+      amountLimit: tempUser.amountLimit,
+      tempUser: true,
+    );
+
+    await _prefs.setString(
+      UserExt.tag,
+      jsonEncode(userExt.toJson()),
+    );
+
+    return userExt;
   }
 }

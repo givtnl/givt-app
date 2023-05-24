@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/network/interceptor.dart';
@@ -74,5 +75,33 @@ class APIService {
     } else {
       return jsonDecode(response.body) as Map<String, dynamic>;
     }
+  }
+
+  Future<bool> checktld(String email) async {
+    final url = Uri.https(apiURL, '/api/checktld', {'email': email});
+    final body = (await client.get(url)).body;
+    return jsonDecode(body) as String == 'true';
+  }
+
+  Future<bool> checkEmail(String email) async {
+    final url = Uri.https(apiURL, '/api/v2/Users/check', {'email': email});
+    final body = (await client.get(url)).body;
+    return jsonDecode(body) as String == 'true';
+  }
+
+  Future<String> registerTempUser(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/users');
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw HttpException(response.body);
+    }
+    return response.body;
   }
 }

@@ -2,7 +2,9 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -33,10 +35,16 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
+
+  void toggleLoading() {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -117,20 +125,34 @@ class _InputPageState extends State<InputPage> {
                 ),
               ),
               const SizedBox(height: 12),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  minimumSize: const Size.fromHeight(40),
-                  shape: const ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+              if (_isLoading)
+                const Center(child: CircularProgressIndicator())
+              else
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    minimumSize: const Size.fromHeight(40),
+                    shape: const ContinuousRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
                     ),
                   ),
+                  onPressed: _emailController.value.text.isNotEmpty
+                      ? () async {
+                          toggleLoading();
+                          if (_formKey.currentState!.validate()) {
+                            await context.read<AuthCubit>().register(
+                                  email: _emailController.value.text.trim(),
+                                  locale: Localizations.localeOf(context)
+                                      .languageCode,
+                                );
+                          }
+                          toggleLoading();
+                        }
+                      : null,
+                  child: Text(locals.continueText),
                 ),
-                onPressed:
-                    _emailController.value.text.isNotEmpty ? () {} : null,
-                child: Text(locals.continueText),
-              ),
               GestureDetector(
                 onTap: () => Navigator.of(context).push(LoginPage.route()),
                 child: RichText(
@@ -158,9 +180,6 @@ class _InputPageState extends State<InputPage> {
             ],
           ),
         ),
-      ),
-      floatingActionButton: Row(
-        children: [],
       ),
     );
   }

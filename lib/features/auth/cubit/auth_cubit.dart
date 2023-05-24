@@ -48,4 +48,29 @@ class AuthCubit extends Cubit<AuthState> {
     await _authRepositoy.logout();
     emit(AuthInitial());
   }
+
+  Future<void> register({
+    required String email,
+    required String locale,
+  }) async {
+    try {
+      if (!await _authRepositoy.checkTld(email)) {
+        emit(AuthFailure());
+        return;
+      }
+      // check email
+      if (await _authRepositoy.checkEmail(email)) {
+        emit(AuthFailure());
+        return;
+      }
+      // register temp user
+      final unRegisteredUserExt =
+          await _authRepositoy.registerTempUser(email, locale);
+
+      emit(AuthSuccess(unRegisteredUserExt));
+    } catch (e) {
+      log(e.toString());
+      emit(AuthFailure());
+    }
+  }
 }
