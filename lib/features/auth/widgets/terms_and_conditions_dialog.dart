@@ -19,14 +19,14 @@ class TermsAndConditionsDialog extends StatelessWidget {
     String termsAndConditions = locals.termsText;
     String title = locals.fullVersionTitleTerms;
     if (typeOfTerms == TypeOfTerms.privacyPolicy) {
+      title = locals.privacyTitle;
+      termsAndConditions = locals.policyText;
       if (['GB', 'GG', 'JE'].contains(localName)) {
         termsAndConditions = locals.policyTextGB;
       }
       if (localName.contains('US')) {
         termsAndConditions = locals.policyTextUS;
       }
-      termsAndConditions = locals.policyText;
-      title = locals.policyText;
     }
     if (typeOfTerms == TypeOfTerms.termsAndConditions) {
       if (['GB', 'GG', 'JE'].contains(localName)) {
@@ -52,6 +52,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 20),
@@ -59,6 +60,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
               termsAndConditions,
               style: const TextStyle(
                 fontSize: 16,
+                color: Colors.white,
               ),
             ),
           ],
