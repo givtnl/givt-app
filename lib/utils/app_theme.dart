@@ -43,17 +43,17 @@ class AppTheme {
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: lightColorScheme.primary,
+          color: Colors.grey.shade300,
         ),
         borderRadius: const BorderRadius.all(
           Radius.circular(8),
         ),
       ),
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: lightColorScheme.primary,
+          color: Color(0xFF41c98e),
         ),
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),

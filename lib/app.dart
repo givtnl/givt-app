@@ -44,10 +44,12 @@ class _AppView extends StatelessWidget {
               );
               return;
             }
-            _navigator.pushAndRemoveUntil<void>(
-              WelcomePage.route(),
-              (route) => false,
-            );
+            if (state is AuthLogout || state is AuthUnkown) {
+              _navigator.pushAndRemoveUntil<void>(
+                WelcomePage.route(),
+                (route) => false,
+              );
+            }
           },
           child: child,
         );

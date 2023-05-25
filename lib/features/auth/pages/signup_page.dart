@@ -83,20 +83,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ?.copyWith(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context).firstName,
-                  enabledBorder: const OutlineInputBorder(),
-                  focusedBorder: const OutlineInputBorder(),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -115,20 +101,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ?.copyWith(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context).lastName,
-                  enabledBorder: const OutlineInputBorder(),
-                  focusedBorder: const OutlineInputBorder(),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -150,20 +122,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ?.copyWith(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context).email,
-                  enabledBorder: const OutlineInputBorder(),
-                  focusedBorder: const OutlineInputBorder(),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                 ),
               ),
               const SizedBox(height: 16),

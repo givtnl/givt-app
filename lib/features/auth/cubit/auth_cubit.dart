@@ -32,7 +32,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } catch (e) {
       log(e.toString());
-      emit(AuthFailure());
+      emit(AuthFailure(message: e.toString()));
     }
   }
 
@@ -40,13 +40,13 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final userExt = await _authRepositoy.isAuthenticated();
       if (userExt == null) {
-        emit(AuthFailure());
+        emit(AuthUnkown());
         return;
       }
 
       emit(AuthSuccess(userExt));
     } catch (e) {
-      emit(AuthFailure());
+      emit(const AuthFailure());
     }
   }
 
@@ -61,7 +61,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       if (!await _authRepositoy.checkTld(email)) {
-        emit(AuthFailure());
+        emit(const AuthFailure());
         return;
       }
       // check email
@@ -82,7 +82,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthSuccess(unRegisteredUserExt));
     } catch (e) {
       log(e.toString());
-      emit(AuthFailure());
+      emit(const AuthFailure());
     }
   }
 }

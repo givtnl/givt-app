@@ -78,6 +78,21 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }
+        if (state is AuthFailure) {
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(locals.loginFailure),
+              content: Text(locals.wrongCredentials),
+              actions: [
+                TextButton(
+                  child: Text(locals.continueText),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          );
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(
