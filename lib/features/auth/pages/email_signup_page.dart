@@ -64,11 +64,11 @@ class _InputPageState extends State<InputPage> {
           if (state is AuthTempAccountWarning) {
             showDialog<void>(
               context: context,
-              builder: (context) => CupertinoAlertDialog(
+              builder: (context) => AlertDialog(
                 title: Text(locals.temporaryAccount),
                 content: Text(locals.tempAccountLogin),
                 actions: [
-                  CupertinoDialogAction(
+                  TextButton(
                     child: Text(locals.continueText),
                     onPressed: () => Navigator.of(context).pushReplacement(
                       SignUpPage.route(
