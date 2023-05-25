@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
+import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
@@ -9,8 +11,28 @@ import 'package:givt_app/shared/widgets/splash_screen.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
-class App extends StatelessWidget {
-  const App({super.key});
+class App extends StatefulWidget {
+  const App({
+    required this.config,
+    super.key,
+  });
+
+  final Map<String, String> config;
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    FlutterSimCountryCode.simCountryCode.then((countryIso) {
+      getIt<APIService>().apiURL = countryIso == 'US'
+          ? widget.config['API_URL_US']!
+          : widget.config['API_URL_EU']!;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
