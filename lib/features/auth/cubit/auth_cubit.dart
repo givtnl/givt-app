@@ -8,7 +8,7 @@ import 'package:givt_app/shared/models/user_ext.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy) : super(AuthInitial());
+  AuthCubit(this._authRepositoy) : super(AuthUnkown());
 
   final AuthRepositoy _authRepositoy;
 
@@ -55,7 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(AuthLoading());
     await _authRepositoy.logout();
-    emit(AuthInitial());
+    emit(AuthLogout());
   }
 
   Future<void> register({
