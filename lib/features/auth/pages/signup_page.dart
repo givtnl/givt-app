@@ -35,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
+    _emailController = TextEditingController(text: widget.email);
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
@@ -133,6 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                readOnly: widget.email.isNotEmpty,
                 controller: _emailController,
                 validator: (value) {
                   if (value == null ||
