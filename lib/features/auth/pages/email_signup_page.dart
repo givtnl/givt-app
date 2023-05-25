@@ -1,5 +1,3 @@
-// Here's the code block for the page with an input field, register button, and forgot password button using Flutter/Dart:
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +8,7 @@ import 'package:givt_app/features/auth/pages/signup_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-class EmailSignupPage extends StatelessWidget {
+class EmailSignupPage extends StatefulWidget {
   const EmailSignupPage({super.key});
 
   static CupertinoPageRoute<dynamic> route() {
@@ -21,19 +19,10 @@ class EmailSignupPage extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return const InputPage();
-  }
+  _EmailSignupPageState createState() => _EmailSignupPageState();
 }
 
-class InputPage extends StatefulWidget {
-  const InputPage({super.key});
-
-  @override
-  _InputPageState createState() => _InputPageState();
-}
-
-class _InputPageState extends State<InputPage> {
+class _EmailSignupPageState extends State<EmailSignupPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   bool _isLoading = false;
