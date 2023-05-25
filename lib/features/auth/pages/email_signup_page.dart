@@ -131,6 +131,7 @@ class _InputPageState extends State<InputPage> {
                     showDragHandle: true,
                     isScrollControlled: true,
                     useSafeArea: true,
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),

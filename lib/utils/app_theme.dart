@@ -8,7 +8,7 @@ class AppTheme {
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       elevation: 0,
       iconTheme: IconThemeData(
         color: lightColorScheme.primary,
