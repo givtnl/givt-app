@@ -64,10 +64,6 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               ),
               child: Text(
                 locals.welcomeContinue,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
               ),
             ),
             GestureDetector(
@@ -218,17 +214,15 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         Text(
           title,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
         Text(
           subtitle,
-          style: TextStyle(
-            fontSize: isFirst ? 16 : 24,
-            fontWeight: isFirst ? FontWeight.w300 : FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: isFirst ? FontWeight.w300 : FontWeight.bold,
+              ),
         )
       ],
     );

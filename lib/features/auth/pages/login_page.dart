@@ -60,24 +60,24 @@ class _LoginPageState extends State<LoginPage> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthTempAccountWarning) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text(locals.temporaryAccount),
-                content: Text(locals.tempAccountLogin),
-                actions: [
-                  TextButton(
-                    child: Text(locals.continueText),
-                    onPressed: () => Navigator.of(context).pushReplacement(
-                      SignUpPage.route(
-                        email: _emailController.text,
-                      ),
+          showDialog<void>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(locals.temporaryAccount),
+              content: Text(locals.tempAccountLogin),
+              actions: [
+                TextButton(
+                  child: Text(locals.continueText),
+                  onPressed: () => Navigator.of(context).pushReplacement(
+                    SignUpPage.route(
+                      email: _emailController.text,
                     ),
                   ),
-                ],
-              ),
-            );
-          }
+                ),
+              ],
+            ),
+          );
+        }
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -230,7 +230,9 @@ class _LoginPageState extends State<LoginPage> {
           const BackButton(),
           Text(
             locals.login,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
           ),
         ],
       );

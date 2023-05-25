@@ -236,10 +236,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     : null,
                 child: Text(
                   locals.next,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
                 ),
               ),
             ],

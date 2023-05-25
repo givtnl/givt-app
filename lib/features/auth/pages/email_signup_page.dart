@@ -170,10 +170,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                         : null,
                     child: Text(
                       locals.continueText,
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
                     ),
                   ),
                 GestureDetector(

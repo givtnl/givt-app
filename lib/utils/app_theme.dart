@@ -7,6 +7,29 @@ class AppTheme {
     fontFamily: 'Avenir-Medium',
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,
+    textTheme: TextTheme(
+      titleLarge: TextStyle(
+        color: lightColorScheme.primary,
+      ),
+      titleMedium: TextStyle(
+        color: lightColorScheme.primary,
+      ),
+      titleSmall: TextStyle(
+        color: lightColorScheme.primary,
+      ),
+      bodyLarge: TextStyle(
+        color: lightColorScheme.primary,
+      ),
+      bodyMedium: TextStyle(
+        color: lightColorScheme.primary,
+      ),
+      bodySmall: TextStyle(
+        color: lightColorScheme.primary,
+      ),
+    ),
+    buttonTheme: const ButtonThemeData(
+      textTheme: ButtonTextTheme.primary,
+    ),
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(
         color: lightColorScheme.primary,
@@ -23,6 +46,9 @@ class AppTheme {
         fontWeight: FontWeight.w600,
       ),
     ),
+    iconTheme: IconThemeData(
+      color: lightColorScheme.primary,
+    ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
         elevation: MaterialStatePropertyAll(0),
@@ -34,6 +60,7 @@ class AppTheme {
           ),
         ),
         backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
+        foregroundColor: MaterialStatePropertyAll(Colors.white),
         minimumSize: MaterialStatePropertyAll(Size.fromHeight(45)),
         shape: MaterialStatePropertyAll(
           ContinuousRectangleBorder(
