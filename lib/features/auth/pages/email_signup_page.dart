@@ -38,13 +38,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     final locals = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          color: Theme.of(context).primaryColor,
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: const BackButton(),
         title: Text(
           locals.welcomeContinue,
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
       ),
       body: BlocListener<AuthCubit, AuthState>(
@@ -74,9 +73,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               context: context,
               isScrollControlled: true,
               useSafeArea: true,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
               builder: (BuildContext context) => LoginPage(
                 email: _emailController.text.trim(),
               ),
@@ -94,7 +90,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontSize: 24,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -107,7 +102,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   },
                   decoration: InputDecoration(
                     hintText: locals.email,
-                    border: const OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -127,9 +121,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     isScrollControlled: true,
                     useSafeArea: true,
                     backgroundColor: Theme.of(context).colorScheme.tertiary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
                     builder: (BuildContext context) =>
                         const TermsAndConditionsDialog(
                       typeOfTerms: TypeOfTerms.termsAndConditions,

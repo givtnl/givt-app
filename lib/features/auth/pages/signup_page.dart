@@ -193,22 +193,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     ?.copyWith(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context).password,
-                  enabledBorder: const OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -252,9 +236,6 @@ class _SignUpPageState extends State<SignUpPage> {
         showDragHandle: true,
         isScrollControlled: true,
         useSafeArea: true,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
         backgroundColor: Theme.of(context).colorScheme.tertiary,
         builder: (BuildContext context) => const TermsAndConditionsDialog(
           typeOfTerms: TypeOfTerms.privacyPolicy,

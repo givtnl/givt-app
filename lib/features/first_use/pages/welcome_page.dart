@@ -71,9 +71,6 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 context: context,
                 isScrollControlled: true,
                 useSafeArea: true,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
                 builder: (BuildContext context) => const LoginPage(),
               ),
               child: _buildAlreadyAnAccountLogin(context, locals),

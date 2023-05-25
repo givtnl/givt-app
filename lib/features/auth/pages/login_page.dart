@@ -113,20 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                     ?.copyWith(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context).email,
-                  enabledBorder: const OutlineInputBorder(),
-                  focusedBorder: const OutlineInputBorder(),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                 ),
               ),
               const SizedBox(height: 15),
@@ -156,22 +142,6 @@ class _LoginPageState extends State<LoginPage> {
                     ?.copyWith(fontSize: 16),
                 decoration: InputDecoration(
                   hintText: AppLocalizations.of(context).password,
-                  enabledBorder: const OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.red,
-                    ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,

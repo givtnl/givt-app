@@ -30,6 +30,50 @@ class AppTheme {
     buttonTheme: const ButtonThemeData(
       textTheme: ButtonTextTheme.primary,
     ),
+    bottomSheetTheme: BottomSheetThemeData(
+      backgroundColor: lightColorScheme.background,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      dragHandleColor: lightColorScheme.onBackground,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      hintStyle: const TextStyle(
+        color: Colors.grey,
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: lightColorScheme.primary,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: lightColorScheme.primary,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
+      errorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.red,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
+    ),
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(
         color: lightColorScheme.primary,
