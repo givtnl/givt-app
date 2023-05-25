@@ -173,8 +173,8 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               title: title,
               subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
             ),
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: size.height * 0.06,
             ),
             Image.asset(
               'assets/images/${isFirst ? '${path}_$locale' : path}.png',
