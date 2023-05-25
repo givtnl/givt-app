@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -248,25 +250,43 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Text _buildAcceptPolicy(AppLocalizations locals) {
-    return Text.rich(
-      TextSpan(
+  Widget _buildAcceptPolicy(AppLocalizations locals) {
+    return GestureDetector(
+      onTap: () => showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        isScrollControlled: true,
+        useSafeArea: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        builder: (BuildContext context) => const TermsAndConditionsDialog(
+          typeOfTerms: TypeOfTerms.privacyPolicy,
+        ),
+      ),
+      child: Row(
         children: [
-          WidgetSpan(
-            child: Checkbox(
-              value: _acceptPolicy,
-              onChanged: (value) {
-                setState(() {
-                  _acceptPolicy = value!;
-                });
-              },
+          Checkbox(
+            value: _acceptPolicy,
+            onChanged: (value) {
+              setState(() {
+                _acceptPolicy = value!;
+              });
+            },
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: locals.acceptPolicy,
+                ),
+                const WidgetSpan(
+                  child: Icon(Icons.info_rounded, size: 16),
+                ),
+              ],
             ),
-          ),
-          TextSpan(
-            text: locals.acceptPolicy,
-          ),
-          const WidgetSpan(
-            child: Icon(Icons.info_rounded, size: 16),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
