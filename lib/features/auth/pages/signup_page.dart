@@ -47,9 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        leading: const BackButton(),
         title: Image.asset(
           'assets/images/logo.png',
           height: size.height * 0.04,

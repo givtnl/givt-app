@@ -71,7 +71,15 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               ),
             ),
             GestureDetector(
-              onTap: () => Navigator.of(context).push(LoginPage.route()),
+              onTap: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                builder: (BuildContext context) => const LoginPage(),
+              ),
               child: _buildAlreadyAnAccountLogin(context, locals),
             ),
           ],

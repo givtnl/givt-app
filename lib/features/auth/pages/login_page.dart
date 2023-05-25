@@ -1,43 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({
-    super.key,
-    this.email = '',
-  });
-
-  final String email;
-
-  static MaterialPageRoute<dynamic> route({String email = ''}) {
-    return MaterialPageRoute(
-      fullscreenDialog: true,
-      builder: (_) => LoginPage(
-        email: email,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return LoginPageView(
-      email: email,
-    );
-  }
-}
-
-class LoginPageView extends StatefulWidget {
-  const LoginPageView({super.key, this.email = ''});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key, this.email = ''});
 
   final String email;
 
   @override
-  _LoginPageViewState createState() => _LoginPageViewState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageViewState extends State<LoginPageView> {
+class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -81,17 +57,29 @@ class _LoginPageViewState extends State<LoginPageView> {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          locals.login,
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
-      body: Padding(
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthTempAccountWarning) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(locals.temporaryAccount),
+                content: Text(locals.tempAccountLogin),
+                actions: [
+                  TextButton(
+                    child: Text(locals.continueText),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                      SignUpPage.route(
+                        email: _emailController.text,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+      },
+      child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 16,
@@ -99,7 +87,9 @@ class _LoginPageViewState extends State<LoginPageView> {
         child: Form(
           key: _formKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _buildTitleRow(locals, context),
               Text(
                 locals.loginText,
                 style: Theme.of(context).textTheme.titleMedium,
@@ -230,4 +220,18 @@ class _LoginPageViewState extends State<LoginPageView> {
       ),
     );
   }
+
+  Row _buildTitleRow(
+    AppLocalizations locals,
+    BuildContext context,
+  ) =>
+      Row(
+        children: [
+          const BackButton(),
+          Text(
+            locals.login,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        ],
+      );
 }

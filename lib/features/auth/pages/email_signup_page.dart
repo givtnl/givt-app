@@ -81,9 +81,15 @@ class _InputPageState extends State<InputPage> {
             );
           }
           if (state is AuthLoginRedirect) {
-            Navigator.of(context).push(
-              LoginPage.route(
-                email: _emailController.text,
+            showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              builder: (BuildContext context) => LoginPage(
+                email: _emailController.text.trim(),
               ),
             );
           }
@@ -182,7 +188,15 @@ class _InputPageState extends State<InputPage> {
                     ),
                   ),
                 GestureDetector(
-                  onTap: () => Navigator.of(context).push(LoginPage.route()),
+                  onTap: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    builder: (BuildContext context) => const LoginPage(),
+                  ),
                   child: _buildAlreadyHaveAnAccount(locals, context),
                 ),
               ],
