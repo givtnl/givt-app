@@ -8,6 +8,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/splash_screen.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -36,6 +37,8 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    AnalyticsHelper.init(widget.config['AMPLITUDE_KEY']!);
+
     return BlocProvider(
       create: (_) => AuthCubit(getIt())..checkAuth(),
       child: const _AppView(),
