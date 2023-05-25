@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
+import 'package:givt_app/features/auth/pages/signup_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -72,7 +73,7 @@ class _InputPageState extends State<InputPage> {
                   CupertinoDialogAction(
                     child: Text(locals.continueText),
                     onPressed: () => Navigator.of(context).pushReplacement(
-                      LoginPage.route(
+                      SignUpPage.route(
                         email: _emailController.text,
                       ),
                     ),
@@ -140,18 +141,19 @@ class _InputPageState extends State<InputPage> {
                       typeOfTerms: TypeOfTerms.termsAndConditions,
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            locals.acceptTerms,
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                          const Icon(Icons.info_outline_rounded),
-                        ],
-                      ),
-                    ],
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: locals.acceptTerms,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                        const WidgetSpan(
+                          child: Icon(Icons.info_rounded, size: 16),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.start,
                   ),
                 ),
                 const SizedBox(height: 12),
