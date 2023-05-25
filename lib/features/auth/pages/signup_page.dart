@@ -233,7 +233,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         // Register user logic
                       }
                     : null,
-                child: Text(locals.next),
+                child: Text(
+                  locals.next,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
               ),
             ],
           ),

@@ -172,7 +172,13 @@ class _InputPageState extends State<InputPage> {
                             toggleLoading();
                           }
                         : null,
-                    child: Text(locals.continueText),
+                    child: Text(
+                      locals.continueText,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                   ),
                 GestureDetector(
                   onTap: () => Navigator.of(context).push(LoginPage.route()),

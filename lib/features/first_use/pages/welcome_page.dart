@@ -64,10 +64,10 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               ),
               child: Text(
                 locals.welcomeContinue,
-                // style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                //       color: Colors.white,
-                //       fontWeight: FontWeight.w600,
-                //     ),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ),
             GestureDetector(
@@ -80,27 +80,28 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     );
   }
 
-  RichText _buildAlreadyAnAccountLogin(BuildContext context, AppLocalizations locals) {
+  RichText _buildAlreadyAnAccountLogin(
+      BuildContext context, AppLocalizations locals) {
     return RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                style: Theme.of(context).textTheme.titleSmall,
-                children: [
-                  TextSpan(
-                    text: locals.alreadyAnAccount,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(),
-                  ),
-                  const TextSpan(text: ' '),
-                  TextSpan(
-                    text: locals.login,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          decoration: TextDecoration.underline,
-                        ),
-                  ),
-                ],
-              ),
-            );
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: Theme.of(context).textTheme.titleSmall,
+        children: [
+          TextSpan(
+            text: locals.alreadyAnAccount,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(),
+          ),
+          const TextSpan(text: ' '),
+          TextSpan(
+            text: locals.login,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  decoration: TextDecoration.underline,
+                ),
+          ),
+        ],
+      ),
+    );
   }
 
   CarouselSlider _buildCarouselSlider(
