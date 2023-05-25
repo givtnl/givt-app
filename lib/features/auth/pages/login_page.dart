@@ -84,13 +84,12 @@ class _LoginPageViewState extends State<LoginPageView> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          color: Theme.of(context).primaryColor,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: Colors.transparent,
-        title:
-            Text(locals.login, style: Theme.of(context).textTheme.titleLarge),
-        elevation: 0,
+        title: Text(
+          locals.login,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -195,17 +194,19 @@ class _LoginPageViewState extends State<LoginPageView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
-              Align(
-                child: TextButton(
-                  onPressed: () {
-                    ///todo add forgot password page
-                  },
-                  child: Text(
-                    locals.forgotPassword,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: Align(
+                  child: TextButton(
+                    onPressed: () {
+                      ///todo add forgot password page
+                    },
+                    child: Text(
+                      locals.forgotPassword,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
                   ),
                 ),
               ),
@@ -214,15 +215,6 @@ class _LoginPageViewState extends State<LoginPageView> {
                 const Center(child: CircularProgressIndicator())
               else
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    minimumSize: const Size.fromHeight(40),
-                    shape: const ContinuousRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                  ),
                   onPressed: () => onLogin(context),
                   child: Text(locals.login),
                 )

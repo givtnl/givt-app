@@ -47,101 +47,111 @@ class _WelcomePageViewState extends State<WelcomePageView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Center(
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: size.height * 0.04,
-          ),
+        title: Image.asset(
+          'assets/images/logo.png',
+          height: size.height * 0.04,
         ),
-        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            CarouselSlider(
-              carouselController: _controller,
-              options: CarouselOptions(
-                enableInfiniteScroll: false,
-                height: size.height * 0.7,
-                viewportFraction: 1,
-                enlargeCenterPage: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _current = index;
-                  });
-                },
-              ),
-              items: _buildCarouselItems(imageNames, size, locals, locale),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: imageNames.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _controller.animateToPage(entry.key),
-                  child: Container(
-                    width: size.width * 0.05,
-                    height: size.height * 0.01,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: (Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Colors.black)
-                          .withOpacity(
-                        _current == entry.key ? 0.9 : 0.4,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
+            _buildCarouselSlider(size, imageNames, locals, locale),
+            _buildAnimatedBottomIndexes(imageNames, size, context),
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 EmailSignupPage.route(),
               ),
-              style: ElevatedButton.styleFrom(
-                elevation: 0,
-                backgroundColor: Theme.of(context).primaryColor,
-                minimumSize: const Size.fromHeight(40),
-                shape: const ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                ),
+              child: Text(
+                locals.welcomeContinue,
+                // style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                //       color: Colors.white,
+                //       fontWeight: FontWeight.w600,
+                //     ),
               ),
-              child: Text(locals.welcomeContinue),
             ),
             GestureDetector(
               onTap: () => Navigator.of(context).push(LoginPage.route()),
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.titleSmall,
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: locals.alreadyAnAccount,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(),
-                    ),
-                    const TextSpan(text: ' '),
-                    TextSpan(
-                      text: locals.login,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            decoration: TextDecoration.underline,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
+              child: _buildAlreadyAnAccountLogin(context, locals),
             ),
           ],
         ),
       ),
     );
   }
+
+  RichText _buildAlreadyAnAccountLogin(BuildContext context, AppLocalizations locals) {
+    return RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                style: Theme.of(context).textTheme.titleSmall,
+                children: [
+                  TextSpan(
+                    text: locals.alreadyAnAccount,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(),
+                  ),
+                  const TextSpan(text: ' '),
+                  TextSpan(
+                    text: locals.login,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
+                  ),
+                ],
+              ),
+            );
+  }
+
+  CarouselSlider _buildCarouselSlider(
+    Size size,
+    List<String> imageNames,
+    AppLocalizations locals,
+    String locale,
+  ) =>
+      CarouselSlider(
+        carouselController: _controller,
+        options: CarouselOptions(
+          enableInfiniteScroll: false,
+          height: size.height * 0.7,
+          viewportFraction: 1,
+          enlargeCenterPage: true,
+          onPageChanged: (index, reason) {
+            setState(() {
+              _current = index;
+            });
+          },
+        ),
+        items: _buildCarouselItems(imageNames, size, locals, locale),
+      );
+
+  Row _buildAnimatedBottomIndexes(
+    List<String> imageNames,
+    Size size,
+    BuildContext context,
+  ) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: imageNames.asMap().entries.map((entry) {
+          return GestureDetector(
+            onTap: () => _controller.animateToPage(entry.key),
+            child: Container(
+              width: size.width * 0.05,
+              height: size.height * 0.01,
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black)
+                    .withOpacity(
+                  _current == entry.key ? 0.9 : 0.4,
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      );
 
   List<Widget> _buildCarouselItems(
     List<String> imageNames,

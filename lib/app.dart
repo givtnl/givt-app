@@ -6,6 +6,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/splash_screen.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
 class App extends StatelessWidget {
@@ -28,6 +29,7 @@ class _AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: AppTheme.lightTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorKey: Util.navigatorKey,

@@ -26,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _passwordController;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
-  bool _acceptTerms = false;
+  bool _acceptPolicy = false;
   bool isLoading = false;
   bool _obscureText = true;
 
@@ -45,23 +45,19 @@ class _SignUpPageState extends State<SignUpPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         leading: BackButton(
-          color: Theme.of(context).primaryColor,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Center(
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: size.height * 0.04,
-          ),
+        title: Image.asset(
+          'assets/images/logo.png',
+          height: size.height * 0.04,
         ),
-        elevation: 0,
         actions: [
           IconButton(
-            color: Theme.of(context).primaryColor,
             icon: const Icon(Icons.question_mark_outlined),
-            onPressed: () {},
+            onPressed: () {
+              ///todo add faq here
+            },
           ),
         ],
       ),
@@ -230,41 +226,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 textAlign: TextAlign.center,
               ),
               const Spacer(),
-              Row(
-                children: [
-                  Checkbox(
-                    value: _acceptTerms,
-                    onChanged: (value) {
-                      setState(() {
-                        _acceptTerms = value!;
-                      });
-                    },
-                  ),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: locals.acceptPolicy,
-                        ),
-                        const WidgetSpan(
-                          child: Icon(Icons.info_rounded, size: 16),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              _buildAcceptPolicy(locals),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 0,
-                  minimumSize: const Size.fromHeight(40),
-                  shape: const ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                ),
-                onPressed: _acceptTerms == true
+                onPressed: _acceptPolicy == true
                     ? () {
                         // Register user logic
                       }
@@ -274,6 +238,31 @@ class _SignUpPageState extends State<SignUpPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Text _buildAcceptPolicy(AppLocalizations locals) {
+    return Text.rich(
+      TextSpan(
+        children: [
+          WidgetSpan(
+            child: Checkbox(
+              value: _acceptPolicy,
+              onChanged: (value) {
+                setState(() {
+                  _acceptPolicy = value!;
+                });
+              },
+            ),
+          ),
+          TextSpan(
+            text: locals.acceptPolicy,
+          ),
+          const WidgetSpan(
+            child: Icon(Icons.info_rounded, size: 16),
+          ),
+        ],
       ),
     );
   }

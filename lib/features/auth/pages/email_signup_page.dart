@@ -53,8 +53,6 @@ class _InputPageState extends State<InputPage> {
           color: Theme.of(context).primaryColor,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
         title: Text(
           locals.welcomeContinue,
           style: Theme.of(context).textTheme.titleLarge,
@@ -161,15 +159,6 @@ class _InputPageState extends State<InputPage> {
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      minimumSize: const Size.fromHeight(40),
-                      shape: const ContinuousRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10),
-                        ),
-                      ),
-                    ),
                     onPressed: _emailController.value.text.isNotEmpty
                         ? () async {
                             toggleLoading();
@@ -187,30 +176,7 @@ class _InputPageState extends State<InputPage> {
                   ),
                 GestureDetector(
                   onTap: () => Navigator.of(context).push(LoginPage.route()),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      style: Theme.of(context).textTheme.titleSmall,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: locals.alreadyAnAccount,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(),
-                        ),
-                        const TextSpan(text: ' '),
-                        TextSpan(
-                          text: locals.login,
-                          style:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: _buildAlreadyHaveAnAccount(locals, context),
                 ),
               ],
             ),
@@ -219,4 +185,27 @@ class _InputPageState extends State<InputPage> {
       ),
     );
   }
+
+  Text _buildAlreadyHaveAnAccount(
+    AppLocalizations locals,
+    BuildContext context,
+  ) =>
+      Text.rich(
+        TextSpan(
+          children: <TextSpan>[
+            TextSpan(
+              text: locals.alreadyAnAccount,
+            ),
+            const TextSpan(text: ' '),
+            TextSpan(
+              text: locals.login,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    decoration: TextDecoration.underline,
+                  ),
+            ),
+          ],
+        ),
+        textAlign: TextAlign.center,
+      );
 }
