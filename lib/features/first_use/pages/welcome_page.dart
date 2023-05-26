@@ -189,7 +189,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               height: size.height * 0.06,
             ),
             Image.asset(
-              'assets/images/${isFirst ? '${path}_$locale' : path}.png',
+              'assets/images/${isFirst && locale.contains('nl') ? '${path}_$locale' : path}.png',
               fit: BoxFit.cover,
               width: size.width * 0.8,
               height: size.height * 0.4,
