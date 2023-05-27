@@ -76,13 +76,9 @@ class HomePage extends StatelessWidget {
                 left: 15,
                 bottom: 10,
               ),
-              child: ToggleButtons(
-                isSelected: [true, false],
-                onPressed: (index) {},
-                children: const [
-                  Text('give'),
-                  Text('discover'),
-                ],
+              child: Image.asset(
+                'assets/images/logo.png',
+                width: size.width * 0.2,
               ),
             ),
           ),
