@@ -23,10 +23,10 @@ class NumericKeyboard extends StatefulWidget {
   final Icon? rightIcon;
 
   /// Action to trigger when right button is pressed
-  final Function()? rightButtonFn;
+  final VoidCallback? rightButtonFn;
 
   /// Action to trigger when left button is pressed
-  final Function()? leftButtonFn;
+  final VoidCallback? leftButtonFn;
 
   /// Callback when an item is pressed
   final KeyboardTapCallback onKeyboardTap;
