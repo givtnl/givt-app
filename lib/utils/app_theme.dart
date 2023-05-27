@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
 
 class AppTheme {
+  /// Colors from android AppCompatTheme
+  static const givtLightGreen = Color(0xFF41c98e);
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: true,
     fontFamily: 'Avenir-Medium',
@@ -51,7 +53,7 @@ class AppTheme {
       ),
       focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(
-          color: Color(0xFF41c98e),
+          color: givtLightGreen,
         ),
         borderRadius: BorderRadius.all(
           Radius.circular(8),

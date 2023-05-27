@@ -3,6 +3,19 @@ import 'package:flutter/material.dart';
 typedef KeyboardTapCallback = void Function(String text);
 
 class NumericKeyboard extends StatefulWidget {
+  const NumericKeyboard({
+    required this.onKeyboardTap,
+    super.key,
+    this.textColor = Colors.grey,
+    this.rightButtonFn,
+    this.rightIcon = const Icon(
+      Icons.backspace_outlined,
+      color: Colors.grey,
+    ),
+    this.leftButtonFn,
+    this.mainAxisAlignment = MainAxisAlignment.spaceEvenly,
+  });
+
   /// Color of the text [default = Colors.black]
   final Color textColor;
 
@@ -20,19 +33,6 @@ class NumericKeyboard extends StatefulWidget {
 
   /// Main axis alignment [default = MainAxisAlignment.spaceEvenly]
   final MainAxisAlignment mainAxisAlignment;
-
-  NumericKeyboard({
-    Key? key,
-    required this.onKeyboardTap,
-    this.textColor = Colors.black,
-    this.rightButtonFn,
-    this.rightIcon = const Icon(
-      Icons.backspace_outlined,
-      color: Colors.black,
-    ),
-    this.leftButtonFn,
-    this.mainAxisAlignment = MainAxisAlignment.spaceEvenly,
-  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -82,7 +82,27 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
           ButtonBar(
             alignment: widget.mainAxisAlignment,
             children: [
-              _calcButton(','),
+              InkWell(
+                borderRadius: BorderRadius.circular(45),
+                onTap: widget.leftButtonFn,
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  width: 100,
+                  height: 50,
+                  child: Text(
+                    ',',
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: widget.textColor,
+                    ),
+                  ),
+                ),
+              ),
               _calcButton('0'),
               InkWell(
                 borderRadius: BorderRadius.circular(45),
