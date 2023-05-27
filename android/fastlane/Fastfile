@@ -4,23 +4,38 @@
 default_platform(:android)
 
 platform :android do
+  desc "Upload keystore"
+  lane :keystore do
+    match_keystore(git_url: "git@github.com:givtnl/givt.apps.codesigning.git", package_name: "net.givtapp.droid2", override_keystore: true)
+  end
+
   desc "Runs all the tests"
   lane :test do
     gradle(task: "test")
   end
 
-  desc "Submit a new Beta Build to Crashlytics Beta"
-  lane :beta do
-    gradle(task: "clean assembleRelease")
-    crashlytics
-  
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
   desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
+  lane :build_and_deploy do
+    flavor = ENV['flavor']
+    package_name = ENV['package_name']
+    track = ENV['track']
+    build_number = google_play_track_version_codes(package_name: package_name, track: track, json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 1
+
+    Dir.chdir "../.." do
+        sh("flutter", "packages", "get")
+        sh("flutter", "clean")
+        sh("flutter", "build", "appbundle", "--flavor", flavor, "--target", "lib/main_#{flavor}.dart", "--build-number=#{build_number}")
+    end
+    signed_aab_path = match_keystore(git_url: "git@github.com:givtnl/givt.apps.codesigning.git", 
+                    package_name: package_name,
+                    aab_path: "../build/app/outputs/bundle/#{flavor}Release/app-#{flavor}-release.aab",
+                    match_secret: ENV['MATCH_PASSWORD'],
+                    override_keystore: false)
+    upload_to_play_store(
+                        package_name: package_name,
+                        json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'], 
+                        aab: signed_aab_path,
+                        release_status: "completed",
+                        track: track)
   end
 end
