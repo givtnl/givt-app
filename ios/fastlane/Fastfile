@@ -1,0 +1,22 @@
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  git_url = "git@github.com:givtnl/givt.apps.codesigning.git"
+  # Lane used to setup fastlane match https://codesigning.guide/
+  lane :certificates do
+    match(type: "appstore", app_identifier: "net.givtapp.", git_url: git_url)
+  end
+
+  desc "Push a new build to Testflight"
+  lane :release do
+    # 1. Setup CI
+    # 2. Sync code signing
+    # 3. get api key
+    # 4. get latest build number +1
+    # 5. build app
+    # 6. upload to testflight
+  end
+end
