@@ -1,18 +1,35 @@
+import 'dart:convert';
 import 'dart:developer';
 
+import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/injection.dart';
 import 'package:http_interceptor/http_interceptor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Interceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {
-      ///TODO add token to request
+      final prefs = await SharedPreferences.getInstance();
+      final sessionString = prefs.getString(Session.tag);
 
-      /// If there is no content type, we set it to application/json
       if (!data.headers.containsKey('Content-Type')) {
         data.headers['Content-Type'] = 'application/json';
       }
       data.headers['Accept'] = 'application/json';
+
+      if (sessionString == null) {
+        return data;
+      }
+
+      final session = Session.fromJson(
+        jsonDecode(sessionString) as Map<String, dynamic>,
+      );
+
+      if (session.accessToken.isNotEmpty) {
+        data.headers['Authorization'] = 'Bearer ${session.accessToken}';
+      }
     } catch (e) {
       log(e.toString());
     }
@@ -34,7 +51,7 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
     ///This is where we need to update our token on 401 response
     if (response.statusCode == 401) {
-      ///todo add here refresh token method from repository
+      await getIt<AuthRepositoy>().refreshToken();
       return true;
     }
     return false;
