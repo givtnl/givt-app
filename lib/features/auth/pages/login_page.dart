@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/util.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.email = ''});
@@ -116,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 validator: (value) {
                   if (value == null ||
                       value.isEmpty ||
-                      value.contains('@') == false) {
+                      value.contains(Util.emailRegEx) == false) {
                     return AppLocalizations.of(context).invalidEmail;
                   }
                   return null;

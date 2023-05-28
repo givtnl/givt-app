@@ -7,6 +7,7 @@ import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/pages/signup_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/util.dart';
 
 class EmailSignupPage extends StatefulWidget {
   const EmailSignupPage({super.key});
@@ -98,7 +99,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 TextFormField(
                   controller: _emailController,
                   onChanged: (value) {
-                    setState(() {});
+                    setState(() {
+                      _formKey.currentState!.validate();
+                    });
                   },
                   decoration: InputDecoration(
                     hintText: locals.email,
@@ -107,7 +110,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
-                        value.contains('@') == false) {
+                        value.contains(Util.emailRegEx) == false) {
                       return AppLocalizations.of(context).invalidEmail;
                     }
                     return null;
@@ -146,7 +149,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(
-                    onPressed: _emailController.value.text.isNotEmpty
+                    onPressed: false
                         ? () async {
                             toggleLoading();
                             if (_formKey.currentState!.validate()) {
