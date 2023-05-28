@@ -1,12 +1,8 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
-import 'package:givt_app/features/give/widgets/numeric_keyboard.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -62,11 +58,8 @@ class HomePage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          BlocProvider(
-            create: (_) => GiveBloc(),
-            child: ChooseAmount(
-              amountLimit: auth.user.amountLimit,
-            ),
+          ChooseAmount(
+            amountLimit: auth.user.amountLimit,
           ),
           ColoredBox(
             color: Colors.white,
