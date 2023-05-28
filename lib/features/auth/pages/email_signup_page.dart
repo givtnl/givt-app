@@ -149,7 +149,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(
-                    onPressed: false
+                    onPressed: _emailController.text.isNotEmpty
                         ? () async {
                             toggleLoading();
                             if (_formKey.currentState!.validate()) {
@@ -162,6 +162,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                             toggleLoading();
                           }
                         : null,
+                    style: ElevatedButton.styleFrom(
+                      disabledBackgroundColor: Colors.grey,
+                    ),
                     child: Text(
                       locals.continueText,
                     ),
