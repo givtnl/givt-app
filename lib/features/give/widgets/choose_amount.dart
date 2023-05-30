@@ -49,52 +49,43 @@ class _ChooseAmountState extends State<ChooseAmount> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Visibility(
-                  visible: collectionFields[0],
-                  child: CollectionFormField(
-                    key: Key(locals.firstCollect),
-                    controller: controllers[0],
-                    amountLimit: widget.amountLimit,
-                    suffixText: locals.firstCollect,
-                    isRemoveIconVisible: collectionFields[1] == true ||
-                        collectionFields[2] == true,
-                    onRemoveIconPressed: () => setState(
-                      () {
-                        collectionFields[0] = false;
-                      },
-                    ),
-                    onFocused: () => selectedField = 0,
+                _buildCollectionField(
+                  collectionFieldName: locals.firstCollect,
+                  amountLimit: widget.amountLimit,
+                  controller: controllers[0],
+                  isVisible: collectionFields[0],
+                  isRemoveIconVisible: collectionFields[1] == true ||
+                      collectionFields[2] == true,
+                  onRemoveIconPressed: () => setState(
+                    () {
+                      collectionFields[0] = false;
+                    },
                   ),
+                  onFocused: () => selectedField = 0,
                 ),
-                Visibility(
-                  visible: collectionFields[1],
-                  child: CollectionFormField(
-                    key: Key(locals.secondCollect),
-                    controller: controllers[1],
-                    amountLimit: widget.amountLimit,
-                    suffixText: locals.secondCollect,
-                    isRemoveIconVisible: collectionFields[0] == true ||
-                        collectionFields[2] == true,
-                    onRemoveIconPressed: () => setState(() {
-                      collectionFields[1] = false;
-                    }),
-                    onFocused: () => selectedField = 1,
-                  ),
+                _buildCollectionField(
+                  collectionFieldName: locals.secondCollect,
+                  amountLimit: widget.amountLimit,
+                  controller: controllers[1],
+                  isVisible: collectionFields[1],
+                  isRemoveIconVisible: collectionFields[0] == true ||
+                      collectionFields[2] == true,
+                  onRemoveIconPressed: () => setState(() {
+                    collectionFields[1] = false;
+                  }),
+                  onFocused: () => selectedField = 1,
                 ),
-                Visibility(
-                  visible: collectionFields[2],
-                  child: CollectionFormField(
-                    key: Key(locals.thirdCollect),
-                    controller: controllers[2],
-                    amountLimit: widget.amountLimit,
-                    suffixText: locals.thirdCollect,
-                    isRemoveIconVisible: collectionFields[0] == true ||
-                        collectionFields[1] == true,
-                    onRemoveIconPressed: () => setState(() {
-                      collectionFields[2] = false;
-                    }),
-                    onFocused: () => selectedField = 2,
-                  ),
+                _buildCollectionField(
+                  collectionFieldName: locals.thirdCollect,
+                  amountLimit: widget.amountLimit,
+                  controller: controllers[2],
+                  isVisible: collectionFields[2],
+                  isRemoveIconVisible: collectionFields[0] == true ||
+                      collectionFields[1] == true,
+                  onRemoveIconPressed: () => setState(() {
+                    collectionFields[2] = false;
+                  }),
+                  onFocused: () => selectedField = 2,
                 ),
                 Visibility(
                   visible: !collectionFields.every(
@@ -127,6 +118,29 @@ class _ChooseAmountState extends State<ChooseAmount> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCollectionField({
+    required String collectionFieldName,
+    required int amountLimit,
+    required TextEditingController controller,
+    required bool isVisible,
+    required bool isRemoveIconVisible,
+    required VoidCallback onRemoveIconPressed,
+    required VoidCallback onFocused,
+  }) {
+    return Visibility(
+      visible: isVisible,
+      child: CollectionFormField(
+        key: Key(collectionFieldName),
+        controller: controller,
+        amountLimit: amountLimit,
+        suffixText: collectionFieldName,
+        isRemoveIconVisible: isRemoveIconVisible,
+        onRemoveIconPressed: onRemoveIconPressed,
+        onFocused: onFocused,
       ),
     );
   }
