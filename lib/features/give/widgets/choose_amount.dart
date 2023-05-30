@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -105,9 +106,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: () {
-                    //todo validate form and if all good navigate to qr page
-                  },
+                  onPressed: () => Navigator.of(context).push(
+                    QrCodeScanPage.route(),
+                  ),
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,
