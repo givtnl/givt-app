@@ -52,7 +52,7 @@ jobs:
       CODESIGNING_DEPLOY_KEY: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
-      GITHUB_API_TOKEN: ${{ secrets.PERSONAL_ACCESS_KEY }}
+      GITHUB_API_TOKEN: ${{ secrets.PIPELINE_PAT }}
 
   semantic-pr:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
