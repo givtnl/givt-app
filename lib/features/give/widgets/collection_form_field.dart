@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class CollectionFormField extends StatelessWidget {
@@ -8,6 +7,7 @@ class CollectionFormField extends StatelessWidget {
     required this.amountLimit,
     required this.onRemoveIconPressed,
     required this.onFocused,
+    this.isSuffixTextVisible = true,
     this.suffixText = '',
     this.prefixCurrencyIcon = const Icon(
       Icons.euro,
@@ -20,6 +20,7 @@ class CollectionFormField extends StatelessWidget {
 
   final TextEditingController controller;
   final bool isRemoveIconVisible;
+  final bool isSuffixTextVisible;
   final int amountLimit;
   final String suffixText;
   final Icon prefixCurrencyIcon;
@@ -44,6 +45,7 @@ class CollectionFormField extends StatelessWidget {
             if (value == null || value.isEmpty) {
               return '';
             }
+
             /// Dart accepts only dot as decimal separator
             if (double.parse(value.replaceAll(',', '.')) >
                 double.parse(amountLimit.toString())) {
@@ -52,18 +54,23 @@ class CollectionFormField extends StatelessWidget {
             return null;
           },
           textInputAction: TextInputAction.next,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.normal,
+                fontSize: 30,
+                color: AppTheme.givtDarkerGray,
+              ),
           decoration: InputDecoration(
-            suffixText: isRemoveIconVisible ? suffixText : null,
-            suffixIcon: isRemoveIconVisible
-                ? IconButton(
-                    onPressed: onRemoveIconPressed,
-                    icon: const Icon(
-                      Icons.remove_circle,
-                      color: Colors.grey,
-                    ),
-                  )
-                : null,
+            suffixText: isSuffixTextVisible ? suffixText : null,
+            suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppTheme.givtDarkerGray,
+                ),
+            suffixIcon: IconButton(
+              onPressed: onRemoveIconPressed,
+              icon: Icon(
+                Icons.remove_circle,
+                color: isRemoveIconVisible ? Colors.grey : Colors.transparent,
+              ),
+            ),
             prefixIcon: prefixCurrencyIcon,
             errorStyle: const TextStyle(
               height: 0,

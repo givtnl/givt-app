@@ -56,6 +56,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   isVisible: collectionFields[0],
                   isRemoveIconVisible: collectionFields[1] == true ||
                       collectionFields[2] == true,
+                  isSuffixTextVisible: collectionFields[1] == true ||
+                      collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(
                     () {
                       collectionFields[0] = false;
@@ -130,6 +132,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required bool isRemoveIconVisible,
     required VoidCallback onRemoveIconPressed,
     required VoidCallback onFocused,
+    bool isSuffixTextVisible = true,
   }) {
     return Visibility(
       visible: isVisible,
@@ -139,6 +142,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         amountLimit: amountLimit,
         suffixText: collectionFieldName,
         isRemoveIconVisible: isRemoveIconVisible,
+        isSuffixTextVisible: isSuffixTextVisible,
         onRemoveIconPressed: onRemoveIconPressed,
         onFocused: onFocused,
       ),
