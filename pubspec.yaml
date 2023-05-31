@@ -37,20 +37,20 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
-  fonts:
-    - family: Avenir
-      fonts:
-        - asset: fonts/AvenirLTStd-Black.ttf
-        - asset: fonts/AvenirLTStd-BlackOblique.ttf
-        - asset: fonts/AvenirLTStd-Book.ttf
-        - asset: fonts/AvenirLTStd-BookOblique.ttf
-        - asset: fonts/AvenirLTStd-Heavy.ttf
-        - asset: fonts/AvenirLTStd-HeavyOblique.ttf
-        - asset: fonts/AvenirLTStd-Light.ttf
-        - asset: fonts/AvenirLTStd-LightOblique.ttf
-        - asset: fonts/AvenirLTStd-Medium.ttf
-        - asset: fonts/AvenirLTStd-MediumOblique.ttf
-        - asset: fonts/AvenirLTStd-Oblique.ttf
-        - asset: fonts/AvenirLTStd-Roman.ttf
+#   fonts:
+#     - family: Avenir
+#       fonts:
+#         - asset: fonts/AvenirLTStd-Black.ttf
+#         - asset: fonts/AvenirLTStd-BlackOblique.ttf
+#         - asset: fonts/AvenirLTStd-Book.ttf
+#         - asset: fonts/AvenirLTStd-BookOblique.ttf
+#         - asset: fonts/AvenirLTStd-Heavy.ttf
+#         - asset: fonts/AvenirLTStd-HeavyOblique.ttf
+#         - asset: fonts/AvenirLTStd-Light.ttf
+#         - asset: fonts/AvenirLTStd-LightOblique.ttf
+#         - asset: fonts/AvenirLTStd-Medium.ttf
+#         - asset: fonts/AvenirLTStd-MediumOblique.ttf
+#         - asset: fonts/AvenirLTStd-Oblique.ttf
+#         - asset: fonts/AvenirLTStd-Roman.ttf
   assets:
     - assets/images/        
