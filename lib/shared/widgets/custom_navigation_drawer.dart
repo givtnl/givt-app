@@ -113,7 +113,7 @@ class CustomNavigationDrawer extends StatelessWidget {
               leading: Icon(icon),
               trailing: const Icon(Icons.arrow_forward_ios),
               title: Text(title),
-              onTap: () {},
+              onTap: onTap,
             ),
           ],
         ),
