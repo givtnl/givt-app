@@ -32,6 +32,8 @@ class _AppState extends State<App> {
       getIt<APIService>().apiURL = countryIso == 'US'
           ? widget.config['API_URL_US']!
           : widget.config['API_URL_EU']!;
+    }).catchError((e) {
+      getIt<APIService>().apiURL = widget.config['API_URL_EU']!;
     });
   }
 
