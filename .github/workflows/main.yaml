@@ -34,22 +34,6 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           DISABLE_ERRORS: true
 
-
-  admin:
-    name: Administrative stuff
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-20.04
-    steps:
-      - name: semantic pull request
-        uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
-
-      - name: spellcheck md
-        uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
-        with:
-            includes: |
-              **/*.md
-            modified_files_only: false
-
 # Build apps
   droid:
     needs: linter
@@ -69,3 +53,13 @@ jobs:
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
       GITHUB_API_TOKEN: ${{ secrets.PERSONAL_ACCESS_KEY }}
+
+  semantic-pr:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
+
+  spellcheck:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
+    with:
+      includes: |
+        **/*.md
+      modified_files_only: false
