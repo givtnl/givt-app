@@ -8,22 +8,61 @@ on:
   push:
     branches:
       - main
+      - develop
+      - feat/bff-609/fastlane-setup
+
   pull_request:
     branches:
       - main
+      - develop
 
 jobs:
-  semantic-pull-request:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
+  linter:
+    name: Lint codebase
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-  build:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
-    with:
-      flutter_channel: stable
+      - name: Superlinter run
+        uses: github/super-linter@v5
+        env:
+          DEFAULT_BRANCH: ${{ github.ref }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: true
 
-  spell-check:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
-    with:
-      includes: |
-        **/*.md
-      modified_files_only: false
+  admin:
+    name: Administrative stuff
+    runs-on: ubuntu-20.04
+    steps:
+      - name: semantic pull request
+        uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
+
+      - name: spellcheck md
+        uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
+        with:
+            includes: |
+              **/*.md
+            modified_files_only: false
+
+# Build apps
+  droid:
+    needs: linter
+#    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/android.yml
+    secrets:
+      CODESIGNING_DEPLOY_KEY: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
+      GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+
+  ios:
+    needs: linter
+#    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/ios.yml
+    secrets:
+      CODESIGNING_DEPLOY_KEY: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
+      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+      APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
+      GITHUB_API_TOKEN: ${{ secrets.PERSONAL_ACCESS_KEY }}
