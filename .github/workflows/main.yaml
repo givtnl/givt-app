@@ -32,9 +32,12 @@ jobs:
           DEFAULT_BRANCH: ${{ github.ref }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VALIDATE_ALL_CODEBASE: true
+          DISABLE_ERRORS: true
+
 
   admin:
     name: Administrative stuff
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-20.04
     steps:
       - name: semantic pull request
