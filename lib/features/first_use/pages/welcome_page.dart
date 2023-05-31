@@ -82,7 +82,9 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   }
 
   RichText _buildAlreadyAnAccountLogin(
-      BuildContext context, AppLocalizations locals) {
+    BuildContext context,
+    AppLocalizations locals,
+  ) {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
@@ -161,10 +163,11 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     AppLocalizations locals,
     String locale,
   ) {
-    List<Widget> carouselItems = [];
+    // ignore: prefer_final_locals
+    var carouselItems = <Widget>[];
     imageNames.asMap().forEach((int index, String path) {
       final isFirst = index == 0;
-      String title = locals.firstUseWelcomeTitle;
+      var title = locals.firstUseWelcomeTitle;
       if (index == 1) {
         title = locals.firstUseLabelTitle1;
       }

@@ -24,7 +24,8 @@ class TermsAndConditionsDialog extends StatelessWidget {
       if (['GB', 'GG', 'JE'].contains(localName)) {
         termsAndConditions = locals.policyTextGB;
       }
-      if (localName.contains('US')) {
+
+      if (localName == 'en_US') {
         termsAndConditions = locals.policyTextUS;
       }
     }
@@ -32,7 +33,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
       if (['GB', 'GG', 'JE'].contains(localName)) {
         termsAndConditions = locals.termsTextGB;
       }
-      if (localName.contains('US')) {
+      if (localName == 'en_US') {
         termsAndConditions = locals.termsTextUS;
       }
     }
