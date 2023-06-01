@@ -1,5 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/give/bloc/give_cubit.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -106,9 +108,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: () => Navigator.of(context).push(
-                    QrCodeScanPage.route(),
-                  ),
+                  onPressed: () => Navigator.of(context)
+                      .push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<GiveCubit>(),
+                            child: const QrCodeScanPage(),
+                          ),
+                          fullscreenDialog: true,
+                        ),
+                      )
+                      .then((value) {
+                        
+                      }),
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,

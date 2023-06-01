@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/bloc/give_cubit.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
+import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
@@ -10,7 +12,12 @@ class HomePage extends StatelessWidget {
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
-      builder: (_) => const HomePage(),
+      builder: (_) => BlocProvider(
+        create: (_) => GiveCubit(
+          getIt(),
+        ),
+        child: const HomePage(),
+      ),
     );
   }
 
