@@ -26,13 +26,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Superlinter run
-        uses: github/super-linter@v5
-        env:
-          DEFAULT_BRANCH: ${{ github.ref }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_ALL_CODEBASE: false
-          DISABLE_ERRORS: true
+#      - name: Superlinter run
+#        uses: github/super-linter@v5
+#        env:
+#          DEFAULT_BRANCH: ${{ github.ref }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          VALIDATE_ALL_CODEBASE: false
+#          DISABLE_ERRORS: true
 
 # Build apps
   droid:
