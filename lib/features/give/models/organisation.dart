@@ -1,5 +1,7 @@
-class Organisation {
-  Organisation({
+import 'package:equatable/equatable.dart';
+
+class Organisation extends Equatable {
+  const Organisation({
     this.campaignId,
     this.organisationName,
     this.country,
@@ -14,6 +16,23 @@ class Organisation {
     this.privacyPolicyLink,
     this.mediumId,
   });
+
+  factory Organisation.empty() => const Organisation(
+        campaignId: '',
+        organisationName: '',
+        country: '',
+        organisationLogoLink: '',
+        title: '',
+        goal: '',
+        thankYou: '',
+        paymentMethods: [],
+        currency: '',
+        amounts: [],
+        wantKnowMoreLink: '',
+        privacyPolicyLink: '',
+        mediumId: '',
+      );
+
   factory Organisation.fromJson(Map<String, dynamic> json) => Organisation(
         campaignId: json['campaignId'] as String?,
         organisationName: json['organisationName'] as String?,
@@ -30,19 +49,19 @@ class Organisation {
         mediumId: json['mediumId'] as String?,
       );
 
-  String? campaignId;
-  String? organisationName;
-  String? country;
-  String? organisationLogoLink;
-  String? title;
-  String? goal;
-  String? thankYou;
-  List<dynamic>? paymentMethods;
-  String? currency;
-  List<dynamic>? amounts;
-  String? wantKnowMoreLink;
-  String? privacyPolicyLink;
-  String? mediumId;
+  final String? campaignId;
+  final String? organisationName;
+  final String? country;
+  final String? organisationLogoLink;
+  final String? title;
+  final String? goal;
+  final String? thankYou;
+  final List<dynamic>? paymentMethods;
+  final String? currency;
+  final List<dynamic>? amounts;
+  final String? wantKnowMoreLink;
+  final String? privacyPolicyLink;
+  final String? mediumId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'campaignId': campaignId,
@@ -91,4 +110,21 @@ class Organisation {
       mediumId: mediumId ?? this.mediumId,
     );
   }
+
+  @override
+  List<Object?> get props => [
+        campaignId,
+        organisationName,
+        country,
+        organisationLogoLink,
+        title,
+        goal,
+        thankYou,
+        paymentMethods,
+        currency,
+        amounts,
+        wantKnowMoreLink,
+        privacyPolicyLink,
+        mediumId,
+      ];
 }

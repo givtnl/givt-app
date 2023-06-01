@@ -1,22 +1,46 @@
-part of 'give_cubit.dart';
+part of 'give_bloc.dart';
 
-abstract class GiveState extends Equatable {
-  const GiveState();
+enum GiveStatus { initial, loading, success, error }
 
-  @override
-  List<Object> get props => [];
-}
+class GiveState extends Equatable {
+  const GiveState({
+    this.status = GiveStatus.initial,
+    this.organisation = const Organisation(),
+    this.collections = const [0.0, 0.0, 0.0],
+    this.givt = '',
+  });
 
-class GiveInitial extends GiveState {}
-
-class GiveLoading extends GiveState {}
-
-class GiveError extends GiveState {}
-
-class GiveLoaded extends GiveState {
-  const GiveLoaded({required this.organisation});
+  final GiveStatus status;
   final Organisation organisation;
+  final List<double> collections;
+  final String givt;
+
+  GiveState copyWith({
+    GiveStatus? status,
+    Organisation? organisation,
+    String? error,
+    double? firstCollection,
+    double? secondCollection,
+    double? thirdCollection,
+    String? givt,
+  }) {
+    return GiveState(
+      status: status ?? this.status,
+      organisation: organisation ?? this.organisation,
+      collections: [
+        firstCollection ?? collections[0],
+        secondCollection ?? collections[1],
+        thirdCollection ?? collections[2],
+      ],
+      givt: givt ?? this.givt,
+    );
+  }
 
   @override
-  List<Object> get props => [organisation];
+  List<Object> get props => [
+        status,
+        organisation,
+        collections,
+        givt,
+      ];
 }
