@@ -117,4 +117,14 @@ class APIService {
     }
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
+
+  Future<Map<String, dynamic>> getCollectGroupList() {
+    final url = Uri.https(apiURL, '/api/v2/CollectGroups/applist');
+    return client.get(url).then((response) {
+      if (response.statusCode >= 400) {
+        throw Exception('something went wrong :(');
+      }
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    });
+  }
 }
