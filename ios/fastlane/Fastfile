@@ -21,7 +21,7 @@ platform :ios do
         issuer_id: "69a6de8f-dee3-47e3-e053-5b8c7c11a4d1",
         key_content: ENV['APPSTORECONNECT_PRIVATE_KEY']
     )
-    build_number = latest_testflight_build_number(api_key: api_key, app_identifier: app_identifier) + 1
+    build_number = latest_testflight_build_number(api_key: api_key, app_identifier: app_identifier) + 2
     Dir.chdir "../.." do
         sh("flutter", "packages", "get")
         sh("flutter", "clean")
