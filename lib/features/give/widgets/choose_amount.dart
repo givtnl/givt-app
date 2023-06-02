@@ -1,5 +1,8 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -108,7 +111,25 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 _buildNextButton(
                   label: locals.next,
                   onPressed: () {
-                    //todo validate form and if all good navigate to qr page
+                    context.read<GiveBloc>().add(
+                          GiveAmountChanged(
+                            firstCollectionAmount:
+                                double.parse(controllers[0].text),
+                            secondCollectionAmount:
+                                double.parse(controllers[1].text),
+                            thirdCollectionAmount:
+                                double.parse(controllers[2].text),
+                          ),
+                        );
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<GiveBloc>(),
+                          child: const QrCodeScanPage(),
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
                   },
                 ),
                 NumericKeyboard(
