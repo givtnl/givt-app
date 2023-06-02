@@ -149,7 +149,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(
-                    onPressed: _emailController.text.isNotEmpty
+                    onPressed: isEnabled
                         ? () async {
                             toggleLoading();
                             if (_formKey.currentState!.validate()) {
@@ -187,6 +187,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
         ),
       ),
     );
+  }
+
+  bool get isEnabled {
+    if (_formKey.currentState == null) return false;
+    if (_formKey.currentState!.validate() == false) return false;
+    return _emailController.text.isNotEmpty;
   }
 
   Text _buildAlreadyHaveAnAccount(

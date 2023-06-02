@@ -4,10 +4,23 @@ import 'package:givt_app/utils/color_schemes.g.dart';
 class AppTheme {
   /// Colors from android AppCompatTheme
   static const givtLightGreen = Color(0xFF41c98e);
+  static const givtBlue = Color(0xFF2e2957);
+  static const givtLightGray = Color(0xFFe3e2e7);
+  static const givtDarkerGray = Color(0xFF898989);
+  static const givtDarkGrey = Color(0xFF555555);
+  static const givtGraycece = Color(0xFFcecece);
+
+  static const givtPurple = Color(0xFF2e2957);
+  static const givtLightPurple = Color(0xFF5a5387);
+  static const givtRed = Color(0xFFD53D4C);
+  static const givtOrange = Color(0xFFF17057);
+  static const givtAmount = Color(0xFFD2D1D9);
+  static const givtYellow = Color(0xFFEDA52E);
+
   static final ThemeData lightTheme = ThemeData(
-    useMaterial3: true,
-    fontFamily: 'Avenir-Medium',
-    colorScheme: lightColorScheme,
+    // useMaterial3: true,
+    // fontFamily: 'Avenir',
+    // colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,
     textTheme: TextTheme(
       titleLarge: TextStyle(

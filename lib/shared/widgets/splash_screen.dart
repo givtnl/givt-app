@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 
 class SpalshPage extends StatelessWidget {
@@ -14,12 +12,12 @@ class SpalshPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: Center(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 100,
-            ),
-          ),
-        );
+      body: Center(
+        child: Image.asset(
+          'assets/images/logo.png',
+          width: 100,
+        ),
+      ),
+    );
   }
 }

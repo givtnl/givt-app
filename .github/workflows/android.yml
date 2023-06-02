@@ -1,0 +1,61 @@
+name: Build Android and upload to Play Store
+on: 
+  workflow_call:
+    secrets:
+      CODESIGNING_DEPLOY_KEY:
+        required: true
+      GOOGLE_PLAY_JSON_KEY:
+        required: true
+      MATCH_PASSWORD:
+        required: true
+
+jobs:
+
+  build-droid: 
+    name: Build Flutter Android
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Running on the main branch, deploying to production."
+            echo "PACKAGE_NAME=net.givtapp.droid2" >> $GITHUB_ENV
+            echo "FLAVOR=production" >> $GITHUB_ENV
+            echo "TRACK=production" >> $GITHUB_ENV
+          else
+            echo "Running on a different branch, deploying to test."
+            echo "PACKAGE_NAME=net.givtapp.droid2.test" >> $GITHUB_ENV
+            echo "FLAVOR=development" >> $GITHUB_ENV
+            echo "TRACK=internal" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1.118.0
+        with: 
+          ruby-version: '3.0'
+          bundler-cache: true
+
+      - name: Auth codesigning
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Run Fastlane
+        uses: maierj/fastlane-action@v2.3.0
+        with:
+          lane: android build_and_deploy
+          subdirectory: android
+        env:
+          GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
+          FLAVOR: ${{ env.FLAVOR }}
+          TRACK: ${{ env.TRACK }}

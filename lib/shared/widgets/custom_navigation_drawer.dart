@@ -16,138 +16,164 @@ class CustomNavigationDrawer extends StatelessWidget {
     return Drawer(
       child: ListView(
         children: [
-          Container(
-            margin: EdgeInsets.only(
-              bottom: size.height * 0.02,
-            ),
-            height: size.height * 0.03,
-            child: Image.asset(
-              'assets/images/logo.png',
-            ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.finalizeRegistration),
+          _buildGivtLogo(size),
+          _buildMenuItem(
+            title: locals.finalizeRegistration,
+            icon: Icons.edit,
             onTap: () {},
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          Divider(
-            thickness: size.height * 0.03,
-          ),
-          SizedBox(
-            height: size.height * 0.10,
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/givy_budget_menu.png',
-                      height: size.height * 0.1,
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: locals.budgetMenuView,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          WidgetSpan(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.02,
-                              ),
-                              child: const Icon(
-                                Icons.arrow_forward_ios,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      softWrap: true,
-                      textAlign: TextAlign.start,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Divider(
-            thickness: size.height * 0.02,
-          ),
-          ListTile(
-            leading: const Icon(Icons.receipt_long),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.historyTitle),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          // Divider(
+          //   thickness: size.height * 0.03,
+          // ),
+          _buildSummaryTile(size, locals, context),
+          // Divider(
+          //   thickness: size.height * 0.02,
+          // ),
+          _buildMenuItem(
+            title: locals.historyTitle,
+            icon: Icons.receipt_long,
             onTap: () {},
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          ListTile(
-            leading: const Icon(Icons.euro),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.giveLimit),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          _buildMenuItem(
+            title: locals.giveLimit,
+            icon: Icons.euro,
             onTap: () {},
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          ListTile(
-            leading: const Icon(Icons.mode_edit_outlined),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.personalInfo),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          _buildMenuItem(
+            title: locals.personalInfo,
+            icon: Icons.mode_edit_outline,
             onTap: () {},
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings_input_component),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.amountPresetsTitle),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          _buildMenuItem(
+            title: locals.amountPresetsTitle,
+            icon: Icons.settings_input_component,
             onTap: () {},
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          ListTile(
-            leading: const Icon(Icons.lock_outline_sharp),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.pincode),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          _buildMenuItem(
+            title: locals.pincode,
+            icon: Icons.lock_outline_sharp,
             onTap: () {},
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          ListTile(
-            leading: const Icon(Icons.fingerprint),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.touchID),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          _buildMenuItem(
+            title: locals.touchID,
+            icon: Icons.fingerprint,
             onTap: () {},
           ),
-          Divider(
-            thickness: size.height * 0.02,
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout_sharp),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.logOut),
+          // Divider(
+          //   thickness: size.height * 0.02,
+          // ),
+          _buildMenuItem(
+            isVisible: true,
+            title: locals.logOut,
+            icon: Icons.logout_sharp,
             onTap: () async => context.read<AuthCubit>().logout(),
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
-          ListTile(
-            leading: const Icon(Icons.delete_forever),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            title: Text(locals.unregister),
+          // Divider(
+          //   indent: size.width * 0.05,
+          // ),
+          _buildMenuItem(
+            title: locals.unregister,
+            icon: Icons.delete_forever,
             onTap: () {},
           ),
         ],
       ),
     );
   }
+
+  Widget _buildMenuItem({
+    required String title,
+    required IconData icon,
+    required VoidCallback onTap,
+    bool isVisible = false,
+  }) =>
+      Visibility(
+        visible: isVisible,
+        child: Column(
+          children: [
+            ListTile(
+              leading: Icon(icon),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              title: Text(title),
+              onTap: onTap,
+            ),
+          ],
+        ),
+      );
+
+  Widget _buildSummaryTile(
+    Size size,
+    AppLocalizations locals,
+    BuildContext context, {
+    bool isVisible = false,
+  }) {
+    return Visibility(
+      visible: isVisible,
+      child: SizedBox(
+        height: size.height * 0.10,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Image.asset(
+                  'assets/images/givy_budget_menu.png',
+                  height: size.height * 0.1,
+                ),
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: locals.budgetMenuView,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      WidgetSpan(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.02,
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  softWrap: true,
+                  textAlign: TextAlign.start,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGivtLogo(Size size) => Container(
+        margin: EdgeInsets.only(
+          bottom: size.height * 0.02,
+        ),
+        height: size.height * 0.03,
+        child: Image.asset(
+          'assets/images/logo.png',
+        ),
+      );
 }
