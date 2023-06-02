@@ -121,7 +121,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                                 double.parse(controllers[2].text),
                           ),
                         );
-                    Navigator.of(context).push(
+                    Navigator.of(context)
+                        .push(
                       MaterialPageRoute<void>(
                         builder: (_) => BlocProvider.value(
                           value: context.read<GiveBloc>(),
@@ -129,7 +130,14 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         ),
                         fullscreenDialog: true,
                       ),
-                    );
+                    )
+                        .then((value) {
+                      setState(() {
+                        controllers.forEach((element) {
+                          element.text = '0';
+                        });
+                      });
+                    });
                   },
                 ),
                 NumericKeyboard(

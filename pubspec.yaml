@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
+  flutter_inappwebview: ^5.7.2+3
   flutter_localizations:
     sdk: flutter
   flutter_native_timezone: ^2.0.0
@@ -28,7 +29,6 @@ dependencies:
   intl: ^0.18.0
   mobile_scanner: ^3.2.0
   shared_preferences: ^2.1.1
-  webview_flutter: ^4.2.1
 
 dev_dependencies:
   bloc_test: ^9.1.1
