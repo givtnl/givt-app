@@ -1,18 +1,23 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
-import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+
+typedef ChooseAmountNextCallback = void Function(
+  double firstCollection,
+  double secondCollection,
+  double thirdCollection,
+);
 
 class ChooseAmount extends StatefulWidget {
   const ChooseAmount({
     required this.amountLimit,
+    required this.onAmountChanged,
     super.key,
   });
 
   final int amountLimit;
+  final ChooseAmountNextCallback onAmountChanged;
 
   @override
   State<ChooseAmount> createState() => _ChooseAmountState();
@@ -28,6 +33,14 @@ class _ChooseAmountState extends State<ChooseAmount> {
   ];
 
   int selectedField = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (final controller in controllers) {
+      controller.dispose();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,35 +123,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: () {
-                    context.read<GiveBloc>().add(
-                          GiveAmountChanged(
-                            firstCollectionAmount:
-                                double.parse(controllers[0].text),
-                            secondCollectionAmount:
-                                double.parse(controllers[1].text),
-                            thirdCollectionAmount:
-                                double.parse(controllers[2].text),
-                          ),
-                        );
-                    Navigator.of(context)
-                        .push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => BlocProvider.value(
-                          value: context.read<GiveBloc>(),
-                          child: const QrCodeScanPage(),
-                        ),
-                        fullscreenDialog: true,
-                      ),
-                    )
-                        .then((value) {
-                      setState(() {
-                        controllers.forEach((element) {
-                          element.text = '0';
-                        });
-                      });
-                    });
-                  },
+                  onPressed: () => widget.onAmountChanged(
+                    double.parse(controllers[0].text),
+                    double.parse(controllers[1].text),
+                    double.parse(controllers[2].text),
+                  ),
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,
