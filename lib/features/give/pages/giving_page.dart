@@ -69,7 +69,6 @@ class GivingScreen extends StatelessWidget {
             controller.addJavaScriptHandler(
               handlerName: 'navigate',
               callback: (args) {
-                
                 if (!args.first.toString().contains('success')) {
                   return;
                 }
@@ -89,18 +88,6 @@ class GivingScreen extends StatelessWidget {
               {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
             ),
           ),
-          // onWebViewCreated: (controller) {
-          //   controller.addJavaScriptHandler(
-          //     handlerName: 'navigate',
-          //     callback: (args) {
-          //       print(args.first.toString());
-          //       // if (!args.first.toString().contains('success')) {
-          //       //   return;
-          //       // }
-          //       // Navigator.of(context).pop();
-          //     },
-          //   );
-          // },
         ),
       ),
     );
