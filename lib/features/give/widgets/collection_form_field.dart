@@ -30,7 +30,6 @@ class CollectionFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = TextEditingController(text: initialValue);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2.5),
       child: Material(
