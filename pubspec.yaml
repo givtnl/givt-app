@@ -28,6 +28,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   intl: ^0.18.0
   mobile_scanner: ^3.2.0
+  permission_handler: ^10.2.0
   shared_preferences: ^2.1.1
 
 dev_dependencies:

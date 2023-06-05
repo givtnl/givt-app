@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -48,6 +49,26 @@ class HomePage extends StatelessWidget {
         children: [
           ChooseAmount(
             amountLimit: auth.user.amountLimit,
+            onAmountChanged:
+                (firstCollection, secondCollection, thirdCollection) {
+              context.read<GiveBloc>().add(
+                    GiveAmountChanged(
+                      firstCollectionAmount: firstCollection,
+                      secondCollectionAmount: secondCollection,
+                      thirdCollectionAmount: thirdCollection,
+                    ),
+                  );
+
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<GiveBloc>(),
+                    child: const SelectGivingWayPage(),
+                  ),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
           ),
           ColoredBox(
             color: Colors.white,

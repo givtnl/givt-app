@@ -35,7 +35,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final locale = Platform.localeName.contains('nl') ? '' : 'en';
+    final locale = Platform.localeName.contains('en') ? '' : 'en';
     final locals = AppLocalizations.of(context);
 
     final imageNames = [
