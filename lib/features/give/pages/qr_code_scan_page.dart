@@ -7,8 +7,10 @@ import 'package:givt_app/features/give/bloc/give_bloc.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class QrCodeScanPage extends StatefulWidget {
   const QrCodeScanPage({super.key});
@@ -19,11 +21,52 @@ class QrCodeScanPage extends StatefulWidget {
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
   bool _isLoading = false;
-  final _controller = MobileScannerController();
+  final _controller = MobileScannerController(autoStart: false);
 
   void toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    isAllowed();
+  }
+
+  Future<void> isAllowed() async {
+    final isAllowed = await Permission.camera.isGranted;
+    if (!mounted) return;
+    if (isAllowed) {
+      await _controller.start();
+      return;
+    }
+
+    await showDialog<bool>(
+      context: context,
+      builder: (context) => PermissionDialog(
+        title: context.l10n.accessDenied,
+        content: context.l10n.cameraPermission,
+        onTryAgain: () async {
+          await Permission.camera.request();
+          await _controller.start();
+          if (!mounted) return;
+          Navigator.of(context).pop(true);
+        },
+        onCancel: () => Navigator.of(context).pop(false),
+      ),
+    ).then((value) {
+      if (value == null) {
+        Navigator.of(context).pop();
+        return;
+      }
+      if (value) {
+        _controller.start();
+        setState(() {});
+        return;
+      }
+      Navigator.of(context).pop();
     });
   }
 
@@ -105,6 +148,9 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
             MobileScanner(
               controller: _controller,
               onDetect: onQRCodeDetected,
+              errorBuilder: (p0, p1, p2) {
+                return Container();
+              },
             ),
             const Positioned.fill(
               child: QrCodeTarget(),
