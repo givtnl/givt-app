@@ -52,12 +52,12 @@ class SelectGivingWayPage extends StatelessWidget {
               subtitle: locals.selectContextCollect,
               image: 'assets/images/select_qr_phone_scan.png',
             ),
-            // _buildListTile(
-            //   onTap: () {},
-            //   title: locals.givingContextCollectionBagList,
-            //   subtitle: locals.selectContextList,
-            //   image: 'assets/images/select_list.png',
-            // ),
+            _buildListTile(
+              onTap: () {},
+              title: locals.givingContextCollectionBagList,
+              subtitle: locals.selectContextList,
+              image: 'assets/images/select_list.png',
+            ),
           ],
         ),
       ),
