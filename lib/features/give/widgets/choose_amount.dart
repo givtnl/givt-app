@@ -123,11 +123,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: () => widget.onAmountChanged(
-                    double.parse(controllers[0].text),
-                    double.parse(controllers[1].text),
-                    double.parse(controllers[2].text),
-                  ),
+                  onPressed: isEnabled
+                      ? () => widget.onAmountChanged(
+                            double.parse(
+                              controllers[0].text.replaceAll(',', '.'),
+                            ),
+                            double.parse(
+                              controllers[1].text.replaceAll(',', '.'),
+                            ),
+                            double.parse(
+                              controllers[2].text.replaceAll(',', '.'),
+                            ),
+                          )
+                      : null,
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,
@@ -140,6 +148,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
         ),
       ),
     );
+  }
+
+  bool get isEnabled {
+    if (_formKey.currentState == null) return false;
+    if (_formKey.currentState!.validate() == false) return false;
+
+    for (final controller in controllers) {
+      if (double.parse(controller.text.replaceAll(',', '.')) != 0) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   Widget _buildCollectionField({
@@ -174,13 +195,17 @@ class _ChooseAmountState extends State<ChooseAmount> {
     /// if text has 1 digit then it will be 0
     if (controllers[selectedField].text.length == 1) {
       controllers[selectedField].text = _zero;
-      _formKey.currentState!.validate();
+      setState(() {
+        _formKey.currentState!.validate();
+      });
       return;
     }
     controllers[selectedField].text = controllers[selectedField]
         .text
         .substring(0, controllers[0].text.length - 1);
-    _formKey.currentState!.validate();
+    setState(() {
+      _formKey.currentState!.validate();
+    });
   }
 
   void onCommaTapped() {
@@ -192,10 +217,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
     }
     if (controllers[selectedField].text == _zero) {
       controllers[selectedField].text += _comma;
+      setState(() {
+        _formKey.currentState!.validate();
+      });
       return;
     }
     controllers[selectedField].text += _comma;
-    _formKey.currentState!.validate();
+    setState(() {
+      _formKey.currentState!.validate();
+    });
   }
 
   void onNumberTapped(String value) {
@@ -207,6 +237,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
     if (controllers[selectedField].text == _zero) {
       controllers[selectedField].text = value;
+      setState(() {
+        _formKey.currentState!.validate();
+      });
       return;
     }
 
@@ -214,12 +247,14 @@ class _ChooseAmountState extends State<ChooseAmount> {
     if (controllers[selectedField].text.length <= 6) {
       controllers[selectedField].text += value;
     }
-    _formKey.currentState!.validate();
+    setState(() {
+      _formKey.currentState!.validate();
+    });
   }
 
   Padding _buildNextButton({
     required String label,
-    required VoidCallback onPressed,
+    VoidCallback? onPressed,
   }) {
     return Padding(
       padding: const EdgeInsets.all(15),
