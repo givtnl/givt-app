@@ -7,8 +7,8 @@ abstract class OrganisationEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class OrganisationStarted extends OrganisationEvent {
-  const OrganisationStarted();
+class OrganisationFetch extends OrganisationEvent {
+  const OrganisationFetch();
 }
 
 class OrganisationTypeChanged extends OrganisationEvent {
@@ -20,6 +20,15 @@ class OrganisationTypeChanged extends OrganisationEvent {
   List<Object> get props => [type];
 }
 
+class OrganisationSelectionChanged extends OrganisationEvent {
+  const OrganisationSelectionChanged(this.index);
+
+  final int index;
+
+  @override
+  List<Object> get props => [index];
+}
+
 class OrganisationFilterQueryChanged extends OrganisationEvent {
   const OrganisationFilterQueryChanged(this.query);
 
@@ -27,13 +36,4 @@ class OrganisationFilterQueryChanged extends OrganisationEvent {
 
   @override
   List<Object> get props => [query];
-}
-
-class OrganisationSelected extends OrganisationEvent {
-  const OrganisationSelected(this.organisation);
-
-  final 
-
-  @override
-  List<Object> get props => [organisation];
 }

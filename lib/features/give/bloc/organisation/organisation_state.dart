@@ -1,21 +1,50 @@
 part of 'organisation_bloc.dart';
 
-abstract class OrganisationState extends Equatable {
-  const OrganisationState();
-
-
-  @override
-  List<Object> get props => [];
+enum OrganisationStatus {
+  initial,
+  loading,
+  error,
+  filtered,
 }
 
-class OrganisationInitial extends OrganisationState {}
+class OrganisationState extends Equatable {
+  const OrganisationState({
+    this.organisations = const [],
+    this.filteredOrganisations = const [],
+    this.selectedType = -1,
+    this.selectedCollectGroup = const CollectGroup.empty(),
+    this.status = OrganisationStatus.initial,
+  });
 
-class OrganisationLoading extends OrganisationState {}
+  final List<CollectGroup> organisations;
+  final List<CollectGroup> filteredOrganisations;
+  final int selectedType;
+  final CollectGroup selectedCollectGroup;
+  final OrganisationStatus status;
 
-class OrganisationListFiltered extends OrganisationState {
-  const OrganisationListFiltered(this.organisations);
-  final List<Organisation> organisations;
+  OrganisationState copyWith({
+    List<CollectGroup>? organisations,
+    List<CollectGroup>? filteredOrganisations,
+    int? selectedType,
+    OrganisationStatus? status,
+    CollectGroup? selectedCollectGroup,
+  }) {
+    return OrganisationState(
+      organisations: organisations ?? this.organisations,
+      filteredOrganisations:
+          filteredOrganisations ?? this.filteredOrganisations,
+      selectedType: selectedType ?? this.selectedType,
+      status: status ?? this.status,
+      selectedCollectGroup: selectedCollectGroup ?? this.selectedCollectGroup,
+    );
+  }
 
   @override
-  List<Object> get props => [organisations];
+  List<Object> get props => [
+        organisations,
+        selectedType,
+        filteredOrganisations,
+        status,
+        selectedCollectGroup
+      ];
 }
