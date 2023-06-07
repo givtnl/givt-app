@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
+
 import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
