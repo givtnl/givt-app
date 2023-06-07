@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
 import 'package:givt_app/injection.dart';
