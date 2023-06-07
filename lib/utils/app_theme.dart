@@ -49,8 +49,10 @@ class AppTheme {
     ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: lightColorScheme.background,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
       ),
       dragHandleColor: lightColorScheme.onBackground,
     ),
