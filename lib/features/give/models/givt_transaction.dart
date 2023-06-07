@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class GivtTransaction extends Equatable {
-  GivtTransaction({
+  const GivtTransaction({
     required this.guid,
     required this.amount,
     required this.beaconId,
