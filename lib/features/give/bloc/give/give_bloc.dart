@@ -6,13 +6,17 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:intl/intl.dart';
 
 part 'give_event.dart';
 part 'give_state.dart';
 
 class GiveBloc extends Bloc<GiveEvent, GiveState> {
-  GiveBloc(this._campaignRepository) : super(const GiveState()) {
+  GiveBloc(
+    this._campaignRepository,
+    this._givtRepository,
+  ) : super(const GiveState()) {
     on<GiveQRCodeScanned>(_qrCodeScanned);
 
     on<GiveAmountChanged>(_amountChanged);
@@ -21,6 +25,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   }
 
   final CampaignRepository _campaignRepository;
+  final GivtRepository _givtRepository;
 
   FutureOr<void> _qrCodeScanned(
     GiveQRCodeScanned event,
@@ -73,8 +78,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
   List<GivtTransaction> _createTransationList(String mediumId, String guid) {
     final transactionList = <GivtTransaction>[];
-    final now = DateTime.now();
-    final formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SS0").format(now);
+    final formattedDate = DateTime.now().toUtc().toIso8601String();
     for (var index = 0; index < state.collections.length; index++) {
       if (state.collections[index] == 0.0) continue;
       transactionList.add(
@@ -126,6 +130,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final organisation = await _getOrganisation(event.nameSpace);
       final transactionList =
           _createTransationList(event.nameSpace, event.userGUID);
+
+      await _givtRepository.submitGivts(
+        guid: event.userGUID,
+        body: {'donations': GivtTransaction.toJsonList(transactionList)},
+      );
       emit(
         state.copyWith(
           status: GiveStatus.readyToGive,

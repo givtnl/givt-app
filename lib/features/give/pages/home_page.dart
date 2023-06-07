@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
       builder: (_) => BlocProvider(
         create: (_) => GiveBloc(
           getIt(),
+          getIt(),
         ),
         child: const HomePage(),
       ),

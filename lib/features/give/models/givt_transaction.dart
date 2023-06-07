@@ -22,6 +22,7 @@ class GivtTransaction extends Equatable {
       'BeaconId': beaconId,
       'Timestamp': timestamp,
       'CollectId': collectId,
+      'mediumId': beaconId,
     };
   }
 
