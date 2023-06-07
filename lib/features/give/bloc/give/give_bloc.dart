@@ -4,10 +4,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
-import 'package:givt_app/injection.dart';
 import 'package:intl/intl.dart';
 
 part 'give_event.dart';
