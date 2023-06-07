@@ -136,7 +136,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               MaterialPageRoute<void>(
                 builder: (_) => BlocProvider.value(
                   value: context.read<GiveBloc>(),
-                  child: const GivingScreen(),
+                  child: const GivingPage(),
                 ),
                 fullscreenDialog: true,
               ),

@@ -98,13 +98,15 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     emit(
       state.copyWith(status: OrganisationStatus.loading),
     );
+    final selectedNow = state.organisations.firstWhere(
+      (organisation) => organisation.nameSpace == event.mediumId,
+    );
     emit(
       state.copyWith(
         status: OrganisationStatus.filtered,
-        selectedCollectGroup:
-            state.selectedCollectGroup == state.organisations[event.index]
-                ? const CollectGroup.empty()
-                : state.organisations[event.index],
+        selectedCollectGroup: state.selectedCollectGroup == selectedNow
+            ? const CollectGroup.empty()
+            : selectedNow,
       ),
     );
   }

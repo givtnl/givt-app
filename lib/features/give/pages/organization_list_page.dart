@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -65,10 +67,11 @@ class OrganizationListPage extends StatelessWidget {
                     itemBuilder: (context, index) => _buildListTile(
                       type: state.filteredOrganisations[index].type,
                       title: state.filteredOrganisations[index].orgName,
-                      isSelected: state.selectedCollectGroup ==
-                          state.organisations[index],
+                      isSelected: state.selectedCollectGroup.nameSpace ==
+                          state.filteredOrganisations[index].nameSpace,
                       onTap: () => context.read<OrganisationBloc>().add(
-                            OrganisationSelectionChanged(index),
+                            OrganisationSelectionChanged(
+                                state.filteredOrganisations[index].nameSpace),
                           ),
                     ),
                   ),
@@ -82,7 +85,29 @@ class OrganizationListPage extends StatelessWidget {
                 onPressed:
                     state.selectedCollectGroup.type == CollecGroupType.none
                         ? null
-                        : () {},
+                        : () {
+                            final userGUID =
+                                (context.read<AuthCubit>().state as AuthSuccess)
+                                    .user
+                                    .guid;
+
+                            context.read<GiveBloc>().add(
+                                  GiveOrganisationSelected(
+                                    state.selectedCollectGroup.nameSpace,
+                                    userGUID,
+                                  ),
+                                );
+
+                            Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<GiveBloc>(),
+                                  child: const GivingPage(),
+                                ),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
               ),
             ],
           );

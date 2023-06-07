@@ -21,12 +21,12 @@ class OrganisationTypeChanged extends OrganisationEvent {
 }
 
 class OrganisationSelectionChanged extends OrganisationEvent {
-  const OrganisationSelectionChanged(this.index);
+  const OrganisationSelectionChanged(this.mediumId);
 
-  final int index;
+  final String mediumId;
 
   @override
-  List<Object> get props => [index];
+  List<Object> get props => [mediumId];
 }
 
 class OrganisationFilterQueryChanged extends OrganisationEvent {

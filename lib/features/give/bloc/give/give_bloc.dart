@@ -16,6 +16,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     on<GiveQRCodeScanned>(_qrCodeScanned);
 
     on<GiveAmountChanged>(_amountChanged);
+
+    on<GiveOrganisationSelected>(_organisationSelected);
   }
 
   final CampaignRepository _campaignRepository;
@@ -28,40 +30,39 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     try {
       final uri = Uri.parse(event.rawValue);
       final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
-      final organisation = await getOrganisation(mediumId);
-      final transactionList = createTransationList(mediumId, event.userGUID);
-      final givt = {
-        'advertisementImageUrl': '',
-        'nativeAppScheme': 'givt:\/\/',
-        'YesSuccess': '',
-        'Thanks': '',
-        'Close': '',
-        'GUID': event.userGUID,
-        'Collect': '',
-        'ConfirmBtn': '',
-        'currency': '',
-        'isProduction': false,
-        'SlimPayInformationPart2': '',
-        'advertisementText': '',
-        'SlimPayInformation': '',
-        'organisation': organisation.organisationName,
-        'shouldShowCreditCard': false,
-        'ShareGivt': '',
-        'urlPart': '',
-        'spUrl': '',
-        'Cancel': '',
-        'message': '',
-        'AreYouSureToCancelGivts': '',
-        'advertisementTitle': '',
-        'apiUrl': '',
-        'canShare': false,
-        'givtObj': GivtTransaction.toJsonList(transactionList),
-      };
+      final organisation = await _getOrganisation(mediumId);
+      final transactionList = _createTransationList(mediumId, event.userGUID);
+      //   'advertisementImageUrl': '',
+      //   'nativeAppScheme': 'givt:\/\/',
+      //   'YesSuccess': '',
+      //   'Thanks': '',
+      //   'Close': '',
+      //   'GUID': event.userGUID,
+      //   'Collect': '',
+      //   'ConfirmBtn': '',
+      //   'currency': '',
+      //   'isProduction': false,
+      //   'SlimPayInformationPart2': '',
+      //   'advertisementText': '',
+      //   'SlimPayInformation': '',
+      //   'organisation': organisation.organisationName,
+      //   'shouldShowCreditCard': false,
+      //   'ShareGivt': '',
+      //   'urlPart': '',
+      //   'spUrl': '',
+      //   'Cancel': '',
+      //   'message': '',
+      //   'AreYouSureToCancelGivts': '',
+      //   'advertisementTitle': '',
+      //   'apiUrl': '',
+      //   'canShare': false,
+      //   'givtObj': GivtTransaction.toJsonList(transactionList),
+      // };
       emit(
         state.copyWith(
-          status: GiveStatus.success,
+          status: GiveStatus.readyToGive,
           organisation: organisation,
-          givt: jsonEncode(givt),
+          givtTransactions: transactionList,
         ),
       );
     } catch (e) {
@@ -70,7 +71,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
   }
 
-  List<GivtTransaction> createTransationList(String mediumId, String guid) {
+  List<GivtTransaction> _createTransationList(String mediumId, String guid) {
     final transactionList = <GivtTransaction>[];
     final now = DateTime.now();
     final formattedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SS0").format(now);
@@ -89,7 +90,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     return transactionList;
   }
 
-  Future<Organisation> getOrganisation(String mediumId) async {
+  Future<Organisation> _getOrganisation(String mediumId) async {
     final organisation = await _campaignRepository.getOrganisation(mediumId);
     organisation.copyWith(mediumId: mediumId);
 
@@ -108,6 +109,28 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           firstCollection: event.firstCollectionAmount,
           secondCollection: event.secondCollectionAmount,
           thirdCollection: event.thirdCollectionAmount,
+        ),
+      );
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: GiveStatus.error));
+    }
+  }
+
+  FutureOr<void> _organisationSelected(
+    GiveOrganisationSelected event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final organisation = await _getOrganisation(event.mediumId);
+      final transactionList =
+          _createTransationList(event.mediumId, event.userGUID);
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToGive,
+          organisation: organisation,
+          givtTransactions: transactionList,
         ),
       );
     } catch (e) {
