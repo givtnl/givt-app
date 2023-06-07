@@ -123,9 +123,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      final organisation = await _getOrganisation(event.mediumId);
+      final organisation = await _getOrganisation(event.nameSpace);
       final transactionList =
-          _createTransationList(event.mediumId, event.userGUID);
+          _createTransationList(event.nameSpace, event.userGUID);
       emit(
         state.copyWith(
           status: GiveStatus.readyToGive,

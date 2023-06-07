@@ -18,13 +18,13 @@ class GiveQRCodeScanned extends GiveEvent {
 }
 
 class GiveOrganisationSelected extends GiveEvent {
-  const GiveOrganisationSelected(this.mediumId, this.userGUID);
+  const GiveOrganisationSelected(this.nameSpace, this.userGUID);
 
-  final String mediumId;
+  final String nameSpace;
   final String userGUID;
 
   @override
-  List<Object> get props => [mediumId, userGUID];
+  List<Object> get props => [nameSpace, userGUID];
 }
 
 class GiveAmountChanged extends GiveEvent {
