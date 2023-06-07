@@ -50,7 +50,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
         content: context.l10n.cameraPermission,
         onTryAgain: () async {
           await Permission.camera.request();
-          await _controller.start();
+          // await _controller.start();
           if (!mounted) return;
           Navigator.of(context).pop(true);
         },
@@ -131,7 +131,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               }
             });
           }
-          if (state.status == GiveStatus.success) {
+          if (state.status == GiveStatus.readyToGive) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute<void>(
                 builder: (_) => BlocProvider.value(
@@ -147,7 +147,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: onQRCodeDetected,
+              onDetect: _onQRCodeDetected,
               errorBuilder: (p0, p1, p2) {
                 return Container();
               },
@@ -174,7 +174,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     );
   }
 
-  Future<void> onQRCodeDetected(BarcodeCapture code) async {
+  Future<void> _onQRCodeDetected(BarcodeCapture code) async {
     toggleLoading();
     await _controller.stop();
     if (code.barcodes.first.rawValue == null) {
