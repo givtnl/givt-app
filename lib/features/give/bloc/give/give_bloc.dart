@@ -7,7 +7,6 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
-import 'package:intl/intl.dart';
 
 part 'give_event.dart';
 part 'give_state.dart';
