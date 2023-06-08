@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -50,7 +50,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
         content: context.l10n.cameraPermission,
         onTryAgain: () async {
           await Permission.camera.request();
-          await _controller.start();
+          // await _controller.start();
           if (!mounted) return;
           Navigator.of(context).pop(true);
         },
@@ -131,12 +131,12 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               }
             });
           }
-          if (state.status == GiveStatus.success) {
+          if (state.status == GiveStatus.readyToGive) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute<void>(
                 builder: (_) => BlocProvider.value(
                   value: context.read<GiveBloc>(),
-                  child: const GivingScreen(),
+                  child: const GivingPage(),
                 ),
                 fullscreenDialog: true,
               ),
@@ -147,7 +147,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: onQRCodeDetected,
+              onDetect: _onQRCodeDetected,
               errorBuilder: (p0, p1, p2) {
                 return Container();
               },
@@ -174,7 +174,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     );
   }
 
-  Future<void> onQRCodeDetected(BarcodeCapture code) async {
+  Future<void> _onQRCodeDetected(BarcodeCapture code) async {
     toggleLoading();
     await _controller.stop();
     if (code.barcodes.first.rawValue == null) {

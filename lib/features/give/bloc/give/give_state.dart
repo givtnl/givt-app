@@ -1,19 +1,19 @@
 part of 'give_bloc.dart';
 
-enum GiveStatus { initial, loading, success, error }
+enum GiveStatus { initial, loading, readyToGive, success, error }
 
 class GiveState extends Equatable {
   const GiveState({
     this.status = GiveStatus.initial,
     this.organisation = const Organisation(),
     this.collections = const [0.0, 0.0, 0.0],
-    this.givt = '',
+    this.givtTransactions = const [],
   });
 
   final GiveStatus status;
   final Organisation organisation;
   final List<double> collections;
-  final String givt;
+  final List<GivtTransaction> givtTransactions;
 
   GiveState copyWith({
     GiveStatus? status,
@@ -22,7 +22,7 @@ class GiveState extends Equatable {
     double? firstCollection,
     double? secondCollection,
     double? thirdCollection,
-    String? givt,
+    List<GivtTransaction>? givtTransactions,
   }) {
     return GiveState(
       status: status ?? this.status,
@@ -32,7 +32,7 @@ class GiveState extends Equatable {
         secondCollection ?? collections[1],
         thirdCollection ?? collections[2],
       ],
-      givt: givt ?? this.givt,
+      givtTransactions: givtTransactions ?? this.givtTransactions,
     );
   }
 
@@ -41,6 +41,6 @@ class GiveState extends Equatable {
         status,
         organisation,
         collections,
-        givt,
+        givtTransactions,
       ];
 }

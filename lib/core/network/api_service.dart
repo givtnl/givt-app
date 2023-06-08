@@ -67,7 +67,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getUserExtension(String guid) async {
-    final url = Uri.https(apiURL, '/api/UsersExtension/$guid');
+    final url = Uri.https(apiURL, '/api/v2/UsersExtension/$guid');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
       throw Exception('something went wrong :(');
@@ -125,6 +125,28 @@ class APIService {
         throw Exception('something went wrong :(');
       }
       return jsonDecode(response.body) as Map<String, dynamic>;
+    });
+  }
+
+  Future<bool> submitGivts({
+    required Map<String, dynamic> body,
+    required String guid,
+  }) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/givts');
+    return client
+        .post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: jsonEncode(body),
+    )
+        .then((response) {
+      if (response.statusCode >= 400) {
+        throw Exception('something went wrong :(');
+      }
+      return response.statusCode == 200;
     });
   }
 }

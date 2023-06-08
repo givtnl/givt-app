@@ -17,6 +17,16 @@ class GiveQRCodeScanned extends GiveEvent {
   List<Object> get props => [rawValue, userGUID];
 }
 
+class GiveOrganisationSelected extends GiveEvent {
+  const GiveOrganisationSelected(this.nameSpace, this.userGUID);
+
+  final String nameSpace;
+  final String userGUID;
+
+  @override
+  List<Object> get props => [nameSpace, userGUID];
+}
+
 class GiveAmountChanged extends GiveEvent {
   const GiveAmountChanged({
     required this.firstCollectionAmount,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
+import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class SelectGivingWayPage extends StatelessWidget {
@@ -48,16 +50,35 @@ class SelectGivingWayPage extends StatelessWidget {
                   fullscreenDialog: true,
                 ),
               ),
-              title: locals.givingContextCollectionBag,
-              subtitle: locals.selectContextCollect,
+              title: locals.givingContextQRCode,
+              subtitle: locals.giveContextQR,
               image: 'assets/images/select_qr_phone_scan.png',
             ),
-            // _buildListTile(
-            //   onTap: () {},
-            //   title: locals.givingContextCollectionBagList,
-            //   subtitle: locals.selectContextList,
-            //   image: 'assets/images/select_list.png',
-            // ),
+            _buildListTile(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: context.read<GiveBloc>(),
+                      ),
+                      BlocProvider(
+                        create: (_) => OrganisationBloc(
+                          getIt(),
+                        )..add(
+                            const OrganisationFetch(),
+                          ),
+                      ),
+                    ],
+                    child: const OrganizationListPage(),
+                  ),
+                  fullscreenDialog: true,
+                ),
+              ),
+              title: locals.givingContextCollectionBagList,
+              subtitle: locals.selectContextList,
+              image: 'assets/images/select_list.png',
+            ),
           ],
         ),
       ),
