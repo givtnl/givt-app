@@ -23,6 +23,7 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   flutter_sim_country_code: ^0.1.2
   flutter_svg: ^2.0.6
+  font_awesome_flutter: ^10.4.0
   get_it: ^7.6.0
   http: ^0.13.6
   http_interceptor: ^1.0.2
@@ -31,31 +32,32 @@ dependencies:
   mobile_scanner: ^3.2.0
   permission_handler: ^10.2.0
   shared_preferences: ^2.1.1
+  vibration: ^1.7.7
 
 dev_dependencies:
   bloc_test: ^9.1.1
   flutter_test:
     sdk: flutter
   mocktail: ^0.3.0
-  very_good_analysis: ^4.0.0
+  very_good_analysis: ^5.0.0+1
 
 flutter:
   uses-material-design: true
   generate: true
-#   fonts:
-#     - family: Avenir
-#       fonts:
-#         - asset: fonts/AvenirLTStd-Black.ttf
-#         - asset: fonts/AvenirLTStd-BlackOblique.ttf
-#         - asset: fonts/AvenirLTStd-Book.ttf
-#         - asset: fonts/AvenirLTStd-BookOblique.ttf
-#         - asset: fonts/AvenirLTStd-Heavy.ttf
-#         - asset: fonts/AvenirLTStd-HeavyOblique.ttf
-#         - asset: fonts/AvenirLTStd-Light.ttf
-#         - asset: fonts/AvenirLTStd-LightOblique.ttf
-#         - asset: fonts/AvenirLTStd-Medium.ttf
-#         - asset: fonts/AvenirLTStd-MediumOblique.ttf
-#         - asset: fonts/AvenirLTStd-Oblique.ttf
-#         - asset: fonts/AvenirLTStd-Roman.ttf
+  fonts:
+    - family: AvenirLTStd
+      fonts:
+        - asset: assets/fonts/AvenirLTStd-Black.otf
+        - asset: assets/fonts/AvenirLTStd-BlackOblique.otf
+        - asset: assets/fonts/AvenirLTStd-Book.otf
+        - asset: assets/fonts/AvenirLTStd-BookOblique.otf
+        - asset: assets/fonts/AvenirLTStd-Heavy.otf
+        - asset: assets/fonts/AvenirLTStd-HeavyOblique.otf
+        - asset: assets/fonts/AvenirLTStd-Light.otf
+        - asset: assets/fonts/AvenirLTStd-LightOblique.otf
+        - asset: assets/fonts/AvenirLTStd-Medium.otf
+        - asset: assets/fonts/AvenirLTStd-MediumOblique.otf
+        - asset: assets/fonts/AvenirLTStd-Oblique.otf
+        - asset: assets/fonts/AvenirLTStd-Roman.otf
   assets:
     - assets/images/        

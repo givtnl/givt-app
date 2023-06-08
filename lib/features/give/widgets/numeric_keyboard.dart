@@ -91,7 +91,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   height: 50,
                   child: Text(
                     ',',
@@ -113,7 +113,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   height: 50,
                   child: widget.rightIcon,
                 ),
@@ -137,7 +137,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
-        width: 100,
+        width: MediaQuery.of(context).size.width * 0.25,
         height: 50,
         child: Text(
           value,

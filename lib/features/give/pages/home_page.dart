@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/give_bloc.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
 import 'package:givt_app/injection.dart';
@@ -13,12 +13,7 @@ class HomePage extends StatelessWidget {
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => GiveBloc(
-          getIt(),
-        ),
-        child: const HomePage(),
-      ),
+      builder: (_) => const HomePage(),
     );
   }
 
@@ -48,26 +43,29 @@ class HomePage extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           ChooseAmount(
+            country: auth.user.country,
             amountLimit: auth.user.amountLimit,
             onAmountChanged:
                 (firstCollection, secondCollection, thirdCollection) {
-              context.read<GiveBloc>().add(
-                    GiveAmountChanged(
-                      firstCollectionAmount: firstCollection,
-                      secondCollectionAmount: secondCollection,
-                      thirdCollectionAmount: thirdCollection,
-                    ),
-                  );
-
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<GiveBloc>(),
+                  builder: (_) => BlocProvider(
+                    create: (context) => GiveBloc(
+                      getIt(),
+                      getIt(),
+                    )..add(
+                        GiveAmountChanged(
+                          firstCollectionAmount: firstCollection,
+                          secondCollectionAmount: secondCollection,
+                          thirdCollectionAmount: thirdCollection,
+                        ),
+                      ),
                     child: const SelectGivingWayPage(),
                   ),
                   fullscreenDialog: true,
                 ),
               );
+              return true;
             },
           ),
           ColoredBox(

@@ -55,7 +55,6 @@ class ContextListTile extends StatelessWidget {
 
   Padding _buildTitleSubtitle(Size size, BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: 10,
           vertical: 5,
         ),
         child: Column(
@@ -70,7 +69,9 @@ class ContextListTile extends StatelessWidget {
                 ),
                 child: Text(
                   title,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                 ),
               ),
