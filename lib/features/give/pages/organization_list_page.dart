@@ -1,5 +1,7 @@
 // ignore_for_file: no_default_cases
 
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -217,15 +219,19 @@ class OrganizationListPage extends StatelessWidget {
               ),
             ),
           ),
-          FilterSuggestionCard(
-            isFocused: bloc.state.selectedType == CollecGroupType.artists.value,
-            title: locals.artist,
-            icon: 'assets/images/artist.png',
-            activeIcon: 'assets/images/artist_focus.png',
-            color: AppTheme.givtDarkGreen,
-            onTap: () => bloc.add(
-              OrganisationTypeChanged(
-                CollecGroupType.artists.value,
+          Visibility(
+            visible: Platform.isIOS,
+            child: FilterSuggestionCard(
+              isFocused:
+                  bloc.state.selectedType == CollecGroupType.artists.value,
+              title: locals.artist,
+              icon: 'assets/images/artist.png',
+              activeIcon: 'assets/images/artist_focus.png',
+              color: AppTheme.givtDarkGreen,
+              onTap: () => bloc.add(
+                OrganisationTypeChanged(
+                  CollecGroupType.artists.value,
+                ),
               ),
             ),
           ),
