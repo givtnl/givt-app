@@ -13,13 +13,7 @@ class HomePage extends StatelessWidget {
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => GiveBloc(
-          getIt(),
-          getIt(),
-        ),
-        child: const HomePage(),
-      ),
+      builder: (_) => const HomePage(),
     );
   }
 
@@ -49,26 +43,29 @@ class HomePage extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           ChooseAmount(
+            country: auth.user.country,
             amountLimit: auth.user.amountLimit,
             onAmountChanged:
                 (firstCollection, secondCollection, thirdCollection) {
-              context.read<GiveBloc>().add(
-                    GiveAmountChanged(
-                      firstCollectionAmount: firstCollection,
-                      secondCollectionAmount: secondCollection,
-                      thirdCollectionAmount: thirdCollection,
-                    ),
-                  );
-
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<GiveBloc>(),
+                  builder: (_) => BlocProvider(
+                    create: (context) => GiveBloc(
+                      getIt(),
+                      getIt(),
+                    )..add(
+                        GiveAmountChanged(
+                          firstCollectionAmount: firstCollection,
+                          secondCollectionAmount: secondCollection,
+                          thirdCollectionAmount: thirdCollection,
+                        ),
+                      ),
                     child: const SelectGivingWayPage(),
                   ),
                   fullscreenDialog: true,
                 ),
               );
+              return true;
             },
           ),
           ColoredBox(
