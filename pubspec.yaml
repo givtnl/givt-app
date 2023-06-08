@@ -16,6 +16,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
+  flutter_blue_plus: ^1.5.2
   flutter_inappwebview: ^5.7.2+3
   flutter_localizations:
     sdk: flutter
