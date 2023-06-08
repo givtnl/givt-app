@@ -67,7 +67,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getUserExtension(String guid) async {
-    final url = Uri.https(apiURL, '/api/UsersExtension/$guid');
+    final url = Uri.https(apiURL, '/api/v2/UsersExtension/$guid');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
       throw Exception('something went wrong :(');

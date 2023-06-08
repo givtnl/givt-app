@@ -17,6 +17,19 @@ enum AccountType {
     }
   }
 
+  static AccountType fromString(String value) {
+    switch (value) {
+      case 'SEPA':
+        return AccountType.sepa;
+      case 'BACS':
+        return AccountType.bacs;
+      case 'CreditCard':
+        return AccountType.creditCard;
+      default:
+        return AccountType.none;
+    }
+  }
+
   static AccountType fromInt(int value) {
     switch (value) {
       case 0:
