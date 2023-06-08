@@ -21,7 +21,7 @@ class QrCodeScanPage extends StatefulWidget {
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
   bool _isLoading = false;
-  final _controller = MobileScannerController(autoStart: false);
+  final _controller = MobileScannerController();
 
   void toggleLoading() {
     setState(() {
@@ -32,7 +32,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
   @override
   void initState() {
     super.initState();
-    isAllowed();
+    Permission.camera.request();
   }
 
   Future<void> isAllowed() async {
@@ -50,7 +50,6 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
         content: context.l10n.cameraPermission,
         onTryAgain: () async {
           await Permission.camera.request();
-          // await _controller.start();
           if (!mounted) return;
           Navigator.of(context).pop(true);
         },
