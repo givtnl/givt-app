@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-typedef ChooseAmountNextCallback = void Function(
+typedef ChooseAmountNextCallback = bool Function(
   double firstCollection,
   double secondCollection,
   double thirdCollection,
@@ -13,10 +13,12 @@ class ChooseAmount extends StatefulWidget {
   const ChooseAmount({
     required this.amountLimit,
     required this.onAmountChanged,
+    required this.country,
     super.key,
   });
 
   final int amountLimit;
+  final String country;
   final ChooseAmountNextCallback onAmountChanged;
 
   @override
@@ -68,6 +70,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 _buildCollectionField(
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
+                  prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
                   isRemoveIconVisible: collectionFields[1] == true ||
@@ -84,6 +87,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 _buildCollectionField(
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
+                  prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
                   isRemoveIconVisible: collectionFields[0] == true ||
@@ -96,6 +100,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 _buildCollectionField(
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
+                  prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
                   isRemoveIconVisible: collectionFields[0] == true ||
@@ -124,7 +129,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 _buildNextButton(
                   label: locals.next,
                   onPressed: isEnabled
-                      ? () => widget.onAmountChanged(
+                      ? () {
+                          widget.onAmountChanged(
                             double.parse(
                               controllers[0].text.replaceAll(',', '.'),
                             ),
@@ -134,7 +140,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
                             double.parse(
                               controllers[2].text.replaceAll(',', '.'),
                             ),
-                          )
+                          );
+
+                          _resetControllers();
+                        }
                       : null,
                 ),
                 NumericKeyboard(
@@ -147,6 +156,28 @@ class _ChooseAmountState extends State<ChooseAmount> {
           ),
         ),
       ),
+    );
+  }
+
+  void _resetControllers() {
+    for (final controller in controllers) {
+      controller.text = '0';
+    }
+  }
+
+  Icon _buildCurrencyIcon() {
+    final countryIso = widget.country;
+    var icon = Icons.euro;
+    if (countryIso == 'US') {
+      icon = Icons.attach_money;
+    }
+    if (countryIso == 'GB') {
+      icon = Icons.currency_pound;
+    }
+
+    return Icon(
+      icon,
+      color: Colors.grey,
     );
   }
 
@@ -171,6 +202,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required bool isRemoveIconVisible,
     required VoidCallback onRemoveIconPressed,
     required VoidCallback onFocused,
+    required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
   }) {
     return Visibility(
@@ -180,6 +212,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         controller: controller,
         amountLimit: amountLimit,
         suffixText: collectionFieldName,
+        prefixCurrencyIcon: prefixCurrencyIcon,
         isRemoveIconVisible: isRemoveIconVisible,
         isSuffixTextVisible: isSuffixTextVisible,
         onRemoveIconPressed: onRemoveIconPressed,

@@ -43,6 +43,7 @@ class HomePage extends StatelessWidget {
         alignment: Alignment.topCenter,
         children: [
           ChooseAmount(
+            country: auth.user.country,
             amountLimit: auth.user.amountLimit,
             onAmountChanged:
                 (firstCollection, secondCollection, thirdCollection) {
@@ -64,6 +65,7 @@ class HomePage extends StatelessWidget {
                   fullscreenDialog: true,
                 ),
               );
+              return true;
             },
           ),
           ColoredBox(
