@@ -146,24 +146,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: (barcode, args) async {
-                toggleLoading();
-                await _controller.stop();
-                if (barcode.rawValue == null) {
-                  toggleLoading();
-                  log('No Givt QR code detected');
-                  return;
-                }
-
-                // ignore: use_build_context_synchronously
-                if (!context.mounted) return;
-                final userGUID =
-                    (context.read<AuthCubit>().state as AuthSuccess).user.guid;
-                context.read<GiveBloc>().add(
-                      GiveQRCodeScanned(barcode.rawValue!, userGUID),
-                    );
-                toggleLoading();
-              },
+              onDetect: _onQRCodeDetected,
             ),
             const Positioned.fill(
               child: QrCodeTarget(),
@@ -187,21 +170,21 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     );
   }
 
-  // Future<void> _onQRCodeDetected(BarcodeCapture code) async {
-  //   toggleLoading();
-  //   await _controller.stop();
-  //   if (code.barcodes.first.rawValue == null) {
-  //     toggleLoading();
-  //     log('No Givt QR code detected');
-  //     return;
-  //   }
+  Future<void> _onQRCodeDetected(BarcodeCapture code) async {
+    toggleLoading();
+    await _controller.stop();
+    if (code.barcodes.first.rawValue == null) {
+      toggleLoading();
+      log('No Givt QR code detected');
+      return;
+    }
 
-  //   // ignore: use_build_context_synchronously
-  //   if (!context.mounted) return;
-  //   final userGUID = (context.read<AuthCubit>().state as AuthSuccess).user.guid;
-  //   context
-  //       .read<GiveBloc>()
-  //       .add(GiveQRCodeScanned(code.barcodes.first.rawValue!, userGUID));
-  //   toggleLoading();
-  // }
+    // ignore: use_build_context_synchronously
+    if (!context.mounted) return;
+    final userGUID = (context.read<AuthCubit>().state as AuthSuccess).user.guid;
+    context
+        .read<GiveBloc>()
+        .add(GiveQRCodeScanned(code.barcodes.first.rawValue!, userGUID));
+    toggleLoading();
+  }
 }
