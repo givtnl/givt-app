@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
@@ -39,6 +40,20 @@ class SelectGivingWayPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
                 textAlign: TextAlign.center,
               ),
+            ),
+            _buildListTile(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<GiveBloc>(),
+                    child: const BTScanPage(),
+                  ),
+                  fullscreenDialog: true,
+                ),
+              ),
+              title: locals.givingContextCollectionBag,
+              subtitle: locals.selectContextCollect,
+              image: 'assets/images/select_givtbox.png',
             ),
             _buildListTile(
               onTap: () => Navigator.of(context).push(
