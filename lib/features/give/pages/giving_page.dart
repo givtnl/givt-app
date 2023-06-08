@@ -12,6 +12,7 @@ import 'package:givt_app/features/give/models/webview_input.dart';
 
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatelessWidget {
   const GivingPage({super.key});
@@ -60,6 +61,7 @@ class GivingPage extends StatelessWidget {
             );
           }
           final givt = _buildGivt(context);
+          Vibration.vibrate(amplitude: 128);
           return Center(
             child: InAppWebView(
               initialUserScripts: UnmodifiableListView(

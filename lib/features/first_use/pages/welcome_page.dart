@@ -57,7 +57,9 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         child: Column(
           children: [
             _buildCarouselSlider(size, imageNames, locals, locale),
+            Expanded(child: Container()),
             _buildAnimatedBottomIndexes(imageNames, size, context),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 EmailSignupPage.route(),
@@ -66,6 +68,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 locals.welcomeContinue,
               ),
             ),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () => showModalBottomSheet<void>(
                 context: context,
@@ -117,7 +120,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.7,
+          height: size.height * 0.6,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -142,7 +145,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
             child: Container(
               width: size.width * 0.05,
               height: size.height * 0.01,
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: (Theme.of(context).brightness == Brightness.dark
