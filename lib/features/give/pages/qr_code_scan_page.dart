@@ -75,7 +75,10 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     final locals = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(),
+        leading: BackButton(
+          onPressed: () =>
+              Navigator.of(context).popUntil((route) => route.isFirst),
+        ),
         title: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
