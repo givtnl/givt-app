@@ -95,7 +95,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.delete_forever,
             onTap: () {},
           ),
-          Expanded(child: Container()),
           Center(
             child: FutureBuilder(
               future: PackageInfo.fromPlatform(),
