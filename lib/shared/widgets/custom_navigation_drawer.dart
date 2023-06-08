@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({
@@ -94,6 +95,21 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.delete_forever,
             onTap: () {},
           ),
+          Expanded(child: Container()),
+          Center(
+            child: FutureBuilder(
+              future: PackageInfo.fromPlatform(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container();
+                }
+                final packageInfo = snapshot.data!;
+                return Text(
+                  'v${packageInfo.version}.${packageInfo.buildNumber}',
+                );
+              },
+            ),
+          )
         ],
       ),
     );
