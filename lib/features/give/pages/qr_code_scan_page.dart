@@ -21,18 +21,12 @@ class QrCodeScanPage extends StatefulWidget {
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
   bool _isLoading = false;
-  final _controller = MobileScannerController(autoStart: false);
+  final _controller = MobileScannerController();
 
   void toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    isAllowed();
   }
 
   Future<void> isAllowed() async {
@@ -50,7 +44,6 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
         content: context.l10n.cameraPermission,
         onTryAgain: () async {
           await Permission.camera.request();
-          // await _controller.start();
           if (!mounted) return;
           Navigator.of(context).pop(true);
         },
@@ -147,9 +140,23 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: _onQRCodeDetected,
-              errorBuilder: (p0, p1, p2) {
-                return Container();
+              onDetect: (barcode, args) async {
+                toggleLoading();
+                await _controller.stop();
+                if (barcode.rawValue == null) {
+                  toggleLoading();
+                  log('No Givt QR code detected');
+                  return;
+                }
+
+                // ignore: use_build_context_synchronously
+                if (!context.mounted) return;
+                final userGUID =
+                    (context.read<AuthCubit>().state as AuthSuccess).user.guid;
+                context
+                    .read<GiveBloc>()
+                    .add(GiveQRCodeScanned(barcode.rawValue!, userGUID));
+                toggleLoading();
               },
             ),
             const Positioned.fill(
@@ -172,23 +179,5 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
         ),
       ),
     );
-  }
-
-  Future<void> _onQRCodeDetected(BarcodeCapture code) async {
-    toggleLoading();
-    await _controller.stop();
-    if (code.barcodes.first.rawValue == null) {
-      toggleLoading();
-      log('No Givt QR code detected');
-      return;
-    }
-
-    // ignore: use_build_context_synchronously
-    if (!context.mounted) return;
-    final userGUID = (context.read<AuthCubit>().state as AuthSuccess).user.guid;
-    context
-        .read<GiveBloc>()
-        .add(GiveQRCodeScanned(code.barcodes.first.rawValue!, userGUID));
-    toggleLoading();
   }
 }

@@ -11,6 +11,7 @@ dependencies:
   badges: ^3.1.1
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
+  device_info_plus: ^9.0.2
   dotted_border: ^2.0.0+3
   equatable: ^2.0.5
   flutter:
@@ -29,7 +30,8 @@ dependencies:
   http_interceptor: ^1.0.2
   internet_connection_checker: ^1.0.0+1
   intl: ^0.18.0
-  mobile_scanner: ^3.2.0
+  mobile_scanner: ^2.1.0
+  package_info_plus: ^4.0.2
   permission_handler: ^10.2.0
   shared_preferences: ^2.1.1
   vibration: ^1.7.7

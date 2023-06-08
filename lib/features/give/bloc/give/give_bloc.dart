@@ -36,32 +36,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
       final organisation = await _getOrganisation(mediumId);
       final transactionList = _createTransationList(mediumId, event.userGUID);
-      //   'advertisementImageUrl': '',
-      //   'nativeAppScheme': 'givt:\/\/',
-      //   'YesSuccess': '',
-      //   'Thanks': '',
-      //   'Close': '',
-      //   'GUID': event.userGUID,
-      //   'Collect': '',
-      //   'ConfirmBtn': '',
-      //   'currency': '',
-      //   'isProduction': false,
-      //   'SlimPayInformationPart2': '',
-      //   'advertisementText': '',
-      //   'SlimPayInformation': '',
-      //   'organisation': organisation.organisationName,
-      //   'shouldShowCreditCard': false,
-      //   'ShareGivt': '',
-      //   'urlPart': '',
-      //   'spUrl': '',
-      //   'Cancel': '',
-      //   'message': '',
-      //   'AreYouSureToCancelGivts': '',
-      //   'advertisementTitle': '',
-      //   'apiUrl': '',
-      //   'canShare': false,
-      //   'givtObj': GivtTransaction.toJsonList(transactionList),
-      // };
+
+      await _givtRepository.submitGivts(
+        guid: event.userGUID,
+        body: {'donations': GivtTransaction.toJsonList(transactionList)},
+      );
+
       emit(
         state.copyWith(
           status: GiveStatus.readyToGive,
