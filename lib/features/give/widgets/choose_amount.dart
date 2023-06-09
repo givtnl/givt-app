@@ -79,6 +79,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(
                     () {
+                      controllers[0].text = '0';
                       collectionFields[0] = false;
                     },
                   ),
@@ -93,6 +94,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   isRemoveIconVisible: collectionFields[0] == true ||
                       collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(() {
+                    controllers[1].text = '0';
                     collectionFields[1] = false;
                   }),
                   onFocused: () => selectedField = 1,
@@ -106,6 +108,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   isRemoveIconVisible: collectionFields[0] == true ||
                       collectionFields[1] == true,
                   onRemoveIconPressed: () => setState(() {
+                    controllers[2].text = '0';
                     collectionFields[2] = false;
                   }),
                   onFocused: () => selectedField = 2,
