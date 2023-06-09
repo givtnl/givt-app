@@ -7,6 +7,7 @@ class CollectionFormField extends StatelessWidget {
     required this.amountLimit,
     required this.onRemoveIconPressed,
     required this.onFocused,
+    required this.focusNode,
     this.isSuffixTextVisible = true,
     this.suffixText = '',
     this.prefixCurrencyIcon = const Icon(
@@ -27,6 +28,7 @@ class CollectionFormField extends StatelessWidget {
   final Color bottomBorderColor;
   final VoidCallback onRemoveIconPressed;
   final VoidCallback onFocused;
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class CollectionFormField extends StatelessWidget {
         elevation: 5,
         borderRadius: BorderRadius.circular(10),
         child: TextFormField(
+          focusNode: focusNode,
           readOnly: true,
           autofocus: true,
           controller: controller,

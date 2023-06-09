@@ -34,13 +34,20 @@ class _ChooseAmountState extends State<ChooseAmount> {
     TextEditingController(text: '0'),
   ];
 
+  final List<FocusNode> focusNodes = [
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+  ];
+
   int selectedField = 0;
 
   @override
   void dispose() {
     super.dispose();
-    for (final controller in controllers) {
-      controller.dispose();
+    for (var index = 0; index < controllers.length; index++) {
+      controllers[index].dispose();
+      focusNodes[index].dispose();
     }
   }
 
@@ -68,6 +75,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 _buildCollectionField(
+                  focusNode: focusNodes[0],
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
                   prefixCurrencyIcon: _buildCurrencyIcon(),
@@ -79,12 +87,18 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(
                     () {
+                      controllers[0].text = '0';
                       collectionFields[0] = false;
+                      _changeFocus();
                     },
                   ),
-                  onFocused: () => selectedField = 0,
+                  onFocused: () {
+                    selectedField = 0;
+                    focusNodes[0].requestFocus();
+                  },
                 ),
                 _buildCollectionField(
+                  focusNode: focusNodes[1],
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
                   prefixCurrencyIcon: _buildCurrencyIcon(),
@@ -93,11 +107,17 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   isRemoveIconVisible: collectionFields[0] == true ||
                       collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(() {
+                    controllers[1].text = '0';
                     collectionFields[1] = false;
+                    _changeFocus();
                   }),
-                  onFocused: () => selectedField = 1,
+                  onFocused: () {
+                    selectedField = 1;
+                    focusNodes[1].requestFocus();
+                  },
                 ),
                 _buildCollectionField(
+                  focusNode: focusNodes[2],
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
                   prefixCurrencyIcon: _buildCurrencyIcon(),
@@ -106,9 +126,14 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   isRemoveIconVisible: collectionFields[0] == true ||
                       collectionFields[1] == true,
                   onRemoveIconPressed: () => setState(() {
+                    controllers[2].text = '0';
                     collectionFields[2] = false;
+                    _changeFocus();
                   }),
-                  onFocused: () => selectedField = 2,
+                  onFocused: () {
+                    selectedField = 2;
+                    focusNodes[2].requestFocus();
+                  },
                 ),
                 Visibility(
                   visible: !collectionFields.every(
@@ -121,6 +146,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       setState(() {
                         collectionFields[collectionFields.indexOf(false)] =
                             true;
+                        _changeFocus();
                       });
                     },
                   ),
@@ -159,10 +185,18 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
+  void _changeFocus() {
+    selectedField = collectionFields.lastIndexOf(true);
+    focusNodes[collectionFields.lastIndexOf(true)].requestFocus();
+  }
+
   void _resetControllers() {
-    for (final controller in controllers) {
-      controller.text = '0';
+    for (var index = 0; index < controllers.length; index++) {
+      controllers[index].text = '0';
+      focusNodes[index].unfocus();
+      collectionFields[index] = index == 0;
     }
+    focusNodes[0].requestFocus();
   }
 
   Icon _buildCurrencyIcon() {
@@ -195,6 +229,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   }
 
   Widget _buildCollectionField({
+    required FocusNode focusNode,
     required String collectionFieldName,
     required int amountLimit,
     required TextEditingController controller,
@@ -208,6 +243,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     return Visibility(
       visible: isVisible,
       child: CollectionFormField(
+        focusNode: focusNode,
         key: Key(collectionFieldName),
         controller: controller,
         amountLimit: amountLimit,
