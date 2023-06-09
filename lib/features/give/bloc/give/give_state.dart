@@ -1,23 +1,33 @@
 part of 'give_bloc.dart';
 
-enum GiveStatus { initial, loading, readyToGive, success, error }
+enum GiveStatus {
+  initial,
+  loading,
+  readyToGive,
+  processingBeaconData,
+  success,
+  error,
+}
 
 class GiveState extends Equatable {
   const GiveState({
     this.status = GiveStatus.initial,
-    this.organisation = const Organisation(),
+    this.organisation  = const Organisation(),
+    this.nearestBeacon = const Beacon.empty(),
     this.collections = const [0.0, 0.0, 0.0],
     this.givtTransactions = const [],
   });
 
   final GiveStatus status;
   final Organisation organisation;
+  final Beacon nearestBeacon;
   final List<double> collections;
   final List<GivtTransaction> givtTransactions;
 
   GiveState copyWith({
     GiveStatus? status,
     Organisation? organisation,
+    Beacon? nearestBeacon,
     String? error,
     double? firstCollection,
     double? secondCollection,
@@ -27,6 +37,7 @@ class GiveState extends Equatable {
     return GiveState(
       status: status ?? this.status,
       organisation: organisation ?? this.organisation,
+      nearestBeacon: nearestBeacon ?? this.nearestBeacon,
       collections: [
         firstCollection ?? collections[0],
         secondCollection ?? collections[1],
@@ -40,6 +51,7 @@ class GiveState extends Equatable {
   List<Object> get props => [
         status,
         organisation,
+        nearestBeacon,
         collections,
         givtTransactions,
       ];
