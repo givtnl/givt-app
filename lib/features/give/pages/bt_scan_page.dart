@@ -4,6 +4,8 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
+import 'package:givt_app/features/give/pages/organization_list_page.dart';
+import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -16,13 +18,23 @@ class BTScanPage extends StatefulWidget {
 
 class _BTScanPageState extends State<BTScanPage> {
   late FlutterBluePlus flutterBlue;
+  bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
     flutterBlue = FlutterBluePlus.instance;
     flutterBlue
-      ..startScan(timeout: const Duration(seconds: 40))
+      ..startScan(timeout: const Duration(seconds: 30)).timeout(
+        const Duration(seconds: 10),
+        onTimeout: () {
+          ///TODO event for timeout to fetch for previous scan donations
+          //context.read<GiveBloc>().add(const GiveBTScanTimeout());
+          setState(() {
+            _isVisible = !_isVisible;
+          });
+        },
+      )
       ..scanResults.listen((results) {}).onData(_onPeripheralsDetectedData);
   }
 
@@ -112,11 +124,30 @@ class _BTScanPageState extends State<BTScanPage> {
                 ),
                 Expanded(child: Container()),
                 Visibility(
-                  visible: false,
+                  visible: _isVisible,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider.value(
+                                value: context.read<GiveBloc>(),
+                              ),
+                              BlocProvider(
+                                create: (_) => OrganisationBloc(
+                                  getIt(),
+                                )..add(
+                                    const OrganisationFetch(),
+                                  ),
+                              ),
+                            ],
+                            child: const OrganizationListPage(),
+                          ),
+                          fullscreenDialog: true,
+                        ),
+                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.givtBlue,
                       ),

@@ -134,6 +134,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           beaconData.contains('61f7ed03');
 
       if (!contains) {
+        emit(state.copyWith(status: GiveStatus.success));
         return;
       }
 
@@ -162,6 +163,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       if (event.threshold) {
         if (a == 'a') {
           /// area filter
+          emit(state.copyWith(status: GiveStatus.processingBeaconData));
           return;
         }
 
