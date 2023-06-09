@@ -53,6 +53,7 @@ class HomePage extends StatelessWidget {
                     create: (context) => GiveBloc(
                       getIt(),
                       getIt(),
+                      getIt(),
                     )..add(
                         GiveAmountChanged(
                           firstCollectionAmount: firstCollection,

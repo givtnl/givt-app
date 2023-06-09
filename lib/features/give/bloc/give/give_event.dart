@@ -17,6 +17,34 @@ class GiveQRCodeScanned extends GiveEvent {
   List<Object> get props => [rawValue, userGUID];
 }
 
+class GiveBTBeaconScanned extends GiveEvent {
+  const GiveBTBeaconScanned({
+    required this.macAddress,
+    required this.rssi,
+    required this.serviceUUID,
+    required this.serviceData,
+    required this.userGUID,
+    this.threshold = true,
+  });
+
+  final String macAddress;
+  final int rssi;
+  final String serviceUUID;
+  final Map<String, List<int>> serviceData;
+  final String userGUID;
+  final bool threshold;
+
+  @override
+  List<Object> get props => [
+        macAddress,
+        threshold,
+        rssi,
+        userGUID,
+        serviceUUID,
+        serviceData,
+      ];
+}
+
 class GiveOrganisationSelected extends GiveEvent {
   const GiveOrganisationSelected(this.nameSpace, this.userGUID);
 
@@ -25,6 +53,22 @@ class GiveOrganisationSelected extends GiveEvent {
 
   @override
   List<Object> get props => [nameSpace, userGUID];
+}
+
+class GiveCheckLastDonation extends GiveEvent {
+  const GiveCheckLastDonation();
+
+  @override
+  List<Object> get props => [];
+}
+
+class GiveToLastOrganisation extends GiveEvent {
+  const GiveToLastOrganisation(this.userGUID);
+
+  final String userGUID;
+
+  @override
+  List<Object> get props => [userGUID];
 }
 
 class GiveAmountChanged extends GiveEvent {

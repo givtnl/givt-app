@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
@@ -9,8 +10,10 @@ part 'organisation_event.dart';
 part 'organisation_state.dart';
 
 class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
-  OrganisationBloc(this._collectGroupRepository)
-      : super(const OrganisationState()) {
+  OrganisationBloc(
+    this._collectGroupRepository,
+    this._campaignRepository,
+  ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
 
     on<OrganisationFilterQueryChanged>(_onFilterQueryChanged);
@@ -21,6 +24,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   }
 
   final CollectGroupRepository _collectGroupRepository;
+  final CampaignRepository _campaignRepository;
 
   FutureOr<void> _onOrganisationFetch(
     OrganisationFetch event,
@@ -28,12 +32,32 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
+      final lastDonatedOrganisation =
+          await _campaignRepository.getLastOrganisationDonated();
       final organisations = await _collectGroupRepository.getCollectGroupList();
+
+      var selectedGroup = state.selectedCollectGroup;
+      if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
+        selectedGroup = organisations.firstWhere(
+          (organisation) =>
+              organisation.nameSpace == lastDonatedOrganisation.mediumId,
+        );
+        organisations
+          ..removeWhere(
+            (organisation) =>
+                organisation.nameSpace == lastDonatedOrganisation.mediumId,
+          )
+          ..insert(
+            0,
+            selectedGroup,
+          );
+      }
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
           organisations: organisations,
           filteredOrganisations: organisations,
+          selectedCollectGroup: selectedGroup,
         ),
       );
     } catch (e) {

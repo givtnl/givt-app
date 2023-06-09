@@ -127,4 +127,6 @@ class Organisation extends Equatable {
         privacyPolicyLink,
         mediumId,
       ];
+
+      static const lastOrganisationDonatedKey = 'lastOrganisationDonated';
 }
