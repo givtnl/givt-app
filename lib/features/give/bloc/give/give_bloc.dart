@@ -8,6 +8,7 @@ import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
 
 part 'give_event.dart';
@@ -58,7 +59,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
   List<GivtTransaction> _createTransationList(String mediumId, String guid) {
     final transactionList = <GivtTransaction>[];
-    final formattedDate = DateTime.now().toUtc().toIso8601String();
+    final formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(
+      DateTime.now().toUtc(),
+    );
     for (var index = 0; index < state.collections.length; index++) {
       if (state.collections[index] == 0.0) continue;
       transactionList.add(
@@ -231,6 +234,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   }) async {
     final organisation = await _getOrganisation(namespace);
     final transactionList = _createTransationList(namespace, userGUID);
+
+    log(transactionList.first.timestamp.toString());
 
     await _campaignRepository.saveLastDonation(
       organisation.copyWith(
