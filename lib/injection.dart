@@ -25,6 +25,7 @@ Future<void> init() async {
     ..registerLazySingleton(
       () => CampaignRepository(
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton(

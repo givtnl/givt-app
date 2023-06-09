@@ -55,6 +55,13 @@ class GiveOrganisationSelected extends GiveEvent {
   List<Object> get props => [nameSpace, userGUID];
 }
 
+class GiveCheckLastDonation extends GiveEvent {
+  const GiveCheckLastDonation();
+
+  @override
+  List<Object> get props => [];
+}
+
 class GiveAmountChanged extends GiveEvent {
   const GiveAmountChanged({
     required this.firstCollectionAmount,

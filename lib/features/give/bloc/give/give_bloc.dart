@@ -26,6 +26,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     on<GiveOrganisationSelected>(_organisationSelected);
 
     on<GiveBTBeaconScanned>(_onBeaconScanned);
+
+    on<GiveCheckLastDonation>(_checkLastDonation);
   }
 
   final CampaignRepository _campaignRepository;
@@ -114,6 +116,21 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
   }
 
+  FutureOr<void> _checkLastDonation(
+    GiveCheckLastDonation event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final lastDonatedOrganisation =
+          await _campaignRepository.getLastOrganisationDonated();
+      emit(state.copyWith(organisation: lastDonatedOrganisation));
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: GiveStatus.error));
+    }
+  }
+
   FutureOr<void> _onBeaconScanned(
     GiveBTBeaconScanned event,
     Emitter<GiveState> emit,
@@ -195,6 +212,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   }) async {
     final organisation = await _getOrganisation(namespace);
     final transactionList = _createTransationList(namespace, userGUID);
+
+    await _campaignRepository.saveLastDonation(
+      organisation.copyWith(
+        mediumId: namespace,
+      ),
+    );
 
     await _givtRepository.submitGivts(
       guid: userGUID,

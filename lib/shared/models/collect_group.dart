@@ -91,4 +91,6 @@ class CollectGroup extends Equatable {
         multiUseAllocations,
         qrCodes,
       ];
+
+  static const orgBeaconListKey = 'OrgBeaconList';
 }

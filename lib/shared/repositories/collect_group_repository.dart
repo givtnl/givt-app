@@ -15,4 +15,12 @@ class CollectGroupRepository {
         .map((e) => CollectGroup.fromJson(e as Map<String, dynamic>))
         .toList();
   }
+
+  Future<bool> fetchCollectGroupList() async {
+    final collectGroups = await getCollectGroupList();
+    return _prefs.setStringList(
+      CollectGroup.orgBeaconListKey,
+      collectGroups.map((e) => e.toJson().toString()).toList(),
+    );
+  }
 }

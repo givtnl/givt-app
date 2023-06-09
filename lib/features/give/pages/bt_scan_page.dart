@@ -138,6 +138,7 @@ class _BTScanPageState extends State<BTScanPage> {
                               BlocProvider(
                                 create: (_) => OrganisationBloc(
                                   getIt(),
+                                  getIt(),
                                 )..add(
                                     const OrganisationFetch(),
                                   ),

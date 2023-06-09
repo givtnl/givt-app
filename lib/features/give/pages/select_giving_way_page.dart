@@ -45,7 +45,10 @@ class SelectGivingWayPage extends StatelessWidget {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (_) => BlocProvider.value(
-                    value: context.read<GiveBloc>(),
+                    value: context.read<GiveBloc>()
+                      ..add(
+                        const GiveCheckLastDonation(),
+                      ),
                     child: const BTScanPage(),
                   ),
                   fullscreenDialog: true,
@@ -75,10 +78,14 @@ class SelectGivingWayPage extends StatelessWidget {
                   builder: (_) => MultiBlocProvider(
                     providers: [
                       BlocProvider.value(
-                        value: context.read<GiveBloc>(),
+                        value: context.read<GiveBloc>()
+                          ..add(
+                            const GiveCheckLastDonation(),
+                          ),
                       ),
                       BlocProvider(
                         create: (_) => OrganisationBloc(
+                          getIt(),
                           getIt(),
                         )..add(
                             const OrganisationFetch(),
