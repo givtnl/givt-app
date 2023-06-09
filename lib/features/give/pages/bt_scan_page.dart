@@ -28,8 +28,6 @@ class _BTScanPageState extends State<BTScanPage> {
       ..startScan(timeout: const Duration(seconds: 30)).timeout(
         const Duration(seconds: 10),
         onTimeout: () {
-          ///TODO event for timeout to fetch for previous scan donations
-          //context.read<GiveBloc>().add(const GiveBTScanTimeout());
           setState(() {
             _isVisible = !_isVisible;
           });
@@ -109,6 +107,8 @@ class _BTScanPageState extends State<BTScanPage> {
             }
           },
           builder: (context, state) {
+            var orgName = state.organisation.organisationName;
+            orgName ??= '';
             return Column(
               children: [
                 const SizedBox(height: 50),
@@ -128,36 +128,55 @@ class _BTScanPageState extends State<BTScanPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => MultiBlocProvider(
-                            providers: [
-                              BlocProvider.value(
-                                value: context.read<GiveBloc>(),
-                              ),
-                              BlocProvider(
-                                create: (_) => OrganisationBloc(
-                                  getIt(),
-                                  getIt(),
-                                )..add(
-                                    const OrganisationFetch(),
-                                  ),
-                              ),
-                            ],
-                            child: const OrganizationListPage(),
+                      onPressed: () {
+                        if (state.organisation.organisationName!.isNotEmpty) {
+                          context.read<GiveBloc>().add(
+                                GiveToLastOrganisation(
+                                  (context.read<AuthCubit>().state
+                                          as AuthSuccess)
+                                      .user
+                                      .guid,
+                                ),
+                              );
+                          return;
+                        }
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider.value(
+                                  value: context.read<GiveBloc>(),
+                                ),
+                                BlocProvider(
+                                  create: (_) => OrganisationBloc(
+                                    getIt(),
+                                    getIt(),
+                                  )..add(
+                                      const OrganisationFetch(),
+                                    ),
+                                ),
+                              ],
+                              child: const OrganizationListPage(),
+                            ),
+                            fullscreenDialog: true,
                           ),
-                          fullscreenDialog: true,
-                        ),
-                      ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.givtBlue,
                       ),
-                      child: Text(locals.giveDifferently),
+                      child: Text(
+                        orgName.isEmpty
+                            ? locals.giveDifferently
+                            : locals.giveToNearestBeacon(
+                                state.organisation.organisationName!,
+                              ),
+                      ),
                     ),
                   ),
                 ),
                 Visibility(
-                  visible: false,
+                  visible: _isVisible && orgName.isNotEmpty,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 20,
