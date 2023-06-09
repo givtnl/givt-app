@@ -184,7 +184,27 @@ class _BTScanPageState extends State<BTScanPage> {
                       bottom: 10,
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => MultiBlocProvider(
+                            providers: [
+                              BlocProvider.value(
+                                value: context.read<GiveBloc>(),
+                              ),
+                              BlocProvider(
+                                create: (_) => OrganisationBloc(
+                                  getIt(),
+                                  getIt(),
+                                )..add(
+                                    const OrganisationFetch(),
+                                  ),
+                              ),
+                            ],
+                            child: const OrganizationListPage(),
+                          ),
+                          fullscreenDialog: true,
+                        ),
+                      ),
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
