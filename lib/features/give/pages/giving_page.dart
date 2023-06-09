@@ -8,7 +8,6 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
-import 'package:givt_app/features/give/models/webview_input.dart';
 
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -28,7 +27,7 @@ class GivingPage extends StatelessWidget {
   ) {
     final giveBlocState = context.read<GiveBloc>().state;
     return WebViewInput(
-      apiUrl: getIt<APIService>().apiURL,
+      apiUrl: Uri.https(getIt<APIService>().apiURL).toString(),
       guid: (context.read<AuthCubit>().state as AuthSuccess).user.guid,
       organisation: giveBlocState.organisation.organisationName!,
       givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
