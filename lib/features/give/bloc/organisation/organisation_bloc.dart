@@ -39,8 +39,9 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       var selectedGroup = state.selectedCollectGroup;
       if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
         selectedGroup = organisations.firstWhere(
-          (organisation) =>
-              organisation.nameSpace == lastDonatedOrganisation.mediumId,
+          (organisation) => lastDonatedOrganisation.mediumId!.contains(
+            organisation.nameSpace,
+          ),
         );
         organisations
           ..removeWhere(
