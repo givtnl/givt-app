@@ -207,7 +207,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         }
 
         await _processGivts(
-          namespace: namespace,
+          namespace: beaconId,
           userGUID: event.userGUID,
           emit: emit,
         );
@@ -216,7 +216,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       if (beaconId.length > 20 && a == 'a') {
         /// donate to beacon
         await _processGivts(
-          namespace: namespace,
+          namespace: beaconId,
           userGUID: event.userGUID,
           emit: emit,
         );
@@ -234,8 +234,6 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   }) async {
     final organisation = await _getOrganisation(namespace);
     final transactionList = _createTransationList(namespace, userGUID);
-
-    log(transactionList.first.timestamp.toString());
 
     await _campaignRepository.saveLastDonation(
       organisation.copyWith(
