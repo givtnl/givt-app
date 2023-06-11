@@ -35,7 +35,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final locale = Platform.localeName.contains('en') ? '' : 'en';
+    final locale = Platform.localeName.contains('en') ? 'en' : '';
     final locals = AppLocalizations.of(context);
 
     final imageNames = [
@@ -120,7 +120,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.6,
+          height: size.height * 0.7,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -192,13 +192,11 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
             ),
             SizedBox(
-              height: size.height * 0.06,
+              height: size.height * 0.05,
             ),
             Image.asset(
-              'assets/images/${isFirst && locale.contains('nl') ? '${path}_$locale' : path}.png',
+              'assets/images/${isFirst && locale.contains('en') ? '${path}_$locale' : path}.png',
               fit: BoxFit.cover,
-              width: size.width * 0.8,
-              height: size.height * 0.4,
             ),
           ],
         ),
