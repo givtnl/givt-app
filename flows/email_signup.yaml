@@ -1,0 +1,6 @@
+description: Testing email sign up flow
+---
+# Validate that the app page is displayed
+- expectEnvironmentText:
+# Go to the email
+- pressOn: "Let's go"
