@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class SpalshPage extends StatelessWidget {
-  const SpalshPage({super.key});
+class SplashPage extends StatelessWidget {
+  const SplashPage({super.key});
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
-      builder: (_) => const SpalshPage(),
+      builder: (_) => const SplashPage(),
     );
   }
 
