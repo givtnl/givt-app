@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -13,13 +12,47 @@ import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:vibration/vibration.dart';
 
-class GivingPage extends StatelessWidget {
+class GivingPage extends StatefulWidget {
   const GivingPage({super.key});
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
       builder: (_) => const GivingPage(),
     );
+  }
+
+  @override
+  State<GivingPage> createState() => _GivingPageState();
+}
+
+class _GivingPageState extends State<GivingPage> {
+  late CustomInAppBrowser _customInAppBrowser;
+
+  @override
+  void initState() {
+    super.initState();
+    _customInAppBrowser = CustomInAppBrowser(
+      onLoad: (url) {
+        if (url == null) {
+          return;
+        }
+        if (!url.toString().contains('natived')) {
+          return;
+        }
+        _closeBrowser();
+      },
+    );
+  }
+
+  Future<void> _closeBrowser() async {
+    if (_customInAppBrowser.isOpened()) {
+      await _customInAppBrowser.close();
+    }
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Map<String, dynamic> _buildGivt(
@@ -55,7 +88,13 @@ class GivingPage extends StatelessWidget {
         ),
       ),
       body: BlocConsumer<GiveBloc, GiveState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state.status == GiveStatus.error) {
+            Navigator.of(context).popUntil(
+              (route) => route.isFirst,
+            );
+          }
+        },
         builder: (context, state) {
           if (state.status == GiveStatus.loading ||
               state.status == GiveStatus.error) {
@@ -64,61 +103,39 @@ class GivingPage extends StatelessWidget {
             );
           }
           final givt = _buildGivt(context);
+
           Vibration.vibrate(amplitude: 128);
-          return Center(
-            child: InAppWebView(
-              initialUserScripts: UnmodifiableListView(
-                [
-                  UserScript(
-                    source: '''
-                        window.addEventListener('flutterInAppWebViewPlatformReady', function(event) {
-                          // window.document.getElementById('cancelBtn').onclick = null;
-                          // window.document.getElementById('cancelBtn').onclick = function (event) {
-                          //   window.flutter_inappwebview.callHandler('navigate', ['cancel'])
-                          // };
-                          if (window.document.getElementById('button').innerHTML != 'Close') {
-                            return;
-                          }
-                            window.document.getElementById('button').onclick = null;
-                            window.document.getElementById('button').onclick = function (event) {
-                              window.flutter_inappwebview.callHandler('navigate', ['success'])
-                            };
-                        });
-                      ''',
-                    injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
-                  )
-                ],
-              ),
-              onLoadStop: (controller, url) async {
-                if (!url.toString().contains('success')) {
-                  return;
-                }
-                controller.addJavaScriptHandler(
-                  handlerName: 'navigate',
-                  callback: (args) {
-                    if (!args.first.toString().contains('success')) {
-                      return;
-                    }
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                  },
-                );
-              },
-              contextMenu: ContextMenu(
-                options: ContextMenuOptions(
-                  hideDefaultSystemContextMenuItems: true,
+
+          _customInAppBrowser
+              .openUrlRequest(
+                urlRequest: URLRequest(
+                  url: Uri.https(
+                    getIt<APIService>().apiURL,
+                    'confirm.html',
+                    {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+                  ),
                 ),
-              ),
-              initialUrlRequest: URLRequest(
-                url: Uri.https(
-                  getIt<APIService>().apiURL,
-                  'confirm.html',
-                  {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
-                ),
-              ),
-            ),
-          );
+              )
+              .then(
+                (value) => _closeBrowser(),
+              );
+          return const SizedBox.shrink();
         },
       ),
     );
   }
+}
+
+/// Custom InAppBrowser class with custom callback
+typedef CustomInAppBroserCallback = void Function(Uri? url);
+
+class CustomInAppBrowser extends InAppBrowser {
+  CustomInAppBrowser({
+    required this.onLoad,
+  }) : super(implementation: WebViewImplementation.NATIVE);
+
+  final CustomInAppBroserCallback onLoad;
+
+  @override
+  Future<void> onLoadStart(Uri? url) async => onLoad(url);
 }

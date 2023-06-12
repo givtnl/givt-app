@@ -60,7 +60,7 @@ class _AppView extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       navigatorKey: Util.navigatorKey,
-      onGenerateRoute: (_) => SpalshPage.route(),
+      onGenerateRoute: (_) => SplashPage.route(),
       builder: (context, child) {
         return BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {

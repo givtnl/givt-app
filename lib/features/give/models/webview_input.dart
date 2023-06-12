@@ -19,7 +19,7 @@ class WebViewInput extends Equatable {
     this.slimPayInformation = '',
     this.organisation = '',
     this.shareGivt = '',
-    this.urlPart = '',
+    this.urlPart = 'natived',
     this.spUrl = '',
     this.cancel = '',
     this.message = '',
