@@ -9,7 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -73,7 +72,8 @@ class OrganizationListPage extends StatelessWidget {
                           state.filteredOrganisations[index].nameSpace,
                       onTap: () => context.read<OrganisationBloc>().add(
                             OrganisationSelectionChanged(
-                                state.filteredOrganisations[index].nameSpace),
+                              state.filteredOrganisations[index].nameSpace,
+                            ),
                           ),
                     ),
                   ),
@@ -99,16 +99,6 @@ class OrganizationListPage extends StatelessWidget {
                                     userGUID,
                                   ),
                                 );
-
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => BlocProvider.value(
-                                  value: context.read<GiveBloc>(),
-                                  child: const GivingPage(),
-                                ),
-                                fullscreenDialog: true,
-                              ),
-                            );
                           },
               ),
             ],
