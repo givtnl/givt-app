@@ -10,6 +10,7 @@ class APIService {
     apiURL = 'givt-debug-api.azurewebsites.net';
   }
   Client client = InterceptedClient.build(
+    requestTimeout: const Duration(seconds: 5),
     interceptors: [
       Interceptor(),
     ],
