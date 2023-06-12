@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/network/api_service.dart';
@@ -35,6 +36,9 @@ class _AppState extends State<App> {
     }).catchError((e) {
       getIt<APIService>().apiURL = widget.config['API_URL_EU']!;
     });
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
   }
 
   @override
