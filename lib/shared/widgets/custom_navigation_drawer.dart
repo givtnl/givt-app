@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -19,6 +20,8 @@ class CustomNavigationDrawer extends StatelessWidget {
         children: [
           _buildGivtLogo(size),
           _buildMenuItem(
+            isVisible: true,
+            showBadge: true,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {},
@@ -119,6 +122,7 @@ class CustomNavigationDrawer extends StatelessWidget {
     required IconData icon,
     required VoidCallback onTap,
     bool isVisible = false,
+    bool showBadge = false,
   }) =>
       Visibility(
         visible: isVisible,
@@ -126,7 +130,11 @@ class CustomNavigationDrawer extends StatelessWidget {
           children: [
             ListTile(
               leading: Icon(icon),
-              trailing: const Icon(Icons.arrow_forward_ios),
+              trailing: badges.Badge(
+                showBadge: showBadge,
+                position: badges.BadgePosition.topStart(top: 6, start: -20),
+                child: const Icon(Icons.arrow_forward_ios),
+              ),
               title: Text(title),
               onTap: onTap,
             ),
