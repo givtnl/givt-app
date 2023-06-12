@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
@@ -14,7 +16,15 @@ class HomePage extends StatelessWidget {
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
-      builder: (_) => const HomePage(),
+      builder: (_) => BlocProvider(
+        create: (_) => RemoteDataSourceSyncBloc(
+          getIt(),
+          getIt(),
+        )..add(
+            const RemoteDataSourceSyncRequested(),
+          ),
+        child: const HomePage(),
+      ),
     );
   }
 
@@ -30,7 +40,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              //todo add faq here
+              _buildNeedsRegistrationDialog(context);
             },
             icon: const Icon(
               Icons.question_mark_outlined,
@@ -43,9 +53,20 @@ class HomePage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Builder(
-            builder: (context) {
-              if (auth.user.needRegistration && !auth.user.mandateSigned) {
+          BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+            listener: (context, state) {
+              if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Synced successfully'),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is RemoteDataSourceSyncSuccess &&
+                  auth.user.needRegistration &&
+                  !auth.user.mandateSigned) {
                 WidgetsBinding.instance.addPostFrameCallback(
                   (_) => _buildNeedsRegistrationDialog(context),
                 );
@@ -108,27 +129,20 @@ class HomePage extends StatelessWidget {
         title: Text(context.l10n.importantReminder),
         content: Text(context.l10n.finalizeRegistrationPopupText),
         actions: [
-          Column(
-            children: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(context.l10n.askMeLater),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(context.l10n.askMeLater),
+          ),
+          TextButton(
+            onPressed: () {
+              //todo redirect to registration page
+            },
+            child: Text(
+              context.l10n.finalizeRegistration,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
-              const Divider(
-                height: 2,
-              ),
-              TextButton(
-                onPressed: () {
-                  //todo redirect to registration page
-                },
-                child: Text(
-                  context.l10n.finalizeRegistration,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),

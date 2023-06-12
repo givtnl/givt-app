@@ -10,6 +10,7 @@ class APIService {
     apiURL = 'givt-debug-api.azurewebsites.net';
   }
   Client client = InterceptedClient.build(
+    requestTimeout: const Duration(seconds: 5),
     interceptors: [
       Interceptor(),
     ],
@@ -146,7 +147,7 @@ class APIService {
       if (response.statusCode >= 400) {
         throw Exception('something went wrong :(');
       }
-      return response.statusCode == 200;
+      return response.statusCode >= 200;
     });
   }
 

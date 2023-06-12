@@ -28,13 +28,15 @@ dependencies:
   get_it: ^7.6.0
   http: ^0.13.6
   http_interceptor: ^1.0.2
-  internet_connection_checker: ^1.0.0+1
+  internet_connection_checker_plus: ^1.0.1
   intl: ^0.18.0
   mobile_scanner: ^2.1.0
   package_info_plus: ^4.0.2
   permission_handler: ^10.2.0
+  share_plus: ^7.0.2
   shared_preferences: ^2.1.1
   sprintf: ^7.0.0
+  url_launcher: ^6.1.11
   vibration: ^1.7.7
 
 dev_dependencies:

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -240,11 +241,22 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         mediumId: namespace,
       ),
     );
+    try {
+      await _givtRepository.submitGivts(
+        guid: userGUID,
+        body: {'donations': GivtTransaction.toJsonList(transactionList)},
+      );
+    } on SocketException catch (e) {
+      log(e.toString());
+      emit(
+        state.copyWith(
+          organisation: organisation,
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
+      return;
+    }
 
-    await _givtRepository.submitGivts(
-      guid: userGUID,
-      body: {'donations': GivtTransaction.toJsonList(transactionList)},
-    );
     emit(
       state.copyWith(
         status: GiveStatus.readyToGive,

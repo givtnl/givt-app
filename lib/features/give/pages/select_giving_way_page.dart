@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
+import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
+import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -31,77 +33,100 @@ class SelectGivingWayPage extends StatelessWidget {
       ),
       body: Padding(
         padding: EdgeInsets.all(size.width * 0.05),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Text(
-                locals.giveSubtitle,
-                style: Theme.of(context).textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            _buildListTile(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<GiveBloc>()
-                      ..add(
-                        const GiveCheckLastDonation(),
-                      ),
-                    child: const BTScanPage(),
-                  ),
-                  fullscreenDialog: true,
+        child: BlocListener<GiveBloc, GiveState>(
+          listener: (context, state) {
+            if (state.status == GiveStatus.noInternetConnection) {
+              Navigator.of(context).pushReplacement(
+                SuccessOfflineDonationPage.route(
+                  state.organisation.organisationName!,
                 ),
-              ),
-              title: locals.givingContextCollectionBag,
-              subtitle: locals.selectContextCollect,
-              image: 'assets/images/select_givtbox.png',
-            ),
-            _buildListTile(
-              onTap: () => Navigator.of(context).push(
+              );
+              return;
+            }
+            if (state.status == GiveStatus.readyToGive) {
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute<void>(
                   builder: (_) => BlocProvider.value(
                     value: context.read<GiveBloc>(),
-                    child: const QrCodeScanPage(),
+                    child: const GivingPage(),
                   ),
                   fullscreenDialog: true,
                 ),
-              ),
-              title: locals.givingContextQRCode,
-              subtitle: locals.giveContextQR,
-              image: 'assets/images/select_qr_phone_scan.png',
-            ),
-            _buildListTile(
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: context.read<GiveBloc>()
-                          ..add(
-                            const GiveCheckLastDonation(),
-                          ),
-                      ),
-                      BlocProvider(
-                        create: (_) => OrganisationBloc(
-                          getIt(),
-                          getIt(),
-                        )..add(
-                            const OrganisationFetch(),
-                          ),
-                      ),
-                    ],
-                    child: const OrganizationListPage(),
-                  ),
-                  fullscreenDialog: true,
+              );
+            }
+          },
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  locals.giveSubtitle,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
               ),
-              title: locals.givingContextCollectionBagList,
-              subtitle: locals.selectContextList,
-              image: 'assets/images/select_list.png',
-            ),
-          ],
+              _buildListTile(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => BlocProvider.value(
+                      value: context.read<GiveBloc>()
+                        ..add(
+                          const GiveCheckLastDonation(),
+                        ),
+                      child: const BTScanPage(),
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                ),
+                title: locals.givingContextCollectionBag,
+                subtitle: locals.selectContextCollect,
+                image: 'assets/images/select_givtbox.png',
+              ),
+              _buildListTile(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => BlocProvider.value(
+                      value: context.read<GiveBloc>(),
+                      child: const QrCodeScanPage(),
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                ),
+                title: locals.givingContextQRCode,
+                subtitle: locals.giveContextQR,
+                image: 'assets/images/select_qr_phone_scan.png',
+              ),
+              _buildListTile(
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider.value(
+                          value: context.read<GiveBloc>()
+                            ..add(
+                              const GiveCheckLastDonation(),
+                            ),
+                        ),
+                        BlocProvider(
+                          create: (_) => OrganisationBloc(
+                            getIt(),
+                            getIt(),
+                          )..add(
+                              const OrganisationFetch(),
+                            ),
+                        ),
+                      ],
+                      child: const OrganizationListPage(),
+                    ),
+                    fullscreenDialog: true,
+                  ),
+                ),
+                title: locals.givingContextCollectionBagList,
+                subtitle: locals.selectContextList,
+                image: 'assets/images/select_list.png',
+              ),
+            ],
+          ),
         ),
       ),
     );

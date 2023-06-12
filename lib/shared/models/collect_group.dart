@@ -71,8 +71,9 @@ class CollectGroup extends Equatable {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['EddyNameSpace'] = nameSpace;
-    data['orgName'] = orgName;
+    data['OrgName'] = orgName;
     data['Celebrations'] = hasCelebration;
+    data['CollectGroupType'] = type.value;
     data['type'] = type.value;
     data['Locations'] = locations.map((e) => e.toJson()).toList();
     data['MultiUseAllocations'] =
