@@ -11,6 +11,14 @@ class SuccessOfflineDonationPage extends StatelessWidget {
 
   final String organisationName;
 
+  static MaterialPageRoute<dynamic> route(String organisationName) {
+    return MaterialPageRoute(
+      builder: (_) => SuccessOfflineDonationPage(
+        organisationName: organisationName,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
