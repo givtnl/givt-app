@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              //todo add faq here
+              _buildNeedsRegistrationDialog(context);
             },
             icon: const Icon(
               Icons.question_mark_outlined,
@@ -64,7 +64,9 @@ class HomePage extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              if (auth.user.needRegistration && !auth.user.mandateSigned) {
+              if (state is RemoteDataSourceSyncSuccess &&
+                  auth.user.needRegistration &&
+                  !auth.user.mandateSigned) {
                 WidgetsBinding.instance.addPostFrameCallback(
                   (_) => _buildNeedsRegistrationDialog(context),
                 );
@@ -127,27 +129,20 @@ class HomePage extends StatelessWidget {
         title: Text(context.l10n.importantReminder),
         content: Text(context.l10n.finalizeRegistrationPopupText),
         actions: [
-          Column(
-            children: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(context.l10n.askMeLater),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(context.l10n.askMeLater),
+          ),
+          TextButton(
+            onPressed: () {
+              //todo redirect to registration page
+            },
+            child: Text(
+              context.l10n.finalizeRegistration,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
-              const Divider(
-                height: 2,
-              ),
-              TextButton(
-                onPressed: () {
-                  //todo redirect to registration page
-                },
-                child: Text(
-                  context.l10n.finalizeRegistration,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
