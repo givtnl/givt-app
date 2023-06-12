@@ -115,6 +115,15 @@ class _GivingPageState extends State<GivingPage> {
                     {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
                   ),
                 ),
+                options: InAppBrowserClassOptions(
+                  crossPlatform: InAppBrowserOptions(
+                    toolbarTopBackgroundColor: Colors.white,
+                  ),
+                  ios: IOSInAppBrowserOptions(
+                    toolbarBottomBackgroundColor: Colors.white,
+                    presentationStyle: IOSUIModalPresentationStyle.POPOVER,
+                  ),
+                ),
               )
               .then(
                 (value) => _closeBrowser(),
