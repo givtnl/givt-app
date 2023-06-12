@@ -5,6 +5,7 @@ enum GiveStatus {
   loading,
   readyToGive,
   processingBeaconData,
+  noInternetConnection,
   success,
   error,
 }

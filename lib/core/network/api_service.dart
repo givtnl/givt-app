@@ -147,7 +147,7 @@ class APIService {
       if (response.statusCode >= 400) {
         throw Exception('something went wrong :(');
       }
-      return response.statusCode == 200;
+      return response.statusCode >= 200;
     });
   }
 

@@ -9,6 +9,16 @@ class GivtTransaction extends Equatable {
     required this.collectId,
   }) : mediumId = beaconId;
 
+  factory GivtTransaction.fromJson(Map<String, dynamic> json) {
+    return GivtTransaction(
+      guid: json['Guid'] as String,
+      amount: json['Amount'] as double,
+      beaconId: json['BeaconId'] as String,
+      timestamp: json['Timestamp'] as String,
+      collectId: json['CollectId'] as String,
+    );
+  }
+
   final String guid;
   final double amount;
   final String beaconId;
@@ -16,8 +26,9 @@ class GivtTransaction extends Equatable {
   final String collectId;
   final String mediumId;
 
-  Map<String, dynamic> toJSON() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'Guid': guid,
       'Amount': amount,
       'BeaconId': beaconId,
       'Timestamp': timestamp,
@@ -46,7 +57,17 @@ class GivtTransaction extends Equatable {
   static List<Map<String, dynamic>> toJsonList(
     List<GivtTransaction> transactionList,
   ) {
-    return transactionList.map((transaction) => transaction.toJSON()).toList();
+    return transactionList.map((transaction) => transaction.toJson()).toList();
+  }
+
+  static List<GivtTransaction> fromJsonList(
+    List<dynamic> jsonList,
+  ) {
+    return jsonList
+        .map(
+          (json) => GivtTransaction.fromJson(json as Map<String, dynamic>),
+        )
+        .toList();
   }
 
   @override
@@ -58,4 +79,6 @@ class GivtTransaction extends Equatable {
         collectId,
         mediumId,
       ];
+
+  static const String givtTransactions = 'givtTransactions';
 }
