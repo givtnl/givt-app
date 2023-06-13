@@ -20,12 +20,14 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Running on the main branch, deploying to production."
-            echo "PACKAGE_NAME=net.givtapp.kids" >> $GITHUB_ENV
+            echo "PACKAGE_NAME=net.givtapp.ios" >> $GITHUB_ENV
+            echo "APP_IDENTIFIER=net.givtapp.ios" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
-            echo "TRACK=production" >> $GITHUB_ENV
+            echo "TRACK=internal" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
-            echo "PACKAGE_NAME=net.givtapp.kids.test" >> $GITHUB_ENV
+            echo "PACKAGE_NAME=net.givtapp.ios.test" >> $GITHUB_ENV
+            echo "APP_IDENTIFIER=net.givtapp.ios.test" >> $GITHUB_ENV
             echo "FLAVOR=development" >> $GITHUB_ENV
             echo "TRACK=internal" >> $GITHUB_ENV
           fi
@@ -59,4 +61,5 @@ jobs:
           APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
+          APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
           FLAVOR: ${{ env.FLAVOR }}

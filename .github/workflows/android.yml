@@ -19,12 +19,12 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Running on the main branch, deploying to production."
-            echo "PACKAGE_NAME=net.givtapp.kids" >> $GITHUB_ENV
+            echo "PACKAGE_NAME=net.givtapp.droid2" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
-            echo "TRACK=production" >> $GITHUB_ENV
+            echo "TRACK=internal" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
-            echo "PACKAGE_NAME=net.givtapp.kids.test" >> $GITHUB_ENV
+            echo "PACKAGE_NAME=net.givtapp.droid2.test" >> $GITHUB_ENV
             echo "FLAVOR=development" >> $GITHUB_ENV
             echo "TRACK=internal" >> $GITHUB_ENV
           fi

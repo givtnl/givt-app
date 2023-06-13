@@ -35,11 +35,11 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final locale = Platform.localeName.contains('nl') ? '' : 'en';
+    final locale = Platform.localeName;
     final locals = AppLocalizations.of(context);
 
     final imageNames = [
-      'givy_welkom',
+      'givy_welcome',
       'givy_register',
       'firstuse_select',
       'firstuse_orgs',
@@ -57,7 +57,9 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         child: Column(
           children: [
             _buildCarouselSlider(size, imageNames, locals, locale),
+            Expanded(child: Container()),
             _buildAnimatedBottomIndexes(imageNames, size, context),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 EmailSignupPage.route(),
@@ -66,6 +68,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 locals.welcomeContinue,
               ),
             ),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () => showModalBottomSheet<void>(
                 context: context,
@@ -117,7 +120,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.7,
+          height: size.height * 0.65,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -142,7 +145,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
             child: Container(
               width: size.width * 0.05,
               height: size.height * 0.01,
-              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: (Theme.of(context).brightness == Brightness.dark
@@ -182,19 +185,18 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         Column(
           children: [
             SizedBox(
-              height: size.height * 0.05,
+              height: size.height * 0.04,
             ),
             _buildTitleAndSubtitle(
               title: title,
               subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
             ),
             SizedBox(
-              height: size.height * 0.06,
+              height: size.height * 0.04,
             ),
             Image.asset(
-              'assets/images/${isFirst && locale.contains('nl') ? '${path}_$locale' : path}.png',
+              'assets/images/${isFirst && locale.contains('nl') ? '${path}_${locale.split('_')[0]}' : path}.png',
               fit: BoxFit.cover,
-              width: size.width * 0.8,
               height: size.height * 0.4,
             ),
           ],

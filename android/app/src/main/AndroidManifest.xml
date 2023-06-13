@@ -1,9 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.givtapp.droid">
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
     <!-- Always include this permission -->
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
    <queries>
        <!-- tel:<phone-number> -->
@@ -18,7 +17,17 @@
        </intent>
    </queries>
    <!-- Include only if your app benefits from precise location access. -->
-   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+   <!-- Allow Bluetooth -->
+   <uses-feature
+       android:name="android.hardware.bluetooth_le"
+       android:required="true" />
+   <!-- Request legacy Bluetooth permissions on older devices. -->
+   <uses-permission android:name="android.permission.BLUETOOTH"
+       android:maxSdkVersion="30" />
+   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+       android:maxSdkVersion="30" />
+   <uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> 
+   <uses-permission android:name="android.permission.VIBRATE"/>
    <application
         android:label="${appName}"
         android:icon="@mipmap/ic_launcher"
@@ -39,6 +48,15 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+              <meta-data
+                android:name="flutterEmbedding"
+                android:value="2" />
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="givt" /> 
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

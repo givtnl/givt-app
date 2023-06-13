@@ -1,8 +1,14 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
+import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
@@ -10,7 +16,15 @@ class HomePage extends StatelessWidget {
 
   static MaterialPageRoute<dynamic> route() {
     return MaterialPageRoute(
-      builder: (_) => const HomePage(),
+      builder: (_) => BlocProvider(
+        create: (_) => RemoteDataSourceSyncBloc(
+          getIt(),
+          getIt(),
+        )..add(
+            const RemoteDataSourceSyncRequested(),
+          ),
+        child: const HomePage(),
+      ),
     );
   }
 
@@ -26,7 +40,7 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              //todo add faq here
+              _buildNeedsRegistrationDialog(context);
             },
             icon: const Icon(
               Icons.question_mark_outlined,
@@ -39,8 +53,53 @@ class HomePage extends StatelessWidget {
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          ChooseAmount(
-            amountLimit: auth.user.amountLimit,
+          BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+            listener: (context, state) {
+              if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Synced successfully'),
+                  ),
+                );
+              }
+            },
+            builder: (context, state) {
+              if (state is RemoteDataSourceSyncSuccess &&
+                  auth.user.needRegistration &&
+                  !auth.user.mandateSigned) {
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => _buildNeedsRegistrationDialog(context),
+                );
+              }
+
+              return ChooseAmount(
+                country: auth.user.country,
+                amountLimit: auth.user.amountLimit,
+                onAmountChanged:
+                    (firstCollection, secondCollection, thirdCollection) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => BlocProvider(
+                        create: (context) => GiveBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            GiveAmountChanged(
+                              firstCollectionAmount: firstCollection,
+                              secondCollectionAmount: secondCollection,
+                              thirdCollectionAmount: thirdCollection,
+                            ),
+                          ),
+                        child: const SelectGivingWayPage(),
+                      ),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                  return true;
+                },
+              );
+            },
           ),
           ColoredBox(
             color: Colors.white,
@@ -53,6 +112,35 @@ class HomePage extends StatelessWidget {
               child: Image.asset(
                 'assets/images/logo.png',
                 width: size.width * 0.2,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _buildNeedsRegistrationDialog(
+    BuildContext context,
+  ) {
+    return showDialog<void>(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text(context.l10n.importantReminder),
+        content: Text(context.l10n.finalizeRegistrationPopupText),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(context.l10n.askMeLater),
+          ),
+          TextButton(
+            onPressed: () {
+              //todo redirect to registration page
+            },
+            child: Text(
+              context.l10n.finalizeRegistration,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

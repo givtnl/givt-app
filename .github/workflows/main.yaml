@@ -9,12 +9,6 @@ on:
     branches:
       - main
       - develop
-      - feat/bff-609/fastlane-setup
-
-  pull_request:
-    branches:
-      - main
-      - develop
 
 jobs:
   linter:
@@ -26,18 +20,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Superlinter run
-        uses: github/super-linter@v5
-        env:
-          DEFAULT_BRANCH: ${{ github.ref }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VALIDATE_ALL_CODEBASE: true
-          DISABLE_ERRORS: true
+#      - name: Superlinter run
+#        uses: github/super-linter@v5
+#        env:
+#          DEFAULT_BRANCH: ${{ github.ref }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          VALIDATE_ALL_CODEBASE: false
+#          DISABLE_ERRORS: true
 
 # Build apps
   droid:
     needs: linter
-#    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/android.yml
     secrets:
       CODESIGNING_DEPLOY_KEY: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
@@ -46,7 +39,6 @@ jobs:
 
   ios:
     needs: linter
-#    if: github.event_name == 'pull_request'
     uses: ./.github/workflows/ios.yml
     secrets:
       CODESIGNING_DEPLOY_KEY: ${{ secrets.CODESIGNING_DEPLOY_KEY }}

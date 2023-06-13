@@ -9,6 +9,7 @@
       "request": "launch",
       "type": "dart",
       "program": "lib/main_development.dart",
+      "flutterMode": "debug",
       "args": [
         "--flavor",
         "development",
@@ -21,6 +22,7 @@
       "request": "launch",
       "type": "dart",
       "program": "lib/main_staging.dart",
+      "flutterMode": "debug",
       "args": ["--flavor", "staging", "--target", "lib/main_staging.dart"]
     },
     {
@@ -28,6 +30,7 @@
       "request": "launch",
       "type": "dart",
       "program": "lib/main_production.dart",
+      "flutterMode": "debug",
       "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
     }
   ]

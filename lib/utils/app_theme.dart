@@ -7,8 +7,11 @@ class AppTheme {
   static const givtBlue = Color(0xFF2e2957);
   static const givtLightGray = Color(0xFFe3e2e7);
   static const givtDarkerGray = Color(0xFF898989);
+  static const givtLightBlue = Color(0xFF4699d2);
   static const givtDarkGrey = Color(0xFF555555);
   static const givtGraycece = Color(0xFFcecece);
+  static const givtGrayf7f6f8 = Color(0xFFf7f6f8);
+  static const givtGrayf3f3f3 = Color(0xFFf3f3f3);
 
   static const givtPurple = Color(0xFF2e2957);
   static const givtLightPurple = Color(0xFF5a5387);
@@ -16,11 +19,12 @@ class AppTheme {
   static const givtOrange = Color(0xFFF17057);
   static const givtAmount = Color(0xFFD2D1D9);
   static const givtYellow = Color(0xFFEDA52E);
+  static const givtDarkGreen = Color(0xFF1da96c);
 
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
-    // fontFamily: 'Avenir',
-    // colorScheme: lightColorScheme,
+    fontFamily: 'AvenirLTStd',
+    colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,
     textTheme: TextTheme(
       titleLarge: TextStyle(
@@ -47,8 +51,10 @@ class AppTheme {
     ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: lightColorScheme.background,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30),
+        ),
       ),
       dragHandleColor: lightColorScheme.onBackground,
     ),

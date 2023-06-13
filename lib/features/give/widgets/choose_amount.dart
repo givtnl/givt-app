@@ -3,13 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
+typedef ChooseAmountNextCallback = bool Function(
+  double firstCollection,
+  double secondCollection,
+  double thirdCollection,
+);
+
 class ChooseAmount extends StatefulWidget {
   const ChooseAmount({
     required this.amountLimit,
+    required this.onAmountChanged,
+    required this.country,
     super.key,
   });
 
   final int amountLimit;
+  final String country;
+  final ChooseAmountNextCallback onAmountChanged;
 
   @override
   State<ChooseAmount> createState() => _ChooseAmountState();
@@ -24,7 +34,22 @@ class _ChooseAmountState extends State<ChooseAmount> {
     TextEditingController(text: '0'),
   ];
 
+  final List<FocusNode> focusNodes = [
+    FocusNode(),
+    FocusNode(),
+    FocusNode(),
+  ];
+
   int selectedField = 0;
+
+  @override
+  void dispose() {
+    super.dispose();
+    for (var index = 0; index < controllers.length; index++) {
+      controllers[index].dispose();
+      focusNodes[index].dispose();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +75,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 _buildCollectionField(
+                  focusNode: focusNodes[0],
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
+                  prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
                   isRemoveIconVisible: collectionFields[1] == true ||
@@ -60,34 +87,53 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(
                     () {
+                      controllers[0].text = '0';
                       collectionFields[0] = false;
+                      _changeFocus();
                     },
                   ),
-                  onFocused: () => selectedField = 0,
+                  onFocused: () {
+                    selectedField = 0;
+                    focusNodes[0].requestFocus();
+                  },
                 ),
                 _buildCollectionField(
+                  focusNode: focusNodes[1],
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
+                  prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
                   isRemoveIconVisible: collectionFields[0] == true ||
                       collectionFields[2] == true,
                   onRemoveIconPressed: () => setState(() {
+                    controllers[1].text = '0';
                     collectionFields[1] = false;
+                    _changeFocus();
                   }),
-                  onFocused: () => selectedField = 1,
+                  onFocused: () {
+                    selectedField = 1;
+                    focusNodes[1].requestFocus();
+                  },
                 ),
                 _buildCollectionField(
+                  focusNode: focusNodes[2],
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
+                  prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
                   isRemoveIconVisible: collectionFields[0] == true ||
                       collectionFields[1] == true,
                   onRemoveIconPressed: () => setState(() {
+                    controllers[2].text = '0';
                     collectionFields[2] = false;
+                    _changeFocus();
                   }),
-                  onFocused: () => selectedField = 2,
+                  onFocused: () {
+                    selectedField = 2;
+                    focusNodes[2].requestFocus();
+                  },
                 ),
                 Visibility(
                   visible: !collectionFields.every(
@@ -100,6 +146,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       setState(() {
                         collectionFields[collectionFields.indexOf(false)] =
                             true;
+                        _changeFocus();
                       });
                     },
                   ),
@@ -107,9 +154,23 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: () {
-                    //todo validate form and if all good navigate to qr page
-                  },
+                  onPressed: isEnabled
+                      ? () {
+                          widget.onAmountChanged(
+                            double.parse(
+                              controllers[0].text.replaceAll(',', '.'),
+                            ),
+                            double.parse(
+                              controllers[1].text.replaceAll(',', '.'),
+                            ),
+                            double.parse(
+                              controllers[2].text.replaceAll(',', '.'),
+                            ),
+                          );
+
+                          _resetControllers();
+                        }
+                      : null,
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,
@@ -124,7 +185,51 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
+  void _changeFocus() {
+    selectedField = collectionFields.lastIndexOf(true);
+    focusNodes[collectionFields.lastIndexOf(true)].requestFocus();
+  }
+
+  void _resetControllers() {
+    for (var index = 0; index < controllers.length; index++) {
+      controllers[index].text = '0';
+      focusNodes[index].unfocus();
+      collectionFields[index] = index == 0;
+    }
+    focusNodes[0].requestFocus();
+  }
+
+  Icon _buildCurrencyIcon() {
+    final countryIso = widget.country;
+    var icon = Icons.euro;
+    if (countryIso == 'US') {
+      icon = Icons.attach_money;
+    }
+    if (countryIso == 'GB') {
+      icon = Icons.currency_pound;
+    }
+
+    return Icon(
+      icon,
+      color: Colors.grey,
+    );
+  }
+
+  bool get isEnabled {
+    if (_formKey.currentState == null) return false;
+    if (_formKey.currentState!.validate() == false) return false;
+
+    for (final controller in controllers) {
+      if (double.parse(controller.text.replaceAll(',', '.')) != 0) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   Widget _buildCollectionField({
+    required FocusNode focusNode,
     required String collectionFieldName,
     required int amountLimit,
     required TextEditingController controller,
@@ -132,15 +237,18 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required bool isRemoveIconVisible,
     required VoidCallback onRemoveIconPressed,
     required VoidCallback onFocused,
+    required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
   }) {
     return Visibility(
       visible: isVisible,
       child: CollectionFormField(
+        focusNode: focusNode,
         key: Key(collectionFieldName),
         controller: controller,
         amountLimit: amountLimit,
         suffixText: collectionFieldName,
+        prefixCurrencyIcon: prefixCurrencyIcon,
         isRemoveIconVisible: isRemoveIconVisible,
         isSuffixTextVisible: isSuffixTextVisible,
         onRemoveIconPressed: onRemoveIconPressed,
@@ -156,13 +264,17 @@ class _ChooseAmountState extends State<ChooseAmount> {
     /// if text has 1 digit then it will be 0
     if (controllers[selectedField].text.length == 1) {
       controllers[selectedField].text = _zero;
-      _formKey.currentState!.validate();
+      setState(() {
+        _formKey.currentState!.validate();
+      });
       return;
     }
     controllers[selectedField].text = controllers[selectedField]
         .text
         .substring(0, controllers[0].text.length - 1);
-    _formKey.currentState!.validate();
+    setState(() {
+      _formKey.currentState!.validate();
+    });
   }
 
   void onCommaTapped() {
@@ -174,10 +286,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
     }
     if (controllers[selectedField].text == _zero) {
       controllers[selectedField].text += _comma;
+      setState(() {
+        _formKey.currentState!.validate();
+      });
       return;
     }
     controllers[selectedField].text += _comma;
-    _formKey.currentState!.validate();
+    setState(() {
+      _formKey.currentState!.validate();
+    });
   }
 
   void onNumberTapped(String value) {
@@ -189,6 +306,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
     if (controllers[selectedField].text == _zero) {
       controllers[selectedField].text = value;
+      setState(() {
+        _formKey.currentState!.validate();
+      });
       return;
     }
 
@@ -196,12 +316,14 @@ class _ChooseAmountState extends State<ChooseAmount> {
     if (controllers[selectedField].text.length <= 6) {
       controllers[selectedField].text += value;
     }
-    _formKey.currentState!.validate();
+    setState(() {
+      _formKey.currentState!.validate();
+    });
   }
 
   Padding _buildNextButton({
     required String label,
-    required VoidCallback onPressed,
+    VoidCallback? onPressed,
   }) {
     return Padding(
       padding: const EdgeInsets.all(15),
