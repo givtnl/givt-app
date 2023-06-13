@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -14,7 +15,7 @@ class CustomNavigationDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-
+    final auth = context.read<AuthCubit>().state as AuthSuccess;
     return Drawer(
       child: ListView(
         children: [
@@ -24,7 +25,11 @@ class CustomNavigationDrawer extends StatelessWidget {
             showBadge: true,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                SignUpPage.route(email: auth.user.email),
+              );
+            },
           ),
           // Divider(
           //   indent: size.width * 0.05,
