@@ -21,7 +21,7 @@ jobs:
             echo "Running on the main branch, deploying to production."
             echo "PACKAGE_NAME=net.givtapp.droid2" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
-            echo "TRACK=beta" >> $GITHUB_ENV
+            echo "TRACK=beta-flutter" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
             echo "PACKAGE_NAME=net.givtapp.droid2.test" >> $GITHUB_ENV
