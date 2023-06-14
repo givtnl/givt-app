@@ -88,7 +88,7 @@ class APIService {
     return (await client.get(url)).body;
   }
 
-  Future<String> registerTempUser(Map<String, dynamic> body) async {
+  Future<String> registerUser(Map<String, dynamic> body) async {
     final url = Uri.https(apiURL, '/api/v2/users');
     final response = await client.post(
       url,
@@ -171,21 +171,6 @@ class APIService {
         throw Exception('something went wrong :(');
       }
       return response.statusCode == 200;
-    });
-  }
-
-  Future<Map<String, dynamic>> postUserExt({
-    required Map<String, dynamic> body,
-  }) async {
-    final url = Uri.https(
-      apiURL,
-      '/v2/Users',
-    );
-    return client.post(url, body: jsonEncode(body)).then((response) {
-      if (response.statusCode >= 400) {
-        throw Exception('something went wrong :(');
-      }
-      return jsonDecode(response.body) as Map<String, dynamic>;
     });
   }
 }
