@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:iban/iban.dart';
 
 typedef OnPaymentChanged = void Function(int selected);
 
@@ -82,9 +83,15 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
               children: [
                 _buildTextFormField(
                   hintText: locals.iBANPlaceHolder,
-                  controller: widget.bankAccount,
+                  controller: widget.ibanNumber,
                   validator: (value) {
+                    if (_currentIndex == 1) {
+                      return null;
+                    }
                     if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (!isValid(value)) {
                       return '';
                     }
                     return null;
@@ -98,7 +105,13 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                   hintText: locals.sortCodePlaceholder,
                   controller: widget.sortCode,
                   validator: (value) {
+                    if (_currentIndex == 0) {
+                      return null;
+                    }
                     if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (value.length != 6) {
                       return '';
                     }
                     return null;
@@ -106,9 +119,15 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 ),
                 _buildTextFormField(
                   hintText: locals.bankAccountNumberPlaceholder,
-                  controller: widget.sortCode,
+                  controller: widget.bankAccount,
                   validator: (value) {
+                    if (_currentIndex == 0) {
+                      return null;
+                    }
                     if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (value.length != 8) {
                       return '';
                     }
                     return null;
@@ -132,7 +151,9 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
       child: TextFormField(
         controller: controller,
         validator: validator,
+        textCapitalization: TextCapitalization.words,
         textInputAction: TextInputAction.next,
+        onChanged: (value) => setState(() {}),
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
