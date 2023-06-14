@@ -50,7 +50,7 @@ class AppTheme {
       textTheme: ButtonTextTheme.primary,
     ),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: lightColorScheme.background,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(30),

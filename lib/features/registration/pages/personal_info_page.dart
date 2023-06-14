@@ -52,102 +52,109 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     final locals = context.l10n;
     return Scaffold(
       appBar: const RegistrationAppBar(),
+      bottomSheet: Container(
+        margin: const EdgeInsets.all(20),
+        child: ElevatedButton(
+          onPressed: isEnabled ? _onNext : null,
+          style: ElevatedButton.styleFrom(
+            disabledBackgroundColor: Colors.grey,
+          ),
+          child: Text(
+            locals.next,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              Text(locals.registerPersonalPage),
-              _buildTextFormField(
-                hintText: locals.streetAndHouseNumber,
-                controller: _address,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '';
-                  }
-                  return null;
-                },
-              ),
-              _buildTextFormField(
-                hintText: locals.postalCode,
-                controller: _postalCode,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '';
-                  }
-
-                  if (_selectedCountry != Country.gg ||
-                      _selectedCountry != Country.gb ||
-                      _selectedCountry != Country.je) {
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(locals.registerPersonalPage),
+                _buildTextFormField(
+                  hintText: locals.streetAndHouseNumber,
+                  controller: _address,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
                     return null;
-                  }
+                  },
+                ),
+                _buildTextFormField(
+                  hintText: locals.postalCode,
+                  controller: _postalCode,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
 
-                  if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                    return '';
-                  }
-                  return null;
-                },
-              ),
-              _buildTextFormField(
-                hintText: locals.city,
-                controller: _city,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '';
-                  }
-                  return null;
-                },
-              ),
-              _buildCountryAndMobileNumber(size, locals, context),
-              PaymentSystemTab(
-                bankAccount: bankAccount,
-                ibanNumber: ibanNumber,
-                sortCode: sortCode,
-                onPaymentChanged: (value) {
-                  if (value == 0) {
-                    bankAccount.clear();
-                    sortCode.clear();
-                    if (_selectedCountry == Country.gg ||
-                        _selectedCountry == Country.gb ||
-                        _selectedCountry == Country.je) {
+                    if (_selectedCountry != Country.gg ||
+                        _selectedCountry != Country.gb ||
+                        _selectedCountry != Country.je) {
+                      return null;
+                    }
+
+                    if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                _buildTextFormField(
+                  hintText: locals.city,
+                  controller: _city,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    return null;
+                  },
+                ),
+                _buildCountryAndMobileNumber(size, locals, context),
+                PaymentSystemTab(
+                  bankAccount: bankAccount,
+                  ibanNumber: ibanNumber,
+                  sortCode: sortCode,
+                  onPaymentChanged: (value) {
+                    if (value == 0) {
+                      bankAccount.clear();
+                      sortCode.clear();
+                      if (_selectedCountry == Country.gg ||
+                          _selectedCountry == Country.gb ||
+                          _selectedCountry == Country.je) {
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => _buildWarningDialog(
+                            message: locals.alertSEPAMessage(
+                              getCountry(_selectedCountry.countryCode, locals),
+                            ),
+                          ),
+                        );
+                      }
+                      return;
+                    }
+                    if (_selectedCountry != Country.gg ||
+                        _selectedCountry != Country.gb ||
+                        _selectedCountry != Country.je) {
                       showDialog<void>(
                         context: context,
                         builder: (context) => _buildWarningDialog(
-                          message: locals.alertSEPAMessage(
+                          message: locals.alertBACSMessage(
                             getCountry(_selectedCountry.countryCode, locals),
                           ),
                         ),
                       );
                     }
-                    return;
-                  }
-                  if (_selectedCountry != Country.gg ||
-                      _selectedCountry != Country.gb ||
-                      _selectedCountry != Country.je) {
-                    showDialog<void>(
-                      context: context,
-                      builder: (context) => _buildWarningDialog(
-                        message: locals.alertBACSMessage(
-                          getCountry(_selectedCountry.countryCode, locals),
-                        ),
-                      ),
-                    );
-                  }
-                  ibanNumber.clear();
-                },
-              ),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: isEnabled ? _onNext : null,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
+                    ibanNumber.clear();
+                  },
                 ),
-                child: Text(
-                  locals.next,
+                SizedBox(
+                  height: size.height * 0.2,
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -168,12 +175,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               if (value == null) {
                 return '';
               }
-
-              // if (_selectedCountry == Country.gg ||
-              //     _selectedCountry == Country.gb ||
-              //     _selectedCountry == Country.je) {
-
-              // }
 
               return null;
             },
@@ -261,6 +262,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
+          label: Text(
+            hintText,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+          ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           errorStyle: const TextStyle(

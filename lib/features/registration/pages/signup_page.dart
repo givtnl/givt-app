@@ -51,8 +51,28 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: const RegistrationAppBar(),
+      resizeToAvoidBottomInset: false,
+      bottomSheet: Container(
+        margin: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildAcceptPolicy(locals),
+            ElevatedButton(
+              onPressed: _isEnabled ? _register : null,
+              style: ElevatedButton.styleFrom(
+                disabledBackgroundColor: Colors.grey,
+              ),
+              child: Text(
+                locals.next,
+              ),
+            )
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: BlocListener<RegistrationBloc, RegistrationState>(
@@ -194,16 +214,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   locals.passwordRule,
                   textAlign: TextAlign.center,
                 ),
-                const Spacer(),
-                _buildAcceptPolicy(locals),
-                ElevatedButton(
-                  onPressed: _isEnabled ? _register : null,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  child: Text(
-                    locals.next,
-                  ),
+                SizedBox(
+                  height: size.height * 0.15,
                 ),
               ],
             ),
