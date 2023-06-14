@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
 
 typedef OnPaymentChanged = void Function(int selected);
@@ -111,7 +112,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                     if (value == null || value.isEmpty) {
                       return '';
                     }
-                    if (value.length != 6) {
+                    if (!Util.ukSortCodeRegEx.hasMatch(value)) {
                       return '';
                     }
                     return null;
