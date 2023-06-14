@@ -104,7 +104,7 @@ class AuthRepositoy {
     );
 
     /// register user
-    final userGUID = await _apiService.registerTempUser(tempUser.toJson());
+    final userGUID = await _apiService.registerUser(tempUser.toJson());
 
     /// create session
     await login(
