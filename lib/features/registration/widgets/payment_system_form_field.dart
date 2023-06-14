@@ -32,8 +32,11 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
-      widget.onPaymentChanged(_tabController.index);
+      if (_tabController.indexIsChanging) {
+        return;
+      }
       setState(() {
+        widget.onPaymentChanged(_tabController.index);
         _currentIndex = _tabController.index;
       });
     });
@@ -52,6 +55,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
       children: [
         TabBar(
           controller: _tabController,
+          indicatorColor: AppTheme.givtLightGreen,
           tabs: const [
             Tab(
               height: 30,

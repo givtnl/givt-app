@@ -36,4 +36,15 @@ enum Country {
     return Country.values.toList()
       ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
   }
+
+  static List<Country> sortedPrefixCountries() {
+    final countries = sortedCountries();
+    for (var i = 0; i < countries.length; i++) {
+      final country = countries[i];
+      if (country == Country.je || country == Country.gg) {
+        countries.remove(country);
+      }
+    }
+    return countries;
+  }
 }

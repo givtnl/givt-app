@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
@@ -76,6 +77,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     return '';
                   }
 
+                  if (_selectedCountry != Country.gg ||
+                      _selectedCountry != Country.gb ||
+                      _selectedCountry != Country.je) {
+                    return null;
+                  }
+
                   if (!Util.ukPostCodeRegEx.hasMatch(value)) {
                     return '';
                   }
@@ -98,12 +105,34 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 ibanNumber: ibanNumber,
                 sortCode: sortCode,
                 onPaymentChanged: (value) {
-                  //todo display dialog
                   if (value == 0) {
                     bankAccount.clear();
                     sortCode.clear();
-
+                    if (_selectedCountry == Country.gg ||
+                        _selectedCountry == Country.gb ||
+                        _selectedCountry == Country.je) {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) => _buildWarningDialog(
+                          message: locals.alertSEPAMessage(
+                            getCountry(_selectedCountry.countryCode, locals),
+                          ),
+                        ),
+                      );
+                    }
                     return;
+                  }
+                  if (_selectedCountry != Country.gg ||
+                      _selectedCountry != Country.gb ||
+                      _selectedCountry != Country.je) {
+                    showDialog<void>(
+                      context: context,
+                      builder: (context) => _buildWarningDialog(
+                        message: locals.alertBACSMessage(
+                          getCountry(_selectedCountry.countryCode, locals),
+                        ),
+                      ),
+                    );
                   }
                   ibanNumber.clear();
                 },
@@ -135,6 +164,19 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: DropdownButtonFormField<Country>(
+            validator: (value) {
+              if (value == null) {
+                return '';
+              }
+
+              // if (_selectedCountry == Country.gg ||
+              //     _selectedCountry == Country.gb ||
+              //     _selectedCountry == Country.je) {
+
+              // }
+
+              return null;
+            },
             value: _selectedCountry,
             decoration: const InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -146,8 +188,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             items: Country.sortedCountries()
                 .map(
                   (Country country) => DropdownMenuItem(
-                    enabled:
-                        _selectedCountry.countryCode == country.countryCode,
                     value: country,
                     child: Text(
                       getCountry(country.countryCode, locals),
@@ -157,17 +197,34 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 )
                 .toList(),
             onChanged: (Country? newValue) {
-              _selectedCountry = newValue!;
+              setState(() {
+                _selectedCountry = newValue!;
+              });
             },
           ),
         ),
         MobileNumberFormField(
           phone: _phone,
-          onPrefixChanged: (String selected) {},
+          selectedCountryPrefix: _selectedCountry.prefix,
+          onPrefixChanged: (String selected) {
+            setState(() {
+              _selectedCountry = Country.sortedCountries().firstWhere(
+                (Country country) => country.countryCode == selected,
+              );
+            });
+          },
           validator: (String? value) {
             if (value == null || value.isEmpty) {
               return '';
             }
+            if (_selectedCountry == Country.gg ||
+                _selectedCountry == Country.gb ||
+                _selectedCountry == Country.je) {
+              if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
+                return '';
+              }
+            }
+
             return null;
           },
         ),
@@ -197,6 +254,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       child: TextFormField(
         controller: controller,
         validator: validator,
+        onChanged: (value) => setState(() {
+          _formKey.currentState!.validate();
+        }),
         textInputAction: TextInputAction.next,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
@@ -213,6 +273,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   String getCountry(String countryCode, AppLocalizations locals) {
     switch (countryCode) {
+      case 'JE':
+        return locals.jersey;
+      case 'GG':
+        return locals.guernsey;
+      case 'AD':
+        return locals.countryStringAD;
       case 'GB':
         return locals.countryStringGB;
       case 'DE':
@@ -256,5 +322,18 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       default:
         return '';
     }
+  }
+
+  Widget _buildWarningDialog({required String message}) {
+    return CupertinoAlertDialog(
+      title: Text(context.l10n.important),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(context.l10n.confirm),
+        ),
+      ],
+    );
   }
 }

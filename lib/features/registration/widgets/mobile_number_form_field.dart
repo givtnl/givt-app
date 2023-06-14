@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-
 typedef OnMobileNumberChanged = void Function(String selected);
 
 class MobileNumberFormField extends StatelessWidget {
   const MobileNumberFormField({
+    required this.phone,
+    required this.onPrefixChanged,
+    required this.selectedCountryPrefix,
+    required this.validator,
     super.key,
-    required TextEditingController phone, required this.onPrefixChanged, required this.validator,
-  }) : _phone = phone;
+  });
 
-  final TextEditingController _phone;
+  final TextEditingController phone;
   final OnMobileNumberChanged onPrefixChanged;
   final String? Function(String?)? validator;
+  final String selectedCountryPrefix;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +28,7 @@ class MobileNumberFormField extends StatelessWidget {
         children: [
           Expanded(
             child: DropdownButtonFormField<String>(
-              // value: ,
+              value: selectedCountryPrefix,
               menuMaxHeight: size.height * 0.3,
               decoration: const InputDecoration(
                 contentPadding: EdgeInsets.symmetric(
@@ -36,7 +39,7 @@ class MobileNumberFormField extends StatelessWidget {
                   height: 0,
                 ),
               ),
-              items: Country.sortedCountries()
+              items: Country.sortedPrefixCountries()
                   .map(
                     (Country category) => DropdownMenuItem(
                       value: category.prefix,
@@ -58,7 +61,7 @@ class MobileNumberFormField extends StatelessWidget {
           Expanded(
             flex: 3,
             child: TextFormField(
-              controller: _phone,
+              controller: phone,
               validator: validator,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.phone,
