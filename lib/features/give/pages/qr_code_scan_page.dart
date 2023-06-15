@@ -80,7 +80,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             Text(locals.giveDifferentScan),
             Text(
-              locals.giveDiffQRText,
+              locals.giveDiffQrText,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -95,7 +95,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               context: context,
               builder: (_) {
                 return AlertDialog(
-                  title: Text(locals.qRScanFailed),
+                  title: Text(locals.qrScanFailed),
                   content: Text(locals.codeCanNotBeScanned),
                   actions: [
                     TextButton(

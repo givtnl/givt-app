@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
               content: Text(locals.tempAccountLogin),
               actions: [
                 TextButton(
-                  child: Text(locals.continueText),
+                  child: Text(locals.continueKey),
                   onPressed: () => Navigator.of(context).pushReplacement(
                     SignUpPage.route(
                       email: _emailController.text,
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
               content: Text(locals.wrongCredentials),
               actions: [
                 TextButton(
-                  child: Text(locals.continueText),
+                  child: Text(locals.continueKey),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],

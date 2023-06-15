@@ -58,7 +58,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 content: Text(locals.tempAccountLogin),
                 actions: [
                   TextButton(
-                    child: Text(locals.continueText),
+                    child: Text(locals.continueKey),
                     onPressed: () => Navigator.of(context).pushReplacement(
                       SignUpPage.route(
                         email: _emailController.text,
@@ -166,7 +166,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                       disabledBackgroundColor: Colors.grey,
                     ),
                     child: Text(
-                      locals.continueText,
+                      locals.continueKey,
                     ),
                   ),
                 GestureDetector(

@@ -92,8 +92,8 @@ class SelectGivingWayPage extends StatelessWidget {
                     fullscreenDialog: true,
                   ),
                 ),
-                title: locals.givingContextQRCode,
-                subtitle: locals.giveContextQR,
+                title: locals.givingContextQrCode,
+                subtitle: locals.giveContextQr,
                 image: 'assets/images/select_qr_phone_scan.png',
               ),
               _buildListTile(
