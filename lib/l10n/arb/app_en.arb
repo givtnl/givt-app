@@ -16,7 +16,7 @@
         "type": "text"
     },
     "savingSettings": "Sit back and relax,\n we are saving your settings.",
-    "continue": "Continue",
+    "continueKey": "Continue",
     "slimPayInfoDetail": "Givt works together with SlimPay for executing the transactions. SlimPay is specialised in handling mandates and automatic money transfers on digital platforms. SlimPay executes these orders for Givt at the lowest rates on this market and at a high speed.\n \n\n SlimPay is an ideal partner for Givt because they make giving without cash very easy and safe. As a payment company, they are supervised by the Nederlandsche Bank and other European national banks.\n \n\n The money will be collected in a SlimPay account. \n Givt will ensure that the money is distributed correctly.",
     "slimPayInfoDetailTitle": "What is SlimPay?",
     "continueRegistration": "Your user account was already\n created, but it was impossible\n to finalise the registration.\n \n\n We would love for you to use\n Givt, so we ask you to login\n to complete the registration.",
