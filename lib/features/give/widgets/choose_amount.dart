@@ -271,7 +271,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     }
     controllers[selectedField].text = controllers[selectedField]
         .text
-        .substring(0, controllers[0].text.length - 1);
+        .substring(0, controllers[selectedField].text.length - 1);
     setState(() {
       _formKey.currentState!.validate();
     });
