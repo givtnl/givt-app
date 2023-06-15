@@ -67,9 +67,9 @@ class HomePage extends StatelessWidget {
               if (state is RemoteDataSourceSyncSuccess &&
                   auth.user.needRegistration &&
                   !auth.user.mandateSigned) {
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => _buildNeedsRegistrationDialog(context),
-                );
+                // WidgetsBinding.instance.addPostFrameCallback(
+                //   (_) => _buildNeedsRegistrationDialog(context),
+                // );
               }
 
               return ChooseAmount(
