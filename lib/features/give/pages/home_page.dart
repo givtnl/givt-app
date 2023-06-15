@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: Stack(
+      body: SafeArea(child: Stack(
         alignment: Alignment.topCenter,
         children: [
           BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
@@ -116,7 +116,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      ),),
     );
   }
 
