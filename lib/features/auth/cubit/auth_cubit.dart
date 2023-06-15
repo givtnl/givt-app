@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 
 part 'auth_state.dart';
@@ -79,13 +82,37 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
+      final countryIso = await FlutterSimCountryCode.simCountryCode;
+
+      final tempUser = TempUser.prefilled(
+        email: email,
+        country: countryIso ?? 'NL',
+        appLanguage: locale,
+        timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
+        amountLimit: countryIso?.toUpperCase() == 'US' ? 4999 : 499,
+      );
+
       // register temp user
-      final unRegisteredUserExt =
-          await _authRepositoy.registerTempUser(email, locale);
+      final unRegisteredUserExt = await _authRepositoy.registerUser(
+        tempUser: tempUser,
+        isTempUser: true,
+      );
 
       emit(AuthSuccess(unRegisteredUserExt));
     } catch (e) {
       log(e.toString());
+      emit(const AuthFailure());
+    }
+  }
+
+  Future<void> refreshUser() async {
+    emit(AuthLoading());
+    try {
+      final userExt = await _authRepositoy.fetchUserExtension(
+        (state as AuthSuccess).user.guid,
+      );
+      emit(AuthSuccess(userExt));
+    } catch (e) {
       emit(const AuthFailure());
     }
   }

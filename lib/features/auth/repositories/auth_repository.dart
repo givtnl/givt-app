@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
-import 'package:givt_app/features/auth/models/temp_user.dart';
+import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -92,31 +90,35 @@ class AuthRepositoy {
   Future<String> checkEmail(String email) async =>
       _apiService.checkEmail(email);
 
-  Future<UserExt> registerTempUser(String email, String locale) async {
-    final countryIso = await FlutterSimCountryCode.simCountryCode;
-
-    final tempUser = TempUser.prefilled(
-      email: email,
-      country: countryIso ?? 'NL',
-      appLanguage: locale,
-      timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
-      amountLimit: countryIso?.toUpperCase() == 'US' ? 4999 : 499,
-    );
-
+  Future<UserExt> registerUser({
+    required TempUser tempUser,
+    required bool isTempUser,
+  }) async {
     /// register user
     final userGUID = await _apiService.registerUser(tempUser.toJson());
 
     /// create session
     await login(
-      email,
+      tempUser.email,
       tempUser.password,
     );
 
     final userExt = UserExt(
-      email: email,
+      email: tempUser.email,
       guid: userGUID,
       amountLimit: tempUser.amountLimit,
-      tempUser: true,
+      tempUser: isTempUser,
+      country: tempUser.country,
+      phoneNumber: tempUser.phoneNumber,
+      firstName: tempUser.firstName,
+      lastName: tempUser.lastName,
+      appLanguage: tempUser.appLanguage,
+      address: tempUser.address,
+      city: tempUser.city,
+      postalCode: tempUser.postalCode,
+      iban: tempUser.iban,
+      sortCode: tempUser.sortCode,
+      accountNumber: tempUser.accountNumber,
     );
 
     await _prefs.setString(
