@@ -40,7 +40,7 @@ class UserExt extends Equatable {
         guid: json['GUID'] as String,
         amountLimit: json['AmountLimit'] as int,
         tempUser: json['IsTempUser'] as bool,
-        iban: json['IBAN'] as String,
+        iban: json['IBAN'] as String?,
         phoneNumber: json['PhoneNumber'] as String,
         firstName: json['FirstName'] as String,
         lastName: json['LastName'] as String,
@@ -93,7 +93,7 @@ class UserExt extends Equatable {
   final String postalCode;
   final String country;
   final int countryCode;
-  final String iban;
+  final String? iban;
   final bool isGiftAidEnabled;
   final AccountType accountType;
   final String? appLanguage;
