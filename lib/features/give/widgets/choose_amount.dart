@@ -70,7 +70,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         child: Form(
           key: _formKey,
           child: Container(
-            margin: const EdgeInsets.only(top: 50),
+            margin: const EdgeInsets.only(top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -167,8 +167,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
-
-                          _resetControllers();
                         }
                       : null,
                 ),
@@ -330,7 +328,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
       child: ElevatedButton.icon(
         onPressed: onPressed,
         label: const Icon(Icons.arrow_forward_ios_outlined),
-        icon: Text(label),
+        icon: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(label),
+        ),
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.white,
           disabledBackgroundColor: Colors.black12,
