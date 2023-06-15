@@ -34,32 +34,32 @@ void _initRepositories() {
     ..registerLazySingleton<APIService>(
       APIService.new,
     )
-    ..registerLazySingleton(
-      () => AuthRepositoy(
+    ..registerLazySingleton<AuthRepositoy>(
+      () => AuthRepositoyImpl(
         getIt(),
         getIt(),
       ),
     )
-    ..registerLazySingleton(
-      () => CampaignRepository(
+    ..registerLazySingleton<CampaignRepository>(
+      () => CampaignRepositoryImpl(
         getIt(),
         getIt(),
       ),
     )
-    ..registerLazySingleton(
-      () => CollectGroupRepository(
+    ..registerLazySingleton<CollectGroupRepository>(
+      () => CollectGroupRepositoryImpl(
         getIt(),
         getIt(),
       ),
     )
-    ..registerLazySingleton(
-      () => GivtRepository(
+    ..registerLazySingleton<GivtRepository>(
+      () => GivtRepositoryImpl(
         getIt(),
         getIt(),
       ),
     )
-    ..registerLazySingleton(
-      () => BeaconRepository(
+    ..registerLazySingleton<BeaconRepository>(
+      () => BeaconRepositoryImpl(
         getIt(),
       ),
     );

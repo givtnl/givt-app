@@ -6,17 +6,24 @@ import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CampaignRepository {
-  CampaignRepository(
-    this._apiService,
-    this._prefs,
-  );
-  final APIService _apiService;
-  final SharedPreferences _prefs;
+mixin CampaignRepository {
+  Future<Organisation> getOrganisation(String mediumId);
+  Future<bool> saveLastDonation(Organisation organisation);
+  Future<Organisation> getLastOrganisationDonated();
+}
 
+class CampaignRepositoryImpl with CampaignRepository {
+  CampaignRepositoryImpl(
+    this.apiService,
+    this.prefs,
+  );
+  final APIService apiService;
+  final SharedPreferences prefs;
+
+  @override
   Future<Organisation> getOrganisation(String mediumId) async {
     try {
-      final response = await _apiService.getOrganisationDetailsFromMedium(
+      final response = await apiService.getOrganisationDetailsFromMedium(
         {
           'code': mediumId,
         },
@@ -36,8 +43,9 @@ class CampaignRepository {
     }
   }
 
+  @override
   Future<bool> saveLastDonation(Organisation organisation) async {
-    return _prefs.setString(
+    return prefs.setString(
       Organisation.lastOrganisationDonatedKey,
       jsonEncode(
         organisation.toJson(),
@@ -45,23 +53,9 @@ class CampaignRepository {
     );
   }
 
-  Future<List<CollectGroup>> _getCollectGroupList() async {
-    final collectGroupList = _prefs.getStringList(
-      CollectGroup.orgBeaconListKey,
-    );
-    if (collectGroupList == null) {
-      return <CollectGroup>[];
-    }
-    final collectGroups = collectGroupList
-        .map(
-          (e) => CollectGroup.fromJson(jsonDecode(e) as Map<String, dynamic>),
-        )
-        .toList();
-    return collectGroups;
-  }
-
+  @override
   Future<Organisation> getLastOrganisationDonated() async {
-    final lastDonation = _prefs.getString(
+    final lastDonation = prefs.getString(
       Organisation.lastOrganisationDonatedKey,
     );
     if (lastDonation == null) {
@@ -73,5 +67,20 @@ class CampaignRepository {
       ) as Map<String, dynamic>,
     );
     return organisation;
+  }
+
+  Future<List<CollectGroup>> _getCollectGroupList() async {
+    final collectGroupList = prefs.getStringList(
+      CollectGroup.orgBeaconListKey,
+    );
+    if (collectGroupList == null) {
+      return <CollectGroup>[];
+    }
+    final collectGroups = collectGroupList
+        .map(
+          (e) => CollectGroup.fromJson(jsonDecode(e) as Map<String, dynamic>),
+        )
+        .toList();
+    return collectGroups;
   }
 }

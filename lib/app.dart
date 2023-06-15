@@ -75,7 +75,9 @@ class _AppView extends StatelessWidget {
               );
               return;
             }
-            if (state is AuthLogout || state is AuthUnkown) {
+            if (state is AuthLogout ||
+                state is AuthUnkown ||
+                state is AuthFailure) {
               _navigator.pushAndRemoveUntil<void>(
                 WelcomePage.route(),
                 (route) => false,
