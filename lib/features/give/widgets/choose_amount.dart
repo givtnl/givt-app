@@ -57,7 +57,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     final locals = AppLocalizations.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(8),
       child: Container(
         height: size.height,
         width: size.width,
@@ -65,7 +65,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
           border: Border.all(
             color: Colors.grey.shade200,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Form(
           key: _formKey,
@@ -333,7 +333,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         icon: Text(label),
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.white,
-          disabledBackgroundColor: Colors.grey,
+          disabledBackgroundColor: Colors.black12,
           minimumSize: const Size(50, 40),
         ),
       ),
@@ -346,28 +346,29 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onPressed,
   }) {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 10,
-        right: size.width * 0.17,
       ),
-      child: DottedBorder(
-        color: Colors.grey,
-        strokeCap: StrokeCap.round,
-        dashPattern: const [3, 6],
-        borderPadding: const EdgeInsets.symmetric(
-          vertical: 10,
-        ),
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(12),
-        padding: const EdgeInsets.all(6),
-        child: ElevatedButton.icon(
-          onPressed: onPressed,
-          icon: const Icon(Icons.add_circle_outlined),
-          label: Text(label),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.grey,
-            backgroundColor: Colors.transparent,
-            minimumSize: const Size(50, 40),
+      child: Center(
+        child: DottedBorder(
+          color: Colors.black54,
+          strokeCap: StrokeCap.round,
+          dashPattern: const [3, 6],
+          borderPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(6),
+          padding: const EdgeInsets.all(6),
+          child: ElevatedButton.icon(
+            onPressed: onPressed,
+            icon: const Icon(Icons.add_circle_outlined),
+            label: Text(label),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black54,
+              backgroundColor: Colors.transparent,
+              minimumSize: const Size(50, 40),
+            ),
           ),
         ),
       ),
