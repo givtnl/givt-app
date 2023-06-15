@@ -138,7 +138,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
         },
         child: Container(
           margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: Colors.white,
