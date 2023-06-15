@@ -52,33 +52,35 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           height: size.height * 0.04,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _buildCarouselSlider(size, imageNames, locals, locale),
-            Expanded(child: Container()),
-            _buildAnimatedBottomIndexes(imageNames, size, context),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).push(
-                EmailSignupPage.route(),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              _buildCarouselSlider(size, imageNames, locals, locale),
+              Expanded(child: Container()),
+              _buildAnimatedBottomIndexes(imageNames, size, context),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).push(
+                  EmailSignupPage.route(),
+                ),
+                child: Text(
+                  locals.welcomeContinue,
+                ),
               ),
-              child: Text(
-                locals.welcomeContinue,
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (BuildContext context) => const LoginPage(),
+                ),
+                child: _buildAlreadyAnAccountLogin(context, locals),
               ),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (BuildContext context) => const LoginPage(),
-              ),
-              child: _buildAlreadyAnAccountLogin(context, locals),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -101,7 +103,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           TextSpan(
             text: locals.login,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                   decoration: TextDecoration.underline,
                 ),
           ),
