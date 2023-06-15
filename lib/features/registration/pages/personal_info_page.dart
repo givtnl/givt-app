@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
@@ -28,6 +30,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   final sortCode = TextEditingController();
   final ibanNumber = TextEditingController();
   Country _selectedCountry = Country.sortedCountries().first;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -54,15 +57,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       appBar: const RegistrationAppBar(),
       bottomSheet: Container(
         margin: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          onPressed: isEnabled ? _onNext : null,
-          style: ElevatedButton.styleFrom(
-            disabledBackgroundColor: Colors.grey,
-          ),
-          child: Text(
-            locals.next,
-          ),
-        ),
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ElevatedButton(
+                onPressed: isEnabled ? _onNext : null,
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: Text(
+                  locals.next,
+                ),
+              ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -237,6 +242,24 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
+
+    setState(() {
+      isLoading = true;
+    });
+    context.read<RegistrationBloc>().add(
+          RegistrationPersonalInfoSubmitted(
+            address: _address.text,
+            city: _city.text,
+            postalCode: _postalCode.text,
+            country: _selectedCountry.countryCode,
+            phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
+            iban: ibanNumber.text,
+            sortCode: sortCode.text,
+            accountNumber: bankAccount.text,
+            appLanguage: Localizations.localeOf(context).languageCode,
+            countryCode: _selectedCountry.countryCode,
+          ),
+        );
   }
 
   bool get isEnabled {

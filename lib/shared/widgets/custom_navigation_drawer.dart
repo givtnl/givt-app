@@ -2,6 +2,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -26,6 +27,12 @@ class CustomNavigationDrawer extends StatelessWidget {
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {
+              if (!auth.user.mandateSigned) {
+                Navigator.of(context).push(
+                  MandateExplanationPage.route(),
+                );
+                return;
+              }
               Navigator.of(context).push(
                 SignUpPage.route(email: auth.user.email),
               );

@@ -23,3 +23,54 @@ class RegistrationPasswordSubmitted extends RegistrationEvent {
   @override
   List<Object> get props => [email, firstName, lastName, password];
 }
+
+class RegistrationPersonalInfoSubmitted extends RegistrationEvent {
+  const RegistrationPersonalInfoSubmitted({
+    required this.address,
+    required this.city,
+    required this.postalCode,
+    required this.country,
+    required this.countryCode,
+    required this.iban,
+    required this.accountNumber,
+    required this.sortCode,
+    required this.phoneNumber,
+    required this.appLanguage,
+  });
+
+  final String address;
+  final String city;
+  final String postalCode;
+  final String country;
+  final String countryCode;
+  final String iban;
+  final String accountNumber;
+  final String sortCode;
+  final String phoneNumber;
+  final String appLanguage;
+
+  @override
+  List<Object> get props => [
+        address,
+        city,
+        postalCode,
+        country,
+        countryCode,
+        iban,
+        accountNumber,
+        sortCode,
+        phoneNumber,
+        appLanguage,
+      ];
+}
+
+class RegistrationMandateFetchUserExt extends RegistrationEvent {
+  const RegistrationMandateFetchUserExt({
+    required this.guid,
+  });
+
+  final String guid;
+
+  @override
+  List<Object> get props => [guid];
+}

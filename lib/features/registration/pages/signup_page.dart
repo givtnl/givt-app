@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
+import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -17,7 +19,7 @@ class SignUpPage extends StatefulWidget {
     return MaterialPageRoute(
       fullscreenDialog: true,
       builder: (_) => BlocProvider(
-        create: (_) => RegistrationBloc(),
+        create: (_) => RegistrationBloc(getIt()),
         child: SignUpPage(
           email: email,
         ),
@@ -77,10 +79,23 @@ class _SignUpPageState extends State<SignUpPage> {
         padding: const EdgeInsets.all(16),
         child: BlocListener<RegistrationBloc, RegistrationState>(
           listener: (context, state) {
-            if (state is RegistrationPassword) {
+            if (state.status == RegistrationStatus.personalInfo) {
               Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => const PersonalInfoPage(),
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<RegistrationBloc>(),
+                    child: const PersonalInfoPage(),
+                  ),
+                ),
+              );
+            }
+            if (state.status == RegistrationStatus.mandateExplanation) {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<RegistrationBloc>(),
+                    child: const MandateExplanationPage(),
+                  ),
                 ),
               );
             }

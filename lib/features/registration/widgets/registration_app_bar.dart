@@ -4,7 +4,10 @@ class RegistrationAppBar extends StatelessWidget
     implements PreferredSizeWidget {
   const RegistrationAppBar({
     super.key,
+    this.actions = const [],
   });
+
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +16,9 @@ class RegistrationAppBar extends StatelessWidget
       leading: const BackButton(),
       title: Image.asset(
         'assets/images/logo.png',
-        height: size.height * 0.04,
+        height: size.height * 0.03,
       ),
-      actions: [
-        IconButton(
-          icon: const Icon(Icons.question_mark_outlined),
-          onPressed: () {
-            ///todo add faq here
-          },
-        ),
-      ],
+      actions: actions,
     );
   }
 
