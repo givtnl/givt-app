@@ -57,7 +57,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     final locals = AppLocalizations.of(context);
 
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(8),
       child: Container(
         height: size.height,
         width: size.width,
@@ -65,12 +65,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
           border: Border.all(
             color: Colors.grey.shade200,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Form(
           key: _formKey,
           child: Container(
-            margin: const EdgeInsets.only(top: 50),
+            margin: const EdgeInsets.only(top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -167,8 +167,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
-
-                          _resetControllers();
                         }
                       : null,
                 ),
@@ -271,7 +269,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     }
     controllers[selectedField].text = controllers[selectedField]
         .text
-        .substring(0, controllers[0].text.length - 1);
+        .substring(0, controllers[selectedField].text.length - 1);
     setState(() {
       _formKey.currentState!.validate();
     });
@@ -330,10 +328,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
       child: ElevatedButton.icon(
         onPressed: onPressed,
         label: const Icon(Icons.arrow_forward_ios_outlined),
-        icon: Text(label),
+        icon: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(label),
+        ),
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.white,
-          disabledBackgroundColor: Colors.grey,
+          disabledBackgroundColor: Colors.black12,
           minimumSize: const Size(50, 40),
         ),
       ),
@@ -346,28 +347,29 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onPressed,
   }) {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 10,
-        right: size.width * 0.17,
       ),
-      child: DottedBorder(
-        color: Colors.grey,
-        strokeCap: StrokeCap.round,
-        dashPattern: const [3, 6],
-        borderPadding: const EdgeInsets.symmetric(
-          vertical: 10,
-        ),
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(12),
-        padding: const EdgeInsets.all(6),
-        child: ElevatedButton.icon(
-          onPressed: onPressed,
-          icon: const Icon(Icons.add_circle_outlined),
-          label: Text(label),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.grey,
-            backgroundColor: Colors.transparent,
-            minimumSize: const Size(50, 40),
+      child: Center(
+        child: DottedBorder(
+          color: Colors.black54,
+          strokeCap: StrokeCap.round,
+          dashPattern: const [3, 6],
+          borderPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(6),
+          padding: const EdgeInsets.all(6),
+          child: ElevatedButton.icon(
+            onPressed: onPressed,
+            icon: const Icon(Icons.add_circle_outlined),
+            label: Text(label),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black54,
+              backgroundColor: Colors.transparent,
+              minimumSize: const Size(50, 40),
+            ),
           ),
         ),
       ),
