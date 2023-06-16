@@ -19,7 +19,7 @@ platform :android do
     flavor = ENV['FLAVOR']
     package_name = ENV['PACKAGE_NAME']
     track = ENV['TRACK']
-    build_number = google_play_track_version_codes(package_name: package_name, track: track, json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 1
+    build_number = google_play_track_version_codes(package_name: package_name, track: track, json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 278
 
     Dir.chdir "../.." do
         sh("flutter", "packages", "get")
