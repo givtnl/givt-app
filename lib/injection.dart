@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -10,11 +13,34 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> init() async {
+Future<void> init({
+  required Map<String, String> environmentVariables,
+}) async {
+  await _initAPIService(environmentVariables);
   await _initCoreDependencies();
 
   /// Init repositories
   _initRepositories();
+}
+
+Future<void> _initAPIService(Map<String, String> environmentVariables) async {
+  var baseUrl = environmentVariables['API_URL_EU']!;
+  try {
+    final countryIso = await FlutterSimCountryCode.simCountryCode;
+    if (countryIso == 'US') {
+      baseUrl = environmentVariables['API_URL_US']!;
+    } else {
+      baseUrl = environmentVariables['API_URL_EU']!;
+    }
+  } catch (e) {
+    /// This fails when testing on a emulator
+    log(e.toString());
+  }
+  getIt.registerLazySingleton<APIService>(
+    () => APIService(
+      apiURL: baseUrl,
+    ),
+  );
 }
 
 Future<void> _initCoreDependencies() async {
@@ -31,9 +57,6 @@ Future<void> _initCoreDependencies() async {
 
 void _initRepositories() {
   getIt
-    ..registerLazySingleton<APIService>(
-      APIService.new,
-    )
     ..registerLazySingleton<AuthRepositoy>(
       () => AuthRepositoyImpl(
         getIt(),
