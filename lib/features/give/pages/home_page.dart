@@ -37,86 +37,77 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _buildNeedsRegistrationDialog(context);
-            },
-            icon: const Icon(
-              Icons.question_mark_outlined,
-              size: 26,
-            ),
-          ),
-        ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: SafeArea(child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-            listener: (context, state) {
-              if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Synced successfully'),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state is RemoteDataSourceSyncSuccess &&
-                  auth.user.needRegistration &&
-                  !auth.user.mandateSigned) {
-                // WidgetsBinding.instance.addPostFrameCallback(
-                //   (_) => _buildNeedsRegistrationDialog(context),
-                // );
-              }
-
-              return ChooseAmount(
-                country: auth.user.country,
-                amountLimit: auth.user.amountLimit,
-                onAmountChanged:
-                    (firstCollection, secondCollection, thirdCollection) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute<void>(
-                      builder: (_) => BlocProvider(
-                        create: (context) => GiveBloc(
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                        )..add(
-                            GiveAmountChanged(
-                              firstCollectionAmount: firstCollection,
-                              secondCollectionAmount: secondCollection,
-                              thirdCollectionAmount: thirdCollection,
-                            ),
-                          ),
-                        child: const SelectGivingWayPage(),
-                      ),
-                      fullscreenDialog: true,
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+              listener: (context, state) {
+                if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Synced successfully'),
                     ),
                   );
-                  return true;
-                },
-              );
-            },
-          ),
-          ColoredBox(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 15,
-                left: 15,
-                bottom: 10,
-              ),
-              child: Image.asset(
-                'assets/images/logo.png',
-                width: size.width * 0.2,
+                }
+              },
+              builder: (context, state) {
+                if (state is RemoteDataSourceSyncSuccess &&
+                    auth.user.needRegistration &&
+                    !auth.user.mandateSigned) {
+                  // WidgetsBinding.instance.addPostFrameCallback(
+                  //   (_) => _buildNeedsRegistrationDialog(context),
+                  // );
+                }
+
+                return ChooseAmount(
+                  country: auth.user.country,
+                  amountLimit: auth.user.amountLimit,
+                  onAmountChanged:
+                      (firstCollection, secondCollection, thirdCollection) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => BlocProvider(
+                          create: (context) => GiveBloc(
+                            getIt(),
+                            getIt(),
+                            getIt(),
+                          )..add(
+                              GiveAmountChanged(
+                                firstCollectionAmount: firstCollection,
+                                secondCollectionAmount: secondCollection,
+                                thirdCollectionAmount: thirdCollection,
+                              ),
+                            ),
+                          child: const SelectGivingWayPage(),
+                        ),
+                        fullscreenDialog: true,
+                      ),
+                    );
+                    return true;
+                  },
+                );
+              },
+            ),
+            ColoredBox(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 15,
+                  left: 15,
+                  bottom: 10,
+                ),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: size.width * 0.2,
+                ),
               ),
             ),
-          ),
-        ],
-      ),),
+          ],
+        ),
+      ),
     );
   }
 
