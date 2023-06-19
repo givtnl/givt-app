@@ -83,7 +83,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
             Column(
               children: [
                 _buildTextFormField(
-                  hintText: locals.iBANPlaceHolder,
+                  hintText: locals.ibanPlaceHolder,
                   controller: widget.ibanNumber,
                   validator: (value) {
                     if (_currentIndex == 1) {

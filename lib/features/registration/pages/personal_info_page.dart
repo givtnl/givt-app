@@ -132,7 +132,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         showDialog<void>(
                           context: context,
                           builder: (context) => _buildWarningDialog(
-                            message: locals.alertSEPAMessage(
+                            message: locals.alertSepaMessage(
                               getCountry(_selectedCountry.countryCode, locals),
                             ),
                           ),
@@ -146,7 +146,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       showDialog<void>(
                         context: context,
                         builder: (context) => _buildWarningDialog(
-                          message: locals.alertBACSMessage(
+                          message: locals.alertBacsMessage(
                             getCountry(_selectedCountry.countryCode, locals),
                           ),
                         ),
@@ -309,47 +309,47 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       case 'GG':
         return locals.guernsey;
       case 'AD':
-        return locals.countryStringAD;
+        return locals.countryStringAd;
       case 'GB':
-        return locals.countryStringGB;
+        return locals.countryStringGb;
       case 'DE':
-        return locals.countryStringDE;
+        return locals.countryStringDe;
       case 'FR':
-        return locals.countryStringFR;
+        return locals.countryStringFr;
       case 'IT':
-        return locals.countryStringIT;
+        return locals.countryStringIt;
       case 'ES':
-        return locals.countryStringES;
+        return locals.countryStringEs;
       case 'NL':
-        return locals.countryStringNL;
+        return locals.countryStringNl;
       case 'BE':
-        return locals.countryStringBE;
+        return locals.countryStringBe;
       case 'AT':
-        return locals.countryStringAT;
+        return locals.countryStringAt;
       case 'PT':
-        return locals.countryStringPT;
+        return locals.countryStringPt;
       case 'IE':
-        return locals.countryStringIE;
+        return locals.countryStringIe;
       case 'FI':
-        return locals.countryStringFI;
+        return locals.countryStringFi;
       case 'LU':
-        return locals.countryStringLU;
+        return locals.countryStringLu;
       case 'SI':
-        return locals.countryStringSI;
+        return locals.countryStringSi;
       case 'SK':
-        return locals.countryStringSK;
+        return locals.countryStringSk;
       case 'EE':
-        return locals.countryStringEE;
+        return locals.countryStringEe;
       case 'LV':
-        return locals.countryStringLV;
+        return locals.countryStringLv;
       case 'LT':
-        return locals.countryStringLT;
+        return locals.countryStringLt;
       case 'GR':
-        return locals.countryStringGR;
+        return locals.countryStringGr;
       case 'CY':
-        return locals.countryStringCY;
+        return locals.countryStringCy;
       case 'MT':
-        return locals.countryStringMT;
+        return locals.countryStringMt;
       default:
         return '';
     }
