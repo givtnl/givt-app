@@ -12,7 +12,7 @@ class CollectionFormField extends StatelessWidget {
     this.suffixText = '',
     this.prefixCurrencyIcon = const Icon(
       Icons.euro,
-      color: Colors.grey,
+      color: Colors.black26,
     ),
     this.bottomBorderColor = AppTheme.givtLightGreen,
     this.isRemoveIconVisible = false,
@@ -33,10 +33,10 @@ class CollectionFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2.5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(10),
+        elevation: 2,
+        borderRadius: BorderRadius.circular(5),
         child: TextFormField(
           focusNode: focusNode,
           readOnly: true,
@@ -58,10 +58,11 @@ class CollectionFormField extends StatelessWidget {
           textInputAction: TextInputAction.next,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.normal,
-                fontSize: 30,
+                fontSize: 28,
                 color: AppTheme.givtDarkerGray,
               ),
           decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 16),
             suffixText: isSuffixTextVisible ? suffixText : null,
             suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppTheme.givtDarkerGray,
@@ -79,8 +80,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             focusedErrorBorder: const UnderlineInputBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: Colors.red,
@@ -89,8 +90,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             errorBorder: const UnderlineInputBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: Colors.red,
@@ -99,8 +100,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: bottomBorderColor,
@@ -109,8 +110,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             enabledBorder: const UnderlineInputBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: Colors.transparent,

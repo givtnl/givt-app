@@ -33,19 +33,19 @@ class TermsAndConditionsDialog extends StatelessWidget {
           title = locals.privacyTitle;
           termsAndConditions = locals.policyText;
           if (['GB', 'GG', 'JE'].contains(localName)) {
-            termsAndConditions = locals.policyTextGB;
+            termsAndConditions = locals.policyTextGb;
           }
 
           if (countryIso == 'US') {
-            termsAndConditions = locals.policyTextUS;
+            termsAndConditions = locals.policyTextUs;
           }
         }
         if (typeOfTerms == TypeOfTerms.termsAndConditions) {
           if (['GB', 'GG', 'JE'].contains(countryIso)) {
-            termsAndConditions = locals.termsTextGB;
+            termsAndConditions = locals.termsTextGb;
           }
           if (localName == 'US') {
-            termsAndConditions = locals.termsTextUS;
+            termsAndConditions = locals.termsTextUs;
           }
         }
         if (typeOfTerms == TypeOfTerms.slimPayInfo) {

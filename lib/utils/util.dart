@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class Util {
-  static final emailRegEx = RegExp(
-      r'^[_a-z0-9-]+(\.[_a-z0-9-]+)*(\+[a-z0-9-]+)?@[a-z0-9-]+(\.[a-z0-9-]+)*$');
   static final ukPostCodeRegEx = RegExp(
       r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$');
   static final ukPhoneNumberRegEx = RegExp(
@@ -10,5 +8,7 @@ class Util {
   static final usPhoneNumberRegEx =
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
+  static final emailRegEx = RegExp(
+      r'^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*(\+[a-zA-Z0-9-]+)?@[a-z0-9-]+(\.[a-zA-Z0-9-]+)*$');
   static final navigatorKey = GlobalKey<NavigatorState>();
 }

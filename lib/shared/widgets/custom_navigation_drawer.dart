@@ -89,7 +89,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           //   indent: size.width * 0.05,
           // ),
           _buildMenuItem(
-            title: locals.touchID,
+            title: locals.touchId,
             icon: Icons.fingerprint,
             onTap: () {},
           ),

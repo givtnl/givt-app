@@ -107,7 +107,7 @@ class AppTheme {
       centerTitle: true,
       titleTextStyle: TextStyle(
         color: lightColorScheme.primary,
-        fontSize: 24,
+        fontSize: 18,
         fontWeight: FontWeight.w600,
       ),
     ),

@@ -23,7 +23,7 @@ jobs:
             echo "PACKAGE_NAME=net.givtapp.ios" >> $GITHUB_ENV
             echo "APP_IDENTIFIER=net.givtapp.ios" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
-            echo "TRACK=production" >> $GITHUB_ENV
+            echo "TRACK=internal" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
             echo "PACKAGE_NAME=net.givtapp.ios.test" >> $GITHUB_ENV

@@ -58,149 +58,151 @@ class _LoginPageState extends State<LoginPage> {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
 
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthTempAccountWarning) {
-          showDialog<void>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(locals.temporaryAccount),
-              content: Text(locals.tempAccountLogin),
-              actions: [
-                TextButton(
-                  child: Text(locals.continueText),
-                  onPressed: () => Navigator.of(context).pushReplacement(
-                    SignUpPage.route(
-                      email: _emailController.text,
+    return SafeArea(
+      child: BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {
+          if (state is AuthTempAccountWarning) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(locals.temporaryAccount),
+                content: Text(locals.tempAccountLogin),
+                actions: [
+                  TextButton(
+                    child: Text(locals.continueKey),
+                    onPressed: () => Navigator.of(context).pushReplacement(
+                      SignUpPage.route(
+                        email: _emailController.text,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        }
-        if (state is AuthFailure) {
-          showDialog<void>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: Text(locals.loginFailure),
-              content: Text(locals.wrongCredentials),
-              actions: [
-                TextButton(
-                  child: Text(locals.continueText),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
-          );
-        }
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 16,
-        ),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildTitleRow(locals, context),
-              Text(
-                locals.loginText,
-                style: Theme.of(context).textTheme.titleMedium,
-                textAlign: TextAlign.center,
+                ],
               ),
-              SizedBox(height: size.height * 0.05),
-              TextFormField(
-                controller: _emailController,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.contains(Util.emailRegEx) == false) {
-                    return AppLocalizations.of(context).invalidEmail;
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).email,
-                ),
+            );
+          }
+          if (state is AuthFailure) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(locals.loginFailure),
+                content: Text(locals.wrongCredentials),
+                actions: [
+                  TextButton(
+                    child: Text(locals.continueKey),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
               ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: _passwordController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return locals.wrongPasswordLockedOut;
-                  }
-                  if (value.length < 7) {
-                    return locals.passwordRule;
-                  }
-                  if (value.contains(RegExp('[0-9]')) == false) {
-                    return locals.passwordRule;
-                  }
-                  if (value.contains(RegExp('[A-Z]')) == false) {
-                    return locals.passwordRule;
-                  }
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildTitleRow(locals, context),
+                Text(
+                  locals.loginText,
+                  style: Theme.of(context).textTheme.titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: size.height * 0.05),
+                TextFormField(
+                  controller: _emailController,
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.contains(Util.emailRegEx) == false) {
+                      return AppLocalizations.of(context).invalidEmail;
+                    }
+                    return null;
+                  },
+                  textInputAction: TextInputAction.next,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context).email,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                TextFormField(
+                  controller: _passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return locals.wrongPasswordLockedOut;
+                    }
+                    if (value.length < 7) {
+                      return locals.passwordRule;
+                    }
+                    if (value.contains(RegExp('[0-9]')) == false) {
+                      return locals.passwordRule;
+                    }
+                    if (value.contains(RegExp('[A-Z]')) == false) {
+                      return locals.passwordRule;
+                    }
 
-                  return null;
-                },
-                obscureText: _obscureText,
-                textInputAction: TextInputAction.next,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge
-                    ?.copyWith(fontSize: 16),
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context).password,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    return null;
+                  },
+                  obscureText: _obscureText,
+                  textInputAction: TextInputAction.next,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(fontSize: 16),
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context).password,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Align(
-                  child: TextButton(
-                    onPressed: () {
-                      ///todo add forgot password page
-                    },
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Align(
+                    child: TextButton(
+                      onPressed: () {
+                        ///todo add forgot password page
+                      },
+                      child: Text(
+                        locals.forgotPassword,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(child: Container()),
+                if (isLoading)
+                  const Center(child: CircularProgressIndicator())
+                else
+                  ElevatedButton(
+                    onPressed: () => onLogin(context),
                     child: Text(
-                      locals.forgotPassword,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
+                      locals.login,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
                           ),
                     ),
-                  ),
-                ),
-              ),
-              Expanded(child: Container()),
-              if (isLoading)
-                const Center(child: CircularProgressIndicator())
-              else
-                ElevatedButton(
-                  onPressed: () => onLogin(context),
-                  child: Text(
-                    locals.login,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                )
-            ],
+                  )
+              ],
+            ),
           ),
         ),
       ),
