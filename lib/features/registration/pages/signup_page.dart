@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
@@ -19,7 +20,10 @@ class SignUpPage extends StatefulWidget {
     return MaterialPageRoute(
       fullscreenDialog: true,
       builder: (_) => BlocProvider(
-        create: (_) => RegistrationBloc(getIt()),
+        create: (context) => RegistrationBloc(
+          authCubit: context.read<AuthCubit>(),
+          authRepositoy: getIt(),
+        ),
         child: SignUpPage(
           email: email,
         ),
@@ -90,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
               );
             }
             if (state.status == RegistrationStatus.mandateExplanation) {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute<void>(
                   builder: (_) => BlocProvider.value(
                     value: context.read<RegistrationBloc>(),

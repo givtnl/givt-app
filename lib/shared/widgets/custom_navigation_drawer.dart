@@ -22,11 +22,17 @@ class CustomNavigationDrawer extends StatelessWidget {
         children: [
           _buildGivtLogo(size),
           _buildMenuItem(
-            isVisible: true,
+            isVisible: auth.user.needRegistration || !auth.user.mandateSigned,
             showBadge: true,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {
+              if (auth.user.needRegistration) {
+                Navigator.of(context).push(
+                  SignUpPage.route(email: auth.user.email),
+                );
+                return;
+              }
               if (!auth.user.mandateSigned) {
                 Navigator.of(context).push(
                   MandateExplanationPage.route(),

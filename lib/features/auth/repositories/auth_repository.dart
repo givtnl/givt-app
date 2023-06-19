@@ -87,6 +87,17 @@ class AuthRepositoy {
 
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
 
+  Future<String> signSepaMandate({
+    required String guid,
+    required String appLanguage,
+  }) async {
+    final response = await _apiService.signSepaMandate(
+      guid,
+      appLanguage,
+    );
+    return response;
+  }
+
   Future<String> checkEmail(String email) async =>
       _apiService.checkEmail(email);
 

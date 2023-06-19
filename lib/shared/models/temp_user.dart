@@ -40,8 +40,8 @@ class TempUser extends Equatable {
 
   factory TempUser.prefilled({
     required String email,
+    required String country,
     String password = r'R4nd0mP@s$w0rd123',
-    String country = 'NL',
     String iban = 'FB66GIVT12345678',
     String phoneNumber = '060000000',
     String firstName = 'John',
@@ -86,7 +86,9 @@ class TempUser extends Equatable {
         country: json['Country'] as String,
         password: json['Password'] as String,
         amountLimit: json['AmountLimit'] as int,
-        appLanguage: json['AppLanguage'] as String,
+        appLanguage: json['AppLanguage'] != null
+            ? json['AppLanguage'] as String
+            : '',
         timeZoneId: json['TimeZoneId'] as String,
         accountNumber: json.containsKey('AccountNumber')
             ? json['AccountNumber'] as String

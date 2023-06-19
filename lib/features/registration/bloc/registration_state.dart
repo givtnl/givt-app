@@ -10,6 +10,8 @@ enum RegistrationStatus {
   bacsDirectDebitMandate,
   success,
   failure,
+  conflict,
+  badRequest,
 }
 
 class RegistrationState extends Equatable {
@@ -19,7 +21,6 @@ class RegistrationState extends Equatable {
     this.firstName = '',
     this.lastName = '',
     this.password = '',
-    this.registeredUser = const UserExt.empty(),
   });
 
   final RegistrationStatus status;
@@ -27,7 +28,6 @@ class RegistrationState extends Equatable {
   final String firstName;
   final String lastName;
   final String password;
-  final UserExt registeredUser;
 
   RegistrationState copyWith({
     RegistrationStatus? status,
@@ -35,7 +35,6 @@ class RegistrationState extends Equatable {
     String? firstName,
     String? lastName,
     String? password,
-    UserExt? registeredUser,
   }) {
     return RegistrationState(
       status: status ?? this.status,
@@ -43,7 +42,7 @@ class RegistrationState extends Equatable {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       password: password ?? this.password,
-      registeredUser: registeredUser ?? this.registeredUser,
+    
     );
   }
 
@@ -54,6 +53,5 @@ class RegistrationState extends Equatable {
         firstName,
         lastName,
         password,
-        registeredUser,
       ];
 }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
-import 'package:givt_app/features/registration/pages/sign_mandate_page.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
+import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class MandateExplanationPage extends StatelessWidget {
@@ -10,7 +14,13 @@ class MandateExplanationPage extends StatelessWidget {
 
   static MaterialPageRoute<void> route() {
     return MaterialPageRoute(
-      builder: (_) => const MandateExplanationPage(),
+      builder: (_) => BlocProvider(
+        create: (context) => RegistrationBloc(
+          authCubit: context.read<AuthCubit>(),
+          authRepositoy: getIt(),
+        ),
+        child: const MandateExplanationPage(),
+      ),
     );
   }
 
@@ -71,7 +81,10 @@ class MandateExplanationPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (_) => const SignMandatePage(),
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<RegistrationBloc>(),
+                    child: const SignSepaMandatePage(),
+                  ),
                 ),
               ),
               child: Text(locals.next),

@@ -74,3 +74,16 @@ class RegistrationMandateFetchUserExt extends RegistrationEvent {
   @override
   List<Object> get props => [guid];
 }
+
+class RegistrationSignMandate extends RegistrationEvent {
+  const RegistrationSignMandate({
+    required this.guid,
+    required this.appLanguage,
+  });
+
+  final String guid;
+  final String appLanguage;
+
+  @override
+  List<Object> get props => [guid, appLanguage];
+}

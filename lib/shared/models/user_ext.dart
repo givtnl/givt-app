@@ -64,7 +64,7 @@ class UserExt extends Equatable {
         guid: json['GUID'] as String,
         amountLimit: json['AmountLimit'] as int,
         tempUser: json['IsTempUser'] as bool,
-        iban: json['IBAN'] as String,
+        iban: json['IBAN'] != null ? json['IBAN'] as String : '',
         phoneNumber: json['PhoneNumber'] as String,
         firstName: json['FirstName'] as String,
         lastName: json['LastName'] as String,
@@ -78,10 +78,12 @@ class UserExt extends Equatable {
         accountNumber: json['AccountNumber'] != null
             ? json['AccountNumber'] as String
             : '',
-        appLanguage: json['AppLanguage'] as String?,
+        appLanguage:
+            json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
         accountType: AccountType.fromString(json['AccountType'] as String),
         needRegistration: json['IsTempUser'] as bool,
-        personalInfoRegistered: json['FirstName'] as String != null,
+        personalInfoRegistered: json['FirstName'] != null,
+        mandateSigned: json['PayProvMandate'] != null,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
