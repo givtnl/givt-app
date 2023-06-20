@@ -69,98 +69,113 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 ),
               ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(locals.registerPersonalPage),
-                _buildTextFormField(
-                  hintText: locals.streetAndHouseNumber,
-                  controller: _address,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                _buildTextFormField(
-                  hintText: locals.postalCode,
-                  controller: _postalCode,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-
-                    if (_selectedCountry != Country.gg ||
-                        _selectedCountry != Country.gb ||
-                        _selectedCountry != Country.je) {
+      body: BlocListener<RegistrationBloc, RegistrationState>(
+        listener: (context, state) {
+          if (state.status == RegistrationStatus.failure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(locals.registrationErrorTitle),
+              ),
+            );
+            setState(() {
+              isLoading = false;
+            });
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(locals.registerPersonalPage),
+                  _buildTextFormField(
+                    hintText: locals.streetAndHouseNumber,
+                    controller: _address,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
                       return null;
-                    }
+                    },
+                  ),
+                  _buildTextFormField(
+                    hintText: locals.postalCode,
+                    controller: _postalCode,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
 
-                    if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                _buildTextFormField(
-                  hintText: locals.city,
-                  controller: _city,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-                    return null;
-                  },
-                ),
-                _buildCountryAndMobileNumber(size, locals, context),
-                PaymentSystemTab(
-                  bankAccount: bankAccount,
-                  ibanNumber: ibanNumber,
-                  sortCode: sortCode,
-                  onFieldChanged: (value) => setState(() {}),
-                  onPaymentChanged: (value) {
-                    if (value == 0) {
-                      bankAccount.clear();
-                      sortCode.clear();
-                      if (_selectedCountry == Country.gg ||
-                          _selectedCountry == Country.gb ||
-                          _selectedCountry == Country.je) {
+                      if (_selectedCountry != Country.gg ||
+                          _selectedCountry != Country.gb ||
+                          _selectedCountry != Country.je) {
+                        return null;
+                      }
+
+                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                        return '';
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildTextFormField(
+                    hintText: locals.city,
+                    controller: _city,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildCountryAndMobileNumber(size, locals, context),
+                  PaymentSystemTab(
+                    bankAccount: bankAccount,
+                    ibanNumber: ibanNumber,
+                    sortCode: sortCode,
+                    onFieldChanged: (value) => setState(() {}),
+                    onPaymentChanged: (value) {
+                      if (value == 0) {
+                        bankAccount.clear();
+                        sortCode.clear();
+                        if (_selectedCountry == Country.gg ||
+                            _selectedCountry == Country.gb ||
+                            _selectedCountry == Country.je) {
+                          showDialog<void>(
+                            context: context,
+                            builder: (context) => _buildWarningDialog(
+                              message: locals.alertSepaMessage(
+                                getCountry(
+                                    _selectedCountry.countryCode, locals),
+                              ),
+                            ),
+                          );
+                        }
+                        setState(() {});
+                        return;
+                      }
+                      if (_selectedCountry != Country.gg ||
+                          _selectedCountry != Country.gb ||
+                          _selectedCountry != Country.je) {
                         showDialog<void>(
                           context: context,
                           builder: (context) => _buildWarningDialog(
-                            message: locals.alertSepaMessage(
+                            message: locals.alertBacsMessage(
                               getCountry(_selectedCountry.countryCode, locals),
                             ),
                           ),
                         );
                       }
-                      setState(() {});
-                      return;
-                    }
-                    if (_selectedCountry != Country.gg ||
-                        _selectedCountry != Country.gb ||
-                        _selectedCountry != Country.je) {
-                      showDialog<void>(
-                        context: context,
-                        builder: (context) => _buildWarningDialog(
-                          message: locals.alertBacsMessage(
-                            getCountry(_selectedCountry.countryCode, locals),
-                          ),
-                        ),
-                      );
-                    }
-                    setState(ibanNumber.clear);
-                  },
-                ),
-                SizedBox(
-                  height: size.height * 0.2,
-                ),
-              ],
+                      setState(ibanNumber.clear);
+                    },
+                  ),
+                  SizedBox(
+                    height: size.height * 0.2,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
