@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
             if (state.status ==
                 RegistrationStatus.bacsDirectDebitMandateExplanation) {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (_) => BlocProvider.value(
                     value: context.read<RegistrationBloc>(),
@@ -107,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
               );
             }
             if (state.status == RegistrationStatus.sepaMandateExplanation) {
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                 MaterialPageRoute<void>(
                   builder: (_) => BlocProvider.value(
                     value: context.read<RegistrationBloc>(),

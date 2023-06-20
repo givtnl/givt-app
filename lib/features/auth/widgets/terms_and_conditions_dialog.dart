@@ -10,7 +10,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
     required this.typeOfTerms,
     super.key,
   });
-
+  //todo refactor this to use the title and the instead of the [TypeOfTerms]
   final TypeOfTerms typeOfTerms;
 
   @override
@@ -23,7 +23,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final localName = Platform.localeName;
+        final localName = Platform.localeName.toUpperCase();
         final locals = context.l10n;
         final countryIso = snapshot.data ?? 'NL';
 
@@ -51,6 +51,18 @@ class TermsAndConditionsDialog extends StatelessWidget {
         if (typeOfTerms == TypeOfTerms.slimPayInfo) {
           title = locals.slimPayInfoDetailTitle;
           termsAndConditions = locals.slimPayInfoDetail;
+        }
+        if (typeOfTerms == TypeOfTerms.bacsInfo) {
+          title = locals.bacsAdvanceNoticeTitle;
+          termsAndConditions = locals.bacsAdvanceNotice;
+        }
+        if (typeOfTerms == TypeOfTerms.directDebitGuarantee) {
+          title = locals.bacsDdGuaranteeTitle;
+          termsAndConditions = locals.bacsDdGuarantee;
+        }
+        if (typeOfTerms == TypeOfTerms.giftAid) {
+          title = locals.giftAidInfoTitle;
+          termsAndConditions = locals.giftAidInfoBody;
         }
         return Padding(
           padding: const EdgeInsets.all(20),

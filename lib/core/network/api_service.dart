@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/interceptor.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
@@ -175,12 +176,28 @@ class APIService {
     String guid,
     String appLanguage,
   ) async {
-    final url = Uri.https(apiURL, 'api/v2/users/$guid/mandate?locale=$appLanguage');
+    final url = Uri.https(apiURL, 'api/v2/users/$guid/mandate');
     final response = await client.post(url);
+
+    if (response.statusCode >= 400) {
+      throw MandateSignatureFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.body;
+  }
+
+  Future<bool> changeGiftAid(String guid, Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, 'api/v2/users/$guid/giftaidauthorisations');
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+    );
 
     if (response.statusCode >= 400) {
       throw Exception(response.statusCode);
     }
-    return response.body;
+    return response.statusCode == 200;
   }
 }

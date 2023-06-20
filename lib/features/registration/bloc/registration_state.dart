@@ -5,13 +5,18 @@ enum RegistrationStatus {
   loading,
   password,
   personalInfo,
-  mandateExplanation,
+  sepaMandateExplanation,
   sepaMandate,
+  bacsDirectDebitMandateExplanation,
   bacsDirectDebitMandate,
   success,
+  bacsDirectDebitMandateSigned,
+  giftAidChanged,
   failure,
   conflict,
   badRequest,
+  ddiFailed,
+  bacsDetailsWrong,
 }
 
 class RegistrationState extends Equatable {

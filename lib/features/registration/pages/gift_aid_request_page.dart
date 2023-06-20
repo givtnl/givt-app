@@ -93,11 +93,11 @@ class _GiftAidRequestPageState extends State<GiftAidRequestPage> {
               ),
               const Spacer(),
               ElevatedButton(
-                onPressed: () => context
-                    .read<RegistrationBloc>()
-                    .add(RegistrationGiftAidChanged(
-                      isGiftAidEnabled: useGiftAid,
-                    )),
+                onPressed: () => context.read<RegistrationBloc>().add(
+                      RegistrationGiftAidChanged(
+                        isGiftAidEnabled: useGiftAid,
+                      ),
+                    ),
                 child: Text(locals.save),
               ),
             ],
