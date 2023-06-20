@@ -109,6 +109,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.sortCodePlaceholder,
                   controller: widget.sortCode,
+                  keyboardType: TextInputType.number,
                   onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 0) {
@@ -126,6 +127,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.bankAccountNumberPlaceholder,
                   controller: widget.bankAccount,
+                  keyboardType: TextInputType.number,
                   onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 0) {
@@ -153,6 +155,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
     required TextEditingController controller,
     required String? Function(String?) validator,
     required void Function(String) onChanged,
+    TextInputType keyboardType = TextInputType.text,
   }) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
@@ -161,6 +164,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
         validator: validator,
         textCapitalization: TextCapitalization.words,
         textInputAction: TextInputAction.next,
+        keyboardType: keyboardType,
         onChanged: onChanged,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
