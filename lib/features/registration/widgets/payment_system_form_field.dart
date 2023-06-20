@@ -5,6 +5,7 @@ import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
 
 typedef OnPaymentChanged = void Function(int selected);
+typedef OnFieldChanged = void Function(String value);
 
 class PaymentSystemTab extends StatefulWidget {
   const PaymentSystemTab({
@@ -12,6 +13,7 @@ class PaymentSystemTab extends StatefulWidget {
     required this.ibanNumber,
     required this.sortCode,
     required this.onPaymentChanged,
+    required this.onFieldChanged,
     super.key,
   });
 
@@ -19,6 +21,7 @@ class PaymentSystemTab extends StatefulWidget {
   final TextEditingController ibanNumber;
   final TextEditingController sortCode;
   final OnPaymentChanged onPaymentChanged;
+  final OnFieldChanged onFieldChanged;
 
   @override
   State<PaymentSystemTab> createState() => _PaymentSystemTabState();
@@ -85,6 +88,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.ibanPlaceHolder,
                   controller: widget.ibanNumber,
+                  onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 1) {
                       return null;
@@ -105,6 +109,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.sortCodePlaceholder,
                   controller: widget.sortCode,
+                  onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 0) {
                       return null;
@@ -121,6 +126,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.bankAccountNumberPlaceholder,
                   controller: widget.bankAccount,
+                  onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 0) {
                       return null;
@@ -146,6 +152,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
     required String hintText,
     required TextEditingController controller,
     required String? Function(String?) validator,
+    required void Function(String) onChanged,
   }) {
     return Container(
       margin: const EdgeInsets.only(top: 10),
@@ -154,7 +161,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
         validator: validator,
         textCapitalization: TextCapitalization.words,
         textInputAction: TextInputAction.next,
-        onChanged: (value) => setState(() {}),
+        onChanged: onChanged,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,

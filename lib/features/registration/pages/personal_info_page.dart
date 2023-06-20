@@ -122,6 +122,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   bankAccount: bankAccount,
                   ibanNumber: ibanNumber,
                   sortCode: sortCode,
+                  onFieldChanged: (value) => setState(() {}),
                   onPaymentChanged: (value) {
                     if (value == 0) {
                       bankAccount.clear();
@@ -138,6 +139,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           ),
                         );
                       }
+                      setState(() {});
                       return;
                     }
                     if (_selectedCountry != Country.gg ||
@@ -152,7 +154,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         ),
                       );
                     }
-                    ibanNumber.clear();
+                    setState(ibanNumber.clear);
                   },
                 ),
                 SizedBox(
