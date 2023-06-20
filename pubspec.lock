@@ -341,6 +341,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  iban:
+    dependency: "direct main"
+    description:
+      name: iban
+      sha256: e9ecd822d36e84da8ce366d8effcd0898f9217727e9d157a090586e9b498c2a7
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   internet_connection_checker_plus:
     dependency: "direct main"
     description:
@@ -429,6 +437,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
+  mod97:
+    dependency: transitive
+    description:
+      name: mod97
+      sha256: "1cb8c7ffd6d4dc6ea5fe91edb45f41bc45ef8cc461a030d9db1ce223eab22e9a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   nested:
     dependency: transitive
     description:

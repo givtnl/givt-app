@@ -27,20 +27,44 @@ class UserExt extends Equatable {
     this.isGiftAidEnabled = false,
     this.accountType = AccountType.none,
     this.appLanguage = '',
+    this.sortCode = '',
+    this.accountNumber = '',
   });
 
-  factory UserExt.empty() => const UserExt(
-        email: '',
-        guid: '',
-        amountLimit: 0,
-      );
+  const UserExt.empty()
+      : email = '',
+        guid = '',
+        amountLimit = 0,
+        tempUser = false,
+        mandateSigned = false,
+        maxAmountRegistered = false,
+        multipleCollectsFirstBallon = true,
+        multipleCollectsSecondBallon = true,
+        needRegistration = true,
+        personalInfoRegistered = false,
+        pinSet = false,
+        multipleCollectsAccepted = false,
+        firstName = '',
+        lastName = '',
+        phoneNumber = '',
+        address = '',
+        postalCode = '',
+        city = '',
+        country = '',
+        iban = '',
+        countryCode = -1,
+        isGiftAidEnabled = false,
+        accountType = AccountType.none,
+        appLanguage = '',
+        sortCode = '',
+        accountNumber = '';
 
   factory UserExt.fromJson(Map<String, dynamic> json) => UserExt(
         email: json['Email'] as String,
         guid: json['GUID'] as String,
         amountLimit: json['AmountLimit'] as int,
         tempUser: json['IsTempUser'] as bool,
-        iban: json['IBAN'] as String?,
+        iban: json['IBAN'] != null ? json['IBAN'] as String : '',
         phoneNumber: json['PhoneNumber'] as String,
         firstName: json['FirstName'] as String,
         lastName: json['LastName'] as String,
@@ -50,8 +74,16 @@ class UserExt extends Equatable {
         country: json['Country'] as String,
         countryCode: json['CountryCode'] as int,
         isGiftAidEnabled: json['GiftAidEnabled'] as bool,
-        appLanguage: json['AppLanguage'] as String?,
+        sortCode: json['SortCode'] != null ? json['SortCode'] as String : '',
+        accountNumber: json['AccountNumber'] != null
+            ? json['AccountNumber'] as String
+            : '',
+        appLanguage:
+            json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
         accountType: AccountType.fromString(json['AccountType'] as String),
+        needRegistration: json['IsTempUser'] as bool,
+        personalInfoRegistered: json['FirstName'] != null,
+        mandateSigned: json['PayProvMandate'] != null,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -72,6 +104,8 @@ class UserExt extends Equatable {
         'AccountType': accountType.toString(),
         'GiftAidEnabled': isGiftAidEnabled,
         'AppLanguage': appLanguage,
+        'SortCode': sortCode,
+        'AccountNumber': accountNumber,
         'mandateSigned': mandateSigned,
         'maxAmountRegistered': maxAmountRegistered,
         'multipleCollectsFirstBallon': multipleCollectsFirstBallon,
@@ -93,7 +127,10 @@ class UserExt extends Equatable {
   final String postalCode;
   final String country;
   final int countryCode;
-  final String? iban;
+  final String iban;
+  final String sortCode;
+  final String accountNumber;
+
   final bool isGiftAidEnabled;
   final AccountType accountType;
   final String? appLanguage;
@@ -124,6 +161,8 @@ class UserExt extends Equatable {
     int? countryCode,
     String? iban,
     bool? isGiftAidEnabled,
+    String? sortCode,
+    String? accountNumber,
     AccountType? accountType,
     String? appLanguage,
     int? amountLimit,
@@ -150,6 +189,8 @@ class UserExt extends Equatable {
       country: country ?? this.country,
       countryCode: countryCode ?? this.countryCode,
       iban: iban ?? this.iban,
+      sortCode: sortCode ?? this.sortCode,
+      accountNumber: accountNumber ?? this.accountNumber,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,
       appLanguage: appLanguage ?? this.appLanguage,
       accountType: accountType ?? this.accountType,
@@ -183,6 +224,8 @@ class UserExt extends Equatable {
         country,
         countryCode,
         iban,
+        sortCode,
+        accountNumber,
         isGiftAidEnabled,
         accountType,
         appLanguage,

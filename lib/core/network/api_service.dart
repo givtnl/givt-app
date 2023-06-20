@@ -85,7 +85,7 @@ class APIService {
     return (await client.get(url)).body;
   }
 
-  Future<String> registerTempUser(Map<String, dynamic> body) async {
+  Future<String> registerUser(Map<String, dynamic> body) async {
     final url = Uri.https(apiURL, '/api/v2/users');
     final response = await client.post(
       url,
@@ -169,5 +169,18 @@ class APIService {
       }
       return response.statusCode == 200;
     });
+  }
+
+  Future<String> signSepaMandate(
+    String guid,
+    String appLanguage,
+  ) async {
+    final url = Uri.https(apiURL, 'api/v2/users/$guid/mandate?locale=$appLanguage');
+    final response = await client.post(url);
+
+    if (response.statusCode >= 400) {
+      throw Exception(response.statusCode);
+    }
+    return response.body;
   }
 }
