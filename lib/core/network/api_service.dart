@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/interceptor.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class APIService {
   APIService({
-    required String apiURL,
-  }) : _apiURL = apiURL;
+      required String apiURL,
+    }) : _apiURL = apiURL;
 
   Client client = InterceptedClient.build(
     requestTimeout: const Duration(seconds: 5),
@@ -91,8 +92,10 @@ class APIService {
     return (await client.get(url)).body;
   }
 
-  Future<String> registerTempUser(Map<String, dynamic> body) async {
-    final url = Uri.https(_apiURL, '/api/v2/users');
+
+  Future<String> registerUser(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/users');
+
     final response = await client.post(
       url,
       headers: {
@@ -175,5 +178,37 @@ class APIService {
       }
       return response.statusCode == 200;
     });
+  }
+
+  Future<String> signSepaMandate(
+    String guid,
+    String appLanguage,
+  ) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/mandate');
+    final response = await client.post(url);
+
+    if (response.statusCode >= 400) {
+      throw MandateSignatureFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.body;
+  }
+
+  Future<bool> changeGiftAid(String guid, Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/giftaidauthorisations');
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw Exception(response.statusCode);
+    }
+    return response.statusCode == 200;
   }
 }

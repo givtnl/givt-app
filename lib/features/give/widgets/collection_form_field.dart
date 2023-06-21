@@ -35,7 +35,7 @@ class CollectionFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: Material(
-        elevation: 1,
+        elevation: 2,
         borderRadius: BorderRadius.circular(5),
         child: TextFormField(
           focusNode: focusNode,

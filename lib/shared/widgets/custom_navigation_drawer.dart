@@ -1,6 +1,9 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
+import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -13,15 +16,33 @@ class CustomNavigationDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-
+    final auth = context.read<AuthCubit>().state as AuthSuccess;
     return Drawer(
       child: ListView(
         children: [
           _buildGivtLogo(size),
           _buildMenuItem(
+            isVisible: auth.user.needRegistration || !auth.user.mandateSigned,
+            showBadge: true,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
-            onTap: () {},
+            onTap: () {
+              if (auth.user.needRegistration) {
+                Navigator.of(context).push(
+                  SignUpPage.route(email: auth.user.email),
+                );
+                return;
+              }
+              if (!auth.user.mandateSigned) {
+                Navigator.of(context).push(
+                  MandateExplanationPage.route(),
+                );
+                return;
+              }
+              Navigator.of(context).push(
+                SignUpPage.route(email: auth.user.email),
+              );
+            },
           ),
           // Divider(
           //   indent: size.width * 0.05,
@@ -119,6 +140,7 @@ class CustomNavigationDrawer extends StatelessWidget {
     required IconData icon,
     required VoidCallback onTap,
     bool isVisible = false,
+    bool showBadge = false,
   }) =>
       Visibility(
         visible: isVisible,
@@ -126,7 +148,11 @@ class CustomNavigationDrawer extends StatelessWidget {
           children: [
             ListTile(
               leading: Icon(icon),
-              trailing: const Icon(Icons.arrow_forward_ios),
+              trailing: badges.Badge(
+                showBadge: showBadge,
+                position: badges.BadgePosition.topStart(top: 6, start: -20),
+                child: const Icon(Icons.arrow_forward_ios),
+              ),
               title: Text(title),
               onTap: onTap,
             ),
