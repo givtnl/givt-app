@@ -41,7 +41,7 @@ class TempUser extends Equatable {
   factory TempUser.prefilled({
     required String email,
     required String country,
-    String password = r'R4nd0mP@s$w0rd123',
+    String password = tempUserPassword,
     String iban = 'FB66GIVT12345678',
     String phoneNumber = '060000000',
     String firstName = 'John',
@@ -198,4 +198,6 @@ class TempUser extends Equatable {
         accountNumber,
         timeZoneId,
       ];
+
+      static const String tempUserPassword = r'R4nd0mP@s$w0rd123';
 }

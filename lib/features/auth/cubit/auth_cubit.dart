@@ -14,12 +14,16 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepositoy _authRepositoy;
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required String email,
+    required String password,
+    bool isUSTempUser = false,
+  }) async {
     emit(AuthLoading());
     try {
       // check email
       final result = await _authRepositoy.checkEmail(email);
-      if (result.contains('temp')) {
+      if (result.contains('temp') && !isUSTempUser) {
         emit(AuthTempAccountWarning(email));
         return;
       }
@@ -70,8 +74,23 @@ class AuthCubit extends Cubit<AuthState> {
         emit(const AuthFailure());
         return;
       }
+
+      final countryIso = await FlutterSimCountryCode.simCountryCode.catchError(
+        (e) => null,
+      );
+
       // check email
       final result = await _authRepositoy.checkEmail(email);
+
+      if (result.contains('temp') && countryIso == 'US') {
+        await login(
+          email: email,
+          password: TempUser.tempUserPassword,
+          isUSTempUser: true,
+        );
+        return;
+      }
+
       if (result.contains('temp')) {
         emit(AuthTempAccountWarning(email));
         return;
@@ -80,10 +99,6 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthLoginRedirect(email));
         return;
       }
-
-      final countryIso = await FlutterSimCountryCode.simCountryCode.catchError(
-        (e) => null,
-      );
 
       final tempUser = TempUser.prefilled(
         email: email,
