@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
@@ -34,8 +37,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     try {
       final lastDonatedOrganisation =
           await _campaignRepository.getLastOrganisationDonated();
-      final organisations = await _collectGroupRepository.getCollectGroupList();
-
+      final unFiltered = await _collectGroupRepository.getCollectGroupList();
+      final userAccountType = await _getAccountType(event.accountType);
+      final organisations = unFiltered
+          .where(
+            (organisation) => organisation.accountType == userAccountType,
+          )
+          .toList();
       var selectedGroup = state.selectedCollectGroup;
       if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
         selectedGroup = organisations.firstWhere(
@@ -62,6 +70,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ),
       );
     } catch (e) {
+      log(e.toString());
       emit(state.copyWith(status: OrganisationStatus.error));
     }
   }
@@ -134,5 +143,22 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
             : selectedNow,
       ),
     );
+  }
+
+  Future<AccountType> _getAccountType(AccountType accountType) async {
+    if (accountType != AccountType.none) {
+      return accountType;
+    }
+    final countryIso = await FlutterSimCountryCode.simCountryCode;
+
+    final country = Country.values.firstWhere(
+      (country) => country.countryCode == countryIso,
+      orElse: () => Country.unknown,
+    );
+
+    if (country.isBACS) {
+      return AccountType.bacs;
+    }
+    return AccountType.sepa;
   }
 }

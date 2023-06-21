@@ -21,7 +21,8 @@ enum Country {
   ad('+376', 'AD', isBACS: true),
   gb('+44', 'GB', isBACS: true),
   je('+44', 'JE', isBACS: true),
-  gg('+44', 'GG', isBACS: true);
+  gg('+44', 'GG', isBACS: true),
+  unknown('', '');
 
   const Country(
     this.prefix,
