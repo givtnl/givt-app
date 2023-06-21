@@ -176,7 +176,7 @@ class APIService {
     String guid,
     String appLanguage,
   ) async {
-    final url = Uri.https(apiURL, 'api/v2/users/$guid/mandate');
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/mandate');
     final response = await client.post(url);
 
     if (response.statusCode >= 400) {
@@ -189,10 +189,13 @@ class APIService {
   }
 
   Future<bool> changeGiftAid(String guid, Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, 'api/v2/users/$guid/giftaidauthorisations');
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/giftaidauthorisations');
     final response = await client.post(
       url,
       body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     );
 
     if (response.statusCode >= 400) {

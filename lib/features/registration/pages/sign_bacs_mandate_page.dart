@@ -17,6 +17,7 @@ class SignBacsMandatePage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final registrationBloc = context.read<RegistrationBloc>();
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -30,14 +31,7 @@ class SignBacsMandatePage extends StatelessWidget {
           listener: (context, state) {
             if (state.status ==
                 RegistrationStatus.bacsDirectDebitMandateSigned) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<RegistrationBloc>(),
-                    child: const GiftAidRequestPage(),
-                  ),
-                ),
-              );
+              Navigator.of(context).push(GiftAidRequestPage.route());
             }
             if (state.status == RegistrationStatus.bacsDetailsWrong) {
               showDialog<void>(
@@ -151,12 +145,12 @@ class SignBacsMandatePage extends StatelessWidget {
                 SizedBox(
                   width: size.width,
                   child: ElevatedButton(
-                    onPressed: () => context.read<RegistrationBloc>().add(
-                          RegistrationSignMandate(
-                            appLanguage: locals.localeName,
-                            guid: user.guid,
-                          ),
-                        ),
+                    onPressed: () => registrationBloc.add(
+                      RegistrationSignMandate(
+                        appLanguage: locals.localeName,
+                        guid: user.guid,
+                      ),
+                    ),
                     child: Text(locals.continueKey),
                   ),
                 ),

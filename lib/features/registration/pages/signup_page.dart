@@ -4,7 +4,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
@@ -97,25 +96,9 @@ class _SignUpPageState extends State<SignUpPage> {
             }
 
             if (state.status ==
-                RegistrationStatus.bacsDirectDebitMandateExplanation) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<RegistrationBloc>(),
-                    child: const BacsExplanationPage(),
-                  ),
-                ),
-              );
-            }
-            if (state.status == RegistrationStatus.sepaMandateExplanation) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<RegistrationBloc>(),
-                    child: const MandateExplanationPage(),
-                  ),
-                ),
-              );
+                    RegistrationStatus.bacsDirectDebitMandateExplanation ||
+                state.status == RegistrationStatus.sepaMandateExplanation) {
+              Navigator.of(context).push(MandateExplanationPage.route());
             }
           },
           child: Form(
