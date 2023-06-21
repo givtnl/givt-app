@@ -303,13 +303,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
-          label: Text(
-            hintText,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-          ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           errorStyle: const TextStyle(
