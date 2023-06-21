@@ -137,7 +137,7 @@ class SignBacsMandatePage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.givtBlue,
                   ),
-                  child: Text(locals.bacsDdGuaranteeTitle),
+                  child: Text(locals.bacsReadDdGuarantee),
                 ),
                 SizedBox(
                   height: size.height * 0.01,
