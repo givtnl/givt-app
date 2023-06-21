@@ -87,3 +87,21 @@ class RegistrationSignMandate extends RegistrationEvent {
   @override
   List<Object> get props => [guid, appLanguage];
 }
+
+class RegistrationInit extends RegistrationEvent {
+  const RegistrationInit();
+
+  @override
+  List<Object> get props => [];
+}
+
+class RegistrationGiftAidChanged extends RegistrationEvent {
+  const RegistrationGiftAidChanged({
+    required this.isGiftAidEnabled,
+  });
+
+  final bool isGiftAidEnabled;
+
+  @override
+  List<Object> get props => [isGiftAidEnabled];
+}

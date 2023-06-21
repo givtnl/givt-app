@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -20,6 +21,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationPersonalInfoSubmitted>(_onRegistrationPersonalInfoSubmitted);
 
     on<RegistrationSignMandate>(_onSignMandate);
+
+    on<RegistrationInit>(_onInit);
+
+    on<RegistrationGiftAidChanged>(_onGiftAidChanged);
   }
 
   final AuthRepositoy authRepositoy;
@@ -75,9 +80,17 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
 
       await authCubit.refreshUser();
+      if (event.iban.isNotEmpty) {
+        emit(
+          state.copyWith(
+            status: RegistrationStatus.sepaMandateExplanation,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(
-          status: RegistrationStatus.mandateExplanation,
+          status: RegistrationStatus.bacsDirectDebitMandateExplanation,
         ),
       );
     } catch (e) {
@@ -100,15 +113,27 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         guid: event.guid,
       );
       log(response);
+
       await authCubit.refreshUser();
+      final user = (authCubit.state as AuthSuccess).user;
+      if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
+        emit(
+          state.copyWith(
+            status: RegistrationStatus.bacsDirectDebitMandateSigned,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(
           status: RegistrationStatus.success,
         ),
       );
-    } catch (e) {
-      log(e.toString());
-      if (e.toString().contains('409')) {
+    } on MandateSignatureFailure catch (e) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      log(body.toString());
+      if (statusCode == 409) {
         emit(
           state.copyWith(
             status: RegistrationStatus.conflict,
@@ -116,7 +141,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         );
         return;
       }
-      if (e.toString().contains('400')) {
+      if (statusCode == 400) {
         emit(
           state.copyWith(
             status: RegistrationStatus.badRequest,
@@ -124,6 +149,62 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         );
         return;
       }
+      emit(
+        state.copyWith(status: RegistrationStatus.failure),
+      );
+    }
+  }
+
+  FutureOr<void> _onInit(
+    RegistrationInit event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    emit(state.copyWith(status: RegistrationStatus.loading));
+    if (authCubit.state is! AuthSuccess) {
+      emit(
+        state.copyWith(status: RegistrationStatus.failure),
+      );
+      return;
+    }
+
+    final user = (authCubit.state as AuthSuccess).user;
+    if (user.accountNumber.isNotEmpty && user.sortCode.isNotEmpty) {
+      emit(
+        state.copyWith(
+          status: RegistrationStatus.bacsDirectDebitMandateExplanation,
+        ),
+      );
+      return;
+    }
+    emit(
+      state.copyWith(
+        status: RegistrationStatus.sepaMandateExplanation,
+      ),
+    );
+  }
+
+  FutureOr<void> _onGiftAidChanged(
+    RegistrationGiftAidChanged event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    final guid = (authCubit.state as AuthSuccess).user.guid;
+    emit(state.copyWith(status: RegistrationStatus.loading));
+
+    try {
+      final response = await authRepositoy.changeGiftAid(
+        guid: guid,
+        giftAid: event.isGiftAidEnabled,
+      );
+      log(response.toString());
+
+      await authCubit.refreshUser();
+      emit(
+        state.copyWith(
+          status: RegistrationStatus.giftAidChanged,
+        ),
+      );
+    } catch (e) {
+      log(e.toString());
       emit(
         state.copyWith(status: RegistrationStatus.failure),
       );

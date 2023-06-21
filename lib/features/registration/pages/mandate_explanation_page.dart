@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/injection.dart';
@@ -18,11 +19,33 @@ class MandateExplanationPage extends StatelessWidget {
         create: (context) => RegistrationBloc(
           authCubit: context.read<AuthCubit>(),
           authRepositoy: getIt(),
-        ),
+        )..add(const RegistrationInit()),
         child: const MandateExplanationPage(),
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RegistrationBloc, RegistrationState>(
+      builder: (context, state) {
+        if (state.status ==
+            RegistrationStatus.bacsDirectDebitMandateExplanation) {
+          return const BacsExplanationPage();
+        }
+        if (state.status == RegistrationStatus.sepaMandateExplanation) {
+          return const _SepaMandateExplanationPageView();
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+}
+
+class _SepaMandateExplanationPageView extends StatelessWidget {
+  const _SepaMandateExplanationPageView();
 
   @override
   Widget build(BuildContext context) {

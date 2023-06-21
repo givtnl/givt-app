@@ -9,6 +9,7 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/util.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({
@@ -93,15 +94,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               );
             }
-            if (state.status == RegistrationStatus.mandateExplanation) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<RegistrationBloc>(),
-                    child: const MandateExplanationPage(),
-                  ),
-                ),
-              );
+
+            if (state.status ==
+                    RegistrationStatus.bacsDirectDebitMandateExplanation ||
+                state.status == RegistrationStatus.sepaMandateExplanation) {
+              Navigator.of(context).push(MandateExplanationPage.route());
             }
           },
           child: Form(
@@ -113,6 +110,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   controller: _firstNameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (!Util.nameFieldsRegEx.hasMatch(value)) {
                       return '';
                     }
                     return null;
@@ -140,6 +140,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   }),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
+                      return '';
+                    }
+                    if (!Util.nameFieldsRegEx.hasMatch(value)) {
                       return '';
                     }
                     return null;

@@ -139,4 +139,14 @@ class AuthRepositoy {
 
     return userExt;
   }
+
+  Future<bool> changeGiftAid({
+    required String guid,
+    required bool giftAid,
+  }) async {
+    return _apiService.changeGiftAid(
+      guid,
+      {'authorised': giftAid},
+    );
+  }
 }

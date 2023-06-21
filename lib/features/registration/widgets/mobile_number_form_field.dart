@@ -8,6 +8,7 @@ class MobileNumberFormField extends StatelessWidget {
   const MobileNumberFormField({
     required this.phone,
     required this.onPrefixChanged,
+    required this.onPhoneChanged,
     required this.selectedCountryPrefix,
     required this.validator,
     super.key,
@@ -15,6 +16,7 @@ class MobileNumberFormField extends StatelessWidget {
 
   final TextEditingController phone;
   final OnMobileNumberChanged onPrefixChanged;
+  final OnMobileNumberChanged onPhoneChanged;
   final String? Function(String?)? validator;
   final String selectedCountryPrefix;
 
@@ -63,6 +65,7 @@ class MobileNumberFormField extends StatelessWidget {
             child: TextFormField(
               controller: phone,
               validator: validator,
+              onChanged: onPhoneChanged,
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.phone,
               style:

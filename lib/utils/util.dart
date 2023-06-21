@@ -10,5 +10,7 @@ class Util {
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
   static final emailRegEx = RegExp(
       r'^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*(\+[a-zA-Z0-9-]+)?@[a-z0-9-]+(\.[a-zA-Z0-9-]+)*$');
+  static final nameFieldsRegEx =
+      RegExp(r'^[^0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$');
   static final navigatorKey = GlobalKey<NavigatorState>();
 }

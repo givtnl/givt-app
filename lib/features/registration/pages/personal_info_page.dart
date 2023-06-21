@@ -229,6 +229,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         MobileNumberFormField(
           phone: _phone,
           selectedCountryPrefix: _selectedCountry.prefix,
+          onPhoneChanged: (String value) => setState(() {}),
           onPrefixChanged: (String selected) {
             setState(() {
               _selectedCountry = Country.sortedCountries().firstWhere(
