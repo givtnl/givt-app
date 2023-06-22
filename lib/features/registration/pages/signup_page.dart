@@ -166,6 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  enabled: widget.email.isEmpty,
                   readOnly: widget.email.isNotEmpty,
                   controller: _emailController,
                   onChanged: (value) => setState(() {
