@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -35,6 +36,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   void initState() {
     super.initState();
+    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    _selectedCountry = Country.values.firstWhere(
+      (element) => element.countryCode == user.country,
+    );
   }
 
   @override
@@ -56,7 +61,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     return Scaffold(
       appBar: const RegistrationAppBar(),
       bottomSheet: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : ElevatedButton(
@@ -241,6 +251,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             if (value == null || value.isEmpty) {
               return '';
             }
+            if (!Util.phoneNumberRegEx.hasMatch(value)) {
+              return '';
+            }
             if (_selectedCountry == Country.gg ||
                 _selectedCountry == Country.gb ||
                 _selectedCountry == Country.je) {
@@ -303,13 +316,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
-          label: Text(
-            hintText,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-          ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           errorStyle: const TextStyle(

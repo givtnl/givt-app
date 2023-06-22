@@ -94,6 +94,14 @@ class AppTheme {
           Radius.circular(8),
         ),
       ),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.grey.shade300,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
     ),
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(

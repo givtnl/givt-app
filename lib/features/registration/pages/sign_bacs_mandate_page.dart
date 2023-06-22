@@ -25,7 +25,12 @@ class SignBacsMandatePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: BlocConsumer<RegistrationBloc, RegistrationState>(
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
@@ -137,7 +142,7 @@ class SignBacsMandatePage extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.givtBlue,
                   ),
-                  child: Text(locals.bacsDdGuaranteeTitle),
+                  child: Text(locals.bacsReadDdGuarantee),
                 ),
                 SizedBox(
                   height: size.height * 0.01,

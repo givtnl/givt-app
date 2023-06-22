@@ -33,14 +33,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                 );
                 return;
               }
-              if (!auth.user.mandateSigned) {
-                Navigator.of(context).push(
-                  MandateExplanationPage.route(),
-                );
-                return;
-              }
               Navigator.of(context).push(
-                SignUpPage.route(email: auth.user.email),
+                MandateExplanationPage.route(),
               );
             },
           ),
