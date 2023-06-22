@@ -6,6 +6,8 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
+import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
+import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync_bloc.dart';
@@ -55,11 +57,9 @@ class HomePage extends StatelessWidget {
               },
               builder: (context, state) {
                 if (state is RemoteDataSourceSyncSuccess &&
-                    auth.user.needRegistration &&
+                        auth.user.needRegistration ||
                     !auth.user.mandateSigned) {
-                  // WidgetsBinding.instance.addPostFrameCallback(
-                  //   (_) => _buildNeedsRegistrationDialog(context),
-                  // );
+                  _buildNeedsRegistrationDialog(context);
                 }
 
                 return ChooseAmount(
@@ -114,6 +114,7 @@ class HomePage extends StatelessWidget {
   Future<void> _buildNeedsRegistrationDialog(
     BuildContext context,
   ) {
+    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
@@ -126,7 +127,15 @@ class HomePage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              //todo redirect to registration page
+              if (!user.mandateSigned) {
+                Navigator.of(context).push(
+                  MandateExplanationPage.route(),
+                );
+                return;
+              }
+              Navigator.of(context).push(
+                SignUpPage.route(email: user.email),
+              );
             },
             child: Text(
               context.l10n.finalizeRegistration,
