@@ -6,10 +6,16 @@ import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/app_version.dart';
 
-class AboutGivtBottomSheet extends StatelessWidget {
-  AboutGivtBottomSheet({super.key});
+class AboutGivtBottomSheet extends StatefulWidget {
+  const AboutGivtBottomSheet({super.key});
 
+  @override
+  State<AboutGivtBottomSheet> createState() => _AboutGivtBottomSheetState();
+}
+
+class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
   final _formKey = GlobalKey<FormState>();
+
   final _emailController = TextEditingController();
 
   @override
@@ -80,6 +86,7 @@ class AboutGivtBottomSheet extends StatelessWidget {
                         controller: _emailController,
                         minLines: 10,
                         maxLines: 10,
+                        onChanged: (value) => setState(() {}),
                         decoration: InputDecoration(
                           hintText: locals.typeMessage,
                         ),
