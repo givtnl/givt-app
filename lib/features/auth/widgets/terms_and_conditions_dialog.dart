@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
@@ -23,7 +21,6 @@ class TermsAndConditionsDialog extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final localName = Platform.localeName.toUpperCase();
         final locals = context.l10n;
         final countryIso = snapshot.data ?? 'NL';
 
@@ -32,7 +29,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
         if (typeOfTerms == TypeOfTerms.privacyPolicy) {
           title = locals.privacyTitle;
           termsAndConditions = locals.policyText;
-          if (['GB', 'GG', 'JE'].contains(localName)) {
+          if (['GB', 'GG', 'JE'].contains(countryIso)) {
             termsAndConditions = locals.policyTextGb;
           }
 
@@ -44,7 +41,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
           if (['GB', 'GG', 'JE'].contains(countryIso)) {
             termsAndConditions = locals.termsTextGb;
           }
-          if (localName == 'US') {
+          if (countryIso == 'US') {
             termsAndConditions = locals.termsTextUs;
           }
         }

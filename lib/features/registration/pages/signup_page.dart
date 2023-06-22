@@ -9,6 +9,7 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/util.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -60,7 +61,24 @@ class _SignUpPageState extends State<SignUpPage> {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: const RegistrationAppBar(),
+      appBar: RegistrationAppBar(
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              showDragHandle: true,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              builder: (_) => const FAQBottomSheet(),
+            ),
+            icon: const Icon(
+              Icons.question_mark_outlined,
+              size: 26,
+            ),
+          ),
+        ],
+      ),
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
         margin: const EdgeInsets.only(

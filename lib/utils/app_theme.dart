@@ -20,6 +20,7 @@ class AppTheme {
   static const givtAmount = Color(0xFFD2D1D9);
   static const givtYellow = Color(0xFFEDA52E);
   static const givtDarkGreen = Color(0xFF1da96c);
+  static const softenedGivtPurple = Color(0xFF585479);
 
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
