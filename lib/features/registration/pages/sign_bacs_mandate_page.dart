@@ -25,7 +25,12 @@ class SignBacsMandatePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: BlocConsumer<RegistrationBloc, RegistrationState>(
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {

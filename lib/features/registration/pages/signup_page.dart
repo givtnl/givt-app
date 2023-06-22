@@ -63,7 +63,12 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: const RegistrationAppBar(),
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

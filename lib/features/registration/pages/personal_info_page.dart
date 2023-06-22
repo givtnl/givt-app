@@ -56,7 +56,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     return Scaffold(
       appBar: const RegistrationAppBar(),
       bottomSheet: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : ElevatedButton(

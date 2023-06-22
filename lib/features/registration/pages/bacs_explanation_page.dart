@@ -40,7 +40,12 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: Column(
           children: [
             const SizedBox(
