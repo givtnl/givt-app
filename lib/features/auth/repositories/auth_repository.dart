@@ -14,6 +14,7 @@ mixin AuthRepositoy {
   Future<bool> logout();
   Future<bool> checkTld(String email);
   Future<String> checkEmail(String email);
+  Future<bool> resetPassword(String email);
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
@@ -181,4 +182,8 @@ class AuthRepositoyImpl with AuthRepositoy {
       {'authorised': giftAid},
     );
   }
+
+  @override
+  Future<bool> resetPassword(String email) =>
+      _apiService.resetPassword({'email': email});
 }

@@ -8,11 +8,11 @@ import 'package:http_interceptor/http/http.dart';
 
 class APIService {
   APIService({
-      required String apiURL,
-    }) : _apiURL = apiURL;
+    required String apiURL,
+  }) : _apiURL = apiURL;
 
   Client client = InterceptedClient.build(
-    requestTimeout: const Duration(seconds: 5),
+    requestTimeout: const Duration(seconds: 10),
     interceptors: [
       Interceptor(),
     ],
@@ -91,7 +91,6 @@ class APIService {
     final url = Uri.https(_apiURL, '/api/v2/Users/check', {'email': email});
     return (await client.get(url)).body;
   }
-
 
   Future<String> registerUser(Map<String, dynamic> body) async {
     final url = Uri.https(apiURL, '/api/v2/users');
@@ -201,6 +200,21 @@ class APIService {
     final response = await client.post(
       url,
       body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw Exception(response.statusCode);
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> resetPassword(Map<String, dynamic> params) async {
+    final url = Uri.https(apiURL, '/api/v2/users/forgotpassword', params);
+    final response = await client.post(
+      url,
       headers: {
         'Content-Type': 'application/json',
       },

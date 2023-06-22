@@ -62,7 +62,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                       child: Text(locals.continueKey),
                       onPressed: () => Navigator.of(context).pushReplacement(
                         SignUpPage.route(
-                          email: _emailController.text,
+                          email: state.email,
                         ),
                       ),
                     ),
@@ -76,7 +76,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 isScrollControlled: true,
                 useSafeArea: true,
                 builder: (BuildContext context) => LoginPage(
-                  email: _emailController.text.trim(),
+                  email: state.email.trim(),
                 ),
               );
             }

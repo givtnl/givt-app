@@ -116,4 +116,25 @@ class AuthCubit extends Cubit<AuthState> {
       emit(const AuthFailure());
     }
   }
+
+  Future<void> changePassword({required String email}) async {
+    emit(AuthLoading());
+    try {
+      // check email
+      final result = await _authRepositoy.checkEmail(email);
+      if (result.contains('temp')) {
+        emit(AuthTempAccountWarning(email));
+        return;
+      }
+      if (result.contains('false')) {
+        emit(AuthChangePasswordWrongEmail(email));
+        return;
+      }
+      await _authRepositoy.resetPassword(email);
+      emit(const AuthChangePasswordSuccess());
+    } catch (e) {
+      log(e.toString());
+      emit(const AuthChangePasswordFailure());
+    }
+  }
 }

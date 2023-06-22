@@ -36,6 +36,7 @@ Future<void> _initAPIService(Map<String, String> environmentVariables) async {
     /// This fails when testing on a emulator
     log(e.toString());
   }
+  log('Using API URL: $baseUrl');
   getIt.registerLazySingleton<APIService>(
     () => APIService(
       apiURL: baseUrl,
