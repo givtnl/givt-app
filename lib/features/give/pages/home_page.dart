@@ -54,14 +54,14 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 }
-              },
-              builder: (context, state) {
-                if (state is RemoteDataSourceSyncSuccess &&
-                        auth.user.needRegistration ||
-                    !auth.user.mandateSigned) {
+                if (state is RemoteDataSourceSyncInProgress) {
+                  if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                    return;
+                  }
                   _buildNeedsRegistrationDialog(context);
                 }
-
+              },
+              builder: (context, state) {
                 return ChooseAmount(
                   country: auth.user.country,
                   amountLimit: auth.user.amountLimit,
@@ -127,14 +127,14 @@ class HomePage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              if (!user.mandateSigned) {
+              if (user.needRegistration) {
                 Navigator.of(context).push(
-                  MandateExplanationPage.route(),
+                  SignUpPage.route(email: user.email),
                 );
                 return;
               }
               Navigator.of(context).push(
-                SignUpPage.route(email: user.email),
+                MandateExplanationPage.route(),
               );
             },
             child: Text(

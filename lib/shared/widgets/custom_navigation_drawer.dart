@@ -27,14 +27,14 @@ class CustomNavigationDrawer extends StatelessWidget {
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {
-              if (!auth.user.mandateSigned) {
+              if (auth.user.needRegistration) {
                 Navigator.of(context).push(
-                  MandateExplanationPage.route(),
+                  SignUpPage.route(email: auth.user.email),
                 );
                 return;
               }
               Navigator.of(context).push(
-                SignUpPage.route(email: auth.user.email),
+                MandateExplanationPage.route(),
               );
             },
           ),
