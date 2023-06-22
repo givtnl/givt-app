@@ -111,7 +111,7 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<bool> logout() async => _prefs.remove(Session.tag);
+  Future<bool> logout() async => _prefs.clear();
 
   @override
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
