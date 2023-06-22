@@ -21,9 +21,12 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap({
+  required FutureOr<Widget> Function() builder,
+  required Map<String, String> environmentVariables,
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
-  await get_it.init();
+  await get_it.init(environmentVariables: environmentVariables);
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };

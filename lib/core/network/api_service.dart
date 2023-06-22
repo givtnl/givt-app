@@ -7,6 +7,10 @@ import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class APIService {
+  APIService({
+      required String apiURL,
+    }) : _apiURL = apiURL;
+
   Client client = InterceptedClient.build(
     requestTimeout: const Duration(seconds: 5),
     interceptors: [
@@ -15,11 +19,13 @@ class APIService {
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
-  late String apiURL;
+  final String _apiURL;
+
+  String get apiURL => _apiURL;
 
   Future<dynamic> checkEmailExists(String email) async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/api/v2/Users/check',
       {'email': email},
     );
@@ -32,7 +38,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/oauth2/token');
+    final url = Uri.https(_apiURL, '/oauth2/token');
     final response = await client.post(
       url,
       body: body,
@@ -49,7 +55,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> refreshToken(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/oauth2/token');
+    final url = Uri.https(_apiURL, '/oauth2/token');
     final response = await client.post(
       url,
       body: body,
@@ -66,7 +72,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getUserExtension(String guid) async {
-    final url = Uri.https(apiURL, '/api/v2/UsersExtension/$guid');
+    final url = Uri.https(_apiURL, '/api/v2/UsersExtension/$guid');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
       throw Exception('something went wrong :(');
@@ -76,18 +82,20 @@ class APIService {
   }
 
   Future<bool> checktld(String email) async {
-    final url = Uri.https(apiURL, '/api/checktld', {'email': email});
+    final url = Uri.https(_apiURL, '/api/checktld', {'email': email});
     final body = (await client.get(url)).body;
     return jsonDecode(body) as String == 'true';
   }
 
   Future<String> checkEmail(String email) async {
-    final url = Uri.https(apiURL, '/api/v2/Users/check', {'email': email});
+    final url = Uri.https(_apiURL, '/api/v2/Users/check', {'email': email});
     return (await client.get(url)).body;
   }
 
+
   Future<String> registerUser(Map<String, dynamic> body) async {
     final url = Uri.https(apiURL, '/api/v2/users');
+
     final response = await client.post(
       url,
       headers: {
@@ -106,7 +114,7 @@ class APIService {
     Map<String, dynamic> params,
   ) async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/api/v3/campaigns',
       params,
     );
@@ -118,7 +126,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getCollectGroupList() {
-    final url = Uri.https(apiURL, '/api/v2/CollectGroups/applist');
+    final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist');
     return client.get(url).then((response) {
       if (response.statusCode >= 400) {
         throw Exception('something went wrong :(');
@@ -131,7 +139,7 @@ class APIService {
     required Map<String, dynamic> body,
     required String guid,
   }) async {
-    final url = Uri.https(apiURL, '/api/v2/users/$guid/givts');
+    final url = Uri.https(_apiURL, '/api/v2/users/$guid/givts');
     return client
         .post(
       url,
@@ -155,7 +163,7 @@ class APIService {
     required Map<String, dynamic> body,
   }) async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/v2/beacons/$beaconId',
       query,
     );

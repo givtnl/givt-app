@@ -6,14 +6,37 @@ import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthRepositoy {
-  AuthRepositoy(
+mixin AuthRepositoy {
+  Future<void> refreshToken();
+  Future<String> login(String email, String password);
+  Future<UserExt> fetchUserExtension(String guid);
+  Future<UserExt?> isAuthenticated();
+  Future<bool> logout();
+  Future<bool> checkTld(String email);
+  Future<String> checkEmail(String email);
+  Future<String> signSepaMandate({
+    required String guid,
+    required String appLanguage,
+  });
+  Future<UserExt> registerUser({
+    required TempUser tempUser,
+    required bool isTempUser,
+  });
+  Future<bool> changeGiftAid({
+    required String guid,
+    required bool giftAid,
+  });
+}
+
+class AuthRepositoyImpl with AuthRepositoy {
+  AuthRepositoyImpl(
     this._prefs,
     this._apiService,
   );
   final SharedPreferences _prefs;
   final APIService _apiService;
 
+  @override
   Future<void> refreshToken() async {
     final currentSession = _prefs.getString(Session.tag);
     if (currentSession == null) {
@@ -34,6 +57,7 @@ class AuthRepositoy {
     );
   }
 
+  @override
   Future<String> login(String email, String password) async {
     final newSession = await _apiService.login(
       {
@@ -53,6 +77,7 @@ class AuthRepositoy {
     return session.userGUID;
   }
 
+  @override
   Future<UserExt> fetchUserExtension(String guid) async {
     final response = await _apiService.getUserExtension(guid);
     final userExt = UserExt.fromJson(response);
@@ -63,6 +88,7 @@ class AuthRepositoy {
     return userExt;
   }
 
+  @override
   Future<UserExt?> isAuthenticated() async {
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
@@ -83,10 +109,13 @@ class AuthRepositoy {
     );
   }
 
+  @override
   Future<bool> logout() async => _prefs.remove(Session.tag);
 
+  @override
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
 
+  @override
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
@@ -98,9 +127,11 @@ class AuthRepositoy {
     return response;
   }
 
+  @override
   Future<String> checkEmail(String email) async =>
       _apiService.checkEmail(email);
 
+  @override
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
@@ -140,6 +171,7 @@ class AuthRepositoy {
     return userExt;
   }
 
+  @override
   Future<bool> changeGiftAid({
     required String guid,
     required bool giftAid,

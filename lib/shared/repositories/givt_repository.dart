@@ -5,12 +5,21 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class GivtRepository {
-  GivtRepository(this._apiClient, this._prefs);
+mixin GivtRepository {
+  Future<void> submitGivts({
+    required String guid,
+    required Map<String, dynamic> body,
+  });
+  Future<void> syncOfflineGivts();
+}
 
-  final APIService _apiClient;
-  final SharedPreferences _prefs;
+class GivtRepositoryImpl with GivtRepository {
+  GivtRepositoryImpl(this.apiClient, this.prefs);
 
+  final APIService apiClient;
+  final SharedPreferences prefs;
+
+  @override
   Future<void> submitGivts({
     required String guid,
     required Map<String, dynamic> body,
@@ -19,7 +28,7 @@ class GivtRepository {
       'donationType': 0,
     }..addAll(body);
     try {
-      await _apiClient.submitGivts(
+      await apiClient.submitGivts(
         body: givts,
         guid: guid,
       );
@@ -33,8 +42,8 @@ class GivtRepository {
   Future<void> _cacheGivts(
     Map<String, dynamic> body,
   ) async {
-    if (!_prefs.containsKey(GivtTransaction.givtTransactions)) {
-      await _prefs.setString(
+    if (!prefs.containsKey(GivtTransaction.givtTransactions)) {
+      await prefs.setString(
         GivtTransaction.givtTransactions,
         jsonEncode(
           <String, dynamic>{
@@ -43,7 +52,7 @@ class GivtRepository {
         ),
       );
     } else {
-      final givtsString = _prefs.getString(
+      final givtsString = prefs.getString(
         GivtTransaction.givtTransactions,
       );
       final givts = jsonDecode(givtsString!) as Map<String, dynamic>;
@@ -53,15 +62,16 @@ class GivtRepository {
         );
       givts['donations'] = donations;
 
-      await _prefs.setString(
+      await prefs.setString(
         GivtTransaction.givtTransactions,
         jsonEncode(givts),
       );
     }
   }
 
+  @override
   Future<void> syncOfflineGivts() async {
-    final givtsString = _prefs.getString(
+    final givtsString = prefs.getString(
       GivtTransaction.givtTransactions,
     );
     if (givtsString == null) {
@@ -71,11 +81,11 @@ class GivtRepository {
     final firstTransaction = GivtTransaction.fromJsonList(
       givts['donations'] as List<dynamic>,
     ).first;
-    await _apiClient.submitGivts(
+    await apiClient.submitGivts(
       body: givts,
       guid: firstTransaction.guid,
     );
-    await _prefs.remove(
+    await prefs.remove(
       GivtTransaction.givtTransactions,
     );
   }
