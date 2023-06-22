@@ -41,7 +41,15 @@ class OrganizationListPage extends StatelessWidget {
         ),
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state.status == OrganisationStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(locals.somethingWentWrong),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           return Column(
             children: [

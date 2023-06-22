@@ -29,7 +29,13 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
     final locals = context.l10n;
     return Scaffold(
       appBar: RegistrationAppBar(
-        title: Text(locals.bacsSetupTitle),
+        title: Text(
+          locals.bacsSetupTitle,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -40,7 +46,12 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: Column(
           children: [
             const SizedBox(
@@ -48,6 +59,9 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
             ),
             Text(
               locals.bacsSetupBody,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontSize: 15,
+                  ),
               textAlign: TextAlign.center,
             ),
             const Spacer(),

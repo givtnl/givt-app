@@ -63,7 +63,12 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: const RegistrationAppBar(),
       resizeToAvoidBottomInset: false,
       bottomSheet: Container(
-        margin: const EdgeInsets.all(20),
+        margin: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -161,16 +166,18 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
+                  enabled: widget.email.isEmpty,
                   readOnly: widget.email.isNotEmpty,
                   controller: _emailController,
                   onChanged: (value) => setState(() {
                     _formKey.currentState!.validate();
                   }),
                   validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        value.contains('@') == false) {
-                      return AppLocalizations.of(context).invalidEmail;
+                    if (value == null || value.isEmpty) {
+                      return context.l10n.invalidEmail;
+                    }
+                    if (!Util.emailRegEx.hasMatch(value)) {
+                      return context.l10n.invalidEmail;
                     }
                     return null;
                   },
@@ -180,7 +187,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       .bodyLarge
                       ?.copyWith(fontSize: 16),
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).email,
+                    hintText: context.l10n.email,
                     errorStyle: const TextStyle(
                       height: 0,
                     ),

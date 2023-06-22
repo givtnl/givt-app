@@ -85,6 +85,7 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -139,7 +140,7 @@ class _BTScanPageState extends State<BTScanPage> {
                                     getIt(),
                                     getIt(),
                                   )..add(
-                                      const OrganisationFetch(),
+                                      OrganisationFetch(user.accountType),
                                     ),
                                 ),
                               ],
@@ -183,7 +184,7 @@ class _BTScanPageState extends State<BTScanPage> {
                                   getIt(),
                                   getIt(),
                                 )..add(
-                                    const OrganisationFetch(),
+                                    OrganisationFetch(user.accountType),
                                   ),
                               ),
                             ],

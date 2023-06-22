@@ -33,11 +33,39 @@ class GivtRepositoryImpl with GivtRepository {
         guid: guid,
       );
     } on SocketException {
-      await prefs.setString(
+      await _cacheGivts(body);
+
+      throw const SocketException('No internet connection');
+    }
+  }
+
+  Future<void> _cacheGivts(
+    Map<String, dynamic> body,
+  ) async {
+    if (!_prefs.containsKey(GivtTransaction.givtTransactions)) {
+      await _prefs.setString(
+        GivtTransaction.givtTransactions,
+        jsonEncode(
+          <String, dynamic>{
+            'donationType': 0,
+          }..addAll(body),
+        ),
+      );
+    } else {
+      final givtsString = _prefs.getString(
+        GivtTransaction.givtTransactions,
+      );
+      final givts = jsonDecode(givtsString!) as Map<String, dynamic>;
+      final donations = (givts['donations'] as List<dynamic>)
+        ..addAll(
+          body['donations'] as List<dynamic>,
+        );
+      givts['donations'] = donations;
+
+      await _prefs.setString(
         GivtTransaction.givtTransactions,
         jsonEncode(givts),
       );
-      throw const SocketException('No internet connection');
     }
   }
 

@@ -82,6 +82,20 @@ class CollectGroup extends Equatable {
     return data;
   }
 
+  AccountType get accountType {
+    final asciiCountry = nameSpace.substring(8, 12);
+    if (asciiCountry == '4742' ||
+        asciiCountry == '4a45' ||
+        asciiCountry == '4747') {
+      return AccountType.bacs;
+    }
+    if (asciiCountry == '5553') {
+      return AccountType.creditCard;
+    }
+
+    return AccountType.sepa;
+  }
+
   @override
   List<Object?> get props => [
         nameSpace,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
@@ -112,7 +113,11 @@ class SelectGivingWayPage extends StatelessWidget {
                             getIt(),
                             getIt(),
                           )..add(
-                              const OrganisationFetch(),
+                              OrganisationFetch(
+                                (context.read<AuthCubit>().state as AuthSuccess)
+                                    .user
+                                    .accountType,
+                              ),
                             ),
                         ),
                       ],
