@@ -2,8 +2,7 @@ import 'package:givt_app/core/network/api_service.dart';
 
 mixin InfraRepository {
   Future<bool> contactSupport({
-    required String name,
-    required String email,
+    required String guid,
     required String message,
   });
 }
@@ -15,14 +14,13 @@ class InfraRepositoryImpl with InfraRepository {
 
   @override
   Future<bool> contactSupport({
-    required String name,
-    required String email,
+    required String guid,
     required String message,
   }) async =>
       apiClient.contactSupport(
         {
-          'guid': name,
-          'subject': email,
+          'guid': guid,
+          'subject': 'Feedback app',
           'message': message,
         },
       );

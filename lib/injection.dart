@@ -6,8 +6,7 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
-import 'package:givt_app/shared/repositories/collect_group_repository.dart';
-import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -84,6 +83,11 @@ void _initRepositories() {
     )
     ..registerLazySingleton<BeaconRepository>(
       () => BeaconRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<InfraRepository>(
+      () => InfraRepositoryImpl(
         getIt(),
       ),
     );

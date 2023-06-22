@@ -10,7 +10,7 @@ import 'package:givt_app/features/registration/pages/mandate_explanation_page.da
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/bloc/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 

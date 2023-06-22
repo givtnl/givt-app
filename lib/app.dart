@@ -6,6 +6,7 @@ import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/widgets/splash_screen.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -29,10 +30,19 @@ class _AppState extends State<App> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocProvider(
-      create: (_) => AuthCubit(getIt())..checkAuth(),
-      child: const _AppView(),
-    );
+  Widget build(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => AuthCubit(getIt())..checkAuth(),
+          ),
+          BlocProvider(
+            create: (_) => InfraCubit(
+              getIt(),
+            ),
+          ),
+        ],
+        child: const _AppView(),
+      );
 }
 
 class _AppView extends StatelessWidget {

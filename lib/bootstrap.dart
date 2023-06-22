@@ -27,6 +27,7 @@ Future<void> bootstrap({
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
   await get_it.init(environmentVariables: environmentVariables);
+  await get_it.getIt.allReady();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
