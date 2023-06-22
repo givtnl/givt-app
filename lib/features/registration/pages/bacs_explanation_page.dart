@@ -29,7 +29,13 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
     final locals = context.l10n;
     return Scaffold(
       appBar: RegistrationAppBar(
-        title: Text(locals.bacsSetupTitle),
+        title: Text(
+          locals.bacsSetupTitle,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium!
+              .copyWith(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -53,6 +59,9 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
             ),
             Text(
               locals.bacsSetupBody,
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    fontSize: 15,
+                  ),
               textAlign: TextAlign.center,
             ),
             const Spacer(),
