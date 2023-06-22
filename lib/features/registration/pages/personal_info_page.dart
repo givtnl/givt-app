@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
 class PersonalInfoPage extends StatefulWidget {
@@ -60,7 +62,23 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     return Scaffold(
-      appBar: const RegistrationAppBar(),
+      appBar: RegistrationAppBar(
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              showDragHandle: true,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              builder: (_) {
+                return _buildPersonalInfoBottomSheet(context);
+              },
+            ),
+            icon: const Icon(Icons.info_rounded),
+          ),
+        ],
+      ),
       bottomSheet: Container(
         margin: const EdgeInsets.only(
           bottom: 30,
@@ -190,6 +208,53 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Container _buildPersonalInfoBottomSheet(
+    BuildContext context,
+  ) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      margin: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Text(
+            context.l10n.personalInfo,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            context.l10n.informationPersonalData,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          ),
+          const Spacer(),
+          ElevatedButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              showDragHandle: true,
+              isScrollControlled: true,
+              useSafeArea: true,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              builder: (_) => const TermsAndConditionsDialog(
+                typeOfTerms: TypeOfTerms.privacyPolicy,
+              ),
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.softenedGivtPurple,
+            ),
+            child: Text(context.l10n.readPrivacy),
+          ),
+          const SizedBox(height: 30),
+        ],
       ),
     );
   }
