@@ -251,6 +251,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             if (value == null || value.isEmpty) {
               return '';
             }
+            if (!Util.phoneNumberRegEx.hasMatch(value)) {
+              return '';
+            }
             if (_selectedCountry == Country.gg ||
                 _selectedCountry == Country.gb ||
                 _selectedCountry == Country.je) {
