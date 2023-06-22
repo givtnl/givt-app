@@ -39,6 +39,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     final user = (context.read<AuthCubit>().state as AuthSuccess).user;
     _selectedCountry = Country.values.firstWhere(
       (element) => element.countryCode == user.country,
+      orElse: () => Country.unknown,
     );
   }
 
