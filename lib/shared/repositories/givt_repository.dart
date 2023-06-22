@@ -42,8 +42,8 @@ class GivtRepositoryImpl with GivtRepository {
   Future<void> _cacheGivts(
     Map<String, dynamic> body,
   ) async {
-    if (!_prefs.containsKey(GivtTransaction.givtTransactions)) {
-      await _prefs.setString(
+    if (!prefs.containsKey(GivtTransaction.givtTransactions)) {
+      await prefs.setString(
         GivtTransaction.givtTransactions,
         jsonEncode(
           <String, dynamic>{
@@ -52,7 +52,7 @@ class GivtRepositoryImpl with GivtRepository {
         ),
       );
     } else {
-      final givtsString = _prefs.getString(
+      final givtsString = prefs.getString(
         GivtTransaction.givtTransactions,
       );
       final givts = jsonDecode(givtsString!) as Map<String, dynamic>;
@@ -62,7 +62,7 @@ class GivtRepositoryImpl with GivtRepository {
         );
       givts['donations'] = donations;
 
-      await _prefs.setString(
+      await prefs.setString(
         GivtTransaction.givtTransactions,
         jsonEncode(givts),
       );
