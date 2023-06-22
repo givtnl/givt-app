@@ -11,6 +11,7 @@ import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
@@ -39,6 +40,22 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              showDragHandle: true,
+              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              builder: (_) => const FAQBottomSheet(),
+            ),
+            icon: const Icon(
+              Icons.question_mark_outlined,
+              size: 26,
+            ),
+          ),
+        ],
       ),
       drawer: const CustomNavigationDrawer(),
       body: SafeArea(
