@@ -5,7 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({
@@ -93,9 +93,9 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.fingerprint,
             onTap: () {},
           ),
-          // Divider(
-          //   thickness: size.height * 0.02,
-          // ),
+          Divider(
+            thickness: size.height * 0.02,
+          ),
           _buildMenuItem(
             isVisible: true,
             title: locals.logOut,
@@ -110,20 +110,21 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.delete_forever,
             onTap: () {},
           ),
-          Center(
-            child: FutureBuilder(
-              future: PackageInfo.fromPlatform(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container();
-                }
-                final packageInfo = snapshot.data!;
-                return Text(
-                  'v${packageInfo.version}.${packageInfo.buildNumber}',
-                );
-              },
+          Divider(
+            thickness: size.height * 0.02,
+          ),
+          _buildMenuItem(
+            isVisible: true,
+            title: locals.titleAboutGivt,
+            icon: Icons.info,
+            onTap: () => showModalBottomSheet<void>(
+              context: context,
+              showDragHandle: true,
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (_) => AboutGivtBottomSheet(),
             ),
-          )
+          ),
         ],
       ),
     );

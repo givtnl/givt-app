@@ -22,20 +22,24 @@ enum Country {
   gb('+44', 'GB', isBACS: true),
   je('+44', 'JE', isBACS: true),
   gg('+44', 'GG', isBACS: true),
+  us('+1', 'US', isCreditCard: true),
   unknown('', '');
 
   const Country(
     this.prefix,
     this.countryCode, {
     this.isBACS = false,
+    this.isCreditCard = false,
   });
   final String prefix;
   final String countryCode;
   final bool isBACS;
+  final bool isCreditCard;
 
   static List<Country> sortedCountries() {
     return Country.values.toList()
-      ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
+      ..sort((a, b) => a.countryCode.compareTo(b.countryCode))
+      ..remove(Country.us);
   }
 
   static List<Country> sortedPrefixCountries() {

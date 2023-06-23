@@ -225,4 +225,20 @@ class APIService {
     }
     return response.statusCode == 200;
   }
+
+  Future<bool> contactSupport(Map<String, String> map) async {
+    final url = Uri.https(apiURL, '/api/sendsupport');
+    final response = await client.post(
+      url,
+      body: jsonEncode(map),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw Exception(response.statusCode);
+    }
+    return response.statusCode == 200;
+  }
 }
