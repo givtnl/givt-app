@@ -28,8 +28,6 @@ Future<void> _initAPIService(Map<String, String> environmentVariables) async {
     final countryIso = await FlutterSimCountryCode.simCountryCode;
     if (countryIso == 'US') {
       baseUrl = environmentVariables['API_URL_US']!;
-    } else {
-      baseUrl = environmentVariables['API_URL_EU']!;
     }
   } catch (e) {
     /// This fails when testing on a emulator
