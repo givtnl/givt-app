@@ -122,7 +122,7 @@ class CustomNavigationDrawer extends StatelessWidget {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              builder: (_) => AboutGivtBottomSheet(),
+              builder: (_) => const AboutGivtBottomSheet(),
             ),
           ),
         ],
