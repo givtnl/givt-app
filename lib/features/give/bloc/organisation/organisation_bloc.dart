@@ -159,6 +159,9 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     if (country.isBACS) {
       return AccountType.bacs;
     }
+    if (country.isCreditCard) {
+      return AccountType.creditCard;
+    }
     return AccountType.sepa;
   }
 }
