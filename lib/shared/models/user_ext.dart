@@ -68,9 +68,10 @@ class UserExt extends Equatable {
         phoneNumber: json['PhoneNumber'] as String,
         firstName: json['FirstName'] as String,
         lastName: json['LastName'] as String,
-        address: json['Address'] as String,
-        postalCode: json['PostalCode'] as String,
-        city: json['City'] as String,
+        address: json['Address'] != null ? json['Address'] as String : '',
+        postalCode:
+            json['PostalCode'] != null ? json['PostalCode'] as String : '',
+        city: json['City'] != null ? json['City'] as String : '',
         country: json['Country'] as String,
         countryCode: json['CountryCode'] as int,
         isGiftAidEnabled: json['GiftAidEnabled'] as bool,
