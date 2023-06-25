@@ -126,7 +126,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.success,
         ),
       );
-    } on MandateSignatureFailure catch (e) {
+    } on GivtServerFailure catch (e) {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());

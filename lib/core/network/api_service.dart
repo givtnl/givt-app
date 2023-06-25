@@ -187,7 +187,7 @@ class APIService {
     final response = await client.post(url);
 
     if (response.statusCode >= 400) {
-      throw MandateSignatureFailure(
+      throw GivtServerFailure(
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
