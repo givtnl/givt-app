@@ -195,6 +195,21 @@ class APIService {
     return response.body;
   }
 
+  Future<bool> unregisterUser(
+    Map<String, dynamic> params,
+  ) async {
+    final url = Uri.https(apiURL, '/api/v2/users/unregister', params);
+    final response = await client.post(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
   Future<bool> changeGiftAid(String guid, Map<String, dynamic> body) async {
     final url = Uri.https(apiURL, '/api/v2/users/$guid/giftaidauthorisations');
     final response = await client.post(
