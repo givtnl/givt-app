@@ -7,6 +7,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/splash_screen.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -61,6 +62,16 @@ class _AppView extends StatelessWidget {
       builder: (context, child) {
         return BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
+            if (state is AuthFailure) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: context.l10n.somethingWentWrong,
+                  content: '',
+                  onConfirm: () => Navigator.of(context).pop(),
+                ),
+              );
+            }
             if (state is AuthSuccess) {
               _navigator.pushAndRemoveUntil<void>(
                 HomePage.route(),
@@ -68,9 +79,7 @@ class _AppView extends StatelessWidget {
               );
               return;
             }
-            if (state is AuthLogout ||
-                state is AuthUnkown ||
-                state is AuthFailure) {
+            if (state is AuthLogout || state is AuthUnkown) {
               _navigator.pushAndRemoveUntil<void>(
                 WelcomePage.route(),
                 (route) => false,

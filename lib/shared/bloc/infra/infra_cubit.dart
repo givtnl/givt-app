@@ -26,13 +26,18 @@ class InfraCubit extends Cubit<InfraState> {
       final applang = 'App Language : $appLanguage';
       final info = await PackageInfo.fromPlatform();
 
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
-      final release = androidInfo.version.release;
-      final sdkInt = androidInfo.version.sdkInt;
-      final manufacturer = androidInfo.manufacturer;
-      final model = androidInfo.model;
-      var os = 'Operating system : $release (SDK $sdkInt)';
-      var device = 'Device : $manufacturer $model';
+      late String os;
+      late String device;
+
+      if (Platform.isAndroid) {
+        final androidInfo = await DeviceInfoPlugin().androidInfo;
+        final release = androidInfo.version.release;
+        final sdkInt = androidInfo.version.sdkInt;
+        final manufacturer = androidInfo.manufacturer;
+        final model = androidInfo.model;
+        os = 'Operating system : $release (SDK $sdkInt)';
+        device = 'Device : $manufacturer $model';
+      }
 
       if (Platform.isIOS) {
         final iosInfo = await DeviceInfoPlugin().iosInfo;

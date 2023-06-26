@@ -50,6 +50,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(userExt));
     } catch (e) {
+      log(e.toString());
       emit(const AuthFailure());
     }
   }
