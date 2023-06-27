@@ -1,5 +1,5 @@
-import 'package:givt_app/app.dart';
-import 'package:givt_app/bootstrap.dart';
+import 'package:givt_app/app/app.dart';
+import 'package:givt_app/app/bootstrap.dart';
 
 void main() {
   bootstrap(
