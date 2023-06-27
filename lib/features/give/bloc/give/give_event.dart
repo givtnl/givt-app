@@ -89,3 +89,20 @@ class GiveAmountChanged extends GiveEvent {
         thirdCollectionAmount,
       ];
 }
+
+class GiveQRCodeScannedOutOfApp extends GiveEvent {
+  const GiveQRCodeScannedOutOfApp(this.encodedMediumId, this.userGUID);
+
+  final String encodedMediumId;
+  final String userGUID;
+
+  @override
+  List<Object> get props => [encodedMediumId, userGUID];
+}
+
+class GiveConfirmQRCodeScannedOutOfApp extends GiveEvent {
+  const GiveConfirmQRCodeScannedOutOfApp();
+
+  @override
+  List<Object> get props => [];
+}

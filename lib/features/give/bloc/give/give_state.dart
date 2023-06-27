@@ -3,6 +3,7 @@ part of 'give_bloc.dart';
 enum GiveStatus {
   initial,
   loading,
+  readyToConfirm,
   readyToGive,
   processingBeaconData,
   noInternetConnection,

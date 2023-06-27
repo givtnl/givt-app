@@ -1,42 +1,30 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
-import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({required this.code, super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => RemoteDataSourceSyncBloc(
-          getIt(),
-          getIt(),
-        )..add(
-            const RemoteDataSourceSyncRequested(),
-          ),
-        child: const HomePage(),
-      ),
-    );
-  }
+  final String code;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     final auth = context.read<AuthCubit>().state as AuthSuccess;
-
+    log('HomePage: $code');
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
@@ -84,24 +72,14 @@ class HomePage extends StatelessWidget {
                   amountLimit: auth.user.amountLimit,
                   onAmountChanged:
                       (firstCollection, secondCollection, thirdCollection) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => BlocProvider(
-                          create: (context) => GiveBloc(
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                          )..add(
-                              GiveAmountChanged(
-                                firstCollectionAmount: firstCollection,
-                                secondCollectionAmount: secondCollection,
-                                thirdCollectionAmount: thirdCollection,
-                              ),
-                            ),
-                          child: const SelectGivingWayPage(),
-                        ),
-                        fullscreenDialog: true,
-                      ),
+                    context.go(
+                      '/home/select_giving_way',
+                      extra: {
+                        'firstCollection': firstCollection,
+                        'secondCollection': secondCollection,
+                        'thirdCollection': thirdCollection,
+                        'code': code,
+                      },
                     );
                     return true;
                   },

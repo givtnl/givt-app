@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
-
-import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatefulWidget {
@@ -52,7 +52,7 @@ class _GivingPageState extends State<GivingPage> {
       return;
     }
 
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    context.go('/home');
   }
 
   Map<String, dynamic> _buildGivt(
@@ -82,17 +82,13 @@ class _GivingPageState extends State<GivingPage> {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: () => Navigator.of(context).popUntil(
-            (route) => route.isFirst,
-          ),
+          onPressed: () => context.go('/home'),
         ),
       ),
       body: BlocConsumer<GiveBloc, GiveState>(
         listener: (context, state) {
           if (state.status == GiveStatus.error) {
-            Navigator.of(context).popUntil(
-              (route) => route.isFirst,
-            );
+            context.go('/home');
           }
         },
         builder: (context, state) {

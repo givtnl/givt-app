@@ -1,15 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
-import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
-import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
-import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:go_router/go_router.dart';
 
 class SelectGivingWayPage extends StatelessWidget {
   const SelectGivingWayPage({super.key});
@@ -37,22 +37,15 @@ class SelectGivingWayPage extends StatelessWidget {
         child: BlocListener<GiveBloc, GiveState>(
           listener: (context, state) {
             if (state.status == GiveStatus.noInternetConnection) {
-              Navigator.of(context).pushReplacement(
-                SuccessOfflineDonationPage.route(
-                  state.organisation.organisationName!,
-                ),
-              );
-              return;
+              context.go('/home/select_giving_way/give_offline');
+            }
+            if (state.status == GiveStatus.readyToConfirm) {
+              _buildQrCodeGiving(context, state.organisation.organisationName!);
             }
             if (state.status == GiveStatus.readyToGive) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<GiveBloc>(),
-                    child: const GivingPage(),
-                  ),
-                  fullscreenDialog: true,
-                ),
+              context.go(
+                '/home/select_giving_way/give',
+                extra: context.read<GiveBloc>(),
               );
             }
           },
@@ -154,4 +147,33 @@ class SelectGivingWayPage extends StatelessWidget {
         title: title,
         subtitle: subtitle,
       );
+
+  Future<void> _buildQrCodeGiving(
+    BuildContext context,
+    String organisationName,
+  ) {
+    return showDialog<void>(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Image.asset(
+          'assets/images/select_qr_phone_scan.png',
+          width: 50,
+        ),
+        content: Text(context.l10n.qrScannedOutOfApp(organisationName)),
+        actions: [
+          TextButton(
+            onPressed: () => context.read<GiveBloc>().add(
+                  const GiveConfirmQRCodeScannedOutOfApp(),
+                ),
+            child: Text(
+              context.l10n.yesPlease,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

@@ -23,6 +23,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) : super(const GiveState()) {
     on<GiveQRCodeScanned>(_qrCodeScanned);
 
+    on<GiveQRCodeScannedOutOfApp>(_qrCodeScannedOutOfApp);
+
+    on<GiveConfirmQRCodeScannedOutOfApp>(_confirmQRCodeScannedOutOfApp);
+
     on<GiveAmountChanged>(_amountChanged);
 
     on<GiveOrganisationSelected>(_organisationSelected);
@@ -289,5 +293,59 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       beaconId: beaconId,
       batteryVoltage: batteryVoltage,
     );
+  }
+
+  FutureOr<void> _qrCodeScannedOutOfApp(
+    GiveQRCodeScannedOutOfApp event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
+
+      final organisation = await _getOrganisation(mediumId);
+      final transactionList = _createTransationList(
+        mediumId,
+        event.userGUID,
+      );
+
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToConfirm,
+          organisation: organisation,
+          givtTransactions: transactionList,
+        ),
+      );
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: GiveStatus.error));
+    }
+  }
+
+  FutureOr<void> _confirmQRCodeScannedOutOfApp(
+    GiveConfirmQRCodeScannedOutOfApp event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    await _campaignRepository.saveLastDonation(
+      state.organisation.copyWith(
+        mediumId: state.organisation.mediumId,
+      ),
+    );
+    try {
+      await _givtRepository.submitGivts(
+        guid: state.givtTransactions.first.guid,
+        body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
+      );
+      emit(state.copyWith(status: GiveStatus.readyToGive));
+    } on SocketException catch (e) {
+      log(e.toString());
+      emit(
+        state.copyWith(
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
+      return;
+    }
   }
 }
