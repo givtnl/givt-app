@@ -10,6 +10,7 @@ import 'package:givt_app/features/give/models/models.dart';
 
 import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:intl/intl.dart';
 import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatefulWidget {
@@ -59,7 +60,11 @@ class _GivingPageState extends State<GivingPage> {
     BuildContext context,
   ) {
     final giveBlocState = context.read<GiveBloc>().state;
+    final format = NumberFormat.simpleCurrency(
+      locale: Localizations.localeOf(context).toString(),
+    );
     return WebViewInput(
+      currency: format.currencySymbol,
       apiUrl: Uri.https(getIt<APIService>().apiURL).toString(),
       guid: (context.read<AuthCubit>().state as AuthSuccess).user.guid,
       organisation: giveBlocState.organisation.organisationName!,
@@ -122,11 +127,12 @@ class _GivingPageState extends State<GivingPage> {
                   ios: IOSInAppBrowserOptions(
                     toolbarBottomBackgroundColor: Colors.white,
                     presentationStyle: IOSUIModalPresentationStyle.POPOVER,
+                    hideToolbarBottom: true,
                   ),
                 ),
               )
-              .then(
-                (value) => _closeBrowser(),
+              .whenComplete(
+                _closeBrowser,
               );
           return const SizedBox.shrink();
         },

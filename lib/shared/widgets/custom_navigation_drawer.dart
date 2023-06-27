@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 
@@ -102,13 +104,16 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.logout_sharp,
             onTap: () async => context.read<AuthCubit>().logout(),
           ),
-          // Divider(
-          //   indent: size.width * 0.05,
-          // ),
+          Divider(
+            indent: size.width * 0.05,
+          ),
           _buildMenuItem(
+            isVisible: true,
             title: locals.unregister,
-            icon: Icons.delete_forever,
-            onTap: () {},
+            icon: FontAwesomeIcons.userXmark,
+            onTap: () => Navigator.of(context).push(
+              UnregisterPage.route(),
+            ),
           ),
           Divider(
             thickness: size.height * 0.02,
@@ -122,7 +127,7 @@ class CustomNavigationDrawer extends StatelessWidget {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              builder: (_) => AboutGivtBottomSheet(),
+              builder: (_) => const AboutGivtBottomSheet(),
             ),
           ),
         ],
