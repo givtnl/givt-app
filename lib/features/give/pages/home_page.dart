@@ -130,7 +130,7 @@ class HomePage extends StatelessWidget {
                 );
                 return;
               }
-              context.goNamed('mandate-explanation');
+              context.goNamed(Pages.sepaMandateExplanation.name);
             },
             child: Text(
               context.l10n.finalizeRegistration,
