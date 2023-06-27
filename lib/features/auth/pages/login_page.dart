@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
-import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.email = ''});
@@ -71,10 +72,11 @@ class _LoginPageState extends State<LoginPage> {
                 actions: [
                   TextButton(
                     child: Text(locals.continueKey),
-                    onPressed: () => Navigator.of(context).pushReplacement(
-                      SignUpPage.route(
-                        email: state.email.trim(),
-                      ),
+                    onPressed: () => context.goNamed(
+                      Pages.registration.name,
+                      queryParameters: {
+                        'email': state.email.trim(),
+                      },
                     ),
                   ),
                 ],

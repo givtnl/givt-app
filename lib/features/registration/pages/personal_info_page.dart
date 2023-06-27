@@ -9,15 +9,10 @@ import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 
 class PersonalInfoPage extends StatefulWidget {
   const PersonalInfoPage({super.key});
-
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const PersonalInfoPage(),
-    );
-  }
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
@@ -451,7 +446,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       content: Text(message),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
           child: Text(context.l10n.confirm),
         ),
       ],

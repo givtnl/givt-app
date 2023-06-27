@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({
@@ -18,20 +16,6 @@ class SignUpPage extends StatefulWidget {
     this.email = '',
   });
   final String email;
-  static MaterialPageRoute<dynamic> route({String email = ''}) {
-    return MaterialPageRoute(
-      fullscreenDialog: true,
-      builder: (_) => BlocProvider(
-        create: (context) => RegistrationBloc(
-          authCubit: context.read<AuthCubit>(),
-          authRepositoy: getIt(),
-        ),
-        child: SignUpPage(
-          email: email,
-        ),
-      ),
-    );
-  }
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -108,20 +92,19 @@ class _SignUpPageState extends State<SignUpPage> {
         child: BlocListener<RegistrationBloc, RegistrationState>(
           listener: (context, state) {
             if (state.status == RegistrationStatus.personalInfo) {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<RegistrationBloc>(),
-                    child: const PersonalInfoPage(),
-                  ),
-                ),
+              context.goNamed(
+                Pages.personalInfo.name,
+                extra: context.read<RegistrationBloc>(),
               );
             }
 
             if (state.status ==
                     RegistrationStatus.bacsDirectDebitMandateExplanation ||
                 state.status == RegistrationStatus.sepaMandateExplanation) {
-              Navigator.of(context).push(MandateExplanationPage.route());
+              context.goNamed(
+                Pages.sepaMandateExplanation.name,
+                extra: context.read<RegistrationBloc>(),
+              );
             }
           },
           child: Form(

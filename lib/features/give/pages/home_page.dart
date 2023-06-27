@@ -4,10 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
-import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -72,8 +71,8 @@ class HomePage extends StatelessWidget {
                   amountLimit: auth.user.amountLimit,
                   onAmountChanged:
                       (firstCollection, secondCollection, thirdCollection) {
-                    context.go(
-                      '/home/select_giving_way',
+                    context.goNamed(
+                      Pages.selectGivingWay.name,
                       extra: {
                         'firstCollection': firstCollection,
                         'secondCollection': secondCollection,
@@ -117,20 +116,21 @@ class HomePage extends StatelessWidget {
         content: Text(context.l10n.finalizeRegistrationPopupText),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pop(),
             child: Text(context.l10n.askMeLater),
           ),
           TextButton(
             onPressed: () {
               if (user.needRegistration) {
-                Navigator.of(context).push(
-                  SignUpPage.route(email: user.email),
+                context.goNamed(
+                  Pages.registration.name,
+                  queryParameters: {
+                    'email': user.email,
+                  },
                 );
                 return;
               }
-              Navigator.of(context).push(
-                MandateExplanationPage.route(),
-              );
+              context.goNamed('mandate-explanation');
             },
             child: Text(
               context.l10n.finalizeRegistration,

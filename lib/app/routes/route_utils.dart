@@ -5,6 +5,13 @@ enum Pages {
   selectGivingWay,
   give,
   giveOffline,
+  signSepaMandate,
+  signBacsMandate,
+  giftAid,
+  personalInfo,
+  sepaMandateExplanation,
+  bacsMandateExplanation,
+  registration,
 }
 
 extension AppPageExtension on Pages {
@@ -17,11 +24,25 @@ extension AppPageExtension on Pages {
       case Pages.welcome:
         return 'welcome';
       case Pages.selectGivingWay:
-        return 'select_giving_way';
+        return 'select-giving-way';
       case Pages.give:
         return 'give';
       case Pages.giveOffline:
-        return 'give_offline';
+        return 'give-offline';
+      case Pages.signSepaMandate:
+        return 'sign-sepa-mandate';
+      case Pages.signBacsMandate:
+        return 'sign-bacs-mandate';
+      case Pages.giftAid:
+        return 'gift-aid';
+      case Pages.personalInfo:
+        return 'personal-info';
+      case Pages.sepaMandateExplanation:
+        return 'sepa-mandate-explanation';
+      case Pages.bacsMandateExplanation:
+        return 'bacs-mandate-explanation';
+      case Pages.registration:
+        return 'registration';
     }
   }
 
@@ -34,11 +55,25 @@ extension AppPageExtension on Pages {
       case Pages.welcome:
         return 'WELCOME';
       case Pages.selectGivingWay:
-        return 'GIVING_WAY';
+        return 'GIVING-WAY';
       case Pages.give:
         return 'GIVE';
       case Pages.giveOffline:
-        return 'GIVE_OFFLINE';
+        return 'GIVE-OFFLINE';
+      case Pages.signSepaMandate:
+        return 'SIGN-SEPA-MANDATE';
+      case Pages.signBacsMandate:
+        return 'SIGN-BACS-MANDATE';
+      case Pages.giftAid:
+        return 'GIFT-AID';
+      case Pages.personalInfo:
+        return 'PERSONAL-INFO';
+      case Pages.sepaMandateExplanation:
+        return 'SEPA-MANDATE-EXPLANATION';
+      case Pages.bacsMandateExplanation:
+        return 'BACS-MANDATE-EXPLANATION';
+      case Pages.registration:
+        return 'REGISTRATION';
     }
   }
 }
