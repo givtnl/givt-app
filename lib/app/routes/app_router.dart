@@ -8,6 +8,14 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
+import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
+import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
+import 'package:givt_app/features/registration/pages/personal_info_page.dart';
+import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
+import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
+import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -43,6 +51,82 @@ class AppRouter {
             path: Pages.home.path,
             name: Pages.home.name,
             routes: [
+              GoRoute(
+                path: Pages.registration.path,
+                name: Pages.registration.name,
+                builder: (context, state) {
+                  final email = state.queryParameters['email'] ?? '';
+                  return BlocProvider(
+                    create: (context) => RegistrationBloc(
+                      authCubit: context.read<AuthCubit>(),
+                      authRepositoy: getIt(),
+                    ),
+                    child: SignUpPage(
+                      email: email,
+                    ),
+                  );
+                },
+                routes: [
+                  GoRoute(
+                    path: Pages.personalInfo.path,
+                    name: Pages.personalInfo.name,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as RegistrationBloc,
+                      child: const PersonalInfoPage(),
+                    ),
+                  ),
+                ],
+              ),
+              GoRoute(
+                path: Pages.sepaMandateExplanation.path,
+                name: Pages.sepaMandateExplanation.name,
+                routes: [
+                  GoRoute(
+                    path: Pages.signSepaMandate.path,
+                    name: Pages.signSepaMandate.name,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as RegistrationBloc,
+                      child: const SignSepaMandatePage(),
+                    ),
+                  ),
+                ],
+                builder: (context, state) => BlocProvider(
+                  create: (context) => RegistrationBloc(
+                    authCubit: context.read<AuthCubit>(),
+                    authRepositoy: getIt(),
+                  )..add(const RegistrationInit()),
+                  child: const MandateExplanationPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.bacsMandateExplanation.path,
+                name: Pages.bacsMandateExplanation.name,
+                routes: [
+                  GoRoute(
+                    path: Pages.signBacsMandate.path,
+                    name: Pages.signBacsMandate.name,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as RegistrationBloc,
+                      child: const SignBacsMandatePage(),
+                    ),
+                  ),
+                  GoRoute(
+                    path: Pages.giftAid.path,
+                    name: Pages.giftAid.name,
+                    builder: (context, state) => BlocProvider(
+                      create: (context) => RegistrationBloc(
+                        authCubit: context.read<AuthCubit>(),
+                        authRepositoy: getIt(),
+                      )..add(const RegistrationInit()),
+                      child: const GiftAidRequestPage(),
+                    ),
+                  ),
+                ],
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const BacsExplanationPage(),
+                ),
+              ),
               GoRoute(
                 path: Pages.selectGivingWay.path,
                 name: Pages.selectGivingWay.name,
