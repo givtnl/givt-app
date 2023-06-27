@@ -23,20 +23,6 @@ class APIService {
 
   String get apiURL => _apiURL;
 
-  Future<dynamic> checkEmailExists(String email) async {
-    final url = Uri.https(
-      _apiURL,
-      '/api/v2/Users/check',
-      {'email': email},
-    );
-    final response = await client.get(url);
-    if (response.statusCode >= 400) {
-      throw Exception('Failed to check email');
-    } else {
-      return response.body;
-    }
-  }
-
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
     final response = await client.post(
