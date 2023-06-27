@@ -46,6 +46,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     GiveQRCodeScanned event,
     Emitter<GiveState> emit,
   ) async {
+    if (state.status == GiveStatus.loading ||
+        state.status == GiveStatus.readyToGive) {
+      return;
+    }
     emit(state.copyWith(status: GiveStatus.loading));
     try {
       final uri = Uri.parse(event.rawValue);

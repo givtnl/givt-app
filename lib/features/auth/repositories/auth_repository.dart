@@ -27,6 +27,9 @@ mixin AuthRepositoy {
     required String guid,
     required bool giftAid,
   });
+  Future<bool> unregisterUser({
+    required String email,
+  });
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -186,4 +189,12 @@ class AuthRepositoyImpl with AuthRepositoy {
   @override
   Future<bool> resetPassword(String email) =>
       _apiService.resetPassword({'email': email});
+
+  @override
+  Future<bool> unregisterUser({
+    required String email,
+  }) async =>
+      _apiService.unregisterUser({
+        'email': email,
+      });
 }

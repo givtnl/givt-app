@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class MandateSignatureFailure extends Equatable implements Exception {
-  const MandateSignatureFailure({
+class GivtServerFailure extends Equatable implements Exception {
+  const GivtServerFailure({
     required this.statusCode,
     this.body,
   });

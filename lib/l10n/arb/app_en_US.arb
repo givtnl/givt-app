@@ -808,7 +808,7 @@
         "description": "Title van de pagina \"Account opzeggen\"",
         "type": "text"
     },
-    "unregisterInfo": "We’re sad to see you go! We will delete all your personal information.",
+    "unregisterInfo": "We’re sad to see you go! We will delete all your personal information.\n \n\n There’s one exception: if you donated to a PBO-registered organisation, we are obligated to keep the information about your donation, your name and address for at least 7 years. Your e-mail address and phone number will be removed.",
     "@unregisterInfo": {
         "description": "Informatie op de \"account opzeggen\" pagina",
         "type": "text"
