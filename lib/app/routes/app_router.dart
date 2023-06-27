@@ -89,6 +89,35 @@ class AppRouter {
                       child: const SignSepaMandatePage(),
                     ),
                   ),
+                  GoRoute(
+                    path: Pages.bacsMandateExplanation.path,
+                    name: Pages.bacsMandateExplanation.name,
+                    routes: [
+                      GoRoute(
+                        path: Pages.signBacsMandate.path,
+                        name: Pages.signBacsMandate.name,
+                        builder: (context, state) => BlocProvider.value(
+                          value: state.extra! as RegistrationBloc,
+                          child: const SignBacsMandatePage(),
+                        ),
+                      ),
+                      GoRoute(
+                        path: Pages.giftAid.path,
+                        name: Pages.giftAid.name,
+                        builder: (context, state) => BlocProvider(
+                          create: (context) => RegistrationBloc(
+                            authCubit: context.read<AuthCubit>(),
+                            authRepositoy: getIt(),
+                          )..add(const RegistrationInit()),
+                          child: const GiftAidRequestPage(),
+                        ),
+                      ),
+                    ],
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as RegistrationBloc,
+                      child: const BacsExplanationPage(),
+                    ),
+                  ),
                 ],
                 builder: (context, state) => BlocProvider(
                   create: (context) => RegistrationBloc(
@@ -96,35 +125,6 @@ class AppRouter {
                     authRepositoy: getIt(),
                   )..add(const RegistrationInit()),
                   child: const MandateExplanationPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.bacsMandateExplanation.path,
-                name: Pages.bacsMandateExplanation.name,
-                routes: [
-                  GoRoute(
-                    path: Pages.signBacsMandate.path,
-                    name: Pages.signBacsMandate.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as RegistrationBloc,
-                      child: const SignBacsMandatePage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giftAid.path,
-                    name: Pages.giftAid.name,
-                    builder: (context, state) => BlocProvider(
-                      create: (context) => RegistrationBloc(
-                        authCubit: context.read<AuthCubit>(),
-                        authRepositoy: getIt(),
-                      )..add(const RegistrationInit()),
-                      child: const GiftAidRequestPage(),
-                    ),
-                  ),
-                ],
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as RegistrationBloc,
-                  child: const BacsExplanationPage(),
                 ),
               ),
               GoRoute(
