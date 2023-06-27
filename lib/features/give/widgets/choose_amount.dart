@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -200,10 +201,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
   Icon _buildCurrencyIcon() {
     final countryIso = widget.country;
     var icon = Icons.euro;
-    if (countryIso == 'US') {
+    if (countryIso == Country.us.countryCode) {
       icon = Icons.attach_money;
     }
-    if (countryIso == 'GB') {
+    if (Country.unitedKingdomCodes().contains(countryIso)) {
       icon = Icons.currency_pound;
     }
 

@@ -105,6 +105,7 @@ class SelectGivingWayPage extends StatelessWidget {
                           create: (_) => OrganisationBloc(
                             getIt(),
                             getIt(),
+                            getIt(),
                           )..add(
                               OrganisationFetch(
                                 (context.read<AuthCubit>().state as AuthSuccess)

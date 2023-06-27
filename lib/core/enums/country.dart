@@ -52,4 +52,12 @@ enum Country {
     }
     return countries;
   }
+
+  static List<String> unitedKingdomCodes() {
+    return [
+      Country.gb.countryCode,
+      Country.je.countryCode,
+      Country.gg.countryCode,
+    ];
+  }
 }
