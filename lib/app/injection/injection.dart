@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -24,7 +25,7 @@ Future<void> init({
 
 Future<void> _initAPIService(Map<String, String> environmentVariables) async {
   var baseUrl = environmentVariables['API_URL_EU']!;
-  if (getIt<CountryIsoInfo>().isUS) {
+  if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
     baseUrl = environmentVariables['API_URL_US']!;
   }
   log('Using API URL: $baseUrl');

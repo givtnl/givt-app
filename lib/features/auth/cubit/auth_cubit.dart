@@ -18,12 +18,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
     try {
-      // check email
-      final result = await _authRepositoy.checkEmail(email);
-      if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
-        return;
-      }
       final userGUID = await _authRepositoy.login(
         email,
         password,
@@ -75,7 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
+        await login(email: email, password: TempUser.defaultPassword);
         return;
       }
       if (result.contains('true')) {

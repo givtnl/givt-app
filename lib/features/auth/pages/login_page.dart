@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.email = ''});
@@ -63,26 +61,6 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthTempAccountWarning) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text(locals.temporaryAccount),
-                content: Text(locals.tempAccountLogin),
-                actions: [
-                  TextButton(
-                    child: Text(locals.continueKey),
-                    onPressed: () => context.goNamed(
-                      Pages.registration.name,
-                      queryParameters: {
-                        'email': state.email.trim(),
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
           if (state is AuthFailure) {
             showDialog<void>(
               context: context,

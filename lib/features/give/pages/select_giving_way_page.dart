@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -37,14 +38,14 @@ class SelectGivingWayPage extends StatelessWidget {
         child: BlocListener<GiveBloc, GiveState>(
           listener: (context, state) {
             if (state.status == GiveStatus.noInternetConnection) {
-              context.go('/home/select_giving_way/give_offline');
+              context.goNamed(Pages.giveOffline.name);
             }
             if (state.status == GiveStatus.readyToConfirm) {
               _buildQrCodeGiving(context, state.organisation.organisationName!);
             }
             if (state.status == GiveStatus.readyToGive) {
-              context.go(
-                '/home/select_giving_way/give',
+              context.goNamed(
+                Pages.give.name,
                 extra: context.read<GiveBloc>(),
               );
             }
