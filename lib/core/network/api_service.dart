@@ -198,7 +198,7 @@ class APIService {
   Future<bool> unregisterUser(
     Map<String, dynamic> params,
   ) async {
-    final url = Uri.https(apiURL, '/api/v2/users/unregister', params);
+    final url = Uri.https(apiURL, '/api/users/unregister', params);
     final response = await client.post(url);
 
     if (response.statusCode >= 400) {
