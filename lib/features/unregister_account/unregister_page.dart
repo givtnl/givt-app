@@ -30,6 +30,16 @@ class _UnregisterPageState extends State<UnregisterPage> {
     final locals = context.l10n;
     return BlocConsumer<UnregisterCubit, UnregisterState>(
       listener: (context, state) {
+        if (state is UnregisterNoInternet) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.noInternetConnectionTitle,
+              content: locals.noInternet,
+              onConfirm: () => Navigator.of(context).pop(),
+            ),
+          );
+        }
         if (state is UnregisterFailure) {
           showDialog<void>(
             context: context,

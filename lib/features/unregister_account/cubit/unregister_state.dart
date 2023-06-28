@@ -43,3 +43,10 @@ class UnregisterSuccess extends UnregisterState {
   @override
   List<Object> get props => [];
 }
+
+class UnregisterNoInternet extends UnregisterState {
+  const UnregisterNoInternet();
+
+  @override
+  List<Object> get props => [];
+}
