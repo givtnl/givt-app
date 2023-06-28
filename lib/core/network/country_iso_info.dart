@@ -15,13 +15,13 @@ mixin CountryIsoInfo {
 class CountryIsoInfoImpl implements CountryIsoInfo {
   CountryIsoInfoImpl();
 
-  String _countryIso = Country.us.countryCode;
+  String _countryIso = Country.nl.countryCode;
 
   @override
   Future<String> get checkCountryIso async {
     try {
       _countryIso =
-          await FlutterSimCountryCode.simCountryCode ?? Country.us.countryCode;
+          await FlutterSimCountryCode.simCountryCode ?? Country.nl.countryCode;
     } on PlatformException catch (e) {
       log(e.toString());
     }
