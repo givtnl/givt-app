@@ -1,11 +1,17 @@
+import 'dart:developer';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class GPSScanPage extends StatefulWidget {
   const GPSScanPage({super.key});
@@ -20,6 +26,68 @@ class _GPSScanPageState extends State<GPSScanPage> {
   @override
   void initState() {
     super.initState();
+    _permissionCheck();
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 2,
+        timeLimit: Duration(seconds: 30),
+      ),
+    ).listen(
+      (Position? position) {
+        if (position == null) {
+          return;
+        }
+        if (!mounted) {
+          return;
+        }
+        context.read<GiveBloc>().add(
+              GiveGPSLocationChanged(
+                latitude: position.latitude,
+                longitude: position.longitude,
+              ),
+            );
+      },
+      onDone: () {
+        log('Done');
+      },
+    );
+    Future.delayed(const Duration(seconds: 10), () {
+      setState(() {
+        _isVisible = !_isVisible;
+      });
+    });
+  }
+
+  Future<void> _permissionCheck() async {
+    final permission = await Permission.location.request();
+    if (!permission.isGranted) {
+      if (!mounted) {
+        return;
+      }
+      await showDialog<void>(
+        context: context,
+        builder: (_) => WarningDialog(
+          title: context.l10n.allowGivtLocationTitle,
+          content: context.l10n.allowGivtLocationMessage,
+          onConfirm: openAppSettings,
+        ),
+      );
+      return;
+    }
+    await Geolocator.isLocationServiceEnabled().then((isEnabled) {
+      if (isEnabled) {
+        return;
+      }
+      showDialog<void>(
+        context: context,
+        builder: (_) => WarningDialog(
+          title: context.l10n.allowGivtLocationTitle,
+          content: context.l10n.locationEnabledMessage,
+          onConfirm: openAppSettings,
+        ),
+      );
+    });
   }
 
   @override

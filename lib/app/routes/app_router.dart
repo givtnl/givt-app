@@ -140,6 +140,7 @@ class AppRouter {
                       getIt(),
                       getIt(),
                       getIt(),
+                      getIt(),
                     )..add(
                         GiveAmountChanged(
                           firstCollectionAmount:

@@ -5,9 +5,12 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/shared/models/models.dart';
+import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
@@ -20,6 +23,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     this._campaignRepository,
     this._givtRepository,
     this._beaconRepository,
+    this._collectGroupRepository,
   ) : super(const GiveState()) {
     on<GiveQRCodeScanned>(_qrCodeScanned);
 
@@ -28,6 +32,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     on<GiveConfirmQRCodeScannedOutOfApp>(_confirmQRCodeScannedOutOfApp);
 
     on<GiveAmountChanged>(_amountChanged);
+
+    on<GiveGPSLocationChanged>(_gpsLocationChanged);
+
+    on<GiveGPSConfirm>(_gpsConfirm);
 
     on<GiveOrganisationSelected>(_organisationSelected);
 
@@ -41,6 +49,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final CampaignRepository _campaignRepository;
   final GivtRepository _givtRepository;
   final BeaconRepository _beaconRepository;
+  final CollectGroupRepository _collectGroupRepository;
 
   FutureOr<void> _qrCodeScanned(
     GiveQRCodeScanned event,
@@ -350,6 +359,106 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
+    }
+  }
+
+  FutureOr<void> _gpsLocationChanged(
+    GiveGPSLocationChanged event,
+    Emitter<GiveState> emit,
+  ) async {
+    if (state.status == GiveStatus.readyToConfirmGPS) {
+      return;
+    }
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final organisations = await _collectGroupRepository.getCollectGroupList();
+      final locations = <Location>[];
+      for (final org in organisations) {
+        locations.addAll(org.locations);
+      }
+      for (final location in locations) {
+        if (location.end == null || location.begin == null) {
+          continue;
+        }
+        // final currentTime = DateTime.now().toUtc();
+        // if (!location.end!.isBefore(currentTime) &&
+        //     !location.begin!.isAfter(currentTime)) {
+        //   continue;
+        // }
+        final distance = Geolocator.distanceBetween(
+          location.latitude,
+          location.longitude,
+          event.latitude,
+          event.longitude,
+        );
+        if (distance < location.radius) {
+          log('Location ${location.name} found in radius at $distance meters');
+
+          /// if no nearest location set nearest location
+          if (state.nearestLocation.beaconId.isEmpty) {
+            emit(
+              state.copyWith(
+                nearestLocation: location,
+              ),
+            );
+            continue;
+          }
+          final distanceBetweenPreviousLocation = Geolocator.distanceBetween(
+            state.nearestLocation.latitude,
+            state.nearestLocation.longitude,
+            event.latitude,
+            event.longitude,
+          );
+
+          /// if closer update nearest location
+          if (distanceBetweenPreviousLocation > distance) {
+            log('Location ${location.name} is closer at $distance meters');
+            emit(
+              state.copyWith(
+                nearestLocation: location,
+              ),
+            );
+            continue;
+          }
+        }
+      }
+      if (state.nearestLocation.beaconId.isNotEmpty) {
+        log('Giving to ${state.nearestLocation.name}');
+        emit(
+          state.copyWith(
+            status: GiveStatus.readyToConfirmGPS,
+          ),
+        );
+      }
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: GiveStatus.error));
+    }
+  }
+
+  FutureOr<void> _gpsConfirm(
+    GiveGPSConfirm event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final organisation =
+          await _getOrganisation(state.nearestLocation.beaconId);
+      final transactionList = _createTransationList(
+        state.nearestLocation.beaconId,
+        event.userGUID,
+      );
+
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToGive,
+          organisation: organisation,
+          givtTransactions: transactionList,
+        ),
+      );
+    } catch (e) {
+      log(e.toString());
+      emit(state.copyWith(status: GiveStatus.error));
     }
   }
 }
