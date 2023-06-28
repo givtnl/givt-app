@@ -27,25 +27,28 @@ class CollectGroup extends Equatable {
     final multiUseAllocations = <MultiUseAllocation>[];
     final qrCodes = <QrCode>[];
 
-    // if (json['Locations'] != null) {
-    //   for (final location in json['Locations'] as List<Map<String, dynamic>>) {
-    //     locations.add(Location.fromJson(location));
-    //   }
-    // }
+    if (json['Locations'] != null) {
+      for (final location in json['Locations'] as List<dynamic>) {
+        locations.add(Location.fromJson(location as Map<String, dynamic>));
+      }
+    }
 
-    // if (json['MultiUseAllocations'] != null) {
-    //   for (final multiUseAllocation
-    //       in json['MultiUseAllocations'] as List<Map<String, dynamic>>) {
-    //     multiUseAllocations
-    //         .add(MultiUseAllocation.fromJson(multiUseAllocation));
-    //   }
-    // }
+    if (json['MultiUseAllocations'] != null) {
+      for (final multiUseAllocation
+          in json['MultiUseAllocations'] as List<dynamic>) {
+        multiUseAllocations.add(
+          MultiUseAllocation.fromJson(
+            multiUseAllocation as Map<String, dynamic>,
+          ),
+        );
+      }
+    }
 
-    // if (json['qrCodes'] != null) {
-    //   for (final qrCode in json['qrCodes']) {
-    //     qrCodes.add(QrCode.fromJson(qrCode));
-    //   }
-    // }
+    if (json['qrCodes'] != null) {
+      for (final qrCode in json['qrCodes'] as List<dynamic>) {
+        qrCodes.add(QrCode.fromJson(qrCode as Map<String, dynamic>));
+      }
+    }
 
     return CollectGroup(
       nameSpace: json['EddyNameSpace'] as String,
