@@ -11,6 +11,15 @@ class Location extends Equatable {
     this.end,
   });
 
+  const Location.empty()
+      : name = '',
+        latitude = 0,
+        longitude = 0,
+        radius = 0,
+        beaconId = '',
+        begin = null,
+        end = null;
+
   factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
       name: json['Name'] as String,
