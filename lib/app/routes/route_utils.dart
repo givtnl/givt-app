@@ -5,6 +5,10 @@ enum Pages {
   selectGivingWay,
   give,
   giveOffline,
+  giveByList,
+  giveByQrCode,
+  giveByLocation,
+  giveByBeacon,
   signSepaMandate,
   signBacsMandate,
   giftAid,
@@ -43,6 +47,14 @@ extension AppPageExtension on Pages {
         return 'bacs-mandate-explanation';
       case Pages.registration:
         return 'registration';
+      case Pages.giveByList:
+        return 'give-by-list';
+      case Pages.giveByQrCode:
+        return 'give-by-qr-code';
+      case Pages.giveByLocation:
+        return 'give-by-location';
+      case Pages.giveByBeacon:
+        return 'give-by-beacon';
     }
   }
 
@@ -74,6 +86,14 @@ extension AppPageExtension on Pages {
         return 'BACS-MANDATE-EXPLANATION';
       case Pages.registration:
         return 'REGISTRATION';
+      case Pages.giveByList:
+        return 'GIVE-BY-LIST';
+      case Pages.giveByQrCode:
+        return 'GIVE-BY-QR-CODE';
+      case Pages.giveByLocation:
+        return 'GIVE-BY-LOCATION';
+      case Pages.giveByBeacon:
+        return 'GIVE-BY-BEACON';
     }
   }
 }

@@ -1,25 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/bt_scan_page.dart';
-import 'package:givt_app/features/give/pages/organization_list_page.dart';
-import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectGivingWayPage extends StatelessWidget {
   const SelectGivingWayPage({super.key});
-
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const SelectGivingWayPage(),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +42,7 @@ class SelectGivingWayPage extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.only(bottom: 20),
                 child: Text(
                   locals.giveSubtitle,
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -61,69 +50,40 @@ class SelectGivingWayPage extends StatelessWidget {
                 ),
               ),
               _buildListTile(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => BlocProvider.value(
-                      value: context.read<GiveBloc>()
-                        ..add(
-                          const GiveCheckLastDonation(),
-                        ),
-                      child: const BTScanPage(),
-                    ),
-                    fullscreenDialog: true,
-                  ),
+                onTap: () => context.goNamed(
+                  Pages.giveByBeacon.name,
+                  extra: context.read<GiveBloc>(),
                 ),
                 title: locals.givingContextCollectionBag,
                 subtitle: locals.selectContextCollect,
                 image: 'assets/images/select_givtbox.png',
               ),
               _buildListTile(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => BlocProvider.value(
-                      value: context.read<GiveBloc>(),
-                      child: const QrCodeScanPage(),
-                    ),
-                    fullscreenDialog: true,
-                  ),
+                onTap: () => context.goNamed(
+                  Pages.giveByQrCode.name,
+                  extra: context.read<GiveBloc>(),
                 ),
                 title: locals.givingContextQrCode,
                 subtitle: locals.giveContextQr,
                 image: 'assets/images/select_qr_phone_scan.png',
               ),
               _buildListTile(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider.value(
-                          value: context.read<GiveBloc>()
-                            ..add(
-                              const GiveCheckLastDonation(),
-                            ),
-                        ),
-                        BlocProvider(
-                          create: (_) => OrganisationBloc(
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                          )..add(
-                              OrganisationFetch(
-                                (context.read<AuthCubit>().state as AuthSuccess)
-                                    .user
-                                    .accountType,
-                              ),
-                            ),
-                        ),
-                      ],
-                      child: const OrganizationListPage(),
-                    ),
-                    fullscreenDialog: true,
-                  ),
+                onTap: () => context.goNamed(
+                  Pages.giveByList.name,
+                  extra: context.read<GiveBloc>(),
                 ),
                 title: locals.givingContextCollectionBagList,
                 subtitle: locals.selectContextList,
                 image: 'assets/images/select_list.png',
+              ),
+              _buildListTile(
+                onTap: () => context.goNamed(
+                  Pages.giveByLocation.name,
+                  extra: context.read<GiveBloc>(),
+                ),
+                title: locals.givingContextLocation,
+                subtitle: locals.selectLocationContextLong,
+                image: 'assets/images/select_location.png',
               ),
             ],
           ),

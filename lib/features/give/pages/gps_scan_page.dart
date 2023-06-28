@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -8,78 +7,24 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
-class BTScanPage extends StatefulWidget {
-  const BTScanPage({super.key});
+class GPSScanPage extends StatefulWidget {
+  const GPSScanPage({super.key});
 
   @override
-  State<BTScanPage> createState() => _BTScanPageState();
+  State<GPSScanPage> createState() => _GPSScanPageState();
 }
 
-class _BTScanPageState extends State<BTScanPage> {
-  late FlutterBluePlus flutterBlue;
+class _GPSScanPageState extends State<GPSScanPage> {
   bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    flutterBlue = FlutterBluePlus.instance;
-    flutterBlue
-      ..startScan(timeout: const Duration(seconds: 30)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          setState(() {
-            _isVisible = !_isVisible;
-          });
-        },
-      )
-      ..scanResults.listen((results) {}).onData(_onPeripheralsDetectedData);
-  }
-
-  void _onPeripheralsDetectedData(List<ScanResult> results) {
-    for (final scanResult in results) {
-      /// Givt beacons have a name, manufacturer data, service data,
-      /// and a service UUID.
-      if (scanResult.device.name.isEmpty) {
-        continue;
-      }
-      if (scanResult.advertisementData.manufacturerData.isNotEmpty) {
-        continue;
-      }
-      if (scanResult.advertisementData.serviceData.isEmpty) {
-        continue;
-      }
-      if (scanResult.advertisementData.serviceUuids.isEmpty) {
-        continue;
-      }
-      if (!scanResult.advertisementData.serviceData
-          .containsKey(scanResult.advertisementData.serviceUuids.first)) {
-        continue;
-      }
-
-      if (scanResult.rssi < -75 || scanResult.rssi < -67) {
-        continue;
-      }
-
-      if (!mounted) {
-        return;
-      }
-      context.read<GiveBloc>().add(
-            GiveBTBeaconScanned(
-              userGUID:
-                  (context.read<AuthCubit>().state as AuthSuccess).user.guid,
-              macAddress: scanResult.device.id.toString(),
-              rssi: scanResult.rssi,
-              serviceUUID: scanResult.advertisementData.serviceUuids.first,
-              serviceData: scanResult.advertisementData.serviceData,
-            ),
-          );
-    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    flutterBlue.stopScan();
   }
 
   @override
@@ -88,7 +33,7 @@ class _BTScanPageState extends State<BTScanPage> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: Text(locals.giveWithYourPhone),
+        title: Text(locals.selectLocationContext),
       ),
       body: Center(
         child: BlocConsumer<GiveBloc, GiveState>(
@@ -100,14 +45,18 @@ class _BTScanPageState extends State<BTScanPage> {
               children: [
                 const SizedBox(height: 50),
                 Text(
-                  locals.makeContact,
+                  locals.searchingEventText,
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),
                 Container(
                   padding: const EdgeInsets.all(10),
-                  child: Image.asset('assets/images/givt_animation.gif'),
+                  child: Image.asset(
+                    'assets/images/givy_lookout.png',
+                    width: 200,
+                    height: 200,
+                  ),
                 ),
                 Expanded(child: Container()),
                 Visibility(
