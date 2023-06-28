@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -47,6 +48,17 @@ class UnregisterCubit extends Cubit<UnregisterState> {
           return;
         }
       }
+      emit(
+        UnregisterFailure(
+          e.toString(),
+        ),
+      );
+    } on SocketException catch (e) {
+      log(e.toString());
+      emit(
+        const UnregisterNoInternet(),
+      );
+    } catch (e) {
       emit(
         UnregisterFailure(
           e.toString(),
