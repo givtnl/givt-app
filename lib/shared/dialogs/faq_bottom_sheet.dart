@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -40,7 +41,7 @@ class FAQBottomSheet extends StatelessWidget {
                 children: [
                   _buildQuestionTile(
                     question: locals.feedbackTitle,
-                    answer: userCountry == 'US'
+                    answer: userCountry == Country.us.countryCode
                         ? locals.faQantwoord0Us
                         : locals.faQantwoord0,
                   ),
@@ -142,17 +143,17 @@ class FAQBottomSheet extends StatelessWidget {
                   ),
                   _buildQuestionTile(
                     question: locals.termsTitle,
-                    answer: userCountry == 'US'
+                    answer: userCountry == Country.us.countryCode
                         ? locals.termsTextUs
-                        : ['GB', 'GG', 'JE'].contains(userCountry)
+                        : Country.unitedKingdomCodes().contains(userCountry)
                             ? locals.termsTextGb
                             : locals.termsText,
                   ),
                   _buildQuestionTile(
                     question: locals.privacyTitle,
-                    answer: userCountry == 'US'
+                    answer: userCountry == Country.us.countryCode
                         ? locals.policyTextUs
-                        : ['GB', 'GG', 'JE'].contains(userCountry)
+                        : Country.unitedKingdomCodes().contains(userCountry)
                             ? locals.policyTextGb
                             : locals.policyText,
                   ),

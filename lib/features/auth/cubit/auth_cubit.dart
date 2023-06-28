@@ -3,26 +3,21 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy) : super(AuthUnkown());
+  AuthCubit(this._authRepositoy, this._countryIsoInfo) : super(AuthUnkown());
 
   final AuthRepositoy _authRepositoy;
+  final CountryIsoInfo _countryIsoInfo;
 
   Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
     try {
-      // check email
-      final result = await _authRepositoy.checkEmail(email);
-      if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
-        return;
-      }
       final userGUID = await _authRepositoy.login(
         email,
         password,
@@ -74,7 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
+        await login(email: email, password: TempUser.defaultPassword);
         return;
       }
       if (result.contains('true')) {
@@ -82,16 +77,14 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      final countryIso = await FlutterSimCountryCode.simCountryCode.catchError(
-        (e) => null,
-      );
+      final countryIso = await _countryIsoInfo.checkCountryIso;
 
       final tempUser = TempUser.prefilled(
         email: email,
-        country: countryIso ?? 'NL',
+        country: countryIso,
         appLanguage: locale,
         timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
-        amountLimit: countryIso?.toUpperCase() == 'US' ? 4999 : 499,
+        amountLimit: _countryIsoInfo.isUS ? 4999 : 499,
       );
 
       // register temp user

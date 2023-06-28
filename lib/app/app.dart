@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +30,10 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) => MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (_) => AuthCubit(getIt())..checkAuth(),
+            create: (_) => AuthCubit(
+              getIt(),
+              getIt(),
+            )..checkAuth(),
           ),
           BlocProvider(
             create: (_) => InfraCubit(

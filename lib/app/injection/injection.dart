@@ -1,8 +1,9 @@
 import 'dart:developer';
 
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:get_it/get_it.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -15,8 +16,8 @@ final getIt = GetIt.instance;
 Future<void> init({
   required Map<String, String> environmentVariables,
 }) async {
-  await _initAPIService(environmentVariables);
   await _initCoreDependencies();
+  await _initAPIService(environmentVariables);
 
   /// Init repositories
   _initRepositories();
@@ -24,16 +25,8 @@ Future<void> init({
 
 Future<void> _initAPIService(Map<String, String> environmentVariables) async {
   var baseUrl = environmentVariables['API_URL_EU']!;
-  try {
-    final countryIso = await FlutterSimCountryCode.simCountryCode;
-    if (countryIso == 'US') {
-      baseUrl = environmentVariables['API_URL_US']!;
-    } else {
-      baseUrl = environmentVariables['API_URL_EU']!;
-    }
-  } catch (e) {
-    /// This fails when testing on a emulator
-    log(e.toString());
+  if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
+    baseUrl = environmentVariables['API_URL_US']!;
   }
   log('Using API URL: $baseUrl');
   getIt.registerLazySingleton<APIService>(
@@ -48,6 +41,9 @@ Future<void> _initCoreDependencies() async {
   getIt
     ..registerLazySingleton(InternetConnectionCheckerPlus.new)
     ..registerLazySingleton(() => sharedPreferences)
+    ..registerLazySingleton<CountryIsoInfo>(
+      CountryIsoInfoImpl.new,
+    )
     ..registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(
         getIt(),

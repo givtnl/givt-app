@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
@@ -16,6 +16,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
     this._collectGroupRepository,
     this._campaignRepository,
+    this._countryIsoInfo,
   ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
 
@@ -28,6 +29,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   final CollectGroupRepository _collectGroupRepository;
   final CampaignRepository _campaignRepository;
+  final CountryIsoInfo _countryIsoInfo;
 
   FutureOr<void> _onOrganisationFetch(
     OrganisationFetch event,
@@ -149,7 +151,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     if (accountType != AccountType.none) {
       return accountType;
     }
-    final countryIso = await FlutterSimCountryCode.simCountryCode;
+    final countryIso = await _countryIsoInfo.checkCountryIso;
 
     final country = Country.values.firstWhere(
       (country) => country.countryCode == countryIso,

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -52,13 +53,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     emit(state.copyWith(status: RegistrationStatus.loading));
 
     try {
-
       final tempUser = TempUser(
         email: state.email,
         country: event.country,
         appLanguage: event.appLanguage,
         timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
-        amountLimit: event.country.toUpperCase() == 'US' ? 4999 : 499,
+        amountLimit:
+            event.country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
         address: event.address,
         city: event.city,
         firstName: state.firstName,

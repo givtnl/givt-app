@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -60,9 +61,9 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        user.country == 'US'
+                        user.country == Country.us.countryCode
                             ? locals.informationAboutUsUs
-                            : ['GB', 'GG', 'JE'].contains(user.country)
+                            : Country.unitedKingdomCodes().contains(user.country)
                                 ? locals.informationAboutUsGb
                                 : locals.informationAboutUs,
                         textAlign: TextAlign.center,

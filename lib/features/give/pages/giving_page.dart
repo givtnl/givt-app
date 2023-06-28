@@ -60,13 +60,14 @@ class _GivingPageState extends State<GivingPage> {
     BuildContext context,
   ) {
     final giveBlocState = context.read<GiveBloc>().state;
+    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
     final format = NumberFormat.simpleCurrency(
-      locale: Localizations.localeOf(context).toString(),
+      locale: user.country,
     );
     return WebViewInput(
       currency: format.currencySymbol,
       apiUrl: Uri.https(getIt<APIService>().apiURL).toString(),
-      guid: (context.read<AuthCubit>().state as AuthSuccess).user.guid,
+      guid: user.guid,
       organisation: giveBlocState.organisation.organisationName!,
       givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
       confirmBtn: context.l10n.next,

@@ -16,12 +16,6 @@ import 'package:givt_app/utils/app_theme.dart';
 class OrganizationListPage extends StatelessWidget {
   const OrganizationListPage({super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const OrganizationListPage(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;

@@ -207,16 +207,6 @@ class AppRouter {
             if (state is AuthLogout || state is AuthUnkown) {
               context.goNamed(Pages.welcome.name);
             }
-            if (state is AuthFailure) {
-              showDialog<void>(
-                context: context,
-                builder: (_) => WarningDialog(
-                  title: context.l10n.somethingWentWrong,
-                  content: '',
-                  onConfirm: () => Navigator.of(context).pop(),
-                ),
-              );
-            }
           },
           child: const SplashPage(),
         ),

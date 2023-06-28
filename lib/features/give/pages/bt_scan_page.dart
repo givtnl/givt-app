@@ -139,6 +139,7 @@ class _BTScanPageState extends State<BTScanPage> {
                                   create: (_) => OrganisationBloc(
                                     getIt(),
                                     getIt(),
+                                    getIt(),
                                   )..add(
                                       OrganisationFetch(user.accountType),
                                     ),
@@ -181,6 +182,7 @@ class _BTScanPageState extends State<BTScanPage> {
                               ),
                               BlocProvider(
                                 create: (_) => OrganisationBloc(
+                                  getIt(),
                                   getIt(),
                                   getIt(),
                                 )..add(
