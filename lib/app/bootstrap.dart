@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:givt_app/injection.dart' as get_it;
+import 'package:givt_app/app/injection/injection.dart' as get_it;
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();

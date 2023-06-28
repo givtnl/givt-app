@@ -2,12 +2,12 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({
@@ -30,13 +30,16 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.edit,
             onTap: () {
               if (auth.user.needRegistration) {
-                Navigator.of(context).push(
-                  SignUpPage.route(email: auth.user.email),
+                context.goNamed(
+                  Pages.registration.name,
+                  queryParameters: {
+                    'email': auth.user.email,
+                  },
                 );
                 return;
               }
-              Navigator.of(context).push(
-                MandateExplanationPage.route(),
+              context.goNamed(
+                Pages.sepaMandateExplanation.name,
               );
             },
           ),

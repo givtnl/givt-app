@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/registration_app_bar.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class SignSepaMandatePage extends StatelessWidget {
   const SignSepaMandatePage({super.key});
@@ -29,7 +31,7 @@ class SignSepaMandatePage extends StatelessWidget {
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == RegistrationStatus.success) {
-              Navigator.of(context).popUntil((route) => route.isFirst);
+              context.goNamed(Pages.home.name);
             }
             if (state.status == RegistrationStatus.conflict) {
               showDialog<void>(
@@ -37,8 +39,7 @@ class SignSepaMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.mandateFailPersonalInformation,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
@@ -49,8 +50,7 @@ class SignSepaMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.duplicateAccountOrganisationMessage,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
@@ -61,8 +61,7 @@ class SignSepaMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.mandateFailTryAgainLater,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }

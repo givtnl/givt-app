@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class SignBacsMandatePage extends StatelessWidget {
   const SignBacsMandatePage({super.key});
@@ -36,7 +37,7 @@ class SignBacsMandatePage extends StatelessWidget {
           listener: (context, state) {
             if (state.status ==
                 RegistrationStatus.bacsDirectDebitMandateSigned) {
-              Navigator.of(context).push(GiftAidRequestPage.route());
+              context.goNamed(Pages.giftAid.name);
             }
             if (state.status == RegistrationStatus.bacsDetailsWrong) {
               showDialog<void>(
@@ -44,8 +45,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.updateBacsAccountDetailsError,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
@@ -56,8 +56,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.ddiFailedTitle,
                   content: locals.ddiFailedMessage,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
@@ -68,8 +67,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.duplicateAccountOrganisationMessage,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
@@ -80,8 +78,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.mandateFailPersonalInformation,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.go('/home'),
                 ),
               );
             }
@@ -92,8 +89,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.mandateFailTryAgainLater,
-                  onConfirm: () =>
-                      Navigator.of(context).popUntil((route) => route.isFirst),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }

@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:go_router/go_router.dart';
 
 class BacsExplanationPage extends StatefulWidget {
   const BacsExplanationPage({super.key});
-
-  static MaterialPageRoute<void> route() {
-    return MaterialPageRoute<void>(
-      builder: (_) => const BacsExplanationPage(),
-    );
-  }
 
   @override
   State<BacsExplanationPage> createState() => _BacsExplanationPageState();
@@ -100,13 +95,9 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
               width: size.width,
               child: ElevatedButton(
                 onPressed: _acceptedTerms
-                    ? () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => BlocProvider.value(
-                              value: context.read<RegistrationBloc>(),
-                              child: const SignBacsMandatePage(),
-                            ),
-                          ),
+                    ? () => context.goNamed(
+                          Pages.signBacsMandate.name,
+                          extra: context.read<RegistrationBloc>(),
                         )
                     : null,
                 style: ElevatedButton.styleFrom(
