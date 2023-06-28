@@ -11,6 +11,8 @@
 		<string>applinks:givt.co.uk</string>
 		<string>applinks:givt.app</string>
 		<string>applinks:givtapp.de</string>
+		<string>applinks:backend.givtapp.net</string>
+		<string>applinks:dev-backend.givtapp.net</string>
 	</array>
 </dict>
 </plist>
