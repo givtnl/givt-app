@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -91,11 +90,6 @@ class _GPSScanPageState extends State<GPSScanPage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return Scaffold(
@@ -118,13 +112,8 @@ class _GPSScanPageState extends State<GPSScanPage> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset(
-                    'assets/images/givy_lookout.png',
-                    width: 200,
-                    height: 200,
-                  ),
+                const AnimatedGivyImage(
+                  image: 'assets/images/givy_lookout.png',
                 ),
                 Expanded(child: Container()),
                 Visibility(
@@ -188,6 +177,68 @@ class _GPSScanPageState extends State<GPSScanPage> {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedGivyImage extends StatefulWidget {
+  const AnimatedGivyImage({
+    required this.image,
+    super.key,
+  });
+
+  final String image;
+
+  @override
+  State<AnimatedGivyImage> createState() => _AnimatedGivyImageState();
+}
+
+class _AnimatedGivyImageState extends State<AnimatedGivyImage>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController animController;
+
+  @override
+  void initState() {
+    super.initState();
+    animController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+
+    animation = Tween<double>(begin: 10, end: -10).animate(animController)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          animController.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          animController.forward();
+        }
+      });
+
+    animController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0, animation.value),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Image.asset(
+          widget.image,
+          width: 200,
+          height: 200,
         ),
       ),
     );
