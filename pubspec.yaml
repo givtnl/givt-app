@@ -12,6 +12,7 @@ dependencies:
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
   device_info_plus: ^9.0.2
+  device_region: ^1.0.1
   dotted_border: ^2.0.0+3
   equatable: ^2.0.5
   firebase_dynamic_links: ^5.3.3
