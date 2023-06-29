@@ -55,7 +55,7 @@ class CollectionFormField extends StatelessWidget {
                 double.parse(amountLimit.toString())) {
               return '';
             }
-            if (double.parse(value.replaceAll(',', '.')) >
+            if (double.parse(value.replaceAll(',', '.')) <
                 double.parse(lowerLimit.toString())) {
               return '';
             }
