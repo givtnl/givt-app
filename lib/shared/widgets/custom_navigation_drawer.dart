@@ -7,6 +7,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
@@ -26,6 +27,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildMenuItem(
             isVisible: auth.user.needRegistration || !auth.user.mandateSigned,
             showBadge: true,
+            showUnderline: false ,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {
@@ -44,9 +46,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             },
           ),
           // Divider(
-          //   indent: size.width * 0.05,
-          // ),
-          // Divider(
           //   thickness: size.height * 0.03,
           // ),
           _buildSummaryTile(size, locals, context),
@@ -58,69 +57,48 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.receipt_long,
             onTap: () {},
           ),
-          // Divider(
-          //   indent: size.width * 0.05,
-          // ),
           _buildMenuItem(
             title: locals.giveLimit,
             icon: Icons.euro,
             onTap: () {},
           ),
-          // Divider(
-          //   indent: size.width * 0.05,
-          // ),
           _buildMenuItem(
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
             onTap: () {},
           ),
-          // Divider(
-          //   indent: size.width * 0.05,
-          // ),
           _buildMenuItem(
             title: locals.amountPresetsTitle,
             icon: Icons.settings_input_component,
             onTap: () {},
           ),
-          // Divider(
-          //   indent: size.width * 0.05,
-          // ),
           _buildMenuItem(
             title: locals.pincode,
             icon: Icons.lock_outline_sharp,
             onTap: () {},
           ),
-          // Divider(
-          //   indent: size.width * 0.05,
-          // ),
           _buildMenuItem(
             title: locals.touchId,
             icon: Icons.fingerprint,
             onTap: () {},
           ),
-          Divider(
-            thickness: size.height * 0.02,
-          ),
+          _buildEmptySpace(),
           _buildMenuItem(
             isVisible: true,
             title: locals.logOut,
             icon: Icons.logout_sharp,
             onTap: () async => context.read<AuthCubit>().logout(),
           ),
-          Divider(
-            indent: size.width * 0.05,
-          ),
           _buildMenuItem(
             isVisible: true,
+            showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
             onTap: () => Navigator.of(context).push(
               UnregisterPage.route(),
             ),
           ),
-          Divider(
-            thickness: size.height * 0.02,
-          ),
+          _buildEmptySpace(),
           _buildMenuItem(
             isVisible: true,
             title: locals.titleAboutGivt,
@@ -138,26 +116,60 @@ class CustomNavigationDrawer extends StatelessWidget {
     );
   }
 
+  Widget _buildEmptySpace() => Container(
+        height: 20,
+        decoration: const BoxDecoration(
+          color: Color.fromARGB(255, 240, 240, 240),
+          border: Border(
+            top: BorderSide(
+              color: Color.fromARGB(255, 173, 173, 173),
+              width: 0.5,
+            ),
+            bottom: BorderSide(
+              color: Color.fromARGB(255, 173, 173, 173),
+              width: 0.5,
+            ),
+          ),
+        ),
+      );
+
   Widget _buildMenuItem({
     required String title,
     required IconData icon,
     required VoidCallback onTap,
     bool isVisible = false,
     bool showBadge = false,
+    bool showUnderline = true,
   }) =>
       Visibility(
         visible: isVisible,
         child: Column(
           children: [
-            ListTile(
-              leading: Icon(icon),
+            Container(decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  color: AppTheme.givtLightGray,
+                  width: showUnderline ? 1 : 0,
+                ),
+              ),
+            ),child: ListTile(
+              leading: Icon(
+                icon,
+                color: AppTheme.givtBlue,
+              ),
               trailing: badges.Badge(
                 showBadge: showBadge,
                 position: badges.BadgePosition.topStart(top: 6, start: -20),
-                child: const Icon(Icons.arrow_forward_ios),
+                child: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
               ),
-              title: Text(title),
+              title: Text(
+                title,
+                style: const TextStyle(fontSize: 17),
+              ),
               onTap: onTap,
+            ),
             ),
           ],
         ),
