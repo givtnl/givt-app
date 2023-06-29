@@ -9,12 +9,6 @@ import 'package:givt_app/l10n/l10n.dart';
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const WelcomePage(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return const WelcomePageView();
@@ -47,6 +41,9 @@ class _WelcomePageViewState extends State<WelcomePageView> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.transparent,
+        ),
         title: Image.asset(
           'assets/images/logo.png',
           height: size.height * 0.04,
