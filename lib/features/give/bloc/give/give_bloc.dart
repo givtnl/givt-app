@@ -251,6 +251,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String userGUID,
     required Emitter<GiveState> emit,
   }) async {
+    if (state.status == GiveStatus.readyToGive) {
+      return;
+    }
     final organisation = await _getOrganisation(namespace);
     final transactionList = _createTransationList(namespace, userGUID);
 
