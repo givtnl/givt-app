@@ -213,30 +213,32 @@ class AppRouter {
                   GoRoute(
                     path: Pages.giveByList.path,
                     name: Pages.giveByList.name,
-                    builder: (context, state) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider.value(
-                          value: state.extra! as GiveBloc
-                            ..add(
-                              const GiveCheckLastDonation(),
-                            ),
-                        ),
-                        BlocProvider(
-                          create: (_) => OrganisationBloc(
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                          )..add(
-                              OrganisationFetch(
-                                (context.read<AuthCubit>().state as AuthSuccess)
-                                    .user
-                                    .accountType,
+                    builder: (context, state) {
+                      final user =
+                          (context.read<AuthCubit>().state as AuthSuccess).user;
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(
+                            value: state.extra! as GiveBloc
+                              ..add(
+                                const GiveCheckLastDonation(),
                               ),
-                            ),
-                        ),
-                      ],
-                      child: const OrganizationListPage(),
-                    ),
+                          ),
+                          BlocProvider(
+                            create: (_) => OrganisationBloc(
+                              getIt(),
+                              getIt(),
+                              getIt(),
+                            )..add(
+                                OrganisationFetch(
+                                  user.accountType,
+                                ),
+                              ),
+                          ),
+                        ],
+                        child: const OrganizationListPage(),
+                      );
+                    },
                   ),
                 ],
               ),
