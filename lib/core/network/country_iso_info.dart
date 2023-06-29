@@ -14,13 +14,13 @@ mixin CountryIsoInfo {
 class CountryIsoInfoImpl implements CountryIsoInfo {
   CountryIsoInfoImpl();
 
-  String _countryIso = Country.us.countryCode;
+  String _countryIso = Country.nl.countryCode;
 
   @override
   Future<String> get checkCountryIso async {
     try {
       _countryIso =
-          (await DeviceRegion.getSIMCountryCode() ?? Country.us.countryCode)
+          (await DeviceRegion.getSIMCountryCode() ?? Country.nl.countryCode)
               .toUpperCase();
     } on PlatformException catch (e) {
       log(e.toString()); 
