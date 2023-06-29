@@ -5,6 +5,7 @@ class CollectionFormField extends StatelessWidget {
   const CollectionFormField({
     required this.controller,
     required this.amountLimit,
+    required this.lowerLimit,
     required this.onRemoveIconPressed,
     required this.onFocused,
     required this.focusNode,
@@ -23,6 +24,7 @@ class CollectionFormField extends StatelessWidget {
   final bool isRemoveIconVisible;
   final bool isSuffixTextVisible;
   final int amountLimit;
+  final int lowerLimit;
   final String suffixText;
   final Icon prefixCurrencyIcon;
   final Color bottomBorderColor;
@@ -51,6 +53,10 @@ class CollectionFormField extends StatelessWidget {
             /// Dart accepts only dot as decimal separator
             if (double.parse(value.replaceAll(',', '.')) >
                 double.parse(amountLimit.toString())) {
+              return '';
+            }
+            if (double.parse(value.replaceAll(',', '.')) >
+                double.parse(lowerLimit.toString())) {
               return '';
             }
             return null;
