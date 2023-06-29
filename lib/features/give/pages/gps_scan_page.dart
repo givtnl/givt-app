@@ -52,6 +52,9 @@ class _GPSScanPageState extends State<GPSScanPage> {
       },
     );
     Future.delayed(const Duration(seconds: 10), () {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _isVisible = !_isVisible;
       });
@@ -204,14 +207,11 @@ class _AnimatedGivyImageState extends State<AnimatedGivyImage>
   void initState() {
     super.initState();
     animController = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
-    animation = Tween<double>(begin: 10, end: -10).animate(animController)
-      ..addListener(() {
-        setState(() {});
-      })
+    animation = Tween<double>(begin: 20, end: -20).animate(animController)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           animController.reverse();
@@ -225,14 +225,14 @@ class _AnimatedGivyImageState extends State<AnimatedGivyImage>
 
   @override
   void dispose() {
-    super.dispose();
     animController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Transform.translate(
-      offset: Offset(0, animation.value),
+    return AnimatedBuilder(
+      animation: animController,
       child: Container(
         padding: const EdgeInsets.all(10),
         child: Image.asset(
@@ -241,6 +241,12 @@ class _AnimatedGivyImageState extends State<AnimatedGivyImage>
           height: 200,
         ),
       ),
+      builder: (context, child) {
+        return Transform.translate(
+          offset: Offset(0, animation.value),
+          child: child,
+        );
+      },
     );
   }
 }
