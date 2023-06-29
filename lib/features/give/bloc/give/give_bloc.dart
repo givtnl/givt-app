@@ -458,6 +458,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         event.userGUID,
       );
 
+      await _processGivts(
+        namespace: state.nearestLocation.beaconId,
+        userGUID: event.userGUID,
+        emit: emit,
+      );
+
       emit(
         state.copyWith(
           status: GiveStatus.readyToGive,
