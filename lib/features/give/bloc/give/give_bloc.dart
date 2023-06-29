@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -270,6 +271,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           organisation: organisation,
           status: GiveStatus.noInternetConnection,
         ),
+      );
+      return;
+    } on GivtServerFailure catch (e) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      log('StatusCode:$statusCode Body:$body');
+      emit(
+        state.copyWith(status: GiveStatus.error),
       );
       return;
     }
