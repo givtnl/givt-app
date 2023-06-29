@@ -62,7 +62,7 @@ class _GivingPageState extends State<GivingPage> {
     final giveBlocState = context.read<GiveBloc>().state;
     final user = (context.read<AuthCubit>().state as AuthSuccess).user;
     final format = NumberFormat.simpleCurrency(
-      locale: user.country,
+      name: giveBlocState.organisation.currency,
     );
     return WebViewInput(
       currency: format.currencySymbol,

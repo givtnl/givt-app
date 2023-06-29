@@ -1,85 +1,92 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-class BTScanPage extends StatefulWidget {
-  const BTScanPage({super.key});
+class GPSScanPage extends StatefulWidget {
+  const GPSScanPage({super.key});
 
   @override
-  State<BTScanPage> createState() => _BTScanPageState();
+  State<GPSScanPage> createState() => _GPSScanPageState();
 }
 
-class _BTScanPageState extends State<BTScanPage> {
-  late FlutterBluePlus flutterBlue;
+class _GPSScanPageState extends State<GPSScanPage> {
   bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    flutterBlue = FlutterBluePlus.instance;
-    flutterBlue
-      ..startScan(timeout: const Duration(seconds: 30)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          setState(() {
-            _isVisible = !_isVisible;
-          });
-        },
-      )
-      ..scanResults.listen((results) {}).onData(_onPeripheralsDetectedData);
+    _permissionCheck();
+    Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 2,
+        timeLimit: Duration(seconds: 30),
+      ),
+    ).listen(
+      (Position? position) {
+        if (position == null) {
+          return;
+        }
+        if (!mounted) {
+          return;
+        }
+        context.read<GiveBloc>().add(
+              GiveGPSLocationChanged(
+                latitude: position.latitude,
+                longitude: position.longitude,
+              ),
+            );
+      },
+      onDone: () {
+        log('Done');
+      },
+    );
+    Future.delayed(const Duration(seconds: 10), () {
+      setState(() {
+        _isVisible = !_isVisible;
+      });
+    });
   }
 
-  void _onPeripheralsDetectedData(List<ScanResult> results) {
-    for (final scanResult in results) {
-      /// Givt beacons have a name, manufacturer data, service data,
-      /// and a service UUID.
-      if (scanResult.device.name.isEmpty) {
-        continue;
-      }
-      if (scanResult.advertisementData.manufacturerData.isNotEmpty) {
-        continue;
-      }
-      if (scanResult.advertisementData.serviceData.isEmpty) {
-        continue;
-      }
-      if (scanResult.advertisementData.serviceUuids.isEmpty) {
-        continue;
-      }
-      if (!scanResult.advertisementData.serviceData
-          .containsKey(scanResult.advertisementData.serviceUuids.first)) {
-        continue;
-      }
-
-      if (scanResult.rssi < -75 || scanResult.rssi < -67) {
-        continue;
-      }
-
+  Future<void> _permissionCheck() async {
+    final permission = await Permission.location.request();
+    if (!permission.isGranted) {
       if (!mounted) {
         return;
       }
-      context.read<GiveBloc>().add(
-            GiveBTBeaconScanned(
-              userGUID:
-                  (context.read<AuthCubit>().state as AuthSuccess).user.guid,
-              macAddress: scanResult.device.id.toString(),
-              rssi: scanResult.rssi,
-              serviceUUID: scanResult.advertisementData.serviceUuids.first,
-              serviceData: scanResult.advertisementData.serviceData,
-            ),
-          );
+      await showDialog<void>(
+        context: context,
+        builder: (_) => WarningDialog(
+          title: context.l10n.allowGivtLocationTitle,
+          content: context.l10n.allowGivtLocationMessage,
+          onConfirm: openAppSettings,
+        ),
+      );
+      return;
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    flutterBlue.stopScan();
+    await Geolocator.isLocationServiceEnabled().then((isEnabled) {
+      if (isEnabled) {
+        return;
+      }
+      showDialog<void>(
+        context: context,
+        builder: (_) => WarningDialog(
+          title: context.l10n.allowGivtLocationTitle,
+          content: context.l10n.locationEnabledMessage,
+          onConfirm: openAppSettings,
+        ),
+      );
+    });
   }
 
   @override
@@ -88,7 +95,7 @@ class _BTScanPageState extends State<BTScanPage> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: Text(locals.giveWithYourPhone),
+        title: Text(locals.selectLocationContext),
       ),
       body: Center(
         child: BlocConsumer<GiveBloc, GiveState>(
@@ -100,14 +107,13 @@ class _BTScanPageState extends State<BTScanPage> {
               children: [
                 const SizedBox(height: 50),
                 Text(
-                  locals.makeContact,
+                  locals.searchingEventText,
                   style: Theme.of(context).textTheme.titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 50),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  child: Image.asset('assets/images/givt_animation.gif'),
+                const AnimatedGivyImage(
+                  image: 'assets/images/givy_lookout.png',
                 ),
                 Expanded(child: Container()),
                 Visibility(
@@ -171,6 +177,68 @@ class _BTScanPageState extends State<BTScanPage> {
               ],
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class AnimatedGivyImage extends StatefulWidget {
+  const AnimatedGivyImage({
+    required this.image,
+    super.key,
+  });
+
+  final String image;
+
+  @override
+  State<AnimatedGivyImage> createState() => _AnimatedGivyImageState();
+}
+
+class _AnimatedGivyImageState extends State<AnimatedGivyImage>
+    with SingleTickerProviderStateMixin {
+  late Animation<double> animation;
+  late AnimationController animController;
+
+  @override
+  void initState() {
+    super.initState();
+    animController = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+
+    animation = Tween<double>(begin: 10, end: -10).animate(animController)
+      ..addListener(() {
+        setState(() {});
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          animController.reverse();
+        } else if (status == AnimationStatus.dismissed) {
+          animController.forward();
+        }
+      });
+
+    animController.forward();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(0, animation.value),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        child: Image.asset(
+          widget.image,
+          width: 200,
+          height: 200,
         ),
       ),
     );

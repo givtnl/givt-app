@@ -5,8 +5,12 @@ import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
+import 'package:givt_app/features/give/pages/gps_scan_page.dart';
 import 'package:givt_app/features/give/pages/home_page.dart';
+import 'package:givt_app/features/give/pages/organization_list_page.dart';
+import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
@@ -16,9 +20,7 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
-import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -138,6 +140,7 @@ class AppRouter {
                       getIt(),
                       getIt(),
                       getIt(),
+                      getIt(),
                     )..add(
                         GiveAmountChanged(
                           firstCollectionAmount:
@@ -164,18 +167,78 @@ class AppRouter {
                   GoRoute(
                     path: Pages.give.path,
                     name: Pages.give.name,
-                    builder: (context, state) => BlocProvider(
-                      create: (_) => state.extra! as GiveBloc,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as GiveBloc,
                       child: const GivingPage(),
                     ),
                   ),
                   GoRoute(
                     path: Pages.giveOffline.path,
                     name: Pages.giveOffline.name,
-                    builder: (context, state) => BlocProvider(
-                      create: (_) => state.extra! as GiveBloc,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as GiveBloc,
                       child: const GivingPage(),
                     ),
+                  ),
+                  GoRoute(
+                    path: Pages.giveByBeacon.path,
+                    name: Pages.giveByBeacon.name,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as GiveBloc
+                        ..add(
+                          const GiveCheckLastDonation(),
+                        ),
+                      child: const BTScanPage(),
+                    ),
+                  ),
+                  GoRoute(
+                    path: Pages.giveByLocation.path,
+                    name: Pages.giveByLocation.name,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as GiveBloc
+                        ..add(
+                          const GiveCheckLastDonation(),
+                        ),
+                      child: const GPSScanPage(),
+                    ),
+                  ),
+                  GoRoute(
+                    path: Pages.giveByQrCode.path,
+                    name: Pages.giveByQrCode.name,
+                    builder: (context, state) => BlocProvider.value(
+                      value: state.extra! as GiveBloc,
+                      child: const QrCodeScanPage(),
+                    ),
+                  ),
+                  GoRoute(
+                    path: Pages.giveByList.path,
+                    name: Pages.giveByList.name,
+                    builder: (context, state) {
+                      final user =
+                          (context.read<AuthCubit>().state as AuthSuccess).user;
+                      return MultiBlocProvider(
+                        providers: [
+                          BlocProvider.value(
+                            value: state.extra! as GiveBloc
+                              ..add(
+                                const GiveCheckLastDonation(),
+                              ),
+                          ),
+                          BlocProvider(
+                            create: (_) => OrganisationBloc(
+                              getIt(),
+                              getIt(),
+                              getIt(),
+                            )..add(
+                                OrganisationFetch(
+                                  user.accountType,
+                                ),
+                              ),
+                          ),
+                        ],
+                        child: const OrganizationListPage(),
+                      );
+                    },
                   ),
                 ],
               ),

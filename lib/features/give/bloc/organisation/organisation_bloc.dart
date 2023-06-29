@@ -52,16 +52,19 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           (organisation) => lastDonatedOrganisation.mediumId!.contains(
             organisation.nameSpace,
           ),
+          orElse: () => const CollectGroup.empty(),
         );
-        organisations
-          ..removeWhere(
-            (organisation) =>
-                organisation.nameSpace == lastDonatedOrganisation.mediumId,
-          )
-          ..insert(
-            0,
-            selectedGroup,
-          );
+        if (selectedGroup.nameSpace.isNotEmpty) {
+          organisations
+            ..removeWhere(
+              (organisation) =>
+                  organisation.nameSpace == lastDonatedOrganisation.mediumId,
+            )
+            ..insert(
+              0,
+              selectedGroup,
+            );
+        }
       }
       emit(
         state.copyWith(

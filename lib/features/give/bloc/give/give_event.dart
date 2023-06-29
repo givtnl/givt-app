@@ -106,3 +106,25 @@ class GiveConfirmQRCodeScannedOutOfApp extends GiveEvent {
   @override
   List<Object> get props => [];
 }
+
+class GiveGPSLocationChanged extends GiveEvent {
+  const GiveGPSLocationChanged({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  final double latitude;
+  final double longitude;
+
+  @override
+  List<Object> get props => [latitude, longitude];
+}
+
+class GiveGPSConfirm extends GiveEvent {
+  const GiveGPSConfirm(this.userGUID);
+
+  final String userGUID;
+
+  @override
+  List<Object> get props => [userGUID];
+}

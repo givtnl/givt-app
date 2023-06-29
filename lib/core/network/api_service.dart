@@ -136,7 +136,10 @@ class APIService {
     )
         .then((response) {
       if (response.statusCode >= 400) {
-        throw Exception('something went wrong :(');
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: jsonDecode(response.body) as Map<String, dynamic>,
+        );
       }
       return response.statusCode >= 200;
     });

@@ -79,6 +79,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[0],
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
@@ -184,6 +185,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
+  int getLowerLimitByCountry(String country) =>
+      country == Country.us.countryCode ? 2 : 0;
+
   void _changeFocus() {
     selectedField = collectionFields.lastIndexOf(true);
     focusNodes[collectionFields.lastIndexOf(true)].requestFocus();
@@ -238,6 +242,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onFocused,
     required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
+    int lowerLimit = 0,
   }) {
     return Visibility(
       visible: isVisible,
@@ -246,6 +251,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         key: Key(collectionFieldName),
         controller: controller,
         amountLimit: amountLimit,
+        lowerLimit: lowerLimit,
         suffixText: collectionFieldName,
         prefixCurrencyIcon: prefixCurrencyIcon,
         isRemoveIconVisible: isRemoveIconVisible,
