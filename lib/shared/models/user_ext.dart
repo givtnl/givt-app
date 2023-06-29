@@ -65,7 +65,8 @@ class UserExt extends Equatable {
         amountLimit: json['AmountLimit'] as int,
         tempUser: json['IsTempUser'] as bool,
         iban: json['IBAN'] != null ? json['IBAN'] as String : '',
-        phoneNumber: json['PhoneNumber'] as String,
+        phoneNumber:
+            json['PhoneNumber'] != null ? json['PhoneNumber'] as String : '',
         firstName: json['FirstName'] as String,
         lastName: json['LastName'] as String,
         address: json['Address'] != null ? json['Address'] as String : '',
