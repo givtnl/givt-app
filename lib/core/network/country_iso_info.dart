@@ -1,11 +1,7 @@
 import 'dart:developer';
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
+import 'package:device_region/device_region.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:sim_data_plus/sim_data.dart';
 
 mixin CountryIsoInfo {
   Future<String> get checkCountryIso;
@@ -24,9 +20,10 @@ class CountryIsoInfoImpl implements CountryIsoInfo {
   Future<String> get checkCountryIso async {
     try {
       _countryIso =
-          await FlutterSimCountryCode.simCountryCode ?? Country.us.countryCode;
+          (await DeviceRegion.getSIMCountryCode() ?? Country.us.countryCode)
+              .toUpperCase();
     } on PlatformException catch (e) {
-      log(e.toString());
+      log(e.toString()); 
     }
     return _countryIso;
   }

@@ -161,6 +161,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  device_region:
+    dependency: "direct main"
+    description:
+      name: device_region
+      sha256: "023a06353d0c47be457d89f384666d914dbdca6ad950937d494fbac5f7ec143e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.1"
   diff_match_patch:
     dependency: transitive
     description:
