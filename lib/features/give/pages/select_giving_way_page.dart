@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectGivingWayPage extends StatelessWidget {
@@ -23,97 +24,107 @@ class SelectGivingWayPage extends StatelessWidget {
           locals.selectContext,
         ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(size.width * 0.05),
-        child: BlocListener<GiveBloc, GiveState>(
-          listener: (context, state) {
-            if (state.status == GiveStatus.noInternetConnection) {
-              context.goNamed(Pages.giveOffline.name);
-            }
-            if (state.status == GiveStatus.readyToConfirmGPS) {
-              _buildGivingDialog(
-                context,
-                text: context.l10n.givtEventText(
-                  state.nearestLocation.name,
-                ),
-                image: 'assets/images/select_location.png',
-                onTap: () => context.read<GiveBloc>().add(
-                      GiveGPSConfirm(
-                        (context.read<AuthCubit>().state as AuthSuccess)
-                            .user
-                            .guid,
-                      ),
-                    ),
-              );
-              return;
-            }
-            if (state.status == GiveStatus.readyToConfirm) {
-              _buildGivingDialog(
-                context,
-                text: context.l10n
-                    .qrScannedOutOfApp(state.organisation.organisationName!),
-                image: 'assets/images/select_qr_phone_scan.png',
-                onTap: () => context.read<GiveBloc>().add(
-                      const GiveConfirmQRCodeScannedOutOfApp(),
-                    ),
-              );
-            }
-            if (state.status == GiveStatus.readyToGive) {
-              context.goNamed(
-                Pages.give.name,
-                extra: context.read<GiveBloc>(),
-              );
-            }
-          },
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20),
-                child: Text(
-                  locals.giveSubtitle,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              _buildListTile(
-                onTap: () => context.goNamed(
-                  Pages.giveByBeacon.name,
-                  extra: context.read<GiveBloc>(),
-                ),
-                title: locals.givingContextCollectionBag,
-                subtitle: locals.selectContextCollect,
-                image: 'assets/images/select_givtbox.png',
-              ),
-              _buildListTile(
-                onTap: () => context.goNamed(
-                  Pages.giveByQrCode.name,
-                  extra: context.read<GiveBloc>(),
-                ),
-                title: locals.givingContextQrCode,
-                subtitle: locals.giveContextQr,
-                image: 'assets/images/select_qr_phone_scan.png',
-              ),
-              _buildListTile(
-                onTap: () => context.goNamed(
-                  Pages.giveByList.name,
-                  extra: context.read<GiveBloc>(),
-                ),
-                title: locals.givingContextCollectionBagList,
-                subtitle: locals.selectContextList,
-                image: 'assets/images/select_list.png',
-              ),
-              _buildListTile(
-                onTap: () => context.goNamed(
-                  Pages.giveByLocation.name,
-                  extra: context.read<GiveBloc>(),
-                ),
-                title: locals.givingContextLocation,
-                subtitle: locals.selectLocationContextLong,
-                image: 'assets/images/select_location.png',
-              ),
-            ],
+      body: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 130),
+            height: size.height,
+            width: size.width,
+            color: AppTheme.givtGraycece,
           ),
-        ),
+          Padding(
+            padding: EdgeInsets.all(size.width * 0.05),
+            child: BlocListener<GiveBloc, GiveState>(
+              listener: (context, state) {
+                if (state.status == GiveStatus.noInternetConnection) {
+                  context.goNamed(Pages.giveOffline.name);
+                }
+                if (state.status == GiveStatus.readyToConfirmGPS) {
+                  _buildGivingDialog(
+                    context,
+                    text: context.l10n.givtEventText(
+                      state.nearestLocation.name,
+                    ),
+                    image: 'assets/images/select_location.png',
+                    onTap: () => context.read<GiveBloc>().add(
+                          GiveGPSConfirm(
+                            (context.read<AuthCubit>().state as AuthSuccess)
+                                .user
+                                .guid,
+                          ),
+                        ),
+                  );
+                  return;
+                }
+                if (state.status == GiveStatus.readyToConfirm) {
+                  _buildGivingDialog(
+                    context,
+                    text: context.l10n.qrScannedOutOfApp(
+                        state.organisation.organisationName!),
+                    image: 'assets/images/select_qr_phone_scan.png',
+                    onTap: () => context.read<GiveBloc>().add(
+                          const GiveConfirmQRCodeScannedOutOfApp(),
+                        ),
+                  );
+                }
+                if (state.status == GiveStatus.readyToGive) {
+                  context.goNamed(
+                    Pages.give.name,
+                    extra: context.read<GiveBloc>(),
+                  );
+                }
+              },
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Text(
+                      locals.giveSubtitle,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  _buildListTile(
+                    onTap: () => context.goNamed(
+                      Pages.giveByBeacon.name,
+                      extra: context.read<GiveBloc>(),
+                    ),
+                    title: locals.givingContextCollectionBag,
+                    subtitle: locals.selectContextCollect,
+                    image: 'assets/images/select_givtbox.png',
+                  ),
+                  _buildListTile(
+                    onTap: () => context.goNamed(
+                      Pages.giveByQrCode.name,
+                      extra: context.read<GiveBloc>(),
+                    ),
+                    title: locals.givingContextQrCode,
+                    subtitle: locals.giveContextQr,
+                    image: 'assets/images/select_qr_phone_scan.png',
+                  ),
+                  _buildListTile(
+                    onTap: () => context.goNamed(
+                      Pages.giveByList.name,
+                      extra: context.read<GiveBloc>(),
+                    ),
+                    title: locals.givingContextCollectionBagList,
+                    subtitle: locals.selectContextList,
+                    image: 'assets/images/select_list.png',
+                  ),
+                  _buildListTile(
+                    onTap: () => context.goNamed(
+                      Pages.giveByLocation.name,
+                      extra: context.read<GiveBloc>(),
+                    ),
+                    title: locals.givingContextLocation,
+                    subtitle: locals.selectLocationContextLong,
+                    image: 'assets/images/select_location.png',
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -131,6 +142,7 @@ class SelectGivingWayPage extends StatelessWidget {
         ),
         trailing: const Icon(
           Icons.arrow_forward_ios,
+          size: 18,
         ),
         title: title,
         subtitle: subtitle,

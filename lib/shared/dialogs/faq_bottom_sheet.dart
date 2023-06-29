@@ -19,7 +19,7 @@ class FAQBottomSheet extends StatelessWidget {
           Text(
             locals.needHelpTitle,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 22,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
@@ -28,14 +28,13 @@ class FAQBottomSheet extends StatelessWidget {
           Text(
             locals.findAnswersToYourQuestions,
             style: const TextStyle(
-              fontWeight: FontWeight.bold,
+              fontSize: 18,
               color: Colors.white,
             ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.73,
+          Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -166,33 +165,42 @@ class FAQBottomSheet extends StatelessWidget {
     );
   }
 
-  ExpansionTile _buildQuestionTile({
+  Widget _buildQuestionTile({
     required String question,
     required String answer,
   }) {
-    return ExpansionTile(
-      tilePadding: const EdgeInsets.all(5),
-      title: Text(
-        question,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-      collapsedIconColor: Colors.white,
-      iconColor: Colors.white,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          child: Text(
-            answer,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.white.withOpacity(0.2),
           ),
         ),
-      ],
+      ),
+      child: ExpansionTile(
+        tilePadding: const EdgeInsets.all(5),
+        title: Text(
+          question,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        collapsedIconColor: Colors.white,
+        iconColor: Colors.white,
+        children: [
+          Container(
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+            child: Text(
+              answer,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
