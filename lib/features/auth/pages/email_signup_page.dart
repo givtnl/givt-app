@@ -72,7 +72,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     locals.toGiveWeNeedYourEmailAddress,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 20,
                     ),
                   ),
                   const SizedBox(height: 12),
