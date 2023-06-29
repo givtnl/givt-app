@@ -148,7 +148,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     try {
       final lastDonatedOrganisation =
           await _campaignRepository.getLastOrganisationDonated();
-      emit(state.copyWith(organisation: lastDonatedOrganisation));
+      emit(
+        state.copyWith(
+          organisation: lastDonatedOrganisation,
+          status: GiveStatus.success,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: GiveStatus.error));
@@ -251,6 +256,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String userGUID,
     required Emitter<GiveState> emit,
   }) async {
+    if (state.status == GiveStatus.readyToGive) {
+      return;
+    }
     final organisation = await _getOrganisation(namespace);
     final transactionList = _createTransationList(namespace, userGUID);
 

@@ -86,6 +86,8 @@ class OrganizationListPage extends StatelessWidget {
                 ),
               _buildGivingButton(
                 title: locals.give,
+                isLoading: context.watch<GiveBloc>().state.status ==
+                    GiveStatus.loading,
                 onPressed:
                     state.selectedCollectGroup.type == CollecGroupType.none
                         ? null
@@ -134,19 +136,24 @@ class OrganizationListPage extends StatelessWidget {
 
   Expanded _buildGivingButton({
     required String title,
+    bool isLoading = false,
     VoidCallback? onPressed,
   }) {
     return Expanded(
       flex: 0,
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            disabledBackgroundColor: Colors.grey,
-          ),
-          child: Text(title),
-        ),
+        child: !isLoading
+            ? ElevatedButton(
+                onPressed: onPressed,
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: Text(title),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }
