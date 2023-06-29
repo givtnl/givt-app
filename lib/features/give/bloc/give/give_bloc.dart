@@ -148,7 +148,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     try {
       final lastDonatedOrganisation =
           await _campaignRepository.getLastOrganisationDonated();
-      emit(state.copyWith(organisation: lastDonatedOrganisation));
+      emit(
+        state.copyWith(
+          organisation: lastDonatedOrganisation,
+          status: GiveStatus.success,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: GiveStatus.error));
