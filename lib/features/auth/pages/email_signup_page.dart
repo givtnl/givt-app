@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
 class EmailSignupPage extends StatefulWidget {
@@ -104,7 +105,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                       showDragHandle: true,
                       isScrollControlled: true,
                       useSafeArea: true,
-                      backgroundColor: Theme.of(context).colorScheme.tertiary,
+                      backgroundColor: AppTheme.givtPurple,
                       builder: (BuildContext context) =>
                           const TermsAndConditionsDialog(
                         typeOfTerms: TypeOfTerms.termsAndConditions,
