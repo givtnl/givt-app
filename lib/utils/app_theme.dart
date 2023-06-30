@@ -123,6 +123,10 @@ class AppTheme {
     iconTheme: IconThemeData(
       color: lightColorScheme.primary,
     ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.all(givtLightGreen),
+      checkColor: MaterialStateProperty.all(givtLightGreen),
+    ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
         elevation: MaterialStatePropertyAll(0),

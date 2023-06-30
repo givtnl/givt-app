@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +15,16 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({required this.code, super.key});
+  const HomePage({required this.code, required this.given, super.key});
 
   final String code;
+  final bool given;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     final auth = context.read<AuthCubit>().state as AuthSuccess;
-    log('HomePage: $code');
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
@@ -54,17 +52,12 @@ class HomePage extends StatelessWidget {
           children: [
             BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
               listener: (context, state) {
-                if (state is RemoteDataSourceSyncSuccess) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(getIt<CountryIsoInfo>().countryIso),
-                    ),
-                  );
-                }
                 if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Synced successfully'),
+                    SnackBar(
+                      content: Text(
+                        'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
+                      ),
                     ),
                   );
                 }
@@ -90,7 +83,7 @@ class HomePage extends StatelessWidget {
                         'code': code,
                       },
                     );
-                    return true;
+                    return given;
                   },
                 );
               },

@@ -78,7 +78,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.mandateFailPersonalInformation,
-                  onConfirm: () => context.go('/home'),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
@@ -129,7 +129,7 @@ class SignBacsMandatePage extends StatelessWidget {
                     showDragHandle: true,
                     isScrollControlled: true,
                     useSafeArea: true,
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor: AppTheme.givtPurple,
                     builder: (BuildContext context) =>
                         const TermsAndConditionsDialog(
                       typeOfTerms: TypeOfTerms.directDebitGuarantee,

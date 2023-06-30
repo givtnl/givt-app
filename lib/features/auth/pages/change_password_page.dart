@@ -116,7 +116,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       margin: const EdgeInsets.all(50),
                       child: Image.asset(
                         'assets/images/givy_question_big.png',
-                        width: size.width * 0.6,
+                        width: size.width * 0.3,
                       ),
                     ),
                     SizedBox(

@@ -49,14 +49,13 @@ class CollectionFormField extends StatelessWidget {
             if (value == null || value.isEmpty) {
               return '';
             }
+            final currentValue = double.parse(value.replaceAll(',', '.'));
 
             /// Dart accepts only dot as decimal separator
-            if (double.parse(value.replaceAll(',', '.')) >
-                double.parse(amountLimit.toString())) {
+            if (currentValue > double.parse(amountLimit.toString())) {
               return '';
             }
-            if (double.parse(value.replaceAll(',', '.')) <
-                double.parse(lowerLimit.toString())) {
+            if (currentValue < double.parse(lowerLimit.toString())) {
               return '';
             }
             return null;
@@ -74,7 +73,7 @@ class CollectionFormField extends StatelessWidget {
                   color: AppTheme.givtDarkerGray,
                 ),
             suffixIcon: IconButton(
-              onPressed: onRemoveIconPressed,
+              onPressed: isRemoveIconVisible ? onRemoveIconPressed : null,
               icon: Icon(
                 Icons.remove_circle,
                 color: isRemoveIconVisible ? Colors.grey : Colors.transparent,

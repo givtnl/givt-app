@@ -158,7 +158,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   label: locals.next,
                   onPressed: isEnabled
                       ? () {
-                          widget.onAmountChanged(
+                          final given = widget.onAmountChanged(
                             double.parse(
                               controllers[0].text.replaceAll(',', '.'),
                             ),
@@ -169,6 +169,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
+                          if (!given) {
+                            return;
+                          }
+
+                          _resetControllers();
                         }
                       : null,
                 ),

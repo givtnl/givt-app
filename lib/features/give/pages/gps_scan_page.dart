@@ -62,21 +62,24 @@ class _GPSScanPageState extends State<GPSScanPage> {
   }
 
   Future<void> _permissionCheck() async {
-    final permission = await Permission.location.request();
-    if (!permission.isGranted) {
-      if (!mounted) {
+    await Geolocator.checkPermission().then((permission) {
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        if (!mounted) {
+          return;
+        }
+        showDialog<void>(
+          context: context,
+          builder: (_) => WarningDialog(
+            title: context.l10n.allowGivtLocationTitle,
+            content: context.l10n.allowGivtLocationMessage,
+            onConfirm: openAppSettings,
+          ),
+        );
         return;
       }
-      await showDialog<void>(
-        context: context,
-        builder: (_) => WarningDialog(
-          title: context.l10n.allowGivtLocationTitle,
-          content: context.l10n.allowGivtLocationMessage,
-          onConfirm: openAppSettings,
-        ),
-      );
-      return;
-    }
+    });
+
     await Geolocator.isLocationServiceEnabled().then((isEnabled) {
       if (isEnabled) {
         return;

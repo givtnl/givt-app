@@ -22,6 +22,7 @@ class ContextListTile extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.only(bottom: 5),
+      height: size.height * 0.18,
       child: InkWell(
         onTap: onTap,
         child: Card(
@@ -36,7 +37,7 @@ class ContextListTile extends StatelessWidget {
               children: [
                 _buildLeading(size),
                 _buildTitleSubtitle(size, context),
-                _buildTrailing(),
+                _buildTrailing(size),
               ],
             ),
           ),
@@ -90,14 +91,10 @@ class ContextListTile extends StatelessWidget {
         ),
       );
 
-  Widget _buildTrailing() => Visibility(
+  Widget _buildTrailing(Size size) => Visibility(
         visible: trailing != null,
-        child: Column(
-          children: [
-            Container(
-              child: trailing,
-            ),
-          ],
+        child: Container(
+          child: trailing,
         ),
       );
 }
