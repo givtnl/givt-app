@@ -120,7 +120,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         showDragHandle: true,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: Theme.of(context).colorScheme.tertiary,
+        backgroundColor: AppTheme.givtPurple,
         builder: (BuildContext context) => const TermsAndConditionsDialog(
           typeOfTerms: TypeOfTerms.bacsInfo,
         ),
@@ -140,7 +140,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
               children: [
                 TextSpan(
                   text: locals.bacsUnderstoodNotice,
-                  style: const TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 12),
                 ),
                 const WidgetSpan(
                   child: Icon(Icons.info_rounded, size: 16),
