@@ -54,9 +54,10 @@ class CustomNavigationDrawer extends StatelessWidget {
           //   thickness: size.height * 0.02,
           // ),
           _buildMenuItem(
+            isVisible: true,
             title: locals.historyTitle,
-            icon: Icons.receipt_long,
-            onTap: () {},
+            icon: FontAwesomeIcons.listUl,
+            onTap: () => context.goNamed(Pages.overview.name),
           ),
           // Divider(
           //   indent: size.width * 0.05,
