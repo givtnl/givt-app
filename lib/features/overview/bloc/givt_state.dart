@@ -1,4 +1,4 @@
-part of 'givt_cubit.dart';
+part of 'givt_bloc.dart';
 
 abstract class GivtState extends Equatable {
   const GivtState({this.givts = const []});
@@ -6,21 +6,17 @@ abstract class GivtState extends Equatable {
   final List<Givt> givts;
 
   @override
-  List<Object> get props => [givts];
+  List<Object> get props => [];
 }
 
 class GivtInitial extends GivtState {
-  const GivtInitial();
+  const GivtInitial() : super();
 }
 
 class GivtLoading extends GivtState {
-  const GivtLoading();
+  const GivtLoading() : super();
 }
 
 class GivtLoaded extends GivtState {
   const GivtLoaded(List<Givt> givts) : super(givts: givts);
-}
-
-class GivtError extends GivtState {
-  const GivtError();
 }

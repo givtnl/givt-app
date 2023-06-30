@@ -31,11 +31,13 @@ class Givt extends Equatable {
         amount: json['Amount'] as double,
         collectGroupId: json['CollectGroupId'] as String,
         organisationName: json['OrgName'] as String,
-        organisationTaxDeductible: json['OrganisationTaxDeductible'] as bool,
+        organisationTaxDeductible: json.containsKey('OrganisationTaxDeductible')
+            ? json['OrganisationTaxDeductible'] as bool
+            : false,
         collectId: json['CollectId'] as String,
         isGiftAid: json['GiftAidEnabled'] as bool,
         status: json['Status'] as int,
-        timeStamp: json['TimeStamp'] as String,
+        timeStamp: json['Timestamp'] as String,
         mediumId: json['MediumId'] as String,
       );
 

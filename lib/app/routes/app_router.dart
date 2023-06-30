@@ -12,7 +12,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
-import 'package:givt_app/features/overview/cubit/givt_cubit.dart';
+import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
@@ -249,9 +249,11 @@ class AppRouter {
                 name: Pages.overview.name,
                 builder: (context, state) {
                   return BlocProvider(
-                    create: (_) => GivtCubit(
+                    create: (_) => GivtBloc(
                       getIt(),
-                    ),
+                    )..add(
+                        const GivtInit(),
+                      ),
                     child: const OverviewPage(),
                   );
                 },
