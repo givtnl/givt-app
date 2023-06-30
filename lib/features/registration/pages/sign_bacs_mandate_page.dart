@@ -129,7 +129,7 @@ class SignBacsMandatePage extends StatelessWidget {
                     showDragHandle: true,
                     isScrollControlled: true,
                     useSafeArea: true,
-                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                    backgroundColor: AppTheme.givtPurple,
                     builder: (BuildContext context) =>
                         const TermsAndConditionsDialog(
                       typeOfTerms: TypeOfTerms.directDebitGuarantee,
