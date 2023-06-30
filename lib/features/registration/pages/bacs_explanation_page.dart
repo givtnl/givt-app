@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class BacsExplanationPage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
                 showDragHandle: true,
                 isScrollControlled: true,
                 useSafeArea: true,
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
+                backgroundColor: AppTheme.givtPurple,
                 builder: (context) => Container(
                     height: MediaQuery.of(context).size.height,
                     padding: const EdgeInsets.all(20),
