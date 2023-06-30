@@ -27,7 +27,7 @@ class SelectGivingWayPage extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            margin: EdgeInsets.only(top: 130),
+            margin: const EdgeInsets.only(top: 130),
             height: size.height,
             width: size.width,
             color: AppTheme.givtGraycece,
@@ -60,7 +60,8 @@ class SelectGivingWayPage extends StatelessWidget {
                   _buildGivingDialog(
                     context,
                     text: context.l10n.qrScannedOutOfApp(
-                        state.organisation.organisationName!),
+                      state.organisation.organisationName!,
+                    ),
                     image: 'assets/images/select_qr_phone_scan.png',
                     onTap: () => context.read<GiveBloc>().add(
                           const GiveConfirmQRCodeScannedOutOfApp(),
