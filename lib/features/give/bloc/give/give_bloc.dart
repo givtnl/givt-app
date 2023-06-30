@@ -268,6 +268,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       ),
     );
     try {
+      log('Submitting Givts');
       await _givtRepository.submitGivts(
         guid: userGUID,
         body: {'donations': GivtTransaction.toJsonList(transactionList)},
@@ -459,25 +460,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      final organisation =
-          await _getOrganisation(state.nearestLocation.beaconId);
-      final transactionList = _createTransationList(
-        state.nearestLocation.beaconId,
-        event.userGUID,
-      );
-
       await _processGivts(
         namespace: state.nearestLocation.beaconId,
         userGUID: event.userGUID,
         emit: emit,
-      );
-
-      emit(
-        state.copyWith(
-          status: GiveStatus.readyToGive,
-          organisation: organisation,
-          givtTransactions: transactionList,
-        ),
       );
     } catch (e) {
       log(e.toString());
