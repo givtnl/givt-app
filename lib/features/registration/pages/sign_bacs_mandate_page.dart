@@ -78,7 +78,7 @@ class SignBacsMandatePage extends StatelessWidget {
                 builder: (_) => WarningDialog(
                   title: locals.mandateFailed,
                   content: locals.mandateFailPersonalInformation,
-                  onConfirm: () => context.go('/home'),
+                  onConfirm: () => context.goNamed(Pages.home.name),
                 ),
               );
             }
