@@ -62,6 +62,10 @@ jobs:
         env:
           GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
+          API_URL_US: ${{env.API_URL_US}}
+          API_URL_EU: ${{env.API_URL_EU}}
+          AMPLITUDE_KEY: ${{env.AMPLITUDE_KEY}}
           FLAVOR: ${{ env.FLAVOR }}
           TRACK: ${{ env.TRACK }}
