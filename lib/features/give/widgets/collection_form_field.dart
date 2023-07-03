@@ -24,7 +24,7 @@ class CollectionFormField extends StatelessWidget {
   final bool isRemoveIconVisible;
   final bool isSuffixTextVisible;
   final int amountLimit;
-  final int lowerLimit;
+  final double lowerLimit;
   final String suffixText;
   final Icon prefixCurrencyIcon;
   final Color bottomBorderColor;
@@ -55,9 +55,9 @@ class CollectionFormField extends StatelessWidget {
             if (currentValue > double.parse(amountLimit.toString())) {
               return '';
             }
-            if (currentValue < double.parse(lowerLimit.toString())) {
+            if (currentValue < lowerLimit) {
               return '';
-            }
+            }            
             return null;
           },
           textInputAction: TextInputAction.next,
