@@ -12,7 +12,7 @@ class LogMessage extends Equatable {
     this.model,
     this.platformID,
     this.tag,
-    this.timestamp,
+    this.deviceUTCTimestamp,
     this.versionOS,
     this.appVersion,
     this.lang,
@@ -27,7 +27,7 @@ class LogMessage extends Equatable {
   String? model;
   String? platformID;
   String? tag;
-  String? timestamp;
+  String? deviceUTCTimestamp;
   String? versionOS;
   String? appVersion;
   String? lang;
@@ -42,7 +42,7 @@ class LogMessage extends Equatable {
         'model': model,
         'platformID': platformID,
         'tag': tag,
-        'timestamp': timestamp,
+        'deviceUTCTimestamp': deviceUTCTimestamp,
         'versionOS': versionOS,
         'appVersion': appVersion,
         'lang': lang,
@@ -73,7 +73,7 @@ class LogMessage extends Equatable {
       model: model ?? this.model,
       platformID: platformID ?? this.platformID,
       tag: tag ?? this.tag,
-      timestamp: timestamp ?? this.timestamp,
+      deviceUTCTimestamp: timestamp ?? this.deviceUTCTimestamp,
       versionOS: versionOS ?? this.versionOS,
       appVersion: appVersion ?? this.appVersion,
       lang: lang ?? this.lang,
@@ -91,7 +91,7 @@ class LogMessage extends Equatable {
         model,
         platformID,
         tag,
-        timestamp,
+        deviceUTCTimestamp,
         versionOS,
         appVersion,
         lang,

@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
@@ -75,7 +74,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ),
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
   }
@@ -110,6 +112,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ),
       );
     } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
   }

@@ -37,7 +37,9 @@ class LoggingInfo implements ILoggingInfo {
     final guid = await _getGuid();
     var lm = LogMessage(
       guid: guid,
-      timestamp: DateTime.now().toUtc().toString(),
+      deviceUTCTimestamp: DateFormat('yyyy-MM-ddTHH:mm:ss').format(
+        DateTime.now().toUtc(),
+      ),
       level: level.toString(),
       message: message,
       lang: Intl.getCurrentLocale(),
@@ -51,7 +53,7 @@ class LoggingInfo implements ILoggingInfo {
       final sdkInt = androidInfo.version.sdkInt;
       final manufacturer = androidInfo.manufacturer;
       final model = androidInfo.model;
-      final os = 'Operating system: $release (SDK $sdkInt)';
+      final os = 'Android $release (SDK $sdkInt)';
       final device = '$manufacturer $model';
       const tag =
           kReleaseMode ? 'GivtApp.Droid.Production' : 'GivtApp.Droid.Debug';
@@ -69,7 +71,7 @@ class LoggingInfo implements ILoggingInfo {
       final version = iosInfo.systemVersion;
       final name = iosInfo.name;
       final model = iosInfo.model;
-      final os = 'Operating system: iOS $systemName $version';
+      final os = 'iOS $systemName $version';
       final device = '$name $model';
       const tag = kReleaseMode ? 'GivtApp.iOS.Production' : 'GivtApp.iOS.Debug';
       lm = lm.copyWith(
@@ -84,7 +86,7 @@ class LoggingInfo implements ILoggingInfo {
         .post(
       Uri.https('api.logit.io', '/v2'),
       headers: {
-        HttpHeaders.contentTypeHeader: ContentType.json.value,
+        'Content-Type': 'application/json',
         'ApiKey': key,
       },
       body: jsonEncode(
@@ -92,7 +94,7 @@ class LoggingInfo implements ILoggingInfo {
       ),
     )
         .then((value) {
-      if (value.statusCode != 200) {
+      if (value.statusCode != 202) {
         log('Error sending log message: ${value.statusCode}');
       }
     });

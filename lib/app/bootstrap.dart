@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
+import 'package:givt_app/core/logging/logging.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -36,6 +37,12 @@ Future<void> bootstrap({
 
   await runZonedGuarded(
     () async => runApp(await builder()),
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+    (error, stackTrace) async {
+      log(error.toString(), stackTrace: stackTrace);
+      await LoggingInfo.instance.error(
+        'Errot: $error, StackTrace: $stackTrace',
+        methodName: StackTrace.current.toString(),
+      );
+    },
   );
 }

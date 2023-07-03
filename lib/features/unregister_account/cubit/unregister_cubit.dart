@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failures.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 
 part 'unregister_state.dart';
@@ -26,7 +26,10 @@ class UnregisterCubit extends Cubit<UnregisterState> {
     } on GivtServerFailure catch (e) {
       final statusCode = e.statusCode;
       final body = e.body;
-      log(body.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       if (statusCode >= 300 && body != null) {
         if (!body.containsKey('AdditionalInformation')) {
           emit(
@@ -54,11 +57,18 @@ class UnregisterCubit extends Cubit<UnregisterState> {
         ),
       );
     } on SocketException catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(
         const UnregisterNoInternet(),
       );
     } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(
         UnregisterFailure(
           e.toString(),

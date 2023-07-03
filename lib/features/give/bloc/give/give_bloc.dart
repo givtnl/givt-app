@@ -7,6 +7,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/core/failures/failure.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -71,7 +72,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -135,7 +139,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -172,7 +179,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -246,7 +256,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         );
       }
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -268,7 +281,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       ),
     );
     try {
-      log('Submitting Givts');
+      await LoggingInfo.instance.info('Submitting Givts');
       await _givtRepository.submitGivts(
         guid: userGUID,
         body: {'donations': GivtTransaction.toJsonList(transactionList)},
@@ -286,6 +299,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
+      await LoggingInfo.instance.error(
+        body.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(
         state.copyWith(status: GiveStatus.error),
       );
@@ -349,6 +366,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
     } catch (e) {
       log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -371,6 +392,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       emit(state.copyWith(status: GiveStatus.readyToGive));
     } on SocketException catch (e) {
       log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(
         state.copyWith(
           status: GiveStatus.noInternetConnection,
@@ -449,7 +474,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         );
       }
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -466,7 +494,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
