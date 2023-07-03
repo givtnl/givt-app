@@ -85,7 +85,9 @@ class UserExt extends Equatable {
         accountType: AccountType.fromString(json['AccountType'] as String),
         needRegistration: json['IsTempUser'] as bool,
         personalInfoRegistered: json['FirstName'] != null,
-        mandateSigned: json['PayProvMandate'] != null,
+        mandateSigned: json.containsKey('mandateSigned')
+            ? json['mandateSigned'] as bool
+            : json['PayProvMandate'] != null,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
