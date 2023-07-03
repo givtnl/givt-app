@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -28,14 +29,17 @@ class _GivingPageState extends State<GivingPage> {
   void initState() {
     super.initState();
     _customInAppBrowser = CustomInAppBrowser(
-      onLoad: (url) {
+      onLoad: (url) async {
         if (url == null) {
           return;
         }
         if (!url.toString().contains('natived')) {
           return;
         }
-        _closeBrowser();
+        await LoggingInfo.instance.info(
+          'Closing browser and navigating to home page from $url',
+        );
+        await _closeBrowser();
       },
     );
   }
