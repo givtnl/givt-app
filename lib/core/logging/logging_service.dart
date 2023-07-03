@@ -31,7 +31,7 @@ class LoggingInfo implements ILoggingInfo {
 
   static LoggingInfo get instance => _singleton;
 
-  Future<void> _log(String message, Level level) async {
+  Future<void> _log(String message, String methodName, Level level) async {
     log(message);
     final info = await PackageInfo.fromPlatform();
     final guid = await _getGuid();
@@ -41,6 +41,7 @@ class LoggingInfo implements ILoggingInfo {
       level: level.toString(),
       message: message,
       lang: Intl.getCurrentLocale(),
+      method: methodName,
       appVersion: '${info.version}.${info.buildNumber}',
     );
 
@@ -107,22 +108,34 @@ class LoggingInfo implements ILoggingInfo {
   }
 
   @override
-  Future<void> debug(String message) async {
-    await _log(message, Level.FINE);
+  Future<void> debug(
+    String message, {
+    String methodName = '',
+  }) async {
+    await _log(message, methodName, Level.FINE);
   }
 
   @override
-  Future<void> error(String message) async {
-    await _log(message, Level.SEVERE);
+  Future<void> error(
+    String message, {
+    String methodName = '',
+  }) async {
+    await _log(message, methodName, Level.SEVERE);
   }
 
   @override
-  Future<void> info(String message) async {
-    await _log(message, Level.INFO);
+  Future<void> info(
+    String message, {
+    String methodName = '',
+  }) async {
+    await _log(message, methodName, Level.INFO);
   }
 
   @override
-  Future<void> warning(String message) async {
-    await _log(message, Level.WARNING);
+  Future<void> warning(
+    String message, {
+    String methodName = '',
+  }) async {
+    await _log(message, methodName, Level.WARNING);
   }
 }
