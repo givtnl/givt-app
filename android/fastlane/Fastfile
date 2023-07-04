@@ -20,6 +20,9 @@ platform :android do
     package_name = ENV['PACKAGE_NAME']
     track = ENV['TRACK']
     logit_api_key = ENV['LOGIT_API_KEY']
+    api_url_us= ENV['API_URL_US']
+    api_url_eu= ENV['API_URL_EU']
+    amplitude_key= ENV['AMPLITUDE_KEY']
     build_number = google_play_track_version_codes(package_name: package_name, track: track, json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 1
 
     Dir.chdir "../.." do
