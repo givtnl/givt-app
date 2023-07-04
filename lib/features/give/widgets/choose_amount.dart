@@ -103,6 +103,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[1],
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
@@ -122,6 +123,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[2],
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
@@ -158,7 +160,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   label: locals.next,
                   onPressed: isEnabled
                       ? () {
-                          widget.onAmountChanged(
+                          final given = widget.onAmountChanged(
                             double.parse(
                               controllers[0].text.replaceAll(',', '.'),
                             ),
@@ -169,6 +171,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
+                          if (!given) {
+                            return;
+                          }
+
+                          _resetControllers();
                         }
                       : null,
                 ),
@@ -185,8 +192,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
-  int getLowerLimitByCountry(String country) =>
-      country == Country.us.countryCode ? 2 : 0;
+  double getLowerLimitByCountry(String country) {
+    if (country == Country.us.countryCode) {
+      return 2;
+    }
+    if (Country.unitedKingdomCodes().contains(country)) {
+      return 0.50;
+    }
+    return 0.25;
+  }
 
   void _changeFocus() {
     selectedField = collectionFields.lastIndexOf(true);
@@ -242,7 +256,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onFocused,
     required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
-    int lowerLimit = 0,
+    double lowerLimit = 0,
   }) {
     return Visibility(
       visible: isVisible,

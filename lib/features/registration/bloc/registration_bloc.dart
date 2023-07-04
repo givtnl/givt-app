@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -93,6 +94,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
     } catch (e) {
       log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(
         state.copyWith(status: RegistrationStatus.failure),
       );
@@ -131,6 +136,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());
+      await LoggingInfo.instance.error(
+        body.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       if (statusCode == 409) {
         emit(
           state.copyWith(
@@ -157,6 +166,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationInit event,
     Emitter<RegistrationState> emit,
   ) async {
+    await LoggingInfo.instance.info(
+        'Registration Init',
+        methodName: StackTrace.current.toString(),
+      );
     emit(state.copyWith(status: RegistrationStatus.loading));
     if (authCubit.state is! AuthSuccess) {
       emit(
@@ -203,6 +216,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
     } catch (e) {
       log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(
         state.copyWith(status: RegistrationStatus.failure),
       );

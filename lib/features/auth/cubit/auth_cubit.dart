@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
@@ -29,7 +28,10 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(AuthFailure(message: e.toString()));
     }
   }
@@ -45,7 +47,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(userExt));
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const AuthFailure());
     }
   }
@@ -95,7 +100,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(unRegisteredUserExt));
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const AuthFailure());
     }
   }
@@ -107,6 +115,10 @@ class AuthCubit extends Cubit<AuthState> {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
       emit(AuthSuccess(userExt));
     } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const AuthFailure());
     }
   }
@@ -127,7 +139,10 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepositoy.resetPassword(email);
       emit(const AuthChangePasswordSuccess());
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const AuthChangePasswordFailure());
     }
   }

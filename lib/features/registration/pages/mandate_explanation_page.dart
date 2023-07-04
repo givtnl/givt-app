@@ -7,6 +7,7 @@ import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class MandateExplanationPage extends StatelessWidget {
@@ -58,7 +59,7 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
                 showDragHandle: true,
                 isScrollControlled: true,
                 useSafeArea: true,
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
+                backgroundColor: AppTheme.givtPurple,
                 builder: (BuildContext context) =>
                     const TermsAndConditionsDialog(
                   typeOfTerms: TypeOfTerms.slimPayInfo,

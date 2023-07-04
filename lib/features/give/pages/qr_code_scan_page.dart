@@ -19,14 +19,7 @@ class QrCodeScanPage extends StatefulWidget {
 }
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
-  bool _isLoading = false;
   final _controller = MobileScannerController();
-
-  void toggleLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
 
   Future<void> isAllowed() async {
     final isAllowed = await Permission.camera.isGranted;
@@ -129,10 +122,8 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
             MobileScanner(
               controller: _controller,
               onDetect: (barcode, args) async {
-                toggleLoading();
                 await _controller.stop();
                 if (barcode.rawValue == null) {
-                  toggleLoading();
                   log('No Givt QR code detected');
                   return;
                 }
@@ -143,18 +134,17 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
                 context
                     .read<GiveBloc>()
                     .add(GiveQRCodeScanned(barcode.rawValue!, userGUID));
-                toggleLoading();
               },
             ),
             const Positioned.fill(
               child: QrCodeTarget(),
             ),
-            if (_isLoading)
+            if (context.watch<GiveBloc>().state.status == GiveStatus.loading)
               const Opacity(
                 opacity: 0.8,
                 child: ModalBarrier(dismissible: false, color: Colors.black),
               ),
-            if (_isLoading)
+            if (context.watch<GiveBloc>().state.status == GiveStatus.loading)
               const Positioned.fill(
                 child: Center(
                   child: CircularProgressIndicator(

@@ -125,15 +125,21 @@ class SignSepaMandatePage extends StatelessWidget {
               ),
               const Spacer(),
               Text(locals.signMandateDisclaimer),
-              ElevatedButton(
-                onPressed: () => context.read<RegistrationBloc>().add(
-                      RegistrationSignMandate(
-                        guid: user.guid,
-                        appLanguage: locals.localeName,
+              if (context.watch<RegistrationBloc>().state.status ==
+                  RegistrationStatus.loading)
+                const Center(
+                  child: CircularProgressIndicator(),
+                )
+              else
+                ElevatedButton(
+                  onPressed: () => context.read<RegistrationBloc>().add(
+                        RegistrationSignMandate(
+                          guid: user.guid,
+                          appLanguage: locals.localeName,
+                        ),
                       ),
-                    ),
-                child: Text(locals.signMandate),
-              )
+                  child: Text(locals.signMandate),
+                )
             ],
           ),
         ),

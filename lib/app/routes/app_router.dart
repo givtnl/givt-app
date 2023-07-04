@@ -266,6 +266,7 @@ class AppRouter {
               )..add(const RemoteDataSourceSyncRequested()),
               child: HomePage(
                 code: state.queryParameters['code'] ?? '',
+                given: state.queryParameters.containsKey('given'),
               ),
             ),
           ),

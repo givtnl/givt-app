@@ -1,9 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/shared/repositories/infra_repository.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -59,7 +59,10 @@ class InfraCubit extends Cubit<InfraState> {
       );
       emit(const InfraSuccess());
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const InfraFailure());
     }
   }

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -16,12 +18,6 @@ import 'package:vibration/vibration.dart';
 class GivingPage extends StatefulWidget {
   const GivingPage({super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const GivingPage(),
-    );
-  }
-
   @override
   State<GivingPage> createState() => _GivingPageState();
 }
@@ -33,14 +29,17 @@ class _GivingPageState extends State<GivingPage> {
   void initState() {
     super.initState();
     _customInAppBrowser = CustomInAppBrowser(
-      onLoad: (url) {
+      onLoad: (url) async {
         if (url == null) {
           return;
         }
         if (!url.toString().contains('natived')) {
           return;
         }
-        _closeBrowser();
+        await LoggingInfo.instance.info(
+          'Closing browser and navigating to home page from $url',
+        );
+        await _closeBrowser();
       },
     );
   }
@@ -52,8 +51,12 @@ class _GivingPageState extends State<GivingPage> {
     if (!mounted) {
       return;
     }
-
-    context.go('/home');
+    context.goNamed(
+      Pages.home.name,
+      queryParameters: {
+        'given': 'true',
+      },
+    );
   }
 
   Map<String, dynamic> _buildGivt(
@@ -86,23 +89,12 @@ class _GivingPageState extends State<GivingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => context.go('/home'),
-        ),
-      ),
-      body: BlocConsumer<GiveBloc, GiveState>(
-        listener: (context, state) {
-          if (state.status == GiveStatus.error) {
-            context.go('/home');
-          }
-        },
-        builder: (context, state) {
-          if (state.status == GiveStatus.loading ||
-              state.status == GiveStatus.error) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+      body: Builder(
+        builder: (
+          context,
+        ) {
+          if (_customInAppBrowser.isOpened()) {
+            return const SizedBox.shrink();
           }
           final givt = _buildGivt(context);
 
@@ -123,7 +115,6 @@ class _GivingPageState extends State<GivingPage> {
                   ),
                   ios: IOSInAppBrowserOptions(
                     toolbarBottomBackgroundColor: Colors.white,
-                    presentationStyle: IOSUIModalPresentationStyle.POPOVER,
                     hideToolbarBottom: true,
                   ),
                 ),
@@ -144,7 +135,7 @@ typedef CustomInAppBroserCallback = void Function(Uri? url);
 class CustomInAppBrowser extends InAppBrowser {
   CustomInAppBrowser({
     required this.onLoad,
-  }) : super(implementation: WebViewImplementation.NATIVE);
+  }) : super();
 
   final CustomInAppBroserCallback onLoad;
 
