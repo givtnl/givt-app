@@ -50,6 +50,9 @@ class CollectionFormField extends StatelessWidget {
               return '';
             }
             final currentValue = double.parse(value.replaceAll(',', '.'));
+            if (currentValue == 0) {
+              return null;
+            }
 
             /// Dart accepts only dot as decimal separator
             if (currentValue > double.parse(amountLimit.toString())) {
@@ -57,7 +60,7 @@ class CollectionFormField extends StatelessWidget {
             }
             if (currentValue < lowerLimit) {
               return '';
-            }            
+            }
             return null;
           },
           textInputAction: TextInputAction.next,
