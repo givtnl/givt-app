@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-typedef ChooseAmountNextCallback = bool Function(
+typedef ChooseAmountNextCallback = void Function(
   double firstCollection,
   double secondCollection,
   double thirdCollection,
@@ -15,11 +15,13 @@ class ChooseAmount extends StatefulWidget {
     required this.amountLimit,
     required this.onAmountChanged,
     required this.country,
+    required this.hasGiven,
     super.key,
   });
 
   final int amountLimit;
   final String country;
+  final bool hasGiven;
   final ChooseAmountNextCallback onAmountChanged;
 
   @override
@@ -42,6 +44,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   ];
 
   int selectedField = 0;
+  bool reset = false;
 
   @override
   void dispose() {
@@ -56,6 +59,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
+    if (widget.hasGiven && !reset) {
+      reset = true;
+      _resetControllers();
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -160,7 +167,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   label: locals.next,
                   onPressed: isEnabled
                       ? () {
-                          final given = widget.onAmountChanged(
+                          widget.onAmountChanged(
                             double.parse(
                               controllers[0].text.replaceAll(',', '.'),
                             ),
@@ -171,11 +178,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
-                          if (!given) {
-                            return;
-                          }
-
-                          _resetControllers();
+                          setState(() {
+                            reset = false;
+                          });
                         }
                       : null,
                 ),
@@ -213,7 +218,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
       focusNodes[index].unfocus();
       collectionFields[index] = index == 0;
     }
-    focusNodes[0].requestFocus();
+    _changeFocus();
+    setState(() {
+      reset = true;
+    });
   }
 
   Icon _buildCurrencyIcon() {

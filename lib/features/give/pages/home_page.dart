@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+            BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
               listener: (context, state) {
                 if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -68,25 +68,22 @@ class HomePage extends StatelessWidget {
                   _buildNeedsRegistrationDialog(context);
                 }
               },
-              builder: (context, state) {
-                return ChooseAmount(
-                  country: auth.user.country,
-                  amountLimit: auth.user.amountLimit,
-                  onAmountChanged:
-                      (firstCollection, secondCollection, thirdCollection) {
-                    context.goNamed(
-                      Pages.selectGivingWay.name,
-                      extra: {
-                        'firstCollection': firstCollection,
-                        'secondCollection': secondCollection,
-                        'thirdCollection': thirdCollection,
-                        'code': code,
-                      },
-                    );
-                    return given;
+              child: ChooseAmount(
+                country: auth.user.country,
+                amountLimit: auth.user.amountLimit,
+                hasGiven: given,
+                onAmountChanged:
+                    (firstCollection, secondCollection, thirdCollection) =>
+                        context.goNamed(
+                  Pages.selectGivingWay.name,
+                  extra: {
+                    'firstCollection': firstCollection,
+                    'secondCollection': secondCollection,
+                    'thirdCollection': thirdCollection,
+                    'code': code,
                   },
-                );
-              },
+                ),
+              ),
             ),
             ColoredBox(
               color: Colors.white,
