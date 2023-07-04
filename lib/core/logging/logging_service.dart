@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/log_message.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:http/http.dart' as http;
@@ -34,6 +33,7 @@ class LoggingInfo implements ILoggingInfo {
   Future<void> _log(String message, String methodName, Level level) async {
     log(message);
     final info = await PackageInfo.fromPlatform();
+    final isDebug = info.packageName.contains('test');
     final guid = await _getGuid();
     var lm = LogMessage(
       guid: guid,
@@ -55,8 +55,7 @@ class LoggingInfo implements ILoggingInfo {
       final model = androidInfo.model;
       final os = 'Android $release (SDK $sdkInt)';
       final device = '$manufacturer $model';
-      const tag =
-          kReleaseMode ? 'GivtApp.Droid.Production' : 'GivtApp.Droid.Debug';
+      final tag = isDebug ? 'GivtApp.Droid.Debug' : 'GivtApp.Droid.Production';
       lm = lm.copyWith(
         platformID: '2',
         model: device,
@@ -73,7 +72,7 @@ class LoggingInfo implements ILoggingInfo {
       final model = iosInfo.model;
       final os = 'iOS $systemName $version';
       final device = '$name $model';
-      const tag = kReleaseMode ? 'GivtApp.iOS.Production' : 'GivtApp.iOS.Debug';
+      final tag = isDebug ? 'GivtApp.iOS.Debug' : 'GivtApp.iOS.Production';
       lm = lm.copyWith(
         platformID: '1',
         model: device,
