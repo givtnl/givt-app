@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:http_interceptor/http_interceptor.dart';
@@ -33,6 +34,10 @@ class Interceptor implements InterceptorContract {
     } catch (e) {
       log(e.toString());
     }
+    await LoggingInfo.instance.error(
+      '${data.method}: ${data.baseUrl}${data.params}',
+      methodName: StackTrace.current.toString(),
+    );
     return data;
   }
 

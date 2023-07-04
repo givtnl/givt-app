@@ -14,6 +14,10 @@ platform :ios do
   lane :release do
     flavor = ENV['FLAVOR']
     app_identifier = ENV['APP_IDENTIFIER']
+    logit_api_key = ENV['LOGIT_API_KEY']
+    api_url_us= ENV['API_URL_US']
+    api_url_eu= ENV['API_URL_EU']
+    amplitude_key= ENV['AMPLITUDE_KEY']
     setup_ci
     sync_code_signing(type: "appstore", readonly: true, app_identifier: app_identifier, git_url: git_url)
     api_key = app_store_connect_api_key(
@@ -25,7 +29,14 @@ platform :ios do
     Dir.chdir "../.." do
         sh("flutter", "packages", "get")
         sh("flutter", "clean")
-        sh("flutter", "build", "ipa", "--flavor", flavor, "--target", "lib/main_#{flavor}.dart", "--build-number=#{build_number}")
+        sh("flutter", "build", "ipa", "--flavor", flavor, 
+          "--target", "lib/main_#{flavor}.dart", 
+          "--build-number=#{build_number}", 
+          "--dart-define=LOGIT_API_KEY=#{logit_api_key}",
+          "--dart-define=API_URL_US=#{api_url_us}",
+          "--dart-define=API_URL_EU=#{api_url_eu}",
+          "--dart-define=AMPLITUDE_KEY=#{amplitude_key}",
+        )
     end
     build_app(
       scheme: flavor, 

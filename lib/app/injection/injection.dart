@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -13,20 +12,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
-Future<void> init({
-  required Map<String, String> environmentVariables,
-}) async {
+Future<void> init() async {
   await _initCoreDependencies();
-  await _initAPIService(environmentVariables);
+  await _initAPIService();
 
   /// Init repositories
   _initRepositories();
 }
 
-Future<void> _initAPIService(Map<String, String> environmentVariables) async {
-  var baseUrl = environmentVariables['API_URL_EU']!;
+Future<void> _initAPIService() async {
+  var baseUrl = const String.fromEnvironment('API_URL_EU');
   if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
-    baseUrl = environmentVariables['API_URL_US']!;
+    baseUrl = const String.fromEnvironment('API_URL_US');
   }
   log('Using API URL: $baseUrl');
   getIt.registerLazySingleton<APIService>(

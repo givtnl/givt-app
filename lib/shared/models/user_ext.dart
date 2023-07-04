@@ -23,6 +23,8 @@ class UserExt extends Equatable {
     this.city = '',
     this.country = '',
     this.iban = '',
+    this.payProvMandate = '',
+    this.payProvMandateStatus = '',
     this.countryCode = -1,
     this.isGiftAidEnabled = false,
     this.accountType = AccountType.none,
@@ -52,6 +54,8 @@ class UserExt extends Equatable {
         city = '',
         country = '',
         iban = '',
+        payProvMandate = '',
+        payProvMandateStatus = '',
         countryCode = -1,
         isGiftAidEnabled = false,
         accountType = AccountType.none,
@@ -85,7 +89,15 @@ class UserExt extends Equatable {
         accountType: AccountType.fromString(json['AccountType'] as String),
         needRegistration: json['IsTempUser'] as bool,
         personalInfoRegistered: json['FirstName'] != null,
-        mandateSigned: json['PayProvMandate'] != null,
+        payProvMandateStatus: json['PayProvMandateStatus'] != null
+            ? json['PayProvMandateStatus'] as String
+            : '',
+        payProvMandate: json['PayProvMandate'] != null
+            ? json['PayProvMandate'] as String
+            : '',
+        mandateSigned: json.containsKey('mandateSigned')
+            ? json['mandateSigned'] as bool
+            : json['PayProvMandate'] != null,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -132,6 +144,8 @@ class UserExt extends Equatable {
   final String iban;
   final String sortCode;
   final String accountNumber;
+  final String payProvMandateStatus;
+  final String payProvMandate;
 
   final bool isGiftAidEnabled;
   final AccountType accountType;
@@ -167,6 +181,8 @@ class UserExt extends Equatable {
     String? accountNumber,
     AccountType? accountType,
     String? appLanguage,
+    String? payProvMandateStatus,
+    String? payProvMandate,
     int? amountLimit,
     bool? tempUser,
     bool? mandateSigned,

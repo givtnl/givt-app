@@ -190,8 +190,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
-  int getLowerLimitByCountry(String country) =>
-      country == Country.us.countryCode ? 2 : 0;
+  double getLowerLimitByCountry(String country) {
+    if (country == Country.us.countryCode) {
+      return 2;
+    }
+    if (Country.unitedKingdomCodes().contains(country)) {
+      return 0.50;
+    }
+    return 0.25;
+  }
 
   void _changeFocus() {
     selectedField = collectionFields.lastIndexOf(true);
@@ -247,7 +254,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onFocused,
     required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
-    int lowerLimit = 0,
+    double lowerLimit = 0,
   }) {
     return Visibility(
       visible: isVisible,
