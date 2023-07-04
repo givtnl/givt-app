@@ -8,6 +8,8 @@ on:
         required: true
       MATCH_PASSWORD:
         required: true
+      LOGIT_API_KEY:
+          required: true
 
 jobs:
 

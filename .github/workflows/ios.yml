@@ -10,6 +10,8 @@ on:
         required: true
       CODESIGNING_DEPLOY_KEY:
         required: true
+      LOGIT_API_KEY:
+          required: true
 
 jobs:
   build-ios: 
