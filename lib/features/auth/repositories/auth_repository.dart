@@ -52,6 +52,7 @@ class AuthRepositoyImpl with AuthRepositoy {
     final response = await _apiService.refreshToken(
       {
         'refresh_token': session.refreshToken,
+        'grant_type': 'refresh_token',
       },
     );
     final newSession = Session.fromJson(response);
