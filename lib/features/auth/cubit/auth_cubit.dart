@@ -1,26 +1,22 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/models/models.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy) : super(AuthUnkown());
+  AuthCubit(this._authRepositoy, this._countryIsoInfo) : super(AuthUnkown());
 
   final AuthRepositoy _authRepositoy;
+  final CountryIsoInfo _countryIsoInfo;
 
   Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
     try {
-      // check email
-      final result = await _authRepositoy.checkEmail(email);
-      if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
-        return;
-      }
       final userGUID = await _authRepositoy.login(
         email,
         password,
@@ -32,7 +28,10 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(AuthFailure(message: e.toString()));
     }
   }
@@ -48,6 +47,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(userExt));
     } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const AuthFailure());
     }
   }
@@ -71,7 +74,7 @@ class AuthCubit extends Cubit<AuthState> {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
+        await login(email: email, password: TempUser.defaultPassword);
         return;
       }
       if (result.contains('true')) {
@@ -79,14 +82,68 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
+      final countryIso = await _countryIsoInfo.checkCountryIso;
+
+      final tempUser = TempUser.prefilled(
+        email: email,
+        country: countryIso,
+        appLanguage: locale,
+        timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
+        amountLimit: _countryIsoInfo.isUS ? 4999 : 499,
+      );
+
       // register temp user
-      final unRegisteredUserExt =
-          await _authRepositoy.registerTempUser(email, locale);
+      final unRegisteredUserExt = await _authRepositoy.registerUser(
+        tempUser: tempUser,
+        isTempUser: true,
+      );
 
       emit(AuthSuccess(unRegisteredUserExt));
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(const AuthFailure());
+    }
+  }
+
+  Future<void> refreshUser() async {
+    final guid = (state as AuthSuccess).user.guid;
+    emit(AuthLoading());
+    try {
+      final userExt = await _authRepositoy.fetchUserExtension(guid);
+      emit(AuthSuccess(userExt));
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(const AuthFailure());
+    }
+  }
+
+  Future<void> changePassword({required String email}) async {
+    emit(AuthLoading());
+    try {
+      // check email
+      final result = await _authRepositoy.checkEmail(email);
+      if (result.contains('temp')) {
+        emit(AuthTempAccountWarning(email));
+        return;
+      }
+      if (result.contains('false')) {
+        emit(AuthChangePasswordWrongEmail(email));
+        return;
+      }
+      await _authRepositoy.resetPassword(email);
+      emit(const AuthChangePasswordSuccess());
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(const AuthChangePasswordFailure());
     }
   }
 }

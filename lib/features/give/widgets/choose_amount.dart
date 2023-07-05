@@ -1,9 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-typedef ChooseAmountNextCallback = bool Function(
+typedef ChooseAmountNextCallback = void Function(
   double firstCollection,
   double secondCollection,
   double thirdCollection,
@@ -14,11 +15,13 @@ class ChooseAmount extends StatefulWidget {
     required this.amountLimit,
     required this.onAmountChanged,
     required this.country,
+    required this.hasGiven,
     super.key,
   });
 
   final int amountLimit;
   final String country;
+  final bool hasGiven;
   final ChooseAmountNextCallback onAmountChanged;
 
   @override
@@ -41,6 +44,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   ];
 
   int selectedField = 0;
+  bool reset = false;
 
   @override
   void dispose() {
@@ -55,6 +59,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
+    if (widget.hasGiven && !reset) {
+      reset = true;
+      _resetControllers();
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8),
@@ -78,6 +86,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[0],
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
@@ -101,6 +110,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[1],
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
@@ -120,6 +130,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[2],
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
@@ -167,6 +178,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
+                          setState(() {
+                            reset = false;
+                          });
                         }
                       : null,
                 ),
@@ -183,6 +197,16 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
+  double getLowerLimitByCountry(String country) {
+    if (country == Country.us.countryCode) {
+      return 2;
+    }
+    if (Country.unitedKingdomCodes().contains(country)) {
+      return 0.50;
+    }
+    return 0.25;
+  }
+
   void _changeFocus() {
     selectedField = collectionFields.lastIndexOf(true);
     focusNodes[collectionFields.lastIndexOf(true)].requestFocus();
@@ -194,16 +218,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
       focusNodes[index].unfocus();
       collectionFields[index] = index == 0;
     }
-    focusNodes[0].requestFocus();
+    _changeFocus();
+    setState(() {
+      reset = true;
+    });
   }
 
   Icon _buildCurrencyIcon() {
     final countryIso = widget.country;
     var icon = Icons.euro;
-    if (countryIso == 'US') {
+    if (countryIso == Country.us.countryCode) {
       icon = Icons.attach_money;
     }
-    if (countryIso == 'GB') {
+    if (Country.unitedKingdomCodes().contains(countryIso)) {
       icon = Icons.currency_pound;
     }
 
@@ -237,6 +264,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onFocused,
     required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
+    double lowerLimit = 0,
   }) {
     return Visibility(
       visible: isVisible,
@@ -245,6 +273,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         key: Key(collectionFieldName),
         controller: controller,
         amountLimit: amountLimit,
+        lowerLimit: lowerLimit,
         suffixText: collectionFieldName,
         prefixCurrencyIcon: prefixCurrencyIcon,
         isRemoveIconVisible: isRemoveIconVisible,

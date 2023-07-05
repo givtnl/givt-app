@@ -1,7 +1,9 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
@@ -13,6 +15,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
     this._collectGroupRepository,
     this._campaignRepository,
+    this._countryIsoInfo,
   ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
 
@@ -25,6 +28,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   final CollectGroupRepository _collectGroupRepository;
   final CampaignRepository _campaignRepository;
+  final CountryIsoInfo _countryIsoInfo;
 
   FutureOr<void> _onOrganisationFetch(
     OrganisationFetch event,
@@ -34,24 +38,32 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     try {
       final lastDonatedOrganisation =
           await _campaignRepository.getLastOrganisationDonated();
-      final organisations = await _collectGroupRepository.getCollectGroupList();
-
+      final unFiltered = await _collectGroupRepository.getCollectGroupList();
+      final userAccountType = await _getAccountType(event.accountType);
+      final organisations = unFiltered
+          .where(
+            (organisation) => organisation.accountType == userAccountType,
+          )
+          .toList();
       var selectedGroup = state.selectedCollectGroup;
       if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
         selectedGroup = organisations.firstWhere(
           (organisation) => lastDonatedOrganisation.mediumId!.contains(
             organisation.nameSpace,
           ),
+          orElse: () => const CollectGroup.empty(),
         );
-        organisations
-          ..removeWhere(
-            (organisation) =>
-                organisation.nameSpace == lastDonatedOrganisation.mediumId,
-          )
-          ..insert(
-            0,
-            selectedGroup,
-          );
+        if (selectedGroup.nameSpace.isNotEmpty) {
+          organisations
+            ..removeWhere(
+              (organisation) =>
+                  organisation.nameSpace == lastDonatedOrganisation.mediumId,
+            )
+            ..insert(
+              0,
+              selectedGroup,
+            );
+        }
       }
       emit(
         state.copyWith(
@@ -62,6 +74,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ),
       );
     } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
   }
@@ -96,6 +112,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ),
       );
     } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
   }
@@ -134,5 +154,25 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
             : selectedNow,
       ),
     );
+  }
+
+  Future<AccountType> _getAccountType(AccountType accountType) async {
+    if (accountType != AccountType.none) {
+      return accountType;
+    }
+    final countryIso = await _countryIsoInfo.checkCountryIso;
+
+    final country = Country.values.firstWhere(
+      (country) => country.countryCode == countryIso,
+      orElse: () => Country.unknown,
+    );
+
+    if (country.isBACS) {
+      return AccountType.bacs;
+    }
+    if (country.isCreditCard) {
+      return AccountType.creditCard;
+    }
+    return AccountType.sepa;
   }
 }

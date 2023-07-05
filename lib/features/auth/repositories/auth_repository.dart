@@ -1,21 +1,46 @@
 import 'dart:convert';
 
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
-import 'package:givt_app/features/auth/models/temp_user.dart';
+import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthRepositoy {
-  AuthRepositoy(
+mixin AuthRepositoy {
+  Future<void> refreshToken();
+  Future<String> login(String email, String password);
+  Future<UserExt> fetchUserExtension(String guid);
+  Future<UserExt?> isAuthenticated();
+  Future<bool> logout();
+  Future<bool> checkTld(String email);
+  Future<String> checkEmail(String email);
+  Future<bool> resetPassword(String email);
+  Future<String> signSepaMandate({
+    required String guid,
+    required String appLanguage,
+  });
+  Future<UserExt> registerUser({
+    required TempUser tempUser,
+    required bool isTempUser,
+  });
+  Future<bool> changeGiftAid({
+    required String guid,
+    required bool giftAid,
+  });
+  Future<bool> unregisterUser({
+    required String email,
+  });
+}
+
+class AuthRepositoyImpl with AuthRepositoy {
+  AuthRepositoyImpl(
     this._prefs,
     this._apiService,
   );
   final SharedPreferences _prefs;
   final APIService _apiService;
 
+  @override
   Future<void> refreshToken() async {
     final currentSession = _prefs.getString(Session.tag);
     if (currentSession == null) {
@@ -27,6 +52,7 @@ class AuthRepositoy {
     final response = await _apiService.refreshToken(
       {
         'refresh_token': session.refreshToken,
+        'grant_type': 'refresh_token',
       },
     );
     final newSession = Session.fromJson(response);
@@ -36,6 +62,7 @@ class AuthRepositoy {
     );
   }
 
+  @override
   Future<String> login(String email, String password) async {
     final newSession = await _apiService.login(
       {
@@ -55,6 +82,7 @@ class AuthRepositoy {
     return session.userGUID;
   }
 
+  @override
   Future<UserExt> fetchUserExtension(String guid) async {
     final response = await _apiService.getUserExtension(guid);
     final userExt = UserExt.fromJson(response);
@@ -65,6 +93,7 @@ class AuthRepositoy {
     return userExt;
   }
 
+  @override
   Future<UserExt?> isAuthenticated() async {
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
@@ -85,38 +114,58 @@ class AuthRepositoy {
     );
   }
 
-  Future<bool> logout() async => _prefs.remove(Session.tag);
+  @override
+  Future<bool> logout() async => _prefs.clear();
 
+  @override
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
 
+  @override
+  Future<String> signSepaMandate({
+    required String guid,
+    required String appLanguage,
+  }) async {
+    final response = await _apiService.signSepaMandate(
+      guid,
+      appLanguage,
+    );
+    return response;
+  }
+
+  @override
   Future<String> checkEmail(String email) async =>
       _apiService.checkEmail(email);
 
-  Future<UserExt> registerTempUser(String email, String locale) async {
-    final countryIso = await FlutterSimCountryCode.simCountryCode;
-
-    final tempUser = TempUser.prefilled(
-      email: email,
-      country: countryIso ?? 'NL',
-      appLanguage: locale,
-      timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
-      amountLimit: countryIso?.toUpperCase() == 'US' ? 4999 : 499,
-    );
-
+  @override
+  Future<UserExt> registerUser({
+    required TempUser tempUser,
+    required bool isTempUser,
+  }) async {
     /// register user
-    final userGUID = await _apiService.registerTempUser(tempUser.toJson());
+    final userGUID = await _apiService.registerUser(tempUser.toJson());
 
     /// create session
     await login(
-      email,
+      tempUser.email,
       tempUser.password,
     );
 
     final userExt = UserExt(
-      email: email,
+      email: tempUser.email,
       guid: userGUID,
       amountLimit: tempUser.amountLimit,
-      tempUser: true,
+      tempUser: isTempUser,
+      country: tempUser.country,
+      phoneNumber: tempUser.phoneNumber,
+      firstName: tempUser.firstName,
+      lastName: tempUser.lastName,
+      appLanguage: tempUser.appLanguage,
+      address: tempUser.address,
+      city: tempUser.city,
+      postalCode: tempUser.postalCode,
+      iban: tempUser.iban,
+      sortCode: tempUser.sortCode,
+      accountNumber: tempUser.accountNumber,
     );
 
     await _prefs.setString(
@@ -126,4 +175,27 @@ class AuthRepositoy {
 
     return userExt;
   }
+
+  @override
+  Future<bool> changeGiftAid({
+    required String guid,
+    required bool giftAid,
+  }) async {
+    return _apiService.changeGiftAid(
+      guid,
+      {'authorised': giftAid},
+    );
+  }
+
+  @override
+  Future<bool> resetPassword(String email) =>
+      _apiService.resetPassword({'email': email});
+
+  @override
+  Future<bool> unregisterUser({
+    required String email,
+  }) async =>
+      _apiService.unregisterUser({
+        'email': email,
+      });
 }

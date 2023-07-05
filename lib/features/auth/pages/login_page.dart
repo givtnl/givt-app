@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/signup_page.dart';
+import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -61,25 +61,6 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthTempAccountWarning) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: Text(locals.temporaryAccount),
-                content: Text(locals.tempAccountLogin),
-                actions: [
-                  TextButton(
-                    child: Text(locals.continueKey),
-                    onPressed: () => Navigator.of(context).pushReplacement(
-                      SignUpPage.route(
-                        email: _emailController.text,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
           if (state is AuthFailure) {
             showDialog<void>(
               context: context,
@@ -175,9 +156,14 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 15),
                   child: Align(
                     child: TextButton(
-                      onPressed: () {
-                        ///todo add forgot password page
-                      },
+                      onPressed: () => showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        builder: (context) => ChangePasswordPage(
+                          email: _emailController.text,
+                        ),
+                      ),
                       child: Text(
                         locals.forgotPassword,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(

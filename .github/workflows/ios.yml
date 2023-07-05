@@ -10,6 +10,8 @@ on:
         required: true
       CODESIGNING_DEPLOY_KEY:
         required: true
+      LOGIT_API_KEY:
+          required: true
 
 jobs:
   build-ios: 
@@ -24,12 +26,18 @@ jobs:
             echo "APP_IDENTIFIER=net.givtapp.ios" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
             echo "TRACK=internal" >> $GITHUB_ENV
+            echo "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a" >> $GITHUB_ENV
+            echo "API_URL_US=backend.givt.app" >> $GITHUB_ENV
+            echo "API_URL_EU=backend.givtapp.net" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
             echo "PACKAGE_NAME=net.givtapp.ios.test" >> $GITHUB_ENV
             echo "APP_IDENTIFIER=net.givtapp.ios.test" >> $GITHUB_ENV
             echo "FLAVOR=development" >> $GITHUB_ENV
             echo "TRACK=internal" >> $GITHUB_ENV
+            echo "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e" >> $GITHUB_ENV
+            echo "API_URL_US=dev-backend.givt.app" >> $GITHUB_ENV
+            echo "API_URL_EU=dev-backend.givtapp.net" >> $GITHUB_ENV
           fi
 
       - name: Checkout
@@ -60,6 +68,10 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_API_TOKEN }}
+          LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
+          API_URL_US: ${{env.API_URL_US}}
+          API_URL_EU: ${{env.API_URL_EU}}
+          AMPLITUDE_KEY: ${{env.AMPLITUDE_KEY}}
           APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
           FLAVOR: ${{ env.FLAVOR }}

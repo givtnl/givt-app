@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/organization_list_page.dart';
-import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class BTScanPage extends StatefulWidget {
   const BTScanPage({super.key});
@@ -116,7 +116,7 @@ class _BTScanPageState extends State<BTScanPage> {
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
                       onPressed: () {
-                        if (state.organisation.organisationName!.isNotEmpty) {
+                        if (orgName!.isNotEmpty) {
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(
                                   (context.read<AuthCubit>().state
@@ -127,26 +127,9 @@ class _BTScanPageState extends State<BTScanPage> {
                               );
                           return;
                         }
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => MultiBlocProvider(
-                              providers: [
-                                BlocProvider.value(
-                                  value: context.read<GiveBloc>(),
-                                ),
-                                BlocProvider(
-                                  create: (_) => OrganisationBloc(
-                                    getIt(),
-                                    getIt(),
-                                  )..add(
-                                      const OrganisationFetch(),
-                                    ),
-                                ),
-                              ],
-                              child: const OrganizationListPage(),
-                            ),
-                            fullscreenDialog: true,
-                          ),
+                        context.goNamed(
+                          Pages.giveByList.name,
+                          extra: context.read<GiveBloc>(),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -171,26 +154,9 @@ class _BTScanPageState extends State<BTScanPage> {
                       bottom: 10,
                     ),
                     child: TextButton(
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => MultiBlocProvider(
-                            providers: [
-                              BlocProvider.value(
-                                value: context.read<GiveBloc>(),
-                              ),
-                              BlocProvider(
-                                create: (_) => OrganisationBloc(
-                                  getIt(),
-                                  getIt(),
-                                )..add(
-                                    const OrganisationFetch(),
-                                  ),
-                              ),
-                            ],
-                            child: const OrganizationListPage(),
-                          ),
-                          fullscreenDialog: true,
-                        ),
+                      onPressed: () => context.goNamed(
+                        Pages.giveByList.name,
+                        extra: context.read<GiveBloc>(),
                       ),
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(

@@ -16,12 +16,6 @@ import 'package:givt_app/utils/app_theme.dart';
 class OrganizationListPage extends StatelessWidget {
   const OrganizationListPage({super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const OrganizationListPage(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -41,7 +35,15 @@ class OrganizationListPage extends StatelessWidget {
         ),
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state.status == OrganisationStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(locals.somethingWentWrong),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           return Column(
             children: [
@@ -84,6 +86,8 @@ class OrganizationListPage extends StatelessWidget {
                 ),
               _buildGivingButton(
                 title: locals.give,
+                isLoading: context.watch<GiveBloc>().state.status ==
+                    GiveStatus.loading,
                 onPressed:
                     state.selectedCollectGroup.type == CollecGroupType.none
                         ? null
@@ -132,19 +136,24 @@ class OrganizationListPage extends StatelessWidget {
 
   Expanded _buildGivingButton({
     required String title,
+    bool isLoading = false,
     VoidCallback? onPressed,
   }) {
     return Expanded(
       flex: 0,
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            disabledBackgroundColor: Colors.grey,
-          ),
-          child: Text(title),
-        ),
+        child: !isLoading
+            ? ElevatedButton(
+                onPressed: onPressed,
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: Text(title),
+              )
+            : const Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
   }

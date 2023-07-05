@@ -2,94 +2,88 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
-import 'package:givt_app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/bloc/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({required this.code, required this.given, super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => BlocProvider(
-        create: (_) => RemoteDataSourceSyncBloc(
-          getIt(),
-          getIt(),
-        )..add(
-            const RemoteDataSourceSyncRequested(),
-          ),
-        child: const HomePage(),
-      ),
-    );
-  }
+  final String code;
+  final bool given;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     final auth = context.read<AuthCubit>().state as AuthSuccess;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              showDragHandle: true,
+              backgroundColor: AppTheme.givtPurple,
+              builder: (_) => const FAQBottomSheet(),
+            ),
+            icon: const Icon(
+              Icons.question_mark_outlined,
+              size: 26,
+            ),
+          ),
+        ],
       ),
       drawer: const CustomNavigationDrawer(),
       body: SafeArea(
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            BlocConsumer<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+            BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
               listener: (context, state) {
                 if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Synced successfully'),
+                    SnackBar(
+                      content: Text(
+                        'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
+                      ),
                     ),
                   );
                 }
-              },
-              builder: (context, state) {
-                if (state is RemoteDataSourceSyncSuccess &&
-                    auth.user.needRegistration &&
-                    !auth.user.mandateSigned) {
-                  // WidgetsBinding.instance.addPostFrameCallback(
-                  //   (_) => _buildNeedsRegistrationDialog(context),
-                  // );
+                if (state is RemoteDataSourceSyncInProgress) {
+                  if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                    return;
+                  }
+                  _buildNeedsRegistrationDialog(context);
                 }
-
-                return ChooseAmount(
-                  country: auth.user.country,
-                  amountLimit: auth.user.amountLimit,
-                  onAmountChanged:
-                      (firstCollection, secondCollection, thirdCollection) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute<void>(
-                        builder: (_) => BlocProvider(
-                          create: (context) => GiveBloc(
-                            getIt(),
-                            getIt(),
-                            getIt(),
-                          )..add(
-                              GiveAmountChanged(
-                                firstCollectionAmount: firstCollection,
-                                secondCollectionAmount: secondCollection,
-                                thirdCollectionAmount: thirdCollection,
-                              ),
-                            ),
-                          child: const SelectGivingWayPage(),
-                        ),
-                        fullscreenDialog: true,
-                      ),
-                    );
-                    return true;
-                  },
-                );
               },
+              child: ChooseAmount(
+                country: auth.user.country,
+                amountLimit: auth.user.amountLimit,
+                hasGiven: given,
+                onAmountChanged:
+                    (firstCollection, secondCollection, thirdCollection) =>
+                        context.goNamed(
+                  Pages.selectGivingWay.name,
+                  extra: {
+                    'firstCollection': firstCollection,
+                    'secondCollection': secondCollection,
+                    'thirdCollection': thirdCollection,
+                    'code': code,
+                  },
+                ),
+              ),
             ),
             ColoredBox(
               color: Colors.white,
@@ -114,6 +108,7 @@ class HomePage extends StatelessWidget {
   Future<void> _buildNeedsRegistrationDialog(
     BuildContext context,
   ) {
+    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
@@ -121,12 +116,21 @@ class HomePage extends StatelessWidget {
         content: Text(context.l10n.finalizeRegistrationPopupText),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => context.pop(),
             child: Text(context.l10n.askMeLater),
           ),
           TextButton(
             onPressed: () {
-              //todo redirect to registration page
+              if (user.needRegistration) {
+                context.goNamed(
+                  Pages.registration.name,
+                  queryParameters: {
+                    'email': user.email,
+                  },
+                );
+                return;
+              }
+              context.goNamed(Pages.sepaMandateExplanation.name);
             },
             child: Text(
               context.l10n.finalizeRegistration,

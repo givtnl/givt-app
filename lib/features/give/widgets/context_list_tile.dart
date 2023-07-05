@@ -20,22 +20,26 @@ class ContextListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return SizedBox(
-      width: size.width * 0.95,
+    return Container(
+      padding: const EdgeInsets.only(bottom: 5),
+      height: size.height * 0.18,
       child: InkWell(
         onTap: onTap,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
-          elevation: 10,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildLeading(size),
-              _buildTitleSubtitle(size, context),
-              _buildTrailing(),
-            ],
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildLeading(size),
+                _buildTitleSubtitle(size, context),
+                _buildTrailing(size),
+              ],
+            ),
           ),
         ),
       ),
@@ -53,7 +57,7 @@ class ContextListTile extends StatelessWidget {
         ),
       );
 
-  Padding _buildTitleSubtitle(Size size, BuildContext context) => Padding(
+  Widget _buildTitleSubtitle(Size size, BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 5,
         ),
@@ -63,10 +67,6 @@ class ContextListTile extends StatelessWidget {
             SizedBox(
               width: size.width * 0.5,
               child: Container(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  top: 20,
-                ),
                 child: Text(
                   title,
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -91,18 +91,10 @@ class ContextListTile extends StatelessWidget {
         ),
       );
 
-  Widget _buildTrailing() => Visibility(
+  Widget _buildTrailing(Size size) => Visibility(
         visible: trailing != null,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 5,
-                top: 40,
-              ),
-              child: trailing,
-            ),
-          ],
+        child: Container(
+          child: trailing,
         ),
       );
 }

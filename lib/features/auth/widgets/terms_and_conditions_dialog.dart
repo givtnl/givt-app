@@ -1,8 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_sim_country_code/flutter_sim_country_code.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
+import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class TermsAndConditionsDialog extends StatelessWidget {
@@ -10,47 +10,58 @@ class TermsAndConditionsDialog extends StatelessWidget {
     required this.typeOfTerms,
     super.key,
   });
-
+  //todo refactor this to use the title and the instead of the [TypeOfTerms]
   final TypeOfTerms typeOfTerms;
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: FlutterSimCountryCode.simCountryCode,
+      future: getIt<CountryIsoInfo>().checkCountryIso,
       builder: (context, AsyncSnapshot<String?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
-        final localName = Platform.localeName;
         final locals = context.l10n;
-        final countryIso = snapshot.data ?? 'NL';
+        final countryIso = snapshot.data;
 
         var termsAndConditions = locals.termsText;
         var title = locals.fullVersionTitleTerms;
         if (typeOfTerms == TypeOfTerms.privacyPolicy) {
           title = locals.privacyTitle;
           termsAndConditions = locals.policyText;
-          if (['GB', 'GG', 'JE'].contains(localName)) {
+          if (Country.unitedKingdomCodes().contains(countryIso)) {
             termsAndConditions = locals.policyTextGb;
           }
 
-          if (countryIso == 'US') {
+          if (countryIso == Country.us.countryCode) {
             termsAndConditions = locals.policyTextUs;
           }
         }
         if (typeOfTerms == TypeOfTerms.termsAndConditions) {
-          if (['GB', 'GG', 'JE'].contains(countryIso)) {
+          if (Country.unitedKingdomCodes().contains(countryIso)) {
             termsAndConditions = locals.termsTextGb;
           }
-          if (localName == 'US') {
+          if (countryIso == Country.us.countryCode) {
             termsAndConditions = locals.termsTextUs;
           }
         }
         if (typeOfTerms == TypeOfTerms.slimPayInfo) {
           title = locals.slimPayInfoDetailTitle;
           termsAndConditions = locals.slimPayInfoDetail;
+        }
+        if (typeOfTerms == TypeOfTerms.bacsInfo) {
+          title = locals.bacsAdvanceNoticeTitle;
+          termsAndConditions = locals.bacsAdvanceNotice;
+        }
+        if (typeOfTerms == TypeOfTerms.directDebitGuarantee) {
+          title = locals.bacsDdGuaranteeTitle;
+          termsAndConditions = locals.bacsDdGuarantee;
+        }
+        if (typeOfTerms == TypeOfTerms.giftAid) {
+          title = locals.giftAidInfoTitle;
+          termsAndConditions = locals.giftAidInfoBody;
         }
         return Padding(
           padding: const EdgeInsets.all(20),

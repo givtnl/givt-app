@@ -20,6 +20,7 @@ class AppTheme {
   static const givtAmount = Color(0xFFD2D1D9);
   static const givtYellow = Color(0xFFEDA52E);
   static const givtDarkGreen = Color(0xFF1da96c);
+  static const softenedGivtPurple = Color(0xFF585479);
 
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
@@ -50,7 +51,7 @@ class AppTheme {
       textTheme: ButtonTextTheme.primary,
     ),
     bottomSheetTheme: BottomSheetThemeData(
-      backgroundColor: lightColorScheme.background,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(30),
@@ -94,6 +95,14 @@ class AppTheme {
           Radius.circular(8),
         ),
       ),
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.grey.shade300,
+        ),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8),
+        ),
+      ),
     ),
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(
@@ -113,6 +122,10 @@ class AppTheme {
     ),
     iconTheme: IconThemeData(
       color: lightColorScheme.primary,
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.all(givtLightGreen),
+      checkColor: MaterialStateProperty.all(givtLightGreen),
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
