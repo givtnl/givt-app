@@ -1,10 +1,13 @@
 part of 'auth_cubit.dart';
 
 abstract class AuthState extends Equatable {
-  const AuthState();
+  const AuthState({
+    this.user = const UserExt.empty(),
+  });
+  final UserExt user;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
 class AuthLoading extends AuthState {}
@@ -26,11 +29,10 @@ class AuthLoginRedirect extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  const AuthSuccess(this.user);
-  final UserExt user;
+  const AuthSuccess({super.user});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [];
 }
 
 class AuthLogout extends AuthState {}
