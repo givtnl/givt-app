@@ -24,7 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(
         AuthSuccess(
-          await _authRepositoy.fetchUserExtension(userGUID),
+          user: await _authRepositoy.fetchUserExtension(userGUID),
         ),
       );
     } catch (e) {
@@ -45,7 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      emit(AuthSuccess(userExt));
+      emit(AuthSuccess(user: userExt));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -98,7 +98,7 @@ class AuthCubit extends Cubit<AuthState> {
         isTempUser: true,
       );
 
-      emit(AuthSuccess(unRegisteredUserExt));
+      emit(AuthSuccess(user: unRegisteredUserExt));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -113,7 +113,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
-      emit(AuthSuccess(userExt));
+      emit(AuthSuccess(user: userExt));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),

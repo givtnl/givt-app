@@ -51,7 +51,10 @@ class APIService {
       encoding: Encoding.getByName('utf-8'),
     );
     if (response.statusCode >= 400) {
-      throw Exception('something went wrong :(');
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
     } else {
       return jsonDecode(response.body) as Map<String, dynamic>;
     }
@@ -244,5 +247,19 @@ class APIService {
       throw Exception(response.statusCode);
     }
     return response.statusCode == 200;
+  }
+
+  Future<List<dynamic>> fetchGivts({Map<String, dynamic>? params}) async {
+    final url = Uri.https(apiURL, '/api/v2/givts', params);
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as List<dynamic>;
   }
 }

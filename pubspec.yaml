@@ -15,7 +15,6 @@ dependencies:
   device_region: ^1.0.1
   dotted_border: ^2.0.0+3
   equatable: ^2.0.5
-  firebase_dynamic_links: ^5.3.3
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
@@ -24,7 +23,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_native_timezone: ^2.0.0
-  flutter_sim_country_code: ^0.1.2
   flutter_svg: ^2.0.6
   font_awesome_flutter: ^10.4.0
   geolocator: ^9.0.2
@@ -42,6 +40,7 @@ dependencies:
   share_plus: ^7.0.2
   shared_preferences: ^2.1.1
   sprintf: ^7.0.0
+  sticky_headers: ^0.3.0+2
   url_launcher: ^6.1.11
   vibration: ^1.7.7
 
