@@ -8,7 +8,7 @@ class Givt extends Equatable {
     required this.organisationName,
     required this.organisationTaxDeductible,
     required this.collectId,
-    required this.isGiftAid,
+    required this.isGiftAidEnabled,
     required this.status,
     required this.timeStamp,
     required this.mediumId,
@@ -20,10 +20,10 @@ class Givt extends Equatable {
         collectGroupId = '',
         organisationName = '',
         organisationTaxDeductible = false,
-        collectId = '',
-        isGiftAid = false,
+        collectId = 0,
+        isGiftAidEnabled = false,
         status = 0,
-        timeStamp = '',
+        timeStamp = null,
         mediumId = '';
 
   factory Givt.fromJson(Map<String, dynamic> json) => Givt(
@@ -34,10 +34,10 @@ class Givt extends Equatable {
         organisationTaxDeductible: json.containsKey('OrganisationTaxDeductible')
             ? json['OrganisationTaxDeductible'] as bool
             : false,
-        collectId: json['CollectId'] as String,
-        isGiftAid: json['GiftAidEnabled'] as bool,
+        collectId: int.parse(json['CollectId'] as String),
+        isGiftAidEnabled: json['GiftAidEnabled'] as bool,
         status: json['Status'] as int,
-        timeStamp: json['Timestamp'] as String,
+        timeStamp: DateTime.parse(json['Timestamp'] as String),
         mediumId: json['MediumId'] as String,
       );
 
@@ -54,10 +54,10 @@ class Givt extends Equatable {
   final String collectGroupId;
   final String organisationName;
   final bool organisationTaxDeductible;
-  final String collectId;
-  final bool isGiftAid;
+  final int collectId;
+  final bool isGiftAidEnabled;
   final int status;
-  final String timeStamp;
+  final DateTime? timeStamp;
   final String mediumId;
 
   Givt copyWith({
@@ -66,10 +66,10 @@ class Givt extends Equatable {
     String? collectGroupId,
     String? organisationName,
     bool? organisationTaxDeductible,
-    String? collectId,
+    int? collectId,
     bool? isGiftAid,
     int? status,
-    String? timeStamp,
+    DateTime? timeStamp,
     String? mediumId,
   }) =>
       Givt(
@@ -80,7 +80,7 @@ class Givt extends Equatable {
         organisationTaxDeductible:
             organisationTaxDeductible ?? this.organisationTaxDeductible,
         collectId: collectId ?? this.collectId,
-        isGiftAid: isGiftAid ?? this.isGiftAid,
+        isGiftAidEnabled: isGiftAid ?? this.isGiftAidEnabled,
         status: status ?? this.status,
         timeStamp: timeStamp ?? this.timeStamp,
         mediumId: mediumId ?? this.mediumId,
@@ -94,7 +94,7 @@ class Givt extends Equatable {
         organisationName,
         organisationTaxDeductible,
         collectId,
-        isGiftAid,
+        isGiftAidEnabled,
         status,
         timeStamp,
         mediumId,
