@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -83,6 +85,9 @@ class OverviewPage extends StatelessWidget {
                 header: _buildHeader(
                   timesStamp: sections[index].timeStamp!,
                   amount: sections[index].amount,
+                  country: (context.read<AuthCubit>().state as AuthSuccess)
+                      .user
+                      .country,
                 ),
                 content: Column(
                   children: state.givtGroups.map((givtGroup) {
@@ -114,32 +119,41 @@ class OverviewPage extends StatelessWidget {
   Container _buildHeader({
     required DateTime timesStamp,
     required double amount,
-  }) =>
-      Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-        color: AppTheme.givtLightPurple,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+    required String country,
+  }) {
+    final currency = NumberFormat.simpleCurrency(
+      name: country == Country.us.countryCode
+          ? 'USD'
+          : Country.unitedKingdomCodes().contains(country)
+              ? 'GBP'
+              : 'EUR',
+    );
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+      color: AppTheme.givtLightPurple,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
             ),
-            Text(
-              '$amount',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+          ),
+          Text(
+            '${currency.currencySymbol} $amount',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 
   Row _buildColorExplanationRow({
     required Color color,
