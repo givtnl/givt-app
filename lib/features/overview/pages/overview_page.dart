@@ -39,6 +39,25 @@ class OverviewPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtPurple,
+                      text: locals.historyAmountAccepted,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtLightGreen,
+                      text: locals.historyAmountCollected,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtRed,
+                      text: locals.historyAmountDenied,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtLightGray,
+                      text: locals.historyAmountCancelled,
+                    ),
                   ],
                 ),
               ),
@@ -61,31 +80,9 @@ class OverviewPage extends StatelessWidget {
             itemCount: _getSectionCount(state),
             itemBuilder: (context, int index) {
               return StickyHeader(
-                header: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                  color: AppTheme.givtLightPurple,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '${DateFormat('MMMM').format(sections[index].timeStamp!)} \'${DateFormat('yy').format(sections[index].timeStamp!)}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        '${sections[index].amount}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+                header: _buildHeader(
+                  timesStamp: sections[index].timeStamp!,
+                  amount: sections[index].amount,
                 ),
                 content: Column(
                   children: state.givtGroups.map((givtGroup) {
@@ -113,6 +110,61 @@ class OverviewPage extends StatelessWidget {
       ),
     );
   }
+
+  Container _buildHeader({
+    required DateTime timesStamp,
+    required double amount,
+  }) =>
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+        color: AppTheme.givtLightPurple,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Text(
+              '$amount',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Row _buildColorExplanationRow({
+    required Color color,
+    required String text,
+  }) =>
+      Row(
+        children: [
+          Container(
+            height: 10,
+            width: 10,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Text(
+            text,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+            ),
+          )
+        ],
+      );
 
   int _getSectionCount(GivtState state) {
     var daysCount = 0;

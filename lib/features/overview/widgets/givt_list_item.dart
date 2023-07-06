@@ -127,6 +127,6 @@ class GivtListItem extends StatelessWidget {
       case 5:
         return AppTheme.givtLightGray;
     }
-    return AppTheme.givtBlue;
+    return AppTheme.givtPurple;
   }
 }
