@@ -18,8 +18,7 @@ class GivtListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final country =
-        (context.read<AuthCubit>().state as AuthSuccess).user.country;
+    final country = context.read<AuthCubit>().state.user.country;
     final currency = NumberFormat.simpleCurrency(
       name: country == Country.us.countryCode
           ? 'USD'
@@ -85,11 +84,23 @@ class GivtListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                givtGroup.organisationName,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Visibility(
+                    visible: givtGroup.isGiftAidEnabled,
+                    child: Image.asset(
+                      'assets/images/gift_aid_yellow.png',
+                      height: 20,
                     ),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    givtGroup.organisationName,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ],
               ),
               ...givtGroup.givts.map(
                 (collection) => ConstrainedBox(
