@@ -262,4 +262,24 @@ class APIService {
     }
     return jsonDecode(response.body) as List<dynamic>;
   }
+
+  Future<bool> deleteGivts({List<dynamic>? body}) async {
+    final url = Uri.https(apiURL, '/api/v2/Givts/multiple');
+
+    final response = await client.delete(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
 }

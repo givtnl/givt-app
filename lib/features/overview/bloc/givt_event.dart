@@ -13,3 +13,14 @@ class GivtInit extends GivtEvent {
   @override
   List<Object> get props => [];
 }
+
+class GiveDelete extends GivtEvent {
+  const GiveDelete({
+    required this.timestamp,
+  });
+
+  final DateTime timestamp;
+
+  @override
+  List<Object> get props => [timestamp];
+}

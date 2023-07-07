@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/failures/failure.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/overview/models/models.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
@@ -13,9 +15,46 @@ part 'givt_state.dart';
 class GivtBloc extends Bloc<GivtEvent, GivtState> {
   GivtBloc(this.givtRepository) : super(const GivtInitial()) {
     on<GivtInit>(_onGivtInit);
+
+    on<GiveDelete>(_onGivtDelete);
   }
 
   final GivtRepository givtRepository;
+
+  FutureOr<void> _onGivtDelete(
+    GiveDelete event,
+    Emitter<GivtState> emit,
+  ) async {
+    try {
+      await LoggingInfo.instance.info('Cancelling transaction(s)');
+      final givtGroup = state.givtGroups.firstWhere(
+        (element) => element.timeStamp! == event.timestamp,
+      );
+      await givtRepository
+          .deleteGivt(
+        givtGroup.givts.map((givt) => givt.id).toList(),
+      )
+          .then((value) {
+        if (value) {
+          LoggingInfo.instance.info('Transaction(s) cancelled');
+          add(const GivtInit());
+        }
+      });
+    } on GivtServerFailure catch (e) {
+      await LoggingInfo.instance.info(e.body.toString());
+      await LoggingInfo.instance.error(e.body.toString());
+      emit(GivtError(e.body.toString()));
+    } on SocketException catch (e) {
+      await LoggingInfo.instance
+          .error('No internet connection to cancel transactions');
+      log(e.toString());
+      emit(const GivtNoInternet());
+    } catch (e) {
+      await LoggingInfo.instance
+          .error(e.toString(), methodName: StackTrace.current.toString());
+      log(e.toString());
+    }
+  }
 
   FutureOr<void> _onGivtInit(GivtInit event, Emitter<GivtState> emit) async {
     emit(const GivtLoading());
@@ -31,7 +70,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
           givtAided: groupGivtAids,
         ),
       );
-    } on SocketException catch(e) {
+    } on SocketException catch (e) {
       log(e.toString());
       emit(const GivtNoInternet());
     }

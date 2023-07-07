@@ -3,11 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
-import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -96,6 +94,28 @@ class OverviewPage extends StatelessWidget {
               ),
             );
           }
+          if (state is GivtError) {
+            if (state.message == 'already_processed') {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: locals.cancelFailed,
+                  content: locals.cantCancelAlreadyProcessed,
+                  onConfirm: () => context.pop(),
+                ),
+              );
+              return;
+            }
+            showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: locals.cancelFailed,
+                content: locals.cantCancelGiftAfter15Minutes,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          
         },
         builder: (context, state) {
           if (state is GivtLoading) {
@@ -106,69 +126,98 @@ class OverviewPage extends StatelessWidget {
           final monthSections = state.givtGroups
               .where((element) => element.givts.isEmpty)
               .toList();
-          final isUKUser = Country.unitedKingdomCodes().contains(user.country);
           return ListView.builder(
-            itemCount: isUKUser
-                ? state.givtAided.entries.length
-                : _getSectionCount(state),
+            itemCount: _getSectionCount(state),
             itemBuilder: (_, int index) {
               return StickyHeader(
-                header: isUKUser
-                    ? _buildHeader(
-                        amount: state.givtAided.entries.elementAt(index).value,
+                key: Key(monthSections[index].timeStamp!.toString()),
+                header: Column(
+                  children: [
+                    Visibility(
+                      visible: user.isGiftAidEnabled,
+                      child: _buildHeader(
+                        amount: state
+                            .givtAided[monthSections[index].timeStamp!.year]!,
                         country: user.country,
                         color: AppTheme.givtYellow,
                         giftAidTitle: locals.giftOverviewGiftAidBanner(
                           "'${DateFormat('yy').format(
-                            DateTime(
-                              state.givtAided.entries.elementAt(index).key,
-                            ),
+                            monthSections[index].timeStamp!,
                           )}",
                         ),
-                      )
-                    : const SizedBox.shrink(),
+                      ),
+                    ),
+                    _buildHeader(
+                      timesStamp: monthSections[index].timeStamp,
+                      amount: monthSections[index].amount,
+                      country: user.country,
+                    )
+                  ],
+                ),
                 content: Column(
-                  children: isUKUser
-                      ? monthSections.map((monthSection) {
-                          return _buildSection(monthSection, user, state);
-                        }).toList()
-                      : [
-                          _buildSection(monthSections[index], user, state),
-                        ],
+                  children: state.givtGroups.map((givtGroup) {
+                    if (givtGroup.givts.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    if (givtGroup.timeStamp!.month !=
+                        monthSections[index].timeStamp!.month) {
+                      return const SizedBox.shrink();
+                    }
+                    return Column(
+                      children: [
+                        GivtListItem(
+                          givtGroup: givtGroup,
+                          onDismiss: (direction) {
+                            context.read<GivtBloc>().add(
+                                  GiveDelete(
+                                    timestamp: givtGroup.timeStamp!,
+                                  ),
+                                );
+                          },
+                          confirmDismiss: (direction) async {
+                            if (givtGroup.status == 1 ||
+                                givtGroup.status == 2) {
+                              return Future.value(
+                                await showDialog<bool>(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) => ConfirmationDialog(
+                                    title: locals.cancelGiftAlertTitle,
+                                    content: locals.cancelGiftAlertMessage,
+                                    onConfirm: () => context.pop(true),
+                                    onCancel: () => context.pop(false),
+                                    confirmText: locals.yes,
+                                    cancelText: locals.no,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return Future.value(
+                              await showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => WarningDialog(
+                                      title: locals.cancelFailed,
+                                      content:
+                                          locals.cantCancelAlreadyProcessed,
+                                      onConfirm: () => context.pop(false),
+                                    ),
+                                  ) ??
+                                  false,
+                            );
+                          },
+                        ),
+                        const Divider(
+                          height: 0,
+                        ),
+                      ],
+                    );
+                  }).toList(),
                 ),
               );
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildSection(GivtGroup monthSection, UserExt user, GivtState state) {
-    return StickyHeader(
-      key: Key(monthSection.timeStamp!.toString()),
-      header: _buildHeader(
-        timesStamp: monthSection.timeStamp,
-        amount: monthSection.amount,
-        country: user.country,
-      ),
-      content: Column(
-        children: state.givtGroups.map((givtGroup) {
-          if (givtGroup.givts.isEmpty) {
-            return const SizedBox.shrink();
-          }
-          if (givtGroup.timeStamp!.month != monthSection.timeStamp!.month) {
-            return const SizedBox.shrink();
-          }
-          return Column(
-            children: [
-              GivtListItem(givtGroup: givtGroup),
-              const Divider(
-                height: 0,
-              ),
-            ],
-          );
-        }).toList(),
       ),
     );
   }

@@ -14,6 +14,8 @@ mixin GivtRepository {
   Future<void> syncOfflineGivts();
 
   Future<List<Givt>> fetchGivts();
+
+  Future<bool> deleteGivt(List<dynamic> ids);
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -100,4 +102,8 @@ class GivtRepositoryImpl with GivtRepository {
       decodedJson,
     );
   }
+
+  @override
+  Future<bool> deleteGivt(List<dynamic> ids) async =>
+      apiClient.deleteGivts(body: ids);
 }

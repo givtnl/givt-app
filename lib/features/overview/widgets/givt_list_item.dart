@@ -10,10 +10,14 @@ import 'package:intl/intl.dart';
 class GivtListItem extends StatelessWidget {
   const GivtListItem({
     required this.givtGroup,
+    required this.onDismiss,
+    required this.confirmDismiss,
     super.key,
   });
 
   final GivtGroup givtGroup;
+  final void Function(DismissDirection)? onDismiss;
+  final Future<bool> Function(DismissDirection)? confirmDismiss;
 
   @override
   Widget build(BuildContext context) {
@@ -26,105 +30,125 @@ class GivtListItem extends StatelessWidget {
               ? 'GBP'
               : 'EUR',
     );
-    return Container(
-      height: size.height * 0.11,
-      decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: _getStatusColor(givtGroup.status),
-            width: 10,
+    return Dismissible(
+      key: Key(givtGroup.timeStamp.toString()),
+      direction: DismissDirection.endToStart,
+      background: const ColoredBox(
+        color: AppTheme.givtRed,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+              size: 30,
+            ),
           ),
         ),
       ),
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
-                decoration: const BoxDecoration(
-                  color: AppTheme.givtLightGray,
-                ),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        width: 5,
-                        color: AppTheme.givtLightPurple,
-                      ),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      DateFormat('dd').format(givtGroup.timeStamp!),
-                      style: const TextStyle(
-                        color: AppTheme.givtBlue,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                DateFormat('hh:mm').format(givtGroup.timeStamp!),
-                style: const TextStyle(
-                  color: AppTheme.givtBlue,
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+      confirmDismiss: confirmDismiss,
+      onDismissed: onDismiss,
+      child: Container(
+        height: size.height * 0.11,
+        decoration: BoxDecoration(
+          border: Border(
+            left: BorderSide(
+              color: _getStatusColor(givtGroup.status),
+              width: 10,
+            ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Visibility(
-                    visible: givtGroup.isGiftAidEnabled,
-                    child: Image.asset(
-                      'assets/images/gift_aid_yellow.png',
-                      height: 20,
-                    ),
+        ),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+        child: Row(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  margin: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                  decoration: const BoxDecoration(
+                    color: AppTheme.givtLightGray,
                   ),
-                  const SizedBox(width: 5),
-                  Text(
-                    givtGroup.organisationName,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          width: 5,
+                          color: AppTheme.givtLightPurple,
+                        ),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        DateFormat('dd').format(givtGroup.timeStamp!),
+                        style: const TextStyle(
+                          color: AppTheme.givtBlue,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
-                  ),
-                ],
-              ),
-              ...givtGroup.givts.map(
-                (collection) => ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: size.width * 0.75,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        '${context.l10n.collect} ${collection.collectId}',
-                        textAlign: TextAlign.start,
                       ),
-                      Expanded(child: Container()),
-                      Text(
-                        '${currency.currencySymbol} ${collection.amount.toStringAsFixed(2)}',
-                        textAlign: TextAlign.end,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ],
+                Text(
+                  DateFormat('hh:mm').format(givtGroup.timeStamp!),
+                  style: const TextStyle(
+                    color: AppTheme.givtBlue,
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Visibility(
+                      visible: givtGroup.isGiftAidEnabled,
+                      child: Image.asset(
+                        'assets/images/gift_aid_yellow.png',
+                        height: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      givtGroup.organisationName,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ],
+                ),
+                ...givtGroup.givts.map(
+                  (collection) => ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: size.width * 0.75,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          '${context.l10n.collect} ${collection.collectId}',
+                          textAlign: TextAlign.start,
+                        ),
+                        Expanded(child: Container()),
+                        Text(
+                          '${currency.currencySymbol} ${collection.amount.toStringAsFixed(2)}',
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
