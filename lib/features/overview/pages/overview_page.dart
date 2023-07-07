@@ -15,6 +15,7 @@ class OverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final user = context.read<AuthCubit>().state.user;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -26,7 +27,7 @@ class OverviewPage extends StatelessWidget {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (context) => Container(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -42,7 +43,7 @@ class OverviewPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     _buildColorExplanationRow(
-                      color: AppTheme.givtPurple,
+                      color: const Color(0xFF494871),
                       text: locals.historyAmountAccepted,
                     ),
                     const SizedBox(height: 20),
@@ -59,6 +60,18 @@ class OverviewPage extends StatelessWidget {
                     _buildColorExplanationRow(
                       color: AppTheme.givtLightGray,
                       text: locals.historyAmountCancelled,
+                    ),
+                    Visibility(
+                      visible: user.isGiftAidEnabled,
+                      child: Column(
+                        children: [
+                          const Divider(color: Colors.white),
+                          _buildColorExplanationRow(
+                            image: 'assets/images/gift_aid_yellow.png',
+                            text: locals.historyAmountCancelled,
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -156,17 +169,26 @@ class OverviewPage extends StatelessWidget {
   }
 
   Row _buildColorExplanationRow({
-    required Color color,
     required String text,
+    Color? color,
+    String? image,
   }) =>
       Row(
         children: [
           Container(
-            height: 10,
-            width: 10,
+            height: 20,
+            width: 20,
             decoration: BoxDecoration(
               color: color,
               shape: BoxShape.circle,
+              image: image != null
+                  ? DecorationImage(
+                      scale: 0.8,
+                      image: AssetImage(
+                        image,
+                      ),
+                    )
+                  : null,
             ),
           ),
           const SizedBox(width: 10),
