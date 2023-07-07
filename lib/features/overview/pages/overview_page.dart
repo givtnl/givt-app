@@ -6,8 +6,10 @@ import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -83,7 +85,18 @@ class OverviewPage extends StatelessWidget {
         ],
       ),
       body: BlocConsumer<GivtBloc, GivtState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is GivtNoInternet) {
+            showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: locals.noInternetConnectionTitle,
+                content: locals.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state is GivtLoading) {
             return const Center(
@@ -176,7 +189,7 @@ class OverviewPage extends StatelessWidget {
     );
     final headerTitle = timesStamp == null
         ? giftAidTitle
-        : '${DateFormat('MMMM').format(timesStamp!)} \'${DateFormat('yy').format(timesStamp)}';
+        : '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       color: color ?? AppTheme.givtLightPurple,

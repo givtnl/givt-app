@@ -26,6 +26,10 @@ class GivtLoading extends GivtState {
   const GivtLoading() : super();
 }
 
+class GivtNoInternet extends GivtState {
+  const GivtNoInternet() : super();
+}
+
 class GivtLoaded extends GivtState {
   const GivtLoaded({
     super.givts,

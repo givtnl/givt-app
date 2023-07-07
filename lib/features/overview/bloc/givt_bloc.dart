@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -30,9 +31,9 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
           givtAided: groupGivtAids,
         ),
       );
-    } catch (e) {
+    } on SocketException catch(e) {
       log(e.toString());
-      // emit(const GivtError());
+      emit(const GivtNoInternet());
     }
   }
 
@@ -183,32 +184,6 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
         giftAidGroups[taxYear] = taxYearAmount;
       }
     }
-    // Map<Integer, Double> giftAidGroups = new HashMap<Integer, Double>();
-
-    //     if (sortedGivts != null && sortedGivts.size() != 0) {
-    //         Integer taxYear = null;
-    //         Double taxYearAmount = null;
-
-    //         for (Givt g : sortedGivts) {
-    //             if (g.giftAidEnabled && g.taxYear != null && g.status == 3) {
-    //                 if (taxYear == null) {
-    //                     taxYear = g.taxYear;
-    //                     taxYearAmount = g.amount;
-    //                 } else {
-    //                     if (taxYear.intValue() == g.taxYear.intValue()) {
-    //                         taxYearAmount += g.amount;
-    //                     } else {
-    //                         giftAidGroups.put(taxYear, taxYearAmount);
-    //                         taxYear = g.taxYear;
-    //                         taxYearAmount = g.amount;
-    //                     }
-    //                 }
-    //             }
-    //             if (sortedGivts.indexOf(g) == (sortedGivts.size() - 1)) {
-    //                 giftAidGroups.put(taxYear, taxYearAmount);
-    //             }
-    //         }
-    //     }
     return giftAidGroups;
   }
 }
