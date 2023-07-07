@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
+import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -88,38 +90,38 @@ class OverviewPage extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          final sections = state.givtGroups
+          final monthSections = state.givtGroups
               .where((element) => element.givts.isEmpty)
               .toList();
+          final isUKUser = Country.unitedKingdomCodes().contains(user.country);
           return ListView.builder(
-            itemCount: _getSectionCount(state),
-            itemBuilder: (context, int index) {
+            itemCount: isUKUser
+                ? state.givtAided.entries.length
+                : _getSectionCount(state),
+            itemBuilder: (_, int index) {
               return StickyHeader(
-                header: _buildHeader(
-                  timesStamp: sections[index].timeStamp!,
-                  amount: sections[index].amount,
-                  country: (context.read<AuthCubit>().state as AuthSuccess)
-                      .user
-                      .country,
-                ),
-                content: Column(
-                  children: state.givtGroups.map((givtGroup) {
-                    if (givtGroup.givts.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    if (givtGroup.timeStamp!.month !=
-                        sections[index].timeStamp!.month) {
-                      return const SizedBox.shrink();
-                    }
-                    return Column(
-                      children: [
-                        GivtListItem(givtGroup: givtGroup),
-                        const Divider(
-                          height: 0,
+                header: isUKUser
+                    ? _buildHeader(
+                        amount: state.givtAided.entries.elementAt(index).value,
+                        country: user.country,
+                        color: AppTheme.givtYellow,
+                        giftAidTitle: locals.giftOverviewGiftAidBanner(
+                          "'${DateFormat('yy').format(
+                            DateTime(
+                              state.givtAided.entries.elementAt(index).key,
+                            ),
+                          )}",
                         ),
-                      ],
-                    );
-                  }).toList(),
+                      )
+                    : const SizedBox.shrink(),
+                content: Column(
+                  children: isUKUser
+                      ? monthSections.map((monthSection) {
+                          return _buildSection(monthSection, user, state);
+                        }).toList()
+                      : [
+                          _buildSection(monthSections[index], user, state),
+                        ],
                 ),
               );
             },
@@ -129,10 +131,41 @@ class OverviewPage extends StatelessWidget {
     );
   }
 
+  Widget _buildSection(GivtGroup monthSection, UserExt user, GivtState state) {
+    return StickyHeader(
+      key: Key(monthSection.timeStamp!.toString()),
+      header: _buildHeader(
+        timesStamp: monthSection.timeStamp,
+        amount: monthSection.amount,
+        country: user.country,
+      ),
+      content: Column(
+        children: state.givtGroups.map((givtGroup) {
+          if (givtGroup.givts.isEmpty) {
+            return const SizedBox.shrink();
+          }
+          if (givtGroup.timeStamp!.month != monthSection.timeStamp!.month) {
+            return const SizedBox.shrink();
+          }
+          return Column(
+            children: [
+              GivtListItem(givtGroup: givtGroup),
+              const Divider(
+                height: 0,
+              ),
+            ],
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   Container _buildHeader({
-    required DateTime timesStamp,
-    required double amount,
     required String country,
+    required double amount,
+    DateTime? timesStamp,
+    Color? color,
+    String? giftAidTitle,
   }) {
     final currency = NumberFormat.simpleCurrency(
       name: country == Country.us.countryCode
@@ -141,14 +174,17 @@ class OverviewPage extends StatelessWidget {
               ? 'GBP'
               : 'EUR',
     );
+    final headerTitle = timesStamp == null
+        ? giftAidTitle
+        : '${DateFormat('MMMM').format(timesStamp!)} \'${DateFormat('yy').format(timesStamp)}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      color: AppTheme.givtLightPurple,
+      color: color ?? AppTheme.givtLightPurple,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}',
+            headerTitle!,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -203,12 +239,12 @@ class OverviewPage extends StatelessWidget {
       );
 
   int _getSectionCount(GivtState state) {
-    var daysCount = 0;
+    var monthsCount = 0;
     for (final group in state.givtGroups) {
       if (group.givts.isEmpty) {
-        daysCount++;
+        monthsCount++;
       }
     }
-    return daysCount;
+    return monthsCount;
   }
 }

@@ -21,8 +21,15 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     try {
       final sortedGivts = _sortGivts(await givtRepository.fetchGivts());
       final groupedGivts = _groupGivts(sortedGivts);
+      final groupGivtAids = _groupGivtAids(sortedGivts);
 
-      emit(GivtLoaded(givtGroups: groupedGivts, givts: sortedGivts));
+      emit(
+        GivtLoaded(
+          givtGroups: groupedGivts,
+          givts: sortedGivts,
+          givtAided: groupGivtAids,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       // emit(const GivtError());
@@ -147,5 +154,61 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
       }
     }
     return givtGroups;
+  }
+
+  Map<int, double> _groupGivtAids(List<Givt> sortedGivts) {
+    if (sortedGivts.isEmpty) {
+      return {};
+    }
+    final giftAidGroups = <int, double>{};
+    var taxYear = 0;
+    var taxYearAmount = 0.0;
+
+    for (final givt in sortedGivts) {
+      if (givt.isGiftAidEnabled && givt.taxYear != 0 && givt.status == 3) {
+        if (taxYear == 0) {
+          taxYear = givt.taxYear;
+          taxYearAmount = givt.amount;
+        } else {
+          if (taxYear == givt.taxYear) {
+            taxYearAmount += givt.amount;
+          } else {
+            giftAidGroups[taxYear] = taxYearAmount;
+            taxYear = givt.taxYear;
+            taxYearAmount = givt.amount;
+          }
+        }
+      }
+      if (sortedGivts.indexOf(givt) == (sortedGivts.length - 1)) {
+        giftAidGroups[taxYear] = taxYearAmount;
+      }
+    }
+    // Map<Integer, Double> giftAidGroups = new HashMap<Integer, Double>();
+
+    //     if (sortedGivts != null && sortedGivts.size() != 0) {
+    //         Integer taxYear = null;
+    //         Double taxYearAmount = null;
+
+    //         for (Givt g : sortedGivts) {
+    //             if (g.giftAidEnabled && g.taxYear != null && g.status == 3) {
+    //                 if (taxYear == null) {
+    //                     taxYear = g.taxYear;
+    //                     taxYearAmount = g.amount;
+    //                 } else {
+    //                     if (taxYear.intValue() == g.taxYear.intValue()) {
+    //                         taxYearAmount += g.amount;
+    //                     } else {
+    //                         giftAidGroups.put(taxYear, taxYearAmount);
+    //                         taxYear = g.taxYear;
+    //                         taxYearAmount = g.amount;
+    //                     }
+    //                 }
+    //             }
+    //             if (sortedGivts.indexOf(g) == (sortedGivts.size() - 1)) {
+    //                 giftAidGroups.put(taxYear, taxYearAmount);
+    //             }
+    //         }
+    //     }
+    return giftAidGroups;
   }
 }
