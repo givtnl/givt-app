@@ -68,7 +68,7 @@ class OverviewPage extends StatelessWidget {
                           const Divider(color: Colors.white),
                           _buildColorExplanationRow(
                             image: 'assets/images/gift_aid_yellow.png',
-                            text: locals.historyAmountCancelled,
+                            text: locals.giftOverviewGiftAidBanner(''),
                           ),
                         ],
                       ),
