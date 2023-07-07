@@ -143,7 +143,7 @@ class OverviewPage extends StatelessWidget {
             ),
           ),
           Text(
-            '${currency.currencySymbol} $amount',
+            '${currency.currencySymbol} ${amount.toStringAsFixed(2)}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,

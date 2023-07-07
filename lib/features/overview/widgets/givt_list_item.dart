@@ -115,7 +115,7 @@ class GivtListItem extends StatelessWidget {
                       ),
                       Expanded(child: Container()),
                       Text(
-                        '${currency.currencySymbol} ${collection.amount}',
+                        '${currency.currencySymbol} ${collection.amount.toStringAsFixed(2)}',
                         textAlign: TextAlign.end,
                       ),
                     ],
