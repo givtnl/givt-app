@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:iban/iban.dart';
@@ -109,7 +110,6 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.sortCodePlaceholder,
                   controller: widget.sortCode,
-                  keyboardType: TextInputType.number,
                   onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 0) {
@@ -127,7 +127,6 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.bankAccountNumberPlaceholder,
                   controller: widget.bankAccount,
-                  keyboardType: TextInputType.number,
                   onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 0) {
@@ -155,31 +154,14 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
     required TextEditingController controller,
     required String? Function(String?) validator,
     required void Function(String) onChanged,
-    TextInputType keyboardType = TextInputType.text,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: TextFormField(
-        controller: controller,
-        validator: validator,
-        textCapitalization: TextCapitalization.words,
-        textInputAction: TextInputAction.next,
-        keyboardType: keyboardType,
-        onChanged: onChanged,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelText: hintText,
-          labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontSize: 16,
-              ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          errorStyle: const TextStyle(
-            height: 0,
-          ),
-        ),
-      ),
+    return CustomTextFormField(
+      controller: controller,
+      hintText: hintText,
+      validator: validator,
+      onChanged: onChanged,
+      keyboardType: TextInputType.number,
+      textCapitalization: TextCapitalization.words,
     );
   }
 }

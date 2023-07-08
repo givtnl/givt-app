@@ -7,6 +7,7 @@ import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
@@ -371,29 +372,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required TextEditingController controller,
     required String? Function(String?) validator,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: TextFormField(
-        controller: controller,
-        validator: validator,
-        onChanged: (value) => setState(() {
-          _formKey.currentState!.validate();
-        }),
-        textInputAction: TextInputAction.next,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelText: hintText,
-          labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontSize: 16,
-              ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          errorStyle: const TextStyle(
-            height: 0,
-          ),
-        ),
-      ),
+    return CustomTextFormField(
+      controller: controller,
+      hintText: hintText,
+      onChanged: (value) => setState(() {
+        _formKey.currentState!.validate();
+      }),
     );
   }
 
