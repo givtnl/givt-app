@@ -169,6 +169,10 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
+          labelText: hintText,
+          labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: 16,
+              ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           errorStyle: const TextStyle(
