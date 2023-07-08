@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/failures/failure.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/overview/models/models.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
@@ -12,20 +15,64 @@ part 'givt_state.dart';
 class GivtBloc extends Bloc<GivtEvent, GivtState> {
   GivtBloc(this.givtRepository) : super(const GivtInitial()) {
     on<GivtInit>(_onGivtInit);
+
+    on<GiveDelete>(_onGivtDelete);
   }
 
   final GivtRepository givtRepository;
+
+  FutureOr<void> _onGivtDelete(
+    GiveDelete event,
+    Emitter<GivtState> emit,
+  ) async {
+    try {
+      await LoggingInfo.instance.info('Cancelling transaction(s)');
+      final givtGroup = state.givtGroups.firstWhere(
+        (element) => element.timeStamp! == event.timestamp,
+      );
+      await givtRepository
+          .deleteGivt(
+        givtGroup.givts.map((givt) => givt.id).toList(),
+      )
+          .then((value) {
+        if (value) {
+          LoggingInfo.instance.info('Transaction(s) cancelled');
+          add(const GivtInit());
+        }
+      });
+    } on GivtServerFailure catch (e) {
+      await LoggingInfo.instance.info(e.body.toString());
+      await LoggingInfo.instance.error(e.body.toString());
+      emit(GivtError(e.body.toString()));
+    } on SocketException catch (e) {
+      await LoggingInfo.instance
+          .error('No internet connection to cancel transactions');
+      log(e.toString());
+      emit(const GivtNoInternet());
+    } catch (e) {
+      await LoggingInfo.instance
+          .error(e.toString(), methodName: StackTrace.current.toString());
+      log(e.toString());
+    }
+  }
 
   FutureOr<void> _onGivtInit(GivtInit event, Emitter<GivtState> emit) async {
     emit(const GivtLoading());
     try {
       final sortedGivts = _sortGivts(await givtRepository.fetchGivts());
       final groupedGivts = _groupGivts(sortedGivts);
+      final groupGivtAids = _groupGivtAids(sortedGivts);
 
-      emit(GivtLoaded(givtGroups: groupedGivts, givts: sortedGivts));
-    } catch (e) {
+      emit(
+        GivtLoaded(
+          givtGroups: groupedGivts,
+          givts: sortedGivts,
+          givtAided: groupGivtAids,
+        ),
+      );
+    } on SocketException catch (e) {
       log(e.toString());
-      // emit(const GivtError());
+      emit(const GivtNoInternet());
     }
   }
 
@@ -147,5 +194,35 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
       }
     }
     return givtGroups;
+  }
+
+  Map<int, double> _groupGivtAids(List<Givt> sortedGivts) {
+    if (sortedGivts.isEmpty) {
+      return {};
+    }
+    final giftAidGroups = <int, double>{};
+    var taxYear = 0;
+    var taxYearAmount = 0.0;
+
+    for (final givt in sortedGivts) {
+      if (givt.isGiftAidEnabled && givt.taxYear != 0 && givt.status == 3) {
+        if (taxYear == 0) {
+          taxYear = givt.taxYear;
+          taxYearAmount = givt.amount;
+        } else {
+          if (taxYear == givt.taxYear) {
+            taxYearAmount += givt.amount;
+          } else {
+            giftAidGroups[taxYear] = taxYearAmount;
+            taxYear = givt.taxYear;
+            taxYearAmount = givt.amount;
+          }
+        }
+      }
+      if (sortedGivts.indexOf(givt) == (sortedGivts.length - 1)) {
+        giftAidGroups[taxYear] = taxYearAmount;
+      }
+    }
+    return giftAidGroups;
   }
 }

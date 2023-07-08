@@ -45,7 +45,7 @@ class InfraCubit extends Cubit<InfraState> {
         final version = iosInfo.systemVersion;
         final name = iosInfo.name;
         final model = iosInfo.model;
-        os = 'Operating system : iOS $systemName $version';
+        os = 'Operating system : $systemName $version';
         device = 'Device : $name $model';
       }
 

@@ -5,7 +5,9 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -15,6 +17,7 @@ class OverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final user = context.read<AuthCubit>().state.user;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -26,7 +29,7 @@ class OverviewPage extends StatelessWidget {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (context) => Container(
                 padding: const EdgeInsets.all(20),
                 child: Column(
@@ -42,7 +45,7 @@ class OverviewPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     _buildColorExplanationRow(
-                      color: AppTheme.givtPurple,
+                      color: const Color(0xFF494871),
                       text: locals.historyAmountAccepted,
                     ),
                     const SizedBox(height: 20),
@@ -60,6 +63,18 @@ class OverviewPage extends StatelessWidget {
                       color: AppTheme.givtLightGray,
                       text: locals.historyAmountCancelled,
                     ),
+                    Visibility(
+                      visible: user.isGiftAidEnabled,
+                      child: Column(
+                        children: [
+                          const Divider(color: Colors.white),
+                          _buildColorExplanationRow(
+                            image: 'assets/images/gift_aid_yellow.png',
+                            text: locals.giftOverviewGiftAidBanner(''),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -68,26 +83,76 @@ class OverviewPage extends StatelessWidget {
         ],
       ),
       body: BlocConsumer<GivtBloc, GivtState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is GivtNoInternet) {
+            showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: locals.noInternetConnectionTitle,
+                content: locals.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          if (state is GivtError) {
+            if (state.message == 'already_processed') {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: locals.cancelFailed,
+                  content: locals.cantCancelAlreadyProcessed,
+                  onConfirm: () => context.pop(),
+                ),
+              );
+              return;
+            }
+            showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: locals.cancelFailed,
+                content: locals.cantCancelGiftAfter15Minutes,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          
+        },
         builder: (context, state) {
           if (state is GivtLoading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          final sections = state.givtGroups
+          final monthSections = state.givtGroups
               .where((element) => element.givts.isEmpty)
               .toList();
           return ListView.builder(
             itemCount: _getSectionCount(state),
-            itemBuilder: (context, int index) {
+            itemBuilder: (_, int index) {
               return StickyHeader(
-                header: _buildHeader(
-                  timesStamp: sections[index].timeStamp!,
-                  amount: sections[index].amount,
-                  country: (context.read<AuthCubit>().state as AuthSuccess)
-                      .user
-                      .country,
+                key: Key(monthSections[index].timeStamp!.toString()),
+                header: Column(
+                  children: [
+                    Visibility(
+                      visible: user.isGiftAidEnabled,
+                      child: _buildHeader(
+                        amount: state
+                            .givtAided[monthSections[index].timeStamp!.year]!,
+                        country: user.country,
+                        color: AppTheme.givtYellow,
+                        giftAidTitle: locals.giftOverviewGiftAidBanner(
+                          "'${DateFormat('yy').format(
+                            monthSections[index].timeStamp!,
+                          )}",
+                        ),
+                      ),
+                    ),
+                    _buildHeader(
+                      timesStamp: monthSections[index].timeStamp,
+                      amount: monthSections[index].amount,
+                      country: user.country,
+                    )
+                  ],
                 ),
                 content: Column(
                   children: state.givtGroups.map((givtGroup) {
@@ -95,12 +160,53 @@ class OverviewPage extends StatelessWidget {
                       return const SizedBox.shrink();
                     }
                     if (givtGroup.timeStamp!.month !=
-                        sections[index].timeStamp!.month) {
+                        monthSections[index].timeStamp!.month) {
                       return const SizedBox.shrink();
                     }
                     return Column(
                       children: [
-                        GivtListItem(givtGroup: givtGroup),
+                        GivtListItem(
+                          givtGroup: givtGroup,
+                          onDismiss: (direction) {
+                            context.read<GivtBloc>().add(
+                                  GiveDelete(
+                                    timestamp: givtGroup.timeStamp!,
+                                  ),
+                                );
+                          },
+                          confirmDismiss: (direction) async {
+                            if (givtGroup.status == 1 ||
+                                givtGroup.status == 2) {
+                              return Future.value(
+                                await showDialog<bool>(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (_) => ConfirmationDialog(
+                                    title: locals.cancelGiftAlertTitle,
+                                    content: locals.cancelGiftAlertMessage,
+                                    onConfirm: () => context.pop(true),
+                                    onCancel: () => context.pop(false),
+                                    confirmText: locals.yes,
+                                    cancelText: locals.no,
+                                  ),
+                                ),
+                              );
+                            }
+
+                            return Future.value(
+                              await showDialog<bool>(
+                                    context: context,
+                                    builder: (_) => WarningDialog(
+                                      title: locals.cancelFailed,
+                                      content:
+                                          locals.cantCancelAlreadyProcessed,
+                                      onConfirm: () => context.pop(false),
+                                    ),
+                                  ) ??
+                                  false,
+                            );
+                          },
+                        ),
                         const Divider(
                           height: 0,
                         ),
@@ -117,9 +223,11 @@ class OverviewPage extends StatelessWidget {
   }
 
   Container _buildHeader({
-    required DateTime timesStamp,
-    required double amount,
     required String country,
+    required double amount,
+    DateTime? timesStamp,
+    Color? color,
+    String? giftAidTitle,
   }) {
     final currency = NumberFormat.simpleCurrency(
       name: country == Country.us.countryCode
@@ -128,14 +236,17 @@ class OverviewPage extends StatelessWidget {
               ? 'GBP'
               : 'EUR',
     );
+    final headerTitle = timesStamp == null
+        ? giftAidTitle
+        : '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}';
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-      color: AppTheme.givtLightPurple,
+      color: color ?? AppTheme.givtLightPurple,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}',
+            headerTitle!,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -143,7 +254,7 @@ class OverviewPage extends StatelessWidget {
             ),
           ),
           Text(
-            '${currency.currencySymbol} $amount',
+            '${currency.currencySymbol} ${amount.toStringAsFixed(2)}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -156,17 +267,26 @@ class OverviewPage extends StatelessWidget {
   }
 
   Row _buildColorExplanationRow({
-    required Color color,
     required String text,
+    Color? color,
+    String? image,
   }) =>
       Row(
         children: [
           Container(
-            height: 10,
-            width: 10,
+            height: 20,
+            width: 20,
             decoration: BoxDecoration(
               color: color,
               shape: BoxShape.circle,
+              image: image != null
+                  ? DecorationImage(
+                      scale: 0.8,
+                      image: AssetImage(
+                        image,
+                      ),
+                    )
+                  : null,
             ),
           ),
           const SizedBox(width: 10),
@@ -181,12 +301,12 @@ class OverviewPage extends StatelessWidget {
       );
 
   int _getSectionCount(GivtState state) {
-    var daysCount = 0;
+    var monthsCount = 0;
     for (final group in state.givtGroups) {
       if (group.givts.isEmpty) {
-        daysCount++;
+        monthsCount++;
       }
     }
-    return daysCount;
+    return monthsCount;
   }
 }
