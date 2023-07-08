@@ -132,9 +132,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         return '';
                       }
 
-                      if (_selectedCountry != Country.gg ||
-                          _selectedCountry != Country.gb ||
-                          _selectedCountry != Country.je) {
+                      if (!Country.unitedKingdomCodes().contains(
+                        _selectedCountry.countryCode,
+                      )) {
                         return null;
                       }
 
@@ -164,15 +164,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       if (value == 0) {
                         bankAccount.clear();
                         sortCode.clear();
-                        if (_selectedCountry == Country.gg ||
-                            _selectedCountry == Country.gb ||
-                            _selectedCountry == Country.je) {
+                        if (Country.unitedKingdomCodes()
+                            .contains(_selectedCountry.countryCode)) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => _buildWarningDialog(
                               message: locals.alertSepaMessage(
-                                getCountry(
-                                    _selectedCountry.countryCode, locals),
+                                Country.getCountry(
+                                  _selectedCountry.countryCode,
+                                  locals,
+                                ),
                               ),
                             ),
                           );
@@ -180,14 +181,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         setState(() {});
                         return;
                       }
-                      if (_selectedCountry != Country.gg ||
-                          _selectedCountry != Country.gb ||
-                          _selectedCountry != Country.je) {
+                      if (!Country.unitedKingdomCodes()
+                          .contains(_selectedCountry.countryCode)) {
                         showDialog<void>(
                           context: context,
                           builder: (context) => _buildWarningDialog(
                             message: locals.alertBacsMessage(
-                              getCountry(_selectedCountry.countryCode, locals),
+                              Country.getCountry(
+                                _selectedCountry.countryCode,
+                                locals,
+                              ),
                             ),
                           ),
                         );
@@ -284,7 +287,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   (Country country) => DropdownMenuItem(
                     value: country,
                     child: Text(
-                      getCountry(country.countryCode, locals),
+                      Country.getCountry(country.countryCode, locals),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -385,59 +388,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         ),
       ),
     );
-  }
-
-  String getCountry(String countryCode, AppLocalizations locals) {
-    switch (countryCode) {
-      case 'JE':
-        return locals.jersey;
-      case 'GG':
-        return locals.guernsey;
-      case 'AD':
-        return locals.countryStringAd;
-      case 'GB':
-        return locals.countryStringGb;
-      case 'DE':
-        return locals.countryStringDe;
-      case 'FR':
-        return locals.countryStringFr;
-      case 'IT':
-        return locals.countryStringIt;
-      case 'ES':
-        return locals.countryStringEs;
-      case 'NL':
-        return locals.countryStringNl;
-      case 'BE':
-        return locals.countryStringBe;
-      case 'AT':
-        return locals.countryStringAt;
-      case 'PT':
-        return locals.countryStringPt;
-      case 'IE':
-        return locals.countryStringIe;
-      case 'FI':
-        return locals.countryStringFi;
-      case 'LU':
-        return locals.countryStringLu;
-      case 'SI':
-        return locals.countryStringSi;
-      case 'SK':
-        return locals.countryStringSk;
-      case 'EE':
-        return locals.countryStringEe;
-      case 'LV':
-        return locals.countryStringLv;
-      case 'LT':
-        return locals.countryStringLt;
-      case 'GR':
-        return locals.countryStringGr;
-      case 'CY':
-        return locals.countryStringCy;
-      case 'MT':
-        return locals.countryStringMt;
-      default:
-        return '';
-    }
   }
 
   Widget _buildWarningDialog({required String message}) {
