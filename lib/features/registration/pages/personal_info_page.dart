@@ -272,9 +272,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               return null;
             },
             value: _selectedCountry,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              errorStyle: TextStyle(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 5,
+              ),
+              labelText: locals.country,
+              labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontSize: 16,
+                  ),
+              errorStyle: const TextStyle(
                 height: 0,
               ),
             ),
@@ -376,6 +383,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
+          labelText: hintText,
+          labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: 16,
+              ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           errorStyle: const TextStyle(
