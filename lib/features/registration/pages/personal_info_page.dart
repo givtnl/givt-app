@@ -318,9 +318,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             if (!Util.phoneNumberRegEx.hasMatch(value)) {
               return '';
             }
-            if (_selectedCountry == Country.gg ||
-                _selectedCountry == Country.gb ||
-                _selectedCountry == Country.je) {
+            if (Country.unitedKingdomCodes()
+                .contains(_selectedCountry.countryCode)) {
               if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
                 return '';
               }
