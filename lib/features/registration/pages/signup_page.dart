@@ -8,6 +8,7 @@ import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -184,10 +185,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     return null;
                   },
                   textInputAction: TextInputAction.next,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: 16,
+                        color: widget.email.isNotEmpty
+                            ? Colors.grey
+                            : lightColorScheme.primary,
+                      ),
                   decoration: InputDecoration(
                     hintText: context.l10n.email,
                     errorStyle: const TextStyle(
