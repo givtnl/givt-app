@@ -307,11 +307,19 @@ class _SignUpPageState extends State<SignUpPage> {
           Text.rich(
             TextSpan(
               children: [
-                TextSpan(
-                  text: locals.acceptPolicy,
+                WidgetSpan(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      locals.acceptPolicy,
+                    ),
+                  ),
                 ),
                 const WidgetSpan(
-                  child: Icon(Icons.info_rounded, size: 16),
+                  child: Icon(
+                    Icons.info_rounded,
+                    size: 16,
+                  ),
                 ),
               ],
             ),
