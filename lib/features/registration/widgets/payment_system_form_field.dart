@@ -89,6 +89,7 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
                 _buildTextFormField(
                   hintText: locals.ibanPlaceHolder,
                   controller: widget.ibanNumber,
+                  keyboardType: TextInputType.text,
                   onChanged: (value) => widget.onFieldChanged(value),
                   validator: (value) {
                     if (_currentIndex == 1) {
@@ -154,13 +155,14 @@ class _PaymentSystemTabState extends State<PaymentSystemTab>
     required TextEditingController controller,
     required String? Function(String?) validator,
     required void Function(String) onChanged,
+    TextInputType? keyboardType = TextInputType.number,
   }) {
     return CustomTextFormField(
       controller: controller,
       hintText: hintText,
       validator: validator,
       onChanged: onChanged,
-      keyboardType: TextInputType.number,
+      keyboardType: keyboardType,
       textCapitalization: TextCapitalization.words,
     );
   }
