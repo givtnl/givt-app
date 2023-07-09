@@ -9,12 +9,6 @@ import 'package:givt_app/l10n/l10n.dart';
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
 
-  static MaterialPageRoute<dynamic> route() {
-    return MaterialPageRoute(
-      builder: (_) => const WelcomePage(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return const WelcomePageView();
@@ -35,11 +29,11 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final locale = Platform.localeName.contains('en') ? '' : 'en';
+    final locale = Platform.localeName;
     final locals = AppLocalizations.of(context);
 
     final imageNames = [
-      'givy_welkom',
+      'givy_welcome',
       'givy_register',
       'firstuse_select',
       'firstuse_orgs',
@@ -47,38 +41,43 @@ class _WelcomePageViewState extends State<WelcomePageView> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const BackButton(
+          color: Colors.transparent,
+        ),
         title: Image.asset(
           'assets/images/logo.png',
           height: size.height * 0.04,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _buildCarouselSlider(size, imageNames, locals, locale),
-            Expanded(child: Container()),
-            _buildAnimatedBottomIndexes(imageNames, size, context),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Navigator.of(context).push(
-                EmailSignupPage.route(),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              _buildCarouselSlider(size, imageNames, locals, locale),
+              Expanded(child: Container()),
+              _buildAnimatedBottomIndexes(imageNames, size, context),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).push(
+                  EmailSignupPage.route(),
+                ),
+                child: Text(
+                  locals.welcomeContinue,
+                ),
               ),
-              child: Text(
-                locals.welcomeContinue,
+              const SizedBox(height: 10),
+              GestureDetector(
+                onTap: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (BuildContext context) => const LoginPage(),
+                ),
+                child: _buildAlreadyAnAccountLogin(context, locals),
               ),
-            ),
-            const SizedBox(height: 10),
-            GestureDetector(
-              onTap: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (BuildContext context) => const LoginPage(),
-              ),
-              child: _buildAlreadyAnAccountLogin(context, locals),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -101,7 +100,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           TextSpan(
             text: locals.login,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w800,
                   decoration: TextDecoration.underline,
                 ),
           ),
@@ -120,7 +119,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.6,
+          height: size.height * 0.65,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -185,19 +184,18 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         Column(
           children: [
             SizedBox(
-              height: size.height * 0.05,
+              height: size.height * 0.04,
             ),
             _buildTitleAndSubtitle(
               title: title,
               subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
             ),
             SizedBox(
-              height: size.height * 0.06,
+              height: size.height * 0.04,
             ),
             Image.asset(
-              'assets/images/${isFirst && locale.contains('nl') ? '${path}_$locale' : path}.png',
+              'assets/images/${isFirst && locale.contains('nl') ? '${path}_${locale.split('_')[0]}' : path}.png',
               fit: BoxFit.cover,
-              width: size.width * 0.8,
               height: size.height * 0.4,
             ),
           ],

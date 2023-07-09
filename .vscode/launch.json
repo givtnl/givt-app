@@ -14,7 +14,13 @@
         "--flavor",
         "development",
         "--target",
-        "lib/main_development.dart"
+        "lib/main_development.dart",
+        "--dart-define",
+        "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e",
+        "--dart-define",
+        "API_URL_US=dev-backend.givt.app",
+        "--dart-define",
+        "API_URL_EU=dev-backend.givtapp.net",
       ]
     },
     {
@@ -23,7 +29,18 @@
       "type": "dart",
       "program": "lib/main_staging.dart",
       "flutterMode": "debug",
-      "args": ["--flavor", "staging", "--target", "lib/main_staging.dart"]
+      "args": [
+        "--flavor", 
+        "staging", 
+        "--target", 
+        "lib/main_staging.dart",
+        "--dart-define",
+        "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e",
+        "--dart-define",
+        "API_URL_US=dev-backend.givt.app",
+        "--dart-define",
+        "API_URL_EU=dev-backend.givtapp.net",
+      ]
     },
     {
       "name": "Launch production",
@@ -31,7 +48,18 @@
       "type": "dart",
       "program": "lib/main_production.dart",
       "flutterMode": "debug",
-      "args": ["--flavor", "production", "--target", "lib/main_production.dart"]
+      "args": [
+        "--flavor", 
+        "production",
+        "--target", 
+        "lib/main_production.dart", 
+        "--dart-define",
+        "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a",
+        "--dart-define",
+        "API_URL_US=backend.givt.app",
+        "--dart-define",
+        "API_URL_EU=backend.givtapp.net",
+      ]
     }
   ]
 }

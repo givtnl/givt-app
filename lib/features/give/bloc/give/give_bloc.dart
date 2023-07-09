@@ -1,12 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:givt_app/core/failures/failure.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/shared/models/models.dart';
+import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:intl/intl.dart';
 import 'package:sprintf/sprintf.dart';
@@ -19,10 +25,19 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     this._campaignRepository,
     this._givtRepository,
     this._beaconRepository,
+    this._collectGroupRepository,
   ) : super(const GiveState()) {
     on<GiveQRCodeScanned>(_qrCodeScanned);
 
+    on<GiveQRCodeScannedOutOfApp>(_qrCodeScannedOutOfApp);
+
+    on<GiveConfirmQRCodeScannedOutOfApp>(_confirmQRCodeScannedOutOfApp);
+
     on<GiveAmountChanged>(_amountChanged);
+
+    on<GiveGPSLocationChanged>(_gpsLocationChanged);
+
+    on<GiveGPSConfirm>(_gpsConfirm);
 
     on<GiveOrganisationSelected>(_organisationSelected);
 
@@ -36,11 +51,16 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final CampaignRepository _campaignRepository;
   final GivtRepository _givtRepository;
   final BeaconRepository _beaconRepository;
+  final CollectGroupRepository _collectGroupRepository;
 
   FutureOr<void> _qrCodeScanned(
     GiveQRCodeScanned event,
     Emitter<GiveState> emit,
   ) async {
+    if (state.status == GiveStatus.loading ||
+        state.status == GiveStatus.readyToGive) {
+      return;
+    }
     emit(state.copyWith(status: GiveStatus.loading));
     try {
       final uri = Uri.parse(event.rawValue);
@@ -52,7 +72,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -116,7 +139,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -129,7 +155,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     try {
       final lastDonatedOrganisation =
           await _campaignRepository.getLastOrganisationDonated();
-      emit(state.copyWith(organisation: lastDonatedOrganisation));
+      emit(
+        state.copyWith(
+          organisation: lastDonatedOrganisation,
+          status: GiveStatus.success,
+        ),
+      );
     } catch (e) {
       log(e.toString());
       emit(state.copyWith(status: GiveStatus.error));
@@ -148,7 +179,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -222,7 +256,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         );
       }
     } catch (e) {
-      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(state.copyWith(status: GiveStatus.error));
     }
   }
@@ -232,6 +269,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String userGUID,
     required Emitter<GiveState> emit,
   }) async {
+    if (state.status == GiveStatus.readyToGive) {
+      return;
+    }
     final organisation = await _getOrganisation(namespace);
     final transactionList = _createTransationList(namespace, userGUID);
 
@@ -240,11 +280,35 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         mediumId: namespace,
       ),
     );
+    try {
+      await LoggingInfo.instance.info('Submitting Givts');
+      await _givtRepository.submitGivts(
+        guid: userGUID,
+        body: {'donations': GivtTransaction.toJsonList(transactionList)},
+      );
+    } on SocketException catch (e) {
+      log(e.toString());
+      emit(
+        state.copyWith(
+          organisation: organisation,
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
+      return;
+    } on GivtServerFailure catch (e) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      log('StatusCode:$statusCode Body:$body');
+      await LoggingInfo.instance.error(
+        body.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(
+        state.copyWith(status: GiveStatus.error),
+      );
+      return;
+    }
 
-    await _givtRepository.submitGivts(
-      guid: userGUID,
-      body: {'donations': GivtTransaction.toJsonList(transactionList)},
-    );
     emit(
       state.copyWith(
         status: GiveStatus.readyToGive,
@@ -277,5 +341,164 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       beaconId: beaconId,
       batteryVoltage: batteryVoltage,
     );
+  }
+
+  FutureOr<void> _qrCodeScannedOutOfApp(
+    GiveQRCodeScannedOutOfApp event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
+
+      final organisation = await _getOrganisation(mediumId);
+      final transactionList = _createTransationList(
+        mediumId,
+        event.userGUID,
+      );
+
+      emit(
+        state.copyWith(
+          status: GiveStatus.readyToConfirm,
+          organisation: organisation,
+          givtTransactions: transactionList,
+        ),
+      );
+    } catch (e) {
+      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(state.copyWith(status: GiveStatus.error));
+    }
+  }
+
+  FutureOr<void> _confirmQRCodeScannedOutOfApp(
+    GiveConfirmQRCodeScannedOutOfApp event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    await _campaignRepository.saveLastDonation(
+      state.organisation.copyWith(
+        mediumId: state.organisation.mediumId,
+      ),
+    );
+    try {
+      await _givtRepository.submitGivts(
+        guid: state.givtTransactions.first.guid,
+        body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
+      );
+      emit(state.copyWith(status: GiveStatus.readyToGive));
+    } on SocketException catch (e) {
+      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(
+        state.copyWith(
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
+      return;
+    }
+  }
+
+  FutureOr<void> _gpsLocationChanged(
+    GiveGPSLocationChanged event,
+    Emitter<GiveState> emit,
+  ) async {
+    if (state.status == GiveStatus.readyToConfirmGPS) {
+      return;
+    }
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      final organisations = await _collectGroupRepository.getCollectGroupList();
+      final locations = <Location>[];
+      for (final org in organisations) {
+        locations.addAll(org.locations);
+      }
+      for (final location in locations) {
+        if (location.end == null || location.begin == null) {
+          continue;
+        }
+        // final currentTime = DateTime.now().toUtc();
+        // if (!location.end!.isBefore(currentTime) &&
+        //     !location.begin!.isAfter(currentTime)) {
+        //   continue;
+        // }
+        final distance = Geolocator.distanceBetween(
+          location.latitude,
+          location.longitude,
+          event.latitude,
+          event.longitude,
+        );
+        if (distance < location.radius) {
+          log('Location ${location.name} found in radius at $distance meters');
+
+          /// if no nearest location set nearest location
+          if (state.nearestLocation.beaconId.isEmpty) {
+            emit(
+              state.copyWith(
+                nearestLocation: location,
+              ),
+            );
+            continue;
+          }
+          final distanceBetweenPreviousLocation = Geolocator.distanceBetween(
+            state.nearestLocation.latitude,
+            state.nearestLocation.longitude,
+            event.latitude,
+            event.longitude,
+          );
+
+          /// if closer update nearest location
+          if (distanceBetweenPreviousLocation > distance) {
+            log('Location ${location.name} is closer at $distance meters');
+            emit(
+              state.copyWith(
+                nearestLocation: location,
+              ),
+            );
+            continue;
+          }
+        }
+      }
+      if (state.nearestLocation.beaconId.isNotEmpty) {
+        log('Giving to ${state.nearestLocation.name}');
+        emit(
+          state.copyWith(
+            status: GiveStatus.readyToConfirmGPS,
+          ),
+        );
+      }
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(state.copyWith(status: GiveStatus.error));
+    }
+  }
+
+  FutureOr<void> _gpsConfirm(
+    GiveGPSConfirm event,
+    Emitter<GiveState> emit,
+  ) async {
+    emit(state.copyWith(status: GiveStatus.loading));
+    try {
+      await _processGivts(
+        namespace: state.nearestLocation.beaconId,
+        userGUID: event.userGUID,
+        emit: emit,
+      );
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(state.copyWith(status: GiveStatus.error));
+    }
   }
 }

@@ -23,35 +23,81 @@ class UserExt extends Equatable {
     this.city = '',
     this.country = '',
     this.iban = '',
+    this.payProvMandate = '',
+    this.payProvMandateStatus = '',
     this.countryCode = -1,
     this.isGiftAidEnabled = false,
     this.accountType = AccountType.none,
     this.appLanguage = '',
+    this.sortCode = '',
+    this.accountNumber = '',
   });
 
-  factory UserExt.empty() => const UserExt(
-        email: '',
-        guid: '',
-        amountLimit: 0,
-      );
+  const UserExt.empty()
+      : email = '',
+        guid = '',
+        amountLimit = 0,
+        tempUser = false,
+        mandateSigned = false,
+        maxAmountRegistered = false,
+        multipleCollectsFirstBallon = true,
+        multipleCollectsSecondBallon = true,
+        needRegistration = true,
+        personalInfoRegistered = false,
+        pinSet = false,
+        multipleCollectsAccepted = false,
+        firstName = '',
+        lastName = '',
+        phoneNumber = '',
+        address = '',
+        postalCode = '',
+        city = '',
+        country = '',
+        iban = '',
+        payProvMandate = '',
+        payProvMandateStatus = '',
+        countryCode = -1,
+        isGiftAidEnabled = false,
+        accountType = AccountType.none,
+        appLanguage = '',
+        sortCode = '',
+        accountNumber = '';
 
   factory UserExt.fromJson(Map<String, dynamic> json) => UserExt(
         email: json['Email'] as String,
         guid: json['GUID'] as String,
         amountLimit: json['AmountLimit'] as int,
         tempUser: json['IsTempUser'] as bool,
-        iban: json['IBAN'] as String,
-        phoneNumber: json['PhoneNumber'] as String,
+        iban: json['IBAN'] != null ? json['IBAN'] as String : '',
+        phoneNumber:
+            json['PhoneNumber'] != null ? json['PhoneNumber'] as String : '',
         firstName: json['FirstName'] as String,
         lastName: json['LastName'] as String,
-        address: json['Address'] as String,
-        postalCode: json['PostalCode'] as String,
-        city: json['City'] as String,
+        address: json['Address'] != null ? json['Address'] as String : '',
+        postalCode:
+            json['PostalCode'] != null ? json['PostalCode'] as String : '',
+        city: json['City'] != null ? json['City'] as String : '',
         country: json['Country'] as String,
         countryCode: json['CountryCode'] as int,
         isGiftAidEnabled: json['GiftAidEnabled'] as bool,
-        appLanguage: json['AppLanguage'] as String,
+        sortCode: json['SortCode'] != null ? json['SortCode'] as String : '',
+        accountNumber: json['AccountNumber'] != null
+            ? json['AccountNumber'] as String
+            : '',
+        appLanguage:
+            json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
         accountType: AccountType.fromString(json['AccountType'] as String),
+        needRegistration: json['IsTempUser'] as bool,
+        personalInfoRegistered: json['FirstName'] != null,
+        payProvMandateStatus: json['PayProvMandateStatus'] != null
+            ? json['PayProvMandateStatus'] as String
+            : '',
+        payProvMandate: json['PayProvMandate'] != null
+            ? json['PayProvMandate'] as String
+            : '',
+        mandateSigned: json.containsKey('mandateSigned')
+            ? json['mandateSigned'] as bool
+            : json['PayProvMandate'] != null,
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -72,6 +118,8 @@ class UserExt extends Equatable {
         'AccountType': accountType.toString(),
         'GiftAidEnabled': isGiftAidEnabled,
         'AppLanguage': appLanguage,
+        'SortCode': sortCode,
+        'AccountNumber': accountNumber,
         'mandateSigned': mandateSigned,
         'maxAmountRegistered': maxAmountRegistered,
         'multipleCollectsFirstBallon': multipleCollectsFirstBallon,
@@ -81,6 +129,22 @@ class UserExt extends Equatable {
         'pinSet': pinSet,
         'multipleCollectsAccepted': multipleCollectsAccepted,
       };
+
+  Map<String, dynamic> toUpdateJson() {
+    final json = <String, dynamic>{};
+    json['id'] = guid;
+    if (iban.isNotEmpty) json['iban'] = iban;
+    if (phoneNumber.isNotEmpty) json['phoneNumber'] = phoneNumber;
+    if (sortCode.isNotEmpty) json['sortCode'] = sortCode;
+    if (accountNumber.isNotEmpty) json['accountNumber'] = accountNumber;
+
+    json['address'] = address;
+    json['postalCode'] = postalCode;
+    json['city'] = city;
+    json['country'] = country;
+
+    return json;
+  }
 
   final String email;
   final String guid;
@@ -94,9 +158,14 @@ class UserExt extends Equatable {
   final String country;
   final int countryCode;
   final String iban;
+  final String sortCode;
+  final String accountNumber;
+  final String payProvMandateStatus;
+  final String payProvMandate;
+
   final bool isGiftAidEnabled;
   final AccountType accountType;
-  final String appLanguage;
+  final String? appLanguage;
 
   final bool tempUser;
   final bool mandateSigned;
@@ -124,8 +193,12 @@ class UserExt extends Equatable {
     int? countryCode,
     String? iban,
     bool? isGiftAidEnabled,
+    String? sortCode,
+    String? accountNumber,
     AccountType? accountType,
     String? appLanguage,
+    String? payProvMandateStatus,
+    String? payProvMandate,
     int? amountLimit,
     bool? tempUser,
     bool? mandateSigned,
@@ -150,6 +223,8 @@ class UserExt extends Equatable {
       country: country ?? this.country,
       countryCode: countryCode ?? this.countryCode,
       iban: iban ?? this.iban,
+      sortCode: sortCode ?? this.sortCode,
+      accountNumber: accountNumber ?? this.accountNumber,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,
       appLanguage: appLanguage ?? this.appLanguage,
       accountType: accountType ?? this.accountType,
@@ -183,6 +258,8 @@ class UserExt extends Equatable {
         country,
         countryCode,
         iban,
+        sortCode,
+        accountNumber,
         isGiftAidEnabled,
         accountType,
         appLanguage,

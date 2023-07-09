@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -20,14 +19,7 @@ class QrCodeScanPage extends StatefulWidget {
 }
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
-  bool _isLoading = false;
   final _controller = MobileScannerController();
-
-  void toggleLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
-  }
 
   Future<void> isAllowed() async {
     final isAllowed = await Permission.camera.isGranted;
@@ -81,7 +73,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             Text(locals.giveDifferentScan),
             Text(
-              locals.giveDiffQRText,
+              locals.giveDiffQrText,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
@@ -96,7 +88,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               context: context,
               builder: (_) {
                 return AlertDialog(
-                  title: Text(locals.qRScanFailed),
+                  title: Text(locals.qrScanFailed),
                   content: Text(locals.codeCanNotBeScanned),
                   actions: [
                     TextButton(
@@ -124,50 +116,34 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
               }
             });
           }
-          if (state.status == GiveStatus.readyToGive) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute<void>(
-                builder: (_) => BlocProvider.value(
-                  value: context.read<GiveBloc>(),
-                  child: const GivingPage(),
-                ),
-                fullscreenDialog: true,
-              ),
-            );
-          }
         },
         child: Stack(
           children: [
             MobileScanner(
               controller: _controller,
               onDetect: (barcode, args) async {
-                toggleLoading();
                 await _controller.stop();
                 if (barcode.rawValue == null) {
-                  toggleLoading();
                   log('No Givt QR code detected');
                   return;
                 }
 
-                // ignore: use_build_context_synchronously
-                if (!context.mounted) return;
-                final userGUID =
-                    (context.read<AuthCubit>().state as AuthSuccess).user.guid;
+                if (!mounted) return;
+                final userGUID = context.read<AuthCubit>().state.user.guid;
                 context
                     .read<GiveBloc>()
                     .add(GiveQRCodeScanned(barcode.rawValue!, userGUID));
-                toggleLoading();
               },
             ),
             const Positioned.fill(
               child: QrCodeTarget(),
             ),
-            if (_isLoading)
+            if (context.watch<GiveBloc>().state.status == GiveStatus.loading)
               const Opacity(
                 opacity: 0.8,
                 child: ModalBarrier(dismissible: false, color: Colors.black),
               ),
-            if (_isLoading)
+            if (context.watch<GiveBloc>().state.status == GiveStatus.loading)
               const Positioned.fill(
                 child: Center(
                   child: CircularProgressIndicator(

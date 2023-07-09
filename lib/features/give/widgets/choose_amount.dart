@@ -1,9 +1,10 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
-typedef ChooseAmountNextCallback = bool Function(
+typedef ChooseAmountNextCallback = void Function(
   double firstCollection,
   double secondCollection,
   double thirdCollection,
@@ -14,11 +15,13 @@ class ChooseAmount extends StatefulWidget {
     required this.amountLimit,
     required this.onAmountChanged,
     required this.country,
+    required this.hasGiven,
     super.key,
   });
 
   final int amountLimit;
   final String country;
+  final bool hasGiven;
   final ChooseAmountNextCallback onAmountChanged;
 
   @override
@@ -41,6 +44,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   ];
 
   int selectedField = 0;
+  bool reset = false;
 
   @override
   void dispose() {
@@ -55,9 +59,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
+    if (widget.hasGiven && !reset) {
+      reset = true;
+      _resetControllers();
+    }
 
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(8),
       child: Container(
         height: size.height,
         width: size.width,
@@ -65,12 +73,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
           border: Border.all(
             color: Colors.grey.shade200,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(5),
         ),
         child: Form(
           key: _formKey,
           child: Container(
-            margin: const EdgeInsets.only(top: 50),
+            margin: const EdgeInsets.only(top: 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -78,6 +86,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[0],
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
@@ -101,6 +110,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[1],
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
@@ -120,6 +130,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[2],
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
+                  lowerLimit: getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
@@ -167,8 +178,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               controllers[2].text.replaceAll(',', '.'),
                             ),
                           );
-
-                          _resetControllers();
+                          setState(() {
+                            reset = false;
+                          });
                         }
                       : null,
                 ),
@@ -185,6 +197,16 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
+  double getLowerLimitByCountry(String country) {
+    if (country == Country.us.countryCode) {
+      return 2;
+    }
+    if (Country.unitedKingdomCodes().contains(country)) {
+      return 0.50;
+    }
+    return 0.25;
+  }
+
   void _changeFocus() {
     selectedField = collectionFields.lastIndexOf(true);
     focusNodes[collectionFields.lastIndexOf(true)].requestFocus();
@@ -196,16 +218,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
       focusNodes[index].unfocus();
       collectionFields[index] = index == 0;
     }
-    focusNodes[0].requestFocus();
+    _changeFocus();
+    setState(() {
+      reset = true;
+    });
   }
 
   Icon _buildCurrencyIcon() {
     final countryIso = widget.country;
     var icon = Icons.euro;
-    if (countryIso == 'US') {
+    if (countryIso == Country.us.countryCode) {
       icon = Icons.attach_money;
     }
-    if (countryIso == 'GB') {
+    if (Country.unitedKingdomCodes().contains(countryIso)) {
       icon = Icons.currency_pound;
     }
 
@@ -239,6 +264,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onFocused,
     required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
+    double lowerLimit = 0,
   }) {
     return Visibility(
       visible: isVisible,
@@ -247,6 +273,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
         key: Key(collectionFieldName),
         controller: controller,
         amountLimit: amountLimit,
+        lowerLimit: lowerLimit,
         suffixText: collectionFieldName,
         prefixCurrencyIcon: prefixCurrencyIcon,
         isRemoveIconVisible: isRemoveIconVisible,
@@ -271,7 +298,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
     }
     controllers[selectedField].text = controllers[selectedField]
         .text
-        .substring(0, controllers[0].text.length - 1);
+        .substring(0, controllers[selectedField].text.length - 1);
     setState(() {
       _formKey.currentState!.validate();
     });
@@ -330,10 +357,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
       child: ElevatedButton.icon(
         onPressed: onPressed,
         label: const Icon(Icons.arrow_forward_ios_outlined),
-        icon: Text(label),
+        icon: Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Text(label),
+        ),
         style: ElevatedButton.styleFrom(
           disabledForegroundColor: Colors.white,
-          disabledBackgroundColor: Colors.grey,
+          disabledBackgroundColor: Colors.black12,
           minimumSize: const Size(50, 40),
         ),
       ),
@@ -346,28 +376,29 @@ class _ChooseAmountState extends State<ChooseAmount> {
     required VoidCallback onPressed,
   }) {
     return Container(
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 10,
-        right: size.width * 0.17,
       ),
-      child: DottedBorder(
-        color: Colors.grey,
-        strokeCap: StrokeCap.round,
-        dashPattern: const [3, 6],
-        borderPadding: const EdgeInsets.symmetric(
-          vertical: 10,
-        ),
-        borderType: BorderType.RRect,
-        radius: const Radius.circular(12),
-        padding: const EdgeInsets.all(6),
-        child: ElevatedButton.icon(
-          onPressed: onPressed,
-          icon: const Icon(Icons.add_circle_outlined),
-          label: Text(label),
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.grey,
-            backgroundColor: Colors.transparent,
-            minimumSize: const Size(50, 40),
+      child: Center(
+        child: DottedBorder(
+          color: Colors.black54,
+          strokeCap: StrokeCap.round,
+          dashPattern: const [3, 6],
+          borderPadding: const EdgeInsets.symmetric(
+            vertical: 10,
+          ),
+          borderType: BorderType.RRect,
+          radius: const Radius.circular(6),
+          padding: const EdgeInsets.all(6),
+          child: ElevatedButton.icon(
+            onPressed: onPressed,
+            icon: const Icon(Icons.add_circle_outlined),
+            label: Text(label),
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.black54,
+              backgroundColor: Colors.transparent,
+              minimumSize: const Size(50, 40),
+            ),
           ),
         ),
       ),

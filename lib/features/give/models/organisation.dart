@@ -17,21 +17,20 @@ class Organisation extends Equatable {
     this.mediumId,
   });
 
-  factory Organisation.empty() => const Organisation(
-        campaignId: '',
-        organisationName: '',
-        country: '',
-        organisationLogoLink: '',
-        title: '',
-        goal: '',
-        thankYou: '',
-        paymentMethods: [],
-        currency: '',
-        amounts: [],
-        wantKnowMoreLink: '',
-        privacyPolicyLink: '',
-        mediumId: '',
-      );
+  const Organisation.empty() :
+        campaignId = '',
+        organisationName = '',
+        country = '',
+        organisationLogoLink = '',
+        title = '',
+        goal = '',
+        thankYou = '',
+        paymentMethods = const [],
+        currency ='',
+        amounts = const [],
+        wantKnowMoreLink = '',
+        privacyPolicyLink = '',
+        mediumId = '';
 
   factory Organisation.fromJson(Map<String, dynamic> json) => Organisation(
         campaignId: json['campaignId'] as String?,

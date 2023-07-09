@@ -89,3 +89,42 @@ class GiveAmountChanged extends GiveEvent {
         thirdCollectionAmount,
       ];
 }
+
+class GiveQRCodeScannedOutOfApp extends GiveEvent {
+  const GiveQRCodeScannedOutOfApp(this.encodedMediumId, this.userGUID);
+
+  final String encodedMediumId;
+  final String userGUID;
+
+  @override
+  List<Object> get props => [encodedMediumId, userGUID];
+}
+
+class GiveConfirmQRCodeScannedOutOfApp extends GiveEvent {
+  const GiveConfirmQRCodeScannedOutOfApp();
+
+  @override
+  List<Object> get props => [];
+}
+
+class GiveGPSLocationChanged extends GiveEvent {
+  const GiveGPSLocationChanged({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  final double latitude;
+  final double longitude;
+
+  @override
+  List<Object> get props => [latitude, longitude];
+}
+
+class GiveGPSConfirm extends GiveEvent {
+  const GiveGPSConfirm(this.userGUID);
+
+  final String userGUID;
+
+  @override
+  List<Object> get props => [userGUID];
+}

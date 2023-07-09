@@ -27,25 +27,28 @@ class CollectGroup extends Equatable {
     final multiUseAllocations = <MultiUseAllocation>[];
     final qrCodes = <QrCode>[];
 
-    // if (json['Locations'] != null) {
-    //   for (final location in json['Locations'] as List<Map<String, dynamic>>) {
-    //     locations.add(Location.fromJson(location));
-    //   }
-    // }
+    if (json['Locations'] != null) {
+      for (final location in json['Locations'] as List<dynamic>) {
+        locations.add(Location.fromJson(location as Map<String, dynamic>));
+      }
+    }
 
-    // if (json['MultiUseAllocations'] != null) {
-    //   for (final multiUseAllocation
-    //       in json['MultiUseAllocations'] as List<Map<String, dynamic>>) {
-    //     multiUseAllocations
-    //         .add(MultiUseAllocation.fromJson(multiUseAllocation));
-    //   }
-    // }
+    if (json['MultiUseAllocations'] != null) {
+      for (final multiUseAllocation
+          in json['MultiUseAllocations'] as List<dynamic>) {
+        multiUseAllocations.add(
+          MultiUseAllocation.fromJson(
+            multiUseAllocation as Map<String, dynamic>,
+          ),
+        );
+      }
+    }
 
-    // if (json['qrCodes'] != null) {
-    //   for (final qrCode in json['qrCodes']) {
-    //     qrCodes.add(QrCode.fromJson(qrCode));
-    //   }
-    // }
+    if (json['qrCodes'] != null) {
+      for (final qrCode in json['qrCodes'] as List<dynamic>) {
+        qrCodes.add(QrCode.fromJson(qrCode as Map<String, dynamic>));
+      }
+    }
 
     return CollectGroup(
       nameSpace: json['EddyNameSpace'] as String,
@@ -71,14 +74,29 @@ class CollectGroup extends Equatable {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['EddyNameSpace'] = nameSpace;
-    data['orgName'] = orgName;
+    data['OrgName'] = orgName;
     data['Celebrations'] = hasCelebration;
+    data['CollectGroupType'] = type.value;
     data['type'] = type.value;
     data['Locations'] = locations.map((e) => e.toJson()).toList();
     data['MultiUseAllocations'] =
         multiUseAllocations.map((e) => e.toJson()).toList();
     data['qrCodes'] = qrCodes.map((e) => e.toJson()).toList();
     return data;
+  }
+
+  AccountType get accountType {
+    final asciiCountry = nameSpace.substring(8, 12);
+    if (asciiCountry == '4742' ||
+        asciiCountry == '4a45' ||
+        asciiCountry == '4747') {
+      return AccountType.bacs;
+    }
+    if (asciiCountry == '5553') {
+      return AccountType.creditCard;
+    }
+
+    return AccountType.sepa;
   }
 
   @override

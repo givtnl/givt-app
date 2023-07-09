@@ -5,6 +5,7 @@ class CollectionFormField extends StatelessWidget {
   const CollectionFormField({
     required this.controller,
     required this.amountLimit,
+    required this.lowerLimit,
     required this.onRemoveIconPressed,
     required this.onFocused,
     required this.focusNode,
@@ -12,7 +13,7 @@ class CollectionFormField extends StatelessWidget {
     this.suffixText = '',
     this.prefixCurrencyIcon = const Icon(
       Icons.euro,
-      color: Colors.grey,
+      color: Colors.black26,
     ),
     this.bottomBorderColor = AppTheme.givtLightGreen,
     this.isRemoveIconVisible = false,
@@ -23,6 +24,7 @@ class CollectionFormField extends StatelessWidget {
   final bool isRemoveIconVisible;
   final bool isSuffixTextVisible;
   final int amountLimit;
+  final double lowerLimit;
   final String suffixText;
   final Icon prefixCurrencyIcon;
   final Color bottomBorderColor;
@@ -33,10 +35,10 @@ class CollectionFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 2.5),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: Material(
-        elevation: 5,
-        borderRadius: BorderRadius.circular(10),
+        elevation: 2,
+        borderRadius: BorderRadius.circular(5),
         child: TextFormField(
           focusNode: focusNode,
           readOnly: true,
@@ -47,10 +49,16 @@ class CollectionFormField extends StatelessWidget {
             if (value == null || value.isEmpty) {
               return '';
             }
+            final currentValue = double.parse(value.replaceAll(',', '.'));
+            if (currentValue == 0) {
+              return null;
+            }
 
             /// Dart accepts only dot as decimal separator
-            if (double.parse(value.replaceAll(',', '.')) >
-                double.parse(amountLimit.toString())) {
+            if (currentValue > double.parse(amountLimit.toString())) {
+              return '';
+            }
+            if (currentValue < lowerLimit) {
               return '';
             }
             return null;
@@ -58,16 +66,17 @@ class CollectionFormField extends StatelessWidget {
           textInputAction: TextInputAction.next,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.normal,
-                fontSize: 30,
+                fontSize: 28,
                 color: AppTheme.givtDarkerGray,
               ),
           decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 16),
             suffixText: isSuffixTextVisible ? suffixText : null,
             suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppTheme.givtDarkerGray,
                 ),
             suffixIcon: IconButton(
-              onPressed: onRemoveIconPressed,
+              onPressed: isRemoveIconVisible ? onRemoveIconPressed : null,
               icon: Icon(
                 Icons.remove_circle,
                 color: isRemoveIconVisible ? Colors.grey : Colors.transparent,
@@ -79,8 +88,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             focusedErrorBorder: const UnderlineInputBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: Colors.red,
@@ -89,8 +98,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             errorBorder: const UnderlineInputBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: Colors.red,
@@ -99,8 +108,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             focusedBorder: UnderlineInputBorder(
               borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: bottomBorderColor,
@@ -109,8 +118,8 @@ class CollectionFormField extends StatelessWidget {
             ),
             enabledBorder: const UnderlineInputBorder(
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10),
+                bottomLeft: Radius.circular(5),
+                bottomRight: Radius.circular(5),
               ),
               borderSide: BorderSide(
                 color: Colors.transparent,

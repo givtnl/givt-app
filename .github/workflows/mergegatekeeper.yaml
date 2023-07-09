@@ -1,0 +1,17 @@
+name: Merge gatekeeping
+
+on:
+  pull_request_target:
+    types:
+        - opened
+    branches:
+        - main
+
+jobs:
+    merge_gatekeeper:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.pull_request.head.ref }} != 'develop' && contains(hotfix, ${{ github.event.pull_request.title }}) == false
+        steps:
+        - uses: superbrothers/close-pull-request@v3
+          with:
+            comment: "Canceled because this does not follow the merge strategy. If this is a hotfix, add the term hotfix in the title of the merge to bypass this check."

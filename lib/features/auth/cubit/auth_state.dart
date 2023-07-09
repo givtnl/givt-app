@@ -1,10 +1,13 @@
 part of 'auth_cubit.dart';
 
 abstract class AuthState extends Equatable {
-  const AuthState();
+  const AuthState({
+    this.user = const UserExt.empty(),
+  });
+  final UserExt user;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [user];
 }
 
 class AuthLoading extends AuthState {}
@@ -26,11 +29,17 @@ class AuthLoginRedirect extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  const AuthSuccess(this.user);
-  final UserExt user;
+  const AuthSuccess({super.user});
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [];
+}
+
+class AuthRefreshed extends AuthState {
+  const AuthRefreshed({super.user});
+
+  @override
+  List<Object> get props => [];
 }
 
 class AuthLogout extends AuthState {}
@@ -44,4 +53,29 @@ class AuthFailure extends AuthState {
 
   @override
   List<Object> get props => [message];
+}
+
+class AuthChangePasswordSuccess extends AuthState {
+  const AuthChangePasswordSuccess();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AuthChangePasswordFailure extends AuthState {
+  const AuthChangePasswordFailure({this.message = ''});
+
+  final String message;
+
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthChangePasswordWrongEmail extends AuthState {
+  const AuthChangePasswordWrongEmail(this.email);
+
+  final String email;
+
+  @override
+  List<Object> get props => [email];
 }

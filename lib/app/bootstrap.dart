@@ -3,7 +3,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:givt_app/injection.dart' as get_it;
+import 'package:givt_app/app/injection/injection.dart' as get_it;
+import 'package:givt_app/core/logging/logging.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -21,9 +22,12 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
-Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+Future<void> bootstrap({
+  required FutureOr<Widget> Function() builder,
+}) async {
   WidgetsFlutterBinding.ensureInitialized();
   await get_it.init();
+  await get_it.getIt.allReady();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
@@ -32,6 +36,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   await runZonedGuarded(
     () async => runApp(await builder()),
-    (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
+    (error, stackTrace) async {
+      log(error.toString(), stackTrace: stackTrace);
+      await LoggingInfo.instance.error(
+        'Errot: $error, StackTrace: $stackTrace',
+        methodName: StackTrace.current.toString(),
+      );
+    },
   );
 }
