@@ -18,64 +18,68 @@ class OverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final user = context.read<AuthCubit>().state.user;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_rounded),
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              showDragHandle: true,
-              isScrollControlled: true,
-              useSafeArea: true,
-              backgroundColor: AppTheme.givtBlue,
-              builder: (context) => Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      locals.historyInfoTitle,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+          Visibility(
+            visible: context.read<GivtBloc>().state.givts.isNotEmpty,
+            child: IconButton(
+              icon: const Icon(Icons.info_rounded),
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                showDragHandle: true,
+                isScrollControlled: true,
+                useSafeArea: true,
+                backgroundColor: AppTheme.givtBlue,
+                builder: (context) => Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        locals.historyInfoTitle,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: const Color(0xFF494871),
-                      text: locals.historyAmountAccepted,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: AppTheme.givtLightGreen,
-                      text: locals.historyAmountCollected,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: AppTheme.givtRed,
-                      text: locals.historyAmountDenied,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: AppTheme.givtLightGray,
-                      text: locals.historyAmountCancelled,
-                    ),
-                    Visibility(
-                      visible: user.isGiftAidEnabled,
-                      child: Column(
-                        children: [
-                          const Divider(color: Colors.white),
-                          _buildColorExplanationRow(
-                            image: 'assets/images/gift_aid_yellow.png',
-                            text: locals.giftOverviewGiftAidBanner(''),
-                          ),
-                        ],
+                      const SizedBox(height: 20),
+                      _buildColorExplanationRow(
+                        color: const Color(0xFF494871),
+                        text: locals.historyAmountAccepted,
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      _buildColorExplanationRow(
+                        color: AppTheme.givtLightGreen,
+                        text: locals.historyAmountCollected,
+                      ),
+                      const SizedBox(height: 20),
+                      _buildColorExplanationRow(
+                        color: AppTheme.givtRed,
+                        text: locals.historyAmountDenied,
+                      ),
+                      const SizedBox(height: 20),
+                      _buildColorExplanationRow(
+                        color: AppTheme.givtLightGray,
+                        text: locals.historyAmountCancelled,
+                      ),
+                      Visibility(
+                        visible: user.isGiftAidEnabled,
+                        child: Column(
+                          children: [
+                            const Divider(color: Colors.white),
+                            _buildColorExplanationRow(
+                              image: 'assets/images/gift_aid_yellow.png',
+                              text: locals.giftOverviewGiftAidBanner(''),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -115,12 +119,31 @@ class OverviewPage extends StatelessWidget {
               ),
             );
           }
-          
         },
         builder: (context, state) {
           if (state is GivtLoading) {
             return const Center(
               child: CircularProgressIndicator(),
+            );
+          }
+          if (state.givts.isEmpty) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    Text(
+                      locals.historyIsEmpty,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 40),
+                    Image.asset(
+                      'assets/images/givy_money.png',
+                      height: size.height * 0.3,
+                    ),
+                  ],
+                ),
+              ),
             );
           }
           final monthSections = state.givtGroups
