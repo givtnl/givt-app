@@ -63,7 +63,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               isScrollControlled: true,
               useSafeArea: true,
               showDragHandle: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (_) {
                 return _buildPersonalInfoBottomSheet(context);
               },
