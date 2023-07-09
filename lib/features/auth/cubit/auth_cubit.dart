@@ -113,7 +113,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
-      emit(AuthSuccess(user: userExt));
+      emit(AuthRefreshed(user: userExt));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
