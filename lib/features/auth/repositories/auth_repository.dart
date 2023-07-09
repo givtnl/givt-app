@@ -30,6 +30,12 @@ mixin AuthRepositoy {
   Future<bool> unregisterUser({
     required String email,
   });
+  Future<bool> updateUser({
+    required String guid,
+    required Map<String, dynamic> newUserExt,
+  });
+
+  Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -198,4 +204,17 @@ class AuthRepositoyImpl with AuthRepositoy {
       _apiService.unregisterUser({
         'email': email,
       });
+
+  @override
+  Future<bool> updateUser({
+    required String guid,
+    required Map<String, dynamic> newUserExt,
+  }) async =>
+      _apiService.updateUser(guid, newUserExt);
+
+  @override
+  Future<bool> updateUserExt(
+    Map<String, dynamic> newUserExt,
+  ) async =>
+      _apiService.updateUserExt(newUserExt);
 }

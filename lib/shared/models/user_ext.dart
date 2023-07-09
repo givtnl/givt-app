@@ -130,6 +130,22 @@ class UserExt extends Equatable {
         'multipleCollectsAccepted': multipleCollectsAccepted,
       };
 
+  Map<String, dynamic> toUpdateJson() {
+    final json = <String, dynamic>{};
+    json['id'] = guid;
+    if (iban.isNotEmpty) json['iban'] = iban;
+    if (phoneNumber.isNotEmpty) json['phoneNumber'] = phoneNumber;
+    if (sortCode.isNotEmpty) json['sortCode'] = sortCode;
+    if (accountNumber.isNotEmpty) json['accountNumber'] = accountNumber;
+
+    json['address'] = address;
+    json['postalCode'] = postalCode;
+    json['city'] = city;
+    json['country'] = country;
+
+    return json;
+  }
+
   final String email;
   final String guid;
   final int amountLimit;
