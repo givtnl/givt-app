@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class GiftAidPage extends StatefulWidget {
@@ -32,9 +33,16 @@ class _GiftAidPageState extends State<GiftAidPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
+    return BottomSheetLayout(
+      title: Row(
+        children: [
+          Text(
+            'Gift Aid',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const Spacer(),
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
               context: context,
@@ -50,67 +58,59 @@ class _GiftAidPageState extends State<GiftAidPage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
-        child: Column(
-          children: [
-            Align(
-              child: Image.asset(
-                'assets/images/givy_gift_aid.png',
-                width: size.width * 0.4,
-              ),
+      child: Column(
+        children: [
+          Align(
+            child: Image.asset(
+              'assets/images/givy_gift_aid.png',
+              width: size.width * 0.4,
             ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                locals.giftAidSetting,
+              ),
+              CupertinoSwitch(
+                onChanged: (bool value) => setState(() {
+                  useGiftAid = value;
+                }),
+                value: useGiftAid,
+              ),
+            ],
+          ),
+          const Divider(),
+          SingleChildScrollView(
+            child: Column(
               children: [
                 Text(
-                  locals.giftAidSetting,
+                  locals.giftAidInfo,
                 ),
-                CupertinoSwitch(
-                  onChanged: (bool value) => setState(() {
-                    useGiftAid = value;
-                  }),
-                  value: useGiftAid,
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  locals.giftAidHeaderDisclaimer,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  locals.giftAidBodyDisclaimer,
                 ),
               ],
             ),
-            const Divider(),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Text(
-                    locals.giftAidInfo,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    locals.giftAidHeaderDisclaimer,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    locals.giftAidBodyDisclaimer,
-                  ),
-                ],
-              ),
+          ),
+          const Spacer(),
+          ElevatedButton(
+            onPressed: () => widget.onGiftAidChanged(
+              useGiftAid,
             ),
-            const Spacer(),
-            ElevatedButton(
-              onPressed: () => widget.onGiftAidChanged(
-                useGiftAid,
-              ),
-              child: Text(locals.save),
-            ),
-          ],
-        ),
+            child: Text(locals.save),
+          ),
+        ],
       ),
     );
   }
