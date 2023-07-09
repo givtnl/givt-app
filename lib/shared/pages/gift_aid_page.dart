@@ -25,8 +25,7 @@ class _GiftAidPageState extends State<GiftAidPage> {
   @override
   void initState() {
     super.initState();
-    useGiftAid =
-        (context.read<AuthCubit>().state as AuthSuccess).user.isGiftAidEnabled;
+    useGiftAid = context.read<AuthCubit>().state.user.isGiftAidEnabled;
   }
 
   @override
