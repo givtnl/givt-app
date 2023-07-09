@@ -130,8 +130,11 @@ class AppRouter {
                         ),
                       ),
                     ],
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as RegistrationBloc,
+                    builder: (context, state) => BlocProvider(
+                      create: (context) => RegistrationBloc(
+                        authCubit: context.read<AuthCubit>(),
+                        authRepositoy: getIt(),
+                      )..add(const RegistrationInit()),
                       child: const BacsExplanationPage(),
                     ),
                   ),

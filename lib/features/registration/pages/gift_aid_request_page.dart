@@ -19,12 +19,15 @@ class GiftAidRequestPage extends StatelessWidget {
           context.goNamed(Pages.home.name);
         }
       },
-      child: GiftAidPage(
-        onGiftAidChanged: (useGiftAid) => context.read<RegistrationBloc>().add(
-              RegistrationGiftAidChanged(
-                isGiftAidEnabled: useGiftAid,
-              ),
-            ),
+      child: Scaffold(
+        body: GiftAidPage(
+          onGiftAidChanged: (useGiftAid) =>
+              context.read<RegistrationBloc>().add(
+                    RegistrationGiftAidChanged(
+                      isGiftAidEnabled: useGiftAid,
+                    ),
+                  ),
+        ),
       ),
     );
   }
