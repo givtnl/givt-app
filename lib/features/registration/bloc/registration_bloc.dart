@@ -118,7 +118,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       log(response);
 
       await authCubit.refreshUser();
-      final user = (authCubit.state as AuthSuccess).user;
+      final user = authCubit.state.user;
       if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
         emit(
           state.copyWith(
@@ -167,9 +167,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     await LoggingInfo.instance.info(
-        'Registration Init',
-        methodName: StackTrace.current.toString(),
-      );
+      'Registration Init',
+      methodName: StackTrace.current.toString(),
+    );
     emit(state.copyWith(status: RegistrationStatus.loading));
     if (authCubit.state is! AuthSuccess) {
       emit(

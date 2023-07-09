@@ -120,7 +120,7 @@ class _UnregisterPageState extends State<UnregisterPage> {
   ) {
     final locals = context.l10n;
     final size = MediaQuery.of(context).size;
-    final email = (context.read<AuthCubit>().state as AuthSuccess).user.email;
+    final email = context.read<AuthCubit>().state.user.email;
     return Column(
       children: [
         const SizedBox(
