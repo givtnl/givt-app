@@ -239,7 +239,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (_) => const TermsAndConditionsDialog(
                 typeOfTerms: TypeOfTerms.privacyPolicy,
               ),
