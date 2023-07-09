@@ -109,7 +109,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> refreshUser() async {
-    final guid = (state as AuthSuccess).user.guid;
+    final guid = state.user.guid;
     emit(AuthLoading());
     try {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
