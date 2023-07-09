@@ -48,9 +48,7 @@ class SelectGivingWayPage extends StatelessWidget {
                     image: 'assets/images/select_location.png',
                     onTap: () => context.read<GiveBloc>().add(
                           GiveGPSConfirm(
-                            (context.read<AuthCubit>().state as AuthSuccess)
-                                .user
-                                .guid,
+                            context.read<AuthCubit>().state.user.guid,
                           ),
                         ),
                   );

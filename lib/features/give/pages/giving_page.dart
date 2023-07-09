@@ -63,7 +63,7 @@ class _GivingPageState extends State<GivingPage> {
     BuildContext context,
   ) {
     final giveBlocState = context.read<GiveBloc>().state;
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final user = context.read<AuthCubit>().state.user;
     final format = NumberFormat.simpleCurrency(
       name: giveBlocState.organisation.currency,
     );

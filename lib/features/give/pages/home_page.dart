@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
   Future<void> _buildNeedsRegistrationDialog(
     BuildContext context,
   ) {
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final user = context.read<AuthCubit>().state.user;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(

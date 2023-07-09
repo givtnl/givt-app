@@ -192,7 +192,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationGiftAidChanged event,
     Emitter<RegistrationState> emit,
   ) async {
-    final guid = (authCubit.state as AuthSuccess).user.guid;
+    final guid = authCubit.state.user.guid;
     emit(state.copyWith(status: RegistrationStatus.loading));
 
     try {
