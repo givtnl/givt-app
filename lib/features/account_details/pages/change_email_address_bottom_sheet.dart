@@ -47,11 +47,6 @@ class _ChangeEmailAddressBottomSheetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  locals.loginText,
-                  style: Theme.of(context).textTheme.titleMedium,
-                  textAlign: TextAlign.center,
-                ),
                 SizedBox(height: size.height * 0.05),
                 CustomTextFormField(
                   controller: emailController,
