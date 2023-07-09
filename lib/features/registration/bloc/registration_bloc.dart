@@ -171,14 +171,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       methodName: StackTrace.current.toString(),
     );
     emit(state.copyWith(status: RegistrationStatus.loading));
-    if (authCubit.state is! AuthSuccess) {
-      emit(
-        state.copyWith(status: RegistrationStatus.failure),
-      );
-      return;
-    }
 
-    final user = (authCubit.state as AuthSuccess).user;
+    final user = authCubit.state.user;
     if (user.accountNumber.isNotEmpty && user.sortCode.isNotEmpty) {
       emit(
         state.copyWith(

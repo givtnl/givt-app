@@ -99,11 +99,17 @@ class _SignUpPageState extends State<SignUpPage> {
               );
             }
 
-            if (state.status ==
-                    RegistrationStatus.bacsDirectDebitMandateExplanation ||
-                state.status == RegistrationStatus.sepaMandateExplanation) {
+            if (state.status == RegistrationStatus.sepaMandateExplanation) {
               context.goNamed(
                 Pages.sepaMandateExplanation.name,
+                extra: context.read<RegistrationBloc>(),
+              );
+            }
+
+            if (state.status ==
+                RegistrationStatus.bacsDirectDebitMandateExplanation) {
+              context.goNamed(
+                Pages.bacsMandateExplanation.name,
                 extra: context.read<RegistrationBloc>(),
               );
             }

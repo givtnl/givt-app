@@ -125,15 +125,19 @@ class HomePage extends StatelessWidget {
           TextButton(
             onPressed: () {
               if (user.needRegistration) {
-                context.goNamed(
-                  Pages.registration.name,
-                  queryParameters: {
-                    'email': user.email,
-                  },
-                );
+                context
+                  ..goNamed(
+                    Pages.registration.name,
+                    queryParameters: {
+                      'email': user.email,
+                    },
+                  )
+                  ..pop();
                 return;
               }
-              context.goNamed(Pages.sepaMandateExplanation.name);
+              context
+                ..goNamed(Pages.sepaMandateExplanation.name)
+                ..pop();
             },
             child: Text(
               context.l10n.finalizeRegistration,
