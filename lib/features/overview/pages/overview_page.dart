@@ -159,8 +159,9 @@ class OverviewPage extends StatelessWidget {
                     Visibility(
                       visible: user.isGiftAidEnabled,
                       child: _buildHeader(
-                        amount: state
-                            .givtAided[monthSections[index].timeStamp!.year]!,
+                        amount: state.givtAided[
+                                monthSections[index].timeStamp!.year] ??
+                            0,
                         country: user.country,
                         color: AppTheme.givtYellow,
                         giftAidTitle: locals.giftOverviewGiftAidBanner(

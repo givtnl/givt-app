@@ -325,7 +325,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             }
             if (Country.unitedKingdomCodes()
                 .contains(_selectedCountry.countryCode)) {
-              if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
+              if (!Util.ukPhoneNumberRegEx
+                  .hasMatch('${_selectedCountry.prefix}$value')) {
                 return '';
               }
             }
