@@ -26,9 +26,9 @@ extension AppPageExtension on Pages {
       case Pages.splash:
         return '/';
       case Pages.home:
-        return 'home';
+        return '/home';
       case Pages.welcome:
-        return 'welcome';
+        return '/welcome';
       case Pages.selectGivingWay:
         return 'select-giving-way';
       case Pages.give:
