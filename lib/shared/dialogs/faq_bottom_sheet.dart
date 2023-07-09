@@ -10,8 +10,7 @@ class FAQBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final userCountry =
-        (context.read<AuthCubit>().state as AuthSuccess).user.country;
+    final userCountry = context.read<AuthCubit>().state.user.country;
     return Container(
       padding: const EdgeInsets.all(20),
       child: Column(
