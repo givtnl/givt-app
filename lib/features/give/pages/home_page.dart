@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-    final auth = context.read<AuthCubit>().state as AuthSuccess;
+    final auth = context.read<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
