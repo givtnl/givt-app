@@ -282,4 +282,44 @@ class APIService {
     }
     return response.statusCode == 200;
   }
+
+  Future<bool> updateUserExt(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/userExtension');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> updateUser(String guid, Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/Users/$guid');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
 }
