@@ -72,6 +72,10 @@ class MobileNumberFormField extends StatelessWidget {
                   Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
               decoration: InputDecoration(
                 hintText: locals.phoneNumber,
+                labelText: locals.phoneNumber,
+                labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
+                    ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 5,

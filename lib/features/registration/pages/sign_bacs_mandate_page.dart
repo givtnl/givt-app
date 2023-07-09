@@ -17,7 +17,7 @@ class SignBacsMandatePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final user = context.read<AuthCubit>().state.user;
     final registrationBloc = context.read<RegistrationBloc>();
     return Scaffold(
       appBar: AppBar(

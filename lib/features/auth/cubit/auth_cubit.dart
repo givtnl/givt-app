@@ -109,11 +109,11 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> refreshUser() async {
-    final guid = (state as AuthSuccess).user.guid;
+    final guid = state.user.guid;
     emit(AuthLoading());
     try {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
-      emit(AuthSuccess(user: userExt));
+      emit(AuthRefreshed(user: userExt));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -124,6 +124,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> changePassword({required String email}) async {
+    final prevState = state;
     emit(AuthLoading());
     try {
       // check email
@@ -137,6 +138,10 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       await _authRepositoy.resetPassword(email);
+      if (prevState is AuthSuccess) {
+        emit(AuthRefreshed(user: prevState.user));
+        return;
+      }
       emit(const AuthChangePasswordSuccess());
     } catch (e) {
       await LoggingInfo.instance.error(

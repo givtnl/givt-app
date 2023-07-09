@@ -129,8 +129,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
                 }
 
                 if (!mounted) return;
-                final userGUID =
-                    (context.read<AuthCubit>().state as AuthSuccess).user.guid;
+                final userGUID = context.read<AuthCubit>().state.user.guid;
                 context
                     .read<GiveBloc>()
                     .add(GiveQRCodeScanned(barcode.rawValue!, userGUID));

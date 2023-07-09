@@ -17,6 +17,7 @@ enum Pages {
   bacsMandateExplanation,
   registration,
   overview,
+  personalInfoEdit,
 }
 
 extension AppPageExtension on Pages {
@@ -58,6 +59,8 @@ extension AppPageExtension on Pages {
         return 'give-by-beacon';
       case Pages.overview:
         return 'overview';
+      case Pages.personalInfoEdit:
+        return 'personal-info-edit';
     }
   }
 
@@ -99,6 +102,8 @@ extension AppPageExtension on Pages {
         return 'GIVE-BY-BEACON';
       case Pages.overview:
         return 'OVERVIEW';
+      case Pages.personalInfoEdit:
+        return 'PERSONAL-INFO-EDIT';
     }
   }
 }

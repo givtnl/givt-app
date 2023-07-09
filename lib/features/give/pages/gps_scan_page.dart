@@ -131,10 +131,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
                         if (orgName!.isNotEmpty) {
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(
-                                  (context.read<AuthCubit>().state
-                                          as AuthSuccess)
-                                      .user
-                                      .guid,
+                                  context.read<AuthCubit>().state.user.guid,
                                 ),
                               );
                           return;

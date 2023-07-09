@@ -7,6 +7,7 @@ import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
@@ -33,11 +34,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   @override
   void initState() {
     super.initState();
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
-    _selectedCountry = Country.values.firstWhere(
-      (element) => element.countryCode == user.country,
-      orElse: () => Country.unknown,
-    );
+    final user = context.read<AuthCubit>().state.user;
+    _selectedCountry = Country.fromCode(user.country);
   }
 
   @override
@@ -65,7 +63,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               isScrollControlled: true,
               useSafeArea: true,
               showDragHandle: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (_) {
                 return _buildPersonalInfoBottomSheet(context);
               },
@@ -132,9 +130,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         return '';
                       }
 
-                      if (_selectedCountry != Country.gg ||
-                          _selectedCountry != Country.gb ||
-                          _selectedCountry != Country.je) {
+                      if (!Country.unitedKingdomCodes().contains(
+                        _selectedCountry.countryCode,
+                      )) {
                         return null;
                       }
 
@@ -164,15 +162,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                       if (value == 0) {
                         bankAccount.clear();
                         sortCode.clear();
-                        if (_selectedCountry == Country.gg ||
-                            _selectedCountry == Country.gb ||
-                            _selectedCountry == Country.je) {
+                        if (Country.unitedKingdomCodes()
+                            .contains(_selectedCountry.countryCode)) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => _buildWarningDialog(
                               message: locals.alertSepaMessage(
-                                getCountry(
-                                    _selectedCountry.countryCode, locals),
+                                Country.getCountry(
+                                  _selectedCountry.countryCode,
+                                  locals,
+                                ),
                               ),
                             ),
                           );
@@ -180,14 +179,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         setState(() {});
                         return;
                       }
-                      if (_selectedCountry != Country.gg ||
-                          _selectedCountry != Country.gb ||
-                          _selectedCountry != Country.je) {
+                      if (!Country.unitedKingdomCodes()
+                          .contains(_selectedCountry.countryCode)) {
                         showDialog<void>(
                           context: context,
                           builder: (context) => _buildWarningDialog(
                             message: locals.alertBacsMessage(
-                              getCountry(_selectedCountry.countryCode, locals),
+                              Country.getCountry(
+                                _selectedCountry.countryCode,
+                                locals,
+                              ),
                             ),
                           ),
                         );
@@ -238,7 +239,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (_) => const TermsAndConditionsDialog(
                 typeOfTerms: TypeOfTerms.privacyPolicy,
               ),
@@ -272,9 +273,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               return null;
             },
             value: _selectedCountry,
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              errorStyle: TextStyle(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 5,
+              ),
+              labelText: locals.country,
+              labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontSize: 16,
+                  ),
+              errorStyle: const TextStyle(
                 height: 0,
               ),
             ),
@@ -284,7 +292,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   (Country country) => DropdownMenuItem(
                     value: country,
                     child: Text(
-                      getCountry(country.countryCode, locals),
+                      Country.getCountry(country.countryCode, locals),
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
@@ -315,10 +323,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             if (!Util.phoneNumberRegEx.hasMatch(value)) {
               return '';
             }
-            if (_selectedCountry == Country.gg ||
-                _selectedCountry == Country.gb ||
-                _selectedCountry == Country.je) {
-              if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
+            if (Country.unitedKingdomCodes()
+                .contains(_selectedCountry.countryCode)) {
+              if (!Util.ukPhoneNumberRegEx
+                  .hasMatch('${_selectedCountry.prefix}$value')) {
                 return '';
               }
             }
@@ -365,79 +373,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required TextEditingController controller,
     required String? Function(String?) validator,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: TextFormField(
-        controller: controller,
-        validator: validator,
-        onChanged: (value) => setState(() {
-          _formKey.currentState!.validate();
-        }),
-        textInputAction: TextInputAction.next,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-        decoration: InputDecoration(
-          hintText: hintText,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          errorStyle: const TextStyle(
-            height: 0,
-          ),
-        ),
-      ),
+    return CustomTextFormField(
+      controller: controller,
+      hintText: hintText,
+      onChanged: (value) => setState(() {
+        _formKey.currentState!.validate();
+      }),
     );
-  }
-
-  String getCountry(String countryCode, AppLocalizations locals) {
-    switch (countryCode) {
-      case 'JE':
-        return locals.jersey;
-      case 'GG':
-        return locals.guernsey;
-      case 'AD':
-        return locals.countryStringAd;
-      case 'GB':
-        return locals.countryStringGb;
-      case 'DE':
-        return locals.countryStringDe;
-      case 'FR':
-        return locals.countryStringFr;
-      case 'IT':
-        return locals.countryStringIt;
-      case 'ES':
-        return locals.countryStringEs;
-      case 'NL':
-        return locals.countryStringNl;
-      case 'BE':
-        return locals.countryStringBe;
-      case 'AT':
-        return locals.countryStringAt;
-      case 'PT':
-        return locals.countryStringPt;
-      case 'IE':
-        return locals.countryStringIe;
-      case 'FI':
-        return locals.countryStringFi;
-      case 'LU':
-        return locals.countryStringLu;
-      case 'SI':
-        return locals.countryStringSi;
-      case 'SK':
-        return locals.countryStringSk;
-      case 'EE':
-        return locals.countryStringEe;
-      case 'LV':
-        return locals.countryStringLv;
-      case 'LT':
-        return locals.countryStringLt;
-      case 'GR':
-        return locals.countryStringGr;
-      case 'CY':
-        return locals.countryStringCy;
-      case 'MT':
-        return locals.countryStringMt;
-      default:
-        return '';
-    }
   }
 
   Widget _buildWarningDialog({required String message}) {

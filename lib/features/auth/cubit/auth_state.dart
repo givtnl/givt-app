@@ -35,6 +35,13 @@ class AuthSuccess extends AuthState {
   List<Object> get props => [];
 }
 
+class AuthRefreshed extends AuthState {
+  const AuthRefreshed({super.user});
+
+  @override
+  List<Object> get props => [];
+}
+
 class AuthLogout extends AuthState {}
 
 class AuthUnkown extends AuthState {}

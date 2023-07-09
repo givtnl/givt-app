@@ -27,7 +27,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildMenuItem(
             isVisible: auth.user.needRegistration || !auth.user.mandateSigned,
             showBadge: true,
-            showUnderline: false ,
+            showUnderline: false,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {
@@ -64,9 +64,10 @@ class CustomNavigationDrawer extends StatelessWidget {
             onTap: () {},
           ),
           _buildMenuItem(
+            isVisible: true,
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
-            onTap: () {},
+            onTap: () => context.goNamed(Pages.personalInfoEdit.name),
           ),
           _buildMenuItem(
             title: locals.amountPresetsTitle,
@@ -146,31 +147,33 @@ class CustomNavigationDrawer extends StatelessWidget {
         visible: isVisible,
         child: Column(
           children: [
-            Container(decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppTheme.givtLightGray,
-                  width: showUnderline ? 1 : 0,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppTheme.givtLightGray,
+                    width: showUnderline ? 1 : 0,
+                  ),
                 ),
               ),
-            ),child: ListTile(
-              leading: Icon(
-                icon,
-                color: AppTheme.givtBlue,
-              ),
-              trailing: badges.Badge(
-                showBadge: showBadge,
-                position: badges.BadgePosition.topStart(top: 6, start: -20),
-                child: const Icon(
-                  Icons.arrow_forward_ios,
+              child: ListTile(
+                leading: Icon(
+                  icon,
+                  color: AppTheme.givtBlue,
                 ),
+                trailing: badges.Badge(
+                  showBadge: showBadge,
+                  position: badges.BadgePosition.topStart(top: 6, start: -20),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                ),
+                title: Text(
+                  title,
+                  style: const TextStyle(fontSize: 17),
+                ),
+                onTap: onTap,
               ),
-              title: Text(
-                title,
-                style: const TextStyle(fontSize: 17),
-              ),
-              onTap: onTap,
-            ),
             ),
           ],
         ),

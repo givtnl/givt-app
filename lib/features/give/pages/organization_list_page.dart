@@ -93,9 +93,7 @@ class OrganizationListPage extends StatelessWidget {
                         ? null
                         : () {
                             final userGUID =
-                                (context.read<AuthCubit>().state as AuthSuccess)
-                                    .user
-                                    .guid;
+                                context.read<AuthCubit>().state.user.guid;
 
                             context.read<GiveBloc>().add(
                                   GiveOrganisationSelected(

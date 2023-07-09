@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -55,6 +57,17 @@ class AppRouter {
             path: Pages.home.path,
             name: Pages.home.name,
             routes: [
+              GoRoute(
+                path: Pages.personalInfoEdit.path,
+                name: Pages.personalInfoEdit.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => PersonalInfoEditBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    authRepositoy: getIt(),
+                  ),
+                  child: const PersonalInfoEditPage(),
+                ),
+              ),
               GoRoute(
                 path: Pages.registration.path,
                 name: Pages.registration.name,
@@ -117,8 +130,11 @@ class AppRouter {
                         ),
                       ),
                     ],
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as RegistrationBloc,
+                    builder: (context, state) => BlocProvider(
+                      create: (context) => RegistrationBloc(
+                        authCubit: context.read<AuthCubit>(),
+                        authRepositoy: getIt(),
+                      )..add(const RegistrationInit()),
                       child: const BacsExplanationPage(),
                     ),
                   ),

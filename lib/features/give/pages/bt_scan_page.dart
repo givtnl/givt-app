@@ -66,7 +66,7 @@ class _BTScanPageState extends State<BTScanPage> {
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
               userGUID:
-                  (context.read<AuthCubit>().state as AuthSuccess).user.guid,
+                  context.read<AuthCubit>().state.user.guid,
               macAddress: scanResult.device.id.toString(),
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
@@ -119,8 +119,8 @@ class _BTScanPageState extends State<BTScanPage> {
                         if (orgName!.isNotEmpty) {
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(
-                                  (context.read<AuthCubit>().state
-                                          as AuthSuccess)
+                                  context.read<AuthCubit>().state
+                                          
                                       .user
                                       .guid,
                                 ),
