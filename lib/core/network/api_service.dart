@@ -284,7 +284,7 @@ class APIService {
   }
 
   Future<bool> updateUserExt(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/api/v2/userExtension');
+    final url = Uri.https(apiURL, '/api/v2/usersExtension');
 
     final response = await client.put(
       url,
