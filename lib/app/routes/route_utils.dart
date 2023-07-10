@@ -18,6 +18,7 @@ enum Pages {
   registration,
   overview,
   personalInfoEdit,
+  giveVPC,
 }
 
 extension AppPageExtension on Pages {
@@ -61,6 +62,8 @@ extension AppPageExtension on Pages {
         return 'overview';
       case Pages.personalInfoEdit:
         return 'personal-info-edit';
+      case Pages.giveVPC:
+        return 'give-vpc';
     }
   }
 
@@ -104,6 +107,8 @@ extension AppPageExtension on Pages {
         return 'OVERVIEW';
       case Pages.personalInfoEdit:
         return 'PERSONAL-INFO-EDIT';
+      case Pages.giveVPC:
+        return 'GIVE-VPC';
     }
   }
 }

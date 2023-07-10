@@ -103,6 +103,17 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildEmptySpace(),
           _buildMenuItem(
             isVisible: true,
+            // TODO commented for easier testing
+            // auth.user.country == 'US' &&
+            // !auth.user.needRegistration &&
+            // auth.user.mandateSigned,
+            title: 'Family',
+            icon: Icons.family_restroom_rounded,
+            onTap: () => context.goNamed(Pages.giveVPC.name),
+          ),
+          _buildEmptySpace(),
+          _buildMenuItem(
+            isVisible: true,
             title: locals.titleAboutGivt,
             icon: Icons.info,
             onTap: () => showModalBottomSheet<void>(
