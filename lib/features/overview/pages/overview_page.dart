@@ -24,7 +24,7 @@ class OverviewPage extends StatelessWidget {
         leading: const BackButton(),
         actions: [
           Visibility(
-            visible: context.read<GivtBloc>().state.givts.isNotEmpty,
+            visible: context.watch<GivtBloc>().state.givtGroups.isNotEmpty,
             child: IconButton(
               icon: const Icon(Icons.info_rounded),
               onPressed: () => showModalBottomSheet<void>(
