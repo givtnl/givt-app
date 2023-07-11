@@ -138,10 +138,6 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       await _authRepositoy.resetPassword(email);
-      if (prevState is AuthSuccess) {
-        emit(AuthRefreshed(user: prevState.user));
-        return;
-      }
       emit(AuthChangePasswordSuccess(user: prevState.user));
     } catch (e) {
       await LoggingInfo.instance.error(
