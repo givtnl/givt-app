@@ -14,6 +14,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
+import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -193,10 +194,16 @@ class AppRouter {
                   GoRoute(
                     path: Pages.giveOffline.path,
                     name: Pages.giveOffline.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const GivingPage(),
-                    ),
+                    builder: (context, state) {
+                      final extra = state.extra! as GiveBloc;
+                      return BlocProvider.value(
+                        value: extra,
+                        child: SuccessOfflineDonationPage(
+                          organisationName:
+                              extra.state.organisation.organisationName!,
+                        ),
+                      );
+                    },
                   ),
                   GoRoute(
                     path: Pages.giveByBeacon.path,

@@ -37,7 +37,10 @@ class SelectGivingWayPage extends StatelessWidget {
             child: BlocListener<GiveBloc, GiveState>(
               listener: (context, state) {
                 if (state.status == GiveStatus.noInternetConnection) {
-                  context.goNamed(Pages.giveOffline.name);
+                  context.goNamed(
+                    Pages.giveOffline.name,
+                    extra: context.read<GiveBloc>(),
+                  );
                 }
                 if (state.status == GiveStatus.readyToConfirmGPS) {
                   _buildGivingDialog(
