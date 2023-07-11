@@ -1,8 +1,12 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 typedef ChooseAmountNextCallback = void Function(
   double firstCollection,
@@ -20,7 +24,7 @@ class ChooseAmount extends StatefulWidget {
   });
 
   final int amountLimit;
-  final String country;
+  final Country country;
   final bool hasGiven;
   final ChooseAmountNextCallback onAmountChanged;
 
@@ -87,7 +91,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
                   lowerLimit: getLowerLimitByCountry(widget.country),
-                  prefixCurrencyIcon: _buildCurrencyIcon(),
+                  prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
                   isRemoveIconVisible: collectionFields[1] == true ||
@@ -111,7 +115,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
                   lowerLimit: getLowerLimitByCountry(widget.country),
-                  prefixCurrencyIcon: _buildCurrencyIcon(),
+                  prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
                   isRemoveIconVisible: collectionFields[0] == true ||
@@ -131,7 +135,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
                   lowerLimit: getLowerLimitByCountry(widget.country),
-                  prefixCurrencyIcon: _buildCurrencyIcon(),
+                  prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
                   isRemoveIconVisible: collectionFields[0] == true ||
@@ -165,24 +169,34 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: isEnabled
-                      ? () {
-                          widget.onAmountChanged(
-                            double.parse(
-                              controllers[0].text.replaceAll(',', '.'),
-                            ),
-                            double.parse(
-                              controllers[1].text.replaceAll(',', '.'),
-                            ),
-                            double.parse(
-                              controllers[2].text.replaceAll(',', '.'),
-                            ),
-                          );
-                          setState(() {
-                            reset = false;
-                          });
-                        }
-                      : null,
+                  onPressed: () async {
+                    final areAmountsValid = await _checkAmounts(
+                      context,
+                      upperLimit: widget.amountLimit,
+                      lowerLimit: getLowerLimitByCountry(widget.country),
+                      currency: NumberFormat.simpleCurrency(
+                        name: widget.country.currency,
+                      ).currencySymbol,
+                    );
+
+                    if (!areAmountsValid) {
+                      return;
+                    }
+                    widget.onAmountChanged(
+                      double.parse(
+                        controllers[0].text.replaceAll(',', '.'),
+                      ),
+                      double.parse(
+                        controllers[1].text.replaceAll(',', '.'),
+                      ),
+                      double.parse(
+                        controllers[2].text.replaceAll(',', '.'),
+                      ),
+                    );
+                    setState(() {
+                      reset = false;
+                    });
+                  },
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,
@@ -197,11 +211,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
-  double getLowerLimitByCountry(String country) {
-    if (country == Country.us.countryCode) {
+  double getLowerLimitByCountry(Country country) {
+    if (country == Country.us) {
       return 2;
     }
-    if (Country.unitedKingdomCodes().contains(country)) {
+    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
       return 0.50;
     }
     return 0.25;
@@ -224,13 +238,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
     });
   }
 
-  Icon _buildCurrencyIcon() {
-    final countryIso = widget.country;
+  Icon _buildCurrencyIcon(Country country) {
     var icon = Icons.euro;
-    if (countryIso == Country.us.countryCode) {
+    if (country == Country.us) {
       icon = Icons.attach_money;
     }
-    if (Country.unitedKingdomCodes().contains(countryIso)) {
+    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
       icon = Icons.currency_pound;
     }
 
@@ -240,17 +253,56 @@ class _ChooseAmountState extends State<ChooseAmount> {
     );
   }
 
-  bool get isEnabled {
-    if (_formKey.currentState == null) return false;
-    if (_formKey.currentState!.validate() == false) return false;
-
+  Future<bool> _checkAmounts(
+    BuildContext context, {
+    required double lowerLimit,
+    required int upperLimit,
+    required String currency,
+  }) async {
     for (final controller in controllers) {
-      if (double.parse(controller.text.replaceAll(',', '.')) != 0) {
-        return true;
+      final amount = double.parse(controller.text.replaceAll(',', '.'));
+      if (amount == 0) {
+        continue;
+      }
+      if (amount < lowerLimit) {
+        await showDialog<void>(
+          context: context,
+          builder: (_) => WarningDialog(
+            title: context.l10n.amountTooLow,
+            content: context.l10n.givtNotEnough('$currency $lowerLimit'),
+            onConfirm: () => context.pop(),
+          ),
+        );
+        return false;
+      }
+      if (amount > upperLimit) {
+        await showDialog<void>(
+          context: context,
+          builder: (_) => WarningDialog(
+            title: context.l10n.amountTooHigh,
+            content: context.l10n.amountLimitExceeded,
+            actions: [
+              CupertinoDialogAction(
+                child: Text(
+                  context.l10n.chooseLowerAmount,
+                ),
+                onPressed: () => context.pop(),
+              ),
+              // CupertinoDialogAction(
+              //   child: Text(
+              //     context.l10n.changeGivingLimit,
+              //     style: const TextStyle(
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // )
+            ],
+          ),
+        );
+        return false;
       }
     }
-
-    return false;
+    return true;
   }
 
   Widget _buildCollectionField({

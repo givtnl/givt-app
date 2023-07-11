@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
@@ -69,7 +70,7 @@ class HomePage extends StatelessWidget {
                 }
               },
               child: ChooseAmount(
-                country: auth.user.country,
+                country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: given,
                 onAmountChanged:
