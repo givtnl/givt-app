@@ -18,21 +18,14 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _emailController;
-  bool _isLoading = false;
+  final formKey = GlobalKey<FormState>();
+  late TextEditingController emailController;
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController(text: widget.email);
-    _formKey.currentState?.validate();
-  }
-
-  void toggleLoading() {
-    setState(() {
-      _isLoading = !_isLoading;
-    });
+    emailController = TextEditingController(text: widget.email);
+    formKey.currentState?.validate();
   }
 
   @override
@@ -80,7 +73,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             },
             builder: (context, state) {
               return Form(
-                key: _formKey,
+                key: formKey,
                 child: Column(
                   children: [
                     _buildTitleRow(locals, context),
@@ -91,10 +84,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
-                      controller: _emailController,
+                      controller: emailController,
                       onChanged: (value) {
                         setState(() {
-                          _formKey.currentState!.validate();
+                          formKey.currentState!.validate();
                         });
                       },
                       decoration: InputDecoration(
@@ -128,11 +121,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       ElevatedButton(
                         onPressed: isEnabled
                             ? () async {
-                                if (!_formKey.currentState!.validate()) {
+                                if (!formKey.currentState!.validate()) {
                                   return;
                                 }
                                 await context.read<AuthCubit>().changePassword(
-                                      email: _emailController.text,
+                                      email: emailController.text,
                                     );
                               }
                             : null,
@@ -154,9 +147,10 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   bool get isEnabled {
-    if (_formKey.currentState == null) return false;
-    if (_formKey.currentState!.validate() == false) return false;
-    return _emailController.text.isNotEmpty;
+    if (widget.email.isNotEmpty) return true;
+    if (formKey.currentState == null) return false;
+    if (formKey.currentState!.validate() == false) return false;
+    return emailController.text.isNotEmpty;
   }
 
   Row _buildTitleRow(
