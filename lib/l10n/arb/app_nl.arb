@@ -1388,5 +1388,6 @@
     "shareDataInfo": "When you enable this option, you agree to share your personal information. With this information, the organisation that receives your donation will be able to provide you with a tax statement.",
     "shareDataDisclaimer": "When you disable this option, your donations will remain anonymous for that organisation.",
     "shareDataAlertTitle": "Do you want a tax statement?",
-    "shareDataAlertMessage": "To receive a tax statement, you need to share your personal information with the organisation you donate to."
+    "shareDataAlertMessage": "To receive a tax statement, you need to share your personal information with the organisation you donate to.",
+    "countryStringUs": "Amerika"
 }
