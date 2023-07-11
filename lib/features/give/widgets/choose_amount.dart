@@ -169,34 +169,36 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 Expanded(child: Container()),
                 _buildNextButton(
                   label: locals.next,
-                  onPressed: () async {
-                    final areAmountsValid = await _checkAmounts(
-                      context,
-                      upperLimit: widget.amountLimit,
-                      lowerLimit: getLowerLimitByCountry(widget.country),
-                      currency: NumberFormat.simpleCurrency(
-                        name: widget.country.currency,
-                      ).currencySymbol,
-                    );
+                  onPressed: isEnabled
+                      ? () async {
+                          final areAmountsValid = await _checkAmounts(
+                            context,
+                            upperLimit: widget.amountLimit,
+                            lowerLimit: getLowerLimitByCountry(widget.country),
+                            currency: NumberFormat.simpleCurrency(
+                              name: widget.country.currency,
+                            ).currencySymbol,
+                          );
 
-                    if (!areAmountsValid) {
-                      return;
-                    }
-                    widget.onAmountChanged(
-                      double.parse(
-                        controllers[0].text.replaceAll(',', '.'),
-                      ),
-                      double.parse(
-                        controllers[1].text.replaceAll(',', '.'),
-                      ),
-                      double.parse(
-                        controllers[2].text.replaceAll(',', '.'),
-                      ),
-                    );
-                    setState(() {
-                      reset = false;
-                    });
-                  },
+                          if (!areAmountsValid) {
+                            return;
+                          }
+                          widget.onAmountChanged(
+                            double.parse(
+                              controllers[0].text.replaceAll(',', '.'),
+                            ),
+                            double.parse(
+                              controllers[1].text.replaceAll(',', '.'),
+                            ),
+                            double.parse(
+                              controllers[2].text.replaceAll(',', '.'),
+                            ),
+                          );
+                          setState(() {
+                            reset = false;
+                          });
+                        }
+                      : null,
                 ),
                 NumericKeyboard(
                   onKeyboardTap: onNumberTapped,
@@ -303,6 +305,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
       }
     }
     return true;
+  }
+
+  bool get isEnabled {
+    for (final controller in controllers) {
+      if (double.parse(controller.text.replaceAll(',', '.')) != 0) {
+        return true;
+      }
+    }
+    return false;
   }
 
   Widget _buildCollectionField({
