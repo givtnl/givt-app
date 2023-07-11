@@ -246,7 +246,7 @@
     "bacsDdGuaranteeTitle": "Direct Debit Guarantee",
     "bacsVerifyBodyDetails": "Name: {value0}\n Address: {value1}\n E-mail address: {value2}\n Sort code: {value3}\n Account number: {value4}\n Frequency type: Incidental, when you use the Givt app to make a donation",
     "bacsHelpTitle": "Need help?",
-    "bacsHelpBody": "Can't figure something out or you just have a question? Give us a call at +31 320 320 115 or hit us up on support@givt.app and we will be in touch!",
+    "bacsHelpBody": "Can't figure something out or you just have a question? Give us a call at +31 320 320 115 or hit us up on support@givt.co.uk and we will be in touch!",
     "bacsSortcodeAccountnumber": "Sortcode: {value0}\n Account number: {value1}",
     "cantFetchPersonalInformation": "We can't seem to fetch your personal information right now, could you try again later?",
     "givingContextCollectionBag": "Collection device",
@@ -1388,5 +1388,6 @@
     "shareDataInfo": "When you enable this option, you agree to share your personal information. With this information, the organisation that receives your donation will be able to provide you with a tax statement.",
     "shareDataDisclaimer": "When you disable this option, your donations will remain anonymous for that organisation.",
     "shareDataAlertTitle": "Do you want a tax statement?",
-    "shareDataAlertMessage": "To receive a tax statement, you need to share your personal information with the organisation you donate to."
+    "shareDataAlertMessage": "To receive a tax statement, you need to share your personal information with the organisation you donate to.",
+    "countryStringUs": "United States of America"
 }
