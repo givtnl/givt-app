@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -31,7 +31,7 @@ class LoggingInfo implements ILoggingInfo {
   static LoggingInfo get instance => _singleton;
 
   Future<void> _log(String message, String methodName, Level level) async {
-    log(message);
+    dev.log(message);
     final info = await PackageInfo.fromPlatform();
     final isDebug = info.packageName.contains('test');
     final guid = await _getGuid();
@@ -94,10 +94,10 @@ class LoggingInfo implements ILoggingInfo {
     )
         .then((value) {
       if (value.statusCode != 202) {
-        log('Error sending log message: ${value.statusCode}');
+        dev.log('Error sending log message: ${value.statusCode}');
       }
     }).catchError((dynamic e) {
-      log('Unknown error while sending log message: $e');
+      dev.log('Unknown error while sending log message: $e');
     });
   }
 
