@@ -109,7 +109,7 @@ Widget _createVPCInfoPage(BuildContext context) {
           ElevatedButton(
             onPressed: () => context
                 .read<VPCCubit>()
-                .fetchURL(context.read<AuthCubit>().state.user.email),
+                .fetchURL(context.read<AuthCubit>().state.user.guid),
             child: const Text('GIVE VPC'),
           ),
         ],
@@ -163,7 +163,7 @@ Widget _createVPCCanceledPage(BuildContext context) {
           ElevatedButton(
             onPressed: () => context
                 .read<VPCCubit>()
-                .fetchURL(context.read<AuthCubit>().state.user.email),
+                .fetchURL(context.read<AuthCubit>().state.user.guid),
             child: const Text('RETRY'),
           ),
         ],

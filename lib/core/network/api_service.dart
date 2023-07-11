@@ -324,18 +324,14 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getVerifiableParentalConsentURL(
-    String email,
+    String guid,
   ) async {
-    final url =
-        Uri.https(apiURL, '/givtservice/v1/PaymentProvider/register-customer');
-
-    final response = await client.post(
-      url,
-      body: jsonEncode({'email': email}),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    final url = Uri.https(
+      apiURL,
+      '/givtservice/v1/PaymentProvider/$guid/parent-control-validation',
     );
+
+    final response = await client.get(url);
 
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body) as Map<String, dynamic>;

@@ -10,11 +10,11 @@ class VPCCubit extends Cubit<VPCState> {
 
   final VPCRepository _vpcRepository;
 
-  Future<void> fetchURL(String email) async {
+  Future<void> fetchURL(String guid) async {
     emit(VPCFetchingURLState());
     try {
       final response =
-          await _vpcRepository.getVerifiableParentalConsentURL(email);
+          await _vpcRepository.getVerifiableParentalConsentURL(guid);
       emit(VPCWebViewState(response: response));
     } catch (error) {
       emit(VPCErrorState(error: error.toString()));

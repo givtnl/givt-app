@@ -2,7 +2,7 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/vpc/models/vps_response.dart';
 
 mixin VPCRepository {
-  Future<VPCResponse> getVerifiableParentalConsentURL(String email);
+  Future<VPCResponse> getVerifiableParentalConsentURL(String guid);
 }
 
 class VPCRepositoryImpl with VPCRepository {
@@ -10,8 +10,8 @@ class VPCRepositoryImpl with VPCRepository {
   final APIService apiService;
 
   @override
-  Future<VPCResponse> getVerifiableParentalConsentURL(String email) async {
-    final response = await apiService.getVerifiableParentalConsentURL(email);
+  Future<VPCResponse> getVerifiableParentalConsentURL(String guid) async {
+    final response = await apiService.getVerifiableParentalConsentURL(guid);
     final vpcResponse = VPCResponse.fromJson(response);
     return vpcResponse;
   }
