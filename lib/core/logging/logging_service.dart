@@ -96,6 +96,8 @@ class LoggingInfo implements ILoggingInfo {
       if (value.statusCode != 202) {
         log('Error sending log message: ${value.statusCode}');
       }
+    }).catchError((dynamic e) {
+      log('Unknown error while sending log message: $e');
     });
   }
 
