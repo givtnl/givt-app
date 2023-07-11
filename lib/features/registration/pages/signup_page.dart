@@ -55,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
               isScrollControlled: true,
               useSafeArea: true,
               showDragHandle: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (_) => const FAQBottomSheet(),
             ),
             icon: const Icon(
