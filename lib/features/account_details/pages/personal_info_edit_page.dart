@@ -224,47 +224,47 @@ class PersonalInfoEditPage extends StatelessWidget {
   Future<void> _showModalBottomSheet(
     BuildContext context, {
     required Widget bottomSheet,
-  }) {
-    return showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => BlocProvider.value(
-        value: context.read<PersonalInfoEditBloc>(),
-        child: bottomSheet,
-      ),
-    );
-  }
+  }) =>
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        builder: (_) => BlocProvider.value(
+          value: context.read<PersonalInfoEditBloc>(),
+          child: bottomSheet,
+        ),
+      );
 
   Widget _buildInfoRow({
     required Widget? icon,
     required String value,
     VoidCallback? onTap,
     bool visible = true,
-  }) {
-    return Visibility(
-      visible: visible,
-      child: Column(
-        children: [
-          const Divider(
-            height: 0,
-          ),
-          ListTile(
-            leading: icon,
-            title: Text(
-              value,
-              style: TextStyle(
-                fontSize: 16,
-                color: onTap == null ? AppTheme.givtGraycece : null,
+  }) =>
+      Visibility(
+        visible: visible,
+        child: Column(
+          children: [
+            const Divider(
+              height: 0,
+            ),
+            ListTile(
+              leading: icon,
+              title: Text(
+                value,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: onTap == null ? AppTheme.givtGraycece : null,
+                ),
               ),
+              trailing: onTap != null
+                  ? const Icon(
+                      Icons.arrow_forward_ios,
+                    )
+                  : null,
+              onTap: onTap,
             ),
-            trailing: const Icon(
-              Icons.arrow_forward_ios,
-            ),
-            onTap: onTap,
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
 }
