@@ -64,7 +64,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             onTap: () {},
           ),
           _buildMenuItem(
-            isVisible: true,
+            isVisible: !auth.user.needRegistration,
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
             onTap: () => context.goNamed(Pages.personalInfoEdit.name),
