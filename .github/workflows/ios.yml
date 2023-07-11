@@ -60,7 +60,7 @@ jobs:
           channel: 'stable'
 
       - name: Run Fastlane
-        uses: maierj/fastlane-action@v3.0.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: ios release
           subdirectory: ios
