@@ -15,6 +15,7 @@ enum Pages {
   personalInfo,
   sepaMandateExplanation,
   bacsMandateExplanation,
+  stripeWebviewHost,
   registration,
   overview,
   personalInfoEdit,
@@ -47,6 +48,8 @@ extension AppPageExtension on Pages {
         return 'sepa-mandate-explanation';
       case Pages.bacsMandateExplanation:
         return 'bacs-mandate-explanation';
+      case Pages.stripeWebviewHost:
+        return 'stripe-webview-host';
       case Pages.registration:
         return 'registration';
       case Pages.giveByList:
@@ -90,6 +93,8 @@ extension AppPageExtension on Pages {
         return 'SEPA-MANDATE-EXPLANATION';
       case Pages.bacsMandateExplanation:
         return 'BACS-MANDATE-EXPLANATION';
+      case Pages.stripeWebviewHost:
+        return 'STRIPE-WEBVIEW-HOST';
       case Pages.registration:
         return 'REGISTRATION';
       case Pages.giveByList:

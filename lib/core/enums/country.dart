@@ -40,8 +40,8 @@ enum Country {
 
   static List<Country> sortedCountries() {
     return Country.values.toList()
-      ..sort((a, b) => a.countryCode.compareTo(b.countryCode))
-      ..remove(Country.us);
+      ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
+    // ..remove(Country.us);
   }
 
   static List<Country> sortedPrefixCountries() {
@@ -119,6 +119,8 @@ enum Country {
         return locals.countryStringCy;
       case 'MT':
         return locals.countryStringMt;
+      case 'US':
+        return locals.countryStringUs;
       default:
         return '';
     }

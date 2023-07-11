@@ -79,6 +79,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
 
       await authCubit.refreshUser();
+      if (event.country.toUpperCase() == Country.us.countryCode) {
+        emit(
+          state.copyWith(
+            status: RegistrationStatus.createStripeAccount,
+          ),
+        );
+        return;
+      }
       if (event.iban.isNotEmpty) {
         emit(
           state.copyWith(

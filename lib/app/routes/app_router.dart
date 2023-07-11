@@ -24,6 +24,7 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/registration/pages/stripe_webview_host_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -57,6 +58,11 @@ class AppRouter {
             path: Pages.home.path,
             name: Pages.home.name,
             routes: [
+              GoRoute(
+                path: Pages.stripeWebviewHost.path,
+                name: Pages.stripeWebviewHost.name,
+                builder: (context, state) => StripeWebviewHost(),
+              ),
               GoRoute(
                 path: Pages.personalInfoEdit.path,
                 name: Pages.personalInfoEdit.name,

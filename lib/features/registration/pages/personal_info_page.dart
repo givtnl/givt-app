@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,57 +114,77 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: Column(
                 children: [
                   Text(locals.registerPersonalPage),
-                  _buildTextFormField(
-                    hintText: locals.streetAndHouseNumber,
-                    controller: _address,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    hintText: locals.postalCode,
-                    controller: _postalCode,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-
-                      if (!Country.unitedKingdomCodes().contains(
-                        _selectedCountry.countryCode,
-                      )) {
+                  if (!(_selectedCountry == Country.us))
+                    _buildTextFormField(
+                      hintText: locals.streetAndHouseNumber,
+                      controller: _address,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
                         return null;
-                      }
+                      },
+                    ),
+                  if (!(_selectedCountry == Country.us))
+                    _buildTextFormField(
+                      hintText: locals.postalCode,
+                      controller: _postalCode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        if (!Country.unitedKingdomCodes().contains(
+                          _selectedCountry.countryCode,
+                        )) {
+                          return null;
+                        }
 
-                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    hintText: locals.city,
-                    controller: _city,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
+                        if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  if (!(_selectedCountry == Country.us))
+                    _buildTextFormField(
+                      hintText: locals.city,
+                      controller: _city,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
                   _buildCountryAndMobileNumber(size, locals, context),
-                  PaymentSystemTab(
-                    bankAccount: bankAccount,
-                    ibanNumber: ibanNumber,
-                    sortCode: sortCode,
-                    onFieldChanged: (value) => setState(() {}),
-                    onPaymentChanged: (value) {
-                      if (value == 0) {
-                        bankAccount.clear();
-                        sortCode.clear();
-                        if (Country.unitedKingdomCodes()
+                  if (!(_selectedCountry == Country.us))
+                    PaymentSystemTab(
+                      bankAccount: bankAccount,
+                      ibanNumber: ibanNumber,
+                      sortCode: sortCode,
+                      onFieldChanged: (value) => setState(() {}),
+                      onPaymentChanged: (value) {
+                        if (value == 0) {
+                          bankAccount.clear();
+                          sortCode.clear();
+                          if (Country.unitedKingdomCodes()
+                              .contains(_selectedCountry.countryCode)) {
+                            showDialog<void>(
+                              context: context,
+                              builder: (context) => _buildWarningDialog(
+                                message: locals.alertSepaMessage(
+                                  Country.getCountry(
+                                    _selectedCountry.countryCode,
+                                    locals,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          setState(() {});
+                          return;
+                        }
+                        if (!Country.unitedKingdomCodes()
                             .contains(_selectedCountry.countryCode)) {
                           showDialog<void>(
                             context: context,
@@ -176,26 +198,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             ),
                           );
                         }
-                        setState(() {});
-                        return;
-                      }
-                      if (!Country.unitedKingdomCodes()
-                          .contains(_selectedCountry.countryCode)) {
-                        showDialog<void>(
-                          context: context,
-                          builder: (context) => _buildWarningDialog(
-                            message: locals.alertBacsMessage(
-                              Country.getCountry(
-                                _selectedCountry.countryCode,
-                                locals,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      setState(ibanNumber.clear);
-                    },
-                  ),
+                        setState(ibanNumber.clear);
+                      },
+                    ),
                   SizedBox(
                     height: size.height * 0.2,
                   ),
@@ -262,49 +267,51 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   ) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: DropdownButtonFormField<Country>(
-            validator: (value) {
-              if (value == null) {
-                return '';
-              }
+        if (!(_selectedCountry == Country.us))
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: DropdownButtonFormField<Country>(
+              validator: (value) {
+                if (value == null) {
+                  return '';
+                }
 
-              return null;
-            },
-            value: _selectedCountry,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              ),
-              labelText: locals.country,
-              labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontSize: 16,
-                  ),
-              errorStyle: const TextStyle(
-                height: 0,
-              ),
-            ),
-            menuMaxHeight: size.height * 0.3,
-            items: Country.sortedCountries()
-                .map(
-                  (Country country) => DropdownMenuItem(
-                    value: country,
-                    child: Text(
-                      Country.getCountry(country.countryCode, locals),
-                      style: Theme.of(context).textTheme.bodyLarge,
+                return null;
+              },
+              value: _selectedCountry,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                labelText: locals.country,
+                labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
                     ),
-                  ),
-                )
-                .toList(),
-            onChanged: (Country? newValue) {
-              setState(() {
-                _selectedCountry = newValue!;
-              });
-            },
+                errorStyle: const TextStyle(
+                  height: 0,
+                ),
+              ),
+              menuMaxHeight: size.height * 0.3,
+              items: Country.sortedCountries()
+                  .map(
+                    (Country country) => DropdownMenuItem(
+                      value: country,
+                      child: Text(
+                        Country.getCountry(country.countryCode, locals),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (Country? newValue) {
+                setState(() {
+                  _selectedCountry = newValue!;
+                });
+              },
+            ),
           ),
-        ),
+        if (_selectedCountry == Country.us) SizedBox(height: 10),
         MobileNumberFormField(
           phone: _phone,
           selectedCountryPrefix: _selectedCountry.prefix,
@@ -330,6 +337,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 return '';
               }
             }
+            if (Country.us == _selectedCountry) {
+              if (!Util.usPhoneNumberRegEx.hasMatch('$value')) {
+                return '';
+                //return 'Please write as (123) 123-1234';
+              }
+            }
 
             return null;
           },
@@ -342,18 +355,31 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
+    log('''
+      address: ${_address.text.isEmpty}
+      city: ${_city.text}
+      postalCode: ${_postalCode.text}
+      country: ${_selectedCountry.countryCode}
+      phoneNumber: ${_phone.text}
+      iban: ${ibanNumber.text}
+      sortCode: ${sortCode.text}
+      accountNumber: ${bankAccount.text}
+      appLanguage: ${Localizations.localeOf(context).languageCode}
+      countryCode: ${_selectedCountry.countryCode}
+    ''');
 
     setState(() {
       isLoading = true;
     });
     context.read<RegistrationBloc>().add(
           RegistrationPersonalInfoSubmitted(
-            address: _address.text,
-            city: _city.text,
-            postalCode: _postalCode.text,
+            address: _address.text.isEmpty ? 'Foobarstraat 5' : _address.text,
+            city: _city.text.isEmpty ? 'Foobar' : _city.text,
+            postalCode: _postalCode.text.isEmpty ? 'B3 1RD' : _postalCode.text,
             country: _selectedCountry.countryCode,
             phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
-            iban: ibanNumber.text,
+            iban:
+                ibanNumber.text.isEmpty ? 'FB66GIVT12345678' : ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,
             appLanguage: Localizations.localeOf(context).languageCode,

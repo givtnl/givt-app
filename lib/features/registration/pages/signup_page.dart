@@ -114,6 +114,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 extra: context.read<RegistrationBloc>(),
               );
             }
+            if (state.status == RegistrationStatus.createStripeAccount) {
+              context.goNamed(
+                Pages.stripeWebviewHost.name,
+                extra: context.read<RegistrationBloc>(),
+              );
+            }
           },
           child: Form(
             key: _formKey,
