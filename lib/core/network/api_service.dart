@@ -114,7 +114,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getCollectGroupList() {
-    final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist');
+    final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist-v2');
     return client.get(url).then((response) {
       if (response.statusCode >= 400) {
         throw Exception('something went wrong :(');
