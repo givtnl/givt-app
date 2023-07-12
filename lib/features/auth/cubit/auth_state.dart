@@ -55,7 +55,11 @@ class AuthLogout extends AuthState {}
 class AuthUnkown extends AuthState {}
 
 class AuthFailure extends AuthState {
-  const AuthFailure({this.message = ''});
+  const AuthFailure({
+    this.message = '',
+    super.session,
+    super.user,
+  });
 
   final String message;
 

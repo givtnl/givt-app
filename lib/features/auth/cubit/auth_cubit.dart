@@ -16,6 +16,7 @@ class AuthCubit extends Cubit<AuthState> {
   final CountryIsoInfo _countryIsoInfo;
 
   Future<void> login({required String email, required String password}) async {
+    final prevState = state;
     emit(AuthLoading());
     try {
       final session = await _authRepositoy.login(
@@ -34,7 +35,13 @@ class AuthCubit extends Cubit<AuthState> {
         e.toString(),
         methodName: StackTrace.current.toString(),
       );
-      emit(AuthFailure(message: e.toString()));
+      emit(
+        AuthFailure(
+          message: e.toString(),
+          user: prevState.user,
+          session: prevState.session,
+        ),
+      );
     }
   }
 

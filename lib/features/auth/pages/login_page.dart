@@ -37,10 +37,18 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> onLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       try {
-        await context.read<AuthCubit>().login(
+        await context
+            .read<AuthCubit>()
+            .login(
               email: _emailController.text,
               password: _passwordController.text,
-            );
+            )
+            .whenComplete(() {
+          if (widget.popWhenSuccess &&
+              context.read<AuthCubit>().state is AuthSuccess) {
+            context.pop();
+          }
+        });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -171,11 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(
-                    onPressed: () => onLogin(context).whenComplete(() {
-                      if (widget.popWhenSuccess) {
-                        context.pop();
-                      }
-                    }),
+                    onPressed: () => onLogin(context),
                     child: Text(
                       locals.login,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
