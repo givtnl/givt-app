@@ -4,11 +4,17 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, this.email = ''});
+  const LoginPage({
+    super.key,
+    this.email = '',
+    this.popWhenSuccess = false,
+  });
 
   final String email;
+  final bool popWhenSuccess;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -18,7 +24,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  bool isLoading = false;
   bool _obscureText = true;
 
   @override
@@ -28,15 +33,8 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController = TextEditingController();
   }
 
-  void toggleLoader(bool loading) {
-    setState(() {
-      isLoading = loading;
-    });
-  }
-
   Future<void> onLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      toggleLoader(true);
       try {
         await context.read<AuthCubit>().login(
               email: _emailController.text,
@@ -50,13 +48,12 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     }
-    toggleLoader(false);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
+    final locals = context.l10n;
 
     return SafeArea(
       child: BlocListener<AuthCubit, AuthState>(
@@ -70,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 actions: [
                   TextButton(
                     child: Text(locals.continueKey),
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => context.pop(),
                   ),
                 ],
               ),
@@ -174,11 +171,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Expanded(child: Container()),
-                if (isLoading)
+                if (context.watch<AuthCubit>().state is AuthLoading)
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(
-                    onPressed: () => onLogin(context),
+                    onPressed: () => onLogin(context).whenComplete(() {
+                      if (widget.popWhenSuccess) {
+                        context.pop();
+                      }
+                    }),
                     child: Text(
                       locals.login,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(

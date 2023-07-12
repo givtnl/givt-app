@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
+import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 
@@ -17,14 +18,15 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login({required String email, required String password}) async {
     emit(AuthLoading());
     try {
-      final userGUID = await _authRepositoy.login(
+      final session = await _authRepositoy.login(
         email,
         password,
       );
 
       emit(
         AuthSuccess(
-          user: await _authRepositoy.fetchUserExtension(userGUID),
+          user: await _authRepositoy.fetchUserExtension(session.userGUID),
+          session: session,
         ),
       );
     } catch (e) {
@@ -39,13 +41,14 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuth() async {
     emit(AuthLoading());
     try {
-      final userExt = await _authRepositoy.isAuthenticated();
-      if (userExt == null) {
+      final (userExt, session) =
+          await _authRepositoy.isAuthenticated() ?? (null, null);
+      if (userExt == null || session == null) {
         emit(AuthUnkown());
         return;
       }
 
-      emit(AuthSuccess(user: userExt));
+      emit(AuthSuccess(user: userExt, session: session));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -113,7 +116,12 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     try {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
-      emit(AuthRefreshed(user: userExt));
+      emit(
+        AuthRefreshed(
+          user: userExt,
+          session: state.session,
+        ),
+      );
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
