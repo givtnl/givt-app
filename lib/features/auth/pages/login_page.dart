@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -61,15 +62,10 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthFailure) {
             showDialog<void>(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text(locals.loginFailure),
-                content: Text(locals.wrongCredentials),
-                actions: [
-                  TextButton(
-                    child: Text(locals.continueKey),
-                    onPressed: () => context.pop(),
-                  ),
-                ],
+              builder: (context) => WarningDialog(
+                title: locals.loginFailure,
+                content: locals.wrongCredentials,
+                onConfirm: () => context.pop(),
               ),
             );
           }
@@ -97,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     if (value == null ||
                         value.isEmpty ||
                         value.contains(Util.emailRegEx) == false) {
-                      return AppLocalizations.of(context).invalidEmail;
+                      return locals.invalidEmail;
                     }
                     return null;
                   },
@@ -107,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                       .bodyLarge
                       ?.copyWith(fontSize: 16),
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).email,
+                    hintText: locals.email,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -136,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       .bodyLarge
                       ?.copyWith(fontSize: 16),
                   decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).password,
+                    hintText: locals.password,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility : Icons.visibility_off,
