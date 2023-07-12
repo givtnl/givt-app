@@ -30,9 +30,6 @@ class CollectGroup extends Equatable {
     if (json['L'] != null) {
       for (final location in json['L'] as List<dynamic>) {
         var loc = Location.fromJson(location as Map<String, dynamic>);
-        if (loc.name.isEmpty) {
-          loc = loc.copyWith(name: json['N'] as String);
-        }
         if (!loc.beaconId.contains('.')) {
           loc =
               loc.copyWith(beaconId: '${json['NS'] as String}.${loc.beaconId}');

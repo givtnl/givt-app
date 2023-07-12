@@ -66,9 +66,27 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final uri = Uri.parse(event.rawValue);
       final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
 
+      final qrCode = await _getCollectGroupInstanceName(mediumId);
+
+      if (qrCode.instance.isEmpty) {
+        emit(state.copyWith(status: GiveStatus.error));
+        return;
+      }
+
+      if (!qrCode.isActive) {
+        final org = await _getOrganisation(mediumId);
+        emit(
+          state.copyWith(
+            status: GiveStatus.beaconNotActive,
+            organisation: org,
+          ),
+        );
+        return;
+      }
+
       emit(
         state.copyWith(
-          instanceName: await _getCollectGroupInstanceName(mediumId),
+          instanceName: qrCode.name,
         ),
       );
 
@@ -473,10 +491,13 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         }
       }
       if (state.nearestLocation.beaconId.isNotEmpty) {
+        final org = await _getOrganisation(state.nearestLocation.beaconId);
         log('Giving to ${state.nearestLocation.name}');
         emit(
           state.copyWith(
             status: GiveStatus.readyToConfirmGPS,
+            organisation: org,
+            instanceName: state.nearestLocation.name,
           ),
         );
       }
@@ -511,32 +532,20 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
   /// Search for the beacon that belongs to the given [mediumId]
   /// and return the instanceName that belongs to the beacon
-  Future<String> _getCollectGroupInstanceName(String mediumId) async {
+  Future<QrCode> _getCollectGroupInstanceName(String mediumId) async {
     final collectGroupList =
         await _collectGroupRepository.getCollectGroupList();
     if (!mediumId.contains('.')) {
-      return '';
+      return const QrCode.empty();
     }
     final namespace = mediumId.split('.').first;
     final instance = mediumId.split('.').last;
-    var instanceName = collectGroupList
+    return collectGroupList
         .where((org) => org.nameSpace.startsWith(namespace))
         .expand((org) => org.qrCodes)
         .firstWhere(
           (element) => element.instance.endsWith(instance),
           orElse: () => const QrCode.empty(),
-        )
-        .name;
-    if (instanceName.isEmpty) {
-      instanceName = collectGroupList
-          .where((org) => org.nameSpace.startsWith(namespace))
-          .expand((org) => org.locations)
-          .firstWhere(
-            (element) => element.beaconId.endsWith(instance),
-            orElse: () => const Location.empty(),
-          )
-          .name;
-    }
-    return instanceName;
+        );
   }
 }
