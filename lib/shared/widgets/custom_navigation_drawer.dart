@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -55,7 +56,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: true,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
-            onTap: () => context.goNamed(Pages.overview.name),
+            onTap: () => _checkToken(context, route: Pages.overview.name),
           ),
           _buildMenuItem(
             title: locals.giveLimit,
@@ -66,7 +67,10 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: !auth.user.needRegistration,
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
-            onTap: () => context.goNamed(Pages.personalInfoEdit.name),
+            onTap: () => _checkToken(
+              context,
+              route: Pages.personalInfoEdit.name,
+            ),
           ),
           _buildMenuItem(
             title: locals.amountPresetsTitle,
@@ -95,7 +99,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => context.goNamed(Pages.unregister.name),
+            onTap: () => _checkToken(context, route: Pages.unregister.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(
@@ -233,4 +237,30 @@ class CustomNavigationDrawer extends StatelessWidget {
           'assets/images/logo.png',
         ),
       );
+
+  void _checkToken(
+    BuildContext context, {
+    required String route,
+  }) {
+    final auth = context.read<AuthCubit>();
+    final isExpired = auth.state.session.isExpired;
+    if (!isExpired) {
+      context.goNamed(route);
+      return;
+    }
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => LoginPage(
+        email: auth.state.user.email,
+        popWhenSuccess: true,
+      ),
+    ).whenComplete(() {
+      if (context.read<AuthCubit>().state.session.isExpired) {
+        return;
+      }
+      context.goNamed(route);
+    });
+  }
 }
