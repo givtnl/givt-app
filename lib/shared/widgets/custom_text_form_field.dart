@@ -3,22 +3,26 @@ import 'package:flutter/material.dart';
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     required this.controller,
-    required this.hintText,
+    this.hintText,
     super.key,
     this.validator,
     this.onChanged,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
     this.textCapitalization = TextCapitalization.none,
+    this.obscureText = false,
+    this.suffixIcon,
   });
 
   final TextEditingController controller;
-  final String hintText;
+  final String? hintText;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final TextInputType? keyboardType;
   final TextInputAction? textInputAction;
   final TextCapitalization textCapitalization;
+  final bool obscureText;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +34,13 @@ class CustomTextFormField extends StatelessWidget {
         onChanged: onChanged,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
+        obscureText: obscureText,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
         decoration: InputDecoration(
           hintText: hintText,
           labelText: hintText,
+          suffixIcon: suffixIcon,
+          errorMaxLines: 2,
           labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
               ),

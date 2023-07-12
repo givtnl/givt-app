@@ -4,6 +4,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -95,31 +96,32 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: size.height * 0.05),
-                TextFormField(
+                CustomTextFormField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (value) {
+                    _formKey.currentState!.validate();
+                  },
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
-                        value.contains(Util.emailRegEx) == false) {
+                        !Util.emailRegEx.hasMatch(value)) {
                       return locals.invalidEmail;
                     }
                     return null;
                   },
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 16),
-                  decoration: InputDecoration(
-                    hintText: locals.email,
-                  ),
+                  hintText: locals.email,
                 ),
                 const SizedBox(height: 15),
-                TextFormField(
+                CustomTextFormField(
                   controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  onChanged: (value) {
+                    _formKey.currentState!.validate();
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return locals.wrongPasswordLockedOut;
+                      return locals.passwordRule;
                     }
                     if (value.length < 7) {
                       return locals.passwordRule;
@@ -134,23 +136,17 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                   obscureText: _obscureText,
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 16),
-                  decoration: InputDecoration(
-                    hintText: locals.password,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
+                  textInputAction: TextInputAction.done,
+                  hintText: locals.password,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                 ),
                 Padding(
