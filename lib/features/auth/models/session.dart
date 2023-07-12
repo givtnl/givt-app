@@ -49,6 +49,16 @@ class Session {
   final String expires;
   final int expiresIn;
 
+  bool get isExpired {
+    final now = DateTime.now().toUtc();
+    final expiresDate = DateTime.parse(expires).subtract(
+      const Duration(
+        minutes: 20,
+      ),
+    );
+    return now.isAfter(expiresDate);
+  }
+
   Map<String, dynamic> toJson() => <String, dynamic>{
         'GUID': userGUID,
         'Email': email,
