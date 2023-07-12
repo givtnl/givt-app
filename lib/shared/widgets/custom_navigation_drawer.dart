@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -96,9 +95,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => Navigator.of(context).push(
-              UnregisterPage.route(),
-            ),
+            onTap: () => context.goNamed(Pages.unregister.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(
