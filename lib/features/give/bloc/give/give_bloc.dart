@@ -66,6 +66,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final uri = Uri.parse(event.rawValue);
       final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
 
+      emit(
+        state.copyWith(
+          instanceName: await _getCollectGroupInstanceName(mediumId),
+        ),
+      );
+
       await _processGivts(
         namespace: mediumId,
         userGUID: event.userGUID,
@@ -102,9 +108,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
   Future<Organisation> _getOrganisation(String mediumId) async {
     final organisation = await _campaignRepository.getOrganisation(mediumId);
-    organisation.copyWith(mediumId: mediumId);
-
-    return organisation;
+    return organisation.copyWith(mediumId: mediumId);
   }
 
   FutureOr<void> _amountChanged(
@@ -276,9 +280,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     final transactionList = _createTransationList(namespace, userGUID);
 
     await _campaignRepository.saveLastDonation(
-      organisation.copyWith(
-        mediumId: namespace,
-      ),
+      organisation,
     );
     try {
       await LoggingInfo.instance.info('Submitting Givts');
@@ -327,7 +329,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (batteryVoltage == null) {
       return;
     }
-    log(msg);
+    await LoggingInfo.instance.info(msg);
     // check for low battery voltage
     if (batteryVoltage > 2450) {
       return;
@@ -349,6 +351,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
+      await LoggingInfo.instance
+          .info('QR Code scanned out of app ${event.encodedMediumId}');
       final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
       final organisation = await _getOrganisation(mediumId);
@@ -365,7 +369,6 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
     } catch (e) {
-      log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
         methodName: StackTrace.current.toString(),
@@ -435,7 +438,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           event.longitude,
         );
         if (distance < location.radius) {
-          log('Location ${location.name} found in radius at $distance meters');
+          await LoggingInfo.instance.info(
+            'Location ${location.name} found in radius at $distance meters',
+          );
 
           /// if no nearest location set nearest location
           if (state.nearestLocation.beaconId.isEmpty) {
@@ -455,7 +460,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
           /// if closer update nearest location
           if (distanceBetweenPreviousLocation > distance) {
-            log('Location ${location.name} is closer at $distance meters');
+            await LoggingInfo.instance.info(
+              'Location ${location.name} is closer at $distance meters',
+            );
             emit(
               state.copyWith(
                 nearestLocation: location,
@@ -500,5 +507,36 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
+  }
+
+  /// Search for the beacon that belongs to the given [mediumId]
+  /// and return the instanceName that belongs to the beacon
+  Future<String> _getCollectGroupInstanceName(String mediumId) async {
+    final collectGroupList =
+        await _collectGroupRepository.getCollectGroupList();
+    if (!mediumId.contains('.')) {
+      return '';
+    }
+    final namespace = mediumId.split('.').first;
+    final instance = mediumId.split('.').last;
+    var instanceName = collectGroupList
+        .where((org) => org.nameSpace.startsWith(namespace))
+        .expand((org) => org.qrCodes)
+        .firstWhere(
+          (element) => element.instance.endsWith(instance),
+          orElse: () => const QrCode.empty(),
+        )
+        .name;
+    if (instanceName.isEmpty) {
+      instanceName = collectGroupList
+          .where((org) => org.nameSpace.startsWith(namespace))
+          .expand((org) => org.locations)
+          .firstWhere(
+            (element) => element.beaconId.endsWith(instance),
+            orElse: () => const Location.empty(),
+          )
+          .name;
+    }
+    return instanceName;
   }
 }

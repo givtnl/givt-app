@@ -15,11 +15,12 @@ enum GiveStatus {
 class GiveState extends Equatable {
   const GiveState({
     this.status = GiveStatus.initial,
-    this.organisation  = const Organisation.empty(),
+    this.organisation = const Organisation.empty(),
     this.nearestBeacon = const Beacon.empty(),
     this.nearestLocation = const Location.empty(),
     this.collections = const [0.0, 0.0, 0.0],
     this.givtTransactions = const [],
+    this.instanceName = '',
   });
 
   final GiveStatus status;
@@ -28,6 +29,7 @@ class GiveState extends Equatable {
   final Location nearestLocation;
   final List<double> collections;
   final List<GivtTransaction> givtTransactions;
+  final String instanceName;
 
   GiveState copyWith({
     GiveStatus? status,
@@ -38,6 +40,7 @@ class GiveState extends Equatable {
     double? firstCollection,
     double? secondCollection,
     double? thirdCollection,
+    String? instanceName,
     List<GivtTransaction>? givtTransactions,
   }) {
     return GiveState(
@@ -45,6 +48,7 @@ class GiveState extends Equatable {
       organisation: organisation ?? this.organisation,
       nearestBeacon: nearestBeacon ?? this.nearestBeacon,
       nearestLocation: nearestLocation ?? this.nearestLocation,
+      instanceName: instanceName ?? this.instanceName,
       collections: [
         firstCollection ?? collections[0],
         secondCollection ?? collections[1],
@@ -62,5 +66,6 @@ class GiveState extends Equatable {
         nearestLocation,
         collections,
         givtTransactions,
+        instanceName,
       ];
 }
