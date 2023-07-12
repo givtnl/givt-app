@@ -66,9 +66,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
+    final prevState = state;
     emit(AuthLoading());
     await _authRepositoy.logout();
-    emit(AuthLogout());
+    emit(AuthLogout(email: prevState.user.email));
   }
 
   Future<void> register({
@@ -88,7 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       if (result.contains('true')) {
-        emit(AuthLoginRedirect(email));
+        emit(AuthLoginRedirect(email: email));
         return;
       }
 
@@ -145,11 +146,11 @@ class AuthCubit extends Cubit<AuthState> {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
+        emit(AuthTempAccountWarning(email: email));
         return;
       }
       if (result.contains('false')) {
-        emit(AuthChangePasswordWrongEmail(email));
+        emit(AuthChangePasswordWrongEmail(email: email));
         return;
       }
       await _authRepositoy.resetPassword(email);

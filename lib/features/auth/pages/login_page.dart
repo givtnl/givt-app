@@ -99,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                 CustomTextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
+                  readOnly: widget.popWhenSuccess,
                   onChanged: (value) {
                     _formKey.currentState!.validate();
                   },

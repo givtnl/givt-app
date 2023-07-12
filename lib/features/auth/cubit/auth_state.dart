@@ -4,30 +4,30 @@ abstract class AuthState extends Equatable {
   const AuthState({
     this.user = const UserExt.empty(),
     this.session = const Session.empty(),
+    this.email = '',
   });
   final UserExt user;
   final Session session;
+  final String email;
 
   @override
-  List<Object> get props => [user, session];
+  List<Object> get props => [user, session, email];
 }
 
 class AuthLoading extends AuthState {}
 
 class AuthTempAccountWarning extends AuthState {
-  const AuthTempAccountWarning(this.email);
-  final String email;
+  const AuthTempAccountWarning({super.email});
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [];
 }
 
 class AuthLoginRedirect extends AuthState {
-  const AuthLoginRedirect(this.email);
-  final String email;
+  const AuthLoginRedirect({super.email});
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [];
 }
 
 class AuthSuccess extends AuthState {
@@ -50,9 +50,23 @@ class AuthRefreshed extends AuthState {
   List<Object> get props => [];
 }
 
-class AuthLogout extends AuthState {}
+class AuthLogout extends AuthState {
+  const AuthLogout({
+    super.email,
+  });
 
-class AuthUnkown extends AuthState {}
+  @override
+  List<Object> get props => [];
+}
+
+class AuthUnkown extends AuthState {
+  const AuthUnkown({
+    super.email,
+  });
+
+  @override
+  List<Object> get props => [];
+}
 
 class AuthFailure extends AuthState {
   const AuthFailure({
@@ -84,10 +98,8 @@ class AuthChangePasswordFailure extends AuthState {
 }
 
 class AuthChangePasswordWrongEmail extends AuthState {
-  const AuthChangePasswordWrongEmail(this.email);
-
-  final String email;
+  const AuthChangePasswordWrongEmail({super.email});
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [];
 }
