@@ -34,6 +34,14 @@ class Session {
         expires: json['.expires'] as String,
         expiresIn: 0,
       );
+  const Session.empty()
+      : userGUID = '',
+        email = '',
+        accessToken = '',
+        refreshToken = '',
+        expires = '',
+        expiresIn = 0;
+
   final String userGUID;
   final String email;
   final String accessToken;
