@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +17,7 @@ class SelectGivingWayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-
+    final user = context.read<AuthCubit>().state.user;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -46,7 +47,7 @@ class SelectGivingWayPage extends StatelessWidget {
                   _buildGivingDialog(
                     context,
                     text: context.l10n.givtEventText(
-                      state.nearestLocation.name,
+                      state.organisation.organisationName!,
                     ),
                     image: 'assets/images/select_location.png',
                     onTap: () => context.read<GiveBloc>().add(
@@ -73,6 +74,24 @@ class SelectGivingWayPage extends StatelessWidget {
                   context.goNamed(
                     Pages.give.name,
                     extra: context.read<GiveBloc>(),
+                  );
+                }
+
+                if (state.status == GiveStatus.beaconNotActive) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: context.l10n.invalidQRcodeTitle,
+                      content: context.l10n.invalidQRcodeMessage(
+                        state.organisation.organisationName!,
+                      ),
+                      onConfirm: () => context.read<GiveBloc>().add(
+                            GiveOrganisationSelected(
+                              state.organisation.mediumId!,
+                              user.guid,
+                            ),
+                          ),
+                    ),
                   );
                 }
               },

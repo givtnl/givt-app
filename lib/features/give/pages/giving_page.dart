@@ -71,11 +71,15 @@ class _GivingPageState extends State<GivingPage> {
     final format = NumberFormat.simpleCurrency(
       name: giveBlocState.organisation.currency,
     );
+    var orgName = giveBlocState.organisation.organisationName!;
+    if (giveBlocState.instanceName.isNotEmpty) {
+      orgName = '$orgName: ${giveBlocState.instanceName}';
+    }
     return WebViewInput(
       currency: format.currencySymbol,
       apiUrl: Uri.https(getIt<APIService>().apiURL).toString(),
       guid: user.guid,
-      organisation: giveBlocState.organisation.organisationName!,
+      organisation: orgName,
       givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
       confirmBtn: context.l10n.next,
       cancel: context.l10n.cancel,
