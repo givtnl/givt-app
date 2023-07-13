@@ -56,7 +56,7 @@ class AuthFailure extends AuthState {
 }
 
 class AuthChangePasswordSuccess extends AuthState {
-  const AuthChangePasswordSuccess();
+  const AuthChangePasswordSuccess({super.user});
 
   @override
   List<Object> get props => [];

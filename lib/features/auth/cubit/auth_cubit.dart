@@ -142,7 +142,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthRefreshed(user: prevState.user));
         return;
       }
-      emit(const AuthChangePasswordSuccess());
+      emit(AuthChangePasswordSuccess(user: prevState.user));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
