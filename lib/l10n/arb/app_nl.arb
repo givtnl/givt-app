@@ -1389,5 +1389,9 @@
     "shareDataDisclaimer": "When you disable this option, your donations will remain anonymous for that organisation.",
     "shareDataAlertTitle": "Do you want a tax statement?",
     "shareDataAlertMessage": "To receive a tax statement, you need to share your personal information with the organisation you donate to.",
-    "countryStringUs": "Amerika"
+    "countryStringUs": "Amerika",
+    "enterPaymentDetails": "Enter Payment Details",
+    "moreInformationAboutStripe": "More Information About Stripe",
+    "moreInformationAboutStripeParagraphOne": "We do not save or process credit card details directly; all payment transactions are securely handled by our trusted third-party payment gateway, Stripe.",
+    "moreInformationAboutStripeParagraphTwo": "In your user profile, we only display the last four digits and brand of your credit card for reference purposes, and your credit card information is never stored in our system. For more information on how we handle your personal data and ensure its security, please refer to our privacy policy."
 }
