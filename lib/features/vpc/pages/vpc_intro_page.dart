@@ -45,6 +45,7 @@ class _VPCIntroPageState extends State<VPCIntroPage> {
                   height: double.infinity,
                   enableInfiniteScroll: false,
                   enlargeCenterPage: true,
+                  viewportFraction: 1,
                   onPageChanged: (index, resaon) {
                     setState(() {
                       _currentPageIndex = index;
