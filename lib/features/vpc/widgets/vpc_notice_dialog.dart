@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/vpc/data/vpc_notice.dart';
+import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class VPCNoticeDialog extends StatelessWidget {
   const VPCNoticeDialog({super.key});
@@ -18,17 +20,20 @@ class VPCNoticeDialog extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        color: const Color(0xFF184869),
+        color: AppTheme.sliderIndicatorFilled,
         borderRadius: BorderRadius.circular(25),
       ),
       child: Stack(
         children: [
-          const SingleChildScrollView(
+          SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Text(
                 VPCNotice.noticeText,
-                style: TextStyle(color: Colors.white, fontSize: 18),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: Colors.white),
               ),
             ),
           ),
@@ -36,7 +41,7 @@ class VPCNoticeDialog extends StatelessWidget {
             top: 5,
             right: 10,
             child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
+              onTap: context.pop,
               child: const Icon(
                 Icons.close_rounded,
                 size: 40,

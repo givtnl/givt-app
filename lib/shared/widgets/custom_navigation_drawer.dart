@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -20,7 +21,7 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     final auth = context.read<AuthCubit>().state;
-    final showFamilyItem = auth.user.country == 'US' &&
+    final showFamilyItem = auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
         auth.user.mandateSigned;
     return Drawer(
@@ -105,7 +106,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
-            isVisible: showFamilyItem,
+            isVisible: true, //showFamilyItem,
             title: 'Family',
             icon: Icons.family_restroom_rounded,
             onTap: () => context.goNamed(Pages.giveVPC.name),

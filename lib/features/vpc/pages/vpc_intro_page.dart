@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/vpc/widgets/vpc_intro_item_family.dart';
 import 'package:givt_app/features/vpc/widgets/vpc_intro_item_g4k.dart';
 import 'package:givt_app/features/vpc/widgets/vpc_intro_item_safety.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
 class VPCIntroPage extends StatefulWidget {
   const VPCIntroPage({super.key});
@@ -67,8 +68,8 @@ class _VPCIntroPageState extends State<VPCIntroPage> {
                     height: 8,
                     decoration: BoxDecoration(
                       color: _currentPageIndex >= pages.indexOf(page)
-                          ? const Color(0xFF184869)
-                          : const Color(0xFFD9D9D9),
+                          ? AppTheme.sliderIndicatorFilled
+                          : AppTheme.sliderIndicatorNotFilled,
                       borderRadius: BorderRadius.circular(25),
                     ),
                   ),

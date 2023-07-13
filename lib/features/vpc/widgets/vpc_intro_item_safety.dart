@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/vpc/widgets/vpc_notice_dialog.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
 class VPCIntroItemSafety extends StatelessWidget {
   const VPCIntroItemSafety({super.key});
@@ -10,13 +11,13 @@ class VPCIntroItemSafety extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
+          Text(
             'Before you create your child’s profile, we must obtain verifiable parental consent. This is achieved by making a \$1 transaction when you enter your card details.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 17,
-              color: Color(0xFF184869),
-            ),
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(color: AppTheme.sliderIndicatorFilled),
           ),
           Image.asset(
             'assets/images/vpc_intro_safety.png',
@@ -28,23 +29,19 @@ class VPCIntroItemSafety extends StatelessWidget {
                 builder: (BuildContext ctx) => const VPCNoticeDialog(),
               );
             },
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
                   'See our direct notice',
-                  style: TextStyle(
-                    color: Color(0xFF184869),
-                    fontSize: 15,
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall!
+                      .copyWith(color: AppTheme.sliderIndicatorFilled),
                 ),
-                SizedBox(
-                  width: 5,
-                ),
-                Icon(
-                  Icons.info_outline,
-                )
+                const SizedBox(width: 5),
+                const Icon(Icons.info_outline)
               ],
             ),
           ),

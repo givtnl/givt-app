@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
 class VPCIntroItemFamily extends StatelessWidget {
   const VPCIntroItemFamily({super.key});
@@ -8,14 +9,14 @@ class VPCIntroItemFamily extends StatelessWidget {
     return SizedBox.expand(
       child: Stack(
         children: [
-          const Positioned.fill(
+          Positioned.fill(
             child: Text(
               'We’ve made it easy for your children to take part in giving.\n\nIf you have multiple children, set up all your child profiles now. If you come out of the app you will need to give verifiable permission again.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 17,
-                color: Color(0xFF184869),
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: AppTheme.sliderIndicatorFilled),
             ),
           ),
           Positioned.fill(

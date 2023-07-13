@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
 class VPCSuccessPage extends StatelessWidget {
   const VPCSuccessPage({super.key});
@@ -24,26 +25,25 @@ class VPCSuccessPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Great! Now you have given VPC, let’s get your children's profiles set up!",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Color(0xFF184869),
-                        ),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(color: AppTheme.sliderIndicatorFilled),
                       ),
                       Image.asset(
                         'assets/images/vpc_givy.png',
                       ),
                       ElevatedButton(
                         onPressed: () {},
-                        child: const Text(
+                        child: Text(
                           'Set up child profile(s)',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 20,
-                          ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: Colors.white),
                         ),
                       )
                     ],
