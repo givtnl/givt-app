@@ -14,7 +14,9 @@ class VPCInfoState extends VPCState {}
 class VPCFetchingURLState extends VPCState {}
 
 class VPCErrorState extends VPCState {
-  const VPCErrorState({required this.error});
+  const VPCErrorState({
+    required this.error,
+  });
   final String error;
 
   @override

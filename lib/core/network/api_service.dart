@@ -328,7 +328,7 @@ class APIService {
   ) async {
     final url = Uri.https(
       apiURL,
-      '/givtservice/v1/PaymentProvider/$guid/parent-control-validation',
+      '/givtservice/v1/PaymentProvider/checkoutsession/$guid/parent-control-validation',
     );
 
     final response = await client.get(url);

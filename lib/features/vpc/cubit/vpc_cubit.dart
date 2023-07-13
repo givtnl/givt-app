@@ -25,6 +25,10 @@ class VPCCubit extends Cubit<VPCState> {
     emit(VPCInfoState());
   }
 
+  void showProfiles() {
+    emit(VPCProfilesOverview());
+  }
+
   void redirectOnSuccess() {
     if (state is VPCWebViewState) {
       emit(VPCSuccessState(response: (state as VPCWebViewState).response));
