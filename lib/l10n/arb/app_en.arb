@@ -1393,5 +1393,6 @@
     "enterPaymentDetails": "Enter Payment Details",
     "moreInformationAboutStripe": "More Information About Stripe",
     "moreInformationAboutStripeParagraphOne": "We do not save or process credit card details directly; all payment transactions are securely handled by our trusted third-party payment gateway, Stripe.",
-    "moreInformationAboutStripeParagraphTwo": "In your user profile, we only display the last four digits and brand of your credit card for reference purposes, and your credit card information is never stored in our system. For more information on how we handle your personal data and ensure its security, please refer to our privacy policy."
+    "moreInformationAboutStripeParagraphTwo": "In your user profile, we only display the last four digits and brand of your credit card for reference purposes, and your credit card information is never stored in our system. For more information on how we handle your personal data and ensure its security, please refer to our privacy policy.",
+    "addTermExample": "Here I put in text"
 }
