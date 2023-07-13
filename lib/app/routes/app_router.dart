@@ -17,6 +17,7 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
@@ -24,7 +25,6 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
-import 'package:givt_app/features/registration/pages/stripe_webview_host_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -59,11 +59,6 @@ class AppRouter {
             name: Pages.home.name,
             routes: [
               GoRoute(
-                path: Pages.stripeWebviewHost.path,
-                name: Pages.stripeWebviewHost.name,
-                builder: (context, state) => StripeWebviewHost(),
-              ),
-              GoRoute(
                 path: Pages.personalInfoEdit.path,
                 name: Pages.personalInfoEdit.name,
                 builder: (context, state) => BlocProvider(
@@ -79,11 +74,21 @@ class AppRouter {
                 name: Pages.registration.name,
                 builder: (context, state) {
                   final email = state.queryParameters['email'] ?? '';
-                  return BlocProvider(
-                    create: (context) => RegistrationBloc(
-                      authCubit: context.read<AuthCubit>(),
-                      authRepositoy: getIt(),
-                    ),
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => StripeCubit(
+                          authRepositoy: getIt(),
+                          authCubit: context.read<AuthCubit>(),
+                        ),
+                      ),
+                      BlocProvider(
+                        create: (context) => RegistrationBloc(
+                          authCubit: context.read<AuthCubit>(),
+                          authRepositoy: getIt(),
+                        ),
+                      ),
+                    ],
                     child: SignUpPage(
                       email: email,
                     ),
@@ -100,6 +105,14 @@ class AppRouter {
                   ),
                 ],
               ),
+              // GoRoute(
+              //   path: Pages.stripeWebviewHost.path,
+              //   name: Pages.stripeWebviewHost.name,
+              //   builder: (context, state) => BlocProvider.value(
+              //     value: state.extra! as RegistrationBloc,
+              //     child: const StripeWebviewHost(),
+              //   ),
+              // ),
               GoRoute(
                 path: Pages.sepaMandateExplanation.path,
                 name: Pages.sepaMandateExplanation.name,

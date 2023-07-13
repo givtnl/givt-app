@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/widgets/stripe_info_sheet.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
@@ -75,24 +76,49 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         ],
       ),
       bottomSheet: Container(
-        margin: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ElevatedButton(
-                onPressed: isEnabled ? _onNext : null,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
+          margin: const EdgeInsets.only(
+            bottom: 30,
+            left: 20,
+            right: 20,
+            top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isLoading)
+                const Center(child: CircularProgressIndicator())
+              else
+                ElevatedButton(
+                  onPressed: isEnabled ? _onNext : null,
+                  style: ElevatedButton.styleFrom(
+                    disabledBackgroundColor: Colors.grey,
+                  ),
+                  child: Text(
+                    _selectedCountry == Country.us
+                        ? locals.enterPaymentDetails
+                        : locals.next,
+                  ),
                 ),
-                child: Text(
-                  locals.next,
-                ),
-              ),
-      ),
+              if (_selectedCountry == Country.us)
+                TextButton.icon(
+                  onPressed: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    showDragHandle: true,
+                    backgroundColor: AppTheme.givtBlue,
+                    builder: (_) => const StripeInfoSheet(),
+                  ),
+                  icon: const Icon(
+                    Icons.info_rounded,
+                    size: 20,
+                  ),
+                  label: Text(locals.moreInformationAboutStripe),
+                )
+              else
+                SizedBox(),
+            ],
+          )),
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
           if (state.status == RegistrationStatus.failure) {
@@ -104,6 +130,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             setState(() {
               isLoading = false;
             });
+          }
+          if (state.status == RegistrationStatus.createStripeAccount) {
+            context.pop();
           }
         },
         child: Padding(
