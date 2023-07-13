@@ -320,15 +320,19 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             if (value == null || value.isEmpty) {
               return '';
             }
-            if (!Util.phoneNumberRegEx.hasMatch(value)) {
-              return '';
-            }
+
             if (Country.unitedKingdomCodes()
                 .contains(_selectedCountry.countryCode)) {
               if (!Util.ukPhoneNumberRegEx
                   .hasMatch('${_selectedCountry.prefix}$value')) {
                 return '';
               }
+              return null;
+            }
+
+            final prefix = _selectedCountry.prefix.replaceAll('+', '');
+            if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
+              return '';
             }
 
             return null;
