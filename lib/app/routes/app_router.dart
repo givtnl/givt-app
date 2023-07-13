@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -12,6 +14,9 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
+import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
+import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
+import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
@@ -20,6 +25,8 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
+import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -53,6 +60,17 @@ class AppRouter {
             path: Pages.home.path,
             name: Pages.home.name,
             routes: [
+              GoRoute(
+                path: Pages.personalInfoEdit.path,
+                name: Pages.personalInfoEdit.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => PersonalInfoEditBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    authRepositoy: getIt(),
+                  ),
+                  child: const PersonalInfoEditPage(),
+                ),
+              ),
               GoRoute(
                 path: Pages.registration.path,
                 name: Pages.registration.name,
@@ -115,8 +133,11 @@ class AppRouter {
                         ),
                       ),
                     ],
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as RegistrationBloc,
+                    builder: (context, state) => BlocProvider(
+                      create: (context) => RegistrationBloc(
+                        authCubit: context.read<AuthCubit>(),
+                        authRepositoy: getIt(),
+                      )..add(const RegistrationInit()),
                       child: const BacsExplanationPage(),
                     ),
                   ),
@@ -175,10 +196,16 @@ class AppRouter {
                   GoRoute(
                     path: Pages.giveOffline.path,
                     name: Pages.giveOffline.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const GivingPage(),
-                    ),
+                    builder: (context, state) {
+                      final extra = state.extra! as GiveBloc;
+                      return BlocProvider.value(
+                        value: extra,
+                        child: SuccessOfflineDonationPage(
+                          organisationName:
+                              extra.state.organisation.organisationName!,
+                        ),
+                      );
+                    },
                   ),
                   GoRoute(
                     path: Pages.giveByBeacon.path,
@@ -241,6 +268,30 @@ class AppRouter {
                     },
                   ),
                 ],
+              ),
+              GoRoute(
+                path: Pages.overview.path,
+                name: Pages.overview.name,
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (_) => GivtBloc(
+                      getIt(),
+                    )..add(
+                        const GivtInit(),
+                      ),
+                    child: const OverviewPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: Pages.unregister.path,
+                name: Pages.unregister.name,
+                builder: (_, state) => BlocProvider(
+                  create: (_) => UnregisterCubit(
+                    getIt(),
+                  ),
+                  child: const UnregisterPage(),
+                ),
               ),
             ],
             builder: (context, state) => BlocProvider(

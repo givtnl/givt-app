@@ -16,6 +16,9 @@ enum Pages {
   sepaMandateExplanation,
   bacsMandateExplanation,
   registration,
+  overview,
+  personalInfoEdit,
+  unregister,
 }
 
 extension AppPageExtension on Pages {
@@ -55,6 +58,12 @@ extension AppPageExtension on Pages {
         return 'give-by-location';
       case Pages.giveByBeacon:
         return 'give-by-beacon';
+      case Pages.overview:
+        return 'overview';
+      case Pages.personalInfoEdit:
+        return 'personal-info-edit';
+      case Pages.unregister:
+        return 'unregister';
     }
   }
 
@@ -94,6 +103,12 @@ extension AppPageExtension on Pages {
         return 'GIVE-BY-LOCATION';
       case Pages.giveByBeacon:
         return 'GIVE-BY-BEACON';
+      case Pages.overview:
+        return 'OVERVIEW';
+      case Pages.personalInfoEdit:
+        return 'PERSONAL-INFO-EDIT';
+      case Pages.unregister:
+        return 'UNREGISTER';
     }
   }
 }

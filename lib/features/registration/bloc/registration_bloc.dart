@@ -118,7 +118,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       log(response);
 
       await authCubit.refreshUser();
-      final user = (authCubit.state as AuthSuccess).user;
+      final user = authCubit.state.user;
       if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
         emit(
           state.copyWith(
@@ -167,18 +167,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     await LoggingInfo.instance.info(
-        'Registration Init',
-        methodName: StackTrace.current.toString(),
-      );
+      'Registration Init',
+      methodName: StackTrace.current.toString(),
+    );
     emit(state.copyWith(status: RegistrationStatus.loading));
-    if (authCubit.state is! AuthSuccess) {
-      emit(
-        state.copyWith(status: RegistrationStatus.failure),
-      );
-      return;
-    }
 
-    final user = (authCubit.state as AuthSuccess).user;
+    final user = authCubit.state.user;
     if (user.accountNumber.isNotEmpty && user.sortCode.isNotEmpty) {
       emit(
         state.copyWith(
@@ -198,7 +192,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationGiftAidChanged event,
     Emitter<RegistrationState> emit,
   ) async {
-    final guid = (authCubit.state as AuthSuccess).user.guid;
+    final guid = authCubit.state.user.guid;
     emit(state.copyWith(status: RegistrationStatus.loading));
 
     try {

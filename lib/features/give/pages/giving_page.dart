@@ -24,6 +24,7 @@ class GivingPage extends StatefulWidget {
 
 class _GivingPageState extends State<GivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
+  bool browserIsOpened = false;
 
   @override
   void initState() {
@@ -46,6 +47,9 @@ class _GivingPageState extends State<GivingPage> {
 
   Future<void> _closeBrowser() async {
     if (_customInAppBrowser.isOpened()) {
+      await LoggingInfo.instance.info(
+        'Browser is opened, closing browser and navigating to home page',
+      );
       await _customInAppBrowser.close();
     }
     if (!mounted) {
@@ -63,15 +67,19 @@ class _GivingPageState extends State<GivingPage> {
     BuildContext context,
   ) {
     final giveBlocState = context.read<GiveBloc>().state;
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final user = context.read<AuthCubit>().state.user;
     final format = NumberFormat.simpleCurrency(
       name: giveBlocState.organisation.currency,
     );
+    var orgName = giveBlocState.organisation.organisationName!;
+    if (giveBlocState.instanceName.isNotEmpty) {
+      orgName = '$orgName: ${giveBlocState.instanceName}';
+    }
     return WebViewInput(
       currency: format.currencySymbol,
       apiUrl: Uri.https(getIt<APIService>().apiURL).toString(),
       guid: user.guid,
-      organisation: giveBlocState.organisation.organisationName!,
+      organisation: orgName,
       givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
       confirmBtn: context.l10n.next,
       cancel: context.l10n.cancel,
@@ -93,35 +101,34 @@ class _GivingPageState extends State<GivingPage> {
         builder: (
           context,
         ) {
-          if (_customInAppBrowser.isOpened()) {
+          if (browserIsOpened) {
             return const SizedBox.shrink();
           }
           final givt = _buildGivt(context);
 
           Vibration.vibrate(amplitude: 128);
-
-          _customInAppBrowser
-              .openUrlRequest(
-                urlRequest: URLRequest(
-                  url: Uri.https(
-                    getIt<APIService>().apiURL,
-                    'confirm.html',
-                    {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
-                  ),
-                ),
-                options: InAppBrowserClassOptions(
-                  crossPlatform: InAppBrowserOptions(
-                    toolbarTopBackgroundColor: Colors.white,
-                  ),
-                  ios: IOSInAppBrowserOptions(
-                    toolbarBottomBackgroundColor: Colors.white,
-                    hideToolbarBottom: true,
-                  ),
-                ),
-              )
-              .whenComplete(
-                _closeBrowser,
-              );
+          LoggingInfo.instance.info(
+            'Opening browser with $givt',
+          );
+          browserIsOpened = true;
+          _customInAppBrowser.openUrlRequest(
+            urlRequest: URLRequest(
+              url: Uri.https(
+                getIt<APIService>().apiURL,
+                'confirm.html',
+                {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+              ),
+            ),
+            options: InAppBrowserClassOptions(
+              crossPlatform: InAppBrowserOptions(
+                toolbarTopBackgroundColor: Colors.white,
+              ),
+              ios: IOSInAppBrowserOptions(
+                toolbarBottomBackgroundColor: Colors.white,
+                hideToolbarBottom: true,
+              ),
+            ),
+          );
           return const SizedBox.shrink();
         },
       ),

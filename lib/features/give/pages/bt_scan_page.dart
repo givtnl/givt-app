@@ -65,8 +65,7 @@ class _BTScanPageState extends State<BTScanPage> {
       }
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
-              userGUID:
-                  (context.read<AuthCubit>().state as AuthSuccess).user.guid,
+              userGUID: context.read<AuthCubit>().state.user.guid,
               macAddress: scanResult.device.id.toString(),
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
@@ -85,6 +84,7 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -98,7 +98,7 @@ class _BTScanPageState extends State<BTScanPage> {
             orgName ??= '';
             return Column(
               children: [
-                const SizedBox(height: 50),
+                SizedBox(height: size.height * 0.03),
                 Text(
                   locals.makeContact,
                   style: Theme.of(context).textTheme.titleMedium,
@@ -119,10 +119,7 @@ class _BTScanPageState extends State<BTScanPage> {
                         if (orgName!.isNotEmpty) {
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(
-                                  (context.read<AuthCubit>().state
-                                          as AuthSuccess)
-                                      .user
-                                      .guid,
+                                  context.read<AuthCubit>().state.user.guid,
                                 ),
                               );
                           return;

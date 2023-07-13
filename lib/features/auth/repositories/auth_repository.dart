@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
   Future<void> refreshToken();
-  Future<String> login(String email, String password);
+  Future<Session> login(String email, String password);
   Future<UserExt> fetchUserExtension(String guid);
-  Future<UserExt?> isAuthenticated();
+  Future<(UserExt, Session)?> isAuthenticated();
   Future<bool> logout();
   Future<bool> checkTld(String email);
   Future<String> checkEmail(String email);
@@ -30,6 +30,12 @@ mixin AuthRepositoy {
   Future<bool> unregisterUser({
     required String email,
   });
+  Future<bool> updateUser({
+    required String guid,
+    required Map<String, dynamic> newUserExt,
+  });
+
+  Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -63,7 +69,7 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<String> login(String email, String password) async {
+  Future<Session> login(String email, String password) async {
     final newSession = await _apiService.login(
       {
         'username': email,
@@ -79,7 +85,7 @@ class AuthRepositoyImpl with AuthRepositoy {
       jsonEncode(session.toJson()),
     );
 
-    return session.userGUID;
+    return session;
   }
 
   @override
@@ -94,7 +100,7 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<UserExt?> isAuthenticated() async {
+  Future<(UserExt, Session)?> isAuthenticated() async {
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
       return null;
@@ -109,8 +115,11 @@ class AuthRepositoyImpl with AuthRepositoy {
     //   return false;
     // }
 
-    return UserExt.fromJson(
-      jsonDecode(_prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
+    return (
+      UserExt.fromJson(
+        jsonDecode(_prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
+      ),
+      session
     );
   }
 
@@ -198,4 +207,17 @@ class AuthRepositoyImpl with AuthRepositoy {
       _apiService.unregisterUser({
         'email': email,
       });
+
+  @override
+  Future<bool> updateUser({
+    required String guid,
+    required Map<String, dynamic> newUserExt,
+  }) async =>
+      _apiService.updateUser(guid, newUserExt);
+
+  @override
+  Future<bool> updateUserExt(
+    Map<String, dynamic> newUserExt,
+  ) async =>
+      _apiService.updateUserExt(newUserExt);
 }

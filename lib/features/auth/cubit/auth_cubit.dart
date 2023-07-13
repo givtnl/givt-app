@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
+import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
 
@@ -15,16 +16,18 @@ class AuthCubit extends Cubit<AuthState> {
   final CountryIsoInfo _countryIsoInfo;
 
   Future<void> login({required String email, required String password}) async {
+    final prevState = state;
     emit(AuthLoading());
     try {
-      final userGUID = await _authRepositoy.login(
+      final session = await _authRepositoy.login(
         email,
         password,
       );
 
       emit(
         AuthSuccess(
-          await _authRepositoy.fetchUserExtension(userGUID),
+          user: await _authRepositoy.fetchUserExtension(session.userGUID),
+          session: session,
         ),
       );
     } catch (e) {
@@ -32,20 +35,27 @@ class AuthCubit extends Cubit<AuthState> {
         e.toString(),
         methodName: StackTrace.current.toString(),
       );
-      emit(AuthFailure(message: e.toString()));
+      emit(
+        AuthFailure(
+          message: e.toString(),
+          user: prevState.user,
+          session: prevState.session,
+        ),
+      );
     }
   }
 
   Future<void> checkAuth() async {
     emit(AuthLoading());
     try {
-      final userExt = await _authRepositoy.isAuthenticated();
-      if (userExt == null) {
+      final (userExt, session) =
+          await _authRepositoy.isAuthenticated() ?? (null, null);
+      if (userExt == null || session == null) {
         emit(AuthUnkown());
         return;
       }
 
-      emit(AuthSuccess(userExt));
+      emit(AuthSuccess(user: userExt, session: session));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -56,9 +66,10 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> logout() async {
+    final prevState = state;
     emit(AuthLoading());
     await _authRepositoy.logout();
-    emit(AuthLogout());
+    emit(AuthLogout(email: prevState.user.email));
   }
 
   Future<void> register({
@@ -78,7 +89,7 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       if (result.contains('true')) {
-        emit(AuthLoginRedirect(email));
+        emit(AuthLoginRedirect(email: email));
         return;
       }
 
@@ -98,7 +109,7 @@ class AuthCubit extends Cubit<AuthState> {
         isTempUser: true,
       );
 
-      emit(AuthSuccess(unRegisteredUserExt));
+      emit(AuthSuccess(user: unRegisteredUserExt));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -109,11 +120,16 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> refreshUser() async {
-    final guid = (state as AuthSuccess).user.guid;
+    final guid = state.user.guid;
     emit(AuthLoading());
     try {
       final userExt = await _authRepositoy.fetchUserExtension(guid);
-      emit(AuthSuccess(userExt));
+      emit(
+        AuthRefreshed(
+          user: userExt,
+          session: state.session,
+        ),
+      );
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -124,20 +140,21 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> changePassword({required String email}) async {
+    final prevState = state;
     emit(AuthLoading());
     try {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email));
+        emit(AuthTempAccountWarning(email: email));
         return;
       }
       if (result.contains('false')) {
-        emit(AuthChangePasswordWrongEmail(email));
+        emit(AuthChangePasswordWrongEmail(email: email));
         return;
       }
       await _authRepositoy.resetPassword(email);
-      emit(const AuthChangePasswordSuccess());
+      emit(AuthChangePasswordSuccess(user: prevState.user));
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),

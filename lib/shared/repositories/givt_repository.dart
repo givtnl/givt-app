@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
+import 'package:givt_app/features/overview/models/givt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GivtRepository {
@@ -11,6 +12,10 @@ mixin GivtRepository {
     required Map<String, dynamic> body,
   });
   Future<void> syncOfflineGivts();
+
+  Future<List<Givt>> fetchGivts();
+
+  Future<bool> deleteGivt(List<dynamic> ids);
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -28,6 +33,7 @@ class GivtRepositoryImpl with GivtRepository {
       'donationType': 0,
     }..addAll(body);
     try {
+      await syncOfflineGivts();
       await apiClient.submitGivts(
         body: givts,
         guid: guid,
@@ -89,4 +95,16 @@ class GivtRepositoryImpl with GivtRepository {
       GivtTransaction.givtTransactions,
     );
   }
+
+  @override
+  Future<List<Givt>> fetchGivts() async {
+    final decodedJson = await apiClient.fetchGivts();
+    return Givt.fromJsonList(
+      decodedJson,
+    );
+  }
+
+  @override
+  Future<bool> deleteGivt(List<dynamic> ids) async =>
+      apiClient.deleteGivts(body: ids);
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/choose_amount.dart';
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-    final auth = context.read<AuthCubit>().state as AuthSuccess;
+    final auth = context.read<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
@@ -69,7 +70,7 @@ class HomePage extends StatelessWidget {
                 }
               },
               child: ChooseAmount(
-                country: auth.user.country,
+                country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: given,
                 onAmountChanged:
@@ -108,7 +109,7 @@ class HomePage extends StatelessWidget {
   Future<void> _buildNeedsRegistrationDialog(
     BuildContext context,
   ) {
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final user = context.read<AuthCubit>().state.user;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
@@ -122,15 +123,19 @@ class HomePage extends StatelessWidget {
           TextButton(
             onPressed: () {
               if (user.needRegistration) {
-                context.goNamed(
-                  Pages.registration.name,
-                  queryParameters: {
-                    'email': user.email,
-                  },
-                );
+                context
+                  ..goNamed(
+                    Pages.registration.name,
+                    queryParameters: {
+                      'email': user.email,
+                    },
+                  )
+                  ..pop();
                 return;
               }
-              context.goNamed(Pages.sepaMandateExplanation.name);
+              context
+                ..goNamed(Pages.sepaMandateExplanation.name)
+                ..pop();
             },
             child: Text(
               context.l10n.finalizeRegistration,

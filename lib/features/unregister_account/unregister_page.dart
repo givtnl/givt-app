@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class UnregisterPage extends StatefulWidget {
   const UnregisterPage({super.key});
-
-  static MaterialPageRoute<void> route() => MaterialPageRoute<void>(
-        builder: (_) => BlocProvider(
-          create: (context) => UnregisterCubit(
-            getIt(),
-          ),
-          child: const UnregisterPage(),
-        ),
-      );
 
   @override
   State<UnregisterPage> createState() => _UnregisterPageState();
@@ -36,7 +27,7 @@ class _UnregisterPageState extends State<UnregisterPage> {
             builder: (_) => WarningDialog(
               title: locals.noInternetConnectionTitle,
               content: locals.noInternet,
-              onConfirm: () => Navigator.of(context).pop(),
+              onConfirm: () => context.pop(),
             ),
           );
         }
@@ -46,10 +37,10 @@ class _UnregisterPageState extends State<UnregisterPage> {
             builder: (_) => WarningDialog(
               title: locals.unregisterErrorTitle,
               content: locals.unregisterButton,
-              onConfirm: () => Navigator.of(context).pop(),
+              onConfirm: () => context.pop(),
             ),
           ).whenComplete(
-            () => Navigator.of(context).pop(),
+            () => context.pop(),
           );
         }
         if (state is UnregisterSuccess) {
@@ -120,7 +111,7 @@ class _UnregisterPageState extends State<UnregisterPage> {
   ) {
     final locals = context.l10n;
     final size = MediaQuery.of(context).size;
-    final email = (context.read<AuthCubit>().state as AuthSuccess).user.email;
+    final email = context.read<AuthCubit>().state.user.email;
     return Column(
       children: [
         const SizedBox(

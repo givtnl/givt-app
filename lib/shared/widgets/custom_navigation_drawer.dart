@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/unregister_account/unregister_page.dart';
+import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -19,7 +19,7 @@ class CustomNavigationDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-    final auth = context.read<AuthCubit>().state as AuthSuccess;
+    final auth = context.read<AuthCubit>().state;
     return Drawer(
       child: ListView(
         children: [
@@ -27,7 +27,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildMenuItem(
             isVisible: auth.user.needRegistration || !auth.user.mandateSigned,
             showBadge: true,
-            showUnderline: false ,
+            showUnderline: false,
             title: locals.finalizeRegistration,
             icon: Icons.edit,
             onTap: () {
@@ -53,9 +53,10 @@ class CustomNavigationDrawer extends StatelessWidget {
           //   thickness: size.height * 0.02,
           // ),
           _buildMenuItem(
+            isVisible: true,
             title: locals.historyTitle,
-            icon: Icons.receipt_long,
-            onTap: () {},
+            icon: FontAwesomeIcons.listUl,
+            onTap: () => _checkToken(context, route: Pages.overview.name),
           ),
           _buildMenuItem(
             title: locals.giveLimit,
@@ -63,9 +64,13 @@ class CustomNavigationDrawer extends StatelessWidget {
             onTap: () {},
           ),
           _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
-            onTap: () {},
+            onTap: () => _checkToken(
+              context,
+              route: Pages.personalInfoEdit.name,
+            ),
           ),
           _buildMenuItem(
             title: locals.amountPresetsTitle,
@@ -94,9 +99,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => Navigator.of(context).push(
-              UnregisterPage.route(),
-            ),
+            onTap: () => _checkToken(context, route: Pages.unregister.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(
@@ -145,31 +148,33 @@ class CustomNavigationDrawer extends StatelessWidget {
         visible: isVisible,
         child: Column(
           children: [
-            Container(decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(
-                  color: AppTheme.givtLightGray,
-                  width: showUnderline ? 1 : 0,
+            Container(
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: AppTheme.givtLightGray,
+                    width: showUnderline ? 1 : 0,
+                  ),
                 ),
               ),
-            ),child: ListTile(
-              leading: Icon(
-                icon,
-                color: AppTheme.givtBlue,
-              ),
-              trailing: badges.Badge(
-                showBadge: showBadge,
-                position: badges.BadgePosition.topStart(top: 6, start: -20),
-                child: const Icon(
-                  Icons.arrow_forward_ios,
+              child: ListTile(
+                leading: Icon(
+                  icon,
+                  color: AppTheme.givtBlue,
                 ),
+                trailing: badges.Badge(
+                  showBadge: showBadge,
+                  position: badges.BadgePosition.topStart(top: 6, start: -20),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                ),
+                title: Text(
+                  title,
+                  style: const TextStyle(fontSize: 17),
+                ),
+                onTap: onTap,
               ),
-              title: Text(
-                title,
-                style: const TextStyle(fontSize: 17),
-              ),
-              onTap: onTap,
-            ),
             ),
           ],
         ),
@@ -232,4 +237,30 @@ class CustomNavigationDrawer extends StatelessWidget {
           'assets/images/logo.png',
         ),
       );
+
+  void _checkToken(
+    BuildContext context, {
+    required String route,
+  }) {
+    final auth = context.read<AuthCubit>();
+    final isExpired = auth.state.session.isExpired;
+    if (!isExpired) {
+      context.goNamed(route);
+      return;
+    }
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => LoginPage(
+        email: auth.state.user.email,
+        popWhenSuccess: true,
+      ),
+    ).whenComplete(() {
+      if (context.read<AuthCubit>().state.session.isExpired) {
+        return;
+      }
+      context.goNamed(route);
+    });
+  }
 }

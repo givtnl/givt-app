@@ -8,6 +8,7 @@ import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,7 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
               isScrollControlled: true,
               useSafeArea: true,
               showDragHandle: true,
-              backgroundColor: Theme.of(context).colorScheme.tertiary,
+              backgroundColor: AppTheme.givtBlue,
               builder: (_) => const FAQBottomSheet(),
             ),
             icon: const Icon(
@@ -99,11 +100,17 @@ class _SignUpPageState extends State<SignUpPage> {
               );
             }
 
-            if (state.status ==
-                    RegistrationStatus.bacsDirectDebitMandateExplanation ||
-                state.status == RegistrationStatus.sepaMandateExplanation) {
+            if (state.status == RegistrationStatus.sepaMandateExplanation) {
               context.goNamed(
                 Pages.sepaMandateExplanation.name,
+                extra: context.read<RegistrationBloc>(),
+              );
+            }
+
+            if (state.status ==
+                RegistrationStatus.bacsDirectDebitMandateExplanation) {
+              context.goNamed(
+                Pages.bacsMandateExplanation.name,
                 extra: context.read<RegistrationBloc>(),
               );
             }
@@ -184,10 +191,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     return null;
                   },
                   textInputAction: TextInputAction.next,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 16),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: 16,
+                        color: widget.email.isNotEmpty
+                            ? Colors.grey
+                            : lightColorScheme.primary,
+                      ),
                   decoration: InputDecoration(
                     hintText: context.l10n.email,
                     errorStyle: const TextStyle(
@@ -307,11 +316,19 @@ class _SignUpPageState extends State<SignUpPage> {
           Text.rich(
             TextSpan(
               children: [
-                TextSpan(
-                  text: locals.acceptPolicy,
+                WidgetSpan(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      locals.acceptPolicy,
+                    ),
+                  ),
                 ),
                 const WidgetSpan(
-                  child: Icon(Icons.info_rounded, size: 16),
+                  child: Icon(
+                    Icons.info_rounded,
+                    size: 16,
+                  ),
                 ),
               ],
             ),

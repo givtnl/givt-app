@@ -23,7 +23,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final size = MediaQuery.of(context).size;
-    final user = (context.read<AuthCubit>().state as AuthSuccess).user;
+    final user = context.read<AuthCubit>().state.user;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -63,7 +63,8 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                       Text(
                         user.country == Country.us.countryCode
                             ? locals.informationAboutUsUs
-                            : Country.unitedKingdomCodes().contains(user.country)
+                            : Country.unitedKingdomCodes()
+                                    .contains(user.country)
                                 ? locals.informationAboutUsGb
                                 : locals.informationAboutUs,
                         textAlign: TextAlign.center,

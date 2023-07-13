@@ -51,7 +51,10 @@ class APIService {
       encoding: Encoding.getByName('utf-8'),
     );
     if (response.statusCode >= 400) {
-      throw Exception('something went wrong :(');
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
     } else {
       return jsonDecode(response.body) as Map<String, dynamic>;
     }
@@ -111,7 +114,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> getCollectGroupList() {
-    final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist');
+    final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist-v2');
     return client.get(url).then((response) {
       if (response.statusCode >= 400) {
         throw Exception('something went wrong :(');
@@ -242,6 +245,80 @@ class APIService {
 
     if (response.statusCode >= 400) {
       throw Exception(response.statusCode);
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<List<dynamic>> fetchGivts({Map<String, dynamic>? params}) async {
+    final url = Uri.https(apiURL, '/api/v2/givts', params);
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as List<dynamic>;
+  }
+
+  Future<bool> deleteGivts({List<dynamic>? body}) async {
+    final url = Uri.https(apiURL, '/api/v2/Givts/multiple');
+
+    final response = await client.delete(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> updateUserExt(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/usersExtension');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> updateUser(String guid, Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/api/v2/Users/$guid');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
     }
     return response.statusCode == 200;
   }

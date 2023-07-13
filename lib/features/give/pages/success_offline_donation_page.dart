@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SuccessOfflineDonationPage extends StatelessWidget {
@@ -18,8 +20,7 @@ class SuccessOfflineDonationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () =>
-              Navigator.of(context).popUntil((route) => route.isFirst),
+          onPressed: () => context.goNamed(Pages.home.name),
           icon: const Icon(Icons.close),
           color: Colors.transparent,
         ),
@@ -53,8 +54,12 @@ class SuccessOfflineDonationPage extends StatelessWidget {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () =>
-              Navigator.of(context).popUntil((route) => route.isFirst),
+          onPressed: () => context.goNamed(
+            Pages.home.name,
+            queryParameters: {
+              'given': 'true',
+            },
+          ),
           child: Text(locals.ready),
         ),
         const SizedBox(height: 10),

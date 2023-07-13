@@ -22,18 +22,16 @@ class Location extends Equatable {
 
   factory Location.fromJson(Map<String, dynamic> json) {
     return Location(
-      name: json['Name'] as String,
-      latitude: json['Latitude'] as double,
-      longitude: json['Longitude'] as double,
-      radius: json['Radius'] as int,
-      beaconId: json['BeaconId'] as String,
-      begin: json['dtBegin'] == null
-          ? null
-          : DateTime.parse(json['dtBegin'] as String),
-      end: json['dtEnd'] == null
+      name: json['N'] != null ? json['N'] as String : '',
+      latitude: json['LA'] as double,
+      longitude: json['LO'] as double,
+      radius: json['R'] as int,
+      beaconId: json['I'] as String,
+      begin: json['DB'] == null ? null : DateTime.parse(json['DB'] as String),
+      end: json['DE'] == null
           ? null
           : DateTime.parse(
-              json['dtEnd'] as String,
+              json['DE'] as String,
             ),
     );
   }
@@ -48,13 +46,13 @@ class Location extends Equatable {
 
   Map<String, dynamic> toJson() {
     return {
-      'Name': name,
-      'Latitude': latitude,
-      'Longitude': longitude,
-      'Radius': radius,
-      'BeaconId': beaconId,
-      'dtBegin': begin?.toIso8601String(),
-      'dtEnd': end?.toIso8601String(),
+      'N': name,
+      'LA': latitude,
+      'LO': longitude,
+      'R': radius,
+      'I': beaconId,
+      'DB': begin?.toIso8601String(),
+      'DE': end?.toIso8601String(),
     };
   }
 
