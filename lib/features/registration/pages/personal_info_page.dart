@@ -379,6 +379,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
       onChanged: (value) => setState(() {
         _formKey.currentState!.validate();
       }),
+      validator: validator,
     );
   }
 
