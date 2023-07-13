@@ -1398,7 +1398,7 @@
     "vpcErrorText": "Cannot get VPC. Please try again later.",
     "vpcSuccessText": "Great! Now you have given VPC, let’s get your children's profiles set up!",
     "setupChildProfileButtonText": "Set up child profile(s)",
-    "vpcIntroFamilyText": "We’ve made it easy for your children to take part in giving.\\n\\nIf you have multiple children, set up all your child profiles now. If you come out of the app you will need to give verifiable permission again.",
+    "vpcIntroFamilyText": "We’ve made it easy for your children to take part in giving.\n\nIf you have multiple children, set up all your child profiles now. If you come out of the app you will need to give verifiable permission again.",
     "vpcIntroG4KText": "Make sure you download Givt4kids from the app store when you’ve set up your child profile(s).",
     "enterCardDetailsButtonText": "Enter card details",
     "vpcIntroSafetyText": "Before you create your child’s profile, we must obtain verifiable parental consent. This is achieved by making a \\$1 transaction when you enter your card details.",
