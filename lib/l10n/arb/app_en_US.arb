@@ -246,7 +246,7 @@
     "bacsDdGuaranteeTitle": "Direct Debit Guarantee",
     "bacsVerifyBodyDetails": "Name: {value0}\n Address: {value1}\n E-mail address: {value2}\n Sort code: {value3}\n Account number: {value4}\n Frequency type: Incidental, when you use the Givt app to make a donation",
     "bacsHelpTitle": "Need help?",
-    "bacsHelpBody": "Can't figure something out or you just have a question? Give us a call at +31 320 320 115 or hit us up on support@givt.co.uk and we will be in touch!",
+    "bacsHelpBody": "Can't figure something out or you just have a question? Give us a call at +44 2037 908068 or hit us up on support@givt.co.uk and we will be in touch!",
     "bacsSortcodeAccountnumber": "Sortcode: {value0}\n Account number: {value1}",
     "cantFetchPersonalInformation": "We can't seem to fetch your personal information right now, could you try again later?",
     "givingContextCollectionBag": "Collection device",
@@ -1139,7 +1139,7 @@
     "giftAidHeaderDisclaimer": "When you enable this option, you agree to the following:",
     "giftAidBodyDisclaimer": "I am a UK taxpayer and understand that if I pay less Income Tax and/or Capital Gains Tax in the current tax year than the amount of Gift Aid claimed on all my donations, it is my responsibility to pay any difference.",
     "giftAidInfoTitle": "What is Gift Aid?",
-    "giftAidInfoBody": "Donating through Gift Aid means charities and community amateur sports clubs (CASCs) can claim an extra 25p for every £1 you give. It will not cost you any extra. \n \n\n Gift Aid treats the donations as being made after deduction of income tax at the basic rate. The charity you give to can reclaim this basic rate income tax paid on the gift from HMRC. Your donations will qualify as long as they’re not more than 4 times what you have paid in tax in that tax year. \n  \n For more info, please go to: www.gov.uk/donating-to-charity/gift-aid",
+    "giftAidInfoBody": "Donating through Gift Aid means charities can claim an extra 25p for every £1 you give. It will not cost you any extra. \n \n\n Gift Aid treats the donations as being made after deduction of income tax at the basic rate. The charity you give to can reclaim this basic rate income tax paid on the gift from HMRC. Your donations will qualify as long as they’re not more than 4 times what you have paid in tax in that tax year. \n  \n For more info, please go to: www.gov.uk/donating-to-charity/gift-aid",
     "faqAnswer12Gb": "Your donation will be withdrawn from your bank account within five working days. The first time you make a donation with Givt, the donation will be withdrawn after two weeks, as it takes extra time to set up your registration.",
     "faqVraagDdi": "Does the Direct Debit mean I signed up to monthly deductions?",
     "faqAntwoordDdi": "NO! You sign a direct debit so we can deduct the donations you have made using the Givt app. The deductions we make are incidental, user-driven deductions.\n \n\n We will not debit your account unless you make a donation using the Givt app.",
@@ -1389,5 +1389,9 @@
     "shareDataDisclaimer": "When you disable this option, your donations will remain anonymous for that organization.",
     "shareDataAlertTitle": "Do you want a tax statement?",
     "shareDataAlertMessage": "To receive a tax statement, you need to share your personal information with the organization you donate to.",
-    "countryStringUs": "United States of America"
+    "countryStringUs": "United States of America",
+    "enterPaymentDetails": "Enter Payment Details",
+    "moreInformationAboutStripe": "More Information About Stripe",
+    "moreInformationAboutStripeParagraphOne": "We do not save or process credit card details directly; all payment transactions are securely handled by our trusted third-party payment gateway, Stripe.",
+    "moreInformationAboutStripeParagraphTwo": "In your user profile, we only display the last four digits and brand of your credit card for reference purposes, and your credit card information is never stored in our system. For more information on how we handle your personal data and ensure its security, please refer to our privacy policy."
 }
