@@ -25,6 +25,8 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
+import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -280,6 +282,16 @@ class AppRouter {
                     child: const OverviewPage(),
                   );
                 },
+              ),
+              GoRoute(
+                path: Pages.unregister.path,
+                name: Pages.unregister.name,
+                builder: (_, state) => BlocProvider(
+                  create: (_) => UnregisterCubit(
+                    getIt(),
+                  ),
+                  child: const UnregisterPage(),
+                ),
               ),
             ],
             builder: (context, state) => BlocProvider(

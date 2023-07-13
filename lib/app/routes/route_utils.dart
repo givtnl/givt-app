@@ -18,6 +18,7 @@ enum Pages {
   registration,
   overview,
   personalInfoEdit,
+  unregister,
 }
 
 extension AppPageExtension on Pages {
@@ -61,6 +62,8 @@ extension AppPageExtension on Pages {
         return 'overview';
       case Pages.personalInfoEdit:
         return 'personal-info-edit';
+      case Pages.unregister:
+        return 'unregister';
     }
   }
 
@@ -104,6 +107,8 @@ extension AppPageExtension on Pages {
         return 'OVERVIEW';
       case Pages.personalInfoEdit:
         return 'PERSONAL-INFO-EDIT';
+      case Pages.unregister:
+        return 'UNREGISTER';
     }
   }
 }

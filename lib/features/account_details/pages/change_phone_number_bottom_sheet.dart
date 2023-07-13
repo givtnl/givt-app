@@ -66,8 +66,8 @@ class _ChangePhoneNumberBottomSheetState
                     if (value == null || value.isEmpty) {
                       return '';
                     }
-
-                    if (!Util.phoneNumberRegEx.hasMatch(value)) {
+                    final prefix = selectedCountry.prefix.replaceAll('+', '');
+                    if (!Util.phoneNumberRegEx(prefix).hasMatch(value)) {
                       return '';
                     }
 

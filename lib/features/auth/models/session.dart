@@ -34,12 +34,30 @@ class Session {
         expires: json['.expires'] as String,
         expiresIn: 0,
       );
+  const Session.empty()
+      : userGUID = '',
+        email = '',
+        accessToken = '',
+        refreshToken = '',
+        expires = '',
+        expiresIn = 0;
+
   final String userGUID;
   final String email;
   final String accessToken;
   final String refreshToken;
   final String expires;
   final int expiresIn;
+
+  bool get isExpired {
+    final now = DateTime.now().toUtc();
+    final expiresDate = DateTime.parse(expires).subtract(
+      const Duration(
+        minutes: 20,
+      ),
+    );
+    return now.isAfter(expiresDate);
+  }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'GUID': userGUID,
