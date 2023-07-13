@@ -6,6 +6,7 @@ import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/vpc/models/vps_response.dart';
 import 'package:givt_app/features/vpc/pages/vpc_intro_page.dart';
 import 'package:givt_app/features/vpc/pages/vpc_success_page.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class GiveVPCPage extends StatelessWidget {
@@ -13,6 +14,8 @@ class GiveVPCPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locals = AppLocalizations.of(context);
+
     return Scaffold(
       body: BlocConsumer<VPCCubit, VPCState>(
         listener: (context, state) {
@@ -21,8 +24,8 @@ class GiveVPCPage extends StatelessWidget {
             log(state.toString());
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text(
-                  'Cannot get VPC. Please try again later.',
+                content: Text(
+                  locals.vpcErrorText,
                   textAlign: TextAlign.center,
                 ),
                 backgroundColor: Theme.of(context).errorColor,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/vpc/widgets/vpc_notice_dialog.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class VPCIntroItemSafety extends StatelessWidget {
@@ -7,12 +8,13 @@ class VPCIntroItemSafety extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locals = AppLocalizations.of(context);
     return SizedBox.expand(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Before you create your child’s profile, we must obtain verifiable parental consent. This is achieved by making a \$1 transaction when you enter your card details.',
+            locals.vpcIntroSafetyText,
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme
@@ -34,14 +36,14 @@ class VPCIntroItemSafety extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  'See our direct notice',
+                  locals.seeDirectNoticeButtonText,
                   style: Theme.of(context)
                       .textTheme
                       .titleSmall!
                       .copyWith(color: AppTheme.sliderIndicatorFilled),
                 ),
                 const SizedBox(width: 5),
-                const Icon(Icons.info_outline)
+                const Icon(Icons.info_outline),
               ],
             ),
           ),

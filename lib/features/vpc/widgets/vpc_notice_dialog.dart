@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/vpc/data/vpc_notice.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,6 +9,7 @@ class VPCNoticeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locals = AppLocalizations.of(context);
 
     return Container(
       margin: EdgeInsets.only(
@@ -29,7 +30,7 @@ class VPCNoticeDialog extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Text(
-                VPCNotice.noticeText,
+                locals.directNoticeText,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!

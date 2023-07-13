@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class VPCSuccessPage extends StatelessWidget {
@@ -7,6 +8,7 @@ class VPCSuccessPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locals = AppLocalizations.of(context);
 
     return Scaffold(
       body: Container(
@@ -19,37 +21,37 @@ class VPCSuccessPage extends StatelessWidget {
               height: size.height * 0.035,
             ),
             Container(
-                padding: const EdgeInsets.all(20),
-                height: size.height * 0.85,
-                child: SizedBox.expand(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Great! Now you have given VPC, let’s get your children's profiles set up!",
-                        textAlign: TextAlign.center,
+              padding: const EdgeInsets.all(20),
+              height: size.height * 0.85,
+              child: SizedBox.expand(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      locals.vpcSuccessText,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(color: AppTheme.sliderIndicatorFilled),
+                    ),
+                    Image.asset(
+                      'assets/images/vpc_givy.png',
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        locals.setupChildProfileButtonText,
                         style: Theme.of(context)
                             .textTheme
-                            .titleMedium!
-                            .copyWith(color: AppTheme.sliderIndicatorFilled),
+                            .titleLarge!
+                            .copyWith(color: Colors.white),
                       ),
-                      Image.asset(
-                        'assets/images/vpc_givy.png',
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: Text(
-                          'Set up child profile(s)',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(color: Colors.white),
-                        ),
-                      )
-                    ],
-                  ),
-                )),
-            const Spacer(),
+                    )
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
