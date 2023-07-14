@@ -57,7 +57,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           //   thickness: size.height * 0.02,
           // ),
           _buildMenuItem(
-            isVisible: true,
+            isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
             onTap: () => _checkToken(context, route: Pages.overview.name),

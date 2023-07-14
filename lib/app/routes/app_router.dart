@@ -166,7 +166,7 @@ class AppRouter {
                 builder: (context, state) => BlocProvider(
                   create: (_) {
                     final extra = state.extra! as Map<String, dynamic>;
-                    final auth = context.read<AuthCubit>().state as AuthSuccess;
+                    final auth = context.read<AuthCubit>().state;
                     final bloc = GiveBloc(
                       getIt(),
                       getIt(),
@@ -251,8 +251,7 @@ class AppRouter {
                     path: Pages.giveByList.path,
                     name: Pages.giveByList.name,
                     builder: (context, state) {
-                      final user =
-                          (context.read<AuthCubit>().state as AuthSuccess).user;
+                      final user = context.read<AuthCubit>().state.user;
                       return MultiBlocProvider(
                         providers: [
                           BlocProvider.value(
