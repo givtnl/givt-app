@@ -87,36 +87,38 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             children: [
               if (isLoading)
                 const Center(child: CircularProgressIndicator())
-              else
-                ElevatedButton(
-                  onPressed: isEnabled ? _onNext : null,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
+              else if (_selectedCountry == Country.us)
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: TextButton.icon(
+                    onPressed: () => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      showDragHandle: true,
+                      backgroundColor: AppTheme.givtBlue,
+                      builder: (_) => const StripeInfoSheet(),
+                    ),
+                    icon: const Icon(
+                      Icons.info_rounded,
+                      size: 20,
+                    ),
+                    label: Text(locals.moreInformationAboutStripe),
                   ),
-                  child: Text(
-                    _selectedCountry == Country.us
-                        ? locals.enterPaymentDetails
-                        : locals.next,
-                  ),
-                ),
-              if (_selectedCountry == Country.us)
-                TextButton.icon(
-                  onPressed: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    showDragHandle: true,
-                    backgroundColor: AppTheme.givtBlue,
-                    builder: (_) => const StripeInfoSheet(),
-                  ),
-                  icon: const Icon(
-                    Icons.info_rounded,
-                    size: 20,
-                  ),
-                  label: Text(locals.moreInformationAboutStripe),
                 )
               else
                 SizedBox(),
+              ElevatedButton(
+                onPressed: isEnabled ? _onNext : null,
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: Text(
+                  _selectedCountry == Country.us
+                      ? locals.enterPaymentDetails
+                      : locals.next,
+                ),
+              ),
             ],
           )),
       body: BlocListener<RegistrationBloc, RegistrationState>(
