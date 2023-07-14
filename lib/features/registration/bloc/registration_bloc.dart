@@ -26,6 +26,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationInit>(_onInit);
 
     on<RegistrationGiftAidChanged>(_onGiftAidChanged);
+
+    on<RegistrationStripeSuccess>(_onStripeSuccess);
   }
 
   final AuthRepositoy authRepositoy;
@@ -194,6 +196,58 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         status: RegistrationStatus.sepaMandateExplanation,
       ),
     );
+  }
+
+  Future<void> _onStripeSuccess(
+    RegistrationStripeSuccess event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    await authCubit.refreshUser();
+    final user = authCubit.state.user;
+    //   String? email,
+    // String? guid,
+    // String? firstName,
+    // String? lastName,
+    // String? phoneNumber,
+    // String? address,
+    // String? city,
+    // String? postalCode,
+    // String? country,
+    // int? countryCode,
+    // String? iban,
+    // bool? isGiftAidEnabled,
+    // String? sortCode,
+    // String? accountNumber,
+    // AccountType? accountType,
+    // String? appLanguage,
+    // String? payProvMandateStatus,
+    // String? payProvMandate,
+    // int? amountLimit,
+    // bool? tempUser,
+    // bool? mandateSigned,
+    // bool? maxAmountRegistered,
+    // bool? multipleCollectsFirstBallon,
+    // bool? multipleCollectsSecondBallon,
+    // bool? needRegistration,
+    // bool? personalInfoRegistered,
+    // bool? pinSet,
+    // bool? multipleCollectsAccepted,
+    log('email: ${user.email} \nguid: ${user.guid}'
+        '\nfirstName: ${user.firstName} \nlastName: ${user.lastName}'
+        '\nphoneNumber: ${user.phoneNumber} \naddress: ${user.address}'
+        '\ncity: ${user.city} \npostalCode: ${user.postalCode}'
+        '\ncountry: ${user.country} \niban; ${user.iban} \naccountNumber : ${user.accountType}'
+        ' \npayProvMandateStatus: ${user.payProvMandateStatus} \npayProvMandate: ${user.payProvMandate}'
+        ' \namountLimit: ${user.amountLimit} \ntempUser: ${user.tempUser}'
+        ' \nmandateSigned: ${user.mandateSigned} \nmaxAmountRegistered: ${user.maxAmountRegistered}'
+        ' \nmultipleCollectsFirstBallon: ${user.multipleCollectsFirstBallon} \nmultipleCollectsSecondBallon: ${user.multipleCollectsSecondBallon}'
+        ' \nneedRegistration: ${user.needRegistration} \npersonalInfoRegistered: ${user.personalInfoRegistered}'
+        ' \npinSet: ${user.pinSet} \nmultipleCollectsAccepted: ${user.multipleCollectsAccepted}');
+    if (user.mandateSigned == true) {
+      emit(state.copyWith(status: RegistrationStatus.success));
+    } else {
+      emit(state.copyWith(status: RegistrationStatus.failure));
+    }
   }
 
   FutureOr<void> _onGiftAidChanged(

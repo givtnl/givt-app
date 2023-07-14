@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
@@ -15,7 +16,6 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({
@@ -54,28 +54,32 @@ class _SignUpPageState extends State<SignUpPage> {
     final stripeCubit = context.read<StripeCubit>();
     return BlocBuilder<StripeCubit, StripeState>(
       builder: (context, stripestate) {
+        log('Stripe state: $stripestate');
+        log('registration state: ${context.read<RegistrationBloc>().state}');
         return Scaffold(
-          appBar: RegistrationAppBar(
-            actions: [
-              IconButton(
-                onPressed: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  showDragHandle: true,
-                  backgroundColor: Theme.of(context).colorScheme.tertiary,
-                  builder: (_) => const FAQBottomSheet(),
+          appBar: stripestate.stripeStatus == StripeObjectStatus.display
+              ? null
+              : RegistrationAppBar(
+                  actions: [
+                    IconButton(
+                      onPressed: () => showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        showDragHandle: true,
+                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        builder: (_) => const FAQBottomSheet(),
+                      ),
+                      icon: const Icon(
+                        Icons.question_mark_outlined,
+                        size: 26,
+                      ),
+                    ),
+                  ],
                 ),
-                icon: const Icon(
-                  Icons.question_mark_outlined,
-                  size: 26,
-                ),
-              ),
-            ],
-          ),
           resizeToAvoidBottomInset: false,
           bottomSheet: stripestate.stripeStatus == StripeObjectStatus.display
-              ? _createWebViewPage(context, stripeCubit.state.stripeObject)
+              ? _createInAppWebview(context, stripeCubit.state.stripeObject)
               : Container(
                   margin: const EdgeInsets.only(
                     bottom: 30,
@@ -369,40 +373,47 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _createView(StripeObjectStatus status) {
     if (status == StripeObjectStatus.loading) {
-      return CircularProgressIndicator();
+      return const Center(child: CircularProgressIndicator());
     } else if (status == StripeObjectStatus.failure) {
-      return Text('Could not connect to Stripe');
+      return const Text('Could not connect to Stripe');
     } else {
       return Text('stripe status ${status}');
     }
   }
 
-  Widget _createWebViewPage(BuildContext context, StripeResponse response) {
-    final webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageStarted: (String url) {
-            log('onPageStarted: $url');
-            if (url == response.cancelUrl) {
-              log('Stripe cancelled');
-              context.pop();
-              // show error snackbar 'Registration not finished'
-            } else if (url == response.successUrl) {
-              log('Stripe success');
-              context.pop();
-              //show success snackbar
-              // change registration status to success
-            }
-          },
-          // onUrlChange: (change) {
-          //   log('VPC onUrlChange: ${change.url}');
-          // },
-        ),
-      )
-      ..loadRequest(Uri.parse(response.url));
-    return SizedBox.expand(
-      child: WebViewWidget(controller: webViewController),
+  Widget _createInAppWebview(BuildContext context, StripeResponse response) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30),
+      child: InAppWebView(
+        initialUrlRequest: URLRequest(url: Uri.parse(response.url)),
+        onWebViewCreated: (controller) {
+          controller.loadUrl(
+              urlRequest: URLRequest(url: Uri.parse(response.url)));
+        },
+        onLoadStart: (controller, url) {
+          print('current $url');
+          if (url == Uri.parse(response.cancelUrl)) {
+            log('Stripe cancelled');
+            context.pop();
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Registration cancelled'),
+              ),
+            );
+          } else if (url == Uri.parse(response.successUrl)) {
+            log('Stripe success');
+            context.pop();
+            context
+                .read<RegistrationBloc>()
+                .add(const RegistrationStripeSuccess());
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Registration successful'),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
