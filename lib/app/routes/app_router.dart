@@ -25,6 +25,8 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/features/vpc/pages/give_vpc_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -69,6 +71,14 @@ class AppRouter {
                     authRepositoy: getIt(),
                   ),
                   child: const PersonalInfoEditPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.giveVPC.path,
+                name: Pages.giveVPC.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => VPCCubit(getIt()),
+                  child: const GiveVPCPage(),
                 ),
               ),
               GoRoute(
