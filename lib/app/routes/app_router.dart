@@ -14,6 +14,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
+import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -26,6 +27,8 @@ import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/vpc/pages/give_vpc_page.dart';
+import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
+import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -203,10 +206,16 @@ class AppRouter {
                   GoRoute(
                     path: Pages.giveOffline.path,
                     name: Pages.giveOffline.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const GivingPage(),
-                    ),
+                    builder: (context, state) {
+                      final extra = state.extra! as GiveBloc;
+                      return BlocProvider.value(
+                        value: extra,
+                        child: SuccessOfflineDonationPage(
+                          organisationName:
+                              extra.state.organisation.organisationName!,
+                        ),
+                      );
+                    },
                   ),
                   GoRoute(
                     path: Pages.giveByBeacon.path,
@@ -283,6 +292,16 @@ class AppRouter {
                     child: const OverviewPage(),
                   );
                 },
+              ),
+              GoRoute(
+                path: Pages.unregister.path,
+                name: Pages.unregister.name,
+                builder: (_, state) => BlocProvider(
+                  create: (_) => UnregisterCubit(
+                    getIt(),
+                  ),
+                  child: const UnregisterPage(),
+                ),
               ),
             ],
             builder: (context, state) => BlocProvider(

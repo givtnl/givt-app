@@ -73,7 +73,10 @@ class _GPSScanPageState extends State<GPSScanPage> {
           builder: (_) => WarningDialog(
             title: context.l10n.allowGivtLocationTitle,
             content: context.l10n.allowGivtLocationMessage,
-            onConfirm: openAppSettings,
+            onConfirm: () {
+              openAppSettings();
+              context.pop();
+            },
           ),
         );
         return;
@@ -89,7 +92,10 @@ class _GPSScanPageState extends State<GPSScanPage> {
         builder: (_) => WarningDialog(
           title: context.l10n.allowGivtLocationTitle,
           content: context.l10n.locationEnabledMessage,
-          onConfirm: openAppSettings,
+          onConfirm: () {
+            openAppSettings();
+            context.pop();
+          },
         ),
       );
     });

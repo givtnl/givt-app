@@ -3,43 +3,49 @@ import 'package:equatable/equatable.dart';
 class QrCode extends Equatable {
   QrCode({
     required this.name,
-    required this.mediumId,
+    required this.instance,
     required this.isActive,
-  }) : nameSpace = mediumId.split('.').first;
+  }) : nameSpace = instance.split('.').first;
+
+  const QrCode.empty()
+      : name = '',
+        instance = '',
+        isActive = false,
+        nameSpace = '';
 
   factory QrCode.fromJson(Map<String, dynamic> json) {
     return QrCode(
-      name: json['name'] as String,
-      mediumId: json['mediumId'] as String,
-      isActive: json['isActive'] as bool,
+      name: json['N'] != null ? json['N'] as String : '',
+      instance: json['I'] as String,
+      isActive: json['A'] as bool,
     );
   }
 
   final String name;
-  final String mediumId;
+  final String instance;
   final bool isActive;
   final String nameSpace;
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'mediumId': mediumId,
-      'isActive': isActive,
+      'N': name,
+      'I': instance,
+      'A': isActive,
     };
   }
 
   QrCode copyWith({
     String? name,
-    String? mediumId,
+    String? instance,
     bool? isActive,
   }) {
     return QrCode(
       name: name ?? this.name,
-      mediumId: mediumId ?? this.mediumId,
+      instance: instance ?? this.instance,
       isActive: isActive ?? this.isActive,
     );
   }
 
   @override
-  List<Object?> get props => [name, mediumId, isActive, nameSpace];
+  List<Object?> get props => [name, instance, isActive, nameSpace];
 }

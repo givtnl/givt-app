@@ -3,12 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key, this.email = ''});
+  const LoginPage({
+    super.key,
+    this.email = '',
+    this.popWhenSuccess = false,
+  });
 
   final String email;
+  final bool popWhenSuccess;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -18,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  bool isLoading = false;
   bool _obscureText = true;
 
   @override
@@ -28,20 +35,21 @@ class _LoginPageState extends State<LoginPage> {
     _passwordController = TextEditingController();
   }
 
-  void toggleLoader(bool loading) {
-    setState(() {
-      isLoading = loading;
-    });
-  }
-
   Future<void> onLogin(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
-      toggleLoader(true);
       try {
-        await context.read<AuthCubit>().login(
+        await context
+            .read<AuthCubit>()
+            .login(
               email: _emailController.text,
               password: _passwordController.text,
-            );
+            )
+            .whenComplete(() {
+          if (widget.popWhenSuccess &&
+              context.read<AuthCubit>().state is AuthSuccess) {
+            context.pop();
+          }
+        });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -50,13 +58,12 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     }
-    toggleLoader(false);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
+    final locals = context.l10n;
 
     return SafeArea(
       child: BlocListener<AuthCubit, AuthState>(
@@ -64,15 +71,10 @@ class _LoginPageState extends State<LoginPage> {
           if (state is AuthFailure) {
             showDialog<void>(
               context: context,
-              builder: (context) => AlertDialog(
-                title: Text(locals.loginFailure),
-                content: Text(locals.wrongCredentials),
-                actions: [
-                  TextButton(
-                    child: Text(locals.continueKey),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
+              builder: (context) => WarningDialog(
+                title: locals.loginFailure,
+                content: locals.wrongCredentials,
+                onConfirm: () => context.pop(),
               ),
             );
           }
@@ -94,31 +96,33 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: size.height * 0.05),
-                TextFormField(
+                CustomTextFormField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  readOnly: widget.popWhenSuccess,
+                  onChanged: (value) {
+                    _formKey.currentState!.validate();
+                  },
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
-                        value.contains(Util.emailRegEx) == false) {
-                      return AppLocalizations.of(context).invalidEmail;
+                        !Util.emailRegEx.hasMatch(value)) {
+                      return locals.invalidEmail;
                     }
                     return null;
                   },
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 16),
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).email,
-                  ),
+                  hintText: locals.email,
                 ),
                 const SizedBox(height: 15),
-                TextFormField(
+                CustomTextFormField(
                   controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
+                  onChanged: (value) {
+                    _formKey.currentState!.validate();
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return locals.wrongPasswordLockedOut;
+                      return locals.passwordRule;
                     }
                     if (value.length < 7) {
                       return locals.passwordRule;
@@ -133,23 +137,17 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                   obscureText: _obscureText,
-                  textInputAction: TextInputAction.next,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(fontSize: 16),
-                  decoration: InputDecoration(
-                    hintText: AppLocalizations.of(context).password,
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
-                      },
+                  textInputAction: TextInputAction.done,
+                  hintText: locals.password,
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
                   ),
                 ),
                 Padding(
@@ -174,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Expanded(child: Container()),
-                if (isLoading)
+                if (context.watch<AuthCubit>().state is AuthLoading)
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(

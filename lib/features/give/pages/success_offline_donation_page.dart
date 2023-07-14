@@ -54,7 +54,12 @@ class SuccessOfflineDonationPage extends StatelessWidget {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () => context.goNamed(Pages.home.name),
+          onPressed: () => context.goNamed(
+            Pages.home.name,
+            queryParameters: {
+              'given': 'true',
+            },
+          ),
           child: Text(locals.ready),
         ),
         const SizedBox(height: 10),

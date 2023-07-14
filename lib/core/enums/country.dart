@@ -20,11 +20,11 @@ enum Country {
   si('+386', 'SI'),
   sk('+421', 'SK'),
   ie('+353', 'IE'),
-  ad('+376', 'AD', isBACS: true),
-  gb('+44', 'GB', isBACS: true),
-  je('+44', 'JE', isBACS: true),
-  gg('+44', 'GG', isBACS: true),
-  us('+1', 'US', isCreditCard: true),
+  ad('+376', 'AD', isBACS: true, currency: 'GBP'),
+  gb('+44', 'GB', isBACS: true, currency: 'GBP'),
+  je('+44', 'JE', isBACS: true, currency: 'GBP'),
+  gg('+44', 'GG', isBACS: true, currency: 'GBP'),
+  us('+1', 'US', isCreditCard: true, currency: 'USD'),
   unknown('', '');
 
   const Country(
@@ -32,8 +32,10 @@ enum Country {
     this.countryCode, {
     this.isBACS = false,
     this.isCreditCard = false,
+    this.currency = 'EUR',
   });
   final String prefix;
+  final String currency;
   final String countryCode;
   final bool isBACS;
   final bool isCreditCard;
@@ -70,6 +72,7 @@ enum Country {
     );
   }
 
+  
   ///TODO this should be done straight from the localizations. Delete all the countries and add only one unified string separated by commas and then split it
   static String getCountry(String countryCode, AppLocalizations locals) {
     switch (countryCode) {
