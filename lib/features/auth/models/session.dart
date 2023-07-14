@@ -51,6 +51,7 @@ class Session {
 
   bool get isExpired {
     final now = DateTime.now().toUtc();
+    if (expires.isEmpty) return false;
     final expiresDate = DateTime.parse(expires).subtract(
       const Duration(
         minutes: 20,
