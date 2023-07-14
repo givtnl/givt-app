@@ -7,6 +7,7 @@ import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -125,6 +126,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   _buildTextFormField(
                     hintText: locals.postalCode,
                     controller: _postalCode,
+                    toUpperCase: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return '';
@@ -376,10 +378,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required String hintText,
     required TextEditingController controller,
     required String? Function(String?) validator,
+    bool toUpperCase = false,
   }) {
     return CustomTextFormField(
       controller: controller,
       hintText: hintText,
+      inputFormatters: toUpperCase ? [UpperCaseTextFormatter()] : [],
       onChanged: (value) => setState(() {
         _formKey.currentState!.validate();
       }),
