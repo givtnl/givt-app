@@ -322,4 +322,25 @@ class APIService {
     }
     return response.statusCode == 200;
   }
+
+  Future<Map<String, dynamic>> getVerifiableParentalConsentURL(
+    String guid,
+  ) async {
+    final url = Uri.https(
+      apiURL,
+      '/givtservice/v1/PaymentProvider/checkoutsession/$guid/parent-control-validation',
+    );
+
+    final response = await client.get(url);
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return responseBody['item'] as Map<String, dynamic>;
+    } else {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
 }
