@@ -204,34 +204,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   ) async {
     await authCubit.refreshUser();
     final user = authCubit.state.user;
-    //   String? email,
-    // String? guid,
-    // String? firstName,
-    // String? lastName,
-    // String? phoneNumber,
-    // String? address,
-    // String? city,
-    // String? postalCode,
-    // String? country,
-    // int? countryCode,
-    // String? iban,
-    // bool? isGiftAidEnabled,
-    // String? sortCode,
-    // String? accountNumber,
-    // AccountType? accountType,
-    // String? appLanguage,
-    // String? payProvMandateStatus,
-    // String? payProvMandate,
-    // int? amountLimit,
-    // bool? tempUser,
-    // bool? mandateSigned,
-    // bool? maxAmountRegistered,
-    // bool? multipleCollectsFirstBallon,
-    // bool? multipleCollectsSecondBallon,
-    // bool? needRegistration,
-    // bool? personalInfoRegistered,
-    // bool? pinSet,
-    // bool? multipleCollectsAccepted,
+
     log('email: ${user.email} \nguid: ${user.guid}'
         '\nfirstName: ${user.firstName} \nlastName: ${user.lastName}'
         '\nphoneNumber: ${user.phoneNumber} \naddress: ${user.address}'
