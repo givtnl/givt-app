@@ -251,8 +251,7 @@ class AppRouter {
                     path: Pages.giveByList.path,
                     name: Pages.giveByList.name,
                     builder: (context, state) {
-                      final user =
-                          (context.read<AuthCubit>().state as AuthSuccess).user;
+                      final user = context.read<AuthCubit>().state.user;
                       return MultiBlocProvider(
                         providers: [
                           BlocProvider.value(
