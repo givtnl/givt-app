@@ -36,7 +36,7 @@ dependencies:
   logging: ^1.2.0
   mobile_scanner: ^2.1.0
   package_info_plus: ^4.0.2
-  permission_handler: ^10.3.0
+  permission_handler: ^10.4.3
   share_plus: ^7.0.2
   shared_preferences: ^2.1.1
   sprintf: ^7.0.0
