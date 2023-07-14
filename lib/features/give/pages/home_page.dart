@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,89 +26,81 @@ class HomePage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     final auth = context.read<AuthCubit>().state;
-    return badges.Badge(
-      showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
-      position: badges.BadgePosition.topStart(
-        top: size.height * 0.05,
-        start: size.width * 0.09,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(locals.amount),
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              showDragHandle: true,
+              backgroundColor: AppTheme.givtPurple,
+              builder: (_) => const FAQBottomSheet(),
+            ),
+            icon: const Icon(
+              Icons.question_mark_outlined,
+              size: 26,
+            ),
+          ),
+        ],
       ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(locals.amount),
-          actions: [
-            IconButton(
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                showDragHandle: true,
-                backgroundColor: AppTheme.givtPurple,
-                builder: (_) => const FAQBottomSheet(),
+      drawer: const CustomNavigationDrawer(),
+      body: SafeArea(
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+              listener: (context, state) {
+                if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
+                      ),
+                    ),
+                  );
+                }
+                if (state is RemoteDataSourceSyncInProgress) {
+                  if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                    return;
+                  }
+                  _buildNeedsRegistrationDialog(context);
+                }
+              },
+              child: ChooseAmount(
+                country: Country.fromCode(auth.user.country),
+                amountLimit: auth.user.amountLimit,
+                hasGiven: given,
+                onAmountChanged:
+                    (firstCollection, secondCollection, thirdCollection) =>
+                        context.goNamed(
+                  Pages.selectGivingWay.name,
+                  extra: {
+                    'firstCollection': firstCollection,
+                    'secondCollection': secondCollection,
+                    'thirdCollection': thirdCollection,
+                    'code': code,
+                  },
+                ),
               ),
-              icon: const Icon(
-                Icons.question_mark_outlined,
-                size: 26,
+            ),
+            ColoredBox(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  right: 15,
+                  left: 15,
+                  bottom: 10,
+                ),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: size.width * 0.2,
+                ),
               ),
             ),
           ],
-        ),
-        drawer: const CustomNavigationDrawer(),
-        body: SafeArea(
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-                listener: (context, state) {
-                  if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
-                        ),
-                      ),
-                    );
-                  }
-                  if (state is RemoteDataSourceSyncInProgress) {
-                    if (!auth.user.needRegistration ||
-                        auth.user.mandateSigned) {
-                      return;
-                    }
-                    _buildNeedsRegistrationDialog(context);
-                  }
-                },
-                child: ChooseAmount(
-                  country: Country.fromCode(auth.user.country),
-                  amountLimit: auth.user.amountLimit,
-                  hasGiven: given,
-                  onAmountChanged:
-                      (firstCollection, secondCollection, thirdCollection) =>
-                          context.goNamed(
-                    Pages.selectGivingWay.name,
-                    extra: {
-                      'firstCollection': firstCollection,
-                      'secondCollection': secondCollection,
-                      'thirdCollection': thirdCollection,
-                      'code': code,
-                    },
-                  ),
-                ),
-              ),
-              ColoredBox(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 15,
-                    left: 15,
-                    bottom: 10,
-                  ),
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: size.width * 0.2,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
