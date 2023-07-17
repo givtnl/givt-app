@@ -59,10 +59,14 @@ class SelectGivingWayPage extends StatelessWidget {
                   return;
                 }
                 if (state.status == GiveStatus.readyToConfirm) {
+                  var orgName = state.organisation.organisationName!;
+                  if (state.instanceName.isNotEmpty) {
+                    orgName = '$orgName: ${state.instanceName}';
+                  }
                   _buildGivingDialog(
                     context,
                     text: context.l10n.qrScannedOutOfApp(
-                      state.organisation.organisationName!,
+                      orgName,
                     ),
                     image: 'assets/images/select_qr_phone_scan.png',
                     onTap: () => context.read<GiveBloc>().add(

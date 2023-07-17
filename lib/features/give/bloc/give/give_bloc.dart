@@ -66,29 +66,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final uri = Uri.parse(event.rawValue);
       final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
 
-      final qrCode = await _getCollectGroupInstanceName(mediumId);
-
-      if (qrCode.instance.isEmpty) {
-        emit(state.copyWith(status: GiveStatus.error));
-        return;
-      }
-
-      if (!qrCode.isActive) {
-        final org = await _getOrganisation(mediumId);
-        emit(
-          state.copyWith(
-            status: GiveStatus.beaconNotActive,
-            organisation: org,
-          ),
-        );
-        return;
-      }
-
-      emit(
-        state.copyWith(
-          instanceName: qrCode.name,
-        ),
-      );
+      await _checkQRCode(mediumId: mediumId, emit: emit);
 
       await _processGivts(
         namespace: mediumId,
@@ -547,5 +525,34 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           (element) => element.instance.endsWith(instance),
           orElse: () => const QrCode.empty(),
         );
+  }
+
+  /// Search for the qrCode that belongs to the given [mediumId]
+  Future<void> _checkQRCode({
+    required String mediumId,
+    required Emitter<GiveState> emit,
+  }) async {
+    final qrCode = await _getCollectGroupInstanceName(mediumId);
+
+    if (qrCode.instance.isEmpty) {
+      emit(state.copyWith(status: GiveStatus.error));
+      return;
+    }
+
+    if (!qrCode.isActive) {
+      final org = await _getOrganisation(mediumId);
+      emit(
+        state.copyWith(
+          status: GiveStatus.beaconNotActive,
+          organisation: org,
+        ),
+      );
+      return;
+    }
+    emit(
+      state.copyWith(
+        instanceName: qrCode.name,
+      ),
+    );
   }
 }
