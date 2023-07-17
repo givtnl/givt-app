@@ -92,8 +92,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
-                          value.contains(Util.emailRegEx) == false) {
-                        return AppLocalizations.of(context).invalidEmail;
+                          !Util.emailRegEx.hasMatch(value)) {
+                        return context.l10n.invalidEmail;
                       }
                       return null;
                     },
