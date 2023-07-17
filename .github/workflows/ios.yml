@@ -48,6 +48,7 @@ jobs:
         with: 
           ruby-version: '3.0'
           bundler-cache: true
+          working-directory: ios
 
       - name: Auth codesigning
         uses: webfactory/ssh-agent@v0.8.0
