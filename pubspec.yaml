@@ -42,7 +42,7 @@ dependencies:
   sprintf: ^7.0.0
   sticky_headers: ^0.3.0+2
   url_launcher: ^6.1.11
-  vibration: ^1.7.7
+  vibration: ^1.8.1
   webview_flutter: ^4.2.2
 
 dev_dependencies:

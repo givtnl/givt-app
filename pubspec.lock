@@ -1046,10 +1046,10 @@ packages:
     dependency: "direct main"
     description:
       name: vibration
-      sha256: "2938d4bf4ecfdb1cdac6b8f20f40cd3e7b7783edd6ca551a46d144a134473626"
+      sha256: d81f665bcb201f586c295a21f3fe8f1cb6dc32c81a213a99e9c714ec8e811ce5
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.7"
+    version: "1.8.1"
   vm_service:
     dependency: transitive
     description:
