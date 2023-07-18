@@ -18,9 +18,9 @@ class CustomNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
-    final auth = context.read<AuthCubit>().state;
+    final size = MediaQuery.sizeOf(context);
+    final locals = context.l10n;
+    final auth = context.watch<AuthCubit>().state;
     final showFamilyItem = auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
         auth.user.mandateSigned;
