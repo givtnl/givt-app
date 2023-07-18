@@ -38,7 +38,7 @@ dependencies:
   package_info_plus: ^4.0.2
   permission_handler: ^10.4.3
   share_plus: ^7.0.2
-  shared_preferences: ^2.1.1
+  shared_preferences: ^2.2.0
   sprintf: ^7.0.0
   sticky_headers: ^0.3.0+2
   url_launcher: ^6.1.11
