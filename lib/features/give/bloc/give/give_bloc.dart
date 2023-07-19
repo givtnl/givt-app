@@ -438,11 +438,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
             'Location ${location.name} found in radius at $distance meters',
           );
 
+          final qrCode = await _getCollectGroupInstanceName(location.beaconId);
+
           /// if no nearest location set nearest location
           if (state.nearestLocation.beaconId.isEmpty) {
             emit(
               state.copyWith(
                 nearestLocation: location,
+                instanceName: qrCode.name,
               ),
             );
             continue;
@@ -462,6 +465,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
             emit(
               state.copyWith(
                 nearestLocation: location,
+                instanceName: qrCode.name,
               ),
             );
             continue;
