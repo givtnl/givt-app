@@ -41,7 +41,7 @@ dependencies:
   shared_preferences: ^2.2.0
   sprintf: ^7.0.0
   sticky_headers: ^0.3.0+2
-  url_launcher: ^6.1.11
+  url_launcher: ^6.1.12
   vibration: ^1.8.1
   webview_flutter: ^4.2.2
 
