@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/vpc/models/vps_response.dart';
 import 'package:givt_app/features/vpc/pages/vpc_intro_page.dart';
 import 'package:givt_app/features/vpc/pages/vpc_success_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class GiveVPCPage extends StatelessWidget {
   const GiveVPCPage({super.key});
@@ -57,27 +57,26 @@ class GiveVPCPage extends StatelessWidget {
 }
 
 Widget _createWebViewPage(BuildContext context, VPCResponse response) {
-  final webViewController = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onPageStarted: (String url) {
-          log('VPC onPageStarted: $url');
-          if (url == response.cancelUrl) {
-            context.read<VPCCubit>().redirectOnCancel();
-          } else if (url == response.successUrl) {
-            context.read<VPCCubit>().redirectOnSuccess();
-          }
-        },
-      ),
-    )
-    ..loadRequest(Uri.parse(response.url));
-
   return Container(
     width: double.infinity,
     height: double.infinity,
     margin: const EdgeInsets.only(top: 30),
-    child: WebViewWidget(controller: webViewController),
+    child: InAppWebView(
+      initialUrlRequest: URLRequest(url: Uri.parse(response.url)),
+      onWebViewCreated: (controller) {
+        controller.loadUrl(
+          urlRequest: URLRequest(url: Uri.parse(response.url)),
+        );
+      },
+      onLoadStart: (controller, url) {
+        log('VPC onPageStarted: $url');
+        if (url == Uri.parse(response.cancelUrl)) {
+          context.read<VPCCubit>().redirectOnCancel();
+        } else if (url == Uri.parse(response.successUrl)) {
+          context.read<VPCCubit>().redirectOnSuccess();
+        }
+      },
+    ),
   );
 }
 
