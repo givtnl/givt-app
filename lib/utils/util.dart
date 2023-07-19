@@ -6,11 +6,10 @@ class Util {
   static final usPhoneNumberRegEx =
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
-  static final emailRegEx = RegExp(
-      r'^[_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*(\+[a-zA-Z0-9-]+)?@[a-z0-9-]+(\.[a-zA-Z0-9-]+)*$');
+  static final emailRegEx = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
   static final nameFieldsRegEx =
       RegExp(r'^[^0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$');
 
-  static final phoneNumberRegEx = RegExp(
-      r'((?:\+|00)[17](?: |\-)?|(?:\+|00)[1-9]\d{0,2}(?: |\-)?|(?:\+|00)1\-\d{3}(?: |\-)?)?(0\d|\([0-9]{3}\)|[1-9]{0,3})(?:((?: |\-)[0-9]{2}){4}|((?:[0-9]{2}){4})|((?: |\-)[0-9]{3}(?: |\-)[0-9]{4})|([0-9]{7}))');
+  static RegExp phoneNumberRegEx(String prefix) =>
+      RegExp('\\(?\\+\\(?$prefix\\)?[()]?([-()]?\\d[-()]?){9,10}');
 }

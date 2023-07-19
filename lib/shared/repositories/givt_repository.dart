@@ -33,6 +33,7 @@ class GivtRepositoryImpl with GivtRepository {
       'donationType': 0,
     }..addAll(body);
     try {
+      await syncOfflineGivts();
       await apiClient.submitGivts(
         body: givts,
         guid: guid,

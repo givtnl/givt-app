@@ -10,6 +10,7 @@ import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/stripe_info_sheet.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -358,15 +359,19 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             if (value == null || value.isEmpty) {
               return '';
             }
-            if (!Util.phoneNumberRegEx.hasMatch(value)) {
-              return '';
-            }
+
             if (Country.unitedKingdomCodes()
                 .contains(_selectedCountry.countryCode)) {
               if (!Util.ukPhoneNumberRegEx
                   .hasMatch('${_selectedCountry.prefix}$value')) {
                 return '';
               }
+              return null;
+            }
+
+            final prefix = _selectedCountry.prefix.replaceAll('+', '');
+            if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
+              return '';
             }
             if (Country.us == _selectedCountry) {
               if (!Util.usPhoneNumberRegEx.hasMatch('$value')) {
@@ -429,13 +434,16 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required String hintText,
     required TextEditingController controller,
     required String? Function(String?) validator,
+    bool toUpperCase = false,
   }) {
     return CustomTextFormField(
       controller: controller,
       hintText: hintText,
+      inputFormatters: toUpperCase ? [UpperCaseTextFormatter()] : [],
       onChanged: (value) => setState(() {
         _formKey.currentState!.validate();
       }),
+      validator: validator,
     );
   }
 
