@@ -16,6 +16,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
@@ -60,9 +61,9 @@ class CustomNavigationDrawer extends StatelessWidget {
           //   thickness: size.height * 0.03,
           // ),
           _buildSummaryTile(size, locals, context),
-          // Divider(
-          //   thickness: size.height * 0.02,
-          // ),
+          Divider(
+            thickness: size.height * 0.02,
+          ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
@@ -71,7 +72,11 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             title: locals.giveLimit,
-            icon: Icons.euro,
+            icon: Util.getCurrencyIconData(
+              country: Country.fromCode(
+                auth.user.country,
+              ),
+            ),
             onTap: () {},
           ),
           _buildMenuItem(
