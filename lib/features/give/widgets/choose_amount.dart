@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -240,20 +241,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
     });
   }
 
-  Icon _buildCurrencyIcon(Country country) {
-    var icon = Icons.euro;
-    if (country == Country.us) {
-      icon = Icons.attach_money;
-    }
-    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
-      icon = Icons.currency_pound;
-    }
-
-    return Icon(
-      icon,
-      color: Colors.grey,
-    );
-  }
+  Icon _buildCurrencyIcon(Country country) => Icon(
+        Util.getCurrencyIconData(
+          country: country,
+        ),
+        color: Colors.grey,
+      );
 
   Future<bool> _checkAmounts(
     BuildContext context, {
