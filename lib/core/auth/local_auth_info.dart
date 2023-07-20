@@ -20,6 +20,8 @@ class LocalAuthInfo with ILocalAuthInfo {
 
   final LocalAuthentication _localAuth;
 
+  static const String _canCheckBiometrics = 'canCheckBiometrics';
+
   @override
   Future<bool> get canCheckBiometrics {
     return SharedPreferences.getInstance().then((prefs) {
@@ -56,6 +58,4 @@ class LocalAuthInfo with ILocalAuthInfo {
     final prefs = await SharedPreferences.getInstance();
     return prefs.setBool(_canCheckBiometrics, value);
   }
-
-  static const String _canCheckBiometrics = 'canCheckBiometrics';
 }
