@@ -209,14 +209,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.4"
-  fixnum:
-    dependency: transitive
-    description:
-      name: fixnum
-      sha256: "25517a4deb0c03aa0f32fd12db525856438902d9c16536311e76cdc57b31d7d1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -234,10 +226,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_blue_plus
-      sha256: "170032874424aed365eaefc73f2b5db0f9a2c2ca1ea73241a9e9d2a90969680f"
+      sha256: d5d0eb18ecfbde524f7361690469826d717fa49b9ac48423a8c1130048ec0b65
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.1"
+    version: "1.7.7"
   flutter_inappwebview:
     dependency: "direct main"
     description:
@@ -693,14 +685,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.4"
-  protobuf:
-    dependency: transitive
-    description:
-      name: protobuf
-      sha256: "01dd9bd0fa02548bf2ceee13545d4a0ec6046459d847b6b061d8a27237108a08"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   provider:
     dependency: transitive
     description:
