@@ -69,8 +69,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     final prevState = state;
     emit(AuthLoading());
-    await _authRepositoy.logout();
-    emit(AuthLogout(email: prevState.user.email));
+    // await _authRepositoy.logout();
+    emit(AuthLogout(user: prevState.user, session: prevState.session));
   }
 
   Future<void> register({
@@ -138,6 +138,24 @@ class AuthCubit extends Cubit<AuthState> {
       );
       emit(const AuthFailure());
     }
+  }
+
+  Future<bool> authenticate() async {
+    final prevState = state;
+    emit(AuthLoading());
+    try {
+      final session = await _authRepositoy.refreshToken();
+      emit(
+        AuthSuccess(
+          user: prevState.user,
+          session: session,
+        ),
+      );
+      return true;
+    } catch (e) {
+      emit(const AuthFailure());
+    }
+    return false;
   }
 
   Future<void> refreshSession() async {
