@@ -59,8 +59,8 @@ class AuthLogout extends AuthState {
   List<Object> get props => [];
 }
 
-class AuthUnkown extends AuthState {
-  const AuthUnkown({
+class AuthUnknown extends AuthState {
+  const AuthUnknown({
     super.email,
   });
 

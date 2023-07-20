@@ -328,7 +328,7 @@ class AppRouter {
                 queryParameters: routerState.queryParameters,
               );
             }
-            if (state is AuthLogout || state is AuthUnkown) {
+            if (state is AuthLogout || state is AuthUnknown) {
               context.goNamed(Pages.welcome.name);
             }
           },

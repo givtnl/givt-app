@@ -10,7 +10,8 @@ import 'package:givt_app/shared/models/models.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy, this._countryIsoInfo) : super(const AuthUnkown());
+  AuthCubit(this._authRepositoy, this._countryIsoInfo)
+      : super(const AuthUnknown());
 
   final AuthRepositoy _authRepositoy;
   final CountryIsoInfo _countryIsoInfo;
@@ -51,7 +52,7 @@ class AuthCubit extends Cubit<AuthState> {
       final (userExt, session) =
           await _authRepositoy.isAuthenticated() ?? (null, null);
       if (userExt == null || session == null) {
-        emit(const AuthUnkown());
+        emit(const AuthUnknown());
         return;
       }
 
