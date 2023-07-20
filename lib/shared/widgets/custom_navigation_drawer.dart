@@ -102,23 +102,34 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           FutureBuilder(
             initialData: false,
-            future: LocalAuthInfo.instance.checkFingerprint(),
-            builder: (context, snapshot) {
+            future: Future.wait<bool>([
+              LocalAuthInfo.instance.checkFingerprint(),
+              LocalAuthInfo.instance.checkFaceId(),
+            ]),
+            builder: (_, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return const SizedBox.shrink();
               }
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+              if (snapshot.data == null) {
+                return const SizedBox.shrink();
+              }
 
-              final isFingerprintAvailable = snapshot.data as bool;
+              final data = snapshot.data! as List<bool>;
+              final isFingerprintAvailable = data[0];
+              final isFaceIdAvailable = data[1];
 
               return _buildMenuItem(
-                isVisible: isFingerprintAvailable,
+                isVisible: isFingerprintAvailable || isFaceIdAvailable,
                 title: isFingerprintAvailable
                     ? Platform.isAndroid
                         ? locals.fingerprintTitle
                         : locals.touchId
                     : locals.faceId,
                 icon: Icons.fingerprint,
-                imageIcon: Platform.isIOS && !isFingerprintAvailable
+                imageIcon: Platform.isIOS && isFaceIdAvailable
                     ? SvgPicture.asset(
                         'assets/images/face_id.svg',
                         width: 24,
