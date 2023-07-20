@@ -308,13 +308,17 @@ class CustomNavigationDrawer extends StatelessWidget {
       return;
     }
     try {
-      await LocalAuthInfo.instance.authenticate().then((hasAuthenticated) {
-        if (!hasAuthenticated) {
-          return;
-        }
-        context.read<AuthCubit>().refreshSession();
-        context.goNamed(route);
-      });
+      final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
+      if (!hasAuthenticated) {
+        return;
+      }
+      // ignore: use_build_context_synchronously
+      if (!context.mounted) {
+        return;
+      }
+      await context.read<AuthCubit>().refreshSession();
+      // ignore: use_build_context_synchronously
+      context.goNamed(route);
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
