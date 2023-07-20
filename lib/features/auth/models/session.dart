@@ -69,5 +69,10 @@ class Session {
         'expires_In': expiresIn,
       };
 
+  @override
+  String toString() {
+    return 'Session{userGUID: $userGUID, email: $email, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, expiresIn: $expiresIn}';
+  }
+
   static String tag = 'Session';
 }

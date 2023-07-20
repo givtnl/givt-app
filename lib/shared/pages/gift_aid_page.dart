@@ -73,7 +73,7 @@ class _GiftAidPageState extends State<GiftAidPage> {
               Text(
                 locals.giftAidSetting,
               ),
-              CupertinoSwitch(
+              Switch.adaptive(
                 onChanged: (bool value) => setState(() {
                   useGiftAid = value;
                 }),

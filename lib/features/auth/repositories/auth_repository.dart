@@ -7,7 +7,7 @@ import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
-  Future<void> refreshToken();
+  Future<Session> refreshToken();
   Future<Session> login(String email, String password);
   Future<UserExt> fetchUserExtension(String guid);
   Future<(UserExt, Session)?> isAuthenticated();
@@ -47,10 +47,10 @@ class AuthRepositoyImpl with AuthRepositoy {
   final APIService _apiService;
 
   @override
-  Future<void> refreshToken() async {
+  Future<Session> refreshToken() async {
     final currentSession = _prefs.getString(Session.tag);
     if (currentSession == null) {
-      return;
+      return const Session.empty();
     }
     final session = Session.fromJson(
       jsonDecode(currentSession) as Map<String, dynamic>,
@@ -66,6 +66,7 @@ class AuthRepositoyImpl with AuthRepositoy {
       Session.tag,
       jsonEncode(newSession.toJson()),
     );
+    return newSession;
   }
 
   @override

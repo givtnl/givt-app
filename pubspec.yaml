@@ -33,6 +33,7 @@ dependencies:
   iban: ^1.0.1
   internet_connection_checker_plus: ^1.0.1
   intl: ^0.18.0
+  local_auth: ^2.1.6
   logging: ^1.2.0
   mobile_scanner: ^2.1.0
   package_info_plus: ^4.0.2
