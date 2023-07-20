@@ -67,7 +67,12 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
-            onTap: () => _checkToken(context, route: Pages.overview.name),
+            onTap: () => _checkToken(
+              context,
+              navigate: () => context.goNamed(
+                Pages.overview.name,
+              ),
+            ),
           ),
           _buildMenuItem(
             title: locals.giveLimit,
@@ -80,7 +85,9 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.mode_edit_outline,
             onTap: () => _checkToken(
               context,
-              route: Pages.personalInfoEdit.name,
+              navigate: () => context.goNamed(
+                Pages.personalInfoEdit.name,
+              ),
             ),
           ),
           _buildMenuItem(
@@ -118,12 +125,15 @@ class CustomNavigationDrawer extends StatelessWidget {
                         color: AppTheme.givtBlue,
                       )
                     : null,
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (_) => FingerprintBottomSheet(
-                    isFingerprint: isFingerprintAvailable,
+                onTap: () => _checkToken(
+                  context,
+                  navigate: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => FingerprintBottomSheet(
+                      isFingerprint: isFingerprintAvailable,
+                    ),
                   ),
                 ),
               );
@@ -141,7 +151,12 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => _checkToken(context, route: Pages.unregister.name),
+            onTap: () => _checkToken(
+              context,
+              navigate: () => context.goNamed(
+                Pages.unregister.name,
+              ),
+            ),
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
@@ -291,12 +306,12 @@ class CustomNavigationDrawer extends StatelessWidget {
 
   Future<void> _checkToken(
     BuildContext context, {
-    required String route,
+    required VoidCallback navigate,
   }) async {
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      context.goNamed(route);
+      navigate();
       return;
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
@@ -304,7 +319,7 @@ class CustomNavigationDrawer extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      _passwordLogin(context, auth: auth, route: route);
+      _passwordLogin(context, auth: auth, navigate: navigate);
       return;
     }
     try {
@@ -317,8 +332,7 @@ class CustomNavigationDrawer extends StatelessWidget {
         return;
       }
       await context.read<AuthCubit>().refreshSession();
-      // ignore: use_build_context_synchronously
-      context.goNamed(route);
+      navigate();
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
@@ -327,14 +341,14 @@ class CustomNavigationDrawer extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      _passwordLogin(context, auth: auth, route: route);
+      _passwordLogin(context, auth: auth, navigate: navigate);
     }
   }
 
   void _passwordLogin(
     BuildContext context, {
     required AuthCubit auth,
-    required String route,
+    required VoidCallback navigate,
   }) {
     showModalBottomSheet<void>(
       context: context,
@@ -348,7 +362,7 @@ class CustomNavigationDrawer extends StatelessWidget {
       if (context.read<AuthCubit>().state.session.isExpired) {
         return;
       }
-      context.goNamed(route);
+      navigate();
     });
   }
 }
