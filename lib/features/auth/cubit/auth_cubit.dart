@@ -69,6 +69,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     final prevState = state;
     emit(AuthLoading());
+    ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     // await _authRepositoy.logout();
     emit(AuthLogout(user: prevState.user, session: prevState.session));
   }
