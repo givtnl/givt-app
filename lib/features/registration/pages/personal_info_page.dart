@@ -108,7 +108,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   ),
                 )
               else
-                SizedBox(),
+                const SizedBox(),
               ElevatedButton(
                 onPressed: isEnabled ? _onNext : null,
                 style: ElevatedButton.styleFrom(
@@ -343,7 +343,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               },
             ),
           ),
-        if (_selectedCountry == Country.us) SizedBox(height: 10),
+        if (_selectedCountry == Country.us) const SizedBox(height: 10),
         MobileNumberFormField(
           phone: _phone,
           selectedCountryPrefix: _selectedCountry.prefix,
@@ -368,15 +368,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               }
               return null;
             }
-
-            final prefix = _selectedCountry.prefix.replaceAll('+', '');
-            if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
-              return '';
+            if (Country.us != _selectedCountry &&
+                !Country.unitedKingdomCodes()
+                    .contains(_selectedCountry.countryCode)) {
+              final prefix = _selectedCountry.prefix.replaceAll('+', '');
+              if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
+                return '';
+              }
             }
             if (Country.us == _selectedCountry) {
-              if (!Util.usPhoneNumberRegEx.hasMatch('$value')) {
+              if (!Util.usPhoneNumberRegEx.hasMatch(value)) {
                 return '';
-                //return 'Please write as (123) 123-1234';
               }
             }
 
