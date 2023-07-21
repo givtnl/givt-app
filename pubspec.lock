@@ -226,10 +226,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_blue_plus
-      sha256: d5d0eb18ecfbde524f7361690469826d717fa49b9ac48423a8c1130048ec0b65
+      sha256: "4fd1afc93eb40f14fcf3acc4b479648e4f7d4aaf0cc98f8397dc32e93e2ff70c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.7"
+    version: "1.8.7"
   flutter_inappwebview:
     dependency: "direct main"
     description:
@@ -361,10 +361,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: "5927202c23bec18ba93f662b5e1f81f2caa2e0cfa472d857d6229f63d59f1730"
+      sha256: edbceb4c06758652fc9d12e58edb371cd977011b032e298dae0eb357167baad2
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.0"
+    version: "9.1.1"
   http:
     dependency: "direct main"
     description:
