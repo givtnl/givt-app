@@ -241,18 +241,26 @@ class _ChooseAmountState extends State<ChooseAmount> {
   }
 
   Icon _buildCurrencyIcon(Country country) {
-    var icon = Icons.euro;
-    if (country == Country.us) {
-      icon = Icons.attach_money;
+    switch (country) {
+      case Country.us:
+        return const Icon(
+          Icons.attach_money,
+          color: Colors.grey,
+        );
+      case Country.gb:
+      case Country.je:
+      case Country.gg:
+        return const Icon(
+          Icons.currency_pound,
+          color: Colors.grey,
+        );
+      // ignore: no_default_cases
+      default:
+        return const Icon(
+          Icons.euro,
+          color: Colors.grey,
+        );
     }
-    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
-      icon = Icons.currency_pound;
-    }
-
-    return Icon(
-      icon,
-      color: Colors.grey,
-    );
   }
 
   Future<bool> _checkAmounts(
