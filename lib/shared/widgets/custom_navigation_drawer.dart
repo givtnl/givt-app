@@ -76,6 +76,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             ),
           ),
           _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
             title: locals.giveLimit,
             icon: Util.getCurrencyIconData(
               country: Country.fromCode(
