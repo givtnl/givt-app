@@ -43,7 +43,8 @@ class LocalAuthInfo with ILocalAuthInfo {
   @override
   Future<bool> checkFaceId() async {
     final biometrics = await _localAuth.getAvailableBiometrics();
-    return biometrics.contains(BiometricType.face);
+    return biometrics.contains(BiometricType.face) ||
+        biometrics.contains(BiometricType.strong);
   }
 
   @override
