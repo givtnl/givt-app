@@ -25,6 +25,9 @@ class AppTheme {
   static const sliderIndicatorFilled = Color(0xFF184869);
   static const sliderIndicatorNotFilled = Color(0xFFD9D9D9);
 
+  static const inputFieldBorderEnabled = Color(0xFFCCCCCC);
+  static const inputFieldBorderSelected = Color(0xFF355070);
+
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
     fontFamily: 'AvenirLTStd',

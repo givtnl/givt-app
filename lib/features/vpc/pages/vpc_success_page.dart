@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class VPCSuccessPage extends StatelessWidget {
   const VPCSuccessPage({super.key});
@@ -12,7 +14,7 @@ class VPCSuccessPage extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 35),
+        padding: const EdgeInsets.only(top: 35),
         width: double.infinity,
         child: Column(
           children: [
@@ -22,10 +24,9 @@ class VPCSuccessPage extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(20),
-              height: size.height * 0.85,
+              height: size.height * 0.82,
               child: SizedBox.expand(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       locals.vpcSuccessText,
@@ -35,20 +36,27 @@ class VPCSuccessPage extends StatelessWidget {
                           .titleMedium!
                           .copyWith(color: AppTheme.sliderIndicatorFilled),
                     ),
-                    Image.asset(
-                      'assets/images/vpc_givy.png',
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        locals.setupChildProfileButtonText,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge!
-                            .copyWith(color: Colors.white),
+                    Expanded(
+                      child: Image.asset(
+                        'assets/images/vpc_givy.png',
                       ),
-                    )
+                    ),
                   ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: ElevatedButton(
+                onPressed: () {
+                  context.goNamed(Pages.createChild.name);
+                },
+                child: Text(
+                  locals.setupChildProfileButtonText,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Colors.white),
                 ),
               ),
             ),

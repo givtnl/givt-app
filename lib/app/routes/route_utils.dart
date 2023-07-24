@@ -20,6 +20,7 @@ enum Pages {
   personalInfoEdit,
   giveVPC,
   unregister,
+  createChild,
 }
 
 extension AppPageExtension on Pages {
@@ -67,6 +68,8 @@ extension AppPageExtension on Pages {
         return 'give-vpc';
       case Pages.unregister:
         return 'unregister';
+      case Pages.createChild:
+        return 'create-child';
     }
   }
 
@@ -114,6 +117,8 @@ extension AppPageExtension on Pages {
         return 'GIVE-VPC';
       case Pages.unregister:
         return 'UNREGISTER';
+      case Pages.createChild:
+        return 'CREATE-CHILD';
     }
   }
 }

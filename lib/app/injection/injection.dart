@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/create_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/vpc/repositories/vpc_repository.dart';
@@ -87,6 +88,11 @@ void _initRepositories() {
     )
     ..registerLazySingleton<VPCRepository>(
       () => VPCRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<CreateChildRepository>(
+      () => CreateChildRepositoryImpl(
         getIt(),
       ),
     );

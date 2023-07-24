@@ -5,6 +5,8 @@ import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/create_child/cubit/create_child_cubit.dart';
+import 'package:givt_app/features/create_child/pages/create_child_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -76,9 +78,21 @@ class AppRouter {
               GoRoute(
                 path: Pages.giveVPC.path,
                 name: Pages.giveVPC.name,
+                // builder: (context, state) => BlocProvider(
+                //   create: (_) => VPCCubit(getIt()),
+                //   child: const GiveVPCPage(),
+                // ),
                 builder: (context, state) => BlocProvider(
-                  create: (_) => VPCCubit(getIt()),
-                  child: const GiveVPCPage(),
+                  create: (_) => CreateChildCubit(getIt()),
+                  child: const CreateChildPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.createChild.path,
+                name: Pages.createChild.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => CreateChildCubit(getIt()),
+                  child: const CreateChildPage(),
                 ),
               ),
               GoRoute(

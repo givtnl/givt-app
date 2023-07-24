@@ -343,4 +343,25 @@ class APIService {
       );
     }
   }
+
+  Future<bool> createChild(Map<String, dynamic> body) async {
+    final url =
+        Uri.https(apiURL, '/givt4kidsservice/v1/User/setup-child-profile');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
 }
