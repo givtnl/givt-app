@@ -83,7 +83,22 @@ class CustomNavigationDrawer extends StatelessWidget {
                 auth.user.country,
               ),
             ),
-            onTap: () {},
+            onTap: () => _checkToken(
+              context,
+              navigate: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => ChangeMaxAmountBottomSheet(
+                  maxAmount: auth.user.amountLimit,
+                  icon: Util.getCurrencyIconData(
+                    country: Country.fromCode(
+                      auth.user.country,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
