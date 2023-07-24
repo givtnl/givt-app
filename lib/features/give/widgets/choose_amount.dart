@@ -5,7 +5,8 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -283,14 +284,28 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 ),
                 onPressed: () => context.pop(),
               ),
-              // CupertinoDialogAction(
-              //   child: Text(
-              //     context.l10n.changeGivingLimit,
-              //     style: const TextStyle(
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // )
+              CupertinoDialogAction(
+                child: Text(
+                  context.l10n.changeGivingLimit,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onPressed: () => AuthUtils.checkToken(
+                  context,
+                  navigate: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => ChangeMaxAmountBottomSheet(
+                      maxAmount: widget.amountLimit,
+                      icon: Util.getCurrencyIconData(
+                        country: widget.country,
+                      ),
+                    ),
+                  ).whenComplete(() => context.pop()),
+                ),
+              )
             ],
           ),
         );

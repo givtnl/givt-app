@@ -2,20 +2,18 @@ import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/auth_utils.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -68,7 +66,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
-            onTap: () => _checkToken(
+            onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => context.goNamed(
                 Pages.overview.name,
@@ -83,7 +81,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                 auth.user.country,
               ),
             ),
-            onTap: () => _checkToken(
+            onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => showModalBottomSheet<void>(
                 context: context,
@@ -104,7 +102,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: !auth.user.needRegistration,
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
-            onTap: () => _checkToken(
+            onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => context.goNamed(
                 Pages.personalInfoEdit.name,
@@ -157,7 +155,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                         color: AppTheme.givtBlue,
                       )
                     : null,
-                onTap: () => _checkToken(
+                onTap: () => AuthUtils.checkToken(
                   context,
                   navigate: () => showModalBottomSheet<void>(
                     context: context,
@@ -183,7 +181,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => _checkToken(
+            onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => context.goNamed(
                 Pages.unregister.name,
@@ -335,65 +333,4 @@ class CustomNavigationDrawer extends StatelessWidget {
           'assets/images/logo.png',
         ),
       );
-
-  Future<void> _checkToken(
-    BuildContext context, {
-    required VoidCallback navigate,
-  }) async {
-    final auth = context.read<AuthCubit>();
-    final isExpired = auth.state.session.isExpired;
-    if (!isExpired) {
-      navigate();
-      return;
-    }
-    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
-      // ignore: use_build_context_synchronously
-      if (!context.mounted) {
-        return;
-      }
-      _passwordLogin(context, navigate: navigate);
-      return;
-    }
-    try {
-      final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
-      if (!hasAuthenticated) {
-        return;
-      }
-      // ignore: use_build_context_synchronously
-      if (!context.mounted) {
-        return;
-      }
-      await context.read<AuthCubit>().refreshSession();
-      navigate();
-    } on PlatformException catch (e) {
-      await LoggingInfo.instance.info(
-        'Error while authenticating with biometrics: ${e.message}',
-      );
-      // ignore: use_build_context_synchronously
-      if (!context.mounted) {
-        return;
-      }
-      _passwordLogin(context, navigate: navigate);
-    }
-  }
-
-  void _passwordLogin(
-    BuildContext context, {
-    required VoidCallback navigate,
-  }) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => LoginPage(
-        email: context.read<AuthCubit>().state.user.email,
-        popWhenSuccess: true,
-      ),
-    ).whenComplete(() {
-      if (context.read<AuthCubit>().state.session.isExpired) {
-        return;
-      }
-      navigate();
-    });
-  }
 }
