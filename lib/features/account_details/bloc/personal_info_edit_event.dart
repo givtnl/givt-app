@@ -80,3 +80,14 @@ class PersonalInfoEditGiftAid extends PersonalInfoEditEvent {
   @override
   List<Object> get props => [isGiftAidEnabled];
 }
+
+class PersonalInfoEditChangeMaxAmount extends PersonalInfoEditEvent {
+  const PersonalInfoEditChangeMaxAmount({
+    required this.newAmountLimit,
+  });
+
+  final int newAmountLimit;
+
+  @override
+  List<Object> get props => [newAmountLimit];
+}
