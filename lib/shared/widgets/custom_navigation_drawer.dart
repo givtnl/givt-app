@@ -351,7 +351,7 @@ class CustomNavigationDrawer extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      _passwordLogin(context, auth: auth, navigate: navigate);
+      _passwordLogin(context, navigate: navigate);
       return;
     }
     try {
@@ -373,13 +373,12 @@ class CustomNavigationDrawer extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      _passwordLogin(context, auth: auth, navigate: navigate);
+      _passwordLogin(context, navigate: navigate);
     }
   }
 
   void _passwordLogin(
     BuildContext context, {
-    required AuthCubit auth,
     required VoidCallback navigate,
   }) {
     showModalBottomSheet<void>(
@@ -387,7 +386,7 @@ class CustomNavigationDrawer extends StatelessWidget {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => LoginPage(
-        email: auth.state.user.email,
+        email: context.read<AuthCubit>().state.user.email,
         popWhenSuccess: true,
       ),
     ).whenComplete(() {
