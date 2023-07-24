@@ -323,6 +323,21 @@ class APIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> downloadYearlyOverview(String guid, String year) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/givts/mail-report', {
+      'year': year,
+    });
+    return client.get(url).then((response) {
+      if (response.statusCode >= 300) {
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: jsonDecode(response.body) as Map<String, dynamic>,
+        );
+      }
+      return response.statusCode == 200;
+    });
+  }
+
   Future<Map<String, dynamic>> getVerifiableParentalConsentURL(
     String guid,
   ) async {

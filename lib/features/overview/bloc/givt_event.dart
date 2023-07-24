@@ -14,6 +14,18 @@ class GivtInit extends GivtEvent {
   List<Object> get props => [];
 }
 
+class GivtDownloadOverviewByYear extends GivtEvent {
+  const GivtDownloadOverviewByYear({
+    required this.year,
+    required this.guid,
+  });
+  final String year;
+  final String guid;
+
+  @override
+  List<Object> get props => [year, guid];
+}
+
 class GiveDelete extends GivtEvent {
   const GiveDelete({
     required this.timestamp,

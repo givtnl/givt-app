@@ -17,6 +17,8 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     on<GivtInit>(_onGivtInit);
 
     on<GiveDelete>(_onGivtDelete);
+
+    on<GivtDownloadOverviewByYear>(_onGivtDownloadOverviewByYear);
   }
 
   final GivtRepository givtRepository;
@@ -224,5 +226,29 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
       }
     }
     return giftAidGroups;
+  }
+
+  FutureOr<void> _onGivtDownloadOverviewByYear(
+    GivtDownloadOverviewByYear event,
+    Emitter<GivtState> emit,
+  ) async {
+    emit(const GivtLoading());
+    try {
+      await givtRepository.downloadYearlyOverview(
+        event.guid,
+        event.year,
+      );
+
+      emit(const GivtDownloadedSuccess());
+      add(const GivtInit());
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(GivtError(
+        e.toString(),
+      ));
+    }
   }
 }
