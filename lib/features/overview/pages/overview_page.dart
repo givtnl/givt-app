@@ -11,123 +11,76 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
-class OverviewPage extends StatelessWidget {
+class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
+
+  @override
+  State<OverviewPage> createState() => _OverviewPageState();
+}
+
+class _OverviewPageState extends State<OverviewPage> {
+  String _overviewYearController = DateTime.now().year.toString();
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final user = context.read<AuthCubit>().state.user;
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        actions: [
-          Visibility(
-            visible: context.watch<GivtBloc>().state.givtGroups.isNotEmpty,
-            child: IconButton(
-              icon: const Icon(Icons.info_rounded),
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                showDragHandle: true,
-                isScrollControlled: true,
-                useSafeArea: true,
-                backgroundColor: AppTheme.givtBlue,
-                builder: (context) => Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        locals.historyInfoTitle,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      _buildColorExplanationRow(
-                        color: const Color(0xFF494871),
-                        text: locals.historyAmountAccepted,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildColorExplanationRow(
-                        color: AppTheme.givtLightGreen,
-                        text: locals.historyAmountCollected,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildColorExplanationRow(
-                        color: AppTheme.givtRed,
-                        text: locals.historyAmountDenied,
-                      ),
-                      const SizedBox(height: 20),
-                      _buildColorExplanationRow(
-                        color: AppTheme.givtLightGray,
-                        text: locals.historyAmountCancelled,
-                      ),
-                      Visibility(
-                        visible: user.isGiftAidEnabled,
-                        child: Column(
-                          children: [
-                            const Divider(color: Colors.white),
-                            _buildColorExplanationRow(
-                              image: 'assets/images/gift_aid_yellow.png',
-                              text: locals.giftOverviewGiftAidBanner(''),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+    return BlocConsumer<GivtBloc, GivtState>(
+      listener: (context, state) {
+        if (state is GivtNoInternet) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.noInternetConnectionTitle,
+              content: locals.noInternet,
+              onConfirm: () => context.pop(),
             ),
-          ),
-        ],
-      ),
-      body: BlocConsumer<GivtBloc, GivtState>(
-        listener: (context, state) {
-          if (state is GivtNoInternet) {
-            showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: locals.noInternetConnectionTitle,
-                content: locals.noInternet,
-                onConfirm: () => context.pop(),
-              ),
-            );
-          }
-          if (state is GivtError) {
-            if (state.message == 'already_processed') {
-              showDialog<void>(
-                context: context,
-                builder: (_) => WarningDialog(
-                  title: locals.cancelFailed,
-                  content: locals.cantCancelAlreadyProcessed,
-                  onConfirm: () => context.pop(),
-                ),
-              );
-              return;
-            }
+          );
+        }
+        if (state is GivtError) {
+          if (state.message == 'already_processed') {
             showDialog<void>(
               context: context,
               builder: (_) => WarningDialog(
                 title: locals.cancelFailed,
-                content: locals.cantCancelGiftAfter15Minutes,
+                content: locals.cantCancelAlreadyProcessed,
                 onConfirm: () => context.pop(),
               ),
             );
+            return;
           }
-        },
-        builder: (context, state) {
-          if (state is GivtLoading) {
-            return const Center(
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.cancelFailed,
+              content: locals.cantCancelGiftAfter15Minutes,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+        if (state is GivtDownloadedSuccess) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.success,
+              content: locals.giftsOverviewSent,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
+      },
+      builder: (context, state) {
+        if (state is GivtLoading) {
+          return const Scaffold(
+            body: Center(
               child: CircularProgressIndicator(),
-            );
-          }
-          if (state.givts.isEmpty) {
-            return Center(
+            ),
+          );
+        }
+        if (state.givts.isEmpty) {
+          return Scaffold(
+            body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -144,12 +97,116 @@ class OverviewPage extends StatelessWidget {
                   ],
                 ),
               ),
-            );
-          }
-          final monthSections = state.givtGroups
-              .where((element) => element.givts.isEmpty)
-              .toList();
-          return ListView.builder(
+            ),
+          );
+        }
+        final monthSections =
+            state.givtGroups.where((element) => element.givts.isEmpty).toList();
+        return Scaffold(
+          appBar: AppBar(
+            leading: const BackButton(),
+            actions: [
+              _buildAppBarItem(
+                context: context,
+                state: state,
+                color: Colors.white,
+                icon: const Icon(Icons.download),
+                child: Column(
+                  children: [
+                    _buildAnnualOverviewHeader(
+                      email: user.email,
+                      text: locals.downloadYearOverviewByChoice,
+                    ),
+                    // _buildYearDropdown(state, context, size),
+                    YearOfDonationsDropdown(
+                      donationYears: _getYears(state),
+                      selectedYear:
+                          _getYears(state).contains(_overviewYearController)
+                              ? _overviewYearController
+                              : _getYears(state).first,
+                      onYearChanged: (String? newValue) {
+                        setState(() {
+                          _overviewYearController = newValue!;
+                        });
+                      },
+                    ),
+                    const Spacer(),
+                    Image.asset(
+                      'assets/images/givy_money.png',
+                      height: size.height * 0.2,
+                    ),
+                    const Spacer(),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<GivtBloc>().add(
+                              GivtDownloadOverviewByYear(
+                                year: _getYears(state)
+                                        .contains(_overviewYearController)
+                                    ? _overviewYearController
+                                    : _getYears(state).first,
+                                guid: user.guid,
+                              ),
+                            );
+                        context.pop();
+                      },
+                      child: Text(locals.send),
+                    )
+                  ],
+                ),
+              ),
+              _buildAppBarItem(
+                state: state,
+                context: context,
+                icon: const Icon(Icons.info_rounded),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      locals.historyInfoTitle,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: const Color(0xFF494871),
+                      text: locals.historyAmountAccepted,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtLightGreen,
+                      text: locals.historyAmountCollected,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtRed,
+                      text: locals.historyAmountDenied,
+                    ),
+                    const SizedBox(height: 20),
+                    _buildColorExplanationRow(
+                      color: AppTheme.givtLightGray,
+                      text: locals.historyAmountCancelled,
+                    ),
+                    Visibility(
+                      visible: user.isGiftAidEnabled,
+                      child: Column(
+                        children: [
+                          const Divider(color: Colors.white),
+                          _buildColorExplanationRow(
+                            image: 'assets/images/gift_aid_yellow.png',
+                            text: locals.giftOverviewGiftAidBanner(''),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          body: ListView.builder(
             itemCount: _getSectionCount(state),
             itemBuilder: (_, int index) {
               return StickyHeader(
@@ -240,9 +297,9 @@ class OverviewPage extends StatelessWidget {
                 ),
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -290,6 +347,53 @@ class OverviewPage extends StatelessWidget {
     );
   }
 
+  Widget _buildAppBarItem({
+    required GivtState state,
+    required BuildContext context,
+    required Widget child,
+    required Icon icon,
+    Color? color,
+  }) {
+    return Visibility(
+      visible: state.givtGroups.isNotEmpty,
+      child: IconButton(
+        icon: icon,
+        onPressed: () => showModalBottomSheet<void>(
+          context: context,
+          showDragHandle: true,
+          isScrollControlled: true,
+          useSafeArea: true,
+          backgroundColor: color ?? AppTheme.givtBlue,
+          builder: (context) =>
+              Container(padding: const EdgeInsets.all(20), child: child),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAnnualOverviewHeader(
+      {required String text, required String email}) {
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        text: text,
+        style: const TextStyle(
+          fontSize: 16,
+          color: AppTheme.givtBlue,
+          fontWeight: FontWeight.normal,
+        ),
+        children: <TextSpan>[
+          TextSpan(
+            text: ' $email',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Row _buildColorExplanationRow({
     required String text,
     Color? color,
@@ -323,6 +427,21 @@ class OverviewPage extends StatelessWidget {
           )
         ],
       );
+
+  List<String> _getYears(GivtState state) {
+    final givts = state.givts;
+    if (givts.isEmpty) {
+      return [];
+    } else {
+      return givts
+          .map((donation) {
+            final year = donation.timeStamp!.year.toString();
+            return year;
+          })
+          .toSet()
+          .toList();
+    }
+  }
 
   int _getSectionCount(GivtState state) {
     var monthsCount = 0;

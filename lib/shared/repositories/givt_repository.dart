@@ -16,6 +16,8 @@ mixin GivtRepository {
   Future<List<Givt>> fetchGivts();
 
   Future<bool> deleteGivt(List<dynamic> ids);
+
+  Future<void> downloadYearlyOverview(String guid, String year);
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -107,4 +109,9 @@ class GivtRepositoryImpl with GivtRepository {
   @override
   Future<bool> deleteGivt(List<dynamic> ids) async =>
       apiClient.deleteGivts(body: ids);
+
+  @override
+  Future<bool> downloadYearlyOverview(String guid, String year) async {
+    return apiClient.downloadYearlyOverview(guid, year);
+  }
 }
