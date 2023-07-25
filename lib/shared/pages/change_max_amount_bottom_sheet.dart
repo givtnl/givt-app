@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -50,13 +51,17 @@ class _ChangeMaxAmountBottomSheetView extends StatefulWidget {
 
 class _ChangeMaxAmountBottomSheetViewState
     extends State<_ChangeMaxAmountBottomSheetView> {
-  late TextEditingController amount;
+  final int maxAmountLimit = 99999;
+  final int minAmountLimit = 0;
+  final int amountStep = 5;
+
+  late TextEditingController amountController;
   bool get isEnabled {
-    final enteredAmount = int.parse(amount.text);
+    final enteredAmount = int.parse(amountController.text);
     if (enteredAmount == 0) {
-      amount.selection = TextSelection(
+      amountController.selection = TextSelection(
         baseOffset: 0,
-        extentOffset: amount.text.length,
+        extentOffset: amountController.text.length,
       );
       return false;
     }
@@ -67,26 +72,28 @@ class _ChangeMaxAmountBottomSheetViewState
   }
 
   void increaseAmount() {
-    if (int.parse(amount.text) == 99999) {
+    final enteredAmount = int.parse(amountController.text);
+    if (enteredAmount == maxAmountLimit) {
       return;
     }
     setState(() {
-      amount.text = (int.parse(amount.text) + 5).toString();
+      amountController.text = (enteredAmount + amountStep).toString();
     });
   }
 
   void decreaseAmount() {
-    if (int.parse(amount.text) == 0) {
+    final enteredAmount = int.parse(amountController.text);
+    if (enteredAmount == minAmountLimit) {
       return;
     }
     setState(() {
-      amount.text = (int.parse(amount.text) - 5).toString();
+      amountController.text = (enteredAmount - amountStep).toString();
     });
   }
 
   @override
   void initState() {
-    amount = TextEditingController(text: widget.maxAmount.toString());
+    amountController = TextEditingController(text: widget.maxAmount.toString());
     super.initState();
   }
 
@@ -151,11 +158,15 @@ class _ChangeMaxAmountBottomSheetViewState
                         SizedBox(
                           width: size.width * 0.15,
                           child: TextFormField(
-                            controller: amount,
+                            controller: amountController,
                             keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
                             onChanged: (value) {
                               if (value.isEmpty) {
-                                amount.text = '0';
+                                amountController.text =
+                                    minAmountLimit.toString();
                               }
                               setState(() {});
                             },
@@ -198,7 +209,7 @@ class _ChangeMaxAmountBottomSheetViewState
                           context.read<PersonalInfoEditBloc>().add(
                                 PersonalInfoEditChangeMaxAmount(
                                   newAmountLimit: int.parse(
-                                    amount.text,
+                                    amountController.text,
                                   ),
                                 ),
                               );
