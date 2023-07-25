@@ -117,7 +117,18 @@ class _OverviewPageState extends State<OverviewPage> {
                       email: user.email,
                       text: locals.downloadYearOverviewByChoice,
                     ),
-                    _buildYearDropdown(state, context, size),
+                    // _buildYearDropdown(state, context, size),
+                    YearOfDonationsDropdown(
+                        donationYears: _getYears(state),
+                        selectedYear:
+                            _getYears(state).contains(_overviewYearController)
+                                ? _overviewYearController
+                                : _getYears(state).first,
+                        onYearChanged: (String? newValue) {
+                          setState(() {
+                            _overviewYearController = newValue!;
+                          });
+                        }),
                     const Spacer(),
                     Image.asset(
                       'assets/images/givy_money.png',
@@ -379,57 +390,6 @@ class _OverviewPageState extends State<OverviewPage> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildYearDropdown(GivtState state, BuildContext context, Size size) {
-    return DropdownButtonFormField<String>(
-      validator: (value) {
-        if (value == null) {
-          return '';
-        }
-
-        return null;
-      },
-      value: _getYears(state).contains(_overviewYearController)
-          ? _overviewYearController
-          : _getYears(state).first,
-      decoration: const InputDecoration(
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 5,
-        ),
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppTheme.givtBlue,
-          ),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: AppTheme.givtBlue,
-          ),
-        ),
-        errorStyle: TextStyle(
-          height: 0,
-        ),
-      ),
-      menuMaxHeight: size.height * 0.3,
-      items: _getYears(state)
-          .map(
-            (String country) => DropdownMenuItem(
-              value: country,
-              child: Text(
-                country,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-            ),
-          )
-          .toList(),
-      onChanged: (String? newValue) {
-        setState(() {
-          _overviewYearController = newValue!;
-        });
-      },
     );
   }
 
