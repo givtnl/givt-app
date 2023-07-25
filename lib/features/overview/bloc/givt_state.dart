@@ -26,10 +26,6 @@ class GivtLoading extends GivtState {
   const GivtLoading() : super();
 }
 
-class GivtDownloadedSuccess extends GivtState {
-  const GivtDownloadedSuccess() : super();
-}
-
 class GivtNoInternet extends GivtState {
   const GivtNoInternet() : super();
 }
@@ -40,6 +36,14 @@ class GivtError extends GivtState {
 
   @override
   List<Object> get props => [message];
+}
+
+class GivtDownloadedSuccess extends GivtState {
+  const GivtDownloadedSuccess({
+    super.givts,
+    super.givtGroups,
+    super.givtAided,
+  });
 }
 
 class GivtLoaded extends GivtState {

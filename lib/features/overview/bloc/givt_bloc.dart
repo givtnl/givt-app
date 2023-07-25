@@ -238,8 +238,11 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
         event.guid,
         event.year,
       );
-
-      emit(const GivtDownloadedSuccess());
+      emit(GivtDownloadedSuccess(
+        givts: state.givts,
+        givtGroups: state.givtGroups,
+        givtAided: state.givtAided,
+      ));
       add(const GivtInit());
     } catch (e) {
       await LoggingInfo.instance.error(
