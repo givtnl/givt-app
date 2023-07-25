@@ -7,6 +7,10 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 
 class AuthUtils {
+  /// Checks if the user is authenticated.
+  /// If the user is authenticated, the [navigate] callback is called.
+  /// If the user is not authenticated, the login bottom sheet is displayed
+  /// or the biometrics are checked.
   static Future<void> checkToken(
     BuildContext context, {
     required VoidCallback navigate,
@@ -22,7 +26,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      _passwordLogin(context, navigate: navigate);
+      _displayLoginBottomSheet(context, navigate: navigate);
       return;
     }
     try {
@@ -44,11 +48,14 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      _passwordLogin(context, navigate: navigate);
+      _displayLoginBottomSheet(context, navigate: navigate);
     }
   }
 
-  static void _passwordLogin(
+  /// Displays the login bottom sheet.
+  /// If the user successfully logs in, the [navigate] callback is called.
+  /// If the user cancels the login, nothing happens.
+  static void _displayLoginBottomSheet(
     BuildContext context, {
     required VoidCallback navigate,
   }) {
