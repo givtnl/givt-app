@@ -232,18 +232,18 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     GivtDownloadOverviewByYear event,
     Emitter<GivtState> emit,
   ) async {
-    emit(const GivtLoading());
     try {
       await givtRepository.downloadYearlyOverview(
         event.guid,
         event.year,
       );
-      emit(GivtDownloadedSuccess(
-        givts: state.givts,
-        givtGroups: state.givtGroups,
-        givtAided: state.givtAided,
-      ));
-      add(const GivtInit());
+      emit(
+        GivtDownloadedSuccess(
+          givts: state.givts,
+          givtGroups: state.givtGroups,
+          givtAided: state.givtAided,
+        ),
+      );
     } catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),

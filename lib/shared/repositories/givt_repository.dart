@@ -111,7 +111,7 @@ class GivtRepositoryImpl with GivtRepository {
       apiClient.deleteGivts(body: ids);
 
   @override
-  Future<void> downloadYearlyOverview(String guid, String year) async {
-    await apiClient.downloadYearlyOverview(guid, year);
+  Future<bool> downloadYearlyOverview(String guid, String year) async {
+    return apiClient.downloadYearlyOverview(guid, year);
   }
 }

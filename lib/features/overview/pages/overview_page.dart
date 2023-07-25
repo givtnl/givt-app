@@ -119,16 +119,17 @@ class _OverviewPageState extends State<OverviewPage> {
                     ),
                     // _buildYearDropdown(state, context, size),
                     YearOfDonationsDropdown(
-                        donationYears: _getYears(state),
-                        selectedYear:
-                            _getYears(state).contains(_overviewYearController)
-                                ? _overviewYearController
-                                : _getYears(state).first,
-                        onYearChanged: (String? newValue) {
-                          setState(() {
-                            _overviewYearController = newValue!;
-                          });
-                        }),
+                      donationYears: _getYears(state),
+                      selectedYear:
+                          _getYears(state).contains(_overviewYearController)
+                              ? _overviewYearController
+                              : _getYears(state).first,
+                      onYearChanged: (String? newValue) {
+                        setState(() {
+                          _overviewYearController = newValue!;
+                        });
+                      },
+                    ),
                     const Spacer(),
                     Image.asset(
                       'assets/images/givy_money.png',
