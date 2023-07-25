@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/interceptor.dart';
-import 'package:http/http.dart';
+import 'package:givt_app/utils/utils.dart';
+import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class APIService {
@@ -11,12 +12,15 @@ class APIService {
     required String apiURL,
   }) : _apiURL = apiURL;
 
-  Client client = InterceptedClient.build(
-    requestTimeout: const Duration(seconds: 10),
-    interceptors: [
-      Interceptor(),
-    ],
-    retryPolicy: ExpiredTokenRetryPolicy(),
+  SecureHttpClient client = SecureHttpClient.build(
+    Util.allowedSHAFingerprints,
+    customClient: InterceptedClient.build(
+      requestTimeout: const Duration(seconds: 10),
+      interceptors: [
+        Interceptor(),
+      ],
+      retryPolicy: ExpiredTokenRetryPolicy(),
+    ),
   );
 
   final String _apiURL;
