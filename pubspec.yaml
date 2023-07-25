@@ -7,7 +7,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  amplitude_flutter: ^3.13.0
+  amplitude_flutter: ^3.16.0
   badges: ^3.1.1
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
