@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
+
 class Util {
   static final ukPostCodeRegEx = RegExp(
       r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$');
@@ -12,4 +15,17 @@ class Util {
 
   static RegExp phoneNumberRegEx(String prefix) =>
       RegExp('\\(?\\+\\(?$prefix\\)?[()]?([-()]?\\d[-()]?){9,10}');
+
+
+  static IconData getCurrencyIconData({required Country country}) {
+    var icon = Icons.euro;
+    if (country == Country.us) {
+      icon = Icons.attach_money;
+    }
+    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
+      icon = Icons.currency_pound;
+    }
+
+    return icon;
+  }
 }

@@ -30,6 +30,8 @@ class PersonalInfoEditBloc
     on<PersonalInfoEditBankDetails>(_onBankDetailsChanged);
 
     on<PersonalInfoEditGiftAid>(_onGiftAidChanged);
+
+    on<PersonalInfoEditChangeMaxAmount>(_onMaxAmountChanged);
   }
 
   final AuthRepositoy authRepositoy;
@@ -206,6 +208,44 @@ class PersonalInfoEditBloc
         giftAid: event.isGiftAidEnabled,
       );
 
+      emit(
+        state.copyWith(
+          status: PersonalInfoEditStatus.success,
+          loggedInUserExt: stateUser,
+        ),
+      );
+    } on SocketException catch (e) {
+      await LoggingInfo.instance.error(e.toString());
+      emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
+    } on GivtServerFailure catch (e) {
+      await LoggingInfo.instance.error(e.toString());
+      emit(
+        state.copyWith(
+          status: PersonalInfoEditStatus.error,
+          error: e.body.toString(),
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _onMaxAmountChanged(
+    PersonalInfoEditChangeMaxAmount event,
+    Emitter<PersonalInfoEditState> emit,
+  ) async {
+    emit(state.copyWith(status: PersonalInfoEditStatus.loading));
+    try {
+      await LoggingInfo.instance
+          .info('Changing max amount to ${event.newAmountLimit}');
+      final stateUser = state.loggedInUserExt.copyWith(
+        amountLimit: event.newAmountLimit,
+      );
+      await authRepositoy.updateUser(
+        guid: state.loggedInUserExt.guid,
+        newUserExt: {
+          'amountLimit': event.newAmountLimit,
+          'email': state.loggedInUserExt.email,
+        },
+      );
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.success,
