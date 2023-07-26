@@ -74,14 +74,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             ),
           ),
           _buildMenuItem(
-            isVisible: true,
-            //TODO: POEditor
-            title: 'Recurring donations',
-            icon: Icons.screen_rotation_alt_outlined,
-            onTap: () => context.goNamed(Pages.recurringDonations.name),
-          ),
-          _buildMenuItem(
-            isVisible: true,
+            isVisible: !auth.user.needRegistration,
             //TODO: POEditor
             title: 'Recurring donations',
             icon: Icons.screen_rotation_alt_outlined,
