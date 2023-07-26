@@ -247,7 +247,6 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
         ),
       );
     } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.info(e.body.toString());
       await LoggingInfo.instance.error(e.body.toString());
       emit(GivtError(e.body.toString()));
     }
