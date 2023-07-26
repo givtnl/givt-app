@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
@@ -69,6 +70,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     final prevState = state;
     emit(AuthLoading());
+
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     // await _authRepositoy.logout();
     emit(AuthLogout(user: prevState.user, session: prevState.session));
@@ -201,6 +203,37 @@ class AuthCubit extends Cubit<AuthState> {
         methodName: StackTrace.current.toString(),
       );
       emit(const AuthChangePasswordFailure());
+    }
+  }
+
+  Future<void> updatePresets({required UserPresets presets}) async {
+    final prevState = state;
+    emit(AuthLoading());
+    try {
+      final user = prevState.user.copyWith(
+        presets: presets,
+      );
+      await _authRepositoy.updateLocalUserExt(
+        newUserExt: user,
+      );
+      emit(
+        AuthSuccess(
+          user: user,
+          session: prevState.session,
+        ),
+      );
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+      emit(
+        AuthFailure(
+          message: e.toString(),
+          user: prevState.user,
+          session: prevState.session,
+        ),
+      );
     }
   }
 }

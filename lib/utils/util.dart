@@ -28,4 +28,14 @@ class Util {
 
     return icon;
   }
+
+  static double getLowerLimitByCountry(Country country) {
+    if (country == Country.us) {
+      return 2;
+    }
+    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
+      return 0.50;
+    }
+    return 0.25;
+  }
 }

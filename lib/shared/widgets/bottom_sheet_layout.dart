@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class BottomSheetLayout extends StatelessWidget {
   const BottomSheetLayout({
     required this.child,
+    this.onBackPressed,
     this.title,
     super.key,
   });
 
   final Widget child;
   final Widget? title;
+  final VoidCallback? onBackPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,9 @@ class BottomSheetLayout extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: title,
-            leading: const BackButton(),
+            leading: BackButton(
+              onPressed: onBackPressed,
+            ),
           ),
           body: child,
         ),
