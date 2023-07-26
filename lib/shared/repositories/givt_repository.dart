@@ -17,7 +17,7 @@ mixin GivtRepository {
 
   Future<bool> deleteGivt(List<dynamic> ids);
 
-  Future<void> downloadYearlyOverview(String guid, String year);
+  Future<void> downloadYearlyOverview({required Map<String, dynamic> body});
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -111,7 +111,8 @@ class GivtRepositoryImpl with GivtRepository {
       apiClient.deleteGivts(body: ids);
 
   @override
-  Future<bool> downloadYearlyOverview(String guid, String year) async {
-    return apiClient.downloadYearlyOverview(guid, year);
+  Future<bool> downloadYearlyOverview(
+      {required Map<String, dynamic> body}) async {
+    return apiClient.downloadYearlyOverview(body);
   }
 }
