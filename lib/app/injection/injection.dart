@@ -25,13 +25,16 @@ Future<void> init() async {
 
 Future<void> _initAPIService() async {
   var baseUrl = const String.fromEnvironment('API_URL_EU');
-  // if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
-  //   baseUrl = const String.fromEnvironment('API_URL_US');
-  // }
+  var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
+  if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
+    baseUrl = const String.fromEnvironment('API_URL_US');
+    baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
+  }
   log('Using API URL: $baseUrl');
   getIt.registerLazySingleton<APIService>(
     () => APIService(
       apiURL: baseUrl,
+      apiURLAWS: baseUrlAWS,
     ),
   );
 }
