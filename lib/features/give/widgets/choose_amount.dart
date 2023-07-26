@@ -92,7 +92,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[0],
                   collectionFieldName: locals.firstCollect,
                   amountLimit: widget.amountLimit,
-                  lowerLimit: getLowerLimitByCountry(widget.country),
+                  lowerLimit: Util.getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                   controller: controllers[0],
                   isVisible: collectionFields[0],
@@ -116,7 +116,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[1],
                   collectionFieldName: locals.secondCollect,
                   amountLimit: widget.amountLimit,
-                  lowerLimit: getLowerLimitByCountry(widget.country),
+                  lowerLimit: Util.getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                   controller: controllers[1],
                   isVisible: collectionFields[1],
@@ -136,7 +136,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   focusNode: focusNodes[2],
                   collectionFieldName: locals.thirdCollect,
                   amountLimit: widget.amountLimit,
-                  lowerLimit: getLowerLimitByCountry(widget.country),
+                  lowerLimit: Util.getLowerLimitByCountry(widget.country),
                   prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                   controller: controllers[2],
                   isVisible: collectionFields[2],
@@ -176,7 +176,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           final areAmountsValid = await _checkAmounts(
                             context,
                             upperLimit: widget.amountLimit,
-                            lowerLimit: getLowerLimitByCountry(widget.country),
+                            lowerLimit:
+                                Util.getLowerLimitByCountry(widget.country),
                             currency: NumberFormat.simpleCurrency(
                               name: widget.country.currency,
                             ).currencySymbol,
@@ -213,16 +214,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
         ),
       ),
     );
-  }
-
-  double getLowerLimitByCountry(Country country) {
-    if (country == Country.us) {
-      return 2;
-    }
-    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
-      return 0.50;
-    }
-    return 0.25;
   }
 
   void _changeFocus() {
