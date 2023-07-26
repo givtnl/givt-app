@@ -6,6 +6,7 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
 import 'package:givt_app/features/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -23,9 +24,9 @@ Future<void> init() async {
 
 Future<void> _initAPIService() async {
   var baseUrl = const String.fromEnvironment('API_URL_EU');
-  if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
-    baseUrl = const String.fromEnvironment('API_URL_US');
-  }
+  // if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
+  //   baseUrl = const String.fromEnvironment('API_URL_US');
+  // }
   log('Using API URL: $baseUrl');
   getIt.registerLazySingleton<APIService>(
     () => APIService(
@@ -89,5 +90,11 @@ void _initRepositories() {
       () => VPCRepositoryImpl(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<RecurringDonationsRepository>(
+      () => RecurringDonationsRepositoryImpl(
+        getIt(),
+      ),
     );
+  ;
 }

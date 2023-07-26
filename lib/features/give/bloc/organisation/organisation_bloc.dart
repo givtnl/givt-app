@@ -130,7 +130,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         filteredOrganisations: state.selectedType == event.type
             ? state.organisations
             : state.organisations
-                .where((organisation) => organisation.type.value == event.type)
+                .where((organisation) => organisation.type.index == event.type)
                 .toList(),
       ),
     );

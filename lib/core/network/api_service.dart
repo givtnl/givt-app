@@ -343,4 +343,22 @@ class APIService {
       );
     }
   }
+
+  Future<List<dynamic>> fetchRecurringDonations({
+    required Map<String, dynamic> params,
+  }) async {
+    final url =
+        Uri.https('api.development.givtapp.net', '/recurringdonations', params);
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['results'] as List<dynamic>;
+  }
 }
