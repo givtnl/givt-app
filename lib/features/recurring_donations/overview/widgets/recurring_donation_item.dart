@@ -11,13 +11,14 @@ class RecurringDonationItem extends StatefulWidget {
     required this.recurringDonation,
     required this.isExtended,
     required this.onTap,
+    required this.onCancel,
     super.key,
   });
 
   final RecurringDonation recurringDonation;
   final bool isExtended;
   final void Function() onTap;
-
+  final void Function() onCancel;
   @override
   State<RecurringDonationItem> createState() => _RecurringDonationItemState();
 }
@@ -148,7 +149,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                   color: Colors.transparent,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: widget.onCancel,
                               icon: const Icon(
                                 Icons.stop_circle_rounded,
                                 color: AppTheme.givtRed,

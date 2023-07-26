@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donation_item.dart';
@@ -23,7 +24,11 @@ class _RecurringDonationsOverviewPageState
   @override
   void initState() {
     super.initState();
-    context
+    _fetchRecurringDonations();
+  }
+
+  Future<void> _fetchRecurringDonations() async {
+    await context
         .read<RecurringDonationsCubit>()
         .fetchRecurringDonations(context.read<AuthCubit>().state.user.guid);
   }
@@ -171,6 +176,21 @@ class _RecurringDonationsOverviewPageState
                                                       recurringDonation
                                                   ? null
                                                   : recurringDonation;
+                                        });
+                                      },
+                                      onCancel: () {
+                                        showDialog<bool>(
+                                          context: context,
+                                          builder: (_) =>
+                                              CancelRecurringDonationConfirmationDialog(
+                                            recurringDonation:
+                                                recurringDonation,
+                                          ),
+                                        ).then((result) {
+                                          if (result != null &&
+                                              result == true) {
+                                            _fetchRecurringDonations();
+                                          }
                                         });
                                       },
                                     ),

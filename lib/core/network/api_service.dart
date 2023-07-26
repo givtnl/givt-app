@@ -361,4 +361,21 @@ class APIService {
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     return decodedBody['results'] as List<dynamic>;
   }
+
+  Future<void> cancelRecurringDonation({
+    required String recurringDonationId,
+  }) async {
+    final url = Uri.https(
+      'api.development.givtapp.net',
+      'recurringdonations/$recurringDonationId/cancel',
+    );
+
+    final response = await client.patch(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
 }
