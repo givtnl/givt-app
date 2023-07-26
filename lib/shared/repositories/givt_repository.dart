@@ -17,7 +17,7 @@ mixin GivtRepository {
 
   Future<bool> deleteGivt(List<dynamic> ids);
 
-  Future<void> downloadYearlyOverview({required Map<String, dynamic> body});
+  Future<bool> downloadYearlyOverview({required Map<String, dynamic> body});
 }
 
 class GivtRepositoryImpl with GivtRepository {

@@ -61,6 +61,7 @@ class _DownloadYearOverviewSheetState extends State<DownloadYearOverviewSheet> {
               ),
             );
             context.pop();
+            widget.givtbloc.add(const GivtInit());
           },
           child: Text(locals.send),
         )

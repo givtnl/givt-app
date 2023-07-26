@@ -329,22 +329,21 @@ class APIService {
 
   Future<bool> downloadYearlyOverview(Map<String, dynamic> body) async {
     final url = Uri.https(apiURLAWS, '/donations/download');
-    return client.post(
+    final response = await client.post(
       url,
       body: jsonEncode(body),
       headers: {
         'Content-Type': 'application/json',
         'x-json-casing': 'PascalKeeze'
       },
-    ).then((response) {
-      if (response.statusCode >= 300) {
-        throw GivtServerFailure(
-          statusCode: response.statusCode,
-          body: jsonDecode(response.body) as Map<String, dynamic>,
-        );
-      }
-      return response.statusCode == 202;
-    });
+    );
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 202;
   }
 
   Future<Map<String, dynamic>> getVerifiableParentalConsentURL(

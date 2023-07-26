@@ -246,14 +246,10 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
           givtAided: state.givtAided,
         ),
       );
-    } catch (e) {
-      await LoggingInfo.instance.error(
-        e.toString(),
-        methodName: StackTrace.current.toString(),
-      );
-      emit(GivtError(
-        e.toString(),
-      ));
+    } on GivtServerFailure catch (e) {
+      await LoggingInfo.instance.info(e.body.toString());
+      await LoggingInfo.instance.error(e.body.toString());
+      emit(GivtError(e.body.toString()));
     }
   }
 }
