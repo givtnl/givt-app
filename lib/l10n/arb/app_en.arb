@@ -257,7 +257,7 @@
     "amountPresetsBody": "Set your amount presets below.",
     "amountPresetsResetAll": "Reset values",
     "amountPresetsErrGivingLimit": "The amount is higher than your maximum amount",
-    "amountPresetsErr25C": "The amount has to be at least 0.25",
+    "amountPresetsErr25C": "The amount has to be at least value0",
     "amountPresetsErrEmpty": "Enter an amount",
     "alertBacsMessage": "Because you indicated {value0} as country choice, we assume that you prefer to give through a SEPA mandate (€), we need your IBAN for that. If you prefer to use BACS (£), we need your Sort Code and Account Number.",
     "alertSepaMessage": "Because you indicated {value0} as country choice, we assume that you prefer to give through BACS Direct Debit (£), we need your Sort Code and Account Number for that. If you prefer to use SEPA (€), we need your IBAN.",
