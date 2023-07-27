@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
+import 'package:givt_app/features/overview/widgets/download_year_donation.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -11,15 +12,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
-class OverviewPage extends StatefulWidget {
+class OverviewPage extends StatelessWidget {
   const OverviewPage({super.key});
-
-  @override
-  State<OverviewPage> createState() => _OverviewPageState();
-}
-
-class _OverviewPageState extends State<OverviewPage> {
-  String _overviewYearController = DateTime.now().year.toString();
 
   @override
   Widget build(BuildContext context) {
@@ -111,47 +105,9 @@ class _OverviewPageState extends State<OverviewPage> {
                 state: state,
                 color: Colors.white,
                 icon: const Icon(Icons.download),
-                child: Column(
-                  children: [
-                    _buildAnnualOverviewHeader(
-                      email: user.email,
-                      text: locals.downloadYearOverviewByChoice,
-                    ),
-                    // _buildYearDropdown(state, context, size),
-                    YearOfDonationsDropdown(
-                      donationYears: _getYears(state),
-                      selectedYear:
-                          _getYears(state).contains(_overviewYearController)
-                              ? _overviewYearController
-                              : _getYears(state).first,
-                      onYearChanged: (String? newValue) {
-                        setState(() {
-                          _overviewYearController = newValue!;
-                        });
-                      },
-                    ),
-                    const Spacer(),
-                    Image.asset(
-                      'assets/images/givy_money.png',
-                      height: size.height * 0.2,
-                    ),
-                    const Spacer(),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.read<GivtBloc>().add(
-                              GivtDownloadOverviewByYear(
-                                year: _getYears(state)
-                                        .contains(_overviewYearController)
-                                    ? _overviewYearController
-                                    : _getYears(state).first,
-                                guid: user.guid,
-                              ),
-                            );
-                        context.pop();
-                      },
-                      child: Text(locals.send),
-                    )
-                  ],
+                child: DownloadYearOverviewSheet(
+                  state: state,
+                  givtbloc: context.read<GivtBloc>(),
                 ),
               ),
               _buildAppBarItem(
@@ -371,29 +327,6 @@ class _OverviewPageState extends State<OverviewPage> {
     );
   }
 
-  Widget _buildAnnualOverviewHeader(
-      {required String text, required String email}) {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        text: text,
-        style: const TextStyle(
-          fontSize: 16,
-          color: AppTheme.givtBlue,
-          fontWeight: FontWeight.normal,
-        ),
-        children: <TextSpan>[
-          TextSpan(
-            text: ' $email',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Row _buildColorExplanationRow({
     required String text,
     Color? color,
@@ -427,21 +360,6 @@ class _OverviewPageState extends State<OverviewPage> {
           )
         ],
       );
-
-  List<String> _getYears(GivtState state) {
-    final givts = state.givts;
-    if (givts.isEmpty) {
-      return [];
-    } else {
-      return givts
-          .map((donation) {
-            final year = donation.timeStamp!.year.toString();
-            return year;
-          })
-          .toSet()
-          .toList();
-    }
-  }
 
   int _getSectionCount(GivtState state) {
     var monthsCount = 0;

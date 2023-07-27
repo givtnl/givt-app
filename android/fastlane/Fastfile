@@ -22,6 +22,8 @@ platform :android do
     logit_api_key = ENV['LOGIT_API_KEY']
     api_url_us= ENV['API_URL_US']
     api_url_eu= ENV['API_URL_EU']
+    api_url_aws_eu= ENV['API_URL_AWS_EU']
+    api_url_aws_us= ENV['API_URL_AWS_US']
     amplitude_key= ENV['AMPLITUDE_KEY']
     build_number = google_play_track_version_codes(package_name: package_name, track: track, json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 1
 
@@ -34,6 +36,8 @@ platform :android do
           "--dart-define=LOGIT_API_KEY=#{logit_api_key}",
           "--dart-define=API_URL_US=#{api_url_us}",
           "--dart-define=API_URL_EU=#{api_url_eu}",
+          "--dart-define=API_URL_AWS_EU=#{api_url_aws_eu}",
+          "--dart-define=API_URL_AWS_US=#{api_url_aws_us}",
           "--dart-define=AMPLITUDE_KEY=#{amplitude_key}",
         )
     end
