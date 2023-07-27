@@ -9,7 +9,9 @@ import 'package:http_interceptor/http/http.dart';
 class APIService {
   APIService({
     required String apiURL,
-  }) : _apiURL = apiURL;
+    required String apiURLAWS,
+  })  : _apiURL = apiURL,
+        _apiURLAWS = apiURLAWS;
 
   Client client = InterceptedClient.build(
     requestTimeout: const Duration(seconds: 10),
@@ -21,8 +23,10 @@ class APIService {
   );
 
   final String _apiURL;
+  final String _apiURLAWS;
 
   String get apiURL => _apiURL;
+  String get apiURLAWS => _apiURLAWS;
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
@@ -326,19 +330,23 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> downloadYearlyOverview(String guid, String year) async {
-    final url = Uri.https(apiURL, '/api/v2/users/$guid/givts/mail-report', {
-      'year': year,
-    });
-    return client.get(url).then((response) {
-      if (response.statusCode >= 300) {
-        throw GivtServerFailure(
-          statusCode: response.statusCode,
-          body: jsonDecode(response.body) as Map<String, dynamic>,
-        );
-      }
-      return response.statusCode == 200;
-    });
+  Future<bool> downloadYearlyOverview(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURLAWS, '/donations/download');
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-json-casing': 'PascalKeeze'
+      },
+    );
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 202;
   }
 
   Future<Map<String, dynamic>> getVerifiableParentalConsentURL(
