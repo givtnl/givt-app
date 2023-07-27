@@ -28,6 +28,7 @@ class Util {
     /// api.production.givtapp.net
     '97 F0 E8 B1 08 59 48 D0 EC AD 82 96 20 4A 47 04 BE F5 5D D2 0F 7E AB BF 33 DF 52 FB D3 A7 4F 96',
   ];
+
   static final ukPostCodeRegEx = RegExp(
       r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$');
   static final ukPhoneNumberRegEx = RegExp(
