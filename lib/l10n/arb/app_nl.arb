@@ -257,7 +257,7 @@
     "amountPresetsBody": "Stel hieronder je voorkeursbedragen in.",
     "amountPresetsResetAll": "Herstel waarden",
     "amountPresetsErrGivingLimit": "Het bedrag is hoger dan je geeflimiet",
-    "amountPresetsErr25C": "Het bedrag moet minstens 0,25 zijn",
+    "amountPresetsErr25C": "Het bedrag moet minstens {value0} zijn",
     "amountPresetsErrEmpty": "Vul een bedrag in",
     "alertBacsMessage": "Doordat je {value0} als landkeuze hebt aangegeven, gaan we ervan uit dat je het liefst wil geven d.m.v. een SEPA-machtiging (€), daar hebben wij je IBAN voor nodig. Wil je toch liever BACS (£) gebruiken, dan hebben we je Sort Code en Account Number nodig.",
     "alertSepaMessage": "Doordat je {value0} als landkeuze hebt aangegeven, gaan we ervan uit dat je het liefst wil geven d.m.v. BACS Direct Debit (£), daar hebben wij je Sort Code en Account Number voor nodig. Wil je toch liever SEPA (€) gebruiken, dan hebben we je IBAN nodig.",

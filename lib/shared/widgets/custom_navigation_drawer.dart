@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/pages/pages.dart';
@@ -117,9 +118,22 @@ class CustomNavigationDrawer extends StatelessWidget {
             ),
           ),
           _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
             title: locals.amountPresetsTitle,
-            icon: Icons.settings_input_component,
-            onTap: () {},
+            icon: Icons.tune,
+            imageIcon: Transform.rotate(
+              angle: 1.57,
+              child: const Icon(
+                Icons.tune,
+                color: AppTheme.givtBlue,
+              ),
+            ),
+            onTap: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (_) => const ChangeAmountPresetsBottomSheet(),
+            ),
           ),
           _buildMenuItem(
             title: locals.pincode,
