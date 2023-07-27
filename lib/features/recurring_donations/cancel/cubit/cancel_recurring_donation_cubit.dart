@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 
@@ -22,6 +23,10 @@ class CancelRecurringDonationCubit extends Cubit<CancelRecurringDonationState> {
       );
       emit(CancelRecurringDonationSuccessState());
     } catch (error) {
+      await LoggingInfo.instance.error(
+        error.toString(),
+        methodName: StackTrace.current.toString(),
+      );
       emit(CancelRecurringDonationErrorState(error: error.toString()));
     }
   }

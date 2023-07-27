@@ -87,7 +87,10 @@ class AppRouter {
                 path: Pages.recurringDonations.path,
                 name: Pages.recurringDonations.name,
                 builder: (context, state) => BlocProvider(
-                  create: (_) => RecurringDonationsCubit(getIt(), getIt()),
+                  create: (_) => RecurringDonationsCubit(getIt(), getIt())
+                    ..fetchRecurringDonations(
+                      context.read<AuthCubit>().state.user.guid,
+                    ),
                   child: const RecurringDonationsOverviewPage(),
                 ),
               ),

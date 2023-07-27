@@ -374,8 +374,7 @@ class APIService {
   Future<List<dynamic>> fetchRecurringDonations({
     required Map<String, dynamic> params,
   }) async {
-    final url =
-        Uri.https('api.development.givtapp.net', '/recurringdonations', params);
+    final url = Uri.https(apiURLAWS, '/recurringdonations', params);
 
     final response = await client.get(url);
 
@@ -393,7 +392,7 @@ class APIService {
     required String recurringDonationId,
   }) async {
     final url = Uri.https(
-      'api.development.givtapp.net',
+      apiURLAWS,
       'recurringdonations/$recurringDonationId/cancel',
     );
 

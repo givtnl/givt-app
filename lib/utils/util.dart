@@ -54,6 +54,14 @@ class Util {
     return icon;
   }
 
+  static String getCurrencyName({required Country country}) {
+    return country == Country.us
+        ? 'USD'
+        : Country.unitedKingdomCodes().contains(country.countryCode)
+            ? 'GBP'
+            : 'EUR';
+  }
+
   static double getLowerLimitByCountry(Country country) {
     if (country == Country.us) {
       return 2;

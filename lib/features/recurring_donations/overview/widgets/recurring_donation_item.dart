@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class RecurringDonationItem extends StatefulWidget {
@@ -30,11 +31,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
   String get frequencyText {
     final user = context.read<AuthCubit>().state.user;
     final currency = NumberFormat.simpleCurrency(
-      name: user.country == Country.us.countryCode
-          ? 'USD'
-          : Country.unitedKingdomCodes().contains(user.country)
-              ? 'GBP'
-              : 'EUR',
+      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
     );
 
     //TODO: POEditor
