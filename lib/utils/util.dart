@@ -22,7 +22,7 @@ class Util {
     /// api.production.givt.app
     'B4 00 35 42 EF C3 19 42 25 BD A5 5F 1D FE 02 27 CB D0 05 59 9D F5 73 7D 02 2B C8 FC 68 5D B5 6C',
 
-    /// api.development.givt.app
+    /// api.development.givtapp.net
     'B6 BC 0A 83 BA BC 3A B4 A0 DA CF 49 2F 88 A5 BB 87 8E E2 FD 02 91 A6 51 17 B8 E3 05 B7 16 04 CF',
 
     /// api.production.givtapp.net

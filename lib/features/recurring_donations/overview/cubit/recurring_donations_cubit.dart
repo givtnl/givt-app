@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 
 part 'recurring_donations_state.dart';
@@ -28,6 +31,12 @@ class RecurringDonationsCubit extends Cubit<RecurringDonationsState> {
         final recurringDonation = response[i];
         final collectGroup = collectGroups.firstWhere(
           (element) => element.nameSpace == recurringDonation.namespace,
+          orElse: () {
+            log(
+              'collection with namespase ${recurringDonation.namespace} not found',
+            );
+            return const CollectGroup.empty();
+          },
         );
 
         final recurringDonationExt =

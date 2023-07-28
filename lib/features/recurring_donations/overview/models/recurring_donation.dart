@@ -3,10 +3,8 @@ import 'package:givt_app/shared/models/collect_group.dart';
 
 enum RecurringDonationState {
   cancelled,
-  inProcess,
-  processed,
-  refused,
-  ;
+  active,
+  finished;
 
   static RecurringDonationState fromJson(Map<String, dynamic> json) {
     return RecurringDonationState.values[(json['currentState'] as int)];
@@ -27,7 +25,7 @@ class RecurringDonation extends Equatable {
 
   factory RecurringDonation.fromJson(Map<String, dynamic> json) =>
       RecurringDonation(
-        amountPerTurn: json['amountPerTurn'] as int,
+        amountPerTurn: json['amountPerTurn'] as num,
         cronExpression: json['cronExpression'] as String,
         currentState: RecurringDonationState.fromJson(json),
         id: json['id'] as String,
@@ -36,7 +34,7 @@ class RecurringDonation extends Equatable {
         startDate: json['startDate'] as String,
       );
 
-  final int amountPerTurn;
+  final num amountPerTurn;
   final String cronExpression;
   final RecurringDonationState currentState;
   final String id;
@@ -46,7 +44,7 @@ class RecurringDonation extends Equatable {
   final CollectGroup collectGroup;
 
   RecurringDonation copyWith({
-    int? amountPerTurn,
+    num? amountPerTurn,
     String? cronExpression,
     RecurringDonationState? currentState,
     String? id,

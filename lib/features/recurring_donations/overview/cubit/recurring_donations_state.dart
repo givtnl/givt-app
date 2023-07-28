@@ -28,9 +28,7 @@ class RecurringDonationsFetchedState extends RecurringDonationsState {
   List<RecurringDonation> get activeRecurringDonations {
     return recurringDonations
         .where(
-          (element) =>
-              element.currentState == RecurringDonationState.inProcess ||
-              element.currentState == RecurringDonationState.processed,
+          (element) => element.currentState == RecurringDonationState.active,
         )
         .toList();
   }

@@ -373,9 +373,10 @@ class APIService {
   Future<List<dynamic>> fetchRecurringDonations({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(apiURLAWS, '/recurringdonations', params);
+    final url = Uri.https(apiURLAWS, '/recurringdonations');
 
-    final response = await client.get(url);
+    final response =
+        await client.get(url, headers: {'Content-Type': 'application/json'});
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
