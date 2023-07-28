@@ -2,9 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
-import 'package:givt_app/core/network/interceptor.dart';
-import 'package:givt_app/utils/utils.dart';
-import 'package:http_certificate_pinning/http_certificate_pinning.dart';
+import 'package:givt_app/core/network/network.dart';
+import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class APIService {
@@ -14,15 +13,13 @@ class APIService {
   })  : _apiURL = apiURL,
         _apiURLAWS = apiURLAWS;
 
-  SecureHttpClient client = SecureHttpClient.build(
-    Util.allowedSHAFingerprints,
-    customClient: InterceptedClient.build(
-      requestTimeout: const Duration(seconds: 10),
-      interceptors: [
-        Interceptor(),
-      ],
-      retryPolicy: ExpiredTokenRetryPolicy(),
-    ),
+  Client client = InterceptedClient.build(
+    requestTimeout: const Duration(seconds: 10),
+    interceptors: [
+      CertificateCheckInterceptor(),
+      TokenInterceptor(),
+    ],
+    retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
   final String _apiURL;
@@ -72,10 +69,12 @@ class APIService {
     final url = Uri.https(_apiURL, '/api/v2/UsersExtension/$guid');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
-      throw Exception('something went wrong :(');
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
     }
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
   Future<bool> checktld(String email) async {

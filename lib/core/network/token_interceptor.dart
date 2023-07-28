@@ -8,7 +8,7 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Interceptor implements InterceptorContract {
+class TokenInterceptor implements InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
     try {

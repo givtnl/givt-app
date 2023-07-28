@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -22,12 +23,16 @@ class ChooseAmount extends StatefulWidget {
     required this.onAmountChanged,
     required this.country,
     required this.hasGiven,
+    required this.arePresetsEnabled,
+    required this.presets,
     super.key,
   });
 
   final int amountLimit;
   final Country country;
   final bool hasGiven;
+  final bool arePresetsEnabled;
+  final List<Preset> presets;
   final ChooseAmountNextCallback onAmountChanged;
 
   @override
@@ -70,6 +75,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
       _resetControllers();
     }
 
+    final currencySymbol = NumberFormat.simpleCurrency(
+      name: widget.country.currency,
+    ).currencySymbol;
+
     return Form(
       key: _formKey,
       child: Container(
@@ -81,7 +90,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
               focusNode: focusNodes[0],
               collectionFieldName: locals.firstCollect,
               amountLimit: widget.amountLimit,
-              lowerLimit: getLowerLimitByCountry(widget.country),
+              lowerLimit: Util.getLowerLimitByCountry(widget.country),
               prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
               controller: controllers[0],
               isVisible: collectionFields[0],
@@ -105,7 +114,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
               focusNode: focusNodes[1],
               collectionFieldName: locals.secondCollect,
               amountLimit: widget.amountLimit,
-              lowerLimit: getLowerLimitByCountry(widget.country),
+              lowerLimit: Util.getLowerLimitByCountry(widget.country),
               prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
               controller: controllers[1],
               isVisible: collectionFields[1],
@@ -125,7 +134,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
               focusNode: focusNodes[2],
               collectionFieldName: locals.thirdCollect,
               amountLimit: widget.amountLimit,
-              lowerLimit: getLowerLimitByCountry(widget.country),
+              lowerLimit: Util.getLowerLimitByCountry(widget.country),
               prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
               controller: controllers[2],
               isVisible: collectionFields[2],
@@ -164,10 +173,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                       final areAmountsValid = await _checkAmounts(
                         context,
                         upperLimit: widget.amountLimit,
-                        lowerLimit: getLowerLimitByCountry(widget.country),
-                        currency: NumberFormat.simpleCurrency(
-                          name: widget.country.currency,
-                        ).currencySymbol,
+                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                        currency: currencySymbol,
                       );
 
                       if (!areAmountsValid) {
@@ -191,6 +198,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   : null,
             ),
             NumericKeyboard(
+              currencySymbol: currencySymbol,
+              presets: widget.arePresetsEnabled ? widget.presets : [],
+              onPresetTap: onPresetTapped,
               onKeyboardTap: onNumberTapped,
               leftButtonFn: onCommaTapped,
               rightButtonFn: onBackspaceTapped,
@@ -199,16 +209,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
         ),
       ),
     );
-  }
-
-  double getLowerLimitByCountry(Country country) {
-    if (country == Country.us) {
-      return 2;
-    }
-    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
-      return 0.50;
-    }
-    return 0.25;
   }
 
   void _changeFocus() {
@@ -400,6 +400,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
     if (controllers[selectedField].text.length <= 6) {
       controllers[selectedField].text += value;
     }
+    setState(() {
+      _formKey.currentState!.validate();
+    });
+  }
+
+  void onPresetTapped(String amount) {
+    controllers[selectedField].text = amount;
     setState(() {
       _formKey.currentState!.validate();
     });
