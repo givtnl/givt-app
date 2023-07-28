@@ -7,7 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/widgets/choose_amount.dart';
+import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -23,12 +23,21 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
+    final size = MediaQuery.sizeOf(context);
+    final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(
-        title: Text(locals.amount),
+        title: Column(
+          children: [
+            // Image.asset(
+            //   'assets/images/logo.png',
+            //   width: size.width * 0.1,
+            // ),
+            // const SizedBox(height: 5),
+            Text(locals.amount),
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
@@ -47,60 +56,29 @@ class HomePage extends StatelessWidget {
         ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-              listener: (context, state) {
-                if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
-                      ),
-                    ),
-                  );
-                }
-                if (state is RemoteDataSourceSyncInProgress) {
-                  if (!auth.user.needRegistration || auth.user.mandateSigned) {
-                    return;
-                  }
-                  _buildNeedsRegistrationDialog(context);
-                }
-              },
-              child: ChooseAmount(
-                country: Country.fromCode(auth.user.country),
-                amountLimit: auth.user.amountLimit,
-                hasGiven: given,
-                onAmountChanged:
-                    (firstCollection, secondCollection, thirdCollection) =>
-                        context.goNamed(
-                  Pages.selectGivingWay.name,
-                  extra: {
-                    'firstCollection': firstCollection,
-                    'secondCollection': secondCollection,
-                    'thirdCollection': thirdCollection,
-                    'code': code,
-                  },
+      body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+        listener: (context, state) {
+          if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
                 ),
               ),
-            ),
-            ColoredBox(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  left: 15,
-                  bottom: 10,
-                ),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: size.width * 0.2,
-                ),
-              ),
-            ),
-          ],
+            );
+          }
+          if (state is RemoteDataSourceSyncInProgress) {
+            if (!auth.user.needRegistration || auth.user.mandateSigned) {
+              return;
+            }
+            _buildNeedsRegistrationDialog(context);
+          }
+        },
+        child: SafeArea(
+          child: _HomePageView(
+            given: given,
+            code: code,
+          ),
         ),
       ),
     );
@@ -146,6 +124,150 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _HomePageView extends StatefulWidget {
+  const _HomePageView({
+    required this.given,
+    required this.code,
+  });
+
+  final bool given;
+  final String code;
+
+  @override
+  State<_HomePageView> createState() => _HomePageViewState();
+}
+
+class _HomePageViewState extends State<_HomePageView> {
+  late PageController pageController;
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = context.watch<AuthCubit>().state;
+    final size = MediaQuery.sizeOf(context);
+    final locals = context.l10n;
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        HomePageViewLayout(
+          child: PageView(
+            controller: pageController,
+            children: [
+              ChooseAmount(
+                country: Country.fromCode(auth.user.country),
+                amountLimit: auth.user.amountLimit,
+                hasGiven: widget.given,
+                onAmountChanged:
+                    (firstCollection, secondCollection, thirdCollection) =>
+                        context.goNamed(
+                  Pages.selectGivingWay.name,
+                  extra: {
+                    'firstCollection': firstCollection,
+                    'secondCollection': secondCollection,
+                    'thirdCollection': thirdCollection,
+                    'code': widget.code,
+                  },
+                ),
+              ),
+              const ChooseCategory()
+            ],
+          ),
+        ),
+        ColoredBox(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 15,
+              left: 15,
+              bottom: 10,
+            ),
+            child: GestureDetector(
+              onTap: () {
+                pageController.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+                height: 40,
+                width: pageController.page != pageController.initialPage
+                    ? size.width * 0.4
+                    : size.width * 0.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: pageController.page != pageController.initialPage
+                      ? Colors.amber
+                      : Colors.blue,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color:
+                              pageController.page != pageController.initialPage
+                                  ? Colors.white
+                                  : Colors.amber,
+                        ),
+                        child: Center(
+                          child: Text(
+                            locals.discoverSegmentNow,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: pageController.page !=
+                                      pageController.initialPage
+                                  ? Colors.black
+                                  : Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 80,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color:
+                              pageController.page != pageController.initialPage
+                                  ? Colors.amber
+                                  : Colors.white,
+                        ),
+                        child: Center(
+                          child: Text(
+                            locals.discoverSegmentWho,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: pageController.page !=
+                                      pageController.initialPage
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
