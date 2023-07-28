@@ -393,10 +393,11 @@ class APIService {
   }) async {
     final url = Uri.https(
       apiURLAWS,
-      'recurringdonations/$recurringDonationId/cancel',
+      'recurringdonations/${recurringDonationId.toLowerCase()}/cancel',
     );
 
-    final response = await client.patch(url);
+    final response =
+        await client.patch(url, headers: {'Content-Type': 'application/json'});
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
