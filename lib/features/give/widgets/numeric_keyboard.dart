@@ -61,7 +61,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     return Container(
       padding: const EdgeInsets.all(8),
       width: size.width,
-      height: size.height * 0.3,
+      height: widget.presets.isNotEmpty ? size.height * 0.3 : null,
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
@@ -122,9 +122,16 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                 Row(
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: [
-                    _buildCommaButton(),
+                    _calcButton(
+                      ',',
+                      onTap: widget.leftButtonFn,
+                    ),
                     _calcButton('0'),
-                    _buildDeleteButton(),
+                    _calcButton(
+                      '⌫',
+                      onTap: widget.rightButtonFn,
+                      child: widget.rightIcon,
+                    ),
                   ],
                 ),
               ],
@@ -135,70 +142,42 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     );
   }
 
-  Expanded _buildCommaButton() => Expanded(
-        child: InkWell(
-          borderRadius: BorderRadius.circular(45),
-          onTap: widget.leftButtonFn,
-          child: Container(
-            margin: const EdgeInsets.all(4),
-            padding: const EdgeInsets.all(12),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Text(
-              ',',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: widget.textColor,
-              ),
-            ),
+  Widget _calcButton(
+    String value, {
+    void Function()? onTap,
+    Widget? child,
+  }) {
+    final onButtonTap = onTap ?? () => widget.onKeyboardTap(value);
+    final valueWidget = child ??
+        Text(
+          value,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: widget.textColor,
           ),
-        ),
-      );
-
-  Expanded _buildDeleteButton() => Expanded(
-        child: InkWell(
-          borderRadius: BorderRadius.circular(45),
-          onTap: widget.rightButtonFn,
-          child: Container(
-            margin: const EdgeInsets.all(4),
-            padding: const EdgeInsets.all(12),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: widget.rightIcon,
-          ),
-        ),
-      );
-
-  Widget _calcButton(String value) {
+        );
+    final size = MediaQuery.sizeOf(context);
+    var padding = 14.0;
+    if (size.height < 700) {
+      padding = 7.5;
+    }
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(45),
-        onTap: () {
-          widget.onKeyboardTap(value);
-        },
+        onTap: onButtonTap,
         child: Container(
           margin: const EdgeInsets.all(4),
-          padding: const EdgeInsets.fromLTRB(12, 16, 12, 12),
+          padding: EdgeInsets.all(padding),
           alignment: Alignment.center,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: widget.textColor,
+            borderRadius: BorderRadius.all(
+              Radius.circular(5),
             ),
           ),
+          child: valueWidget,
         ),
       ),
     );
