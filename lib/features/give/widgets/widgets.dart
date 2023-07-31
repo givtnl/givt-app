@@ -1,3 +1,4 @@
+export 'animated_switch.dart';
 export 'choose_amount.dart';
 export 'choose_category.dart';
 export 'collection_form_field.dart';

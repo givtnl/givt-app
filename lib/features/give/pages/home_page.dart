@@ -15,29 +15,25 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({required this.code, required this.given, super.key});
 
   final String code;
   final bool given;
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isGive = true;
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          children: [
-            // Image.asset(
-            //   'assets/images/logo.png',
-            //   width: size.width * 0.1,
-            // ),
-            // const SizedBox(height: 5),
-            Text(locals.amount),
-          ],
-        ),
+        title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
@@ -76,8 +72,13 @@ class HomePage extends StatelessWidget {
         },
         child: SafeArea(
           child: _HomePageView(
-            given: given,
-            code: code,
+            given: widget.given,
+            code: widget.code,
+            onPageChanged: () => setState(
+              () {
+                isGive = !isGive;
+              },
+            ),
           ),
         ),
       ),
@@ -130,12 +131,14 @@ class HomePage extends StatelessWidget {
 
 class _HomePageView extends StatefulWidget {
   const _HomePageView({
+    required this.onPageChanged,
     required this.given,
     required this.code,
   });
 
   final bool given;
   final String code;
+  final VoidCallback onPageChanged;
 
   @override
   State<_HomePageView> createState() => _HomePageViewState();
@@ -143,6 +146,8 @@ class _HomePageView extends StatefulWidget {
 
 class _HomePageViewState extends State<_HomePageView> {
   late PageController pageController;
+  int pageIndex = 0;
+
   @override
   void initState() {
     pageController = PageController();
@@ -152,14 +157,13 @@ class _HomePageViewState extends State<_HomePageView> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthCubit>().state;
-    final size = MediaQuery.sizeOf(context);
-    final locals = context.l10n;
     return Stack(
       alignment: Alignment.topCenter,
       children: [
         HomePageViewLayout(
           child: PageView(
             controller: pageController,
+            onPageChanged: onPageChanged,
             children: [
               ChooseAmount(
                 country: Country.fromCode(auth.user.country),
@@ -189,87 +193,31 @@ class _HomePageViewState extends State<_HomePageView> {
             padding: const EdgeInsets.only(
               right: 15,
               left: 15,
-              bottom: 10,
+              bottom: 5,
             ),
-            child: GestureDetector(
-              onTap: () {
-                pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-                height: 40,
-                width: pageController.page != pageController.initialPage
-                    ? size.width * 0.4
-                    : size.width * 0.5,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: pageController.page != pageController.initialPage
-                      ? Colors.amber
-                      : Colors.blue,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color:
-                              pageController.page != pageController.initialPage
-                                  ? Colors.white
-                                  : Colors.amber,
-                        ),
-                        child: Center(
-                          child: Text(
-                            locals.discoverSegmentNow,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: pageController.page !=
-                                      pageController.initialPage
-                                  ? Colors.black
-                                  : Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color:
-                              pageController.page != pageController.initialPage
-                                  ? Colors.amber
-                                  : Colors.white,
-                        ),
-                        child: Center(
-                          child: Text(
-                            locals.discoverSegmentWho,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: pageController.page !=
-                                      pageController.initialPage
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            child: AnimatedSwitch(
+              onChanged: onPageChanged,
+              pageIndex: pageIndex,
             ),
           ),
         ),
       ],
+    );
+  }
+
+  void onPageChanged(int index) {
+    if (index == pageIndex) {
+      return;
+    }
+    setState(() {
+      pageIndex = index;
+      widget.onPageChanged();
+    });
+
+    pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 }
