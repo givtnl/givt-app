@@ -56,7 +56,9 @@ class _PresetFormFieldState extends State<PresetFormField> {
         borderRadius: BorderRadius.circular(5),
         child: TextFormField(
           controller: widget.controller,
-          keyboardType: TextInputType.number,
+          keyboardType: const TextInputType.numberWithOptions(
+            decimal: true,
+          ),
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r'^\d+\,?\d{0,2}')),
           ],

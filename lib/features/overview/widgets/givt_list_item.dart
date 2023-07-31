@@ -50,7 +50,10 @@ class GivtListItem extends StatelessWidget {
       confirmDismiss: confirmDismiss,
       onDismissed: onDismiss,
       child: Container(
-        height: size.height * 0.11,
+        height: givtGroup.givts.length == 3
+            ? size.height * 0.15
+            : size.height * 0.11,
+        width: size.width,
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
@@ -66,8 +69,8 @@ class GivtListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: size.width * 0.1,
+                  height: size.width * 0.1,
                   margin: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                   decoration: const BoxDecoration(
                     color: AppTheme.givtLightGray,
@@ -116,7 +119,6 @@ class GivtListItem extends StatelessWidget {
                         height: 20,
                       ),
                     ),
-                    const SizedBox(width: 5),
                     Text(
                       givtGroup.organisationName,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
