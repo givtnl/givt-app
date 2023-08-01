@@ -47,6 +47,7 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final size = MediaQuery.sizeOf(context);
     final amountLimit = context.read<AuthCubit>().state.user.amountLimit;
     final country =
         Country.fromCode(context.read<AuthCubit>().state.user.country);
@@ -58,69 +59,73 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
 
     return Form(
       key: formKey,
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            locals.amountPresetsBody,
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          PresetFormField(
-            controller: firstPreset,
-            amountLimit: amountLimit,
-            lowerLimit: lowerLimit,
-            currency: currency,
-            onChanged: (_) => formKey.currentState!.validate(),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          PresetFormField(
-            controller: secondPreset,
-            amountLimit: amountLimit,
-            lowerLimit: lowerLimit,
-            currency: currency,
-            onChanged: (_) => formKey.currentState!.validate(),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          PresetFormField(
-            controller: thirdPreset,
-            amountLimit: amountLimit,
-            lowerLimit: lowerLimit,
-            currency: currency,
-            onChanged: (_) => formKey.currentState!.validate(),
-          ),
-          const Spacer(),
-          if (context.watch<AuthCubit>().state is AuthLoading)
-            const Center(
-              child: CircularProgressIndicator(),
-            )
-          else
-            ElevatedButton(
-              onPressed: () {
-                if (!formKey.currentState!.validate()) {
-                  return;
-                }
-                widget.onAmountPresetsChanged(
-                  double.parse(firstPreset.text.replaceAll(',', '.')),
-                  double.parse(secondPreset.text.replaceAll(',', '.')),
-                  double.parse(thirdPreset.text.replaceAll(',', '.')),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
-              child: Text(locals.save),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-        ],
+            Text(
+              locals.amountPresetsBody,
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            PresetFormField(
+              controller: firstPreset,
+              amountLimit: amountLimit,
+              lowerLimit: lowerLimit,
+              currency: currency,
+              onChanged: (_) => formKey.currentState!.validate(),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            PresetFormField(
+              controller: secondPreset,
+              amountLimit: amountLimit,
+              lowerLimit: lowerLimit,
+              currency: currency,
+              onChanged: (_) => formKey.currentState!.validate(),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            PresetFormField(
+              controller: thirdPreset,
+              amountLimit: amountLimit,
+              lowerLimit: lowerLimit,
+              currency: currency,
+              onChanged: (_) => formKey.currentState!.validate(),
+            ),
+            SizedBox(
+              height: size.height * 0.20,
+            ),
+            if (context.watch<AuthCubit>().state is AuthLoading)
+              const Center(
+                child: CircularProgressIndicator(),
+              )
+            else
+              ElevatedButton(
+                onPressed: () {
+                  if (!formKey.currentState!.validate()) {
+                    return;
+                  }
+                  widget.onAmountPresetsChanged(
+                    double.parse(firstPreset.text.replaceAll(',', '.')),
+                    double.parse(secondPreset.text.replaceAll(',', '.')),
+                    double.parse(thirdPreset.text.replaceAll(',', '.')),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: Text(locals.save),
+              ),
+          ],
+        ),
       ),
     );
   }
