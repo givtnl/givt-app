@@ -58,7 +58,7 @@ class CollectGroup extends Equatable {
       orgName: json['N'] as String,
       hasCelebration: json['C'] as bool,
       type: CollecGroupType.values.firstWhere(
-        (e) => e.value == json['T'],
+        (e) => e.index == json['T'],
       ),
       locations: locations,
       multiUseAllocations: multiUseAllocations,
@@ -79,8 +79,8 @@ class CollectGroup extends Equatable {
     data['NS'] = nameSpace;
     data['N'] = orgName;
     data['C'] = hasCelebration;
-    data['T'] = type.value;
-    data['type'] = type.value;
+    data['T'] = type.index;
+    data['type'] = type.index;
     data['L'] = locations.map((e) => e.toJson()).toList();
     data['MultiUseAllocations'] =
         multiUseAllocations.map((e) => e.toJson()).toList();

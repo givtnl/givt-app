@@ -369,4 +369,40 @@ class APIService {
       );
     }
   }
+
+  Future<List<dynamic>> fetchRecurringDonations({
+    required Map<String, dynamic> params,
+  }) async {
+    final url = Uri.https(apiURLAWS, '/recurringdonations');
+
+    final response =
+        await client.get(url, headers: {'Content-Type': 'application/json'});
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['results'] as List<dynamic>;
+  }
+
+  Future<void> cancelRecurringDonation({
+    required String recurringDonationId,
+  }) async {
+    final url = Uri.https(
+      apiURLAWS,
+      'recurringdonations/${recurringDonationId.toLowerCase()}/cancel',
+    );
+
+    final response =
+        await client.patch(url, headers: {'Content-Type': 'application/json'});
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
 }
