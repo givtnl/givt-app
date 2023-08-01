@@ -7,6 +7,7 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_list.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -38,13 +39,13 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locals = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
         title: Text(
-          //TODO: POEditor
-          'Recurring donations',
+          locals.menuItemRecurringDonation,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -57,9 +58,8 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
           if (state is RecurringDonationsErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text(
-                  //TODO: POEditor
-                  'Cannot fetch recurring donations. Please try again later',
+                content: Text(
+                  locals.somethingWentWrong,
                   textAlign: TextAlign.center,
                 ),
                 backgroundColor: Theme.of(context).errorColor,
@@ -84,6 +84,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
               children: [
                 CreateRecurringDonationButton(
                   onClick: () {},
+                  locals: locals,
                 ),
                 const SizedBox(height: 20),
                 Card(
@@ -107,7 +108,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                       children: [
                         Text(
                           //TODO: POEditor
-                          'Recurring donations',
+                          locals.menuItemRecurringDonation,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         Container(

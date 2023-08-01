@@ -72,8 +72,11 @@ class CustomNavigationDrawer extends StatelessWidget {
               'assets/images/givy_budget_menu.png',
               fit: BoxFit.contain,
             ),
-            onTap: () => context.goNamed(
-              Pages.personalSummary.name,
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(
+                Pages.personalSummary.name,
+              ),
             ),
           ),
           _buildMenuItem(
@@ -89,10 +92,12 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
-            //TODO: POEditor
-            title: 'Recurring donations',
+            title: locals.menuItemRecurringDonation,
             icon: Icons.screen_rotation_alt_outlined,
-            onTap: () => context.goNamed(Pages.recurringDonations.name),
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(Pages.recurringDonations.name),
+            ),
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
