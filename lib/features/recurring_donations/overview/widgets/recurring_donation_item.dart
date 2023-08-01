@@ -29,8 +29,33 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-
     const animationDuration = Duration(milliseconds: 300);
+    final frequencies = [
+      locals.setupRecurringGiftWeek,
+      locals.setupRecurringGiftMonth,
+      locals.setupRecurringGiftQuarter,
+      locals.setupRecurringGiftHalfYear,
+      locals.setupRecurringGiftYear
+    ];
+    String getFrequencyText() {
+      final user = context.read<AuthCubit>().state.user;
+      final currency = NumberFormat.simpleCurrency(
+        name: Util.getCurrencyName(country: Country.fromCode(user.country)),
+      );
+
+      final result =
+          '${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol} ${widget.recurringDonation.amountPerTurn.toStringAsFixed(2)}';
+
+      return result;
+    }
+
+    String endsOnText() {
+      final dateFormat = DateFormat('dd-MM-yyyy');
+      final endsOn = locals.recurringDonationStops(
+          dateFormat.format(widget.recurringDonation.endDate));
+      return endsOn;
+    }
+
     return InkWell(
       onTap: widget.onTap,
       borderRadius: BorderRadius.circular(15),
@@ -87,7 +112,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          frequencyText,
+                          getFrequencyText(),
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
@@ -95,7 +120,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          endsOnText,
+                          endsOnText(),
                           style:
                               Theme.of(context).textTheme.bodySmall?.copyWith(),
                         ),
@@ -169,30 +194,5 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
         ),
       ),
     );
-  }
-
-  //TODO: POEditor
-  final frequencies = ['week', 'month', 'quarter', 'half year', 'year'];
-
-  String get frequencyText {
-    final user = context.read<AuthCubit>().state.user;
-    final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
-    );
-
-    //TODO: POEditor
-    final result =
-        'Each ${frequencies[widget.recurringDonation.frequency]} you give ${currency.currencySymbol} ${widget.recurringDonation.amountPerTurn.toStringAsFixed(2)}';
-
-    return result;
-  }
-
-  String get endsOnText {
-    final dateFormat = DateFormat('dd-MM-yyyy');
-
-    //TODO: POEditor
-    final endsOn =
-        'This will stop on ${dateFormat.format(widget.recurringDonation.endDate)}';
-    return endsOn;
   }
 }
