@@ -212,31 +212,37 @@ class PersonalSummary extends StatelessWidget {
                   ],
                 )
               : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Spacer(),
                     Image.asset(
                       'assets/images/givy_money.png',
                       height: 60,
                     ),
-                    const Spacer(
-                      flex: 2,
-                    ),
-                    Text(
-                      locals.budgetSummarySetGoalBold,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    const Text(
-                      //locals.budgetSummarySetGoal,
-                      'Giving goal feature coming soon!',
+                    RichText(
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: locals.budgetSummarySetGoalBold,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: AppTheme.givtBlue,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: AppTheme.fontFamily,
+                            ),
+                          ),
+                          const TextSpan(
+                            //locals.budgetSummarySetGoal
+                            text: '\nGiving goal feature coming soon!',
+                            style: TextStyle(
+                              color: AppTheme.givtBlue,
+                              fontFamily: AppTheme.fontFamily,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const Spacer(),
                   ],
                 ),
         ),
