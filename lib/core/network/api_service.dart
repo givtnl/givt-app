@@ -405,4 +405,20 @@ class APIService {
       );
     }
   }
+
+  Future<List<dynamic>> fetchMonthlySummary(
+    String guid,
+    Map<String, String> params,
+  ) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/summary', params);
+
+    final response = await client.get(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as List<dynamic>;
+  }
 }

@@ -65,6 +65,19 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
+            isAccent: true,
+            icon: Icons.wallet,
+            title: locals.budgetMenuView,
+            imageIcon: Image.asset(
+              'assets/images/givy_budget_menu.png',
+              fit: BoxFit.contain,
+            ),
+            onTap: () => context.goNamed(
+              Pages.personalSummary.name,
+            ),
+          ),
+          _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
             onTap: () => AuthUtils.checkToken(
@@ -259,12 +272,14 @@ class CustomNavigationDrawer extends StatelessWidget {
     bool isVisible = false,
     bool showBadge = false,
     bool showUnderline = true,
+    bool isAccent = false,
   }) =>
       Visibility(
         visible: isVisible,
         child: Column(
           children: [
             Container(
+              height: isAccent ? 90 : 60,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -273,25 +288,59 @@ class CustomNavigationDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              child: ListTile(
-                leading: imageIcon ??
-                    Icon(
-                      icon,
-                      color: AppTheme.givtBlue,
+              child: isAccent
+                  ? ListTile(
+                      minVerticalPadding: 0,
+                      contentPadding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                      title: Row(
+                        children: [
+                          imageIcon ??
+                              Icon(
+                                icon,
+                                color: AppTheme.givtBlue,
+                              ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        ],
+                      ),
+                      onTap: onTap,
+                    )
+                  : ListTile(
+                      leading: imageIcon ??
+                          Icon(
+                            icon,
+                            color: AppTheme.givtBlue,
+                          ),
+                      trailing: badges.Badge(
+                        showBadge: showBadge,
+                        position:
+                            badges.BadgePosition.topStart(top: 6, start: -20),
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                        ),
+                      ),
+                      title: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight:
+                                isAccent ? FontWeight.w900 : FontWeight.normal),
+                      ),
+                      onTap: onTap,
                     ),
-                trailing: badges.Badge(
-                  showBadge: showBadge,
-                  position: badges.BadgePosition.topStart(top: 6, start: -20),
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                  ),
-                ),
-                title: Text(
-                  title,
-                  style: const TextStyle(fontSize: 17),
-                ),
-                onTap: onTap,
-              ),
             ),
           ],
         ),
