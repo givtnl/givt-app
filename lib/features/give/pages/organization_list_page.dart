@@ -179,40 +179,40 @@ class OrganizationListPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FilterSuggestionCard(
-            isFocused: bloc.state.selectedType == CollecGroupType.church.value,
+            isFocused: bloc.state.selectedType == CollecGroupType.church.index,
             title: locals.church,
-            icon: 'assets/images/church.png',
-            activeIcon: 'assets/images/church_focus.png',
-            color: AppTheme.givtLightBlue,
+            icon: CollecGroupType.church.icon,
+            activeIcon: CollecGroupType.church.activeIcon,
+            color: CollecGroupType.church.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.church.value,
+                CollecGroupType.church.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             isFocused:
-                bloc.state.selectedType == CollecGroupType.charities.value,
+                bloc.state.selectedType == CollecGroupType.charities.index,
             title: locals.charity,
-            icon: 'assets/images/charity.png',
-            activeIcon: 'assets/images/charity_focus.png',
-            color: AppTheme.givtYellow,
+            icon: CollecGroupType.charities.icon,
+            activeIcon: CollecGroupType.charities.activeIcon,
+            color: CollecGroupType.charities.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.charities.value,
+                CollecGroupType.charities.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             isFocused:
-                bloc.state.selectedType == CollecGroupType.campaign.value,
+                bloc.state.selectedType == CollecGroupType.campaign.index,
             title: locals.campaign,
-            icon: 'assets/images/campaign.png',
-            activeIcon: 'assets/images/campaign_focus.png',
-            color: AppTheme.givtOrange,
+            icon: CollecGroupType.campaign.icon,
+            activeIcon: CollecGroupType.campaign.activeIcon,
+            color: CollecGroupType.campaign.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.campaign.value,
+                CollecGroupType.campaign.index,
               ),
             ),
           ),
@@ -220,14 +220,14 @@ class OrganizationListPage extends StatelessWidget {
             visible: Platform.isIOS,
             child: FilterSuggestionCard(
               isFocused:
-                  bloc.state.selectedType == CollecGroupType.artists.value,
+                  bloc.state.selectedType == CollecGroupType.artists.index,
               title: locals.artist,
-              icon: 'assets/images/artist.png',
-              activeIcon: 'assets/images/artist_focus.png',
-              color: AppTheme.givtDarkGreen,
+              icon: CollecGroupType.artists.icon,
+              activeIcon: CollecGroupType.artists.activeIcon,
+              color: CollecGroupType.artists.color,
               onTap: () => bloc.add(
                 OrganisationTypeChanged(
-                  CollecGroupType.artists.value,
+                  CollecGroupType.artists.index,
                 ),
               ),
             ),

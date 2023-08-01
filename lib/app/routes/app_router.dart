@@ -17,6 +17,8 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
+import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
@@ -79,6 +81,17 @@ class AppRouter {
                 builder: (context, state) => BlocProvider(
                   create: (_) => VPCCubit(getIt()),
                   child: const GiveVPCPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.recurringDonations.path,
+                name: Pages.recurringDonations.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => RecurringDonationsCubit(getIt(), getIt())
+                    ..fetchRecurringDonations(
+                      context.read<AuthCubit>().state.user.guid,
+                    ),
+                  child: const RecurringDonationsOverviewPage(),
                 ),
               ),
               GoRoute(
