@@ -379,40 +379,43 @@ class PersonalSummary extends StatelessWidget {
     required String countryCharacter,
   }) {
     return Dialog(
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppTheme.givtGraycece,
-              border: Border.all(color: Colors.transparent),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(4),
-                topRight: Radius.circular(4),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: size.height * 0.1,
+          maxHeight: size.height * 0.5,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppTheme.givtGraycece,
+                border: Border.all(color: Colors.transparent),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(4),
+                  topRight: Radius.circular(4),
+                ),
               ),
-            ),
-            width: double.maxFinite,
-            child: Text(
-              getMonthNameFromISOString(state.dateTime),
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              width: double.maxFinite,
               child: Text(
-                locals.budgetSummaryGivt,
+                getMonthNameFromISOString(state.dateTime),
+                textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-          ),
-          ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: size.height * 0.1,
-                maxHeight: size.height * 0.5,
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, left: 10),
+                child: Text(
+                  locals.budgetSummaryGivt,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -432,8 +435,16 @@ class PersonalSummary extends StatelessWidget {
                     ),
                   ],
                 ),
-              )),
-        ],
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Close'),
+            ),
+          ],
+        ),
       ),
     );
   }
