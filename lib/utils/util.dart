@@ -55,18 +55,6 @@ class Util {
     return icon;
   }
 
-  static String getCurrencyCharacter({required Country country}) {
-    var currency = '€';
-    if (country == Country.us) {
-      currency = r'$';
-    }
-    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
-      currency = '£';
-    }
-
-    return currency;
-  }
-
   static String getCurrencyName({required Country country}) {
     return country == Country.us
         ? 'USD'

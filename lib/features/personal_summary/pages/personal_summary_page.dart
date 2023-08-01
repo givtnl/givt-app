@@ -17,9 +17,9 @@ class PersonalSummary extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
-    final countryCharacter = Util.getCurrencyCharacter(
-      country: Country.fromCode(user.country),
-    );
+    final countryCharacter = NumberFormat.simpleCurrency(
+      name: Country.fromCode(user.country).currency,
+    ).currencySymbol;
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.budgetMenuView),
