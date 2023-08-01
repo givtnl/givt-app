@@ -1,3 +1,5 @@
+// ignore_for_file: equal_keys_in_map
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -365,5 +367,32 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
+  }
+
+  Future<List<dynamic>> fetchMonthlySummary(
+    String guid,
+    String fromDate,
+    String tillDate,
+  ) async {
+    final params = {
+      'OrderType': '3',
+      'GroupType': '2',
+      'FromDate': fromDate,
+      'TillDate': tillDate,
+      'TransactionStatusses': '1',
+      'TransactionStatusses': '2',
+      'TransactionStatusses': '3',
+    };
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/summary', params);
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as List<dynamic>;
   }
 }

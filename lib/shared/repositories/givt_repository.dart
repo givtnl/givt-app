@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/overview/models/givt.dart';
+import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GivtRepository {
@@ -18,6 +19,12 @@ mixin GivtRepository {
   Future<bool> deleteGivt(List<dynamic> ids);
 
   Future<bool> downloadYearlyOverview({required Map<String, dynamic> body});
+
+  Future<List<MonthlySummaryItem>> fetchMonthlySummary({
+    required String guid,
+    required String fromDate,
+    required String tillDate,
+  });
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -114,5 +121,18 @@ class GivtRepositoryImpl with GivtRepository {
   Future<bool> downloadYearlyOverview(
       {required Map<String, dynamic> body}) async {
     return apiClient.downloadYearlyOverview(body);
+  }
+
+  @override
+  Future<List<MonthlySummaryItem>> fetchMonthlySummary({
+    required String guid,
+    required String fromDate,
+    required String tillDate,
+  }) async {
+    final decodedJson =
+        await apiClient.fetchMonthlySummary(guid, fromDate, tillDate);
+    return MonthlySummaryItem.fromJsonList(
+      decodedJson,
+    );
   }
 }

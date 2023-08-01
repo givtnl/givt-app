@@ -17,6 +17,8 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
+import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/pages/personal_summary_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
@@ -62,6 +64,19 @@ class AppRouter {
             path: Pages.home.path,
             name: Pages.home.name,
             routes: [
+              GoRoute(
+                path: Pages.personalSummary.path,
+                name: Pages.personalSummary.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => PersonalSummaryBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    givtRepo: getIt(),
+                  )..add(
+                      const PersonalSummaryInit(),
+                    ),
+                  child: const PersonalSummary(),
+                ),
+              ),
               GoRoute(
                 path: Pages.personalInfoEdit.path,
                 name: Pages.personalInfoEdit.name,

@@ -16,7 +16,6 @@ class Util {
   static RegExp phoneNumberRegEx(String prefix) =>
       RegExp('\\(?\\+\\(?$prefix\\)?[()]?([-()]?\\d[-()]?){9,10}');
 
-
   static IconData getCurrencyIconData({required Country country}) {
     var icon = Icons.euro;
     if (country == Country.us) {
@@ -27,5 +26,17 @@ class Util {
     }
 
     return icon;
+  }
+
+  static String getCurrencyCharacter({required Country country}) {
+    var currency = '€';
+    if (country == Country.us) {
+      currency = r'$';
+    }
+    if (Country.unitedKingdomCodes().contains(country.countryCode)) {
+      currency = '£';
+    }
+
+    return currency;
   }
 }
