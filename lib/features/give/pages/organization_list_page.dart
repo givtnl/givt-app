@@ -216,19 +216,16 @@ class OrganizationListPage extends StatelessWidget {
               ),
             ),
           ),
-          Visibility(
+          FilterSuggestionCard(
             visible: Platform.isIOS,
-            child: FilterSuggestionCard(
-              isFocused:
-                  bloc.state.selectedType == CollecGroupType.artists.index,
-              title: locals.artist,
-              icon: CollecGroupType.artists.icon,
-              activeIcon: CollecGroupType.artists.activeIcon,
-              color: CollecGroupType.artists.color,
-              onTap: () => bloc.add(
-                OrganisationTypeChanged(
-                  CollecGroupType.artists.index,
-                ),
+            isFocused: bloc.state.selectedType == CollecGroupType.artists.index,
+            title: locals.artist,
+            icon: CollecGroupType.artists.icon,
+            activeIcon: CollecGroupType.artists.activeIcon,
+            color: CollecGroupType.artists.color,
+            onTap: () => bloc.add(
+              OrganisationTypeChanged(
+                CollecGroupType.artists.index,
               ),
             ),
           ),
