@@ -1,3 +1,5 @@
+// ignore_for_file: equal_keys_in_map
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -129,8 +131,16 @@ class GivtRepositoryImpl with GivtRepository {
     required String fromDate,
     required String tillDate,
   }) async {
-    final decodedJson =
-        await apiClient.fetchMonthlySummary(guid, fromDate, tillDate);
+    final params = {
+      'OrderType': '3',
+      'GroupType': '2',
+      'FromDate': fromDate,
+      'TillDate': tillDate,
+      'TransactionStatusses': '1',
+      'TransactionStatusses': '2',
+      'TransactionStatusses': '3',
+    };
+    final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
     return MonthlySummaryItem.fromJsonList(
       decodedJson,
     );

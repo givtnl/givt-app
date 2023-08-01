@@ -1,5 +1,3 @@
-// ignore_for_file: equal_keys_in_map
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -410,18 +408,8 @@ class APIService {
 
   Future<List<dynamic>> fetchMonthlySummary(
     String guid,
-    String fromDate,
-    String tillDate,
+    Map<String, String> params,
   ) async {
-    final params = {
-      'OrderType': '3',
-      'GroupType': '2',
-      'FromDate': fromDate,
-      'TillDate': tillDate,
-      'TransactionStatusses': '1',
-      'TransactionStatusses': '2',
-      'TransactionStatusses': '3',
-    };
     final url = Uri.https(apiURL, '/api/v2/users/$guid/summary', params);
 
     final response = await client.get(url);
