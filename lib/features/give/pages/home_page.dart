@@ -73,6 +73,8 @@ class HomePage extends StatelessWidget {
                 country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: given,
+                arePresetsEnabled: auth.user.presets.isEnabled,
+                presets: auth.user.presets.presets,
                 onAmountChanged:
                     (firstCollection, secondCollection, thirdCollection) =>
                         context.goNamed(

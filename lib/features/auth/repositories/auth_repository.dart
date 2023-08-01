@@ -36,6 +36,10 @@ mixin AuthRepositoy {
   });
 
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
+
+  Future<bool> updateLocalUserExt({
+    required UserExt newUserExt,
+  });
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -221,4 +225,13 @@ class AuthRepositoyImpl with AuthRepositoy {
     Map<String, dynamic> newUserExt,
   ) async =>
       _apiService.updateUserExt(newUserExt);
+
+  @override
+  Future<bool> updateLocalUserExt({
+    required UserExt newUserExt,
+  }) async =>
+      _prefs.setString(
+        UserExt.tag,
+        jsonEncode(newUserExt),
+      );
 }
