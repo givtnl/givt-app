@@ -87,7 +87,7 @@ class GivtListItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        DateFormat('dd').format(givtGroup.timeStamp!),
+                        DateFormat('dd').format(givtGroup.timeStamp!.toLocal()),
                         style: const TextStyle(
                           color: AppTheme.givtBlue,
                           fontSize: 18,
@@ -98,7 +98,7 @@ class GivtListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  DateFormat('hh:mm').format(givtGroup.timeStamp!),
+                  DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
                   style: const TextStyle(
                     color: AppTheme.givtBlue,
                     fontSize: 10,
