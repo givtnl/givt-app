@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/shared/models/monthly_summary_item.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +18,9 @@ class PersonalSummary extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
+    final userCountry = Country.fromCode(user.country);
     final countryCharacter = NumberFormat.simpleCurrency(
-      name: Country.fromCode(user.country).currency,
+      name: userCountry.currency,
     ).currencySymbol;
     return Scaffold(
       appBar: AppBar(
@@ -68,12 +70,14 @@ class PersonalSummary extends StatelessWidget {
                           size: size,
                           locals: locals,
                           countryCharacter: countryCharacter,
+                          userCountry: userCountry,
                           state: state,
                         ),
                         _buildNarrowWidget(
                           left: false,
                           size: size,
                           locals: locals,
+                          userCountry: userCountry,
                           countryCharacter: countryCharacter,
                           state: state,
                         ),
@@ -161,6 +165,7 @@ class PersonalSummary extends StatelessWidget {
     required AppLocalizations locals,
     required bool left,
     required String countryCharacter,
+    required Country userCountry,
     required PersonalSummaryState state,
   }) =>
       Container(
@@ -187,7 +192,11 @@ class PersonalSummary extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '$countryCharacter ${state.monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount)}',
+                          '$countryCharacter'
+                          '${getTotalSumPerMonth(
+                            state.monthlyGivts,
+                            userCountry,
+                          )}',
                           style: const TextStyle(
                             fontSize: 24,
                             color: Colors.white,
@@ -447,6 +456,19 @@ class PersonalSummary extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String getTotalSumPerMonth(
+    List<MonthlySummaryItem> monthlyGivts,
+    Country country,
+  ) {
+    final totalDouble =
+        monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount);
+    if (country.countryCode == 'US' ||
+        Country.unitedKingdomCodes().contains(country.countryCode)) {
+      return totalDouble.toStringAsFixed(2);
+    }
+    return totalDouble.toStringAsFixed(2).replaceAll('.', ',');
   }
 
   String getMonthNameFromISOString(String isoString) {
