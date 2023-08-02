@@ -95,6 +95,7 @@ class PersonalSummary extends StatelessWidget {
                     locals: locals,
                     state: state,
                     countryCharacter: countryCharacter,
+                    userCountry: userCountry,
                   ),
                 ],
               );
@@ -283,6 +284,7 @@ class PersonalSummary extends StatelessWidget {
     required AppLocalizations locals,
     required PersonalSummaryState state,
     required String countryCharacter,
+    required Country userCountry,
   }) =>
       Container(
         width: size.width * 0.9,
@@ -344,7 +346,7 @@ class PersonalSummary extends StatelessWidget {
                                 children: [
                                   Text(e.organisationName),
                                   Text(
-                                    '$countryCharacter ${e.amount}',
+                                    '$countryCharacter ${Util.formatNumberComma(e.amount, userCountry)}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -371,6 +373,7 @@ class PersonalSummary extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) =>
                         _buildMonthlyHistoryDialog(
+                          country: userCountry,
                           context: context,
                           size: size,
                           locals: locals,
@@ -393,6 +396,7 @@ class PersonalSummary extends StatelessWidget {
     required AppLocalizations locals,
     required PersonalSummaryState state,
     required String countryCharacter,
+    required Country country,
   }) {
     return Dialog(
       child: ConstrainedBox(
@@ -444,7 +448,7 @@ class PersonalSummary extends StatelessWidget {
                         children: [
                           Text(e.organisationName),
                           Text(
-                            '$countryCharacter ${e.amount}',
+                            '$countryCharacter ${Util.formatNumberComma(e.amount, country)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -474,10 +478,6 @@ class PersonalSummary extends StatelessWidget {
   ) {
     final totalDouble =
         monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount);
-    if (country.countryCode == 'US' ||
-        Country.unitedKingdomCodes().contains(country.countryCode)) {
-      return totalDouble.toStringAsFixed(2);
-    }
-    return totalDouble.toStringAsFixed(2).replaceAll('.', ',');
+    return Util.formatNumberComma(totalDouble, country);
   }
 }

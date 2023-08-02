@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class GivtListItem extends StatelessWidget {
@@ -140,7 +141,10 @@ class GivtListItem extends StatelessWidget {
                         ),
                         Expanded(child: Container()),
                         Text(
-                          '${currency.currencySymbol} ${collection.amount.toStringAsFixed(2)}',
+                          '${currency.currencySymbol} ${Util.formatNumberComma(
+                            collection.amount,
+                            Country.fromCode(country),
+                          )}',
                           textAlign: TextAlign.end,
                         ),
                       ],

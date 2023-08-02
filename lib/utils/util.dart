@@ -74,6 +74,14 @@ class Util {
     return 0.25;
   }
 
+  static String formatNumberComma(double number, Country country) {
+    if (country.countryCode == 'US' ||
+        Country.unitedKingdomCodes().contains(country.countryCode)) {
+      return number.toStringAsFixed(2);
+    }
+    return number.toStringAsFixed(2).replaceAll('.', ',');
+  }
+
   static String getMonthName(String isoString, String locale) {
     final dateTime = DateTime.parse(isoString);
     final dateFormat = DateFormat.MMMM(locale);

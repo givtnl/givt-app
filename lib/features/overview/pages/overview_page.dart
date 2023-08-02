@@ -298,7 +298,7 @@ class OverviewPage extends StatelessWidget {
             ),
           ),
           Text(
-            '${currency.currencySymbol} ${amount.toStringAsFixed(2)}',
+            '${currency.currencySymbol} ${Util.formatNumberComma(amount, Country.fromCode(country))}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
