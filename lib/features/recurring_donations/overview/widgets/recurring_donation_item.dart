@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
+import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_detail_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -63,7 +65,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        elevation: 2,
+        elevation: 0,
         child: AnimatedContainer(
           duration: animationDuration,
           decoration: BoxDecoration(
@@ -71,7 +73,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: widget.recurringDonation.collectGroup.type.color,
-              width: 1.5,
+              width: 1,
             ),
           ),
           width: double.infinity,
@@ -121,8 +123,10 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                         const SizedBox(height: 4),
                         Text(
                           endsOnText(),
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: AppTheme.givtDarkerGray),
                         ),
                       ],
                     ),
@@ -151,11 +155,10 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                               ),
                               onPressed: widget.onCancel,
                               icon: const Icon(
-                                Icons.stop_circle_rounded,
+                                Icons.stop_circle_outlined,
                                 color: AppTheme.givtRed,
                               ),
                               label: Text(
-                                //TODO: POEditor
                                 locals.cancelRecurringDonation,
                                 style: Theme.of(context)
                                     .textTheme
@@ -173,7 +176,8 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                   color: Colors.transparent,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () => _showModalBottomSheet(context,
+                                  bottomSheet: RecurringDonationsDetailPage()),
                               icon: const Icon(
                                 Icons.list_rounded,
                               ),
@@ -195,4 +199,18 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
       ),
     );
   }
+
+  Future<void> _showModalBottomSheet(
+    BuildContext context, {
+    required Widget bottomSheet,
+  }) =>
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        builder: (_) => BlocProvider.value(
+          value: context.read<RecurringDonationsCubit>(),
+          child: bottomSheet,
+        ),
+      );
 }

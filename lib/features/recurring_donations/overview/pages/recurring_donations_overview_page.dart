@@ -122,7 +122,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                               Text(
                                 locals.emptyRecurringDonationList,
                               ),
-                              Container(
+                              SizedBox(
                                 height: size.height * 0.5,
                                 child: Center(
                                   child: Image.asset(
