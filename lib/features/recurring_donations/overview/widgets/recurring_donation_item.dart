@@ -63,7 +63,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        elevation: 2,
+        elevation: 0,
         child: AnimatedContainer(
           duration: animationDuration,
           decoration: BoxDecoration(
@@ -151,7 +151,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                               ),
                               onPressed: widget.onCancel,
                               icon: const Icon(
-                                Icons.stop_circle_rounded,
+                                Icons.stop_circle_outlined,
                                 color: AppTheme.givtRed,
                               ),
                               label: Text(
@@ -176,10 +176,16 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                               onPressed: () {},
                               icon: const Icon(
                                 Icons.list_rounded,
+                                color: Colors.white,
                               ),
                               label: Text(
                                 locals.featureRecurringDonations3Title,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      color: Colors.white,
+                                    ),
                               ),
                             ),
                           ),
