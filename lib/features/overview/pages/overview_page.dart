@@ -8,6 +8,7 @@ import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -172,6 +173,7 @@ class OverviewPage extends StatelessWidget {
                     Visibility(
                       visible: user.isGiftAidEnabled,
                       child: _buildHeader(
+                        context: context,
                         amount: state.givtAided[
                                 monthSections[index].timeStamp!.year] ??
                             0,
@@ -185,6 +187,7 @@ class OverviewPage extends StatelessWidget {
                       ),
                     ),
                     _buildHeader(
+                      context: context,
                       timesStamp: monthSections[index].timeStamp,
                       amount: monthSections[index].amount,
                       country: user.country,
@@ -260,6 +263,7 @@ class OverviewPage extends StatelessWidget {
   }
 
   Container _buildHeader({
+    required BuildContext context,
     required String country,
     required double amount,
     DateTime? timesStamp,
@@ -275,7 +279,10 @@ class OverviewPage extends StatelessWidget {
     );
     final headerTitle = timesStamp == null
         ? giftAidTitle
-        : '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}';
+        : "${Util.getMonthName(
+            timesStamp.toIso8601String(),
+            Util.getLanguageTageFromLocale(context),
+          )} '${DateFormat('yy').format(timesStamp)}";
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       color: color ?? AppTheme.givtLightPurple,

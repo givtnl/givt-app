@@ -115,7 +115,10 @@ class PersonalSummary extends StatelessWidget {
           children: [
             _buildArrowButton(left: true, context: context),
             Text(
-              getMonthNameFromISOString(state.dateTime),
+              Util.getMonthName(
+                state.dateTime,
+                Util.getLanguageTageFromLocale(context),
+              ),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -310,7 +313,10 @@ class PersonalSummary extends StatelessWidget {
               ),
               width: double.maxFinite,
               child: Text(
-                getMonthNameFromISOString(state.dateTime),
+                Util.getMonthName(
+                  state.dateTime,
+                  Util.getLanguageTageFromLocale(context),
+                ),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
@@ -409,7 +415,10 @@ class PersonalSummary extends StatelessWidget {
               ),
               width: double.maxFinite,
               child: Text(
-                getMonthNameFromISOString(state.dateTime),
+                Util.getMonthName(
+                  state.dateTime,
+                  Util.getLanguageTageFromLocale(context),
+                ),
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -470,11 +479,5 @@ class PersonalSummary extends StatelessWidget {
       return totalDouble.toStringAsFixed(2);
     }
     return totalDouble.toStringAsFixed(2).replaceAll('.', ',');
-  }
-
-  String getMonthNameFromISOString(String isoString) {
-    final dateTime = DateTime.parse(isoString);
-    final monthName = DateFormat('MMMM').format(dateTime);
-    return monthName;
   }
 }
