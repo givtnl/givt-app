@@ -84,10 +84,11 @@ class PersonalSummary extends StatelessWidget {
                       ],
                     ),
                   ),
-                  _buildGiveNowButton(
-                    locals: locals,
-                    onTap: () {},
-                  ),
+                  // Hide inactive button
+                  // _buildGiveNowButton(
+                  //   locals: locals,
+                  //   onTap: () {},
+                  // ),
                   _buildMonthlyHistory(
                     context: context,
                     size: size,

@@ -5,7 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
+//import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_list.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -82,10 +82,11 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                CreateRecurringDonationButton(
-                  onClick: () {},
-                  locals: locals,
-                ),
+                // Hide inactive button
+                // CreateRecurringDonationButton(
+                //   onClick: () {},
+                //   locals: locals,
+                // ),
                 const SizedBox(height: 20),
                 Card(
                   shape: RoundedRectangleBorder(
