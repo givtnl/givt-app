@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:intl/intl.dart';
 
 class Util {
   /// Allowed SHA-256 fingerprints for Givt backend
@@ -71,5 +72,27 @@ class Util {
       return 0.50;
     }
     return 0.25;
+  }
+
+  static String formatNumberComma(double number, Country country) {
+    if (country.countryCode == 'US' ||
+        Country.unitedKingdomCodes().contains(country.countryCode)) {
+      return number.toStringAsFixed(2);
+    }
+    return number.toStringAsFixed(2).replaceAll('.', ',');
+  }
+
+  static String getMonthName(String isoString, String locale) {
+    final dateTime = DateTime.parse(isoString);
+    final dateFormat = DateFormat.MMMM(locale);
+    final monthName = dateFormat.format(dateTime);
+    final capitalizedMonthName =
+        '${monthName[0].toUpperCase()}${monthName.substring(1)}';
+    return capitalizedMonthName;
+  }
+
+  static String getLanguageTageFromLocale(BuildContext context) {
+    final languageTag = Localizations.localeOf(context).toLanguageTag();
+    return languageTag;
   }
 }

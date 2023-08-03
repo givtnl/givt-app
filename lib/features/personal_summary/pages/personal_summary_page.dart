@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
+import 'package:givt_app/shared/models/monthly_summary_item.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -17,8 +18,9 @@ class PersonalSummary extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
+    final userCountry = Country.fromCode(user.country);
     final countryCharacter = NumberFormat.simpleCurrency(
-      name: Country.fromCode(user.country).currency,
+      name: userCountry.currency,
     ).currencySymbol;
     return Scaffold(
       appBar: AppBar(
@@ -68,28 +70,32 @@ class PersonalSummary extends StatelessWidget {
                           size: size,
                           locals: locals,
                           countryCharacter: countryCharacter,
+                          userCountry: userCountry,
                           state: state,
                         ),
                         _buildNarrowWidget(
                           left: false,
                           size: size,
                           locals: locals,
+                          userCountry: userCountry,
                           countryCharacter: countryCharacter,
                           state: state,
                         ),
                       ],
                     ),
                   ),
-                  _buildGiveNowButton(
-                    locals: locals,
-                    onTap: () {},
-                  ),
+                  // Hide inactive button
+                  // _buildGiveNowButton(
+                  //   locals: locals,
+                  //   onTap: () {},
+                  // ),
                   _buildMonthlyHistory(
                     context: context,
                     size: size,
                     locals: locals,
                     state: state,
                     countryCharacter: countryCharacter,
+                    userCountry: userCountry,
                   ),
                 ],
               );
@@ -110,7 +116,10 @@ class PersonalSummary extends StatelessWidget {
           children: [
             _buildArrowButton(left: true, context: context),
             Text(
-              getMonthNameFromISOString(state.dateTime),
+              Util.getMonthName(
+                state.dateTime,
+                Util.getLanguageTageFromLocale(context),
+              ),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -161,6 +170,7 @@ class PersonalSummary extends StatelessWidget {
     required AppLocalizations locals,
     required bool left,
     required String countryCharacter,
+    required Country userCountry,
     required PersonalSummaryState state,
   }) =>
       Container(
@@ -187,7 +197,11 @@ class PersonalSummary extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          '$countryCharacter ${state.monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount)}',
+                          '$countryCharacter'
+                          '${getTotalSumPerMonth(
+                            state.monthlyGivts,
+                            userCountry,
+                          )}',
                           style: const TextStyle(
                             fontSize: 24,
                             color: Colors.white,
@@ -270,6 +284,7 @@ class PersonalSummary extends StatelessWidget {
     required AppLocalizations locals,
     required PersonalSummaryState state,
     required String countryCharacter,
+    required Country userCountry,
   }) =>
       Container(
         width: size.width * 0.9,
@@ -300,7 +315,10 @@ class PersonalSummary extends StatelessWidget {
               ),
               width: double.maxFinite,
               child: Text(
-                getMonthNameFromISOString(state.dateTime),
+                Util.getMonthName(
+                  state.dateTime,
+                  Util.getLanguageTageFromLocale(context),
+                ),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
@@ -328,7 +346,7 @@ class PersonalSummary extends StatelessWidget {
                                 children: [
                                   Text(e.organisationName),
                                   Text(
-                                    '$countryCharacter ${e.amount}',
+                                    '$countryCharacter ${Util.formatNumberComma(e.amount, userCountry)}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -355,6 +373,7 @@ class PersonalSummary extends StatelessWidget {
                     context: context,
                     builder: (BuildContext context) =>
                         _buildMonthlyHistoryDialog(
+                          country: userCountry,
                           context: context,
                           size: size,
                           locals: locals,
@@ -377,6 +396,7 @@ class PersonalSummary extends StatelessWidget {
     required AppLocalizations locals,
     required PersonalSummaryState state,
     required String countryCharacter,
+    required Country country,
   }) {
     return Dialog(
       child: ConstrainedBox(
@@ -399,7 +419,10 @@ class PersonalSummary extends StatelessWidget {
               ),
               width: double.maxFinite,
               child: Text(
-                getMonthNameFromISOString(state.dateTime),
+                Util.getMonthName(
+                  state.dateTime,
+                  Util.getLanguageTageFromLocale(context),
+                ),
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -425,7 +448,7 @@ class PersonalSummary extends StatelessWidget {
                         children: [
                           Text(e.organisationName),
                           Text(
-                            '$countryCharacter ${e.amount}',
+                            '$countryCharacter ${Util.formatNumberComma(e.amount, country)}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -449,9 +472,12 @@ class PersonalSummary extends StatelessWidget {
     );
   }
 
-  String getMonthNameFromISOString(String isoString) {
-    final dateTime = DateTime.parse(isoString);
-    final monthName = DateFormat('MMMM').format(dateTime);
-    return monthName;
+  String getTotalSumPerMonth(
+    List<MonthlySummaryItem> monthlyGivts,
+    Country country,
+  ) {
+    final totalDouble =
+        monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount);
+    return Util.formatNumberComma(totalDouble, country);
   }
 }
