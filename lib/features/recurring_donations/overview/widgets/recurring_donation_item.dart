@@ -180,16 +180,10 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                   bottomSheet: RecurringDonationsDetailPage()),
                               icon: const Icon(
                                 Icons.list_rounded,
-                                color: Colors.white,
                               ),
                               label: Text(
                                 locals.featureRecurringDonations3Title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ),
                           ),
