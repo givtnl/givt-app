@@ -16,6 +16,7 @@ class RecurringDonationItem extends StatefulWidget {
     required this.isExtended,
     required this.onTap,
     required this.onCancel,
+    required this.onOverview,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class RecurringDonationItem extends StatefulWidget {
   final bool isExtended;
   final void Function() onTap;
   final void Function() onCancel;
+  final void Function() onOverview;
   @override
   State<RecurringDonationItem> createState() => _RecurringDonationItemState();
 }
@@ -176,8 +178,15 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                   color: Colors.transparent,
                                 ),
                               ),
-                              onPressed: () => _showModalBottomSheet(context,
-                                  bottomSheet: RecurringDonationsDetailPage()),
+                              onPressed: () {
+                                widget.onOverview();
+                                _showModalBottomSheet(
+                                  context,
+                                  bottomSheet: RecurringDonationsDetailPage(
+                                    recurringDonation: widget.recurringDonation,
+                                  ),
+                                );
+                              },
                               icon: const Icon(
                                 Icons.list_rounded,
                               ),

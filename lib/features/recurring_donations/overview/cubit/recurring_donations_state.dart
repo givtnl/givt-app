@@ -20,6 +20,18 @@ class RecurringDonationsErrorState extends RecurringDonationsState {
   List<Object> get props => [error];
 }
 
+class RecurringDonationsDetailState extends RecurringDonationsState {
+  const RecurringDonationsDetailState({
+    required this.instances,
+    required this.recurringDonations,
+  });
+
+  final List<RecurringDonationDetail> instances;
+  final List<RecurringDonation> recurringDonations;
+  @override
+  List<Object> get props => [instances, recurringDonations];
+}
+
 class RecurringDonationsFetchedState extends RecurringDonationsState {
   const RecurringDonationsFetchedState({required this.recurringDonations});
 

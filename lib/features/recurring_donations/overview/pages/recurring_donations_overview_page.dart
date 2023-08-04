@@ -20,6 +20,16 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
         .fetchRecurringDonations(context.read<AuthCubit>().state.user.guid);
   }
 
+  Future<void> _fetchRecurringInstances(
+    BuildContext context,
+    RecurringDonation selected,
+  ) async {
+    await context.read<RecurringDonationsCubit>().fetchRecurringInstances(
+        context.read<RecurringDonationsCubit>().state
+            as RecurringDonationsFetchedState,
+        selected);
+  }
+
   void _onCancelRecurringDonationPressed(
     BuildContext context,
     RecurringDonation recurringDonation,
@@ -138,6 +148,12 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                           RecurringDonationsList(
                             height: size.height * 0.69,
                             recurringDonations: recurringDonations,
+                            onOverview: (RecurringDonation recurringDonation) {
+                              _fetchRecurringInstances(
+                                context,
+                                recurringDonation,
+                              );
+                            },
                             onCancel: (RecurringDonation recurringDonation) {
                               _onCancelRecurringDonationPressed(
                                 context,
