@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -14,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.readOnly = false,
+    this.inputFormatters = const [],
   });
 
   final TextEditingController controller;
@@ -26,6 +28,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final bool readOnly;
+  final List<TextInputFormatter> inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +42,8 @@ class CustomTextFormField extends StatelessWidget {
         onChanged: onChanged,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
+        textCapitalization: textCapitalization,
+        inputFormatters: inputFormatters,
         obscureText: obscureText,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontSize: 16,

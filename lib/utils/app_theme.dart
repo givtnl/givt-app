@@ -21,6 +21,11 @@ class AppTheme {
   static const givtYellow = Color(0xFFEDA52E);
   static const givtDarkGreen = Color(0xFF1da96c);
   static const softenedGivtPurple = Color(0xFF585479);
+  static const presetsButtonColor = Color(0xFF918fa6);
+
+  static const sliderIndicatorFilled = Color(0xFF184869);
+  static const sliderIndicatorNotFilled = Color(0xFFD9D9D9);
+  static const fontFamily = 'AvenirLTStd';
 
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,

@@ -21,6 +21,10 @@
         "API_URL_US=dev-backend.givt.app",
         "--dart-define",
         "API_URL_EU=dev-backend.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_EU=api.development.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_US=api.development.givtapp.net",
       ]
     },
     {
@@ -40,6 +44,10 @@
         "API_URL_US=dev-backend.givt.app",
         "--dart-define",
         "API_URL_EU=dev-backend.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_EU=api.development.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_US=api.development.givtapp.net",
       ]
     },
     {
@@ -59,6 +67,10 @@
         "API_URL_US=backend.givt.app",
         "--dart-define",
         "API_URL_EU=backend.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_EU=api.production.givtapp.net",
+        "--dart-define",
+        "API_URL_AWS_US=api.production.givt.app",
       ]
     }
   ]

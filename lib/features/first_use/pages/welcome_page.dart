@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:go_router/go_router.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -71,14 +74,46 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (_) => LoginPage(
-                    email: auth.email,
-                  ),
-                ),
+                onTap: () async {
+                  if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+                    if (!mounted) {
+                      return;
+                    }
+                    await showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => LoginPage(
+                        email: auth.user.email,
+                      ),
+                    );
+                    return;
+                  }
+                  final hasAuthenticated =
+                      await LocalAuthInfo.instance.authenticate();
+                  if (!hasAuthenticated) {
+                    if (!mounted) {
+                      return;
+                    }
+                    await showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => LoginPage(
+                        email: auth.user.email,
+                      ),
+                    );
+                    return;
+                  }
+                  if (!mounted) {
+                    return;
+                  }
+                  await context.read<AuthCubit>().authenticate();
+                  if (!mounted) {
+                    return;
+                  }
+                  context.goNamed(Pages.home.name);
+                },
                 child: _buildAlreadyAnAccountLogin(context, locals),
               ),
             ],

@@ -52,15 +52,16 @@ class AuthRefreshed extends AuthState {
 
 class AuthLogout extends AuthState {
   const AuthLogout({
-    super.email,
+    super.user,
+    super.session,
   });
 
   @override
   List<Object> get props => [];
 }
 
-class AuthUnkown extends AuthState {
-  const AuthUnkown({
+class AuthUnknown extends AuthState {
+  const AuthUnknown({
     super.email,
   });
 

@@ -18,7 +18,10 @@ enum Pages {
   registration,
   overview,
   personalInfoEdit,
+  giveVPC,
   unregister,
+  personalSummary,
+  recurringDonations,
 }
 
 extension AppPageExtension on Pages {
@@ -62,8 +65,14 @@ extension AppPageExtension on Pages {
         return 'overview';
       case Pages.personalInfoEdit:
         return 'personal-info-edit';
+      case Pages.giveVPC:
+        return 'give-vpc';
       case Pages.unregister:
         return 'unregister';
+      case Pages.personalSummary:
+        return 'personal-summary';
+      case Pages.recurringDonations:
+        return 'recurring-donations';
     }
   }
 
@@ -107,8 +116,14 @@ extension AppPageExtension on Pages {
         return 'OVERVIEW';
       case Pages.personalInfoEdit:
         return 'PERSONAL-INFO-EDIT';
+      case Pages.giveVPC:
+        return 'GIVE-VPC';
       case Pages.unregister:
         return 'UNREGISTER';
+      case Pages.personalSummary:
+        return 'PERSONAL-SUMMARY';
+      case Pages.recurringDonations:
+        return 'RECURRING-DONATIONS';
     }
   }
 }

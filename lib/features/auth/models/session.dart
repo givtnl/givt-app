@@ -51,6 +51,7 @@ class Session {
 
   bool get isExpired {
     final now = DateTime.now().toUtc();
+    if (expires.isEmpty) return false;
     final expiresDate = DateTime.parse(expires).subtract(
       const Duration(
         minutes: 20,
@@ -67,6 +68,11 @@ class Session {
         '.expires': expires,
         'expires_In': expiresIn,
       };
+
+  @override
+  String toString() {
+    return 'Session{userGUID: $userGUID, email: $email, accessToken: $accessToken, refreshToken: $refreshToken, expires: $expires, expiresIn: $expiresIn}';
+  }
 
   static String tag = 'Session';
 }
