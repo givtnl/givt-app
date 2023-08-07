@@ -4,6 +4,7 @@ class RecurringDonationDetail extends Equatable {
   const RecurringDonationDetail({
     required this.timestamp,
     required this.donationId,
+    required this.amount,
     //required this.count,
     // required this.status,
     // required this.isGiftAidEnabled,
@@ -11,7 +12,8 @@ class RecurringDonationDetail extends Equatable {
   factory RecurringDonationDetail.fromJson(Map<String, dynamic> json) {
     return RecurringDonationDetail(
       timestamp: DateTime.parse(json['confirmationDateTime'] as String),
-      donationId: json['donationId'] as String,
+      donationId: json['donationId'].toString(),
+      amount: json['amount'] as int,
       // status: json['Status'] as int,
       // isGiftAidEnabled: json['GiftAidEnabled'] as bool,
       //count: json['Count'] as int,
@@ -19,7 +21,7 @@ class RecurringDonationDetail extends Equatable {
   }
   final DateTime timestamp;
   final String donationId;
-  //final int count;
+  final int amount;
   // final int status;
   // final bool isGiftAidEnabled;
 
@@ -36,6 +38,7 @@ class RecurringDonationDetail extends Equatable {
   List<Object> get props => [
         timestamp,
         donationId,
+        amount
         //count,
         // status,
         // isGiftAidEnabled,
