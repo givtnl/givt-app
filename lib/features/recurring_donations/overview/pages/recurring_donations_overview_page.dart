@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
+import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_reccuring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donations_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 //import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
@@ -20,14 +23,22 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
         .fetchRecurringDonations(context.read<AuthCubit>().state.user.guid);
   }
 
-  Future<void> _fetchRecurringInstances(
+  Future<void> _onViewDetailInstances(
     BuildContext context,
     RecurringDonation selected,
   ) async {
-    await context.read<RecurringDonationsCubit>().fetchRecurringInstances(
-        context.read<RecurringDonationsCubit>().state
-            as RecurringDonationsFetchedState,
-        selected);
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider(
+        create: (_) => DetailedReccuringDonationsCubit(getIt())
+          ..fetchRecurringInstances(selected),
+        child: RecurringDonationsDetailPage(
+          recurringDonation: selected,
+        ),
+      ),
+    );
   }
 
   void _onCancelRecurringDonationPressed(
@@ -146,10 +157,10 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                           )
                         else
                           RecurringDonationsList(
-                            height: size.height * 0.69,
+                            height: size.height * 0.68,
                             recurringDonations: recurringDonations,
                             onOverview: (RecurringDonation recurringDonation) {
-                              _fetchRecurringInstances(
+                              _onViewDetailInstances(
                                 context,
                                 recurringDonation,
                               );

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_detail_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -180,12 +178,6 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                               ),
                               onPressed: () {
                                 widget.onOverview();
-                                _showModalBottomSheet(
-                                  context,
-                                  bottomSheet: RecurringDonationsDetailPage(
-                                    recurringDonation: widget.recurringDonation,
-                                  ),
-                                );
                               },
                               icon: const Icon(
                                 Icons.list_rounded,
@@ -208,18 +200,4 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
       ),
     );
   }
-
-  Future<void> _showModalBottomSheet(
-    BuildContext context, {
-    required Widget bottomSheet,
-  }) =>
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        builder: (_) => BlocProvider.value(
-          value: context.read<RecurringDonationsCubit>(),
-          child: bottomSheet,
-        ),
-      );
 }
