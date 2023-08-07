@@ -5,25 +5,21 @@ class RecurringDonationDetail extends Equatable {
     required this.timestamp,
     required this.donationId,
     required this.amount,
-    //required this.count,
-    // required this.status,
-    // required this.isGiftAidEnabled,
+    this.status = 1,
+    this.isGiftAidEnabled = false,
   });
   factory RecurringDonationDetail.fromJson(Map<String, dynamic> json) {
     return RecurringDonationDetail(
       timestamp: DateTime.parse(json['confirmationDateTime'] as String),
       donationId: json['donationId'].toString(),
       amount: json['amount'] as int,
-      // status: json['Status'] as int,
-      // isGiftAidEnabled: json['GiftAidEnabled'] as bool,
-      //count: json['Count'] as int,
     );
   }
   final DateTime timestamp;
   final String donationId;
   final int amount;
-  // final int status;
-  // final bool isGiftAidEnabled;
+  final int status;
+  final bool isGiftAidEnabled;
 
   static List<RecurringDonationDetail> fromJsonList(List<dynamic> jsonList) =>
       jsonList
@@ -35,12 +31,5 @@ class RecurringDonationDetail extends Equatable {
           .toList();
 
   @override
-  List<Object> get props => [
-        timestamp,
-        donationId,
-        amount
-        //count,
-        // status,
-        // isGiftAidEnabled,
-      ];
+  List<Object> get props => [timestamp, donationId, amount, status];
 }
