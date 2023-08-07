@@ -4,8 +4,8 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class DontaionTypeExplanationSheet extends StatelessWidget {
-  const DontaionTypeExplanationSheet({super.key});
+class DonationTypeExplanationSheet extends StatelessWidget {
+  const DonationTypeExplanationSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
