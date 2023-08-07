@@ -7,16 +7,16 @@ import 'package:givt_app/features/recurring_donations/detail/models/recurring_do
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 
-part 'detailed_reccuring_donations_state.dart';
+part 'detailed_recurring_donations_state.dart';
 
-class DetailedReccuringDonationsCubit
-    extends Cubit<DetailedReccuringDonationsState> {
-  DetailedReccuringDonationsCubit(this._recurringDonationsRepository)
-      : super(DetailedReccuringDonationsInitial());
+class DetailedRecurringDonationsCubit
+    extends Cubit<DetailedRecurringDonationsState> {
+  DetailedRecurringDonationsCubit(this._recurringDonationsRepository)
+      : super(DetailedRecurringDonationsInitial());
   final DetailRecurringDonationsRepository _recurringDonationsRepository;
 
   Future<void> fetchRecurringInstances(RecurringDonation selected) async {
-    emit(DetailedReccuringDonationsLoading());
+    emit(DetailedRecurringDonationsLoading());
     try {
       final response = await _recurringDonationsRepository
           .fetchRecurringInstances(selected.id);
@@ -28,7 +28,7 @@ class DetailedReccuringDonationsCubit
         error.toString(),
         methodName: StackTrace.current.toString(),
       );
-      emit(DetailedReccuringDonationsError(error: error.toString()));
+      emit(DetailedRecurringDonationsError(error: error.toString()));
     }
   }
 }

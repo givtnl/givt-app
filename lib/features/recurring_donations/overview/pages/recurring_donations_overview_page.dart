@@ -4,7 +4,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
-import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_reccuring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donations_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
@@ -32,7 +32,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => BlocProvider(
-        create: (_) => DetailedReccuringDonationsCubit(getIt())
+        create: (_) => DetailedRecurringDonationsCubit(getIt())
           ..fetchRecurringInstances(selected),
         child: RecurringDonationsDetailPage(
           recurringDonation: selected,

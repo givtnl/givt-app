@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_reccuring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/models/recurring_donation_detail.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/detail_list_item.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/detail_year_separator.dart';
@@ -41,10 +41,10 @@ class RecurringDonationsDetailPage extends StatelessWidget {
               child: const DonationTypeExplanationSheet())
         ],
       ),
-      body: BlocConsumer<DetailedReccuringDonationsCubit,
-          DetailedReccuringDonationsState>(
+      body: BlocConsumer<DetailedRecurringDonationsCubit,
+          DetailedRecurringDonationsState>(
         listener: (context, state) {
-          if (state is DetailedReccuringDonationsError) {
+          if (state is DetailedRecurringDonationsError) {
             showDialog<void>(
               context: context,
               builder: (_) => WarningDialog(
@@ -56,7 +56,7 @@ class RecurringDonationsDetailPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state is DetailedReccuringDonationsLoading) {
+          if (state is DetailedRecurringDonationsLoading) {
             return const CircularProgressIndicator();
           }
           final recurringDonationsDetails = <RecurringDonationDetail>[];
