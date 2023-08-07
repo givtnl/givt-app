@@ -38,7 +38,7 @@ class RecurringDonationsDetailPage extends StatelessWidget {
           _buildAppBarItem(
               context: context,
               icon: const Icon(Icons.info_rounded),
-              child: const DontaionTypeExplanationSheet())
+              child: const DonationTypeExplanationSheet())
         ],
       ),
       body: BlocConsumer<DetailedReccuringDonationsCubit,

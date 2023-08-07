@@ -116,7 +116,7 @@ class OverviewPage extends StatelessWidget {
                 state: state,
                 context: context,
                 icon: const Icon(Icons.info_rounded),
-                child: DontaionTypeExplanationSheet(),
+                child: DonationTypeExplanationSheet(),
               ),
             ],
           ),
