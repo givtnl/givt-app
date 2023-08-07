@@ -58,7 +58,7 @@ class GivtListItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
-              color: _getStatusColor(givtGroup.status),
+              color: Util.getStatusColor(givtGroup.status),
               width: 10,
             ),
           ),
@@ -157,17 +157,5 @@ class GivtListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getStatusColor(int status) {
-    switch (status) {
-      case 3:
-        return AppTheme.givtLightGreen;
-      case 4:
-        return AppTheme.givtRed;
-      case 5:
-        return AppTheme.givtLightGray;
-    }
-    return AppTheme.givtPurple;
   }
 }

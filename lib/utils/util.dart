@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:intl/intl.dart';
 
+import 'app_theme.dart';
+
 class Util {
   /// Allowed SHA-256 fingerprints for Givt backend
   /// The list is used in APIService while building the http.client
@@ -94,5 +96,17 @@ class Util {
   static String getLanguageTageFromLocale(BuildContext context) {
     final languageTag = Localizations.localeOf(context).toLanguageTag();
     return languageTag;
+  }
+
+  static Color getStatusColor(int status) {
+    switch (status) {
+      case 3:
+        return AppTheme.givtLightGreen;
+      case 4:
+        return AppTheme.givtRed;
+      case 5:
+        return AppTheme.givtLightGray;
+    }
+    return AppTheme.givtPurple;
   }
 }

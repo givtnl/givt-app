@@ -6,6 +6,7 @@ class RecurringDonationsList extends StatefulWidget {
   const RecurringDonationsList({
     required this.recurringDonations,
     required this.onCancel,
+    required this.onOverview,
     this.width,
     this.height,
     super.key,
@@ -15,6 +16,7 @@ class RecurringDonationsList extends StatefulWidget {
   final double? height;
   final List<RecurringDonation> recurringDonations;
   final void Function(RecurringDonation recurringDonation) onCancel;
+  final void Function(RecurringDonation recurringDonation) onOverview;
 
   @override
   State<RecurringDonationsList> createState() => _RecurringDonationsListState();
@@ -45,6 +47,9 @@ class _RecurringDonationsListState extends State<RecurringDonationsList> {
                   },
                   onCancel: () {
                     widget.onCancel(recurringDonation);
+                  },
+                  onOverview: () {
+                    widget.onOverview(recurringDonation);
                   },
                 ),
               )
