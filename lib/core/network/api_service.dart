@@ -406,6 +406,28 @@ class APIService {
     }
   }
 
+  Future<Map<String, dynamic>> fetchRecurringInstances(
+    String donationId,
+  ) async {
+    final url =
+        Uri.https(apiURLAWS, 'recurringdonations/$donationId/donations');
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-json-casing': 'PascalKeeze'
+      },
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
   Future<List<dynamic>> fetchMonthlySummary(
     String guid,
     Map<String, String> params,

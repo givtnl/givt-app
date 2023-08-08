@@ -14,6 +14,7 @@ class RecurringDonationItem extends StatefulWidget {
     required this.isExtended,
     required this.onTap,
     required this.onCancel,
+    required this.onOverview,
     super.key,
   });
 
@@ -21,6 +22,7 @@ class RecurringDonationItem extends StatefulWidget {
   final bool isExtended;
   final void Function() onTap;
   final void Function() onCancel;
+  final void Function() onOverview;
   @override
   State<RecurringDonationItem> createState() => _RecurringDonationItemState();
 }
@@ -71,7 +73,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: widget.recurringDonation.collectGroup.type.color,
-              width: 1.5,
+              width: 1,
             ),
           ),
           width: double.infinity,
@@ -121,8 +123,10 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                         const SizedBox(height: 4),
                         Text(
                           endsOnText(),
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: AppTheme.givtDarkerGray),
                         ),
                       ],
                     ),
@@ -155,7 +159,6 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                 color: AppTheme.givtRed,
                               ),
                               label: Text(
-                                //TODO: POEditor
                                 locals.cancelRecurringDonation,
                                 style: Theme.of(context)
                                     .textTheme
@@ -173,19 +176,15 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                   color: Colors.transparent,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                widget.onOverview();
+                              },
                               icon: const Icon(
                                 Icons.list_rounded,
-                                color: Colors.white,
                               ),
                               label: Text(
                                 locals.featureRecurringDonations3Title,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(
-                                      color: Colors.white,
-                                    ),
+                                style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ),
                           ),
