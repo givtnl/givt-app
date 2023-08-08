@@ -11,7 +11,7 @@ class Util {
   /// https://github.com/diefferson/http_certificate_pinning/tree/master
   static final List<String> allowedSHAFingerprints = [
     /// backend.givtapp.net
-    '3C A9 57 A6 92 E2 D7 0A 14 B2 C2 97 F8 0A 60 1A 64 AA 31 DF C7 E7 4B 9A 2E 30 DF CE 42 6F 8C 90',
+    '90 FB E1 EF 4D 99 50 C0 6B 12 D9 0B 87 84 CC F9 56 92 92 EF F3 6E 01 4C 4A 27 1E CC C9 CA 17 52',
 
     /// dev-backend.givtapp.net
     'E5 CD DE 1C 42 98 98 68 44 14 D4 D6 6B 44 F5 17 0F E0 5D B8 1F CE 25 2D A6 88 6C A4 34 E1 72 DD',
