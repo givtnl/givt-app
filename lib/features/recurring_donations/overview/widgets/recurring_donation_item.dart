@@ -183,7 +183,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                 Icons.list_rounded,
                               ),
                               label: Text(
-                                locals.featureRecurringDonations3Title,
+                                locals.goToListWithRecurringDonationDonations,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ),

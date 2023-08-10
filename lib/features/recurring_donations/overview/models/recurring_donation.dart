@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:jiffy/jiffy.dart';
 
 enum RecurringDonationState {
   cancelled,
@@ -117,6 +118,30 @@ class RecurringDonation extends Equatable {
         );
     }
     return startDateDateTime;
+  }
+
+  DateTime getNextDonationDate(DateTime previousDate) {
+    final frequency = _evaluateFrequencyFromCronExpression();
+    final jiffy = Jiffy.parseFromDateTime(previousDate);
+
+    DateTime nextDonationDate;
+
+    switch (frequency) {
+      case 0:
+        nextDonationDate = jiffy.add(days: 7).dateTime;
+      case 1:
+        nextDonationDate = jiffy.add(months: 1).dateTime;
+      case 2:
+        nextDonationDate = jiffy.add(months: 3).dateTime;
+      case 3:
+        nextDonationDate = jiffy.add(months: 6).dateTime;
+      case 4:
+        nextDonationDate = jiffy.add(years: 1).dateTime;
+      default:
+        nextDonationDate = jiffy.dateTime;
+    }
+
+    return nextDonationDate;
   }
 
   @override

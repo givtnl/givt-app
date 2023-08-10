@@ -45,6 +45,7 @@ dependencies:
   sticky_headers: ^0.3.0+2
   url_launcher: ^6.1.12
   vibration: ^1.8.1
+  jiffy: ^6.2.1
 
 dev_dependencies:
   bloc_test: ^9.1.1
