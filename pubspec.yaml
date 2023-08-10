@@ -48,7 +48,7 @@ dependencies:
   jiffy: ^6.2.1
 
 dev_dependencies:
-  bloc_test: ^9.1.1
+  bloc_test: ^9.1.4
   flutter_test:
     sdk: flutter
   mocktail: ^0.3.0
