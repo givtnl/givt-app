@@ -5,7 +5,7 @@ class RecurringDonationDetail extends Equatable {
     required this.timestamp,
     required this.donationId,
     required this.amount,
-    this.status = 1,
+    this.status = 3,
     this.isGiftAidEnabled = false,
   });
   factory RecurringDonationDetail.fromJson(Map<String, dynamic> json) {

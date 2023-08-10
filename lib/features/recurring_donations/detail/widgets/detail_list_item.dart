@@ -29,7 +29,7 @@ class DetailInstanceItem extends StatelessWidget {
         color: Colors.white,
         border: Border(
           left: BorderSide(
-            color: Util.getStatusColor(3),
+            color: Util.getStatusColor(detail.status),
             width: 10,
           ),
         ),

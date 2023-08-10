@@ -3,7 +3,7 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class YearBanner extends StatelessWidget {
   const YearBanner(this.year, {super.key});
-  final int year;
+  final String year;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,7 +12,7 @@ class YearBanner extends StatelessWidget {
       margin: const EdgeInsets.only(top: 20),
       color: AppTheme.givtLightPurple,
       child: Text(
-        year.toString(),
+        year,
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
