@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -20,7 +18,10 @@ class DetailedRecurringDonationsCubit
     try {
       final response = await _recurringDonationsRepository
           .fetchRecurringInstances(selected.id);
-      log('response: ${response.first.donationId}');
+      if (response.isEmpty) {
+        emit(DetailedRecurringDonationsEmpty());
+        return;
+      }
       response.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       emit(DetailedInstancesFetched(instances: response));
     } catch (error) {
