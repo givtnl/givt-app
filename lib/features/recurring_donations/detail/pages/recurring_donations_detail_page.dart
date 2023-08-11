@@ -132,7 +132,7 @@ class RecurringDonationsDetailPage extends StatelessWidget {
     required Country userCountry,
   }) {
     int? currentYear;
-    List<Widget> finalList = [];
+    final finalList = <Widget>[];
     for (final obj in instances) {
       if (currentYear == null || obj.timestamp.year != currentYear) {
         // Add a year banner widget whenever the year changes
@@ -154,7 +154,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
   }
 
   Widget _buildAppBarItem({
-    // required GivtState state,
     required BuildContext context,
     required Widget child,
     required Icon icon,
@@ -162,7 +161,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
   }) {
     return Visibility(
       visible: true,
-      //state.givtGroups.isNotEmpty,
       child: IconButton(
         icon: icon,
         onPressed: () => showModalBottomSheet<void>(
