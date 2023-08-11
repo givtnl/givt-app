@@ -99,7 +99,26 @@ class RecurringDonationsDetailPage extends StatelessWidget {
                     ),
                   )
                 else
-                  const SizedBox(),
+                  SizedBox(
+                    height: size.height * 0.89,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          UpcomingRecurringDonation(
+                            upcoming: DetailInstanceItem(
+                              size: size,
+                              context: context,
+                              userCountry: userCountry,
+                              detail: _getUpcomingDonation(
+                                recurringDonation: recurringDonation,
+                                isGiftAidEnabled: user.isGiftAidEnabled,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           );
@@ -109,20 +128,28 @@ class RecurringDonationsDetailPage extends StatelessWidget {
   }
 
   RecurringDonationDetail _getUpcomingDonation({
-    required RecurringDonationDetail lastInstance,
+    RecurringDonationDetail? lastInstance,
     required RecurringDonation recurringDonation,
     required bool isGiftAidEnabled,
   }) {
-    final nextTime =
-        recurringDonation.getNextDonationDate(lastInstance.timestamp);
-    final upcoming = RecurringDonationDetail(
+    var nextTime = DateTime.now();
+    if (lastInstance == null) {
+      final startDate = DateTime.parse(recurringDonation.startDate);
+      nextTime = recurringDonation
+          .getNextDonationDate(startDate)
+          .subtract(const Duration(days: 1));
+    }
+    if (lastInstance != null) {
+      nextTime = recurringDonation.getNextDonationDate(lastInstance.timestamp);
+    }
+
+    return RecurringDonationDetail(
       timestamp: nextTime,
       donationId: '1111',
       amount: int.parse(recurringDonation.amountPerTurn.toString()),
       status: 1,
       isGiftAidEnabled: isGiftAidEnabled,
     );
-    return upcoming;
   }
 
   List<Widget> _getInstancesList({
