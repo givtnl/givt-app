@@ -234,10 +234,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_blue_plus
-      sha256: "4fd1afc93eb40f14fcf3acc4b479648e4f7d4aaf0cc98f8397dc32e93e2ff70c"
+      sha256: "042da5457a9e4eeceb4177f8baa0ccaa1a3a24ab311f84c417b167bfcc58563d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.7"
+    version: "1.14.9"
   flutter_inappwebview:
     dependency: "direct main"
     description:
