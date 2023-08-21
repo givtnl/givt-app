@@ -351,6 +351,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           .info('QR Code scanned out of app ${event.encodedMediumId}');
       final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
+      await _checkQRCode(mediumId: mediumId, emit: emit);
+
       final organisation = await _getOrganisation(mediumId);
       final transactionList = _createTransationList(
         mediumId,

@@ -2,26 +2,31 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
-import 'package:givt_app/core/network/interceptor.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/http.dart';
 
 class APIService {
   APIService({
     required String apiURL,
-  }) : _apiURL = apiURL;
+    required String apiURLAWS,
+  })  : _apiURL = apiURL,
+        _apiURLAWS = apiURLAWS;
 
   Client client = InterceptedClient.build(
     requestTimeout: const Duration(seconds: 10),
     interceptors: [
-      Interceptor(),
+      CertificateCheckInterceptor(),
+      TokenInterceptor(),
     ],
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
   final String _apiURL;
+  final String _apiURLAWS;
 
   String get apiURL => _apiURL;
+  String get apiURLAWS => _apiURLAWS;
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
@@ -64,10 +69,12 @@ class APIService {
     final url = Uri.https(_apiURL, '/api/v2/UsersExtension/$guid');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
-      throw Exception('something went wrong :(');
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
     }
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
   Future<bool> checktld(String email) async {
@@ -349,6 +356,25 @@ class APIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> downloadYearlyOverview(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURLAWS, '/donations/download');
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-json-casing': 'PascalKeeze'
+      },
+    );
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 202;
+  }
+
   Future<Map<String, dynamic>> getVerifiableParentalConsentURL(
     String guid,
   ) async {
@@ -368,5 +394,79 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
+  }
+
+  Future<List<dynamic>> fetchRecurringDonations({
+    required Map<String, dynamic> params,
+  }) async {
+    final url = Uri.https(apiURLAWS, '/recurringdonations');
+
+    final response =
+        await client.get(url, headers: {'Content-Type': 'application/json'});
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['results'] as List<dynamic>;
+  }
+
+  Future<void> cancelRecurringDonation({
+    required String recurringDonationId,
+  }) async {
+    final url = Uri.https(
+      apiURLAWS,
+      'recurringdonations/${recurringDonationId.toLowerCase()}/cancel',
+    );
+
+    final response =
+        await client.patch(url, headers: {'Content-Type': 'application/json'});
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchRecurringInstances(
+    String donationId,
+  ) async {
+    final url =
+        Uri.https(apiURLAWS, 'recurringdonations/$donationId/donations');
+
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-json-casing': 'PascalKeeze'
+      },
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<List<dynamic>> fetchMonthlySummary(
+    String guid,
+    Map<String, String> params,
+  ) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/summary', params);
+
+    final response = await client.get(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return jsonDecode(response.body) as List<dynamic>;
   }
 }

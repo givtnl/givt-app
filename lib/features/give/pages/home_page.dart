@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
-    final auth = context.read<AuthCubit>().state;
+    final auth = context.watch<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.amount),
@@ -73,6 +73,8 @@ class HomePage extends StatelessWidget {
                 country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: given,
+                arePresetsEnabled: auth.user.presets.isEnabled,
+                presets: auth.user.presets.presets,
                 onAmountChanged:
                     (firstCollection, secondCollection, thirdCollection) =>
                         context.goNamed(

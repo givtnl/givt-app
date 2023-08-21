@@ -38,6 +38,14 @@ class GivtError extends GivtState {
   List<Object> get props => [message];
 }
 
+class GivtDownloadedSuccess extends GivtState {
+  const GivtDownloadedSuccess({
+    super.givts,
+    super.givtGroups,
+    super.givtAided,
+  });
+}
+
 class GivtLoaded extends GivtState {
   const GivtLoaded({
     super.givts,

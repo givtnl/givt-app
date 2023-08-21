@@ -72,8 +72,10 @@ enum Country {
     );
   }
 
-  
-  ///TODO this should be done straight from the localizations. Delete all the countries and add only one unified string separated by commas and then split it
+  ///To-do this should be done straight from the localizations.
+  ///Delete all the countries and
+  ///add only one unified string separated by commas and then split it
+
   static String getCountry(String countryCode, AppLocalizations locals) {
     switch (countryCode) {
       case 'JE':

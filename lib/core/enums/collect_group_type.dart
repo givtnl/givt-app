@@ -1,36 +1,46 @@
-enum CollecGroupType {
-  church(0),
-  campaign(1),
-  artists(2),
-  charities(3),
-  unknown(4),
-  demo(5),
-  debug(6),
-  none(-1);
+import 'package:flutter/material.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
-  const CollecGroupType(this.value);
-  final int value;  
+enum CollecGroupType {
+  church(
+    icon: 'assets/images/church.png',
+    activeIcon: 'assets/images/church_focus.png',
+    color: AppTheme.givtLightBlue,
+  ),
+  campaign(
+    icon: 'assets/images/campaign.png',
+    activeIcon: 'assets/images/campaign_focus.png',
+    color: AppTheme.givtOrange,
+  ),
+  artists(
+    icon: 'assets/images/artist.png',
+    activeIcon: 'assets/images/artist_focus.png',
+    color: AppTheme.givtDarkGreen,
+  ),
+  charities(
+    icon: 'assets/images/charity.png',
+    activeIcon: 'assets/images/charity_focus.png',
+    color: AppTheme.givtYellow,
+  ),
+  unknown(icon: '', activeIcon: '', color: Colors.grey),
+  demo(icon: '', activeIcon: '', color: Colors.grey),
+  debug(icon: '', activeIcon: '', color: Colors.grey),
+  none(icon: '', activeIcon: '', color: Colors.grey);
+
+  const CollecGroupType({
+    required this.icon,
+    required this.activeIcon,
+    required this.color,
+  });
+  final String icon;
+  final String activeIcon;
+  final Color color;
 
   static CollecGroupType fromInt(int value) {
-    switch (value) {
-      case 0:
-        return CollecGroupType.church;
-      case 1:
-        return CollecGroupType.campaign;
-      case 2:
-        return CollecGroupType.artists;
-      case 3:
-        return CollecGroupType.charities;
-      case 4:
-        return CollecGroupType.unknown;
-      case 5:
-        return CollecGroupType.demo;
-      case 6:
-        return CollecGroupType.debug;
-      default:
-        return CollecGroupType.none;
+    if (value >= 0 && value < CollecGroupType.none.index) {
+      return CollecGroupType.values[value];
+    } else {
+      return CollecGroupType.none;
     }
   }
-
-  
 }
