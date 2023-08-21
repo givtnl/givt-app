@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class GivtListItem extends StatelessWidget {
@@ -50,11 +51,14 @@ class GivtListItem extends StatelessWidget {
       confirmDismiss: confirmDismiss,
       onDismissed: onDismiss,
       child: Container(
-        height: size.height * 0.11,
+        height: givtGroup.givts.length == 3
+            ? size.height * 0.15
+            : size.height * 0.11,
+        width: size.width,
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
-              color: _getStatusColor(givtGroup.status),
+              color: Util.getStatusColor(givtGroup.status),
               width: 10,
             ),
           ),
@@ -66,8 +70,8 @@ class GivtListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: size.width * 0.1,
+                  height: size.width * 0.1,
                   margin: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                   decoration: const BoxDecoration(
                     color: AppTheme.givtLightGray,
@@ -83,7 +87,7 @@ class GivtListItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        DateFormat('dd').format(givtGroup.timeStamp!),
+                        DateFormat('dd').format(givtGroup.timeStamp!.toLocal()),
                         style: const TextStyle(
                           color: AppTheme.givtBlue,
                           fontSize: 18,
@@ -94,7 +98,7 @@ class GivtListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  DateFormat('hh:mm').format(givtGroup.timeStamp!),
+                  DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
                   style: const TextStyle(
                     color: AppTheme.givtBlue,
                     fontSize: 10,
@@ -116,7 +120,6 @@ class GivtListItem extends StatelessWidget {
                         height: 20,
                       ),
                     ),
-                    const SizedBox(width: 5),
                     Text(
                       givtGroup.organisationName,
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -138,7 +141,10 @@ class GivtListItem extends StatelessWidget {
                         ),
                         Expanded(child: Container()),
                         Text(
-                          '${currency.currencySymbol} ${collection.amount.toStringAsFixed(2)}',
+                          '${currency.currencySymbol} ${Util.formatNumberComma(
+                            collection.amount,
+                            Country.fromCode(country),
+                          )}',
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -151,17 +157,5 @@ class GivtListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getStatusColor(int status) {
-    switch (status) {
-      case 3:
-        return AppTheme.givtLightGreen;
-      case 4:
-        return AppTheme.givtRed;
-      case 5:
-        return AppTheme.givtLightGray;
-    }
-    return AppTheme.givtPurple;
   }
 }

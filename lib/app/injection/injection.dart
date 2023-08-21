@@ -7,6 +7,9 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/create_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
+import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
+import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
 import 'package:givt_app/features/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -24,13 +27,16 @@ Future<void> init() async {
 
 Future<void> _initAPIService() async {
   var baseUrl = const String.fromEnvironment('API_URL_EU');
+  var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
     baseUrl = const String.fromEnvironment('API_URL_US');
+    baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
   getIt.registerLazySingleton<APIService>(
     () => APIService(
       apiURL: baseUrl,
+      apiURLAWS: baseUrlAWS,
     ),
   );
 }
@@ -88,6 +94,21 @@ void _initRepositories() {
     )
     ..registerLazySingleton<VPCRepository>(
       () => VPCRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<RecurringDonationsRepository>(
+      () => RecurringDonationsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<CancelRecurringDonationRepository>(
+      () => CancelRecurringDonationRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<DetailRecurringDonationsRepository>(
+      () => DetailRecurringDonationsRepositoryImpl(
         getIt(),
       ),
     )

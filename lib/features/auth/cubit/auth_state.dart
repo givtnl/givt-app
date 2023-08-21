@@ -52,7 +52,8 @@ class AuthRefreshed extends AuthState {
 
 class AuthLogout extends AuthState {
   const AuthLogout({
-    super.email,
+    super.user,
+    super.session,
   });
 
   @override

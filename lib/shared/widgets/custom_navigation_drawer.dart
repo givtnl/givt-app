@@ -2,20 +2,20 @@ import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/auth_utils.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
@@ -61,33 +61,98 @@ class CustomNavigationDrawer extends StatelessWidget {
           //   thickness: size.height * 0.03,
           // ),
           _buildSummaryTile(size, locals, context),
-          // Divider(
-          //   thickness: size.height * 0.02,
-          // ),
+          Divider(
+            thickness: size.height * 0.02,
+          ),
+          _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
+            isAccent: true,
+            icon: Icons.wallet,
+            title: locals.budgetMenuView,
+            imageIcon: Image.asset(
+              'assets/images/givy_budget_menu.png',
+              fit: BoxFit.contain,
+            ),
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(
+                Pages.personalSummary.name,
+              ),
+            ),
+          ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
-            onTap: () => _checkToken(context, route: Pages.overview.name),
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(
+                Pages.overview.name,
+              ),
+            ),
           ),
           _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
+            title: locals.menuItemRecurringDonation,
+            icon: Icons.screen_rotation_alt_outlined,
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(Pages.recurringDonations.name),
+            ),
+          ),
+          _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
             title: locals.giveLimit,
-            icon: Icons.euro,
-            onTap: () {},
+            icon: Util.getCurrencyIconData(
+              country: Country.fromCode(
+                auth.user.country,
+              ),
+            ),
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => ChangeMaxAmountBottomSheet(
+                  maxAmount: auth.user.amountLimit,
+                  icon: Util.getCurrencyIconData(
+                    country: Country.fromCode(
+                      auth.user.country,
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
             title: locals.personalInfo,
             icon: Icons.mode_edit_outline,
-            onTap: () => _checkToken(
+            onTap: () => AuthUtils.checkToken(
               context,
-              route: Pages.personalInfoEdit.name,
+              navigate: () => context.goNamed(
+                Pages.personalInfoEdit.name,
+              ),
             ),
           ),
           _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
             title: locals.amountPresetsTitle,
-            icon: Icons.settings_input_component,
-            onTap: () {},
+            icon: Icons.tune,
+            imageIcon: Transform.rotate(
+              angle: 1.57,
+              child: const Icon(
+                Icons.tune,
+                color: AppTheme.givtBlue,
+              ),
+            ),
+            onTap: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (_) => const ChangeAmountPresetsBottomSheet(),
+            ),
           ),
           _buildMenuItem(
             title: locals.pincode,
@@ -96,35 +161,49 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           FutureBuilder(
             initialData: false,
-            future: LocalAuthInfo.instance.checkFingerprint(),
-            builder: (context, snapshot) {
+            future: Future.wait<bool>([
+              LocalAuthInfo.instance.checkFingerprint(),
+              LocalAuthInfo.instance.checkFaceId(),
+            ]),
+            builder: (_, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return const SizedBox.shrink();
               }
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
+              }
+              if (snapshot.data == null) {
+                return const SizedBox.shrink();
+              }
 
-              final isFingerprintAvailable = snapshot.data as bool;
+              final data = snapshot.data! as List<bool>;
+              final isFingerprintAvailable = data[0];
+              final isFaceIdAvailable = data[1];
 
               return _buildMenuItem(
-                isVisible: isFingerprintAvailable,
+                isVisible: isFingerprintAvailable || isFaceIdAvailable,
                 title: isFingerprintAvailable
                     ? Platform.isAndroid
                         ? locals.fingerprintTitle
                         : locals.touchId
                     : locals.faceId,
                 icon: Icons.fingerprint,
-                imageIcon: Platform.isIOS && !isFingerprintAvailable
+                imageIcon: Platform.isIOS && isFaceIdAvailable
                     ? SvgPicture.asset(
                         'assets/images/face_id.svg',
                         width: 24,
                         color: AppTheme.givtBlue,
                       )
                     : null,
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (_) => FingerprintBottomSheet(
-                    isFingerprint: isFingerprintAvailable,
+                onTap: () => AuthUtils.checkToken(
+                  context,
+                  navigate: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => FingerprintBottomSheet(
+                      isFingerprint: isFingerprintAvailable,
+                    ),
                   ),
                 ),
               );
@@ -142,11 +221,17 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => _checkToken(context, route: Pages.unregister.name),
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(
+                Pages.unregister.name,
+              ),
+            ),
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
-            isVisible: showFamilyItem,
+            isVisible: false,
+            // showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
             onTap: () => context.goNamed(Pages.giveVPC.name),
@@ -194,12 +279,14 @@ class CustomNavigationDrawer extends StatelessWidget {
     bool isVisible = false,
     bool showBadge = false,
     bool showUnderline = true,
+    bool isAccent = false,
   }) =>
       Visibility(
         visible: isVisible,
         child: Column(
           children: [
             Container(
+              height: isAccent ? 90 : 60,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -208,25 +295,59 @@ class CustomNavigationDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              child: ListTile(
-                leading: imageIcon ??
-                    Icon(
-                      icon,
-                      color: AppTheme.givtBlue,
+              child: isAccent
+                  ? ListTile(
+                      minVerticalPadding: 0,
+                      contentPadding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                      title: Row(
+                        children: [
+                          imageIcon ??
+                              Icon(
+                                icon,
+                                color: AppTheme.givtBlue,
+                              ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        ],
+                      ),
+                      onTap: onTap,
+                    )
+                  : ListTile(
+                      leading: imageIcon ??
+                          Icon(
+                            icon,
+                            color: AppTheme.givtBlue,
+                          ),
+                      trailing: badges.Badge(
+                        showBadge: showBadge,
+                        position:
+                            badges.BadgePosition.topStart(top: 6, start: -20),
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                        ),
+                      ),
+                      title: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight:
+                                isAccent ? FontWeight.w900 : FontWeight.normal),
+                      ),
+                      onTap: onTap,
                     ),
-                trailing: badges.Badge(
-                  showBadge: showBadge,
-                  position: badges.BadgePosition.topStart(top: 6, start: -20),
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                  ),
-                ),
-                title: Text(
-                  title,
-                  style: const TextStyle(fontSize: 17),
-                ),
-                onTap: onTap,
-              ),
             ),
           ],
         ),
@@ -289,67 +410,4 @@ class CustomNavigationDrawer extends StatelessWidget {
           'assets/images/logo.png',
         ),
       );
-
-  Future<void> _checkToken(
-    BuildContext context, {
-    required String route,
-  }) async {
-    final auth = context.read<AuthCubit>();
-    final isExpired = auth.state.session.isExpired;
-    if (!isExpired) {
-      context.goNamed(route);
-      return;
-    }
-    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
-      // ignore: use_build_context_synchronously
-      if (!context.mounted) {
-        return;
-      }
-      _passwordLogin(context, auth: auth, route: route);
-      return;
-    }
-    try {
-      final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
-      if (!hasAuthenticated) {
-        return;
-      }
-      // ignore: use_build_context_synchronously
-      if (!context.mounted) {
-        return;
-      }
-      await context.read<AuthCubit>().refreshSession();
-      // ignore: use_build_context_synchronously
-      context.goNamed(route);
-    } on PlatformException catch (e) {
-      await LoggingInfo.instance.info(
-        'Error while authenticating with biometrics: ${e.message}',
-      );
-      // ignore: use_build_context_synchronously
-      if (!context.mounted) {
-        return;
-      }
-      _passwordLogin(context, auth: auth, route: route);
-    }
-  }
-
-  void _passwordLogin(
-    BuildContext context, {
-    required AuthCubit auth,
-    required String route,
-  }) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => LoginPage(
-        email: auth.state.user.email,
-        popWhenSuccess: true,
-      ),
-    ).whenComplete(() {
-      if (context.read<AuthCubit>().state.session.isExpired) {
-        return;
-      }
-      context.goNamed(route);
-    });
-  }
 }

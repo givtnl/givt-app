@@ -19,6 +19,10 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
+import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/pages/personal_summary_page.dart';
+import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
@@ -27,10 +31,10 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
-import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/vpc/pages/give_vpc_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
+import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/features/vpc/pages/give_vpc_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -65,6 +69,19 @@ class AppRouter {
             name: Pages.home.name,
             routes: [
               GoRoute(
+                path: Pages.personalSummary.path,
+                name: Pages.personalSummary.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => PersonalSummaryBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    givtRepo: getIt(),
+                  )..add(
+                      const PersonalSummaryInit(),
+                    ),
+                  child: const PersonalSummary(),
+                ),
+              ),
+              GoRoute(
                 path: Pages.personalInfoEdit.path,
                 name: Pages.personalInfoEdit.name,
                 builder: (context, state) => BlocProvider(
@@ -93,6 +110,17 @@ class AppRouter {
                 builder: (context, state) => BlocProvider(
                   create: (_) => CreateChildCubit(getIt()),
                   child: const CreateChildPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.recurringDonations.path,
+                name: Pages.recurringDonations.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => RecurringDonationsCubit(getIt(), getIt())
+                    ..fetchRecurringDonations(
+                      context.read<AuthCubit>().state.user.guid,
+                    ),
+                  child: const RecurringDonationsOverviewPage(),
                 ),
               ),
               GoRoute(
