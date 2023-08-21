@@ -38,8 +38,7 @@ class CustomNavigationDrawer extends StatelessWidget {
               if (auth.user.needRegistration) {
                 final auth = context.read<AuthCubit>().state;
                 final createStripe = auth.user.personalInfoRegistered &&
-                    Country.fromCode(auth.user.countryCode.toString()) ==
-                        Country.us;
+                    (auth.user.country == Country.us.countryCode);
                 context
                   ..goNamed(
                     Pages.registration.name,

@@ -88,9 +88,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     right: 20,
                     top: 20,
                   ),
-                  child: stripestate.stripeStatus == StripeObjectStatus.success
-                      ? const SizedBox()
-                      : Column(
+                  child: stripestate.stripeStatus == StripeObjectStatus.initial
+                      ? Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             _buildAcceptPolicy(locals),
@@ -104,8 +103,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             )
                           ],
-                        ),
-                ),
+                        )
+                      : const SizedBox()),
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: BlocConsumer<RegistrationBloc, RegistrationState>(
