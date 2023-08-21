@@ -1,3 +1,4 @@
+import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:givt_app/l10n/l10n.dart';
@@ -164,6 +165,39 @@ class _CreateChildPageState extends State<CreateChildPage> {
                       onTap: _showDataPickerDialog,
                       showCursor: true,
                       readOnly: true,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextField(
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(color: AppTheme.sliderIndicatorFilled),
+                      decoration: InputDecoration(
+                        //TODO:
+                        label: const Text('Giving allowance'),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: AppTheme.inputFieldBorderEnabled,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: AppTheme.inputFieldBorderSelected,
+                          ),
+                        ),
+                      ),
+                      textInputAction: TextInputAction.next,
+                      inputFormatters: [
+                        CurrencyTextInputFormatter(
+                          decimalDigits: 2,
+                        )
+                      ],
+                      keyboardType: TextInputType.number,
                       onChanged: (value) {},
                     ),
                   ],
