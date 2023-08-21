@@ -43,7 +43,6 @@ enum Country {
   static List<Country> sortedCountries() {
     return Country.values.toList()
       ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
-    // ..remove(Country.us);
   }
 
   static List<Country> sortedPrefixCountries() {

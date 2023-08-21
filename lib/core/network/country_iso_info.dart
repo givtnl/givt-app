@@ -20,7 +20,7 @@ class CountryIsoInfoImpl implements CountryIsoInfo {
   Future<String> get checkCountryIso async {
     try {
       _countryIso =
-          (await DeviceRegion.getSIMCountryCode() ?? Country.us.countryCode)
+          (await DeviceRegion.getSIMCountryCode() ?? Country.nl.countryCode)
               .toUpperCase();
     } on PlatformException catch (e) {
       log(e.toString());

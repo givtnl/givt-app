@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -347,6 +345,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         MobileNumberFormField(
           phone: _phone,
           selectedCountryPrefix: _selectedCountry.prefix,
+          hintText: _selectedCountry != Country.us
+              ? locals.phoneNumber
+              : locals.mobileNumberUsDigits,
           onPhoneChanged: (String value) => setState(() {}),
           onPrefixChanged: (String selected) {
             setState(() {
@@ -393,18 +394,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     if (_formKey.currentState!.validate() == false) {
       return;
     }
-    log('''
-      address: ${_address.text.isEmpty}
-      city: ${_city.text}
-      postalCode: ${_postalCode.text}
-      country: ${_selectedCountry.countryCode}
-      phoneNumber: ${_phone.text}
-      iban: ${ibanNumber.text}
-      sortCode: ${sortCode.text}
-      accountNumber: ${bankAccount.text}
-      appLanguage: ${Localizations.localeOf(context).languageCode}
-      countryCode: ${_selectedCountry.countryCode}
-    ''');
 
     setState(() {
       isLoading = true;
