@@ -32,40 +32,8 @@ class StripeCubit extends Cubit<StripeState> {
       );
     }
   }
-  //   FutureOr<void> _onCreateStripeDetails(
-  //   RegistrationCreateStripeDetails event,
-  //   Emitter<RegistrationState> emit,
-  // ) async {
-  //   //final email = authCubit.state.user.email;
-  //   emit(state.copyWith(status: RegistrationStatus.loading));
-  //   log('us user details remebered in db');
-  //   emit(
-  //     state.copyWith(
-  //       status: RegistrationStatus.createStripeAccount,
-  //     ),
-  //   );
 
-  //   // try {
-  //   //   final response = await authRepositoy.registerStripeCustomer(
-  //   //     email: email,
-  //   //   );
-  //   //   log(response.toString());
-
-  //   //   emit(
-  //   //     state.copyWith(
-  //   //       stripeState: StripeObjectStatus.success,
-  //   //       stripeObject: response,
-  //   //     ),
-  //   //   );
-  //   // } catch (e) {
-  //   //   log(e.toString());
-  //   //   await LoggingInfo.instance.error(
-  //   //     e.toString(),
-  //   //     methodName: StackTrace.current.toString(),
-  //   //   );
-  //   //   emit(
-  //   //     state.copyWith(stripeState: StripeObjectStatus.failure),
-  //   //   );
-  //   // }
-  // }
+  Future<void> stripeRegistrationComplete() async {
+    emit(state.copyWith(stripeStatus: StripeObjectStatus.success));
+  }
 }

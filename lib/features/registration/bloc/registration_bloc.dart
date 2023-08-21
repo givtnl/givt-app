@@ -28,6 +28,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationGiftAidChanged>(_onGiftAidChanged);
 
     on<RegistrationStripeSuccess>(_onStripeSuccess);
+    on<RegistrationStripeInit>(_onStripeInit);
   }
 
   final AuthRepositoy authRepositoy;
@@ -198,25 +199,26 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     );
   }
 
+  void _onStripeInit(
+    RegistrationStripeInit event,
+    Emitter<RegistrationState> emit,
+  ) {
+    emit(state.copyWith(status: RegistrationStatus.createStripeAccount));
+  }
+
   Future<void> _onStripeSuccess(
     RegistrationStripeSuccess event,
     Emitter<RegistrationState> emit,
   ) async {
-    await authCubit.refreshUser();
-    final user = authCubit.state.user;
+    var user = authCubit.state.user;
 
-    log('email: ${user.email} \nguid: ${user.guid}'
-        '\nfirstName: ${user.firstName} \nlastName: ${user.lastName}'
-        '\nphoneNumber: ${user.phoneNumber} \naddress: ${user.address}'
-        '\ncity: ${user.city} \npostalCode: ${user.postalCode}'
-        '\ncountry: ${user.country} \niban; ${user.iban} \naccountNumber : ${user.accountType}'
-        ' \npayProvMandateStatus: ${user.payProvMandateStatus} \npayProvMandate: ${user.payProvMandate}'
-        ' \namountLimit: ${user.amountLimit} \ntempUser: ${user.tempUser}'
-        ' \nmandateSigned: ${user.mandateSigned} \nmaxAmountRegistered: ${user.maxAmountRegistered}'
-        ' \nmultipleCollectsFirstBallon: ${user.multipleCollectsFirstBallon} \nmultipleCollectsSecondBallon: ${user.multipleCollectsSecondBallon}'
-        ' \nneedRegistration: ${user.needRegistration} \npersonalInfoRegistered: ${user.personalInfoRegistered}'
-        ' \npinSet: ${user.pinSet} \nmultipleCollectsAccepted: ${user.multipleCollectsAccepted}');
-    if (user.mandateSigned == true) {
+    while (user.tempUser) {
+      await authCubit.refreshUser();
+      user = authCubit.state.user;
+      log('fetched user state is: ${user.tempUser}');
+      await Future<void>.delayed(const Duration(seconds: 5));
+    }
+    if (user.tempUser == false) {
       emit(state.copyWith(status: RegistrationStatus.success));
     } else {
       emit(state.copyWith(status: RegistrationStatus.failure));

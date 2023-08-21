@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -21,9 +19,10 @@ class SignUpPage extends StatefulWidget {
   const SignUpPage({
     super.key,
     this.email = '',
+    this.createStripe = 'false',
   });
   final String email;
-
+  final String createStripe;
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -45,6 +44,9 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
+    if (widget.createStripe.contains('true')) {
+      context.read<RegistrationBloc>().add(const RegistrationStripeInit());
+    }
   }
 
   @override
@@ -52,10 +54,9 @@ class _SignUpPageState extends State<SignUpPage> {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.of(context).size;
     final stripeCubit = context.read<StripeCubit>();
+
     return BlocBuilder<StripeCubit, StripeState>(
       builder: (context, stripestate) {
-        log('Stripe state: $stripestate');
-        log('registration state: ${context.read<RegistrationBloc>().state}');
         return Scaffold(
           appBar: stripestate.stripeStatus == StripeObjectStatus.display
               ? null
@@ -87,21 +88,23 @@ class _SignUpPageState extends State<SignUpPage> {
                     right: 20,
                     top: 20,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildAcceptPolicy(locals),
-                      ElevatedButton(
-                        onPressed: _isEnabled ? _register : null,
-                        style: ElevatedButton.styleFrom(
-                          disabledBackgroundColor: Colors.grey,
+                  child: stripestate.stripeStatus == StripeObjectStatus.success
+                      ? const SizedBox()
+                      : Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildAcceptPolicy(locals),
+                            ElevatedButton(
+                              onPressed: _isEnabled ? _register : null,
+                              style: ElevatedButton.styleFrom(
+                                disabledBackgroundColor: Colors.grey,
+                              ),
+                              child: Text(
+                                locals.next,
+                              ),
+                            )
+                          ],
                         ),
-                        child: Text(
-                          locals.next,
-                        ),
-                      )
-                    ],
-                  ),
                 ),
           body: Padding(
             padding: const EdgeInsets.all(16),
@@ -133,7 +136,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 }
               },
               builder: (context, state) {
-                return (state.status == RegistrationStatus.createStripeAccount)
+                return (state.status ==
+                            RegistrationStatus.createStripeAccount ||
+                        stripestate.stripeStatus == StripeObjectStatus.success)
                     ? _createView(stripeCubit.state.stripeStatus)
                     : Form(
                         key: _formKey,
@@ -376,6 +381,8 @@ class _SignUpPageState extends State<SignUpPage> {
       return const Center(child: CircularProgressIndicator());
     } else if (status == StripeObjectStatus.failure) {
       return const Text('Could not connect to Stripe');
+    } else if (status == StripeObjectStatus.success) {
+      return const Center(child: CircularProgressIndicator());
     } else {
       return Text('stripe status ${status}');
     }
@@ -391,9 +398,7 @@ class _SignUpPageState extends State<SignUpPage> {
               urlRequest: URLRequest(url: Uri.parse(response.url)));
         },
         onLoadStart: (controller, url) {
-          print('current $url');
           if (url == Uri.parse(response.cancelUrl)) {
-            log('Stripe cancelled');
             context.pop();
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -401,14 +406,22 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             );
           } else if (url == Uri.parse(response.successUrl)) {
-            log('Stripe success');
-            context.pop();
+            context.read<StripeCubit>().stripeRegistrationComplete();
             context
                 .read<RegistrationBloc>()
                 .add(const RegistrationStripeSuccess());
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Registration successful'),
+
+            showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: 'Registration successful',
+                content:
+                    'Your registration might take up to 1 minute to complete, but you can already donate!',
+                onConfirm: () {
+                  context
+                    ..pop()
+                    ..goNamed(Pages.home.name);
+                },
               ),
             );
           }

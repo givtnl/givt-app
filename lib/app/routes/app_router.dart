@@ -87,6 +87,9 @@ class AppRouter {
                 name: Pages.registration.name,
                 builder: (context, state) {
                   final email = state.queryParameters['email'] ?? '';
+
+                  final createStripe =
+                      state.queryParameters['createStripe'] ?? 'false';
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider(
@@ -104,6 +107,7 @@ class AppRouter {
                     ],
                     child: SignUpPage(
                       email: email,
+                      createStripe: createStripe,
                     ),
                   );
                 },
