@@ -22,6 +22,7 @@ import 'package:givt_app/features/personal_summary/pages/personal_summary_page.d
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
@@ -114,13 +115,27 @@ class AppRouter {
                 name: Pages.registration.name,
                 builder: (context, state) {
                   final email = state.queryParameters['email'] ?? '';
-                  return BlocProvider(
-                    create: (context) => RegistrationBloc(
-                      authCubit: context.read<AuthCubit>(),
-                      authRepositoy: getIt(),
-                    ),
+
+                  final createStripe =
+                      state.queryParameters['createStripe'] ?? 'false';
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => StripeCubit(
+                          authRepositoy: getIt(),
+                          authCubit: context.read<AuthCubit>(),
+                        ),
+                      ),
+                      BlocProvider(
+                        create: (context) => RegistrationBloc(
+                          authCubit: context.read<AuthCubit>(),
+                          authRepositoy: getIt(),
+                        ),
+                      ),
+                    ],
                     child: SignUpPage(
                       email: email,
+                      createStripe: createStripe,
                     ),
                   );
                 },

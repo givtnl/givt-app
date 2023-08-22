@@ -10,6 +10,7 @@ class MobileNumberFormField extends StatelessWidget {
     required this.onPrefixChanged,
     required this.onPhoneChanged,
     required this.selectedCountryPrefix,
+    required this.hintText,
     required this.validator,
     super.key,
   });
@@ -19,6 +20,7 @@ class MobileNumberFormField extends StatelessWidget {
   final OnMobileNumberChanged onPhoneChanged;
   final String? Function(String?)? validator;
   final String selectedCountryPrefix;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +73,7 @@ class MobileNumberFormField extends StatelessWidget {
               style:
                   Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
               decoration: InputDecoration(
-                hintText: locals.phoneNumber,
+                hintText: hintText,
                 labelText: locals.phoneNumber,
                 labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontSize: 16,

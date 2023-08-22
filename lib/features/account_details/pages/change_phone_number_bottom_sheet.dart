@@ -53,6 +53,9 @@ class _ChangePhoneNumberBottomSheetState
               children: [
                 MobileNumberFormField(
                   phone: phone,
+                  hintText: selectedCountry != Country.us
+                      ? locals.phoneNumber
+                      : locals.mobileNumberUsDigits,
                   selectedCountryPrefix: selectedCountry.prefix,
                   onPhoneChanged: (String value) => setState(() {}),
                   onPrefixChanged: (String selected) {

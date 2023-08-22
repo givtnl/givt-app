@@ -7,6 +7,7 @@ enum RegistrationStatus {
   personalInfo,
   sepaMandateExplanation,
   sepaMandate,
+  createStripeAccount,
   bacsDirectDebitMandateExplanation,
   bacsDirectDebitMandate,
   success,
@@ -47,7 +48,6 @@ class RegistrationState extends Equatable {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       password: password ?? this.password,
-    
     );
   }
 

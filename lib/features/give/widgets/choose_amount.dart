@@ -212,9 +212,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 ),
                 NumericKeyboard(
                   currencySymbol: currencySymbol,
-                  presets: widget.arePresetsEnabled
-                      ? widget.presets
-                      : [],
+                  presets: widget.arePresetsEnabled ? widget.presets : [],
                   onPresetTap: onPresetTapped,
                   onKeyboardTap: onNumberTapped,
                   leftButtonFn: onCommaTapped,
