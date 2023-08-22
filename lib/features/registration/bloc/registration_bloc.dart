@@ -211,12 +211,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     var user = authCubit.state.user;
-
-    while (user.tempUser) {
+    var delayTime = 2;
+    while (user.tempUser || delayTime < 257) {
       await authCubit.refreshUser();
       user = authCubit.state.user;
-      log('fetched user state is: ${user.tempUser}');
-      await Future<void>.delayed(const Duration(seconds: 5));
+      await Future<void>.delayed(Duration(seconds: delayTime));
+      delayTime = delayTime * 2;
     }
     if (user.tempUser == false) {
       emit(state.copyWith(status: RegistrationStatus.success));
