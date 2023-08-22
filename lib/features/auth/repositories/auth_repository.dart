@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +20,7 @@ mixin AuthRepositoy {
     required String guid,
     required String appLanguage,
   });
+  Future<StripeResponse> registerStripeCustomer({required String email});
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
@@ -227,6 +229,12 @@ class AuthRepositoyImpl with AuthRepositoy {
       _apiService.updateUserExt(newUserExt);
 
   @override
+  Future<StripeResponse> registerStripeCustomer({required String email}) async {
+    final reponse = await _apiService.registerStripeCustomer(email);
+    final stripeResponse = StripeResponse.fromJson(reponse);
+    return stripeResponse;
+  }
+
   Future<bool> updateLocalUserExt({
     required UserExt newUserExt,
   }) async =>

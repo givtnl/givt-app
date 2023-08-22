@@ -79,7 +79,8 @@ class APIService {
 
   Future<bool> checktld(String email) async {
     final url = Uri.https(_apiURL, '/api/checktld', {'email': email});
-    final body = (await client.get(url)).body;
+    final response = await client.get(url);
+    final body = response.body;
     return jsonDecode(body) as String == 'true';
   }
 
@@ -192,6 +193,31 @@ class APIService {
       );
     }
     return response.body;
+  }
+
+  Future<Map<String, dynamic>> registerStripeCustomer(
+    String email,
+  ) async {
+    final url = Uri.https(
+        apiURL, '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({'email': email}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return responseBody['item'] as Map<String, dynamic>;
+    } else {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
   }
 
   Future<bool> unregisterUser(

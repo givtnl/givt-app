@@ -125,11 +125,14 @@ class HomePage extends StatelessWidget {
           TextButton(
             onPressed: () {
               if (user.needRegistration) {
+                final createStripe = user.personalInfoRegistered &&
+                    Country.fromCode(user.countryCode.toString()) == Country.us;
                 context
                   ..goNamed(
                     Pages.registration.name,
                     queryParameters: {
                       'email': user.email,
+                      'createStripe': createStripe.toString()
                     },
                   )
                   ..pop();

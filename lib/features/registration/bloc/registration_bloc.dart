@@ -26,6 +26,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationInit>(_onInit);
 
     on<RegistrationGiftAidChanged>(_onGiftAidChanged);
+
+    on<RegistrationStripeSuccess>(_onStripeSuccess);
+    on<RegistrationStripeInit>(_onStripeInit);
   }
 
   final AuthRepositoy authRepositoy;
@@ -79,6 +82,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
 
       await authCubit.refreshUser();
+      if (event.country.toUpperCase() == Country.us.countryCode) {
+        emit(
+          state.copyWith(
+            status: RegistrationStatus.createStripeAccount,
+          ),
+        );
+        return;
+      }
       if (event.iban.isNotEmpty) {
         emit(
           state.copyWith(
@@ -186,6 +197,32 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         status: RegistrationStatus.sepaMandateExplanation,
       ),
     );
+  }
+
+  void _onStripeInit(
+    RegistrationStripeInit event,
+    Emitter<RegistrationState> emit,
+  ) {
+    emit(state.copyWith(status: RegistrationStatus.createStripeAccount));
+  }
+
+  Future<void> _onStripeSuccess(
+    RegistrationStripeSuccess event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    var user = authCubit.state.user;
+    var delayTime = 2;
+    while (user.tempUser || delayTime < 257) {
+      await authCubit.refreshUser();
+      user = authCubit.state.user;
+      await Future<void>.delayed(Duration(seconds: delayTime));
+      delayTime = delayTime * 2;
+    }
+    if (user.tempUser == false) {
+      emit(state.copyWith(status: RegistrationStatus.success));
+    } else {
+      emit(state.copyWith(status: RegistrationStatus.failure));
+    }
   }
 
   FutureOr<void> _onGiftAidChanged(

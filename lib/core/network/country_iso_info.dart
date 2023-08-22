@@ -23,7 +23,7 @@ class CountryIsoInfoImpl implements CountryIsoInfo {
           (await DeviceRegion.getSIMCountryCode() ?? Country.nl.countryCode)
               .toUpperCase();
     } on PlatformException catch (e) {
-      log(e.toString()); 
+      log(e.toString());
     }
     return _countryIso;
   }
