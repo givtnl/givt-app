@@ -2,6 +2,9 @@ part of 'registration_bloc.dart';
 
 abstract class RegistrationEvent extends Equatable {
   const RegistrationEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 class RegistrationPasswordSubmitted extends RegistrationEvent {
@@ -85,26 +88,11 @@ class RegistrationSignMandate extends RegistrationEvent {
   List<Object> get props => [guid, appLanguage];
 }
 
-class RegistrationStripeInit extends RegistrationEvent {
-  const RegistrationStripeInit();
+class RegistrationStripeInit extends RegistrationEvent {}
 
-  @override
-  List<Object> get props => [];
-}
+class RegistrationStripeSuccess extends RegistrationEvent {}
 
-class RegistrationStripeSuccess extends RegistrationEvent {
-  const RegistrationStripeSuccess();
-
-  @override
-  List<Object> get props => [];
-}
-
-class RegistrationInit extends RegistrationEvent {
-  const RegistrationInit();
-
-  @override
-  List<Object> get props => [];
-}
+class RegistrationInit extends RegistrationEvent {}
 
 class RegistrationGiftAidChanged extends RegistrationEvent {
   const RegistrationGiftAidChanged({
