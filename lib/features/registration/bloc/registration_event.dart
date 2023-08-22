@@ -88,11 +88,17 @@ class RegistrationSignMandate extends RegistrationEvent {
   List<Object> get props => [guid, appLanguage];
 }
 
-class RegistrationStripeInit extends RegistrationEvent {}
+class RegistrationStripeInit extends RegistrationEvent {
+  const RegistrationStripeInit();
+}
 
-class RegistrationStripeSuccess extends RegistrationEvent {}
+class RegistrationStripeSuccess extends RegistrationEvent {
+  const RegistrationStripeSuccess();
+}
 
-class RegistrationInit extends RegistrationEvent {}
+class RegistrationInit extends RegistrationEvent {
+  const RegistrationInit();
+}
 
 class RegistrationGiftAidChanged extends RegistrationEvent {
   const RegistrationGiftAidChanged({

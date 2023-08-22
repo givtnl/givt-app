@@ -150,14 +150,6 @@ class AppRouter {
                   ),
                 ],
               ),
-              // GoRoute(
-              //   path: Pages.stripeWebviewHost.path,
-              //   name: Pages.stripeWebviewHost.name,
-              //   builder: (context, state) => BlocProvider.value(
-              //     value: state.extra! as RegistrationBloc,
-              //     child: const StripeWebviewHost(),
-              //   ),
-              // ),
               GoRoute(
                 path: Pages.sepaMandateExplanation.path,
                 name: Pages.sepaMandateExplanation.name,
