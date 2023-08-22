@@ -400,13 +400,14 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     });
     context.read<RegistrationBloc>().add(
           RegistrationPersonalInfoSubmitted(
-            address: _address.text.isEmpty ? 'Foobarstraat 5' : _address.text,
-            city: _city.text.isEmpty ? 'Foobar' : _city.text,
-            postalCode: _postalCode.text.isEmpty ? 'B3 1RD' : _postalCode.text,
+            address: _address.text.isEmpty ? Util.defaultAdress : _address.text,
+            city: _city.text.isEmpty ? Util.defaultCity : _city.text,
+            postalCode: _postalCode.text.isEmpty
+                ? Util.defaultPostCode
+                : _postalCode.text,
             country: _selectedCountry.countryCode,
             phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
-            iban:
-                ibanNumber.text.isEmpty ? 'FB66GIVT12345678' : ibanNumber.text,
+            iban: ibanNumber.text.isEmpty ? Util.defaultIban : ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,
             appLanguage: Localizations.localeOf(context).languageCode,
