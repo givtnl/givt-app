@@ -2,60 +2,50 @@ part of 'create_child_cubit.dart';
 
 abstract class CreateChildState extends Equatable {
   const CreateChildState({
-    this.name = '',
-    this.dateOfBirth,
-    this.allowance = 0,
-    this.isAllowanceDetailsVisible = false,
+    this.child,
   });
 
-  final String name;
-  final DateTime? dateOfBirth;
-  final double allowance;
+  final Child? child;
 
-  final bool isAllowanceDetailsVisible;
+  @override
+  List<Object?> get props => [child];
+}
+
+class CreateChildInputState extends CreateChildState {
+  const CreateChildInputState({
+    super.child,
+  });
+}
+
+class CreateChildInputErrorState extends CreateChildState {
+  const CreateChildInputErrorState({
+    super.child,
+    this.nameErrorMessage,
+    this.dateErrorMessage,
+    this.allowanceErrorMessage,
+  });
+
+  final String? nameErrorMessage;
+  final String? dateErrorMessage;
+  final String? allowanceErrorMessage;
 
   @override
   List<Object?> get props =>
-      [name, dateOfBirth, allowance, isAllowanceDetailsVisible];
+      [child, nameErrorMessage, dateErrorMessage, allowanceErrorMessage];
 }
 
-class CreateChildInputDataState extends CreateChildState {
-  const CreateChildInputDataState({
-    super.name,
-    super.dateOfBirth,
-    super.allowance,
-    super.isAllowanceDetailsVisible,
-  });
-
-  bool get isFilled {
-    return name.length > 1 && dateOfBirth != null && allowance > 0;
-  }
-
-  // CreateChildInputDataState copyWith({
-  //   String? name,
-  //   DateTime? dateOfBirth,
-  //   double? allowance,
-  //   bool? isAllowanceDetailsVisible,
-  // }) {
-  //   return CreateChildInputDataState(
-  //     name: name ?? this.name,
-  //     dateOfBirth: dateOfBirth ?? this.dateOfBirth,
-  //     allowance: allowance ?? this.allowance,
-  //     isAllowanceDetailsVisible:
-  //         isAllowanceDetailsVisible ?? this.isAllowanceDetailsVisible,
-  //   );
-  // }
-}
-
-class CreateChildErrorState extends CreateChildState {
-  const CreateChildErrorState({required this.error});
-  final String error;
+class CreateChildExternalErrorState extends CreateChildState {
+  const CreateChildExternalErrorState({required this.errorMessage});
+  final String errorMessage;
 
   @override
-  List<Object?> get props =>
-      [name, dateOfBirth, allowance, isAllowanceDetailsVisible, error];
+  List<Object?> get props => [child, errorMessage];
 }
 
-class CreateChildSuccessState extends CreateChildState {}
+class CreateChildSuccessState extends CreateChildState {
+  const CreateChildSuccessState({
+    super.child,
+  });
+}
 
 class CreateChildUploadingState extends CreateChildState {}

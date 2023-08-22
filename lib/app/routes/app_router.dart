@@ -95,13 +95,9 @@ class AppRouter {
               GoRoute(
                 path: Pages.giveVPC.path,
                 name: Pages.giveVPC.name,
-                // builder: (context, state) => BlocProvider(
-                //   create: (_) => VPCCubit(getIt()),
-                //   child: const GiveVPCPage(),
-                // ),
                 builder: (context, state) => BlocProvider(
-                  create: (_) => CreateChildCubit(getIt()),
-                  child: const CreateChildPage(),
+                  create: (_) => VPCCubit(getIt()),
+                  child: const GiveVPCPage(),
                 ),
               ),
               GoRoute(

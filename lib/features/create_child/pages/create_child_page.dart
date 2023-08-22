@@ -1,8 +1,18 @@
+import 'dart:developer';
+
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/create_child/cubit/create_child_cubit.dart';
+import 'package:givt_app/features/create_child/models/child.dart';
+import 'package:givt_app/features/create_child/widgets/create_child_text_field.dart';
+import 'package:givt_app/features/create_child/widgets/giving_allowance_info_bottom_sheet.dart';
 // import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -48,8 +58,8 @@ class _CreateChildPageState extends State<CreateChildPage> {
                 right: 10,
                 top: 10,
                 child: TextButton(
-                  //TODO
                   child: Text(
+                    //TODO: POEditor
                     'Next',
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                           color: AppTheme.sliderIndicatorFilled,
@@ -58,8 +68,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                   ),
                   onPressed: () {
                     _selectedDate = currentDate;
-                    _dateOfBirthController.text =
-                        _dateFormatter.format(_selectedDate);
+                    _setDateOfBirthText(_selectedDate);
                     context.pop();
                   },
                 ),
@@ -71,155 +80,227 @@ class _CreateChildPageState extends State<CreateChildPage> {
     );
   }
 
+  final _nameController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
+  final _allowanceController = TextEditingController();
   final _dateFormatter = DateFormat('MM-dd-yyyy');
   var _selectedDate = DateTime.now();
+
+  void _setDateOfBirthText(DateTime? date) {
+    _dateOfBirthController.text =
+        date != null ? _dateFormatter.format(date) : '';
+  }
+
+  void _createChildProfile() {
+    final name = _nameController.text.trim();
+    final dateOfBirth =
+        _dateOfBirthController.text.isNotEmpty ? _selectedDate : null;
+
+    final allowance = _allowanceController.text.isNotEmpty
+        ? int.parse(
+            _allowanceController.text
+                .trim()
+                .substring(1), // removing currency sign
+          )
+        : null;
+
+    final user = context.read<AuthCubit>().state.user;
+    final child = Child(
+      parentId: user.guid,
+      firstName: name,
+      dateOfBirth: dateOfBirth,
+      allowance: allowance,
+    );
+    context.read<CreateChildCubit>().createChild(child: child);
+  }
+
+  void _updateInputFields(Child? child, String currencySymbol) {
+    _nameController.text = child?.firstName ?? '';
+    _setDateOfBirthText(child?.dateOfBirth);
+    var allowanceText = '';
+    if (child != null && child.allowance != null) {
+      allowanceText = '$currencySymbol${child.allowance}';
+    }
+    _allowanceController.text = allowanceText;
+  }
+
+  Widget _createGivingAllowanceInfoButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5),
+      child: TextButton.icon(
+        icon: const Icon(
+          Icons.info_rounded,
+          size: 20,
+          color: AppTheme.sliderIndicatorFilled,
+        ),
+        //TODO: POEditor
+        label: Text(
+          'More about giving allowance',
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: AppTheme.sliderIndicatorFilled,
+              ),
+        ),
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            backgroundColor: AppTheme.givtPurple,
+            showDragHandle: true,
+            useSafeArea: true,
+            builder: (context) => const GivingAllowanceInfoBottomSheet(),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     // final locals = AppLocalizations.of(context);
 
+    final user = context.read<AuthCubit>().state.user;
+    final currency = NumberFormat.simpleCurrency(
+      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
+    );
+
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.only(top: 35),
-        width: double.infinity,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Image.asset(
-                'assets/images/logo.png',
-                height: size.height * 0.035,
+      body: BlocConsumer<CreateChildCubit, CreateChildState>(
+        listener: (context, state) {
+          log('create child state changed on $state');
+          if (state is CreateChildExternalErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  state.errorMessage,
+                  textAlign: TextAlign.center,
+                ),
+                backgroundColor: Theme.of(context).errorColor,
               ),
-              Container(
-                padding: const EdgeInsets.all(20),
-                height: size.height * 0.82,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      //TODO
+            );
+          } else if (state is CreateChildInputState ||
+              state is CreateChildInputErrorState) {
+            _updateInputFields(state.child, currency.currencySymbol);
+          } else if (state is CreateChildSuccessState) {
+            //Temp snackbar while we do not have childs overview
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Profile for ${state.child?.firstName} successfully created!',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+            context.pop();
+          }
+        },
+        builder: (context, state) {
+          if (state is CreateChildUploadingState) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return Container(
+            padding: const EdgeInsets.only(top: 35),
+            width: double.infinity,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png',
+                    height: size.height * 0.035,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    height: size.height * 0.82,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          //TODO: POEditor
+                          child: Text(
+                            'Please enter some information about your child',
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                    color: AppTheme.sliderIndicatorFilled),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        CreateChildTextField(
+                          maxLength: 20,
+                          errorText: state is CreateChildInputErrorState
+                              ? state.nameErrorMessage
+                              : null,
+                          controller: _nameController,
+                          //TODO: POEditor
+                          labelText: 'First Name',
+                          textInputAction: TextInputAction.next,
+                          keyboardType: TextInputType.name,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CreateChildTextField(
+                          controller: _dateOfBirthController,
+                          errorText: state is CreateChildInputErrorState
+                              ? state.dateErrorMessage
+                              : null,
+                          //TODO: POEditor
+                          labelText: 'Date of birth',
+                          onTap: _showDataPickerDialog,
+                          showCursor: true,
+                          textInputAction: TextInputAction.next,
+                          readOnly: true,
+                        ),
+                        const SizedBox(
+                          height: 40,
+                        ),
+                        CreateChildTextField(
+                          //TODO: POEditor
+                          labelText: 'Giving allowance',
+                          errorText: state is CreateChildInputErrorState
+                              ? state.allowanceErrorMessage
+                              : null,
+                          controller: _allowanceController,
+                          maxLength: 4,
+                          textInputAction: TextInputAction.done,
+                          inputFormatters: [
+                            CurrencyTextInputFormatter(
+                              locale: currency.locale,
+                              decimalDigits: 0,
+                              turnOffGrouping: true,
+                              enableNegative: false,
+                              symbol: currency.currencySymbol,
+                            )
+                          ],
+                          keyboardType: TextInputType.number,
+                        ),
+                        _createGivingAllowanceInfoButton(),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    child: ElevatedButton(
+                      onPressed: _createChildProfile,
                       child: Text(
-                        'Please enter some information about your child',
-                        textAlign: TextAlign.center,
+                        //TODO: POEditor
+                        'Create child profile',
                         style: Theme.of(context)
                             .textTheme
-                            .titleMedium!
-                            .copyWith(color: AppTheme.sliderIndicatorFilled),
+                            .titleLarge!
+                            .copyWith(color: Colors.white),
                       ),
                     ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    TextField(
-                      maxLength: 20,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: AppTheme.sliderIndicatorFilled),
-                      decoration: InputDecoration(
-                        //TODO:
-                        label: const Text('First Name'),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppTheme.inputFieldBorderEnabled,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppTheme.inputFieldBorderSelected,
-                          ),
-                        ),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.name,
-                      onChanged: (value) {},
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      controller: _dateOfBirthController,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: AppTheme.sliderIndicatorFilled),
-                      decoration: InputDecoration(
-                        //TODO
-                        label: const Text('Date of birth'),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppTheme.inputFieldBorderEnabled,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppTheme.inputFieldBorderSelected,
-                          ),
-                        ),
-                      ),
-                      onTap: _showDataPickerDialog,
-                      showCursor: true,
-                      readOnly: true,
-                      onChanged: (value) {},
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: AppTheme.sliderIndicatorFilled),
-                      decoration: InputDecoration(
-                        //TODO:
-                        label: const Text('Giving allowance'),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppTheme.inputFieldBorderEnabled,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(
-                            color: AppTheme.inputFieldBorderSelected,
-                          ),
-                        ),
-                      ),
-                      textInputAction: TextInputAction.next,
-                      inputFormatters: [
-                        CurrencyTextInputFormatter(
-                          decimalDigits: 2,
-                        )
-                      ],
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {},
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  //TODO
-                  child: Text(
-                    'Create child profile',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(color: Colors.white),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -2,25 +2,28 @@ import 'package:equatable/equatable.dart';
 
 class Child extends Equatable {
   const Child({
-    required this.firstName,
-    required this.lastName,
-    required this.dateOfBirth,
     required this.parentId,
+    this.firstName,
+    this.lastName,
+    this.dateOfBirth,
+    this.allowance,
     this.isChild = true,
   });
 
-  final String firstName;
-  final String lastName;
-  final String dateOfBirth;
   final String parentId;
+  final String? firstName;
+  final String? lastName;
+  final DateTime? dateOfBirth;
+  final int? allowance;
   final bool isChild;
 
   Map<String, dynamic> toJson() {
     return {
       'firstName': firstName,
       'lastName': lastName,
-      'dateOfBirth': dateOfBirth,
+      'dateOfBirth': dateOfBirth?.toIso8601String(),
       'isChild': isChild,
+      'givingAllowance': allowance,
       'parent': {
         'parentId': parentId,
       }
@@ -28,5 +31,6 @@ class Child extends Equatable {
   }
 
   @override
-  List<Object?> get props => [firstName, lastName, dateOfBirth, parentId];
+  List<Object?> get props =>
+      [firstName, lastName, dateOfBirth, allowance, parentId];
 }
