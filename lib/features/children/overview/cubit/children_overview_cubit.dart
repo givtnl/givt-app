@@ -1,5 +1,3 @@
-// ignore_for_file: cascade_invocations
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
