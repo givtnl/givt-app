@@ -11,7 +11,7 @@ import 'package:givt_app/features/children/create_child/cubit/create_child_cubit
 import 'package:givt_app/features/children/create_child/models/child.dart';
 import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/create_child/widgets/giving_allowance_info_bottom_sheet.dart';
-// import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
@@ -60,8 +60,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                 top: 10,
                 child: TextButton(
                   child: Text(
-                    //TODO: POEditor
-                    'Next',
+                    AppLocalizations.of(context).next,
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                           color: AppTheme.sliderIndicatorFilled,
                           fontWeight: FontWeight.bold,
@@ -134,9 +133,8 @@ class _CreateChildPageState extends State<CreateChildPage> {
           size: 20,
           color: AppTheme.sliderIndicatorFilled,
         ),
-        //TODO: POEditor
         label: Text(
-          'More about giving allowance',
+          AppLocalizations.of(context).createChildGivingAllowanceInfoButton,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                 color: AppTheme.sliderIndicatorFilled,
               ),
@@ -157,7 +155,6 @@ class _CreateChildPageState extends State<CreateChildPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    // final locals = AppLocalizations.of(context);
 
     final user = context.read<AuthCubit>().state.user;
     final currency = NumberFormat.simpleCurrency(
@@ -190,6 +187,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CreateChildInputState ||
               state is CreateChildInputErrorState) {
+            final locals = AppLocalizations.of(context);
             return Container(
               padding: const EdgeInsets.only(top: 35),
               width: double.infinity,
@@ -208,9 +206,8 @@ class _CreateChildPageState extends State<CreateChildPage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
-                            //TODO: POEditor
                             child: Text(
-                              'Please enter some information about your child',
+                              locals.createChildPageTitle,
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -228,8 +225,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                                 ? state.nameErrorMessage
                                 : null,
                             controller: _nameController,
-                            //TODO: POEditor
-                            labelText: 'First Name',
+                            labelText: locals.firstName,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.name,
                           ),
@@ -241,8 +237,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                             errorText: state is CreateChildInputErrorState
                                 ? state.dateErrorMessage
                                 : null,
-                            //TODO: POEditor
-                            labelText: 'Date of birth',
+                            labelText: locals.dateOfBirth,
                             onTap: _showDataPickerDialog,
                             showCursor: true,
                             textInputAction: TextInputAction.next,
@@ -252,8 +247,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                             height: 40,
                           ),
                           CreateChildTextField(
-                            //TODO: POEditor
-                            labelText: 'Giving allowance',
+                            labelText: locals.createChildGivingAllowanceHint,
                             errorText: state is CreateChildInputErrorState
                                 ? state.allowanceErrorMessage
                                 : null,
@@ -281,8 +275,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                       child: ElevatedButton(
                         onPressed: _createChildProfile,
                         child: Text(
-                          //TODO: POEditor
-                          'Create child profile',
+                          locals.createChildProfileButton,
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!

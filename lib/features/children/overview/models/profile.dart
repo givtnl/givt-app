@@ -27,10 +27,10 @@ class Profile extends Equatable {
     final pictureMap = map['picture'] as Map<String, dynamic>;
     return Profile(
       id: map['id'] as String,
-      firstName: map['firstName'] as String,
-      lastName: map['lastName'] as String,
-      nickname: map['nickname'] as String,
-      comment: map['comment'] as String,
+      firstName: (map['firstName'] ?? '') as String,
+      lastName: (map['lastName'] ?? '') as String,
+      nickname: (map['nickname'] ?? '') as String,
+      comment: (map['comment'] ?? '') as String,
       wallet: Wallet.fromMap(map['wallet'] as Map<String, dynamic>),
       pictureURL: pictureMap['pictureURL'] as String,
     );

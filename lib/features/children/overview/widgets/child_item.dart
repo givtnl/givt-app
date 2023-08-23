@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class ChildItem extends StatelessWidget {
@@ -17,6 +18,7 @@ class ChildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locals = AppLocalizations.of(context);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
@@ -65,8 +67,7 @@ class ChildItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            //TODO: POEditor
-                            'Total available:',
+                            locals.childOverviewTotalAvailable,
                             style: Theme.of(context)
                                 .textTheme
                                 .labelLarge!
@@ -107,8 +108,7 @@ class ChildItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      //TODO: POEditor
-                      'Pending approval:',
+                      locals.childOverviewPendingApproval,
                       style: Theme.of(context).textTheme.labelLarge!.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

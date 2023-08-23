@@ -38,6 +38,7 @@ import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -116,7 +117,8 @@ class AppRouter {
                 path: Pages.createChild.path,
                 name: Pages.createChild.name,
                 builder: (context, state) => BlocProvider(
-                  create: (_) => CreateChildCubit(getIt()),
+                  create: (_) =>
+                      CreateChildCubit(getIt(), AppLocalizations.of(context)),
                   child: const CreateChildPage(),
                 ),
               ),

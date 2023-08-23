@@ -9,6 +9,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/child_item.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,7 @@ class ChildrenOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locals = AppLocalizations.of(context);
 
     return Scaffold(
       body: Container(
@@ -96,8 +98,7 @@ class ChildrenOverviewPage extends StatelessWidget {
             }
           },
           child: Text(
-            //TODO: POEditor
-            'Add child profile',
+            locals.createChildAddProfileButton,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

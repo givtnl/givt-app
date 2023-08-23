@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class GivingAllowanceInfoBottomSheet extends StatelessWidget {
   const GivingAllowanceInfoBottomSheet({super.key});
@@ -6,6 +7,7 @@ class GivingAllowanceInfoBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locals = AppLocalizations.of(context);
 
     return Container(
       width: double.infinity,
@@ -13,17 +15,15 @@ class GivingAllowanceInfoBottomSheet extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          //TODO: POEditor
           Text(
-            'Monthly giving allowance',
+            locals.createChildGivingAllowanceTitle,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                 ),
           ),
           const SizedBox(height: 15),
-          //TODO: POEditor
           Text(
-            "Empower your child with the joy of giving by setting up a Monthly Giving Allowance. This not only fosters a habit of generosity but also imparts important financial skills.   Funds will be added to your child's wallet immediately upon set up and replenished monthly, enabling them to learn about budgeting and decision-making while experiencing the fulfilment of making a difference.   Should you wish to change the amount or stop the giving allowance please reach out to us at support@givt.app",
+            locals.createChildGivingAllowanceText,
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: Colors.white,
                 ),
