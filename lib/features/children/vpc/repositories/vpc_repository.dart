@@ -1,5 +1,5 @@
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/vpc/models/vps_response.dart';
+import 'package:givt_app/features/children/vpc/models/vps_response.dart';
 
 mixin VPCRepository {
   Future<VPCResponse> getVerifiableParentalConsentURL(String guid);

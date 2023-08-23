@@ -1,5 +1,5 @@
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/create_child/models/child.dart';
+import 'package:givt_app/features/children/create_child/models/child.dart';
 
 mixin CreateChildRepository {
   Future<bool> createChild(Child child);

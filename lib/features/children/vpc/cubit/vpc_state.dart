@@ -7,7 +7,7 @@ abstract class VPCState extends Equatable {
   List<Object> get props => [];
 }
 
-class VPCProfilesOverview extends VPCState {}
+class VPCInitialState extends VPCState {}
 
 class VPCInfoState extends VPCState {}
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/vpc/widgets/vpc_notice_dialog.dart';
+import 'package:givt_app/features/children/vpc/widgets/vpc_notice_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 

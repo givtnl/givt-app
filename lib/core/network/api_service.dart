@@ -417,6 +417,33 @@ class APIService {
     return response.statusCode == 200;
   }
 
+  Future<List<dynamic>> fetchChildren(String parentGuid) async {
+    //TODO:
+    //Need to be replaced with proper env variable later.
+    //Not sure what to use in case of G4k api
+    final url = Uri.https(
+      'dev-backend.givtapp.net',
+      '/givt4kidsservice/v1/User/get-children',
+    );
+
+    final response = await client.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(parentGuid),
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['items'] as List<dynamic>;
+    return itemMap;
+  }
+
   Future<List<dynamic>> fetchRecurringDonations({
     required Map<String, dynamic> params,
   }) async {

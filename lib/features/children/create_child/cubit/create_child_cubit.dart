@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/create_child/models/child.dart';
-import 'package:givt_app/features/create_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/create_child/models/child.dart';
+import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
 
 part 'create_child_state.dart';
 

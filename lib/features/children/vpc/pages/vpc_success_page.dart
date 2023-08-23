@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -45,17 +47,18 @@ class VPCSuccessPage extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
+              padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
               child: ElevatedButton(
                 onPressed: () {
+                  context.read<VPCCubit>().resetVPC();
                   context.goNamed(Pages.createChild.name);
                 },
                 child: Text(
                   locals.setupChildProfileButtonText,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.white),
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
               ),
             ),
