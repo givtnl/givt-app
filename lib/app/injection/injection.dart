@@ -4,12 +4,14 @@ import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
+import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
-import 'package:givt_app/features/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,6 +98,11 @@ void _initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<ChildrenOverviewRepository>(
+      () => ChildrenOverviewRepositoryImpl(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<RecurringDonationsRepository>(
       () => RecurringDonationsRepositoryImpl(
         getIt(),
@@ -108,6 +115,11 @@ void _initRepositories() {
     )
     ..registerLazySingleton<DetailRecurringDonationsRepository>(
       () => DetailRecurringDonationsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<CreateChildRepository>(
+      () => CreateChildRepositoryImpl(
         getIt(),
       ),
     );

@@ -1,14 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/vpc/models/vps_response.dart';
-import 'package:givt_app/features/vpc/repositories/vpc_repository.dart';
+import 'package:givt_app/features/children/vpc/models/vps_response.dart';
+import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 
 part 'vpc_state.dart';
 
 class VPCCubit extends Cubit<VPCState> {
-  VPCCubit(this._vpcRepository) : super(VPCProfilesOverview());
+  VPCCubit(this._vpcRepository) : super(VPCInitialState());
 
   final VPCRepository _vpcRepository;
+
+  var _vpcGained = false;
+
+  bool get vpcGained => _vpcGained;
 
   Future<void> fetchURL(String guid) async {
     emit(VPCFetchingURLState());
@@ -25,13 +29,14 @@ class VPCCubit extends Cubit<VPCState> {
     emit(VPCInfoState());
   }
 
-  void showProfiles() {
-    emit(VPCProfilesOverview());
+  void resetVPC() {
+    emit(VPCInitialState());
   }
 
   void redirectOnSuccess() {
     if (state is VPCWebViewState) {
       emit(VPCSuccessState(response: (state as VPCWebViewState).response));
+      _vpcGained = true;
     }
   }
 
