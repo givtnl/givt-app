@@ -5,24 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
+  const WelcomePage({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
-    return const WelcomePageView();
+    return WelcomePageView(
+      prefs: prefs,
+    );
   }
 }
 
 class WelcomePageView extends StatefulWidget {
-  const WelcomePageView({super.key});
-
+  const WelcomePageView({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   State<WelcomePageView> createState() => _WelcomePageViewState();
 }
@@ -68,6 +72,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 onPressed: () => Navigator.of(context).push(
                   EmailSignupPage.route(),
                 ),
+                onLongPress: hackUSASIM,
                 child: Text(
                   locals.welcomeContinue,
                 ),
@@ -267,5 +272,14 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         )
       ],
     );
+  }
+
+  void hackUSASIM() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('App hacked for USA'),
+      ),
+    );
+    await widget.prefs.setString('countryIso', Country.us.countryCode);
   }
 }

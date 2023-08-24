@@ -360,7 +360,9 @@ class AppRouter {
           GoRoute(
             path: Pages.welcome.path,
             name: Pages.welcome.name,
-            builder: (context, state) => const WelcomePage(),
+            builder: (context, state) => WelcomePage(
+              prefs: getIt(),
+            ),
           ),
         ],
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
