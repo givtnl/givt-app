@@ -294,5 +294,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       ),
     );
     await widget.prefs.setString('countryIso', Country.us.countryCode);
+    await get_it.initAPIService();
+    get_it.initRepositories();
   }
 }
