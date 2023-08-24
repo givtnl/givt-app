@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
@@ -274,7 +275,19 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     );
   }
 
-  void hackUSASIM() async {
+  Future<void> hackUSASIM() async {
+    widget.prefs.getString('countryIso');
+    if (widget.prefs.getString('countryIso') == Country.us.countryCode) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Hack removed'),
+        ),
+      );
+      await widget.prefs.remove('countryIso');
+      await get_it.initAPIService();
+      get_it.initRepositories();
+      return;
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('App hacked for USA'),
