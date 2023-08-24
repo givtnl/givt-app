@@ -211,13 +211,24 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     Emitter<RegistrationState> emit,
   ) async {
     var user = authCubit.state.user;
-    var delayTime = 2;
-    while (user.tempUser || delayTime < 257) {
+
+    var trials = 1;
+    var delayTime = 5;
+
+    while (user.tempUser || trials < 257) {
+      //get current state of user in givt system
+      ///and update it in the app
       await authCubit.refreshUser();
       user = authCubit.state.user;
+      log('trial number $trials, delay time is $delayTime,\n   user is: ${user.tempUser}');
+
+      if (trials > 16) {
+        delayTime = 60;
+      }
+      trials++;
       await Future<void>.delayed(Duration(seconds: delayTime));
-      delayTime = delayTime * 2;
     }
+
     if (user.tempUser == false) {
       emit(state.copyWith(status: RegistrationStatus.success));
     } else {

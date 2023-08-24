@@ -408,7 +408,7 @@ class _SignUpPageState extends State<SignUpPage> {
               builder: (_) => WarningDialog(
                 title: 'Registration successful',
                 content:
-                    'Your registration might take up to 1 minute to complete, but you can already donate!',
+                    'Your registration might take some time complete, but you can already donate!',
                 onConfirm: () {
                   context
                     ..pop()
