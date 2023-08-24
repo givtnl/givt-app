@@ -280,7 +280,6 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     if (!apiURL.contains('dev')) {
       return;
     }
-    widget.prefs.getString('countryIso');
     if (widget.prefs.getString('countryIso') == Country.us.countryCode) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
