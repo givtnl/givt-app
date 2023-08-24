@@ -276,6 +276,10 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   }
 
   Future<void> hackUSASIM() async {
+    const apiURL = String.fromEnvironment('API_URL_US');
+    if (!apiURL.contains('dev')) {
+      return;
+    }
     widget.prefs.getString('countryIso');
     if (widget.prefs.getString('countryIso') == Country.us.countryCode) {
       ScaffoldMessenger.of(context).showSnackBar(
