@@ -3,26 +3,31 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
+  const WelcomePage({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
-    return const WelcomePageView();
+    return WelcomePageView(
+      prefs: prefs,
+    );
   }
 }
 
 class WelcomePageView extends StatefulWidget {
-  const WelcomePageView({super.key});
-
+  const WelcomePageView({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   State<WelcomePageView> createState() => _WelcomePageViewState();
 }
@@ -68,6 +73,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 onPressed: () => Navigator.of(context).push(
                   EmailSignupPage.route(),
                 ),
+                onLongPress: hackUSASIM,
                 child: Text(
                   locals.welcomeContinue,
                 ),
@@ -267,5 +273,31 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         )
       ],
     );
+  }
+
+  Future<void> hackUSASIM() async {
+    const apiURL = String.fromEnvironment('API_URL_US');
+    if (!apiURL.contains('dev')) {
+      return;
+    }
+    if (widget.prefs.getString('countryIso') == Country.us.countryCode) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Hack removed'),
+        ),
+      );
+      await widget.prefs.remove('countryIso');
+      await get_it.initAPIService();
+      get_it.initRepositories();
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('App hacked for USA'),
+      ),
+    );
+    await widget.prefs.setString('countryIso', Country.us.countryCode);
+    await get_it.initAPIService();
+    get_it.initRepositories();
   }
 }

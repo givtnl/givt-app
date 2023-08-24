@@ -20,13 +20,14 @@ final getIt = GetIt.instance;
 
 Future<void> init() async {
   await _initCoreDependencies();
-  await _initAPIService();
+  await initAPIService();
 
   /// Init repositories
-  _initRepositories();
+  initRepositories();
 }
 
-Future<void> _initAPIService() async {
+Future<void> initAPIService() async {
+  getIt.allowReassignment = true;
   var baseUrl = const String.fromEnvironment('API_URL_EU');
   var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
@@ -57,7 +58,9 @@ Future<void> _initCoreDependencies() async {
     );
 }
 
-void _initRepositories() {
+void initRepositories() {
+  getIt.allowReassignment = true;
+
   getIt
     ..registerLazySingleton<AuthRepositoy>(
       () => AuthRepositoyImpl(
