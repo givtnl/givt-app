@@ -215,12 +215,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     var trials = 1;
     var delayTime = 5;
 
-    while (user.tempUser || trials < 257) {
+    while (user.tempUser && trials < 257) {
       //get current state of user in givt system
       ///and update it in the app
       await authCubit.refreshUser();
       user = authCubit.state.user;
-      log('trial number $trials, delay time is $delayTime,\n   user is: ${user.tempUser}');
+      log('trial number $trials, delay time is $delayTime,\n   user is temporary: ${user.tempUser}');
 
       if (trials > 16) {
         delayTime = 60;
