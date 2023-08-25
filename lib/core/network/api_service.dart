@@ -418,11 +418,8 @@ class APIService {
   }
 
   Future<List<dynamic>> fetchChildren(String parentGuid) async {
-    //TODO:
-    //Need to be replaced with proper env variable later.
-    //Not sure what to use in case of G4k api
     final url = Uri.https(
-      'dev-backend.givtapp.net',
+      apiURL,
       '/givt4kidsservice/v1/User/get-children',
     );
 
