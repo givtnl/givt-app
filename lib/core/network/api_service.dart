@@ -22,11 +22,16 @@ class APIService {
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
-  final String _apiURL;
-  final String _apiURLAWS;
+  String _apiURL;
+  String _apiURLAWS;
 
   String get apiURL => _apiURL;
   String get apiURLAWS => _apiURLAWS;
+
+  void updateApiUrl(String url, String awsurl) {
+    _apiURL = url;
+    _apiURLAWS = awsurl;
+  }
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
