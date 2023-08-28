@@ -7,6 +7,7 @@ import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
@@ -287,8 +288,10 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         ),
       );
       await widget.prefs.remove('countryIso');
-      await get_it.initAPIService();
-      get_it.initRepositories();
+      var baseUrl = const String.fromEnvironment('API_URL_EU');
+      var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
+      get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+
       return;
     }
     ScaffoldMessenger.of(context).showSnackBar(
@@ -296,8 +299,10 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         content: Text('App hacked for USA'),
       ),
     );
+
+    var baseUrl = const String.fromEnvironment('API_URL_US');
+    var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
+    get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
     await widget.prefs.setString('countryIso', Country.us.countryCode);
-    await get_it.initAPIService();
-    get_it.initRepositories();
   }
 }
