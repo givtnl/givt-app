@@ -1396,7 +1396,7 @@
     "moreInformationAboutStripeParagraphTwo": "In your user profile, we only display the last four digits and brand of your credit card for reference purposes, and your credit card information is never stored in our system. For more information on how we handle your personal data and ensure its security, please refer to our privacy policy.",
     "addTermExample": "Here I put in text",
     "vpcErrorText": "Cannot get VPC. Please try again later.",
-    "vpcSuccessText": "Great! Now you have given VPC, let’s get your children's profiles set up!",
+    "vpcSuccessText": "Now you have given VPC, let’s get your children's profiles set up!",
     "setupChildProfileButtonText": "Set up child profile(s)",
     "vpcIntroFamilyText": "We’ve made it easy for your children to take part in giving.\n\nIf you have multiple children, set up all your child profiles now. If you come out of the app you will need to give verifiable permission again.",
     "vpcIntroG4KText": "Make sure you download Givt4kids from the app store when you’ve set up your child profile(s).",
@@ -1420,5 +1420,6 @@
     "createChildGivingAllowanceText": "Empower your child with the joy of giving by setting up a Monthly Giving Allowance. This not only fosters a habit of generosity but also imparts important financial skills. \u2028\u2028Funds will be added to your child's wallet immediately upon set up and replenished monthly, enabling them to learn about budgeting and decision-making while experiencing the fulfilment of making a difference. \u2028\u2028Should you wish to change the amount or stop the giving allowance please reach out to us at support@givt.app",
     "createChildAddProfileButton": "Add child profile",
     "childOverviewTotalAvailable": "Total available:",
-    "childOverviewPendingApproval": "Pending approval:"
+    "childOverviewPendingApproval": "Pending approval:",
+    "vpcSuccessTitle": "Great!"
 }
