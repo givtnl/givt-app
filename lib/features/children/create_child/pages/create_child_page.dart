@@ -271,7 +271,10 @@ class _CreateChildPageState extends State<CreateChildPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 35, right: 35, bottom: 30),
+                        left: 35,
+                        right: 35,
+                        bottom: 30,
+                      ),
                       child: ElevatedButton(
                         onPressed: _createChildProfile,
                         child: Text(
@@ -281,7 +284,6 @@ class _CreateChildPageState extends State<CreateChildPage> {
                               .headlineSmall!
                               .copyWith(
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold,
                               ),
                         ),
                       ),

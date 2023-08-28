@@ -101,7 +101,6 @@ class ChildrenOverviewPage extends StatelessWidget {
             locals.createChildAddProfileButton,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
-                  fontWeight: FontWeight.bold,
                 ),
           ),
         ),

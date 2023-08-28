@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/children/vpc/widgets/vpc_intro_item_image.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_notice_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -13,22 +14,29 @@ class VPCIntroItemSafety extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            locals.vpcIntroSafetyText,
-            textAlign: TextAlign.center,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium!
-                .copyWith(color: AppTheme.sliderIndicatorFilled),
+          Padding(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
+            child: Text(
+              locals.vpcIntroSafetyText,
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(color: AppTheme.sliderIndicatorFilled),
+            ),
           ),
-          Image.asset(
-            'assets/images/vpc_intro_safety.png',
+          const VPCIntroItemImage(
+            background: 'assets/images/vpc_intro_safety_bg.svg',
+            foreground: 'assets/images/vpc_intro_safety.svg',
           ),
           TextButton(
             onPressed: () {
-              showDialog<void>(
+              showModalBottomSheet<void>(
                 context: context,
-                builder: (BuildContext ctx) => const VPCNoticeDialog(),
+                backgroundColor: AppTheme.givtPurple,
+                showDragHandle: true,
+                useSafeArea: true,
+                builder: (context) => const VPCNoticeDialog(),
               );
             },
             child: Row(

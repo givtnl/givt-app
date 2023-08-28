@@ -16,31 +16,51 @@ class VPCSuccessPage extends StatelessWidget {
     final locals = AppLocalizations.of(context);
 
     return Scaffold(
+      backgroundColor: AppTheme.vpcSuccessBackground,
       body: Container(
         padding: const EdgeInsets.only(top: 35),
         width: double.infinity,
         child: Column(
           children: [
-            Image.asset(
-              'assets/images/logo.png',
+            SvgPicture.asset(
+              'assets/images/logo_white.svg',
               height: size.height * 0.035,
             ),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(40),
               height: size.height * 0.82,
               child: SizedBox.expand(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SvgPicture.asset(
+                      'assets/images/white_badge_check.svg',
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    Text(
+                      //TODO: POEditor
+                      'Great!',
+                      style:
+                          Theme.of(context).textTheme.headlineMedium!.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                    ),
                     Text(
                       locals.vpcSuccessText,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: AppTheme.sliderIndicatorFilled),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Colors.white,
+                          ),
                     ),
                     Expanded(
-                      child: SvgPicture.asset('assets/images/vpc_givy.svg'),
+                      child: Center(
+                        child: SvgPicture.asset('assets/images/vpc_givy.svg'),
+                      ),
                     ),
                   ],
                 ),
@@ -53,11 +73,13 @@ class VPCSuccessPage extends StatelessWidget {
                   context.read<VPCCubit>().resetVPC();
                   context.goNamed(Pages.createChild.name);
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.sliderIndicatorFilled,
+                ),
                 child: Text(
                   locals.setupChildProfileButtonText,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.bold,
                       ),
                 ),
               ),
