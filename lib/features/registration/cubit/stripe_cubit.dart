@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
@@ -29,6 +32,11 @@ class StripeCubit extends Cubit<StripeState> {
     } catch (e) {
       emit(
         state.copyWith(stripeStatus: StripeObjectStatus.failure),
+      );
+      log(e.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
       );
     }
   }
