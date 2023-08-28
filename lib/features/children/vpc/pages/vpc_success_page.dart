@@ -43,8 +43,7 @@ class VPCSuccessPage extends StatelessWidget {
                       height: 60,
                     ),
                     Text(
-                      //TODO: POEditor
-                      'Great!',
+                      locals.vpcSuccessTitle,
                       style:
                           Theme.of(context).textTheme.headlineMedium!.copyWith(
                                 color: Colors.white,
