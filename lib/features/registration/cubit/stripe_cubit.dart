@@ -33,9 +33,9 @@ class StripeCubit extends Cubit<StripeState> {
       emit(
         state.copyWith(stripeStatus: StripeObjectStatus.failure),
       );
-      log(e.toString());
+      log('${e}, ALSO user email: $email \nuser country: ${authCubit.state.user.country}');
       await LoggingInfo.instance.error(
-        e.toString(),
+        '${e}, ALSO user email: $email \nuser country: ${authCubit.state.user.country}',
         methodName: StackTrace.current.toString(),
       );
     }

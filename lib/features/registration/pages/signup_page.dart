@@ -377,8 +377,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return const Center(child: CircularProgressIndicator());
     }
     if (status == StripeObjectStatus.failure) {
-      return Text(
-          'Could not connect to Stripe \nuser email: ${user.email} \nuser country: ${user.country}');
+      return const Text('Could not connect to Stripe');
     }
     if (status == StripeObjectStatus.success) {
       return const Center(child: CircularProgressIndicator());
