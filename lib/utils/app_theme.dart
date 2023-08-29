@@ -33,6 +33,8 @@ class AppTheme {
   static const childItemBackground = Color(0xFF54A1EE);
   static const childItemPendingBackground = Color(0xFFE28D4D);
 
+  static const vpcSuccessBackground = Color(0xFF7DBDA1);
+
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
     fontFamily: 'AvenirLTStd',
