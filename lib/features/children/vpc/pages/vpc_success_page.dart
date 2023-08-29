@@ -28,7 +28,7 @@ class VPCSuccessPage extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.all(40),
-              height: size.height * 0.82,
+              height: size.height * 0.81,
               child: SizedBox.expand(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

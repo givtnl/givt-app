@@ -36,7 +36,7 @@ class ChildrenOverviewPage extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-              height: size.height * 0.921,
+              height: size.height * 0.9,
               child: BlocConsumer<ChildrenOverviewCubit, ChildrenOverviewState>(
                 listener: (context, state) {
                   log('children overview state changed on $state');
