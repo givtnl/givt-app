@@ -1,10 +1,16 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/utils/utils.dart';
+import 'package:native_shared_preferences/native_shared_preferences.dart';
+import 'package:propertylistserialization/propertylistserialization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
@@ -108,6 +114,7 @@ class AuthRepositoyImpl with AuthRepositoy {
 
   @override
   Future<(UserExt, Session)?> isAuthenticated() async {
+    await _copyFromNative();
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
       return null;
@@ -242,4 +249,122 @@ class AuthRepositoyImpl with AuthRepositoy {
         UserExt.tag,
         jsonEncode(newUserExt),
       );
+
+  Future<void> _copyFromNative() async {
+    final nativePrefs = await NativeSharedPreferences.getInstance();
+    
+    if (_prefs.containsKey(Util.nativeAppKeysMigration)) {
+      final isMigrated = _prefs.getBool(Util.nativeAppKeysMigration) ?? false;
+      if (isMigrated) {
+        return;
+      }
+    }
+    await LoggingInfo.instance
+        .info('Migrating ${nativePrefs.getKeys().toList()} native keys');
+    for (var i = 0; i < nativePrefs.getKeys().length; i++) {
+      final key = nativePrefs.getKeys().elementAt(i);
+      final value = nativePrefs.get(key);
+      if (_prefs.containsKey(key)) {
+        continue;
+      }
+
+      if (key == NativeNSUSerDefaultsKeys.orgBeaconListV2) {
+        continue;
+      }
+
+      if (value is String) {
+        await _prefs.setString(key, value);
+      } else if (value is int) {
+        await _prefs.setInt(key, value);
+      } else if (value is double) {
+        await _prefs.setDouble(key, value);
+      } else if (value is bool) {
+        await _prefs.setBool(key, value);
+      } else if (value is List<String>) {
+        await _prefs.setStringList(key, value);
+      } else if (value is List<int>) {
+        // UnmodifiableUint8ArrayView
+        final list = Uint8List.fromList(value);
+        final archive = PropertyListSerialization.propertyListWithData(
+          list.buffer.asByteData(),
+          keyedArchive: true,
+        ) as Map<String, Object?>;
+        final objectList = archive[r'$objects']! as List<dynamic>;
+        if (key == NativeNSUSerDefaultsKeys.userExt) {
+          final userExt = const UserExt.empty().copyWith(
+            guid: objectList[2] as String,
+            email: objectList[3] as String,
+            country: objectList[4] as String,
+          );
+          await _prefs.setString(key, jsonEncode(userExt.toJson()));
+        }
+        // if (key == NativeNSUSerDefaultsKeys.offlineGivts) {
+        //   await prefs.setStringList(
+        //     key,
+        //     value.map((e) => jsonEncode(e)).toList(),
+        //   );
+        // }
+      } else if (value is List<Object?>) {
+        await _prefs.setString(
+          key,
+          jsonEncode(value),
+        );
+      } else if (value == null) {
+        await _prefs.remove(key);
+      } else {
+        await LoggingInfo.instance
+            .info('Unknown type for key $key: ${value.runtimeType}');
+      }
+    }
+
+    await _restoreUser();
+
+    await LoggingInfo.instance.info(
+        '${_prefs.getKeys().toList()} shared keys migrated on ${DateTime.now()}');
+
+    await _prefs.setBool(
+      Util.nativeAppKeysMigration,
+      _prefs.getKeys().containsAll(nativePrefs.getKeys().toList()),
+    );
+  }
+
+  Future<void> _restoreUser() async {
+    final userExt = UserExt.fromJson(
+      jsonDecode(
+        _prefs.getString(
+          NativeNSUSerDefaultsKeys.userExt,
+        )!,
+      ) as Map<String, dynamic>,
+    );
+
+    await _prefs.setString(
+      UserExt.tag,
+      jsonEncode(
+        userExt.copyWith(
+          tempUser: _prefs.getBool(NativeNSUSerDefaultsKeys.tempUser),
+          mandateSigned: _prefs.getBool(NativeNSUSerDefaultsKeys.mandateSigned),
+          amountLimit: _prefs.getInt(NativeNSUSerDefaultsKeys.amountLimit),
+          accountType: AccountType.fromString(
+            _prefs.getString(NativeNSUSerDefaultsKeys.accountType)!,
+          ),
+        )..toJson(),
+      ),
+    );
+
+    final bearer = _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken);
+
+    await _prefs.setString(
+      Session.tag,
+      jsonEncode(
+        Session(
+          email: userExt.email,
+          userGUID: userExt.guid,
+          accessToken: bearer ?? '',
+          refreshToken: bearer ?? '',
+          expires: '',
+          expiresIn: 0,
+        ),
+      ),
+    );
+  }
 }
