@@ -252,18 +252,26 @@ class AuthRepositoyImpl with AuthRepositoy {
 
   Future<void> _copyFromNative() async {
     final nativePrefs = await NativeSharedPreferences.getInstance();
-    
+
     if (_prefs.containsKey(Util.nativeAppKeysMigration)) {
       final isMigrated = _prefs.getBool(Util.nativeAppKeysMigration) ?? false;
       if (isMigrated) {
         return;
       }
     }
+
     await LoggingInfo.instance
         .info('Migrating ${nativePrefs.getKeys().toList()} native keys');
+
+    if (nativePrefs.getKeys().isEmpty) {
+      await LoggingInfo.instance.info('No native keys to migrate');
+      return;
+    }
+
     for (var i = 0; i < nativePrefs.getKeys().length; i++) {
       final key = nativePrefs.getKeys().elementAt(i);
       final value = nativePrefs.get(key);
+
       if (_prefs.containsKey(key)) {
         continue;
       }
@@ -290,7 +298,8 @@ class AuthRepositoyImpl with AuthRepositoy {
           keyedArchive: true,
         ) as Map<String, Object?>;
         final objectList = archive[r'$objects']! as List<dynamic>;
-        if (key == NativeNSUSerDefaultsKeys.userExt) {
+        if (key == NativeNSUSerDefaultsKeys.userExtiOS ||
+            key == NativeNSUSerDefaultsKeys.userExtAndroid) {
           final userExt = const UserExt.empty().copyWith(
             guid: objectList[2] as String,
             email: objectList[3] as String,
@@ -329,11 +338,12 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   Future<void> _restoreUser() async {
+    var user = _prefs.getString(NativeNSUSerDefaultsKeys.userExtiOS) ??
+        _prefs.getString(NativeNSUSerDefaultsKeys.userExtAndroid);
+
     final userExt = UserExt.fromJson(
       jsonDecode(
-        _prefs.getString(
-          NativeNSUSerDefaultsKeys.userExt,
-        )!,
+        user!,
       ) as Map<String, dynamic>,
     );
 

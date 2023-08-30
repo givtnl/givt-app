@@ -5,7 +5,8 @@ class NativeNSUSerDefaultsKeys {
   static const String bearerExpiration = 'bearerExpiration';
   static const String amountLimit = 'amountLimit';
   static const String offlineGivts = 'offlineGivts';
-  static const String userExt = 'userExt';
+  static const String userExtiOS = 'userExt';
+  static const String userExtAndroid = 'user';
   static const String mandateSigned = 'mandateSigned';
   static const String viewedCoachMarks = 'viewedCoachMarks';
   static const String userClaims = 'userClaims';
