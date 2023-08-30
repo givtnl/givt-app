@@ -11,6 +11,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/mobile_number_us_formatter.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -356,6 +357,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               );
             });
           },
+          formatter:
+              (_selectedCountry == Country.us) ? MobileNumberFormatter() : null,
           validator: (String? value) {
             if (value == null || value.isEmpty) {
               return '';
