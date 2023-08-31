@@ -58,7 +58,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         ),
         title: Image.asset(
           'assets/images/logo.png',
-          height: size.height * 0.04,
+          height: 30,
         ),
       ),
       body: SafeArea(
@@ -66,11 +66,9 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              _buildCarouselSlider(size, imageNames, locals, locale),
-              Expanded(child: Container()),
+              Expanded(child: _buildCarouselSlider(size, imageNames, locals, locale)),
               _buildAnimatedBottomIndexes(imageNames, size, context),
-              const SizedBox(height: 20),
-              ElevatedButton(
+              Padding(padding: const EdgeInsets.symmetric(vertical: 15), child: ElevatedButton(
                 onPressed: () => Navigator.of(context).push(
                   EmailSignupPage.route(),
                 ),
@@ -78,8 +76,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 child: Text(
                   locals.welcomeContinue,
                 ),
-              ),
-              const SizedBox(height: 10),
+              ),),
               GestureDetector(
                 onTap: () async {
                   if (!await LocalAuthInfo.instance.canCheckBiometrics) {
@@ -130,7 +127,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     );
   }
 
-  RichText _buildAlreadyAnAccountLogin(
+  Widget _buildAlreadyAnAccountLogin(
     BuildContext context,
     AppLocalizations locals,
   ) {
@@ -166,7 +163,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.65,
+          height: size.height * 0.5,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -228,23 +225,23 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       }
 
       carouselItems.add(
-        Column(
+        Flex(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.vertical,
           children: [
-            SizedBox(
-              height: size.height * 0.04,
-            ),
-            _buildTitleAndSubtitle(
-              title: title,
-              subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
-            ),
-            SizedBox(
-              height: size.height * 0.04,
+            Container(
+              height: 75,
+              child: _buildTitleAndSubtitle(
+                title: title,
+                subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
+              ),
             ),
             Image.asset(
               'assets/images/${isFirst && locale.contains('nl') ? '${path}_${locale.split('_')[0]}' : path}.png',
               fit: BoxFit.cover,
-              height: size.height * 0.4,
+              height: size.height * 0.3,
             ),
+            Container(),
           ],
         ),
       );

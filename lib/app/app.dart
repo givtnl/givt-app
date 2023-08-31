@@ -22,6 +22,11 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
