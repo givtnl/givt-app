@@ -23,6 +23,7 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
 
+    // Make the status bar transparent on Android
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
