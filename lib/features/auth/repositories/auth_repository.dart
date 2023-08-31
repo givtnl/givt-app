@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -276,7 +278,8 @@ class AuthRepositoyImpl with AuthRepositoy {
         continue;
       }
 
-      if (key == NativeNSUSerDefaultsKeys.orgBeaconListV2) {
+      if (key == NativeNSUSerDefaultsKeys.orgBeaconListV2 ||
+          key == NativeNSUSerDefaultsKeys.orgBeaconList) {
         continue;
       }
 
@@ -290,7 +293,7 @@ class AuthRepositoyImpl with AuthRepositoy {
         await _prefs.setBool(key, value);
       } else if (value is List<String>) {
         await _prefs.setStringList(key, value);
-      } else if (value is List<int>) {
+      } else if (value is List<int> && Platform.isIOS) {
         // UnmodifiableUint8ArrayView
         final list = Uint8List.fromList(value);
         final archive = PropertyListSerialization.propertyListWithData(
@@ -298,8 +301,7 @@ class AuthRepositoyImpl with AuthRepositoy {
           keyedArchive: true,
         ) as Map<String, Object?>;
         final objectList = archive[r'$objects']! as List<dynamic>;
-        if (key == NativeNSUSerDefaultsKeys.userExtiOS ||
-            key == NativeNSUSerDefaultsKeys.userExtAndroid) {
+        if (key == NativeNSUSerDefaultsKeys.userExtiOS) {
           final userExt = const UserExt.empty().copyWith(
             guid: objectList[2] as String,
             email: objectList[3] as String,
@@ -325,11 +327,22 @@ class AuthRepositoyImpl with AuthRepositoy {
             .info('Unknown type for key $key: ${value.runtimeType}');
       }
     }
-
-    await _restoreUser();
+    try {
+      await _restoreUser();
+      if (Platform.isAndroid &&
+          _prefs.containsKey(NativeSharedPreferencesKeys.cachedGivts)) {
+        await _restoreOfflineGivts();
+      }
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+    }
 
     await LoggingInfo.instance.info(
-        '${_prefs.getKeys().toList()} shared keys migrated on ${DateTime.now()}');
+      '${_prefs.getKeys().toList()} shared keys migrated on ${DateTime.now()}',
+    );
 
     await _prefs.setBool(
       Util.nativeAppKeysMigration,
@@ -338,31 +351,47 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   Future<void> _restoreUser() async {
-    var user = _prefs.getString(NativeNSUSerDefaultsKeys.userExtiOS) ??
-        _prefs.getString(NativeNSUSerDefaultsKeys.userExtAndroid);
+    final user = _prefs.getString(NativeNSUSerDefaultsKeys.userExtiOS) ??
+        _prefs.getString(NativeSharedPreferencesKeys.prefsUser);
 
-    final userExt = UserExt.fromJson(
+    var userExt = UserExt.fromJson(
       jsonDecode(
         user!,
       ) as Map<String, dynamic>,
     );
 
-    await _prefs.setString(
-      UserExt.tag,
-      jsonEncode(
-        userExt.copyWith(
-          tempUser: _prefs.getBool(NativeNSUSerDefaultsKeys.tempUser),
-          mandateSigned: _prefs.getBool(NativeNSUSerDefaultsKeys.mandateSigned),
-          amountLimit: _prefs.getInt(NativeNSUSerDefaultsKeys.amountLimit),
-          accountType: AccountType.fromString(
-            _prefs.getString(NativeNSUSerDefaultsKeys.accountType)!,
-          ),
-        )..toJson(),
+    userExt = userExt.copyWith(
+      tempUser: Platform.isIOS
+          ? _prefs.getBool(NativeNSUSerDefaultsKeys.tempUser)
+          : _prefs.getBool(NativeSharedPreferencesKeys.prefsTempUser),
+      mandateSigned: _prefs.getBool(NativeSharedPreferencesKeys.mandateSigned),
+      amountLimit: _prefs.getInt(NativeNSUSerDefaultsKeys.amountLimit),
+      accountType: AccountType.fromString(
+        _prefs.getString(NativeNSUSerDefaultsKeys.accountType) ?? '',
       ),
     );
 
-    final bearer = _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken);
+    await _prefs.setString(
+      UserExt.tag,
+      jsonEncode(
+        userExt.toJson(),
+      ),
+    );
 
+    final bearer = Platform.isIOS
+        ? _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken)
+        : jsonDecode(
+            _prefs.getString(
+              NativeSharedPreferencesKeys.bearerToken,
+            )!,
+          )['Token'] as String;
+    final expiration = Platform.isIOS
+        ? ''
+        : jsonDecode(
+            _prefs.getString(
+              NativeSharedPreferencesKeys.bearerToken,
+            )!,
+          )['Expiration'] as String;
     await _prefs.setString(
       Session.tag,
       jsonEncode(
@@ -371,9 +400,45 @@ class AuthRepositoyImpl with AuthRepositoy {
           userGUID: userExt.guid,
           accessToken: bearer ?? '',
           refreshToken: bearer ?? '',
-          expires: '',
+          expires: expiration,
           expiresIn: 0,
-        ),
+        ).toJson(),
+      ),
+    );
+  }
+
+  Future<void> _restoreOfflineGivts() async {
+    final offlineGivtsString = _prefs.getString(
+          NativeSharedPreferencesKeys.cachedGivts,
+        ) ??
+        '';
+
+    if (offlineGivtsString.isEmpty) {
+      return;
+    }
+
+    final decodedGivts = jsonDecode(offlineGivtsString) as List<dynamic>;
+
+    final offlineGivts = GivtTransaction.fromJsonList(
+      decodedGivts,
+    );
+
+    await LoggingInfo.instance.info(
+      'Restoring ${offlineGivts.length} offline givts: $offlineGivtsString',
+    );
+
+    await _prefs.setString(
+      GivtTransaction.givtTransactions,
+      jsonEncode(
+        <String, dynamic>{
+          'donationType': 0,
+        }..addAll(
+            {
+              'donations': GivtTransaction.toJsonList(
+                offlineGivts,
+              ),
+            },
+          ),
       ),
     );
   }

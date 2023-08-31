@@ -1,4 +1,4 @@
-class SharedPreferencesKeys {
+class NativeSharedPreferencesKeys {
   static const String loggedInApp = 'loggedInApp';
   static const String isLoggedIn = 'isLoggedIn';
   static const String yearlyTestimonialsToShow = 'YearlyTestimonialsToShow';

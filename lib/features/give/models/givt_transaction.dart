@@ -11,9 +11,13 @@ class GivtTransaction extends Equatable {
 
   factory GivtTransaction.fromJson(Map<String, dynamic> json) {
     return GivtTransaction(
-      guid: json['Guid'] as String,
+      guid: json.containsKey('Guid')
+          ? json['Guid'] as String
+          : json['UserId'] as String,
       amount: json['Amount'] as double,
-      beaconId: json['BeaconId'] as String,
+      beaconId: json.containsKey('BeaconId')
+          ? json['BeaconId'] as String
+          : json['MediumId'] as String,
       timestamp: json['Timestamp'] as String,
       collectId: json['CollectId'] as String,
     );
