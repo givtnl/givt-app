@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -11,7 +12,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/mobile_number_us_formatter.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -357,8 +357,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               );
             });
           },
-          formatter:
-              (_selectedCountry == Country.us) ? MobileNumberFormatter() : null,
+          formatter: (_selectedCountry == Country.us)
+              ? FilteringTextInputFormatter.digitsOnly
+              : null,
           validator: (String? value) {
             if (value == null || value.isEmpty) {
               return '';
@@ -381,7 +382,22 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               }
             }
             if (Country.us == _selectedCountry) {
-              if (!Util.usPhoneNumberRegEx.hasMatch(value)) {
+              //here
+              final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+              var formatted = '';
+              if (numericOnly.length == 10) {
+                final chunkSize = [3, 3, 4];
+                var startIndex = 0;
+
+                final chunks = chunkSize.map((size) {
+                  final chunk =
+                      numericOnly.substring(startIndex, startIndex + size);
+                  startIndex += size;
+                  return chunk;
+                });
+                formatted = chunks.join('-');
+              }
+              if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
                 return '';
               }
             }
