@@ -35,11 +35,18 @@ class MobileNumberFormatter extends TextInputFormatter {
       return chunk;
     });
     final formatted = chunks.join('-');
+
     var cursorPosition = newValue.selection.baseOffset;
-    if (formatted.replaceAll('_', '').length == 8 ||
-        formatted.replaceAll('_', '').length == 5) {
+    final length = formatted.replaceAll('_', '').replaceAll('-', '').length;
+
+    if (length > 3) {
       cursorPosition = cursorPosition + 1;
+
+      if (length > 6) {
+        cursorPosition = cursorPosition + 1;
+      }
     }
+
     return TextEditingValue(
       text: formatted,
       selection: TextSelection.collapsed(

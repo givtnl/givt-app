@@ -69,10 +69,7 @@ class MobileNumberFormField extends StatelessWidget {
             flex: 3,
             child: TextFormField(
               inputFormatters: formatter != null
-                  ? [
-                      //  FilteringTextInputFormatter.digitsOnly,
-                      formatter!
-                    ]
+                  ? [FilteringTextInputFormatter.digitsOnly, formatter!]
                   : null,
               controller: phone,
               validator: validator,
