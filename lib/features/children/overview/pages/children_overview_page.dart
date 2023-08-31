@@ -69,7 +69,7 @@ class ChildrenOverviewPage extends StatelessWidget {
                             .map(
                               (profile) => ChildItem(
                                 name: profile.firstName,
-                                total: profile.wallet.total,
+                                total: profile.wallet.balance,
                                 currencySymbol: currency.currencySymbol,
                                 pending: profile.wallet.pending,
                               ),
