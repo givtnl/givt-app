@@ -358,7 +358,10 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             });
           },
           formatter: (_selectedCountry == Country.us)
-              ? FilteringTextInputFormatter.digitsOnly
+              ? [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10)
+                ]
               : null,
           validator: (String? value) {
             if (value == null || value.isEmpty) {
@@ -382,7 +385,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               }
             }
             if (Country.us == _selectedCountry) {
-              //here
               final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
               var formatted = '';
               if (numericOnly.length == 10) {
