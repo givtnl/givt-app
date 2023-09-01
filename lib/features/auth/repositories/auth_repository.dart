@@ -5,8 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/amount_presets/models/models.dart';
-import 'package:givt_app/features/amount_presets/models/user_presets.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
