@@ -378,14 +378,15 @@ class AuthRepositoyImpl with AuthRepositoy {
     }
     if (Platform.isIOS &&
         _prefs.containsKey(NativeNSUSerDefaultsKeys.lastGivtToOrganisation)) {
-      final organisation = Organisation(
-        organisationName: _prefs.getString(
-          NativeNSUSerDefaultsKeys.lastGivtToOrganisation_name,
-        ),
-        mediumId: _prefs.getString(
-          NativeNSUSerDefaultsKeys.lastGivtToOrganisation,
-        ),
-      );
+      final organisation = const Organisation.empty()
+        ..copyWith(
+          organisationName: _prefs.getString(
+            NativeNSUSerDefaultsKeys.lastGivtToOrganisation_name,
+          ),
+          mediumId: _prefs.getString(
+            NativeNSUSerDefaultsKeys.lastGivtToOrganisation,
+          ),
+        );
       await _prefs.setString(
         Organisation.lastOrganisationDonatedKey,
         jsonEncode(
