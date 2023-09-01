@@ -125,7 +125,10 @@ class APIService {
     final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist-v2');
     return client.get(url).then((response) {
       if (response.statusCode >= 400) {
-        throw Exception('something went wrong :(');
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: jsonDecode(response.body) as Map<String, dynamic>,
+        );
       }
       return jsonDecode(response.body) as Map<String, dynamic>;
     });
@@ -173,7 +176,10 @@ class APIService {
     )
         .then((response) {
       if (response.statusCode >= 400) {
-        throw Exception('something went wrong :(');
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: jsonDecode(response.body) as Map<String, dynamic>,
+        );
       }
       return response.statusCode == 200;
     });
