@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:http_certificate_pinning/http_certificate_pinning.dart';
@@ -6,6 +8,10 @@ import 'package:http_interceptor/http_interceptor.dart';
 class CertificateCheckInterceptor extends InterceptorContract {
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
+    if (Platform.isIOS) {
+      return data;
+    }
+
     final secure = await HttpCertificatePinning.check(
       serverURL: data.baseUrl,
       sha: SHA.SHA256,
