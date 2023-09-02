@@ -116,7 +116,15 @@ class AuthRepositoyImpl with AuthRepositoy {
 
   @override
   Future<(UserExt, Session)?> isAuthenticated() async {
-    await _copyFromNative();
+    try {
+      await _copyFromNative();
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+    }
+
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
       return null;
@@ -327,17 +335,11 @@ class AuthRepositoyImpl with AuthRepositoy {
             .info('Unknown type for key $key: ${value.runtimeType}');
       }
     }
-    try {
-      await _restoreUser();
-      if (Platform.isAndroid &&
-          _prefs.containsKey(NativeSharedPreferencesKeys.cachedGivts)) {
-        await _restoreOfflineGivts();
-      }
-    } catch (e) {
-      await LoggingInfo.instance.error(
-        e.toString(),
-        methodName: StackTrace.current.toString(),
-      );
+
+    await _restoreUser();
+    if (Platform.isAndroid &&
+        _prefs.containsKey(NativeSharedPreferencesKeys.cachedGivts)) {
+      await _restoreOfflineGivts();
     }
 
     await LoggingInfo.instance.info(
