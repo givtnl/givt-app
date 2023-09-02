@@ -38,7 +38,7 @@ class _VPCIntroPageState extends State<VPCIntroPage> {
             ),
             Container(
               padding: const EdgeInsets.all(20),
-              height: size.height * 0.865,
+              height: size.height * 0.855,
               child: CarouselSlider(
                 carouselController: _carouselController,
                 options: CarouselOptions(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
@@ -12,6 +13,7 @@ class MobileNumberFormField extends StatelessWidget {
     required this.selectedCountryPrefix,
     required this.hintText,
     required this.validator,
+    this.formatter,
     super.key,
   });
 
@@ -21,6 +23,7 @@ class MobileNumberFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final String selectedCountryPrefix;
   final String hintText;
+  final List<TextInputFormatter>? formatter;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +68,7 @@ class MobileNumberFormField extends StatelessWidget {
           Expanded(
             flex: 3,
             child: TextFormField(
+              inputFormatters: formatter != null ? [...formatter!] : null,
               controller: phone,
               validator: validator,
               onChanged: onPhoneChanged,

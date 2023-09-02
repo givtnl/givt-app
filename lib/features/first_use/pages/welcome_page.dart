@@ -3,26 +3,32 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
+  const WelcomePage({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
-    return const WelcomePageView();
+    return WelcomePageView(
+      prefs: prefs,
+    );
   }
 }
 
 class WelcomePageView extends StatefulWidget {
-  const WelcomePageView({super.key});
-
+  const WelcomePageView({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   State<WelcomePageView> createState() => _WelcomePageViewState();
 }
@@ -52,7 +58,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         ),
         title: Image.asset(
           'assets/images/logo.png',
-          height: size.height * 0.04,
+          height: 30,
         ),
       ),
       body: SafeArea(
@@ -60,19 +66,17 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              _buildCarouselSlider(size, imageNames, locals, locale),
-              Expanded(child: Container()),
+              Expanded(child: _buildCarouselSlider(size, imageNames, locals, locale)),
               _buildAnimatedBottomIndexes(imageNames, size, context),
-              const SizedBox(height: 20),
-              ElevatedButton(
+              Padding(padding: const EdgeInsets.symmetric(vertical: 15), child: ElevatedButton(
                 onPressed: () => Navigator.of(context).push(
                   EmailSignupPage.route(),
                 ),
+                onLongPress: hackUSASIM,
                 child: Text(
                   locals.welcomeContinue,
                 ),
-              ),
-              const SizedBox(height: 10),
+              ),),
               GestureDetector(
                 onTap: () async {
                   if (!await LocalAuthInfo.instance.canCheckBiometrics) {
@@ -123,7 +127,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     );
   }
 
-  RichText _buildAlreadyAnAccountLogin(
+  Widget _buildAlreadyAnAccountLogin(
     BuildContext context,
     AppLocalizations locals,
   ) {
@@ -159,7 +163,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.65,
+          height: size.height * 0.5,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -221,23 +225,23 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       }
 
       carouselItems.add(
-        Column(
+        Flex(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.vertical,
           children: [
-            SizedBox(
-              height: size.height * 0.04,
-            ),
-            _buildTitleAndSubtitle(
-              title: title,
-              subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
-            ),
-            SizedBox(
-              height: size.height * 0.04,
+            Container(
+              height: 75,
+              child: _buildTitleAndSubtitle(
+                title: title,
+                subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
+              ),
             ),
             Image.asset(
               'assets/images/${isFirst && locale.contains('nl') ? '${path}_${locale.split('_')[0]}' : path}.png',
               fit: BoxFit.cover,
-              height: size.height * 0.4,
+              height: size.height * 0.3,
             ),
+            Container(),
           ],
         ),
       );
@@ -267,5 +271,35 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         )
       ],
     );
+  }
+
+  Future<void> hackUSASIM() async {
+    const apiURL = String.fromEnvironment('API_URL_US');
+    if (!apiURL.contains('dev')) {
+      return;
+    }
+    if (widget.prefs.getString('countryIso') == Country.us.countryCode) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Hack removed'),
+        ),
+      );
+      await widget.prefs.remove('countryIso');
+      var baseUrl = const String.fromEnvironment('API_URL_EU');
+      var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
+      get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('App hacked for USA'),
+      ),
+    );
+
+    var baseUrl = const String.fromEnvironment('API_URL_US');
+    var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
+    get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+    await widget.prefs.setString('countryIso', Country.us.countryCode);
   }
 }

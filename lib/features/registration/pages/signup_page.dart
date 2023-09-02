@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
@@ -138,7 +140,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 return (state.status ==
                             RegistrationStatus.createStripeAccount ||
                         stripestate.stripeStatus == StripeObjectStatus.success)
-                    ? _createView(stripeCubit.state.stripeStatus)
+                    ? _createView(
+                        stripeCubit.state.stripeStatus,
+                        context.read<AuthCubit>().state.user,
+                      )
                     : _buildSignUpForm(locals, size);
               },
             ),
@@ -367,7 +372,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _createView(StripeObjectStatus status) {
+  Widget _createView(StripeObjectStatus status, UserExt user) {
     if (status == StripeObjectStatus.loading) {
       return const Center(child: CircularProgressIndicator());
     }

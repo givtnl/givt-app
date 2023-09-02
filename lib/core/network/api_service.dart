@@ -22,11 +22,16 @@ class APIService {
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
-  final String _apiURL;
-  final String _apiURLAWS;
+  String _apiURL;
+  String _apiURLAWS;
 
   String get apiURL => _apiURL;
   String get apiURLAWS => _apiURLAWS;
+
+  void updateApiUrl(String url, String awsurl) {
+    _apiURL = url;
+    _apiURLAWS = awsurl;
+  }
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
@@ -424,11 +429,8 @@ class APIService {
   }
 
   Future<List<dynamic>> fetchChildren(String parentGuid) async {
-    //TODO:
-    //Need to be replaced with proper env variable later.
-    //Not sure what to use in case of G4k api
     final url = Uri.https(
-      'dev-backend.givtapp.net',
+      apiURL,
       '/givt4kidsservice/v1/User/get-children',
     );
 
