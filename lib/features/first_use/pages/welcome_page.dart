@@ -12,6 +12,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -66,17 +67,47 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              Expanded(child: _buildCarouselSlider(size, imageNames, locals, locale)),
+              Expanded(
+                child: _buildCarouselSlider(
+                  size,
+                  imageNames,
+                  locals,
+                  locale,
+                ),
+              ),
               _buildAnimatedBottomIndexes(imageNames, size, context),
-              Padding(padding: const EdgeInsets.symmetric(vertical: 15), child: ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  EmailSignupPage.route(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final country =
+                        await get_it.getIt<CountryIsoInfo>().checkCountryIso;
+                    if (!mounted) {
+                      return;
+                    }
+                    if (country == Country.us.countryCode) {
+                      await showDialog<void>(
+                        context: context,
+                        builder: (_) => WarningDialog(
+                          title: 'Oops',
+                          content:
+                              'At the moment we are not able to process new users in the USA. Please try again later.',
+                          onConfirm: () => context.pop(),
+                        ),
+                      );
+                      return;
+                    }
+
+                    await Navigator.of(context).push(
+                      EmailSignupPage.route(),
+                    );
+                  },
+                  onLongPress: hackUSASIM,
+                  child: Text(
+                    locals.welcomeContinue,
+                  ),
                 ),
-                onLongPress: hackUSASIM,
-                child: Text(
-                  locals.welcomeContinue,
-                ),
-              ),),
+              ),
               GestureDetector(
                 onTap: () async {
                   if (!await LocalAuthInfo.instance.canCheckBiometrics) {
@@ -229,7 +260,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           direction: Axis.vertical,
           children: [
-            Container(
+            SizedBox(
               height: 75,
               child: _buildTitleAndSubtitle(
                 title: title,
@@ -285,8 +316,8 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         ),
       );
       await widget.prefs.remove('countryIso');
-      var baseUrl = const String.fromEnvironment('API_URL_EU');
-      var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
+      const baseUrl = String.fromEnvironment('API_URL_EU');
+      const baseUrlAWS = String.fromEnvironment('API_URL_AWS_EU');
       get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
 
       return;
@@ -297,8 +328,8 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       ),
     );
 
-    var baseUrl = const String.fromEnvironment('API_URL_US');
-    var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
+    const baseUrl = String.fromEnvironment('API_URL_US');
+    const baseUrlAWS = String.fromEnvironment('API_URL_AWS_US');
     get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
     await widget.prefs.setString('countryIso', Country.us.countryCode);
   }
