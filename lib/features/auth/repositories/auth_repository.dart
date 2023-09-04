@@ -1,10 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/utils/utils.dart';
+import 'package:native_shared_preferences/native_shared_preferences.dart';
+import 'package:propertylistserialization/propertylistserialization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
@@ -108,6 +116,15 @@ class AuthRepositoyImpl with AuthRepositoy {
 
   @override
   Future<(UserExt, Session)?> isAuthenticated() async {
+    try {
+      await _copyFromNative();
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
+    }
+
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
       return null;
@@ -242,4 +259,224 @@ class AuthRepositoyImpl with AuthRepositoy {
         UserExt.tag,
         jsonEncode(newUserExt),
       );
+
+  Future<void> _copyFromNative() async {
+    final nativePrefs = await NativeSharedPreferences.getInstance();
+
+    if (_prefs.containsKey(Util.nativeAppKeysMigration)) {
+      final isMigrated = _prefs.getBool(Util.nativeAppKeysMigration) ?? false;
+      if (isMigrated) {
+        return;
+      }
+    }
+
+    await LoggingInfo.instance
+        .info('Migrating ${nativePrefs.getKeys().toList()} native keys');
+
+    if (nativePrefs.getKeys().isEmpty) {
+      await LoggingInfo.instance.info('No native keys to migrate');
+      return;
+    }
+
+    for (var i = 0; i < nativePrefs.getKeys().length; i++) {
+      final key = nativePrefs.getKeys().elementAt(i);
+      final value = nativePrefs.get(key);
+
+      if (_prefs.containsKey(key)) {
+        continue;
+      }
+
+      if (key == NativeNSUSerDefaultsKeys.orgBeaconListV2 ||
+          key == NativeNSUSerDefaultsKeys.orgBeaconList) {
+        continue;
+      }
+
+      if (value is String) {
+        await _prefs.setString(key, value);
+      } else if (value is int) {
+        await _prefs.setInt(key, value);
+      } else if (value is double) {
+        await _prefs.setDouble(key, value);
+      } else if (value is bool) {
+        await _prefs.setBool(key, value);
+      } else if (value is List<String>) {
+        await _prefs.setStringList(key, value);
+      } else if (value is List<int> && Platform.isIOS) {
+        // UnmodifiableUint8ArrayView
+        final list = Uint8List.fromList(value);
+        final archive = PropertyListSerialization.propertyListWithData(
+          list.buffer.asByteData(),
+          keyedArchive: true,
+        ) as Map<String, Object?>;
+        final objectList = archive[r'$objects']! as List<dynamic>;
+        if (key == NativeNSUSerDefaultsKeys.userExtiOS) {
+          final userExt = const UserExt.empty().copyWith(
+            guid: objectList[2] as String,
+            email: objectList[3] as String,
+            country: objectList[4] as String,
+          );
+          await _prefs.setString(key, jsonEncode(userExt.toJson()));
+        }
+        // if (key == NativeNSUSerDefaultsKeys.offlineGivts) {
+        //   await prefs.setStringList(
+        //     key,
+        //     value.map((e) => jsonEncode(e)).toList(),
+        //   );
+        // }
+      } else if (value is List<Object?>) {
+        await _prefs.setString(
+          key,
+          jsonEncode(value),
+        );
+      } else if (value == null) {
+        await _prefs.remove(key);
+      } else {
+        await LoggingInfo.instance
+            .info('Unknown type for key $key: ${value.runtimeType}');
+      }
+    }
+
+    await _restoreUser();
+    if (Platform.isAndroid &&
+        _prefs.containsKey(NativeSharedPreferencesKeys.cachedGivts)) {
+      await _restoreOfflineGivts();
+    }
+
+    await LoggingInfo.instance.info(
+      '${_prefs.getKeys().toList()} shared keys migrated on ${DateTime.now()}',
+    );
+
+    await _prefs.setBool(
+      Util.nativeAppKeysMigration,
+      _prefs.getKeys().containsAll(nativePrefs.getKeys().toList()),
+    );
+  }
+
+  Future<void> _restoreUser() async {
+    final user = _prefs.getString(NativeNSUSerDefaultsKeys.userExtiOS) ??
+        _prefs.getString(NativeSharedPreferencesKeys.prefsUser);
+
+    var userExt = UserExt.fromJson(
+      jsonDecode(
+        user!,
+      ) as Map<String, dynamic>,
+    );
+
+    if (Platform.isAndroid &&
+        _prefs.containsKey(NativeSharedPreferencesKeys.latestSelectedBeacon)) {
+      final organisation = Organisation.fromJson(
+        jsonDecode(
+          _prefs.getString(
+            NativeSharedPreferencesKeys.latestSelectedBeacon,
+          )!,
+        ) as Map<String, dynamic>,
+      );
+      await _prefs.setString(
+        Organisation.lastOrganisationDonatedKey,
+        jsonEncode(
+          organisation.toJson(),
+        ),
+      );
+    }
+    if (Platform.isIOS &&
+        _prefs.containsKey(NativeNSUSerDefaultsKeys.lastGivtToOrganisation)) {
+      final organisation = const Organisation.empty()
+        ..copyWith(
+          organisationName: _prefs.getString(
+            NativeNSUSerDefaultsKeys.lastGivtToOrganisation_name,
+          ),
+          mediumId: _prefs.getString(
+            NativeNSUSerDefaultsKeys.lastGivtToOrganisation,
+          ),
+        );
+      await _prefs.setString(
+        Organisation.lastOrganisationDonatedKey,
+        jsonEncode(
+          organisation.toJson(),
+        ),
+      );
+    }
+
+    userExt = userExt.copyWith(
+      tempUser: Platform.isIOS
+          ? _prefs.getBool(NativeNSUSerDefaultsKeys.tempUser)
+          : _prefs.getBool(NativeSharedPreferencesKeys.prefsTempUser),
+      mandateSigned: _prefs.getBool(NativeSharedPreferencesKeys.mandateSigned),
+      amountLimit: _prefs.getInt(NativeNSUSerDefaultsKeys.amountLimit),
+      accountType: AccountType.fromString(
+        _prefs.getString(NativeNSUSerDefaultsKeys.accountType) ?? '',
+      ),
+    );
+
+    await _prefs.setString(
+      UserExt.tag,
+      jsonEncode(
+        userExt.toJson(),
+      ),
+    );
+
+    final bearer = Platform.isIOS
+        ? _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken)
+        : jsonDecode(
+            _prefs.getString(
+              NativeSharedPreferencesKeys.bearerToken,
+            )!,
+          )['Token'] as String;
+    final expiration = Platform.isIOS
+        ? ''
+        : jsonDecode(
+            _prefs.getString(
+              NativeSharedPreferencesKeys.bearerToken,
+            )!,
+          )['Expiration'] as String;
+    await _prefs.setString(
+      Session.tag,
+      jsonEncode(
+        Session(
+          email: userExt.email,
+          userGUID: userExt.guid,
+          accessToken: bearer ?? '',
+          refreshToken: bearer ?? '',
+          expires: expiration,
+          expiresIn: 0,
+        ).toJson(),
+      ),
+    );
+  }
+
+  Future<void> _restoreOfflineGivts() async {
+    final offlineGivtsString = _prefs.getString(
+          NativeSharedPreferencesKeys.cachedGivts,
+        ) ??
+        '';
+
+    if (offlineGivtsString.isEmpty) {
+      return;
+    }
+
+    final decodedGivts = jsonDecode(offlineGivtsString) as List<dynamic>;
+
+    final offlineGivts = GivtTransaction.fromJsonList(
+      decodedGivts,
+    );
+
+    await LoggingInfo.instance.info(
+      'Restoring ${offlineGivts.length} offline givts: $offlineGivtsString',
+    );
+
+    await _prefs.setString(
+      GivtTransaction.givtTransactions,
+      jsonEncode(
+        <String, dynamic>{
+          'donationType': 0,
+        }..addAll(
+            {
+              'donations': GivtTransaction.toJsonList(
+                offlineGivts,
+              ),
+            },
+          ),
+      ),
+    );
+  }
 }

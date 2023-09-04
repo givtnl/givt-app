@@ -15,6 +15,7 @@ class Util {
   static const String defaultLastName = 'Doe';
   static const String defaulAppLanguage = 'en';
   static const String defaultTimeZoneId = 'Europe/Amsterdam';
+  static const String nativeAppKeysMigration = 'nativeAppKeysMigration';
 
   /// Allowed SHA-256 fingerprints for Givt backend
   /// The list is used in APIService while building the http.client
