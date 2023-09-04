@@ -28,10 +28,12 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    final showFamilyItem = false;
-    // auth.user.country == Country.us.countryCode &&
-    //     !auth.user.needRegistration &&
-    //     auth.user.mandateSigned;
+    const apiURL = String.fromEnvironment('API_URL_US');
+
+    final showFamilyItem = apiURL.contains('dev') &&
+        auth.user.country == Country.us.countryCode &&
+        !auth.user.needRegistration &&
+        auth.user.mandateSigned;
     return Drawer(
       child: ListView(
         children: [
