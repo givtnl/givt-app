@@ -28,9 +28,10 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    final showFamilyItem = auth.user.country == Country.us.countryCode &&
-        !auth.user.needRegistration &&
-        auth.user.mandateSigned;
+    final showFamilyItem = false;
+    // auth.user.country == Country.us.countryCode &&
+    //     !auth.user.needRegistration &&
+    //     auth.user.mandateSigned;
     return Drawer(
       child: ListView(
         children: [
@@ -235,7 +236,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
-            isVisible: false,
+            isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
             onTap: () => context.goNamed(Pages.childrenOverview.name),
