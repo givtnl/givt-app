@@ -26,6 +26,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationInit>(_onInit);
 
     on<RegistrationGiftAidChanged>(_onGiftAidChanged);
+
+    on<RegistrationStripeSuccess>(_onStripeSuccess);
+    on<RegistrationStripeInit>(_onStripeInit);
   }
 
   final AuthRepositoy authRepositoy;
@@ -79,6 +82,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
 
       await authCubit.refreshUser();
+      if (event.country.toUpperCase() == Country.us.countryCode) {
+        emit(
+          state.copyWith(
+            status: RegistrationStatus.createStripeAccount,
+          ),
+        );
+        return;
+      }
       if (event.iban.isNotEmpty) {
         emit(
           state.copyWith(
@@ -186,6 +197,43 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         status: RegistrationStatus.sepaMandateExplanation,
       ),
     );
+  }
+
+  void _onStripeInit(
+    RegistrationStripeInit event,
+    Emitter<RegistrationState> emit,
+  ) {
+    emit(state.copyWith(status: RegistrationStatus.createStripeAccount));
+  }
+
+  Future<void> _onStripeSuccess(
+    RegistrationStripeSuccess event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    var user = authCubit.state.user;
+
+    var trials = 1;
+    var delayTime = 5;
+
+    while (user.tempUser && trials < 257) {
+      //get current state of user in givt system
+      ///and update it in the app
+      await authCubit.refreshUser();
+      user = authCubit.state.user;
+      log('trial number $trials, delay time is $delayTime,\n   user is temporary: ${user.tempUser}');
+
+      if (trials > 16) {
+        delayTime = 60;
+      }
+      trials++;
+      await Future<void>.delayed(Duration(seconds: delayTime));
+    }
+
+    if (user.tempUser == false) {
+      emit(state.copyWith(status: RegistrationStatus.success));
+    } else {
+      emit(state.copyWith(status: RegistrationStatus.failure));
+    }
   }
 
   FutureOr<void> _onGiftAidChanged(

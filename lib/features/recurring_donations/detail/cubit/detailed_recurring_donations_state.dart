@@ -13,6 +13,9 @@ final class DetailedRecurringDonationsInitial
 final class DetailedRecurringDonationsLoading
     extends DetailedRecurringDonationsState {}
 
+final class DetailedRecurringDonationsEmpty
+    extends DetailedRecurringDonationsState {}
+
 class DetailedInstancesFetched extends DetailedRecurringDonationsState {
   const DetailedInstancesFetched({
     required this.instances,

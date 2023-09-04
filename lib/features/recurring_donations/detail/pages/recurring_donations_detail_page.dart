@@ -6,6 +6,7 @@ import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_recu
 import 'package:givt_app/features/recurring_donations/detail/models/recurring_donation_detail.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/detail_list_item.dart';
 import 'package:givt_app/features/recurring_donations/detail/widgets/detail_year_separator.dart';
+import 'package:givt_app/features/recurring_donations/detail/widgets/upcoming_detail_item.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
@@ -74,22 +75,80 @@ class RecurringDonationsDetailPage extends StatelessWidget {
                     height: size.height * 0.89,
                     child: SingleChildScrollView(
                       child: Column(
-                        children: _getInstancesList(
-                          context: context,
-                          instances: recurringDonationsDetails,
-                          userCountry: userCountry,
-                          size: size,
-                        ),
+                        children: [
+                          UpcomingRecurringDonation(
+                            upcoming: DetailInstanceItem(
+                              size: size,
+                              context: context,
+                              userCountry: userCountry,
+                              detail: _getUpcomingDonation(
+                                lastInstance: recurringDonationsDetails.first,
+                                recurringDonation: recurringDonation,
+                                isGiftAidEnabled: user.isGiftAidEnabled,
+                              ),
+                            ),
+                          ),
+                          ..._getInstancesList(
+                            context: context,
+                            instances: recurringDonationsDetails,
+                            userCountry: userCountry,
+                            size: size,
+                          ),
+                        ],
                       ),
                     ),
                   )
                 else
-                  const SizedBox(),
+                  SizedBox(
+                    height: size.height * 0.89,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          UpcomingRecurringDonation(
+                            upcoming: DetailInstanceItem(
+                              size: size,
+                              context: context,
+                              userCountry: userCountry,
+                              detail: _getUpcomingDonation(
+                                recurringDonation: recurringDonation,
+                                isGiftAidEnabled: user.isGiftAidEnabled,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
               ],
             ),
           );
         },
       ),
+    );
+  }
+
+  RecurringDonationDetail _getUpcomingDonation({
+    RecurringDonationDetail? lastInstance,
+    required RecurringDonation recurringDonation,
+    required bool isGiftAidEnabled,
+  }) {
+    var nextTime = DateTime.now();
+    if (lastInstance == null) {
+      final startDate = DateTime.parse(recurringDonation.startDate);
+      nextTime = recurringDonation
+          .getNextDonationDate(startDate)
+          .subtract(const Duration(days: 1));
+    }
+    if (lastInstance != null) {
+      nextTime = recurringDonation.getNextDonationDate(lastInstance.timestamp);
+    }
+
+    return RecurringDonationDetail(
+      timestamp: nextTime,
+      donationId: '1111',
+      amount: int.parse(recurringDonation.amountPerTurn.toString()),
+      status: 1,
+      isGiftAidEnabled: isGiftAidEnabled,
     );
   }
 
@@ -100,11 +159,11 @@ class RecurringDonationsDetailPage extends StatelessWidget {
     required Country userCountry,
   }) {
     int? currentYear;
-    List<Widget> finalList = [];
+    final finalList = <Widget>[];
     for (final obj in instances) {
       if (currentYear == null || obj.timestamp.year != currentYear) {
         // Add a year banner widget whenever the year changes
-        finalList.add(YearBanner(obj.timestamp.year));
+        finalList.add(YearBanner(obj.timestamp.year.toString()));
         currentYear = obj.timestamp.year;
       }
 
@@ -122,7 +181,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
   }
 
   Widget _buildAppBarItem({
-    // required GivtState state,
     required BuildContext context,
     required Widget child,
     required Icon icon,
@@ -130,7 +188,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
   }) {
     return Visibility(
       visible: true,
-      //state.givtGroups.isNotEmpty,
       child: IconButton(
         icon: icon,
         onPressed: () => showModalBottomSheet<void>(

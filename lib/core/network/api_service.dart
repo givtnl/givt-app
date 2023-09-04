@@ -22,11 +22,16 @@ class APIService {
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
-  final String _apiURL;
-  final String _apiURLAWS;
+  String _apiURL;
+  String _apiURLAWS;
 
   String get apiURL => _apiURL;
   String get apiURLAWS => _apiURLAWS;
+
+  void updateApiUrl(String url, String awsurl) {
+    _apiURL = url;
+    _apiURLAWS = awsurl;
+  }
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
@@ -79,7 +84,8 @@ class APIService {
 
   Future<bool> checktld(String email) async {
     final url = Uri.https(_apiURL, '/api/checktld', {'email': email});
-    final body = (await client.get(url)).body;
+    final response = await client.get(url);
+    final body = response.body;
     return jsonDecode(body) as String == 'true';
   }
 
@@ -124,7 +130,10 @@ class APIService {
     final url = Uri.https(_apiURL, '/api/v2/CollectGroups/applist-v2');
     return client.get(url).then((response) {
       if (response.statusCode >= 400) {
-        throw Exception('something went wrong :(');
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: jsonDecode(response.body) as Map<String, dynamic>,
+        );
       }
       return jsonDecode(response.body) as Map<String, dynamic>;
     });
@@ -172,7 +181,10 @@ class APIService {
     )
         .then((response) {
       if (response.statusCode >= 400) {
-        throw Exception('something went wrong :(');
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: jsonDecode(response.body) as Map<String, dynamic>,
+        );
       }
       return response.statusCode == 200;
     });
@@ -192,6 +204,31 @@ class APIService {
       );
     }
     return response.body;
+  }
+
+  Future<Map<String, dynamic>> registerStripeCustomer(
+    String email,
+  ) async {
+    final url = Uri.https(
+        apiURL, '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode({'email': email}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return responseBody['item'] as Map<String, dynamic>;
+    } else {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
   }
 
   Future<bool> unregisterUser(
@@ -368,6 +405,51 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
+  }
+
+  Future<bool> createChild(Map<String, dynamic> body) async {
+    final url =
+        Uri.https(apiURL, '/givt4kidsservice/v1/User/setup-child-profile');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<List<dynamic>> fetchChildren(String parentGuid) async {
+    final url = Uri.https(
+      apiURL,
+      '/givt4kidsservice/v1/User/get-children',
+    );
+
+    final response = await client.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(parentGuid),
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['items'] as List<dynamic>;
+    return itemMap;
   }
 
   Future<List<dynamic>> fetchRecurringDonations({

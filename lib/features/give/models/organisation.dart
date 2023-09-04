@@ -17,8 +17,8 @@ class Organisation extends Equatable {
     this.mediumId,
   });
 
-  const Organisation.empty() :
-        campaignId = '',
+  const Organisation.empty()
+      : campaignId = '',
         organisationName = '',
         country = '',
         organisationLogoLink = '',
@@ -26,7 +26,7 @@ class Organisation extends Equatable {
         goal = '',
         thankYou = '',
         paymentMethods = const [],
-        currency ='',
+        currency = '',
         amounts = const [],
         wantKnowMoreLink = '',
         privacyPolicyLink = '',
@@ -34,7 +34,9 @@ class Organisation extends Equatable {
 
   factory Organisation.fromJson(Map<String, dynamic> json) => Organisation(
         campaignId: json['campaignId'] as String?,
-        organisationName: json['organisationName'] as String?,
+        organisationName: json.containsKey('orgName')
+            ? json['orgName'] as String?
+            : json['organisationName'] as String?,
         country: json['country'] as String?,
         organisationLogoLink: json['organisationLogoLink'] as String?,
         title: json['title'] as String?,
@@ -45,7 +47,9 @@ class Organisation extends Equatable {
         amounts: json['amounts'] as List<dynamic>?,
         wantKnowMoreLink: json['wantKnowMoreLink'] as String?,
         privacyPolicyLink: json['privacyPolicyLink'] as String?,
-        mediumId: json['mediumId'] as String?,
+        mediumId: json.containsKey('mediumId')
+            ? json['mediumId'] as String?
+            : json['nameSpace'] as String?,
       );
 
   final String? campaignId;
@@ -127,5 +131,5 @@ class Organisation extends Equatable {
         mediumId,
       ];
 
-      static const lastOrganisationDonatedKey = 'lastOrganisationDonated';
+  static const lastOrganisationDonatedKey = 'lastOrganisationDonated';
 }

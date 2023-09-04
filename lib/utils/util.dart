@@ -5,6 +5,18 @@ import 'package:intl/intl.dart';
 import 'app_theme.dart';
 
 class Util {
+// Default user info
+  static const String defaultAdress = 'Foobarstraat 5';
+  static const String defaultCity = 'Foobar';
+  static const String defaultPostCode = 'B3 1RD';
+  static const String defaultIban = 'FB66GIVT12345678';
+  static const String defaultPhoneNumber = '060000000';
+  static const String defaultFirstName = 'John';
+  static const String defaultLastName = 'Doe';
+  static const String defaulAppLanguage = 'en';
+  static const String defaultTimeZoneId = 'Europe/Amsterdam';
+  static const String nativeAppKeysMigration = 'nativeAppKeysMigration';
+
   /// Allowed SHA-256 fingerprints for Givt backend
   /// The list is used in APIService while building the http.client
   /// using the http_certificate_pinning package

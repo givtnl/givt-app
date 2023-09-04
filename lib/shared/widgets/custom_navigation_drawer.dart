@@ -43,12 +43,18 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.edit,
             onTap: () {
               if (auth.user.needRegistration) {
-                context.goNamed(
-                  Pages.registration.name,
-                  queryParameters: {
-                    'email': auth.user.email,
-                  },
-                );
+                final auth = context.read<AuthCubit>().state;
+                final createStripe = auth.user.personalInfoRegistered &&
+                    (auth.user.country == Country.us.countryCode);
+                context
+                  ..goNamed(
+                    Pages.registration.name,
+                    queryParameters: {
+                      'email': auth.user.email,
+                      'createStripe': createStripe.toString()
+                    },
+                  )
+                  ..pop();
                 return;
               }
               context.goNamed(
@@ -229,11 +235,10 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
-            isVisible: false,
-            // showFamilyItem,
+            isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
-            onTap: () => context.goNamed(Pages.giveVPC.name),
+            onTap: () => context.goNamed(Pages.childrenOverview.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(
