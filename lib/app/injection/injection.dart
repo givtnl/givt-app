@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
@@ -24,6 +25,9 @@ Future<void> init() async {
 
   /// Init repositories
   initRepositories();
+
+  /// Init notification service
+  await NotificationService.instance.init();
 }
 
 Future<void> initAPIService() async {

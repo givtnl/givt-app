@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/core/notification/notification.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -22,12 +24,23 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
+@pragma('vm:entry-point')
+Future<void> _processOfflineDonations(RemoteMessage message) async {
+  await get_it.init();
+  await get_it.getIt.allReady();
+  await LoggingInfo.instance
+      .info('Starting process cached givts through push notification');
+
+  await NotificationService.instance.silentNotification(message.data);
+}
+
 Future<void> bootstrap({
   required FutureOr<Widget> Function() builder,
 }) async {
-  WidgetsFlutterBinding.ensureInitialized();
   await get_it.init();
   await get_it.getIt.allReady();
+  FirebaseMessaging.onBackgroundMessage(_processOfflineDonations);
+
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
