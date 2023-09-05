@@ -50,6 +50,10 @@ mixin AuthRepositoy {
   Future<bool> updateLocalUserExt({
     required UserExt newUserExt,
   });
+
+  Future<void> checkUserExt({
+    required String email,
+  });
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -104,6 +108,22 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
+  Future<void> checkUserExt({required String email}) async {
+    if (!_prefs.containsKey(UserExt.tag)) {
+      return;
+    }
+    final userExt = UserExt.fromJson(
+      jsonDecode(
+        _prefs.getString(UserExt.tag)!,
+      ) as Map<String, dynamic>,
+    );
+    if (userExt.email == email) {
+      return;
+    }
+    await _prefs.clear();
+  }
+
+  @override
   Future<UserExt> fetchUserExtension(String guid) async {
     final response = await _apiService.getUserExtension(guid);
     final userExt = UserExt.fromJson(response);
@@ -148,7 +168,26 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<bool> logout() async => _prefs.clear();
+  Future<bool> logout() async {
+    // _prefs.clear();
+    final sessionString = _prefs.getString(Session.tag);
+    if (sessionString == null) {
+      throw Exception('No session found');
+    }
+    final session = Session.fromJson(
+      jsonDecode(sessionString) as Map<String, dynamic>,
+    );
+    return _prefs.setString(
+      Session.tag,
+      jsonEncode(
+        session
+            .copyWith(
+              isLoggedIn: false,
+            )
+            .toJson(),
+      ),
+    );
+  }
 
   @override
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
@@ -443,6 +482,7 @@ class AuthRepositoyImpl with AuthRepositoy {
           refreshToken: bearer ?? '',
           expires: expiration,
           expiresIn: 0,
+          isLoggedIn: true,
         ).toJson(),
       ),
     );
