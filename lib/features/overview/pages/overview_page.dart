@@ -65,6 +65,17 @@ class OverviewPage extends StatelessWidget {
             ),
           );
         }
+
+        if (state is GivtUnknown) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.errorOccurred,
+              content: locals.errorContactGivt,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         if (state is GivtLoading) {
