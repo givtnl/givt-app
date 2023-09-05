@@ -58,6 +58,9 @@ class Util {
   static RegExp phoneNumberRegEx(String prefix) =>
       RegExp('\\(?\\+\\(?$prefix\\)?[()]?([-()]?\\d[-()]?){9,10}');
 
+  static RegExp phoneNumberRegExWithPrefix() => RegExp(
+      r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}');
+
   static IconData getCurrencyIconData({required Country country}) {
     var icon = Icons.euro;
     if (country == Country.us) {

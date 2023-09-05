@@ -286,6 +286,10 @@ class AuthRepositoyImpl with AuthRepositoy {
         continue;
       }
 
+      if (key.contains('flutter.')) {
+        continue;
+      }
+
       if (key == NativeNSUSerDefaultsKeys.orgBeaconListV2 ||
           key == NativeNSUSerDefaultsKeys.orgBeaconList) {
         continue;
