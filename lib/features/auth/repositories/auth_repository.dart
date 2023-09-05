@@ -391,7 +391,7 @@ class AuthRepositoyImpl with AuthRepositoy {
 
     await _prefs.setBool(
       Util.nativeAppKeysMigration,
-      _prefs.getKeys().containsAll(nativePrefs.getKeys().toList()),
+      true,
     );
   }
 
@@ -423,15 +423,15 @@ class AuthRepositoyImpl with AuthRepositoy {
     }
     if (Platform.isIOS &&
         _prefs.containsKey(NativeNSUSerDefaultsKeys.lastGivtToOrganisation)) {
-      final organisation = const Organisation.empty()
-        ..copyWith(
-          organisationName: _prefs.getString(
-            NativeNSUSerDefaultsKeys.lastGivtToOrganisation_name,
-          ),
-          mediumId: _prefs.getString(
-            NativeNSUSerDefaultsKeys.lastGivtToOrganisation,
-          ),
-        );
+      var organisation = const Organisation.empty();
+      organisation = organisation.copyWith(
+        organisationName: _prefs.getString(
+          NativeNSUSerDefaultsKeys.lastGivtToOrganisation_name,
+        ),
+        mediumId: _prefs.getString(
+          NativeNSUSerDefaultsKeys.lastGivtToOrganisation,
+        ),
+      );
       await _prefs.setString(
         Organisation.lastOrganisationDonatedKey,
         jsonEncode(
@@ -444,7 +444,9 @@ class AuthRepositoyImpl with AuthRepositoy {
       tempUser: Platform.isIOS
           ? _prefs.getBool(NativeNSUSerDefaultsKeys.tempUser)
           : _prefs.getBool(NativeSharedPreferencesKeys.prefsTempUser),
-      mandateSigned: _prefs.getBool(NativeSharedPreferencesKeys.mandateSigned),
+      mandateSigned: Platform.isIOS
+          ? _prefs.getBool(NativeNSUSerDefaultsKeys.mandateSigned)
+          : _prefs.getBool(NativeSharedPreferencesKeys.mandateSigned),
       amountLimit: _prefs.getInt(NativeNSUSerDefaultsKeys.amountLimit),
       accountType: AccountType.fromString(
         _prefs.getString(NativeNSUSerDefaultsKeys.accountType) ?? '',
