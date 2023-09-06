@@ -77,7 +77,8 @@ class Session {
 
   bool get isExpired {
     final now = DateTime.now().toUtc();
-    if (expires.isEmpty) return false;
+    /// If the expires date is empty, then ask user to login.
+    if (expires.isEmpty) return true;
     final expiresDate = DateTime.parse(expires).subtract(
       const Duration(
         minutes: 20,
