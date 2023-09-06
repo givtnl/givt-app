@@ -60,7 +60,10 @@ class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
                 const SizedBox(width: 32.0),
               ],
             ),
-            if (localShowAlloance) _buildDisclaimer() else const SizedBox(),
+            if (localShowAlloance)
+              _buildDisclaimer(locals)
+            else
+              const SizedBox(),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -137,7 +140,7 @@ class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
     );
   }
 
-  Widget _buildDisclaimer() => Stack(
+  Widget _buildDisclaimer(AppLocalizations locals) => Stack(
         children: [
           Container(
             decoration: BoxDecoration(
@@ -159,17 +162,18 @@ class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
                   child: RichText(
                     maxLines: 3,
                     overflow: TextOverflow.visible,
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
-                            text: 'Cannot see the giving allowance? ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.givtBlue)),
+                          text: locals.cannotSeeAllowance,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.givtBlue,
+                          ),
+                        ),
                         TextSpan(
-                            text:
-                                'It can take a couple hours to be processed through our system.',
-                            style: TextStyle(color: AppTheme.givtBlue)),
+                            text: locals.allowanceTakesTime,
+                            style: const TextStyle(color: AppTheme.givtBlue)),
                       ],
                     ),
                   ),
