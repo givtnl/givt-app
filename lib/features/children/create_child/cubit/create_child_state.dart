@@ -45,12 +45,7 @@ class CreateChildExternalErrorState extends CreateChildState {
 class CreateChildSuccessState extends CreateChildState {
   const CreateChildSuccessState({
     super.child,
-    this.showAllowanceDisclaimer = false,
   });
-  final bool showAllowanceDisclaimer;
-
-  @override
-  List<Object?> get props => [child, showAllowanceDisclaimer];
 }
 
 class CreateChildUploadingState extends CreateChildState {}
