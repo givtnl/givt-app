@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class FingerprintBottomSheet extends StatefulWidget {
   const FingerprintBottomSheet({
@@ -75,17 +78,32 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
               Switch.adaptive(
                 activeColor: AppTheme.givtLightGreen,
                 onChanged: (bool value) async {
-                  final hasAuthentication =
-                      await LocalAuthInfo.instance.authenticate();
-                  if (!hasAuthentication) {
-                    return;
+                  try {
+                    final hasAuthentication =
+                        await LocalAuthInfo.instance.authenticate();
+                    if (!hasAuthentication) {
+                      return;
+                    }
+                    await LocalAuthInfo.instance.setCanCheckBiometrics(
+                      value: value,
+                    );
+                    setState(() {
+                      useFingerprint = value;
+                    });
+                  } catch (e) {
+                    await showDialog<void>(
+                      context: context,
+                      builder: (_) => WarningDialog(
+                        title: locals.errorOccurred,
+                        content: locals.errorContactGivt,
+                        onConfirm: () => context.pop(),
+                      ),
+                    );
+                    await LoggingInfo.instance.error(
+                      e.toString(),
+                      methodName: StackTrace.current.toString(),
+                    );
                   }
-                  await LocalAuthInfo.instance.setCanCheckBiometrics(
-                    value: value,
-                  );
-                  setState(() {
-                    useFingerprint = value;
-                  });
                 },
                 value: useFingerprint,
               ),

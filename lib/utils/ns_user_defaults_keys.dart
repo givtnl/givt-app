@@ -20,7 +20,7 @@ class NativeNSUSerDefaultsKeys {
   static const String hasGivtsInPreviousYear = 'hasGivtsInPreviousYear';
   static const String lastGivtToOrganisation = 'lastGivtToOrganisation';
   static const String lastGivtToOrganisation_name =
-      'lastGivtToOrganisationName';
+      'lastGivtToOrganisation_name';
   static const String showCasesByUserID = 'showCasesByUserID';
   static const String orgBeaconListV2 = 'orgBeaconListV2';
   static const String tempUser = 'tempUser';

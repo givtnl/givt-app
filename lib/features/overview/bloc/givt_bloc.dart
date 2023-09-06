@@ -75,6 +75,10 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     } on SocketException catch (e) {
       log(e.toString());
       emit(const GivtNoInternet());
+    } catch (e) {
+      await LoggingInfo.instance
+          .error(e.toString(), methodName: StackTrace.current.toString());
+      emit(const GivtUnknown());
     }
   }
 
