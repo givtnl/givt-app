@@ -174,6 +174,12 @@ class OverviewPage extends StatelessWidget {
                         monthSections[index].timeStamp!.month) {
                       return const SizedBox.shrink();
                     }
+
+                    if (givtGroup.timeStamp!.year !=
+                        monthSections[index].timeStamp!.year) {
+                      return const SizedBox.shrink();
+                    }
+
                     return Column(
                       children: [
                         GivtListItem(
