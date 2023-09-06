@@ -11,6 +11,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -92,12 +93,17 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
-            onTap: () => AuthUtils.checkToken(
-              context,
-              navigate: () => context.goNamed(
-                Pages.overview.name,
-              ),
-            ),
+            onTap: () {
+              context.read<RemoteDataSourceSyncBloc>().add(
+                    const RemoteDataSourceSyncRequested(),
+                  );
+              AuthUtils.checkToken(
+                context,
+                navigate: () => context.goNamed(
+                  Pages.overview.name,
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
