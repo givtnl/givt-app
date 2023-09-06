@@ -179,7 +179,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
               state is CreateChildInputErrorState) {
             _updateInputFields(state.child, currency.currencySymbol);
           } else if (state is CreateChildSuccessState) {
-            context.goNamed(Pages.childrenOverview.name);
+            context.goNamed(Pages.childrenOverview.name, extra: true);
           }
         },
         builder: (context, state) {

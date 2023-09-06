@@ -102,7 +102,9 @@ class AppRouter {
                 builder: (context, state) => BlocProvider(
                   create: (_) => ChildrenOverviewCubit(getIt())
                     ..fetchChildren(context.read<AuthCubit>().state.user.guid),
-                  child: const ChildrenOverviewPage(),
+                  child: ChildrenOverviewPage(
+                    showAllowanceDisclaimer: state.extra! as bool,
+                  ),
                 ),
               ),
               GoRoute(

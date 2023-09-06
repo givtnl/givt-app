@@ -11,11 +11,26 @@ import 'package:givt_app/features/children/overview/widgets/child_item.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class ChildrenOverviewPage extends StatelessWidget {
-  const ChildrenOverviewPage({super.key});
+class ChildrenOverviewPage extends StatefulWidget {
+  const ChildrenOverviewPage(
+      {required this.showAllowanceDisclaimer, super.key});
+  final bool showAllowanceDisclaimer;
+
+  @override
+  State<ChildrenOverviewPage> createState() => _ChildrenOverviewPageState();
+}
+
+class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
+  bool localShowAlloance = false;
+  @override
+  void initState() {
+    localShowAlloance = widget.showAllowanceDisclaimer;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +60,7 @@ class ChildrenOverviewPage extends StatelessWidget {
                 const SizedBox(width: 32.0),
               ],
             ),
+            if (localShowAlloance) _buildDisclaimer() else const SizedBox(),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -120,4 +136,60 @@ class ChildrenOverviewPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildDisclaimer() => Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+                color: AppTheme.givtLightYellow,
+                border: Border.all(
+                  color: AppTheme.givtKidsYellow,
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(20))),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+            margin:
+                const EdgeInsets.only(bottom: 0, top: 10, left: 20, right: 20),
+            child: Row(
+              children: [
+                const Icon(Icons.info, color: AppTheme.givtBlue, size: 30.0),
+                const SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  child: RichText(
+                    maxLines: 3,
+                    overflow: TextOverflow.visible,
+                    text: const TextSpan(
+                      children: [
+                        TextSpan(
+                            text: 'Cannot see the giving allowance? ',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.givtBlue)),
+                        TextSpan(
+                            text:
+                                'It can take a couple hours to be processed through our system.',
+                            style: TextStyle(color: AppTheme.givtBlue)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 20,
+            child: IconButton(
+                padding: EdgeInsets.zero,
+                alignment: Alignment.topCenter,
+                onPressed: () => setState(() {
+                      localShowAlloance = false;
+                    }),
+                icon: SvgPicture.asset(
+                  'assets/images/notification_kids_allowance_dismiss.svg',
+                  height: 24,
+                )),
+          ),
+        ],
+      );
 }

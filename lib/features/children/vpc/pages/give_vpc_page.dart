@@ -33,7 +33,7 @@ class GiveVPCPage extends StatelessWidget {
               ),
             );
             context.read<VPCCubit>().resetVPC();
-            context.goNamed(Pages.childrenOverview.name);
+            context.goNamed(Pages.childrenOverview.name, extra: false);
           }
         },
         builder: (context, state) {
