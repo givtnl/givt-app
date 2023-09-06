@@ -21,6 +21,11 @@ class AuthCubit extends Cubit<AuthState> {
     final prevState = state;
     emit(AuthLoading());
     try {
+      
+      /// check if user is trying to login with a different account.
+      /// if so delete the current user and login with the new one
+      await _authRepositoy.checkUserExt(email: email);
+
       final session = await _authRepositoy.login(
         email,
         password,
@@ -56,6 +61,10 @@ class AuthCubit extends Cubit<AuthState> {
         emit(const AuthUnknown());
         return;
       }
+      if (!session.isLoggedIn) {
+        emit(AuthLogout(user: userExt, session: session));
+        return;
+      }
 
       emit(AuthSuccess(user: userExt, session: session));
     } catch (e) {
@@ -72,7 +81,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
 
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
-    // await _authRepositoy.logout();
+    await _authRepositoy.logout();
+
     emit(AuthLogout(user: prevState.user, session: prevState.session));
   }
 

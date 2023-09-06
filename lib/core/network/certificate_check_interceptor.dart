@@ -23,6 +23,7 @@ class CertificateCheckInterceptor extends InterceptorContract {
       sha: SHA.SHA256,
       allowedSHAFingerprints: Util.allowedSHAFingerprints,
       timeout: 50,
+      index: 2,
     );
 
     if (!secure.contains('CONNECTION_SECURE')) {

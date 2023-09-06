@@ -448,10 +448,9 @@ packages:
   http_certificate_pinning:
     dependency: "direct main"
     description:
-      name: http_certificate_pinning
-      sha256: "91b4a08890c614042acac47ebc502c91488e057847fa427d6296b27e1febba6c"
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/http_certificate_pinning"
+      relative: true
+    source: path
     version: "2.0.7"
   http_interceptor:
     dependency: "direct main"
