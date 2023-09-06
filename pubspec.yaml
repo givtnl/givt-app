@@ -30,7 +30,8 @@ dependencies:
   get_it: ^7.6.0
   go_router: ^9.1.1
   http: ^0.13.6
-  http_certificate_pinning: ^2.0.7
+  http_certificate_pinning:
+    path: ./packages/http_certificate_pinning
   http_interceptor: ^1.0.2
   iban: ^1.0.1
   internet_connection_checker_plus: ^1.0.1
