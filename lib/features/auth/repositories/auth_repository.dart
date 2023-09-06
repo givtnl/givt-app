@@ -79,10 +79,15 @@ class AuthRepositoyImpl with AuthRepositoy {
         'grant_type': 'refresh_token',
       },
     );
-    final newSession = Session.fromJson(response);
+    var newSession = Session.fromJson(response);
+    newSession = newSession.copyWith(
+      isLoggedIn: true,
+    );
     await _prefs.setString(
       Session.tag,
-      jsonEncode(newSession.toJson()),
+      jsonEncode(
+        newSession.toJson(),
+      ),
     );
     return newSession;
   }
@@ -97,11 +102,15 @@ class AuthRepositoyImpl with AuthRepositoy {
       },
     );
 
-    final session = Session.fromJson(newSession);
-
+    var session = Session.fromJson(newSession);
+    session = session.copyWith(
+      isLoggedIn: true,
+    );
     await _prefs.setString(
       Session.tag,
-      jsonEncode(session.toJson()),
+      jsonEncode(
+        session.toJson(),
+      ),
     );
 
     return session;
