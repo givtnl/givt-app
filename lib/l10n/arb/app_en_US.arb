@@ -1421,5 +1421,7 @@
     "createChildAddProfileButton": "Add child profile",
     "childOverviewTotalAvailable": "Total available:",
     "childOverviewPendingApproval": "Pending approval:",
-    "vpcSuccessTitle": "Great!"
+    "vpcSuccessTitle": "Great!",
+    "cannotSeeAllowance": "Cannot see the giving allowance? ",
+    "allowanceTakesTime": "It can take a couple hours to be processed through our system."
 }

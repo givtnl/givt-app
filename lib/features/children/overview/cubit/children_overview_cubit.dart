@@ -14,12 +14,34 @@ class ChildrenOverviewCubit extends Cubit<ChildrenOverviewState> {
   Future<void> fetchChildren(String parentGuid) async {
     emit(const ChildrenOverviewLoadingState());
 
+    final initialNumber = state is ChildrenOverviewUpdatedState
+        ? (state as ChildrenOverviewUpdatedState).profiles.length
+        : 0;
+
+    var displayAllowanceInfo = false;
     try {
       final response =
           await _childrenOverviewRepository.fetchChildren(parentGuid);
-      emit(ChildrenOverviewUpdatedState(profiles: response));
+      if (response.length > initialNumber) {
+        displayAllowanceInfo = true;
+      }
+      emit(
+        ChildrenOverviewUpdatedState(
+          profiles: response,
+          displayAllowanceInfo: displayAllowanceInfo,
+        ),
+      );
     } catch (error) {
       emit(ChildrenOverviewErrorState(errorMessage: error.toString()));
     }
+  }
+
+  void removeDisclaimer(List<Profile> profiles) {
+    emit(
+      ChildrenOverviewUpdatedState(
+        profiles: profiles,
+        displayAllowanceInfo: false,
+      ),
+    );
   }
 }
