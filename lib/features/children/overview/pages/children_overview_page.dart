@@ -7,6 +7,7 @@ import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/widgets/child_item.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -50,7 +51,7 @@ class ChildrenOverviewPage extends StatelessWidget {
               builder: (context, state) {
                 if (state is ChildrenOverviewUpdatedState &&
                     state.displayAllowanceInfo) {
-                  return _buildDisclaimer(locals);
+                  return _buildDisclaimer(locals, context, state.profiles);
                 } else {
                   return const SizedBox();
                 }
@@ -132,7 +133,9 @@ class ChildrenOverviewPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDisclaimer(AppLocalizations locals) => Stack(
+  Widget _buildDisclaimer(AppLocalizations locals, BuildContext context,
+          List<Profile> profiles) =>
+      Stack(
         children: [
           Container(
             decoration: BoxDecoration(
@@ -178,7 +181,11 @@ class ChildrenOverviewPage extends StatelessWidget {
             child: IconButton(
                 padding: EdgeInsets.zero,
                 alignment: Alignment.topCenter,
-                onPressed: () {},
+                onPressed: () {
+                  context
+                      .read<ChildrenOverviewCubit>()
+                      .removeDisclaimer(profiles);
+                },
                 icon: SvgPicture.asset(
                   'assets/images/notification_kids_allowance_dismiss.svg',
                   height: 24,

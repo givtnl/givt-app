@@ -35,4 +35,13 @@ class ChildrenOverviewCubit extends Cubit<ChildrenOverviewState> {
       emit(ChildrenOverviewErrorState(errorMessage: error.toString()));
     }
   }
+
+  void removeDisclaimer(List<Profile> profiles) {
+    emit(
+      ChildrenOverviewUpdatedState(
+        profiles: profiles,
+        displayAllowanceInfo: false,
+      ),
+    );
+  }
 }
