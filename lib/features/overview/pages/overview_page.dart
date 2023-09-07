@@ -7,7 +7,9 @@ import 'package:givt_app/features/overview/widgets/download_year_donation.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/donation_type_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
@@ -63,6 +65,17 @@ class OverviewPage extends StatelessWidget {
             ),
           );
         }
+
+        if (state is GivtUnknown) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.errorOccurred,
+              content: locals.errorContactGivt,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         if (state is GivtLoading) {
@@ -74,6 +87,9 @@ class OverviewPage extends StatelessWidget {
         }
         if (state.givts.isEmpty) {
           return Scaffold(
+            appBar: AppBar(
+              leading: const BackButton(),
+            ),
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -114,51 +130,7 @@ class OverviewPage extends StatelessWidget {
                 state: state,
                 context: context,
                 icon: const Icon(Icons.info_rounded),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      locals.historyInfoTitle,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: const Color(0xFF494871),
-                      text: locals.historyAmountAccepted,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: AppTheme.givtLightGreen,
-                      text: locals.historyAmountCollected,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: AppTheme.givtRed,
-                      text: locals.historyAmountDenied,
-                    ),
-                    const SizedBox(height: 20),
-                    _buildColorExplanationRow(
-                      color: AppTheme.givtLightGray,
-                      text: locals.historyAmountCancelled,
-                    ),
-                    Visibility(
-                      visible: user.isGiftAidEnabled,
-                      child: Column(
-                        children: [
-                          const Divider(color: Colors.white),
-                          _buildColorExplanationRow(
-                            image: 'assets/images/gift_aid_yellow.png',
-                            text: locals.giftOverviewGiftAidBanner(''),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                child: const DonationTypeExplanationSheet(),
               ),
             ],
           ),
@@ -172,6 +144,7 @@ class OverviewPage extends StatelessWidget {
                     Visibility(
                       visible: user.isGiftAidEnabled,
                       child: _buildHeader(
+                        context: context,
                         amount: state.givtAided[
                                 monthSections[index].timeStamp!.year] ??
                             0,
@@ -185,6 +158,7 @@ class OverviewPage extends StatelessWidget {
                       ),
                     ),
                     _buildHeader(
+                      context: context,
                       timesStamp: monthSections[index].timeStamp,
                       amount: monthSections[index].amount,
                       country: user.country,
@@ -200,6 +174,12 @@ class OverviewPage extends StatelessWidget {
                         monthSections[index].timeStamp!.month) {
                       return const SizedBox.shrink();
                     }
+
+                    if (givtGroup.timeStamp!.year !=
+                        monthSections[index].timeStamp!.year) {
+                      return const SizedBox.shrink();
+                    }
+
                     return Column(
                       children: [
                         GivtListItem(
@@ -260,6 +240,7 @@ class OverviewPage extends StatelessWidget {
   }
 
   Container _buildHeader({
+    required BuildContext context,
     required String country,
     required double amount,
     DateTime? timesStamp,
@@ -275,7 +256,10 @@ class OverviewPage extends StatelessWidget {
     );
     final headerTitle = timesStamp == null
         ? giftAidTitle
-        : '${DateFormat('MMMM').format(timesStamp)} \'${DateFormat('yy').format(timesStamp)}';
+        : "${Util.getMonthName(
+            timesStamp.toIso8601String(),
+            Util.getLanguageTageFromLocale(context),
+          )} '${DateFormat('yy').format(timesStamp)}";
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       color: color ?? AppTheme.givtLightPurple,
@@ -291,7 +275,7 @@ class OverviewPage extends StatelessWidget {
             ),
           ),
           Text(
-            '${currency.currencySymbol} ${amount.toStringAsFixed(2)}',
+            '${currency.currencySymbol} ${Util.formatNumberComma(amount, Country.fromCode(country))}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,
@@ -326,40 +310,6 @@ class OverviewPage extends StatelessWidget {
       ),
     );
   }
-
-  Row _buildColorExplanationRow({
-    required String text,
-    Color? color,
-    String? image,
-  }) =>
-      Row(
-        children: [
-          Container(
-            height: 20,
-            width: 20,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-              image: image != null
-                  ? DecorationImage(
-                      scale: 0.8,
-                      image: AssetImage(
-                        image,
-                      ),
-                    )
-                  : null,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.white,
-            ),
-          )
-        ],
-      );
 
   int _getSectionCount(GivtState state) {
     var monthsCount = 0;

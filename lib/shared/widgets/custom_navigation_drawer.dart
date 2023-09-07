@@ -11,6 +11,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -28,7 +29,10 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    final showFamilyItem = auth.user.country == Country.us.countryCode &&
+    const apiURL = String.fromEnvironment('API_URL_US');
+
+    final showFamilyItem = apiURL.contains('dev') &&
+        auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
         auth.user.mandateSigned;
     return Drawer(
@@ -43,12 +47,18 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.edit,
             onTap: () {
               if (auth.user.needRegistration) {
-                context.goNamed(
-                  Pages.registration.name,
-                  queryParameters: {
-                    'email': auth.user.email,
-                  },
-                );
+                final auth = context.read<AuthCubit>().state;
+                final createStripe = auth.user.personalInfoRegistered &&
+                    (auth.user.country == Country.us.countryCode);
+                context
+                  ..goNamed(
+                    Pages.registration.name,
+                    queryParameters: {
+                      'email': auth.user.email,
+                      'createStripe': createStripe.toString()
+                    },
+                  )
+                  ..pop();
                 return;
               }
               context.goNamed(
@@ -65,21 +75,44 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
-            title: locals.historyTitle,
-            icon: FontAwesomeIcons.listUl,
+            isAccent: true,
+            icon: Icons.wallet,
+            title: locals.budgetMenuView,
+            imageIcon: Image.asset(
+              'assets/images/givy_budget_menu.png',
+              fit: BoxFit.contain,
+            ),
             onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => context.goNamed(
-                Pages.overview.name,
+                Pages.personalSummary.name,
               ),
             ),
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
-            //TODO: POEditor
-            title: 'Recurring donations',
+            title: locals.historyTitle,
+            icon: FontAwesomeIcons.listUl,
+            onTap: () {
+              context.read<RemoteDataSourceSyncBloc>().add(
+                    const RemoteDataSourceSyncRequested(),
+                  );
+              AuthUtils.checkToken(
+                context,
+                navigate: () => context.goNamed(
+                  Pages.overview.name,
+                ),
+              );
+            },
+          ),
+          _buildMenuItem(
+            isVisible: !auth.user.needRegistration,
+            title: locals.menuItemRecurringDonation,
             icon: Icons.screen_rotation_alt_outlined,
-            onTap: () => context.goNamed(Pages.recurringDonations.name),
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => context.goNamed(Pages.recurringDonations.name),
+            ),
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
@@ -214,7 +247,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
-            onTap: () => context.goNamed(Pages.giveVPC.name),
+            onTap: () => context.goNamed(Pages.childrenOverview.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(
@@ -259,12 +292,14 @@ class CustomNavigationDrawer extends StatelessWidget {
     bool isVisible = false,
     bool showBadge = false,
     bool showUnderline = true,
+    bool isAccent = false,
   }) =>
       Visibility(
         visible: isVisible,
         child: Column(
           children: [
             Container(
+              height: isAccent ? 90 : 60,
               decoration: BoxDecoration(
                 border: Border(
                   bottom: BorderSide(
@@ -273,25 +308,59 @@ class CustomNavigationDrawer extends StatelessWidget {
                   ),
                 ),
               ),
-              child: ListTile(
-                leading: imageIcon ??
-                    Icon(
-                      icon,
-                      color: AppTheme.givtBlue,
+              child: isAccent
+                  ? ListTile(
+                      minVerticalPadding: 0,
+                      contentPadding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
+                      title: Row(
+                        children: [
+                          imageIcon ??
+                              Icon(
+                                icon,
+                                color: AppTheme.givtBlue,
+                              ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16),
+                              child: Text(
+                                title,
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                          ),
+                        ],
+                      ),
+                      onTap: onTap,
+                    )
+                  : ListTile(
+                      leading: imageIcon ??
+                          Icon(
+                            icon,
+                            color: AppTheme.givtBlue,
+                          ),
+                      trailing: badges.Badge(
+                        showBadge: showBadge,
+                        position:
+                            badges.BadgePosition.topStart(top: 6, start: -20),
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                        ),
+                      ),
+                      title: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight:
+                                isAccent ? FontWeight.w900 : FontWeight.normal),
+                      ),
+                      onTap: onTap,
                     ),
-                trailing: badges.Badge(
-                  showBadge: showBadge,
-                  position: badges.BadgePosition.topStart(top: 6, start: -20),
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                  ),
-                ),
-                title: Text(
-                  title,
-                  style: const TextStyle(fontSize: 17),
-                ),
-                onTap: onTap,
-              ),
             ),
           ],
         ),

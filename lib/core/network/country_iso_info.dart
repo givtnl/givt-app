@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:device_region/device_region.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 mixin CountryIsoInfo {
   Future<String> get checkCountryIso;
@@ -19,11 +20,18 @@ class CountryIsoInfoImpl implements CountryIsoInfo {
   @override
   Future<String> get checkCountryIso async {
     try {
-      _countryIso =
-          (await DeviceRegion.getSIMCountryCode() ?? Country.nl.countryCode)
-              .toUpperCase();
+      final prefs = await SharedPreferences.getInstance();
+      final localCountryIso = prefs.getString('countryIso');
+
+      if (localCountryIso != null) {
+        _countryIso = localCountryIso;
+      } else {
+        _countryIso =
+            (await DeviceRegion.getSIMCountryCode() ?? Country.nl.countryCode)
+                .toUpperCase();
+      }
     } on PlatformException catch (e) {
-      log(e.toString()); 
+      log(e.toString());
     }
     return _countryIso;
   }

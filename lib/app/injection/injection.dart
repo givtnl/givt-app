@@ -4,11 +4,14 @@ import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
+import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
+import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
-import 'package:givt_app/features/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,13 +20,14 @@ final getIt = GetIt.instance;
 
 Future<void> init() async {
   await _initCoreDependencies();
-  await _initAPIService();
+  await initAPIService();
 
   /// Init repositories
-  _initRepositories();
+  initRepositories();
 }
 
-Future<void> _initAPIService() async {
+Future<void> initAPIService() async {
+  getIt.allowReassignment = true;
   var baseUrl = const String.fromEnvironment('API_URL_EU');
   var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   if (await getIt<CountryIsoInfo>().checkCountryIso == Country.us.countryCode) {
@@ -54,7 +58,9 @@ Future<void> _initCoreDependencies() async {
     );
 }
 
-void _initRepositories() {
+void initRepositories() {
+  getIt.allowReassignment = true;
+
   getIt
     ..registerLazySingleton<AuthRepositoy>(
       () => AuthRepositoyImpl(
@@ -95,6 +101,11 @@ void _initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<ChildrenOverviewRepository>(
+      () => ChildrenOverviewRepositoryImpl(
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<RecurringDonationsRepository>(
       () => RecurringDonationsRepositoryImpl(
         getIt(),
@@ -102,6 +113,16 @@ void _initRepositories() {
     )
     ..registerLazySingleton<CancelRecurringDonationRepository>(
       () => CancelRecurringDonationRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<DetailRecurringDonationsRepository>(
+      () => DetailRecurringDonationsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<CreateChildRepository>(
+      () => CreateChildRepositoryImpl(
         getIt(),
       ),
     );

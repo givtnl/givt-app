@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class CreateRecurringDonationButton extends StatelessWidget {
-  const CreateRecurringDonationButton({required this.onClick, super.key});
+  const CreateRecurringDonationButton(
+      {required this.onClick, required this.locals, super.key});
 
   final void Function() onClick;
+  final AppLocalizations locals;
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +29,14 @@ class CreateRecurringDonationButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  //TODO: POEditor
-                  'Schedule your',
+                  locals.recurringGiftsSetupCreate,
                   style: Theme.of(context)
                       .textTheme
                       .titleMedium
                       ?.copyWith(color: Colors.white),
                 ),
                 Text(
-                  //TODO: POEditor
-                  'recurring donation',
+                  locals.recurringGiftsSetupRecurringGift,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

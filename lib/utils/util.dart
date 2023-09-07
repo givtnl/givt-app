@@ -1,32 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:intl/intl.dart';
+
+import 'app_theme.dart';
 
 class Util {
+// Default user info
+  static const String defaultAdress = 'Foobarstraat 5';
+  static const String defaultCity = 'Foobar';
+  static const String defaultPostCode = 'B3 1RD';
+  static const String defaultIban = 'FB66GIVT12345678';
+  static const String defaultPhoneNumber = '060000000';
+  static const String defaultFirstName = 'John';
+  static const String defaultLastName = 'Doe';
+  static const String defaulAppLanguage = 'en';
+  static const String defaultTimeZoneId = 'Europe/Amsterdam';
+  static const String nativeAppKeysMigration = 'nativeAppKeysMigration';
+
   /// Allowed SHA-256 fingerprints for Givt backend
   /// The list is used in APIService while building the http.client
   /// using the http_certificate_pinning package
   /// https://github.com/diefferson/http_certificate_pinning/tree/master
   static final List<String> allowedSHAFingerprints = [
     /// backend.givtapp.net
-    '3C A9 57 A6 92 E2 D7 0A 14 B2 C2 97 F8 0A 60 1A 64 AA 31 DF C7 E7 4B 9A 2E 30 DF CE 42 6F 8C 90',
-
     /// dev-backend.givtapp.net
-    'A3 DF 18 C7 60 73 54 55 CD DD AE 9A BF CB 4E B7 03 1B 80 32 FB C4 A0 B0 E7 0A CB 6B C4 A4 4B A7',
-
     /// backend.givt.app
-    'DE 9C AD B7 02 B9 58 AA 85 BF 82 D9 D8 14 E7 DD 30 AB EB 1E 6D F1 82 C7 DA 81 8A 18 D8 2D 2F 0D',
-
     /// dev-backend.givt.app
-    'C6 E5 6F E7 C5 BA CE EA DD 87 7F A0 C0 DA 4D D1 EC DF 69 A6 F5 37 08 0D E3 63 D0 7D 94 66 C3 36',
+    '6D99FB265EB1C5B3744765FCBC648F3CD8E1BFFAFDC4C2F99B9D47CF7FF1C24F',
 
     /// api.production.givt.app
-    'B4 00 35 42 EF C3 19 42 25 BD A5 5F 1D FE 02 27 CB D0 05 59 9D F5 73 7D 02 2B C8 FC 68 5D B5 6C',
-
     /// api.development.givtapp.net
-    'B6 BC 0A 83 BA BC 3A B4 A0 DA CF 49 2F 88 A5 BB 87 8E E2 FD 02 91 A6 51 17 B8 E3 05 B7 16 04 CF',
-
     /// api.production.givtapp.net
-    '97 F0 E8 B1 08 59 48 D0 EC AD 82 96 20 4A 47 04 BE F5 5D D2 0F 7E AB BF 33 DF 52 FB D3 A7 4F 96',
+    '87DCD4DC74640A322CD205552506D1BE64F12596258096544986B4850BC72706',
   ];
 
   static final ukPostCodeRegEx = RegExp(
@@ -42,6 +47,9 @@ class Util {
 
   static RegExp phoneNumberRegEx(String prefix) =>
       RegExp('\\(?\\+\\(?$prefix\\)?[()]?([-()]?\\d[-()]?){9,10}');
+
+  static RegExp phoneNumberRegExWithPrefix() => RegExp(
+      r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}');
 
   static IconData getCurrencyIconData({required Country country}) {
     var icon = Icons.euro;
@@ -71,5 +79,39 @@ class Util {
       return 0.50;
     }
     return 0.25;
+  }
+
+  static String formatNumberComma(double number, Country country) {
+    if (country.countryCode == 'US' ||
+        Country.unitedKingdomCodes().contains(country.countryCode)) {
+      return number.toStringAsFixed(2);
+    }
+    return number.toStringAsFixed(2).replaceAll('.', ',');
+  }
+
+  static String getMonthName(String isoString, String locale) {
+    final dateTime = DateTime.parse(isoString);
+    final dateFormat = DateFormat.MMMM(locale);
+    final monthName = dateFormat.format(dateTime);
+    final capitalizedMonthName =
+        '${monthName[0].toUpperCase()}${monthName.substring(1)}';
+    return capitalizedMonthName;
+  }
+
+  static String getLanguageTageFromLocale(BuildContext context) {
+    final languageTag = Localizations.localeOf(context).toLanguageTag();
+    return languageTag;
+  }
+
+  static Color getStatusColor(int status) {
+    switch (status) {
+      case 3:
+        return AppTheme.givtLightGreen;
+      case 4:
+        return AppTheme.givtRed;
+      case 5:
+        return AppTheme.givtLightGray;
+    }
+    return AppTheme.givtPurple;
   }
 }

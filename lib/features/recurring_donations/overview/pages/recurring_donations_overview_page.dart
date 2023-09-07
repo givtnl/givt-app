@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
+import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_recurring_donations_cubit.dart';
+import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donations_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
+//import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_list.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +21,24 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
     await context
         .read<RecurringDonationsCubit>()
         .fetchRecurringDonations(context.read<AuthCubit>().state.user.guid);
+  }
+
+  Future<void> _onViewDetailInstances(
+    BuildContext context,
+    RecurringDonation selected,
+  ) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider(
+        create: (_) => DetailedRecurringDonationsCubit(getIt())
+          ..fetchRecurringInstances(selected),
+        child: RecurringDonationsDetailPage(
+          recurringDonation: selected,
+        ),
+      ),
+    );
   }
 
   void _onCancelRecurringDonationPressed(
@@ -38,13 +60,13 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final locals = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
         title: Text(
-          //TODO: POEditor
-          'Recurring donations',
+          locals.menuItemRecurringDonation,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -57,9 +79,8 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
           if (state is RecurringDonationsErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: const Text(
-                  //TODO: POEditor
-                  'Cannot fetch recurring donations. Please try again later',
+                content: Text(
+                  locals.somethingWentWrong,
                   textAlign: TextAlign.center,
                 ),
                 backgroundColor: Theme.of(context).errorColor,
@@ -82,22 +103,24 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                CreateRecurringDonationButton(
-                  onClick: () {},
-                ),
+                // Hide inactive button
+                // CreateRecurringDonationButton(
+                //   onClick: () {},
+                //   locals: locals,
+                // ),
                 const SizedBox(height: 20),
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  elevation: 5,
+                  elevation: 3,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 10,
                       vertical: 10,
                     ),
                     decoration: BoxDecoration(
-                      color: AppTheme.givtGraycece.withAlpha(100),
+                      color: AppTheme.givtLightGray.withAlpha(100),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     width: double.infinity,
@@ -106,26 +129,49 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          //TODO: POEditor
-                          'Recurring donations',
+                          locals.menuItemRecurringDonation,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         Container(
                           width: double.infinity,
                           height: 2,
-                          color: Colors.black,
+                          color: AppTheme.givtBlue,
                         ),
                         const SizedBox(height: 10),
-                        RecurringDonationsList(
-                          height: size.height * 0.69,
-                          recurringDonations: recurringDonations,
-                          onCancel: (RecurringDonation recurringDonation) {
-                            _onCancelRecurringDonationPressed(
-                              context,
-                              recurringDonation,
-                            );
-                          },
-                        ),
+                        if (recurringDonations.isEmpty)
+                          Column(
+                            children: [
+                              Text(
+                                locals.emptyRecurringDonationList,
+                              ),
+                              SizedBox(
+                                height: size.height * 0.5,
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/images/givy_money.png',
+                                    width: size.width * 0.5,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        else
+                          RecurringDonationsList(
+                            height: size.height * 0.68,
+                            recurringDonations: recurringDonations,
+                            onOverview: (RecurringDonation recurringDonation) {
+                              _onViewDetailInstances(
+                                context,
+                                recurringDonation,
+                              );
+                            },
+                            onCancel: (RecurringDonation recurringDonation) {
+                              _onCancelRecurringDonationPressed(
+                                context,
+                                recurringDonation,
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),

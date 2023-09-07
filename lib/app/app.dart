@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -21,6 +22,12 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+
+    // Make the status bar transparent on Android
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
+
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
@@ -37,6 +44,11 @@ class _AppState extends State<App> {
           ),
           BlocProvider(
             create: (_) => InfraCubit(
+              getIt(),
+            ),
+          ),
+          BlocProvider(
+            create: (_) => VPCCubit(
               getIt(),
             ),
           ),

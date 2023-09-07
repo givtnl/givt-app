@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,7 @@ class RecurringDonationItem extends StatefulWidget {
     required this.isExtended,
     required this.onTap,
     required this.onCancel,
+    required this.onOverview,
     super.key,
   });
 
@@ -20,39 +22,42 @@ class RecurringDonationItem extends StatefulWidget {
   final bool isExtended;
   final void Function() onTap;
   final void Function() onCancel;
+  final void Function() onOverview;
   @override
   State<RecurringDonationItem> createState() => _RecurringDonationItemState();
 }
 
 class _RecurringDonationItemState extends State<RecurringDonationItem> {
-  //TODO: POEditor
-  final frequencies = ['week', 'month', 'quarter', 'half year', 'year'];
-
-  String get frequencyText {
-    final user = context.read<AuthCubit>().state.user;
-    final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
-    );
-
-    //TODO: POEditor
-    final result =
-        'Each ${frequencies[widget.recurringDonation.frequency]} you give ${currency.currencySymbol} ${widget.recurringDonation.amountPerTurn.toStringAsFixed(2)}';
-
-    return result;
-  }
-
-  String get endsOnText {
-    final dateFormat = DateFormat('dd-MM-yyyy');
-
-    //TODO: POEditor
-    final endsOn =
-        'This will stop on ${dateFormat.format(widget.recurringDonation.endDate)}';
-    return endsOn;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final locals = context.l10n;
     const animationDuration = Duration(milliseconds: 300);
+    final frequencies = [
+      locals.setupRecurringGiftWeek,
+      locals.setupRecurringGiftMonth,
+      locals.setupRecurringGiftQuarter,
+      locals.setupRecurringGiftHalfYear,
+      locals.setupRecurringGiftYear
+    ];
+    String getFrequencyText() {
+      final user = context.read<AuthCubit>().state.user;
+      final currency = NumberFormat.simpleCurrency(
+        name: Util.getCurrencyName(country: Country.fromCode(user.country)),
+      );
+
+      final result =
+          '${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol} ${widget.recurringDonation.amountPerTurn.toStringAsFixed(2)}';
+
+      return result;
+    }
+
+    String endsOnText() {
+      final dateFormat = DateFormat('dd-MM-yyyy');
+      final endsOn = locals.recurringDonationStops(
+          dateFormat.format(widget.recurringDonation.endDate));
+      return endsOn;
+    }
+
     return InkWell(
       onTap: widget.onTap,
       borderRadius: BorderRadius.circular(15),
@@ -60,7 +65,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        elevation: 2,
+        elevation: 0,
         child: AnimatedContainer(
           duration: animationDuration,
           decoration: BoxDecoration(
@@ -68,7 +73,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: widget.recurringDonation.collectGroup.type.color,
-              width: 1.5,
+              width: 1,
             ),
           ),
           width: double.infinity,
@@ -109,7 +114,7 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          frequencyText,
+                          getFrequencyText(),
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall
@@ -117,9 +122,11 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          endsOnText,
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(),
+                          endsOnText(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(color: AppTheme.givtDarkerGray),
                         ),
                       ],
                     ),
@@ -148,12 +155,11 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                               ),
                               onPressed: widget.onCancel,
                               icon: const Icon(
-                                Icons.stop_circle_rounded,
+                                Icons.stop_circle_outlined,
                                 color: AppTheme.givtRed,
                               ),
                               label: Text(
-                                //TODO: POEditor
-                                'Stop',
+                                locals.cancelRecurringDonation,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
@@ -170,13 +176,14 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
                                   color: Colors.transparent,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                widget.onOverview();
+                              },
                               icon: const Icon(
                                 Icons.list_rounded,
                               ),
                               label: Text(
-                                //TODO: POEditor
-                                'Overview',
+                                locals.goToListWithRecurringDonationDonations,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                             ),

@@ -20,7 +20,10 @@ enum Pages {
   personalInfoEdit,
   giveVPC,
   unregister,
+  createChild,
+  personalSummary,
   recurringDonations,
+  childrenOverview
 }
 
 extension AppPageExtension on Pages {
@@ -68,8 +71,14 @@ extension AppPageExtension on Pages {
         return 'give-vpc';
       case Pages.unregister:
         return 'unregister';
+      case Pages.createChild:
+        return 'create-child';
+      case Pages.personalSummary:
+        return 'personal-summary';
       case Pages.recurringDonations:
         return 'recurring-donations';
+      case Pages.childrenOverview:
+        return 'children-overview';
     }
   }
 
@@ -117,8 +126,14 @@ extension AppPageExtension on Pages {
         return 'GIVE-VPC';
       case Pages.unregister:
         return 'UNREGISTER';
+      case Pages.createChild:
+        return 'CREATE-CHILD';
+      case Pages.personalSummary:
+        return 'PERSONAL-SUMMARY';
       case Pages.recurringDonations:
         return 'RECURRING-DONATIONS';
+      case Pages.childrenOverview:
+        return 'CHILDREN-OVERVIEW';
     }
   }
 }

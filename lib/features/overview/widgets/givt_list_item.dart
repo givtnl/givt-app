@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/models/givt_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class GivtListItem extends StatelessWidget {
@@ -57,7 +58,7 @@ class GivtListItem extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             left: BorderSide(
-              color: _getStatusColor(givtGroup.status),
+              color: Util.getStatusColor(givtGroup.status),
               width: 10,
             ),
           ),
@@ -86,7 +87,7 @@ class GivtListItem extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        DateFormat('dd').format(givtGroup.timeStamp!),
+                        DateFormat('dd').format(givtGroup.timeStamp!.toLocal()),
                         style: const TextStyle(
                           color: AppTheme.givtBlue,
                           fontSize: 18,
@@ -97,7 +98,7 @@ class GivtListItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  DateFormat('hh:mm').format(givtGroup.timeStamp!),
+                  DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
                   style: const TextStyle(
                     color: AppTheme.givtBlue,
                     fontSize: 10,
@@ -140,7 +141,10 @@ class GivtListItem extends StatelessWidget {
                         ),
                         Expanded(child: Container()),
                         Text(
-                          '${currency.currencySymbol} ${collection.amount.toStringAsFixed(2)}',
+                          '${currency.currencySymbol} ${Util.formatNumberComma(
+                            collection.amount,
+                            Country.fromCode(country),
+                          )}',
                           textAlign: TextAlign.end,
                         ),
                       ],
@@ -153,17 +157,5 @@ class GivtListItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Color _getStatusColor(int status) {
-    switch (status) {
-      case 3:
-        return AppTheme.givtLightGreen;
-      case 4:
-        return AppTheme.givtRed;
-      case 5:
-        return AppTheme.givtLightGray;
-    }
-    return AppTheme.givtPurple;
   }
 }

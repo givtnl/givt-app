@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/utils/util.dart';
 
 class TempUser extends Equatable {
   const TempUser({
@@ -42,15 +43,15 @@ class TempUser extends Equatable {
     required String email,
     required String country,
     String password = defaultPassword,
-    String iban = 'FB66GIVT12345678',
-    String phoneNumber = '060000000',
-    String firstName = 'John',
-    String lastName = 'Doe',
-    String address = 'Foobarstraat 5',
-    String city = 'Foobar',
-    String postalCode = 'B3 1RD',
-    String appLanguage = 'en',
-    String timeZoneId = 'Europe/Amsterdam',
+    String iban = Util.defaultIban,
+    String phoneNumber = Util.defaultPhoneNumber,
+    String firstName = Util.defaultFirstName,
+    String lastName = Util.defaultLastName,
+    String address = Util.defaultAdress,
+    String city = Util.defaultCity,
+    String postalCode = Util.defaultPostCode,
+    String appLanguage = Util.defaulAppLanguage,
+    String timeZoneId = Util.defaultTimeZoneId,
     String accountNumber = '',
     String sortCode = '',
     int amountLimit = 499,
@@ -86,9 +87,8 @@ class TempUser extends Equatable {
         country: json['Country'] as String,
         password: json['Password'] as String,
         amountLimit: json['AmountLimit'] as int,
-        appLanguage: json['AppLanguage'] != null
-            ? json['AppLanguage'] as String
-            : '',
+        appLanguage:
+            json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
         timeZoneId: json['TimeZoneId'] as String,
         accountNumber: json.containsKey('AccountNumber')
             ? json['AccountNumber'] as String

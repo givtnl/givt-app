@@ -42,8 +42,7 @@ enum Country {
 
   static List<Country> sortedCountries() {
     return Country.values.toList()
-      ..sort((a, b) => a.countryCode.compareTo(b.countryCode))
-      ..remove(Country.us);
+      ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
   }
 
   static List<Country> sortedPrefixCountries() {
@@ -72,8 +71,10 @@ enum Country {
     );
   }
 
-  
-  ///TODO this should be done straight from the localizations. Delete all the countries and add only one unified string separated by commas and then split it
+  ///To-do this should be done straight from the localizations.
+  ///Delete all the countries and
+  ///add only one unified string separated by commas and then split it
+
   static String getCountry(String countryCode, AppLocalizations locals) {
     switch (countryCode) {
       case 'JE':
@@ -122,6 +123,8 @@ enum Country {
         return locals.countryStringCy;
       case 'MT':
         return locals.countryStringMt;
+      case 'US':
+        return locals.countryStringUs;
       default:
         return '';
     }
