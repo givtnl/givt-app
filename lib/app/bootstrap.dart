@@ -40,12 +40,13 @@ Future<void> bootstrap({
   required FirebaseOptions options,
   required FutureOr<Widget> Function() builder,
 }) async {
-  await get_it.init();
-  await get_it.getIt.allReady();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     name: name,
     options: options,
   );
+  await get_it.init();
+  await get_it.getIt.allReady();
   FirebaseMessaging.onBackgroundMessage(_processOfflineDonations);
 
   FlutterError.onError = (details) {
