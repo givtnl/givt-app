@@ -15,22 +15,8 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class ChildrenOverviewPage extends StatefulWidget {
-  const ChildrenOverviewPage(
-      {required this.showAllowanceDisclaimer, super.key});
-  final bool showAllowanceDisclaimer;
-
-  @override
-  State<ChildrenOverviewPage> createState() => _ChildrenOverviewPageState();
-}
-
-class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
-  bool localShowAlloance = false;
-  @override
-  void initState() {
-    localShowAlloance = widget.showAllowanceDisclaimer;
-    super.initState();
-  }
+class ChildrenOverviewPage extends StatelessWidget {
+  const ChildrenOverviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +46,16 @@ class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
                 const SizedBox(width: 32.0),
               ],
             ),
-            if (localShowAlloance)
-              _buildDisclaimer(locals)
-            else
-              const SizedBox(),
+            BlocBuilder<ChildrenOverviewCubit, ChildrenOverviewState>(
+              builder: (context, state) {
+                if (state is ChildrenOverviewUpdatedState &&
+                    state.displayAllowanceInfo) {
+                  return _buildDisclaimer(locals);
+                } else {
+                  return const SizedBox();
+                }
+              },
+            ),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -186,9 +178,7 @@ class _ChildrenOverviewPageState extends State<ChildrenOverviewPage> {
             child: IconButton(
                 padding: EdgeInsets.zero,
                 alignment: Alignment.topCenter,
-                onPressed: () => setState(() {
-                      localShowAlloance = false;
-                    }),
+                onPressed: () {},
                 icon: SvgPicture.asset(
                   'assets/images/notification_kids_allowance_dismiss.svg',
                   height: 24,

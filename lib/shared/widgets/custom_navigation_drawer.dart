@@ -247,8 +247,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
-            onTap: () =>
-                context.goNamed(Pages.childrenOverview.name, extra: false),
+            onTap: () => context.goNamed(Pages.childrenOverview.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(
