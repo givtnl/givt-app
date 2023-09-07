@@ -7,14 +7,15 @@ import 'package:native_shared_preferences/original_shared_preferences/original_s
 part 'children_overview_state.dart';
 
 class ChildrenOverviewCubit extends Cubit<ChildrenOverviewState> {
-  ChildrenOverviewCubit(this._childrenOverviewRepository, this._prefs)
+  ChildrenOverviewCubit(this._childrenOverviewRepository)
       : super(const ChildrenOverviewInitialState());
 
   final ChildrenOverviewRepository _childrenOverviewRepository;
-  final SharedPreferences _prefs;
+
   Future<void> fetchChildren(String parentGuid) async {
+    final prefs = await SharedPreferences.getInstance();
     emit(const ChildrenOverviewLoadingState());
-    final initalNumber = _prefs.getInt(Profile.number) ?? 0;
+    final initalNumber = prefs.getInt(Profile.number) ?? 0;
     var displayAllowanceInfo = false;
     try {
       final response =
@@ -29,7 +30,7 @@ class ChildrenOverviewCubit extends Cubit<ChildrenOverviewState> {
         ),
       );
 
-      await _prefs.setInt(Profile.number, response.length);
+      await prefs.setInt(Profile.number, response.length);
     } catch (error) {
       emit(ChildrenOverviewErrorState(errorMessage: error.toString()));
     }

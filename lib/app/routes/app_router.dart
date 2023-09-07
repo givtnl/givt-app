@@ -100,10 +100,8 @@ class AppRouter {
                 path: Pages.childrenOverview.path,
                 name: Pages.childrenOverview.name,
                 builder: (context, state) => BlocProvider(
-                  create: (_) => ChildrenOverviewCubit(
-                    getIt(),
-                    getIt(),
-                  )..fetchChildren(context.read<AuthCubit>().state.user.guid),
+                  create: (_) => ChildrenOverviewCubit(getIt())
+                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
                   child: const ChildrenOverviewPage(),
                 ),
               ),
