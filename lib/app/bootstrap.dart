@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
@@ -35,10 +36,16 @@ Future<void> _processOfflineDonations(RemoteMessage message) async {
 }
 
 Future<void> bootstrap({
+  required String name,
+  required FirebaseOptions options,
   required FutureOr<Widget> Function() builder,
 }) async {
   await get_it.init();
   await get_it.getIt.allReady();
+  await Firebase.initializeApp(
+    name: name,
+    options: options,
+  );
   FirebaseMessaging.onBackgroundMessage(_processOfflineDonations);
 
   FlutterError.onError = (details) {
