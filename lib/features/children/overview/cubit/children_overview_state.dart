@@ -18,12 +18,14 @@ class ChildrenOverviewLoadingState extends ChildrenOverviewState {
 class ChildrenOverviewUpdatedState extends ChildrenOverviewState {
   const ChildrenOverviewUpdatedState({
     required this.profiles,
+    required this.displayAllowanceInfo,
   });
 
   final List<Profile> profiles;
+  final bool displayAllowanceInfo;
 
   @override
-  List<Object> get props => [profiles];
+  List<Object> get props => [profiles, displayAllowanceInfo];
 }
 
 class ChildrenOverviewErrorState extends ChildrenOverviewState {

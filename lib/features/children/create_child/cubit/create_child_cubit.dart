@@ -60,7 +60,9 @@ class CreateChildCubit extends Cubit<CreateChildState> {
     try {
       final isChildCreated = await _createChildRepository.createChild(child);
       if (isChildCreated) {
-        emit(CreateChildSuccessState(child: child));
+        emit(
+          CreateChildSuccessState(child: child),
+        );
       } else {
         throw Exception(_locals.createChildErrorText);
       }
