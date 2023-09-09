@@ -336,13 +336,49 @@ class AppRouter {
                                   user.accountType,
                                 ),
                               ),
-                          ),
+                          )
                         ],
                         child: const OrganizationListPage(),
                       );
                     },
                   ),
                 ],
+              ),
+              GoRoute(
+                path: Pages.chooseCategoryList.path,
+                name: Pages.chooseCategoryList.name,
+                builder: (context, state) {
+                  final user = context.read<AuthCubit>().state.user;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (_) => GiveBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            const GiveCheckLastDonation(),
+                          ),
+                      ),
+                      BlocProvider(
+                        create: (_) => OrganisationBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            OrganisationFetch(
+                              user.accountType,
+                              type: state.extra != null && state.extra is int
+                                  ? state.extra! as int
+                                  : -1,
+                            ),
+                          ),
+                      )
+                    ],
+                    child: const OrganizationListPage(),
+                  );
+                },
               ),
               GoRoute(
                 path: Pages.overview.path,

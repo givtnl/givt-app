@@ -45,12 +45,17 @@ class OrganizationListPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final focusNode = FocusNode();
+          if (state.selectedType == CollecGroupType.none.index) {
+            focusNode.requestFocus();
+          }
           return Column(
             children: [
               _buildFilterType(bloc, locals),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: CupertinoSearchTextField(
+                  focusNode: focusNode,
                   onChanged: (value) => context
                       .read<OrganisationBloc>()
                       .add(OrganisationFilterQueryChanged(value)),
@@ -115,16 +120,12 @@ class OrganizationListPage extends StatelessWidget {
     switch (CollecGroupType.fromInt(selectedType)) {
       case CollecGroupType.church:
         title = locals.church;
-        break;
       case CollecGroupType.charities:
         title = locals.charity;
-        break;
       case CollecGroupType.campaign:
         title = locals.campaign;
-        break;
       case CollecGroupType.artists:
         title = locals.artist;
-        break;
       default:
         break;
     }
