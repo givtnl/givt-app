@@ -27,6 +27,7 @@ class ChooseAmount extends StatefulWidget {
     required this.hasGiven,
     required this.arePresetsEnabled,
     required this.presets,
+    this.showAddCollectionButton = true,
     super.key,
   });
 
@@ -34,6 +35,7 @@ class ChooseAmount extends StatefulWidget {
   final Country country;
   final bool hasGiven;
   final bool arePresetsEnabled;
+  final bool showAddCollectionButton;
   final List<Preset> presets;
   final ChooseAmountNextCallback onAmountChanged;
 
@@ -154,8 +156,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
             ),
             Visibility(
               visible: !collectionFields.every(
-                (element) => element == true,
-              ),
+                    (element) => element == true,
+                  ) &&
+                  widget.showAddCollectionButton,
               child: _buildAddCollectionButton(
                 size: size,
                 label: locals.addCollect,

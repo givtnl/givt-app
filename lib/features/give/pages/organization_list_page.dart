@@ -9,12 +9,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class OrganizationListPage extends StatelessWidget {
-  const OrganizationListPage({super.key});
+  const OrganizationListPage({
+    super.key,
+    this.isChooseCategory = false,
+  });
+
+  final bool isChooseCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +106,21 @@ class OrganizationListPage extends StatelessWidget {
                             final userGUID =
                                 context.read<AuthCubit>().state.user.guid;
 
+                            if (isChooseCategory) {
+                              showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<GiveBloc>(),
+                                  child: EnterAmountBottomSheet(
+                                    collectGroupNameSpace:
+                                        state.selectedCollectGroup.nameSpace,
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
                             context.read<GiveBloc>().add(
                                   GiveOrganisationSelected(
                                     state.selectedCollectGroup.nameSpace,
