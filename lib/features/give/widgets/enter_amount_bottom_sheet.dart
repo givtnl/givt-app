@@ -31,6 +31,7 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
         if (state.status == GiveStatus.readyToGive) {
           context.goNamed(
             Pages.give.name,
+            extra: context.read<GiveBloc>(),
           );
         }
         if (state.status == GiveStatus.success) {

@@ -262,28 +262,6 @@ class AppRouter {
                 ),
                 routes: [
                   GoRoute(
-                    path: Pages.give.path,
-                    name: Pages.give.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const GivingPage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giveOffline.path,
-                    name: Pages.giveOffline.name,
-                    builder: (context, state) {
-                      final extra = state.extra! as GiveBloc;
-                      return BlocProvider.value(
-                        value: extra,
-                        child: SuccessOfflineDonationPage(
-                          organisationName:
-                              extra.state.organisation.organisationName!,
-                        ),
-                      );
-                    },
-                  ),
-                  GoRoute(
                     path: Pages.giveByBeacon.path,
                     name: Pages.giveByBeacon.name,
                     builder: (context, state) => BlocProvider.value(
@@ -343,6 +321,28 @@ class AppRouter {
                     },
                   ),
                 ],
+              ),
+              GoRoute(
+                path: Pages.give.path,
+                name: Pages.give.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as GiveBloc,
+                  child: const GivingPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.giveOffline.path,
+                name: Pages.giveOffline.name,
+                builder: (context, state) {
+                  final extra = state.extra! as GiveBloc;
+                  return BlocProvider.value(
+                    value: extra,
+                    child: SuccessOfflineDonationPage(
+                      organisationName:
+                          extra.state.organisation.organisationName!,
+                    ),
+                  );
+                },
               ),
               GoRoute(
                 path: Pages.chooseCategoryList.path,
