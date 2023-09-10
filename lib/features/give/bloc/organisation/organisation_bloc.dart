@@ -75,6 +75,14 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           selectedCollectGroup: selectedGroup,
         ),
       );
+      if (event.type == CollecGroupType.none.index) {
+        emit(
+          state.copyWith(selectedType: event.type),
+        );
+      }
+      if (event.type != -1 && event.type != CollecGroupType.none.index) {
+        add(OrganisationTypeChanged(event.type));
+      }
     } on GivtServerFailure catch (e) {
       final statusCode = e.statusCode;
       final body = e.body;

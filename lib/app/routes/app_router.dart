@@ -262,28 +262,6 @@ class AppRouter {
                 ),
                 routes: [
                   GoRoute(
-                    path: Pages.give.path,
-                    name: Pages.give.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const GivingPage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giveOffline.path,
-                    name: Pages.giveOffline.name,
-                    builder: (context, state) {
-                      final extra = state.extra! as GiveBloc;
-                      return BlocProvider.value(
-                        value: extra,
-                        child: SuccessOfflineDonationPage(
-                          organisationName:
-                              extra.state.organisation.organisationName!,
-                        ),
-                      );
-                    },
-                  ),
-                  GoRoute(
                     path: Pages.giveByBeacon.path,
                     name: Pages.giveByBeacon.name,
                     builder: (context, state) => BlocProvider.value(
@@ -336,13 +314,87 @@ class AppRouter {
                                   user.accountType,
                                 ),
                               ),
-                          ),
+                          )
                         ],
                         child: const OrganizationListPage(),
                       );
                     },
                   ),
                 ],
+              ),
+              GoRoute(
+                path: Pages.give.path,
+                name: Pages.give.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as GiveBloc,
+                  child: const GivingPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.giveOffline.path,
+                name: Pages.giveOffline.name,
+                builder: (context, state) {
+                  final extra = state.extra! as GiveBloc;
+                  return BlocProvider.value(
+                    value: extra,
+                    child: SuccessOfflineDonationPage(
+                      organisationName:
+                          extra.state.organisation.organisationName!,
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
+                path: Pages.chooseCategoryList.path,
+                name: Pages.chooseCategoryList.name,
+                builder: (context, state) {
+                  final user = context.read<AuthCubit>().state.user;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (_) => GiveBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            const GiveCheckLastDonation(),
+                          ),
+                      ),
+                      BlocProvider(
+                        create: (_) => OrganisationBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            OrganisationFetch(
+                              user.accountType,
+                              type: state.extra != null && state.extra is int
+                                  ? state.extra! as int
+                                  : -1,
+                            ),
+                          ),
+                      )
+                    ],
+                    child: const OrganizationListPage(
+                      isChooseCategory: true,
+                    ),
+                  );
+                },
+                // routes: [
+                //   GoRoute(
+                //     path: Pages.chooseCategoryEnterAmount.path,
+                //     name: Pages.chooseCategoryEnterAmount.name,
+                //     builder: (context, state) => BlocProvider.value(
+                //       value: state.extra! as GiveBloc
+                //         ..add(
+                //           const GiveCheckLastDonation(),
+                //         ),
+                //       child: const OrganizationListPage(),
+                //     ),
+                //   ),
+
+                // ],
               ),
               GoRoute(
                 path: Pages.overview.path,

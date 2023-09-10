@@ -7,7 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/give/widgets/choose_amount.dart';
+import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -15,20 +15,25 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({required this.code, required this.given, super.key});
 
   final String code;
   final bool given;
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isGive = true;
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
+    final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
     return Scaffold(
       appBar: AppBar(
-        title: Text(locals.amount),
+        title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
@@ -47,62 +52,34 @@ class HomePage extends StatelessWidget {
         ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: SafeArea(
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-              listener: (context, state) {
-                if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
-                      ),
-                    ),
-                  );
-                }
-                if (state is RemoteDataSourceSyncInProgress) {
-                  if (!auth.user.needRegistration || auth.user.mandateSigned) {
-                    return;
-                  }
-                  _buildNeedsRegistrationDialog(context);
-                }
+      body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+        listener: (context, state) {
+          if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
+                ),
+              ),
+            );
+          }
+          if (state is RemoteDataSourceSyncInProgress) {
+            if (!auth.user.needRegistration || auth.user.mandateSigned) {
+              return;
+            }
+            _buildNeedsRegistrationDialog(context);
+          }
+        },
+        child: SafeArea(
+          child: _HomePageView(
+            given: widget.given,
+            code: widget.code,
+            onPageChanged: () => setState(
+              () {
+                isGive = !isGive;
               },
-              child: ChooseAmount(
-                country: Country.fromCode(auth.user.country),
-                amountLimit: auth.user.amountLimit,
-                hasGiven: given,
-                arePresetsEnabled: auth.user.presets.isEnabled,
-                presets: auth.user.presets.presets,
-                onAmountChanged:
-                    (firstCollection, secondCollection, thirdCollection) =>
-                        context.goNamed(
-                  Pages.selectGivingWay.name,
-                  extra: {
-                    'firstCollection': firstCollection,
-                    'secondCollection': secondCollection,
-                    'thirdCollection': thirdCollection,
-                    'code': code,
-                  },
-                ),
-              ),
             ),
-            ColoredBox(
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 15,
-                  left: 15,
-                  bottom: 10,
-                ),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: size.width * 0.2,
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -151,6 +128,99 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _HomePageView extends StatefulWidget {
+  const _HomePageView({
+    required this.onPageChanged,
+    required this.given,
+    required this.code,
+  });
+
+  final bool given;
+  final String code;
+  final VoidCallback onPageChanged;
+
+  @override
+  State<_HomePageView> createState() => _HomePageViewState();
+}
+
+class _HomePageViewState extends State<_HomePageView> {
+  late PageController pageController;
+  int pageIndex = 0;
+
+  @override
+  void initState() {
+    pageController = PageController();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final auth = context.watch<AuthCubit>().state;
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        HomePageViewLayout(
+          child: PageView(
+            controller: pageController,
+            onPageChanged: onPageChanged,
+            children: [
+              ChooseAmount(
+                country: Country.fromCode(auth.user.country),
+                amountLimit: auth.user.amountLimit,
+                hasGiven: widget.given,
+                arePresetsEnabled: auth.user.presets.isEnabled,
+                presets: auth.user.presets.presets,
+                onAmountChanged:
+                    (firstCollection, secondCollection, thirdCollection) =>
+                        context.goNamed(
+                  Pages.selectGivingWay.name,
+                  extra: {
+                    'firstCollection': firstCollection,
+                    'secondCollection': secondCollection,
+                    'thirdCollection': thirdCollection,
+                    'code': widget.code,
+                  },
+                ),
+              ),
+              const ChooseCategory()
+            ],
+          ),
+        ),
+        ColoredBox(
+          color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 15,
+              left: 15,
+              bottom: 5,
+            ),
+            child: AnimatedSwitch(
+              onChanged: onPageChanged,
+              pageIndex: pageIndex,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void onPageChanged(int index) {
+    if (index == pageIndex) {
+      return;
+    }
+    setState(() {
+      pageIndex = index;
+      widget.onPageChanged();
+    });
+
+    pageController.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 }
