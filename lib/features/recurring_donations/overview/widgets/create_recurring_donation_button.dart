@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class CreateRecurringDonationButton extends StatelessWidget {
-  const CreateRecurringDonationButton(
-      {required this.onClick, required this.locals, super.key});
+  const CreateRecurringDonationButton({
+    required this.onClick,
+    super.key,
+  });
 
-  final void Function() onClick;
-  final AppLocalizations locals;
+  final VoidCallback onClick;
 
   @override
   Widget build(BuildContext context) {
+    final locals = context.l10n;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         elevation: 5,
