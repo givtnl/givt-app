@@ -22,10 +22,20 @@ class AppTheme {
   static const givtDarkGreen = Color(0xFF1da96c);
   static const softenedGivtPurple = Color(0xFF585479);
   static const presetsButtonColor = Color(0xFF918fa6);
+  static const givtLightYellow = Color(0xFFFFF9E3);
+  static const givtKidsYellow = Color(0xFFFFE075);
 
   static const sliderIndicatorFilled = Color(0xFF184869);
   static const sliderIndicatorNotFilled = Color(0xFFD9D9D9);
   static const fontFamily = 'AvenirLTStd';
+
+  static const inputFieldBorderEnabled = Color(0xFFCCCCCC);
+  static const inputFieldBorderSelected = Color(0xFF355070);
+
+  static const childItemBackground = Color(0xFF54A1EE);
+  static const childItemPendingBackground = Color(0xFFE28D4D);
+
+  static const vpcSuccessBackground = Color(0xFF7DBDA1);
 
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,

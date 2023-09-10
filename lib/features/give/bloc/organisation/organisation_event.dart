@@ -8,12 +8,16 @@ abstract class OrganisationEvent extends Equatable {
 }
 
 class OrganisationFetch extends OrganisationEvent {
-  const OrganisationFetch(this.accountType);
+  const OrganisationFetch(
+    this.accountType, {
+    this.type = -1,
+  });
 
   final AccountType accountType;
+  final int type;
 
   @override
-  List<Object> get props => [accountType];
+  List<Object> get props => [accountType, type];
 }
 
 class OrganisationTypeChanged extends OrganisationEvent {

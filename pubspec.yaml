@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 3.18.3
+version: 3.19.1
 publish_to: none
 
 environment:
@@ -8,9 +8,11 @@ environment:
 
 dependencies:
   amplitude_flutter: ^3.16.0
+  animated_toggle_switch: ^0.7.0
   badges: ^3.1.1
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
+  currency_text_input_formatter: ^2.1.10
   device_info_plus: ^9.0.2
   device_region: ^1.0.1
   dotted_border: ^2.0.0+3
@@ -18,7 +20,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
-  flutter_blue_plus: ^1.8.7
+  flutter_blue_plus: 1.8.7
   flutter_inappwebview: ^5.7.2+3
   flutter_localizations:
     sdk: flutter
@@ -29,7 +31,8 @@ dependencies:
   get_it: ^7.6.0
   go_router: ^9.1.1
   http: ^0.13.6
-  http_certificate_pinning: ^2.0.7
+  http_certificate_pinning:
+    path: ./packages/http_certificate_pinning
   http_interceptor: ^1.0.2
   iban: ^1.0.1
   internet_connection_checker_plus: ^1.0.1
@@ -46,6 +49,8 @@ dependencies:
   url_launcher: ^6.1.12
   vibration: ^1.8.1
   jiffy: ^6.2.1
+  native_shared_preferences: ^2.0.7
+  propertylistserialization: ^1.3.0
 
 dev_dependencies:
   bloc_test: ^9.1.1

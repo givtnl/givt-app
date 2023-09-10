@@ -65,6 +65,17 @@ class OverviewPage extends StatelessWidget {
             ),
           );
         }
+
+        if (state is GivtUnknown) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.errorOccurred,
+              content: locals.errorContactGivt,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
       },
       builder: (context, state) {
         if (state is GivtLoading) {
@@ -76,6 +87,9 @@ class OverviewPage extends StatelessWidget {
         }
         if (state.givts.isEmpty) {
           return Scaffold(
+            appBar: AppBar(
+              leading: const BackButton(),
+            ),
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -116,7 +130,7 @@ class OverviewPage extends StatelessWidget {
                 state: state,
                 context: context,
                 icon: const Icon(Icons.info_rounded),
-                child: DonationTypeExplanationSheet(),
+                child: const DonationTypeExplanationSheet(),
               ),
             ],
           ),
@@ -160,6 +174,12 @@ class OverviewPage extends StatelessWidget {
                         monthSections[index].timeStamp!.month) {
                       return const SizedBox.shrink();
                     }
+
+                    if (givtGroup.timeStamp!.year !=
+                        monthSections[index].timeStamp!.year) {
+                      return const SizedBox.shrink();
+                    }
+
                     return Column(
                       children: [
                         GivtListItem(

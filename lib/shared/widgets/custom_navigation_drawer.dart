@@ -11,6 +11,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -28,7 +29,10 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    final showFamilyItem = auth.user.country == Country.us.countryCode &&
+    const apiURL = String.fromEnvironment('API_URL_US');
+
+    final showFamilyItem = apiURL.contains('dev') &&
+        auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
         auth.user.mandateSigned;
     return Drawer(
@@ -43,12 +47,18 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.edit,
             onTap: () {
               if (auth.user.needRegistration) {
-                context.goNamed(
-                  Pages.registration.name,
-                  queryParameters: {
-                    'email': auth.user.email,
-                  },
-                );
+                final auth = context.read<AuthCubit>().state;
+                final createStripe = auth.user.personalInfoRegistered &&
+                    (auth.user.country == Country.us.countryCode);
+                context
+                  ..goNamed(
+                    Pages.registration.name,
+                    queryParameters: {
+                      'email': auth.user.email,
+                      'createStripe': createStripe.toString()
+                    },
+                  )
+                  ..pop();
                 return;
               }
               context.goNamed(
@@ -83,12 +93,17 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
-            onTap: () => AuthUtils.checkToken(
-              context,
-              navigate: () => context.goNamed(
-                Pages.overview.name,
-              ),
-            ),
+            onTap: () {
+              context.read<RemoteDataSourceSyncBloc>().add(
+                    const RemoteDataSourceSyncRequested(),
+                  );
+              AuthUtils.checkToken(
+                context,
+                navigate: () => context.goNamed(
+                  Pages.overview.name,
+                ),
+              );
+            },
           ),
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
@@ -229,11 +244,10 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
-            isVisible: false,
-            // showFamilyItem,
+            isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
-            onTap: () => context.goNamed(Pages.giveVPC.name),
+            onTap: () => context.goNamed(Pages.childrenOverview.name),
           ),
           _buildEmptySpace(),
           _buildMenuItem(

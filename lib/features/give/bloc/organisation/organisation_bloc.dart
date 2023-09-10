@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -73,9 +75,20 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           selectedCollectGroup: selectedGroup,
         ),
       );
-    } catch (e) {
+      if (event.type == CollecGroupType.none.index) {
+        emit(
+          state.copyWith(selectedType: event.type),
+        );
+      }
+      if (event.type != -1 && event.type != CollecGroupType.none.index) {
+        add(OrganisationTypeChanged(event.type));
+      }
+    } on GivtServerFailure catch (e) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      log('StatusCode:$statusCode Body:$body');
       await LoggingInfo.instance.error(
-        e.toString(),
+        body.toString(),
         methodName: StackTrace.current.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));

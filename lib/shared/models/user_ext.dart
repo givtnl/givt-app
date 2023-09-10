@@ -68,33 +68,26 @@ class UserExt extends Equatable {
 
   factory UserExt.fromJson(Map<String, dynamic> json) => UserExt(
         email: json['Email'] as String,
-        guid: json['GUID'] as String,
+        guid: (json['GUID'] ?? json['Guid']) as String,
         amountLimit: json['AmountLimit'] as int,
-        tempUser: json['IsTempUser'] as bool,
+        tempUser: (json['IsTempUser'] ?? json['TempUser']) as bool,
         iban: json['IBAN'] != null ? json['IBAN'] as String : '',
-        phoneNumber:
-            json['PhoneNumber'] != null ? json['PhoneNumber'] as String : '',
-        firstName: json['FirstName'] as String,
-        lastName: json['LastName'] as String,
-        address: json['Address'] != null ? json['Address'] as String : '',
-        postalCode:
-            json['PostalCode'] != null ? json['PostalCode'] as String : '',
-        city: json['City'] != null ? json['City'] as String : '',
-        country: json['Country'] as String,
-        countryCode: json['CountryCode'] as int,
-        isGiftAidEnabled: json['GiftAidEnabled'] as bool,
-        sortCode: json['SortCode'] != null ? json['SortCode'] as String : '',
-        accountNumber: json['AccountNumber'] != null
-            ? json['AccountNumber'] as String
-            : '',
-        appLanguage:
-            json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
-        accountType: AccountType.fromString(json['AccountType'] as String),
-        needRegistration: json['IsTempUser'] as bool,
+        phoneNumber: (json['PhoneNumber'] ?? '') as String,
+        firstName: (json['FirstName'] ?? '') as String,
+        lastName: (json['LastName'] ?? '') as String,
+        address: (json['Address'] ?? '') as String,
+        postalCode: (json['PostalCode'] ?? '') as String,
+        city: (json['City'] ?? '') as String,
+        country: (json['Country'] ?? '') as String,
+        countryCode: (json['CountryCode'] ?? -1) as int,
+        isGiftAidEnabled: (json['GiftAidEnabled'] ?? false) as bool,
+        sortCode: (json['SortCode'] ?? '') as String,
+        accountNumber: (json['AccountNumber'] ?? '') as String,
+        appLanguage: (json['AppLanguage'] ?? '') as String,
+        accountType: AccountType.fromString((json['AccountType'] ?? '') as String),
+        needRegistration: (json['IsTempUser'] ?? json['TempUser']) as bool,
         personalInfoRegistered: json['FirstName'] != null,
-        payProvMandateStatus: json['PayProvMandateStatus'] != null
-            ? json['PayProvMandateStatus'] as String
-            : '',
+        payProvMandateStatus: (json['PayProvMandateStatus'] ?? '') as String,
         payProvMandate: json['PayProvMandate'] != null
             ? json['PayProvMandate'] as String
             : '',

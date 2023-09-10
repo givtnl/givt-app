@@ -5,6 +5,12 @@ import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
+import 'package:givt_app/features/children/create_child/pages/create_child_page.dart';
+import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
+import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/features/children/vpc/pages/give_vpc_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -22,6 +28,7 @@ import 'package:givt_app/features/personal_summary/pages/personal_summary_page.d
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
@@ -31,8 +38,7 @@ import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
-import 'package:givt_app/features/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/vpc/pages/give_vpc_page.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -91,11 +97,29 @@ class AppRouter {
                 ),
               ),
               GoRoute(
+                path: Pages.childrenOverview.path,
+                name: Pages.childrenOverview.name,
+                builder: (context, state) => BlocProvider(
+                  create: (_) => ChildrenOverviewCubit(getIt())
+                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+                  child: const ChildrenOverviewPage(),
+                ),
+              ),
+              GoRoute(
                 path: Pages.giveVPC.path,
                 name: Pages.giveVPC.name,
+                builder: (context, state) {
+                  context.read<VPCCubit>().showVPCInfo();
+                  return const GiveVPCPage();
+                },
+              ),
+              GoRoute(
+                path: Pages.createChild.path,
+                name: Pages.createChild.name,
                 builder: (context, state) => BlocProvider(
-                  create: (_) => VPCCubit(getIt()),
-                  child: const GiveVPCPage(),
+                  create: (_) =>
+                      CreateChildCubit(getIt(), AppLocalizations.of(context)),
+                  child: const CreateChildPage(),
                 ),
               ),
               GoRoute(
@@ -114,13 +138,27 @@ class AppRouter {
                 name: Pages.registration.name,
                 builder: (context, state) {
                   final email = state.queryParameters['email'] ?? '';
-                  return BlocProvider(
-                    create: (context) => RegistrationBloc(
-                      authCubit: context.read<AuthCubit>(),
-                      authRepositoy: getIt(),
-                    ),
+
+                  final createStripe =
+                      state.queryParameters['createStripe'] ?? 'false';
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => StripeCubit(
+                          authRepositoy: getIt(),
+                          authCubit: context.read<AuthCubit>(),
+                        ),
+                      ),
+                      BlocProvider(
+                        create: (context) => RegistrationBloc(
+                          authCubit: context.read<AuthCubit>(),
+                          authRepositoy: getIt(),
+                        ),
+                      ),
+                    ],
                     child: SignUpPage(
                       email: email,
+                      createStripe: createStripe,
                     ),
                   );
                 },
@@ -224,28 +262,6 @@ class AppRouter {
                 ),
                 routes: [
                   GoRoute(
-                    path: Pages.give.path,
-                    name: Pages.give.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const GivingPage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giveOffline.path,
-                    name: Pages.giveOffline.name,
-                    builder: (context, state) {
-                      final extra = state.extra! as GiveBloc;
-                      return BlocProvider.value(
-                        value: extra,
-                        child: SuccessOfflineDonationPage(
-                          organisationName:
-                              extra.state.organisation.organisationName!,
-                        ),
-                      );
-                    },
-                  ),
-                  GoRoute(
                     path: Pages.giveByBeacon.path,
                     name: Pages.giveByBeacon.name,
                     builder: (context, state) => BlocProvider.value(
@@ -298,13 +314,87 @@ class AppRouter {
                                   user.accountType,
                                 ),
                               ),
-                          ),
+                          )
                         ],
                         child: const OrganizationListPage(),
                       );
                     },
                   ),
                 ],
+              ),
+              GoRoute(
+                path: Pages.give.path,
+                name: Pages.give.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as GiveBloc,
+                  child: const GivingPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.giveOffline.path,
+                name: Pages.giveOffline.name,
+                builder: (context, state) {
+                  final extra = state.extra! as GiveBloc;
+                  return BlocProvider.value(
+                    value: extra,
+                    child: SuccessOfflineDonationPage(
+                      organisationName:
+                          extra.state.organisation.organisationName!,
+                    ),
+                  );
+                },
+              ),
+              GoRoute(
+                path: Pages.chooseCategoryList.path,
+                name: Pages.chooseCategoryList.name,
+                builder: (context, state) {
+                  final user = context.read<AuthCubit>().state.user;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (_) => GiveBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            const GiveCheckLastDonation(),
+                          ),
+                      ),
+                      BlocProvider(
+                        create: (_) => OrganisationBloc(
+                          getIt(),
+                          getIt(),
+                          getIt(),
+                        )..add(
+                            OrganisationFetch(
+                              user.accountType,
+                              type: state.extra != null && state.extra is int
+                                  ? state.extra! as int
+                                  : -1,
+                            ),
+                          ),
+                      )
+                    ],
+                    child: const OrganizationListPage(
+                      isChooseCategory: true,
+                    ),
+                  );
+                },
+                // routes: [
+                //   GoRoute(
+                //     path: Pages.chooseCategoryEnterAmount.path,
+                //     name: Pages.chooseCategoryEnterAmount.name,
+                //     builder: (context, state) => BlocProvider.value(
+                //       value: state.extra! as GiveBloc
+                //         ..add(
+                //           const GiveCheckLastDonation(),
+                //         ),
+                //       child: const OrganizationListPage(),
+                //     ),
+                //   ),
+
+                // ],
               ),
               GoRoute(
                 path: Pages.overview.path,
@@ -345,7 +435,9 @@ class AppRouter {
           GoRoute(
             path: Pages.welcome.path,
             name: Pages.welcome.name,
-            builder: (context, state) => const WelcomePage(),
+            builder: (context, state) => WelcomePage(
+              prefs: getIt(),
+            ),
           ),
         ],
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(

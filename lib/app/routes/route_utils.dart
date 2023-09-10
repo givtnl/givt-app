@@ -6,6 +6,8 @@ enum Pages {
   give,
   giveOffline,
   giveByList,
+  chooseCategoryList,
+  chooseCategoryEnterAmount,
   giveByQrCode,
   giveByLocation,
   giveByBeacon,
@@ -20,8 +22,10 @@ enum Pages {
   personalInfoEdit,
   giveVPC,
   unregister,
+  createChild,
   personalSummary,
   recurringDonations,
+  childrenOverview
 }
 
 extension AppPageExtension on Pages {
@@ -69,10 +73,18 @@ extension AppPageExtension on Pages {
         return 'give-vpc';
       case Pages.unregister:
         return 'unregister';
+      case Pages.createChild:
+        return 'create-child';
       case Pages.personalSummary:
         return 'personal-summary';
       case Pages.recurringDonations:
         return 'recurring-donations';
+      case Pages.childrenOverview:
+        return 'children-overview';
+      case Pages.chooseCategoryList:
+        return 'choose-category-list';
+      case Pages.chooseCategoryEnterAmount:
+        return 'choose-category-enter-amount';
     }
   }
 
@@ -120,10 +132,18 @@ extension AppPageExtension on Pages {
         return 'GIVE-VPC';
       case Pages.unregister:
         return 'UNREGISTER';
+      case Pages.createChild:
+        return 'CREATE-CHILD';
       case Pages.personalSummary:
         return 'PERSONAL-SUMMARY';
       case Pages.recurringDonations:
         return 'RECURRING-DONATIONS';
+      case Pages.childrenOverview:
+        return 'CHILDREN-OVERVIEW';
+      case Pages.chooseCategoryList:
+        return 'CHOOSE-CATEGORY-LIST';
+      case Pages.chooseCategoryEnterAmount:
+        return 'CHOOSE-CATEGORY-ENTER-AMOUNT';
     }
   }
 }

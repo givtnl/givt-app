@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/widgets/stripe_info_sheet.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
@@ -74,24 +76,51 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         ],
       ),
       bottomSheet: Container(
-        margin: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
-        child: isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ElevatedButton(
+          margin: const EdgeInsets.only(
+            bottom: 30,
+            left: 20,
+            right: 20,
+            top: 20,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isLoading)
+                const Center(child: CircularProgressIndicator())
+              else if (_selectedCountry == Country.us)
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: TextButton.icon(
+                    onPressed: () => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      showDragHandle: true,
+                      backgroundColor: AppTheme.givtBlue,
+                      builder: (_) => const StripeInfoSheet(),
+                    ),
+                    icon: const Icon(
+                      Icons.info_rounded,
+                      size: 20,
+                    ),
+                    label: Text(locals.moreInformationAboutStripe),
+                  ),
+                )
+              else
+                const SizedBox(),
+              ElevatedButton(
                 onPressed: isEnabled ? _onNext : null,
                 style: ElevatedButton.styleFrom(
                   disabledBackgroundColor: Colors.grey,
                 ),
                 child: Text(
-                  locals.next,
+                  _selectedCountry == Country.us
+                      ? locals.enterPaymentDetails
+                      : locals.next,
                 ),
               ),
-      ),
+            ],
+          )),
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
           if (state.status == RegistrationStatus.failure) {
@@ -104,6 +133,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               isLoading = false;
             });
           }
+          if (state.status == RegistrationStatus.createStripeAccount) {
+            context.pop();
+          }
         },
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -113,58 +145,77 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: Column(
                 children: [
                   Text(locals.registerPersonalPage),
-                  _buildTextFormField(
-                    hintText: locals.streetAndHouseNumber,
-                    controller: _address,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    hintText: locals.postalCode,
-                    controller: _postalCode,
-                    toUpperCase: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-
-                      if (!Country.unitedKingdomCodes().contains(
-                        _selectedCountry.countryCode,
-                      )) {
+                  if (!(_selectedCountry == Country.us))
+                    _buildTextFormField(
+                      hintText: locals.streetAndHouseNumber,
+                      controller: _address,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
                         return null;
-                      }
+                      },
+                    ),
+                  if (!(_selectedCountry == Country.us))
+                    _buildTextFormField(
+                      hintText: locals.postalCode,
+                      controller: _postalCode,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        if (!Country.unitedKingdomCodes().contains(
+                          _selectedCountry.countryCode,
+                        )) {
+                          return null;
+                        }
 
-                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
-                  _buildTextFormField(
-                    hintText: locals.city,
-                    controller: _city,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return '';
-                      }
-                      return null;
-                    },
-                  ),
+                        if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
+                  if (!(_selectedCountry == Country.us))
+                    _buildTextFormField(
+                      hintText: locals.city,
+                      controller: _city,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return '';
+                        }
+                        return null;
+                      },
+                    ),
                   _buildCountryAndMobileNumber(size, locals, context),
-                  PaymentSystemTab(
-                    bankAccount: bankAccount,
-                    ibanNumber: ibanNumber,
-                    sortCode: sortCode,
-                    onFieldChanged: (value) => setState(() {}),
-                    onPaymentChanged: (value) {
-                      if (value == 0) {
-                        bankAccount.clear();
-                        sortCode.clear();
-                        if (Country.unitedKingdomCodes()
+                  if (!(_selectedCountry == Country.us))
+                    PaymentSystemTab(
+                      bankAccount: bankAccount,
+                      ibanNumber: ibanNumber,
+                      sortCode: sortCode,
+                      onFieldChanged: (value) => setState(() {}),
+                      onPaymentChanged: (value) {
+                        if (value == 0) {
+                          bankAccount.clear();
+                          sortCode.clear();
+                          if (Country.unitedKingdomCodes()
+                              .contains(_selectedCountry.countryCode)) {
+                            showDialog<void>(
+                              context: context,
+                              builder: (context) => _buildWarningDialog(
+                                message: locals.alertSepaMessage(
+                                  Country.getCountry(
+                                    _selectedCountry.countryCode,
+                                    locals,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          setState(() {});
+                          return;
+                        }
+                        if (!Country.unitedKingdomCodes()
                             .contains(_selectedCountry.countryCode)) {
                           showDialog<void>(
                             context: context,
@@ -178,26 +229,9 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             ),
                           );
                         }
-                        setState(() {});
-                        return;
-                      }
-                      if (!Country.unitedKingdomCodes()
-                          .contains(_selectedCountry.countryCode)) {
-                        showDialog<void>(
-                          context: context,
-                          builder: (context) => _buildWarningDialog(
-                            message: locals.alertBacsMessage(
-                              Country.getCountry(
-                                _selectedCountry.countryCode,
-                                locals,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      setState(ibanNumber.clear);
-                    },
-                  ),
+                        setState(ibanNumber.clear);
+                      },
+                    ),
                   SizedBox(
                     height: size.height * 0.2,
                   ),
@@ -264,52 +298,57 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   ) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: DropdownButtonFormField<Country>(
-            validator: (value) {
-              if (value == null) {
-                return '';
-              }
+        if (!(_selectedCountry == Country.us))
+          Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: DropdownButtonFormField<Country>(
+              validator: (value) {
+                if (value == null) {
+                  return '';
+                }
 
-              return null;
-            },
-            value: _selectedCountry,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 5,
-              ),
-              labelText: locals.country,
-              labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontSize: 16,
-                  ),
-              errorStyle: const TextStyle(
-                height: 0,
-              ),
-            ),
-            menuMaxHeight: size.height * 0.3,
-            items: Country.sortedCountries()
-                .map(
-                  (Country country) => DropdownMenuItem(
-                    value: country,
-                    child: Text(
-                      Country.getCountry(country.countryCode, locals),
-                      style: Theme.of(context).textTheme.bodyLarge,
+                return null;
+              },
+              value: _selectedCountry,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                labelText: locals.country,
+                labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
                     ),
-                  ),
-                )
-                .toList(),
-            onChanged: (Country? newValue) {
-              setState(() {
-                _selectedCountry = newValue!;
-              });
-            },
+                errorStyle: const TextStyle(
+                  height: 0,
+                ),
+              ),
+              menuMaxHeight: size.height * 0.3,
+              items: Country.sortedCountries()
+                  .map(
+                    (Country country) => DropdownMenuItem(
+                      value: country,
+                      child: Text(
+                        Country.getCountry(country.countryCode, locals),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (Country? newValue) {
+                setState(() {
+                  _selectedCountry = newValue!;
+                });
+              },
+            ),
           ),
-        ),
+        if (_selectedCountry == Country.us) const SizedBox(height: 10),
         MobileNumberFormField(
           phone: _phone,
           selectedCountryPrefix: _selectedCountry.prefix,
+          hintText: _selectedCountry != Country.us
+              ? locals.phoneNumber
+              : locals.mobileNumberUsDigits,
           onPhoneChanged: (String value) => setState(() {}),
           onPrefixChanged: (String selected) {
             setState(() {
@@ -318,6 +357,12 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               );
             });
           },
+          formatter: (_selectedCountry == Country.us)
+              ? [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10)
+                ]
+              : null,
           validator: (String? value) {
             if (value == null || value.isEmpty) {
               return '';
@@ -331,10 +376,32 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               }
               return null;
             }
+            if (Country.us != _selectedCountry &&
+                !Country.unitedKingdomCodes()
+                    .contains(_selectedCountry.countryCode)) {
+              final prefix = _selectedCountry.prefix.replaceAll('+', '');
+              if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
+                return '';
+              }
+            }
+            if (Country.us == _selectedCountry) {
+              final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+              var formatted = '';
+              if (numericOnly.length == 10) {
+                final chunkSize = [3, 3, 4];
+                var startIndex = 0;
 
-            final prefix = _selectedCountry.prefix.replaceAll('+', '');
-            if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
-              return '';
+                final chunks = chunkSize.map((size) {
+                  final chunk =
+                      numericOnly.substring(startIndex, startIndex + size);
+                  startIndex += size;
+                  return chunk;
+                });
+                formatted = chunks.join('-');
+              }
+              if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
+                return '';
+              }
             }
 
             return null;
@@ -354,12 +421,14 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     });
     context.read<RegistrationBloc>().add(
           RegistrationPersonalInfoSubmitted(
-            address: _address.text,
-            city: _city.text,
-            postalCode: _postalCode.text,
+            address: _address.text.isEmpty ? Util.defaultAdress : _address.text,
+            city: _city.text.isEmpty ? Util.defaultCity : _city.text,
+            postalCode: _postalCode.text.isEmpty
+                ? Util.defaultPostCode
+                : _postalCode.text,
             country: _selectedCountry.countryCode,
             phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
-            iban: ibanNumber.text,
+            iban: ibanNumber.text.isEmpty ? Util.defaultIban : ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,
             appLanguage: Localizations.localeOf(context).languageCode,
