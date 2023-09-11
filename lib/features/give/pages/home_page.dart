@@ -31,53 +31,57 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
-        actions: [
-          IconButton(
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              useSafeArea: true,
-              showDragHandle: true,
-              backgroundColor: AppTheme.givtPurple,
-              builder: (_) => const FAQBottomSheet(),
-            ),
-            icon: const Icon(
-              Icons.question_mark_outlined,
-              size: 26,
-            ),
-          ),
-        ],
-      ),
-      drawer: const CustomNavigationDrawer(),
-      body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-        listener: (context, state) {
-          if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
-                ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title:
+              Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
+          actions: [
+            IconButton(
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                showDragHandle: true,
+                backgroundColor: AppTheme.givtPurple,
+                builder: (_) => const FAQBottomSheet(),
               ),
-            );
-          }
-          if (state is RemoteDataSourceSyncInProgress) {
-            if (!auth.user.needRegistration || auth.user.mandateSigned) {
-              return;
+              icon: const Icon(
+                Icons.question_mark_outlined,
+                size: 26,
+              ),
+            ),
+          ],
+        ),
+        drawer: const CustomNavigationDrawer(),
+        body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+          listener: (context, state) {
+            if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
+                  ),
+                ),
+              );
             }
-            _buildNeedsRegistrationDialog(context);
-          }
-        },
-        child: SafeArea(
-          child: _HomePageView(
-            given: widget.given,
-            code: widget.code,
-            onPageChanged: () => setState(
-              () {
-                isGive = !isGive;
-              },
+            if (state is RemoteDataSourceSyncInProgress) {
+              if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                return;
+              }
+              _buildNeedsRegistrationDialog(context);
+            }
+          },
+          child: SafeArea(
+            child: _HomePageView(
+              given: widget.given,
+              code: widget.code,
+              onPageChanged: () => setState(
+                () {
+                  isGive = !isGive;
+                },
+              ),
             ),
           ),
         ),
