@@ -38,7 +38,7 @@ class ChildrenOverviewPage extends StatelessWidget {
               children: [
                 BackButton(
                   onPressed: () {
-                    Navigator.maybePop(context);
+                    context.pop();
                     AnalyticsHelper.logEvent(
                         eventName: AmplitudeEvents.backClicked);
                   },
