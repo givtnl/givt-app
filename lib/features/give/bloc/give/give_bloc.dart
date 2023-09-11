@@ -310,6 +310,13 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         e.toString(),
         methodName: StackTrace.current.toString(),
       );
+      emit(
+        state.copyWith(
+          organisation: organisation,
+          status: GiveStatus.noInternetConnection,
+        ),
+      );
+      return;
     }
 
     emit(

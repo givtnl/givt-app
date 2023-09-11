@@ -28,6 +28,12 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
     final auth = context.watch<AuthCubit>().state;
     return BlocListener<GiveBloc, GiveState>(
       listener: (context, state) {
+        if (state.status == GiveStatus.noInternetConnection) {
+          context.goNamed(
+            Pages.giveOffline.name,
+            extra: context.read<GiveBloc>(),
+          );
+        }
         if (state.status == GiveStatus.readyToGive) {
           context.goNamed(
             Pages.give.name,
