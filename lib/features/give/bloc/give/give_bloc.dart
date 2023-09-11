@@ -305,6 +305,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         state.copyWith(status: GiveStatus.error),
       );
       return;
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: StackTrace.current.toString(),
+      );
     }
 
     emit(

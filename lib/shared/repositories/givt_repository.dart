@@ -53,6 +53,9 @@ class GivtRepositoryImpl with GivtRepository {
       await _cacheGivts(body);
 
       throw const SocketException('No internet connection');
+    } catch (e) {
+      await _cacheGivts(body);
+      rethrow;
     }
   }
 
