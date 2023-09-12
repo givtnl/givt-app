@@ -515,6 +515,10 @@ class AuthRepositoyImpl with AuthRepositoy {
       decodedGivts,
     );
 
+    if(offlineGivts.isEmpty){
+      return;
+    }
+
     await LoggingInfo.instance.info(
       'Restoring ${offlineGivts.length} offline givts: $offlineGivtsString',
     );
