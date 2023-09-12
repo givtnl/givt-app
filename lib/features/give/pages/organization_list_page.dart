@@ -9,12 +9,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class OrganizationListPage extends StatelessWidget {
-  const OrganizationListPage({super.key});
+  const OrganizationListPage({
+    super.key,
+    this.isChooseCategory = false,
+  });
+
+  final bool isChooseCategory;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +51,17 @@ class OrganizationListPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          final focusNode = FocusNode();
+          if (state.selectedType == CollecGroupType.none.index) {
+            focusNode.requestFocus();
+          }
           return Column(
             children: [
               _buildFilterType(bloc, locals),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: CupertinoSearchTextField(
+                  focusNode: focusNode,
                   onChanged: (value) => context
                       .read<OrganisationBloc>()
                       .add(OrganisationFilterQueryChanged(value)),
@@ -95,6 +106,21 @@ class OrganizationListPage extends StatelessWidget {
                             final userGUID =
                                 context.read<AuthCubit>().state.user.guid;
 
+                            if (isChooseCategory) {
+                              showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => BlocProvider.value(
+                                  value: context.read<GiveBloc>(),
+                                  child: EnterAmountBottomSheet(
+                                    collectGroupNameSpace:
+                                        state.selectedCollectGroup.nameSpace,
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
                             context.read<GiveBloc>().add(
                                   GiveOrganisationSelected(
                                     state.selectedCollectGroup.nameSpace,
@@ -115,16 +141,12 @@ class OrganizationListPage extends StatelessWidget {
     switch (CollecGroupType.fromInt(selectedType)) {
       case CollecGroupType.church:
         title = locals.church;
-        break;
       case CollecGroupType.charities:
         title = locals.charity;
-        break;
       case CollecGroupType.campaign:
         title = locals.campaign;
-        break;
       case CollecGroupType.artists:
         title = locals.artist;
-        break;
       default:
         break;
     }
@@ -216,19 +238,16 @@ class OrganizationListPage extends StatelessWidget {
               ),
             ),
           ),
-          Visibility(
+          FilterSuggestionCard(
             visible: Platform.isIOS,
-            child: FilterSuggestionCard(
-              isFocused:
-                  bloc.state.selectedType == CollecGroupType.artists.index,
-              title: locals.artist,
-              icon: CollecGroupType.artists.icon,
-              activeIcon: CollecGroupType.artists.activeIcon,
-              color: CollecGroupType.artists.color,
-              onTap: () => bloc.add(
-                OrganisationTypeChanged(
-                  CollecGroupType.artists.index,
-                ),
+            isFocused: bloc.state.selectedType == CollecGroupType.artists.index,
+            title: locals.artist,
+            icon: CollecGroupType.artists.icon,
+            activeIcon: CollecGroupType.artists.activeIcon,
+            color: CollecGroupType.artists.color,
+            onTap: () => bloc.add(
+              OrganisationTypeChanged(
+                CollecGroupType.artists.index,
               ),
             ),
           ),

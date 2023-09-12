@@ -195,7 +195,8 @@ class CustomNavigationDrawer extends StatelessWidget {
               final isFaceIdAvailable = data[1];
 
               return _buildMenuItem(
-                isVisible: isFingerprintAvailable || isFaceIdAvailable,
+                isVisible: (isFingerprintAvailable || isFaceIdAvailable) &&
+                    !auth.user.tempUser,
                 title: isFingerprintAvailable
                     ? Platform.isAndroid
                         ? locals.fingerprintTitle
@@ -235,12 +236,20 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => AuthUtils.checkToken(
-              context,
-              navigate: () => context.goNamed(
-                Pages.unregister.name,
-              ),
-            ),
+            onTap: () {
+              if (auth.user.tempUser) {
+                context.goNamed(
+                  Pages.unregister.name,
+                );
+                return;
+              }
+              AuthUtils.checkToken(
+                context,
+                navigate: () => context.goNamed(
+                  Pages.unregister.name,
+                ),
+              );
+            },
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(

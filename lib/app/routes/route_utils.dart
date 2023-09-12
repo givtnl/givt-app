@@ -6,6 +6,8 @@ enum Pages {
   give,
   giveOffline,
   giveByList,
+  chooseCategoryList,
+  chooseCategoryEnterAmount,
   giveByQrCode,
   giveByLocation,
   giveByBeacon,
@@ -79,6 +81,10 @@ extension AppPageExtension on Pages {
         return 'recurring-donations';
       case Pages.childrenOverview:
         return 'children-overview';
+      case Pages.chooseCategoryList:
+        return 'choose-category-list';
+      case Pages.chooseCategoryEnterAmount:
+        return 'choose-category-enter-amount';
     }
   }
 
@@ -134,6 +140,10 @@ extension AppPageExtension on Pages {
         return 'RECURRING-DONATIONS';
       case Pages.childrenOverview:
         return 'CHILDREN-OVERVIEW';
+      case Pages.chooseCategoryList:
+        return 'CHOOSE-CATEGORY-LIST';
+      case Pages.chooseCategoryEnterAmount:
+        return 'CHOOSE-CATEGORY-ENTER-AMOUNT';
     }
   }
 }
