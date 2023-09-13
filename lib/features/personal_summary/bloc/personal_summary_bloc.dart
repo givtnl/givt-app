@@ -33,7 +33,7 @@ class PersonalSummaryBloc
   ) async {
     emit(state.copyWith(status: PersonalSummaryStatus.loading));
     final now = DateTime.now();
-    final firstDayOfMonth = DateTime(now.year, now.month, 1);
+    final firstDayOfMonth = DateTime(now.year, now.month);
     try {
       final monthlyGivts = await givtRepo.fetchMonthlySummary(
         guid: state.loggedInUserExt.guid,
@@ -44,8 +44,11 @@ class PersonalSummaryBloc
         status: PersonalSummaryStatus.success,
         monthlyGivts: monthlyGivts,
       ));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalSummaryStatus.error,
@@ -65,20 +68,20 @@ class PersonalSummaryBloc
       if (current.month == 12) {
         current = DateTime(current.year + 1, 1, 31);
       } else {
-        current = DateTime(current.year, current.month + 2, 1)
-            .subtract(Duration(days: 1));
+        current = DateTime(current.year, current.month + 2)
+            .subtract(const Duration(days: 1));
       }
     }
     if (event.increase == false) {
       if (current.month == 1) {
         current = DateTime(current.year - 1, 12, 31);
       } else {
-        current = DateTime(current.year, current.month, 1)
-            .subtract(Duration(days: 1));
+        current = DateTime(current.year, current.month)
+            .subtract(const Duration(days: 1));
       }
     }
 
-    final firstDayOfMonth = DateTime(current.year, current.month, 1);
+    final firstDayOfMonth = DateTime(current.year, current.month);
     try {
       final monthlyGivts = await givtRepo.fetchMonthlySummary(
         guid: state.loggedInUserExt.guid,
@@ -90,8 +93,11 @@ class PersonalSummaryBloc
         dateTime: current.toIso8601String(),
         monthlyGivts: monthlyGivts,
       ));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalSummaryStatus.error,

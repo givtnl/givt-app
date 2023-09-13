@@ -30,10 +30,10 @@ class RemoteDataSourceSyncBloc
       await _collectGroupRepository.fetchCollectGroupList();
       await _givtRepository.syncOfflineGivts();
       emit(RemoteDataSourceSyncSuccess());
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(RemoteDataSourceSyncInitial());
     }
