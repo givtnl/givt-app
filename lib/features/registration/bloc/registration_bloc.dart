@@ -103,11 +103,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.bacsDirectDebitMandateExplanation,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: RegistrationStatus.failure),
@@ -143,13 +143,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.success,
         ),
       );
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());
       await LoggingInfo.instance.error(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       if (statusCode == 409) {
         emit(
@@ -256,11 +256,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.giftAidChanged,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: RegistrationStatus.failure),

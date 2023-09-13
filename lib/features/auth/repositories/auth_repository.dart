@@ -147,10 +147,10 @@ class AuthRepositoyImpl with AuthRepositoy {
   Future<(UserExt, Session)?> isAuthenticated() async {
     try {
       await _copyFromNative();
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
     }
 
@@ -359,9 +359,23 @@ class AuthRepositoyImpl with AuthRepositoy {
         final archive = PropertyListSerialization.propertyListWithData(
           list.buffer.asByteData(),
           keyedArchive: true,
-        ) as Map<String, Object?>;
+        );
+        if (archive is! Map<String, Object?>) {
+          continue;
+        }
+        if (!archive.containsKey(r'$objects')) {
+          continue;
+        }
+        if (archive[r'$objects'] == null) {
+          continue;
+        }
         final objectList = archive[r'$objects']! as List<dynamic>;
         if (key == NativeNSUSerDefaultsKeys.userExtiOS) {
+          if (objectList[2] is! String ||
+              objectList[3] is! String ||
+              objectList[4] is! String) {
+            continue;
+          }
           final userExt = const UserExt.empty().copyWith(
             guid: objectList[2] as String,
             email: objectList[3] as String,
@@ -369,12 +383,6 @@ class AuthRepositoyImpl with AuthRepositoy {
           );
           await _prefs.setString(key, jsonEncode(userExt.toJson()));
         }
-        // if (key == NativeNSUSerDefaultsKeys.offlineGivts) {
-        //   await prefs.setStringList(
-        //     key,
-        //     value.map((e) => jsonEncode(e)).toList(),
-        //   );
-        // }
       } else if (value is List<Object?>) {
         await _prefs.setString(
           key,
@@ -408,9 +416,13 @@ class AuthRepositoyImpl with AuthRepositoy {
     final user = _prefs.getString(NativeNSUSerDefaultsKeys.userExtiOS) ??
         _prefs.getString(NativeSharedPreferencesKeys.prefsUser);
 
+    if (user == null) {
+      return;
+    }
+
     var userExt = UserExt.fromJson(
       jsonDecode(
-        user!,
+        user,
       ) as Map<String, dynamic>,
     );
 

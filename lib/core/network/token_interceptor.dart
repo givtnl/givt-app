@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -31,12 +30,14 @@ class TokenInterceptor implements InterceptorContract {
       if (session.accessToken.isNotEmpty) {
         data.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
-    } catch (e) {
-      log(e.toString());
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
     }
-    await LoggingInfo.instance.error(
+    await LoggingInfo.instance.info(
       '${data.method}: ${data.baseUrl}${data.params}',
-      methodName: StackTrace.current.toString(),
     );
     return data;
   }

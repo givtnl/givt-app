@@ -58,10 +58,10 @@ class InfraCubit extends Cubit<InfraState> {
         message: '$message <br /><br />$footer',
       );
       emit(const InfraSuccess());
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const InfraFailure());
     }

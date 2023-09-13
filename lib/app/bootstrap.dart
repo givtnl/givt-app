@@ -39,8 +39,8 @@ Future<void> bootstrap({
     (error, stackTrace) async {
       log(error.toString(), stackTrace: stackTrace);
       await LoggingInfo.instance.error(
-        'Errot: $error, StackTrace: $stackTrace',
-        methodName: StackTrace.current.toString(),
+        error.toString(),
+        methodName: stackTrace.toString(),
       );
     },
   );
