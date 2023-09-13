@@ -75,9 +75,9 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     } on SocketException catch (e) {
       log(e.toString());
       emit(const GivtNoInternet());
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance
-          .error(e.toString(), methodName: StackTrace.current.toString());
+          .error(e.toString(), methodName: stackTrace.toString());
       emit(const GivtUnknown());
     }
   }
@@ -250,8 +250,11 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
           givtAided: state.givtAided,
         ),
       );
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.body.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.body.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(GivtError(e.body.toString()));
     }
   }

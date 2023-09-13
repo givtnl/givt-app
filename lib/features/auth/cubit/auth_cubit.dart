@@ -21,7 +21,6 @@ class AuthCubit extends Cubit<AuthState> {
     final prevState = state;
     emit(AuthLoading());
     try {
-      
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
@@ -37,11 +36,19 @@ class AuthCubit extends Cubit<AuthState> {
           session: session,
         ),
       );
-    } catch (e) {
-      await LoggingInfo.instance.error(
-        e.toString(),
-        methodName: StackTrace.current.toString(),
-      );
+    } catch (e, stackTrace) {
+      if (e.toString().contains('invalid_grant')) {
+        await LoggingInfo.instance.warning(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
+      } else {
+        await LoggingInfo.instance.error(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
+      }
+
       emit(
         AuthFailure(
           message: e.toString(),
@@ -67,10 +74,10 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       emit(AuthSuccess(user: userExt, session: session));
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const AuthFailure());
     }
@@ -124,10 +131,10 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       emit(AuthSuccess(user: unRegisteredUserExt));
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const AuthFailure());
     }
@@ -144,10 +151,10 @@ class AuthCubit extends Cubit<AuthState> {
           session: state.session,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const AuthFailure());
     }
@@ -182,10 +189,10 @@ class AuthCubit extends Cubit<AuthState> {
           session: session,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const AuthFailure());
     }
@@ -207,10 +214,10 @@ class AuthCubit extends Cubit<AuthState> {
       }
       await _authRepositoy.resetPassword(email);
       emit(AuthChangePasswordSuccess(user: prevState.user));
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const AuthChangePasswordFailure());
     }
@@ -232,10 +239,10 @@ class AuthCubit extends Cubit<AuthState> {
           session: prevState.session,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         AuthFailure(

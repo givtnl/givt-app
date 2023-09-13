@@ -73,10 +73,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -138,10 +138,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -178,10 +178,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -255,10 +255,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           emit: emit,
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -293,13 +293,13 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
       await LoggingInfo.instance.error(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: GiveStatus.error),
@@ -366,10 +366,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           givtTransactions: transactionList,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -391,11 +391,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
       );
       emit(state.copyWith(status: GiveStatus.readyToGive));
-    } on SocketException catch (e) {
+    } on SocketException catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(
@@ -481,10 +481,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           ),
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -501,10 +501,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }

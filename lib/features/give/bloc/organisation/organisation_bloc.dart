@@ -83,13 +83,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       if (event.type != -1 && event.type != CollecGroupType.none.index) {
         add(OrganisationTypeChanged(event.type));
       }
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
       await LoggingInfo.instance.error(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
@@ -124,10 +124,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           filteredOrganisations: filteredOrganisations,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
