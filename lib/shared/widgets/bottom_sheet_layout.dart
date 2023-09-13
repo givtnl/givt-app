@@ -5,11 +5,13 @@ class BottomSheetLayout extends StatelessWidget {
     required this.child,
     this.onBackPressed,
     this.title,
+    this.bottomSheet,
     super.key,
   });
 
   final Widget child;
   final Widget? title;
+  final Widget? bottomSheet;
   final VoidCallback? onBackPressed;
 
   @override
@@ -27,6 +29,7 @@ class BottomSheetLayout extends StatelessWidget {
               onPressed: onBackPressed,
             ),
           ),
+          bottomSheet: bottomSheet,
           body: child,
         ),
       ),
