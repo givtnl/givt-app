@@ -355,33 +355,40 @@ class AuthRepositoyImpl with AuthRepositoy {
         await _prefs.setStringList(key, value);
       } else if (value is List<int> && Platform.isIOS) {
         // UnmodifiableUint8ArrayView
-        final list = Uint8List.fromList(value);
-        final archive = PropertyListSerialization.propertyListWithData(
-          list.buffer.asByteData(),
-          keyedArchive: true,
-        );
-        if (archive is! Map<String, Object?>) {
-          continue;
-        }
-        if (!archive.containsKey(r'$objects')) {
-          continue;
-        }
-        if (archive[r'$objects'] == null) {
-          continue;
-        }
-        final objectList = archive[r'$objects']! as List<dynamic>;
-        if (key == NativeNSUSerDefaultsKeys.userExtiOS) {
-          if (objectList[2] is! String ||
-              objectList[3] is! String ||
-              objectList[4] is! String) {
+        try {
+          final list = Uint8List.fromList(value);
+          final archive = PropertyListSerialization.propertyListWithData(
+            list.buffer.asByteData(),
+            keyedArchive: true,
+          );
+          if (archive is! Map<String, Object?>) {
             continue;
           }
-          final userExt = const UserExt.empty().copyWith(
-            guid: objectList[2] as String,
-            email: objectList[3] as String,
-            country: objectList[4] as String,
+          if (!archive.containsKey(r'$objects')) {
+            continue;
+          }
+          if (archive[r'$objects'] == null) {
+            continue;
+          }
+          final objectList = archive[r'$objects']! as List<dynamic>;
+          if (key == NativeNSUSerDefaultsKeys.userExtiOS) {
+            if (objectList[2] is! String ||
+                objectList[3] is! String ||
+                objectList[4] is! String) {
+              continue;
+            }
+            final userExt = const UserExt.empty().copyWith(
+              guid: objectList[2] as String,
+              email: objectList[3] as String,
+              country: objectList[4] as String,
+            );
+            await _prefs.setString(key, jsonEncode(userExt.toJson()));
+          }
+        } catch (e, stackTrace) {
+          await LoggingInfo.instance.error(
+            e.toString(),
+            methodName: stackTrace.toString(),
           );
-          await _prefs.setString(key, jsonEncode(userExt.toJson()));
         }
       } else if (value is List<Object?>) {
         await _prefs.setString(
@@ -527,7 +534,7 @@ class AuthRepositoyImpl with AuthRepositoy {
       decodedGivts,
     );
 
-    if(offlineGivts.isEmpty){
+    if (offlineGivts.isEmpty) {
       return;
     }
 
