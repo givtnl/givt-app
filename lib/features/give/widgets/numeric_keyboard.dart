@@ -163,6 +163,9 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     if (size.height < 700) {
       padding = 7.5;
     }
+    if (size.height < 600) {
+      padding = 0;
+    }
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(45),
