@@ -79,3 +79,4 @@ flutter:
         - asset: assets/fonts/AvenirLTStd-Roman.otf
   assets:
     - assets/images/        
+    - assets/ca/
