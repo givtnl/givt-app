@@ -93,9 +93,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
             _buildCollectionField(
               focusNode: focusNodes[0],
               collectionFieldName: locals.firstCollect,
-              amountLimit: widget.amountLimit,
-              lowerLimit: Util.getLowerLimitByCountry(widget.country),
-              prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
               controller: controllers[0],
               isVisible: collectionFields[0],
               isRemoveIconVisible:
@@ -117,9 +114,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
             _buildCollectionField(
               focusNode: focusNodes[1],
               collectionFieldName: locals.secondCollect,
-              amountLimit: widget.amountLimit,
-              lowerLimit: Util.getLowerLimitByCountry(widget.country),
-              prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
               controller: controllers[1],
               isVisible: collectionFields[1],
               isRemoveIconVisible:
@@ -137,9 +131,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
             _buildCollectionField(
               focusNode: focusNodes[2],
               collectionFieldName: locals.thirdCollect,
-              amountLimit: widget.amountLimit,
-              lowerLimit: Util.getLowerLimitByCountry(widget.country),
-              prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
               controller: controllers[2],
               isVisible: collectionFields[2],
               isRemoveIconVisible:
@@ -318,15 +309,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
   Widget _buildCollectionField({
     required FocusNode focusNode,
     required String collectionFieldName,
-    required int amountLimit,
     required TextEditingController controller,
     required bool isVisible,
     required bool isRemoveIconVisible,
     required VoidCallback onRemoveIconPressed,
     required VoidCallback onFocused,
-    required Icon prefixCurrencyIcon,
     bool isSuffixTextVisible = true,
-    double lowerLimit = 0,
   }) {
     return Visibility(
       visible: isVisible,
@@ -334,10 +322,10 @@ class _ChooseAmountState extends State<ChooseAmount> {
         focusNode: focusNode,
         key: Key(collectionFieldName),
         controller: controller,
-        amountLimit: amountLimit,
-        lowerLimit: lowerLimit,
+        amountLimit: widget.amountLimit,
+        lowerLimit: Util.getLowerLimitByCountry(widget.country),
+        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
         suffixText: collectionFieldName,
-        prefixCurrencyIcon: prefixCurrencyIcon,
         isRemoveIconVisible: isRemoveIconVisible,
         isSuffixTextVisible: isSuffixTextVisible,
         onRemoveIconPressed: onRemoveIconPressed,
@@ -467,7 +455,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
             style: ElevatedButton.styleFrom(
               foregroundColor: Colors.black54,
               backgroundColor: Colors.transparent,
-              minimumSize: const Size(50, 40),
+              minimumSize: const Size(30, 20),
             ),
           ),
         ),
