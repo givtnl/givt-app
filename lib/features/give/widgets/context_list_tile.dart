@@ -22,7 +22,7 @@ class ContextListTile extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.only(bottom: 5),
-      height: (size.height - 230) / 4,
+      height: (size.height - 200) / 4,
       child: InkWell(
         onTap: onTap,
         child: Card(
