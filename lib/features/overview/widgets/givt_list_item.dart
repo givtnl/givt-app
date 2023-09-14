@@ -31,6 +31,10 @@ class GivtListItem extends StatelessWidget {
               ? 'GBP'
               : 'EUR',
     );
+
+    final itemTitleStyle = size.height < 600
+        ? Theme.of(context).textTheme.titleSmall
+        : Theme.of(context).textTheme.titleLarge;
     return Dismissible(
       key: Key(givtGroup.timeStamp.toString()),
       direction: DismissDirection.endToStart,
@@ -51,9 +55,6 @@ class GivtListItem extends StatelessWidget {
       confirmDismiss: confirmDismiss,
       onDismissed: onDismiss,
       child: Container(
-        height: givtGroup.givts.length == 3
-            ? size.height * 0.15
-            : size.height * 0.11,
         width: size.width,
         decoration: BoxDecoration(
           border: Border(
@@ -122,9 +123,9 @@ class GivtListItem extends StatelessWidget {
                     ),
                     Text(
                       givtGroup.organisationName,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: itemTitleStyle!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),

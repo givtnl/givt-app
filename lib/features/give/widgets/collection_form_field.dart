@@ -66,6 +66,7 @@ class CollectionFormField extends StatelessWidget {
           textInputAction: TextInputAction.next,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.normal,
+                fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
                 color: AppTheme.givtDarkerGray,
               ),
           decoration: InputDecoration(
