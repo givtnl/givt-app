@@ -27,13 +27,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool isGive = true;
+  final _key = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        if (_key.currentState != null && _key.currentState!.isDrawerOpen) {
+          Navigator.of(context).pop();
+          return false;
+        }
+        return false;
+      },
       child: Scaffold(
+        key: _key,
         appBar: AppBar(
           title:
               Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
