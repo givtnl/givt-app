@@ -488,34 +488,90 @@ class AuthRepositoyImpl with AuthRepositoy {
       ),
     );
 
-    final bearer = Platform.isIOS
-        ? _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken)
-        : jsonDecode(
-            _prefs.getString(
-              NativeSharedPreferencesKeys.bearerToken,
-            )!,
-          )['Token'] as String;
-    final expiration = Platform.isIOS
-        ? ''
-        : jsonDecode(
-            _prefs.getString(
-              NativeSharedPreferencesKeys.bearerToken,
-            )!,
-          )['Expiration'] as String;
+    final bearer = _getSaveToken();
+    final expiration = _getExpiration();
+
     await _prefs.setString(
       Session.tag,
       jsonEncode(
         Session(
           email: userExt.email,
           userGUID: userExt.guid,
-          accessToken: bearer ?? '',
-          refreshToken: bearer ?? '',
+          accessToken: bearer,
+          refreshToken: bearer,
           expires: expiration,
           expiresIn: 0,
           isLoggedIn: true,
         ).toJson(),
       ),
     );
+  }
+
+  String _getExpiration() {
+    if (Platform.isIOS) {
+      return '';
+    }
+    final expirationString = _prefs.getString(
+      NativeSharedPreferencesKeys.bearerToken,
+    );
+
+    if (expirationString == null) {
+      return '';
+    }
+    if (expirationString.isEmpty) {
+      return '';
+    }
+    final expiration = jsonDecode(
+      expirationString,
+    );
+    if (expiration is! Map<String, dynamic>) {
+      return '';
+    }
+
+    if (!expiration.containsKey('Expiration')) {
+      return '';
+    }
+
+    return expiration['Expiration'] as String;
+  }
+
+  String _getSaveToken() {
+    if (Platform.isIOS &&
+        _prefs.containsKey(NativeNSUSerDefaultsKeys.bearerToken)) {
+      if (_prefs.getString(NativeNSUSerDefaultsKeys.bearerToken) == null) {
+        return '';
+      }
+      return _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken)!;
+    }
+    if (!_prefs.containsKey(NativeSharedPreferencesKeys.bearerToken)) {
+      return '';
+    }
+
+    final bearerTokenString = _prefs.getString(
+      NativeSharedPreferencesKeys.bearerToken,
+    );
+
+    if (bearerTokenString == null) {
+      return '';
+    }
+
+    if (bearerTokenString.isEmpty) {
+      return '';
+    }
+
+    final bearerToken = jsonDecode(
+      bearerTokenString,
+    );
+
+    if (bearerToken is! Map<String, dynamic>) {
+      return '';
+    }
+
+    if (!bearerToken.containsKey('Token')) {
+      return '';
+    }
+
+    return bearerToken['Token'] as String;
   }
 
   Future<void> _restoreOfflineGivts() async {
