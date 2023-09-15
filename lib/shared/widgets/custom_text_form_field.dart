@@ -16,6 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.inputFormatters = const [],
+    this.autofillHints = null,
   });
 
   final TextEditingController controller;
@@ -29,6 +30,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool readOnly;
   final List<TextInputFormatter> inputFormatters;
+  final Iterable<String>? autofillHints;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class CustomTextFormField extends StatelessWidget {
         enabled: !readOnly,
         controller: controller,
         validator: validator,
+        autofillHints: autofillHints,
         onChanged: onChanged,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
