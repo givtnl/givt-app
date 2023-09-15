@@ -32,7 +32,7 @@ Future<void> bootstrap({
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
-  await LoggingInfo.instance.info('');
+
   Bloc.observer = const AppBlocObserver();
 
   await runZonedGuarded(
