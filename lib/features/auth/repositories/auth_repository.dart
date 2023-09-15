@@ -152,6 +152,13 @@ class AuthRepositoyImpl with AuthRepositoy {
         e.toString(),
         methodName: stackTrace.toString(),
       );
+      await LoggingInfo.instance.error(
+        'Error migrating native keys, setting migration to true',
+      );
+      await _prefs.setBool(
+        Util.nativeAppKeysMigration,
+        true,
+      );
     }
 
     final sessionString = _prefs.getString(Session.tag);
@@ -309,6 +316,7 @@ class AuthRepositoyImpl with AuthRepositoy {
       );
 
   Future<void> _copyFromNative() async {
+    await LoggingInfo.instance.info('Start Migration...');
     final nativePrefs = await NativeSharedPreferences.getInstance();
 
     if (_prefs.containsKey(Util.nativeAppKeysMigration)) {
@@ -323,6 +331,10 @@ class AuthRepositoyImpl with AuthRepositoy {
 
     if (nativePrefs.getKeys().isEmpty) {
       await LoggingInfo.instance.info('No native keys to migrate');
+      await _prefs.setBool(
+        Util.nativeAppKeysMigration,
+        true,
+      );
       return;
     }
 
@@ -488,34 +500,17 @@ class AuthRepositoyImpl with AuthRepositoy {
       ),
     );
     try {
-      String? bearer;
-      if (Platform.isIOS &&
-          _prefs.containsKey(NativeNSUSerDefaultsKeys.bearerToken)) {
-        bearer = _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken);
-      } else if (Platform.isAndroid &&
-          _prefs.containsKey(NativeSharedPreferencesKeys.bearerToken)) {
-        bearer = jsonDecode(
-          _prefs.getString(NativeSharedPreferencesKeys.bearerToken)!,
-        )['Token'] as String;
-      }
+      final bearer = _getSaveToken();
+      final expiration = _getExpiration();
 
-      var expiration = '';
-      if (Platform.isAndroid &&
-          _prefs.containsKey(NativeSharedPreferencesKeys.bearerToken)) {
-        expiration = jsonDecode(
-          _prefs.getString(
-            NativeSharedPreferencesKeys.bearerToken,
-          )!,
-        )['Expiration'] as String;
-      }
       await _prefs.setString(
         Session.tag,
         jsonEncode(
           Session(
             email: userExt.email,
             userGUID: userExt.guid,
-            accessToken: bearer ?? '',
-            refreshToken: bearer ?? '',
+            accessToken: bearer,
+            refreshToken: bearer,
             expires: expiration,
             expiresIn: 0,
             isLoggedIn: true,
@@ -528,6 +523,73 @@ class AuthRepositoyImpl with AuthRepositoy {
         methodName: stackTrace.toString(),
       );
     }
+  }
+
+  String _getExpiration() {
+    if (Platform.isIOS) {
+      return '';
+    }
+    final expirationString = _prefs.getString(
+      NativeSharedPreferencesKeys.bearerToken,
+    );
+
+    if (expirationString == null) {
+      return '';
+    }
+    if (expirationString.isEmpty) {
+      return '';
+    }
+    final expiration = jsonDecode(
+      expirationString,
+    );
+    if (expiration is! Map<String, dynamic>) {
+      return '';
+    }
+
+    if (!expiration.containsKey('Expiration')) {
+      return '';
+    }
+
+    return expiration['Expiration'] as String;
+  }
+
+  String _getSaveToken() {
+    if (Platform.isIOS &&
+        _prefs.containsKey(NativeNSUSerDefaultsKeys.bearerToken)) {
+      if (_prefs.getString(NativeNSUSerDefaultsKeys.bearerToken) == null) {
+        return '';
+      }
+      return _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken)!;
+    }
+    if (!_prefs.containsKey(NativeSharedPreferencesKeys.bearerToken)) {
+      return '';
+    }
+
+    final bearerTokenString = _prefs.getString(
+      NativeSharedPreferencesKeys.bearerToken,
+    );
+
+    if (bearerTokenString == null) {
+      return '';
+    }
+
+    if (bearerTokenString.isEmpty) {
+      return '';
+    }
+
+    final bearerToken = jsonDecode(
+      bearerTokenString,
+    );
+
+    if (bearerToken is! Map<String, dynamic>) {
+      return '';
+    }
+
+    if (!bearerToken.containsKey('Token')) {
+      return '';
+    }
+
+    return bearerToken['Token'] as String;
   }
 
   Future<void> _restoreOfflineGivts() async {
