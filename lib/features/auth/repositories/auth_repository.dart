@@ -152,6 +152,13 @@ class AuthRepositoyImpl with AuthRepositoy {
         e.toString(),
         methodName: stackTrace.toString(),
       );
+      await LoggingInfo.instance.error(
+        'Error migrating native keys, setting migration to true',
+      );
+      await _prefs.setBool(
+        Util.nativeAppKeysMigration,
+        true,
+      );
     }
 
     final sessionString = _prefs.getString(Session.tag);
@@ -309,6 +316,7 @@ class AuthRepositoyImpl with AuthRepositoy {
       );
 
   Future<void> _copyFromNative() async {
+    await LoggingInfo.instance.info('Start Migration...');
     final nativePrefs = await NativeSharedPreferences.getInstance();
 
     if (_prefs.containsKey(Util.nativeAppKeysMigration)) {
@@ -323,6 +331,10 @@ class AuthRepositoyImpl with AuthRepositoy {
 
     if (nativePrefs.getKeys().isEmpty) {
       await LoggingInfo.instance.info('No native keys to migrate');
+      await _prefs.setBool(
+        Util.nativeAppKeysMigration,
+        true,
+      );
       return;
     }
 

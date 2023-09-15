@@ -26,12 +26,13 @@ Future<void> bootstrap({
   required FutureOr<Widget> Function() builder,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LoggingInfo.instance.info('App started');
   await get_it.init();
   await get_it.getIt.allReady();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
-
+  await LoggingInfo.instance.info('');
   Bloc.observer = const AppBlocObserver();
 
   await runZonedGuarded(
