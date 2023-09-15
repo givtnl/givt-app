@@ -167,7 +167,7 @@ class SelectGivingWayPage extends StatelessWidget {
         ),
         trailing: const Icon(
           Icons.arrow_forward_ios,
-          size: 18,
+          size: 20,
         ),
         title: title,
         subtitle: subtitle,
