@@ -499,24 +499,30 @@ class AuthRepositoyImpl with AuthRepositoy {
         userExt.toJson(),
       ),
     );
+    try {
+      final bearer = _getSaveToken();
+      final expiration = _getExpiration();
 
-    final bearer = _getSaveToken();
-    final expiration = _getExpiration();
-
-    await _prefs.setString(
-      Session.tag,
-      jsonEncode(
-        Session(
-          email: userExt.email,
-          userGUID: userExt.guid,
-          accessToken: bearer,
-          refreshToken: bearer,
-          expires: expiration,
-          expiresIn: 0,
-          isLoggedIn: true,
-        ).toJson(),
-      ),
-    );
+      await _prefs.setString(
+        Session.tag,
+        jsonEncode(
+          Session(
+            email: userExt.email,
+            userGUID: userExt.guid,
+            accessToken: bearer,
+            refreshToken: bearer,
+            expires: expiration,
+            expiresIn: 0,
+            isLoggedIn: true,
+          ).toJson(),
+        ),
+      );
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+    }
   }
 
   String _getExpiration() {
