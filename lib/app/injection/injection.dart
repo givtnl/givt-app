@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
@@ -35,6 +37,13 @@ Future<void> initAPIService() async {
     baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
+  if (Platform.isAndroid) {
+    final data =
+        await PlatformAssetBundle().load('assets/ca/isrgrootx1.pem');
+    SecurityContext.defaultContext.setTrustedCertificatesBytes(
+      data.buffer.asUint8List(),
+    );
+  }
   getIt.registerLazySingleton<APIService>(
     () => APIService(
       apiURL: baseUrl,

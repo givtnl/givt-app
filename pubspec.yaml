@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.0.1
+version: 4.0.2
 publish_to: none
 
 environment:
@@ -79,3 +79,4 @@ flutter:
         - asset: assets/fonts/AvenirLTStd-Roman.otf
   assets:
     - assets/images/        
+    - assets/ca/
