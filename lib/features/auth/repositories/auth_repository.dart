@@ -487,35 +487,47 @@ class AuthRepositoyImpl with AuthRepositoy {
         userExt.toJson(),
       ),
     );
+    try {
+      String? bearer;
+      if (Platform.isIOS &&
+          _prefs.containsKey(NativeNSUSerDefaultsKeys.bearerToken)) {
+        bearer = _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken);
+      } else if (Platform.isAndroid &&
+          _prefs.containsKey(NativeSharedPreferencesKeys.bearerToken)) {
+        bearer = jsonDecode(
+          _prefs.getString(NativeSharedPreferencesKeys.bearerToken)!,
+        )['Token'] as String;
+      }
 
-    final bearer = Platform.isIOS
-        ? _prefs.getString(NativeNSUSerDefaultsKeys.bearerToken)
-        : jsonDecode(
-            _prefs.getString(
-              NativeSharedPreferencesKeys.bearerToken,
-            )!,
-          )['Token'] as String;
-    final expiration = Platform.isIOS
-        ? ''
-        : jsonDecode(
-            _prefs.getString(
-              NativeSharedPreferencesKeys.bearerToken,
-            )!,
-          )['Expiration'] as String;
-    await _prefs.setString(
-      Session.tag,
-      jsonEncode(
-        Session(
-          email: userExt.email,
-          userGUID: userExt.guid,
-          accessToken: bearer ?? '',
-          refreshToken: bearer ?? '',
-          expires: expiration,
-          expiresIn: 0,
-          isLoggedIn: true,
-        ).toJson(),
-      ),
-    );
+      var expiration = '';
+      if (Platform.isAndroid &&
+          _prefs.containsKey(NativeSharedPreferencesKeys.bearerToken)) {
+        expiration = jsonDecode(
+          _prefs.getString(
+            NativeSharedPreferencesKeys.bearerToken,
+          )!,
+        )['Expiration'] as String;
+      }
+      await _prefs.setString(
+        Session.tag,
+        jsonEncode(
+          Session(
+            email: userExt.email,
+            userGUID: userExt.guid,
+            accessToken: bearer ?? '',
+            refreshToken: bearer ?? '',
+            expires: expiration,
+            expiresIn: 0,
+            isLoggedIn: true,
+          ).toJson(),
+        ),
+      );
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+    }
   }
 
   Future<void> _restoreOfflineGivts() async {
