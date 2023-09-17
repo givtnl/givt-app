@@ -13,14 +13,17 @@ import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class OrganizationListPage extends StatelessWidget {
   const OrganizationListPage({
     super.key,
     this.isChooseCategory = false,
+    this.isSelection = false,
   });
 
   final bool isChooseCategory;
+  final bool isSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,7 @@ class OrganizationListPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               _buildGivingButton(
-                title: locals.give,
+                title: isSelection ? locals.selectReceiverButton : locals.give,
                 isLoading: context.watch<GiveBloc>().state.status ==
                     GiveStatus.loading,
                 onPressed:
@@ -105,6 +108,16 @@ class OrganizationListPage extends StatelessWidget {
                         : () {
                             final userGUID =
                                 context.read<AuthCubit>().state.user.guid;
+                            if (isSelection) {
+                              context.pop(
+                                state.filteredOrganisations.firstWhere(
+                                  (element) =>
+                                      element.nameSpace ==
+                                      state.selectedCollectGroup.nameSpace,
+                                ),
+                              );
+                              return;
+                            }
 
                             if (isChooseCategory) {
                               showModalBottomSheet<void>(
@@ -138,6 +151,9 @@ class OrganizationListPage extends StatelessWidget {
 
   String _buildTitle(int selectedType, AppLocalizations locals) {
     var title = locals.chooseWhoYouWantToGiveTo;
+    if (isSelection) {
+      title = locals.selectRecipient;
+    }
     switch (CollecGroupType.fromInt(selectedType)) {
       case CollecGroupType.church:
         title = locals.church;
@@ -190,7 +206,7 @@ class OrganizationListPage extends StatelessWidget {
         selected: isSelected,
         selectedTileColor: getHighlightColor(type),
         leading: Icon(
-          getIconByType(type),
+          CollecGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
         title: Text(title),
@@ -266,21 +282,6 @@ class OrganizationListPage extends StatelessWidget {
         return AppTheme.givtDarkGreen;
       default:
         return AppTheme.givtLightBlue;
-    }
-  }
-
-  IconData getIconByType(CollecGroupType type) {
-    switch (type) {
-      case CollecGroupType.church:
-        return FontAwesomeIcons.placeOfWorship;
-      case CollecGroupType.charities:
-        return FontAwesomeIcons.heart;
-      case CollecGroupType.campaign:
-        return FontAwesomeIcons.handHoldingHeart;
-      case CollecGroupType.artists:
-        return FontAwesomeIcons.guitar;
-      default:
-        return FontAwesomeIcons.church;
     }
   }
 }

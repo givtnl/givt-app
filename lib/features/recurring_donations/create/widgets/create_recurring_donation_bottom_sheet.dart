@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/bloc/give/give.dart';
+import 'package:givt_app/features/give/bloc/organisation/organisation.dart';
+import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/create_recurring_donation_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -149,10 +154,62 @@ class _CreateRecurringDonationBottomSheetViewState
                         text: state.recipient.orgName,
                       ),
                       readOnly: true,
-                      onTap: () {},
+                      onTap: () async {
+                        final selectedRecipient =
+                            await Navigator.of(context).push<CollectGroup>(
+                          MaterialPageRoute(
+                            builder: (contex) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider(
+                                  create: (_) => OrganisationBloc(
+                                    getIt(),
+                                    getIt(),
+                                    getIt(),
+                                  )..add(
+                                      OrganisationFetchForSelection(
+                                        user.accountType,
+                                      ),
+                                    ),
+                                ),
+                                BlocProvider(
+                                  create: (_) => GiveBloc(
+                                    getIt(),
+                                    getIt(),
+                                    getIt(),
+                                    getIt(),
+                                  ),
+                                ),
+                              ],
+                              child: const OrganizationListPage(
+                                isSelection: true,
+                              ),
+                            ),
+                          ),
+                        );
+
+                        if (selectedRecipient == null) {
+                          return;
+                        }
+
+                        if (!mounted) {
+                          return;
+                        }
+
+                        context
+                            .read<CreateRecurringDonationCubit>()
+                            .setRecipient(selectedRecipient);
+                      },
                       decoration: InputDecoration(
                         hintText: locals.selectRecipient,
                         contentPadding: const EdgeInsets.all(20),
+                        prefixIcon: state.recipient.orgName.isNotEmpty
+                            ? Icon(
+                                CollecGroupType.getIconByType(
+                                  state.recipient.type,
+                                ),
+                                color: AppTheme.givtBlue,
+                              )
+                            : null,
                         errorStyle: const TextStyle(
                           height: 0,
                         ),
@@ -160,20 +217,6 @@ class _CreateRecurringDonationBottomSheetViewState
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(5),
                             bottomRight: Radius.circular(5),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 8,
-                          ),
-                        ),
-                        errorBorder: const UnderlineInputBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(5),
-                            bottomRight: Radius.circular(5),
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.red,
-                            width: 8,
                           ),
                         ),
                         focusedBorder: const UnderlineInputBorder(
@@ -186,14 +229,16 @@ class _CreateRecurringDonationBottomSheetViewState
                             width: 8,
                           ),
                         ),
-                        enabledBorder: const UnderlineInputBorder(
-                          borderRadius: BorderRadius.only(
+                        enabledBorder: UnderlineInputBorder(
+                          borderRadius: const BorderRadius.only(
                             bottomLeft: Radius.circular(5),
                             bottomRight: Radius.circular(5),
                           ),
                           borderSide: BorderSide(
-                            color: Colors.transparent,
-                            width: 0,
+                            color: state.recipient.orgName.isNotEmpty
+                                ? AppTheme.givtLightGreen
+                                : Colors.transparent,
+                            width: 8,
                           ),
                         ),
                       ),

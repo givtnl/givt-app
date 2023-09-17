@@ -20,6 +20,15 @@ class OrganisationFetch extends OrganisationEvent {
   List<Object> get props => [accountType, type];
 }
 
+class OrganisationFetchForSelection extends OrganisationEvent {
+  const OrganisationFetchForSelection(this.accountType);
+
+  final AccountType accountType;
+
+  @override
+  List<Object> get props => [accountType];
+}
+
 class OrganisationTypeChanged extends OrganisationEvent {
   const OrganisationTypeChanged(this.type);
 

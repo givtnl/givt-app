@@ -21,6 +21,8 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
 
+    on<OrganisationFetchForSelection>(_onOrganisationFetchForSelection);
+
     on<OrganisationFilterQueryChanged>(_onFilterQueryChanged);
 
     on<OrganisationTypeChanged>(_onTypeChanged);
@@ -90,6 +92,45 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       await LoggingInfo.instance.error(
         body.toString(),
         methodName: StackTrace.current.toString(),
+      );
+      emit(state.copyWith(status: OrganisationStatus.error));
+    }
+  }
+
+  FutureOr<void> _onOrganisationFetchForSelection(
+    OrganisationFetchForSelection event,
+    Emitter<OrganisationState> emit,
+  ) async {
+    emit(state.copyWith(status: OrganisationStatus.loading));
+    try {
+      final unFiltered = await _collectGroupRepository.getCollectGroupList();
+      final userAccountType = await _getAccountType(event.accountType);
+      final organisations = unFiltered
+          .where(
+            (organisation) => organisation.accountType == userAccountType,
+          )
+          .toList();
+      emit(
+        state.copyWith(
+          status: OrganisationStatus.filtered,
+          organisations: organisations,
+          filteredOrganisations: organisations,
+        ),
+      );
+      
+    } on GivtServerFailure catch (e, stackTrace) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      log('StatusCode:$statusCode Body:$body');
+      await LoggingInfo.instance.warning(
+        body.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: OrganisationStatus.error));
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
