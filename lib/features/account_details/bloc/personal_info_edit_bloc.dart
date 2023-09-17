@@ -107,11 +107,17 @@ class PersonalInfoEditBloc
           loggedInUserExt: stateUser,
         ),
       );
-    } on SocketException catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on SocketException catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,
@@ -141,11 +147,17 @@ class PersonalInfoEditBloc
           loggedInUserExt: stateUser,
         ),
       );
-    } on SocketException catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on SocketException catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,
@@ -177,11 +189,17 @@ class PersonalInfoEditBloc
           loggedInUserExt: stateUser,
         ),
       );
-    } on SocketException catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on SocketException catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,
@@ -214,11 +232,17 @@ class PersonalInfoEditBloc
           loggedInUserExt: stateUser,
         ),
       );
-    } on SocketException catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on SocketException catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,
@@ -252,11 +276,17 @@ class PersonalInfoEditBloc
           loggedInUserExt: stateUser,
         ),
       );
-    } on SocketException catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on SocketException catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
-    } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,

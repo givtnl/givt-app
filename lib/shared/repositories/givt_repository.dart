@@ -94,7 +94,17 @@ class GivtRepositoryImpl with GivtRepository {
     if (givtsString == null) {
       return;
     }
+    if (givtsString.isEmpty) {
+      return;
+    }
+
     final givts = jsonDecode(givtsString) as Map<String, dynamic>;
+    if (givts.isEmpty) {
+      return;
+    }
+    if ((givts['donations'] as List<dynamic>).isEmpty) {
+      return;
+    }
     final firstTransaction = GivtTransaction.fromJsonList(
       givts['donations'] as List<dynamic>,
     ).first;

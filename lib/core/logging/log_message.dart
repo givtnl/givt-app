@@ -16,6 +16,7 @@ class LogMessage extends Equatable {
     this.versionOS,
     this.appVersion,
     this.lang,
+    this.deviceId,
   });
 
   String? guid;
@@ -31,6 +32,7 @@ class LogMessage extends Equatable {
   String? versionOS;
   String? appVersion;
   String? lang;
+  String? deviceId;
 
   Map<String, dynamic> toJson() => {
         'guid': guid,
@@ -46,6 +48,7 @@ class LogMessage extends Equatable {
         'versionOS': versionOS,
         'appVersion': appVersion,
         'lang': lang,
+        'deviceId': deviceId,
       };
 
   LogMessage copyWith({
@@ -62,6 +65,7 @@ class LogMessage extends Equatable {
     String? versionOS,
     String? appVersion,
     String? lang,
+    String? deviceId,
   }) {
     return LogMessage(
       guid: guid ?? this.guid,
@@ -77,6 +81,7 @@ class LogMessage extends Equatable {
       versionOS: versionOS ?? this.versionOS,
       appVersion: appVersion ?? this.appVersion,
       lang: lang ?? this.lang,
+      deviceId: deviceId ?? this.deviceId,
     );
   }
 
@@ -95,5 +100,6 @@ class LogMessage extends Equatable {
         versionOS,
         appVersion,
         lang,
+        deviceId,
       ];
 }

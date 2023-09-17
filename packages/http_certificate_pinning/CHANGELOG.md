@@ -1,26 +1,3 @@
-## 1.0.0
-
-* This version contains:
-  - The base HTTPS validation  
-  - Interceptor to Dio (https://pub.dev/packages/dio)
-  - Client to HTTP (https://pub.dev/packages/http)
-  
-## 1.0.1
-  
-Accepts ':' in certificates
-
-  
-## 1.0.2
-  
-
-## 1.0.3
-  
-Downgrade Alamofire version
-
-## 1.0.4
-  
-Support iOS 9.0 and above 
-
 ## 2.0.0
 
 Flutter 2 support and null-safety

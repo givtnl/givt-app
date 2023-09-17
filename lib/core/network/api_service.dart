@@ -341,7 +341,9 @@ class APIService {
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
       );
     }
     return response.statusCode == 200;

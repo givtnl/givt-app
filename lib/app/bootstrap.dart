@@ -26,6 +26,7 @@ Future<void> bootstrap({
   required FutureOr<Widget> Function() builder,
 }) async {
   WidgetsFlutterBinding.ensureInitialized();
+  await LoggingInfo.instance.info('App started');
   await get_it.init();
   await get_it.getIt.allReady();
   FlutterError.onError = (details) {
@@ -39,8 +40,8 @@ Future<void> bootstrap({
     (error, stackTrace) async {
       log(error.toString(), stackTrace: stackTrace);
       await LoggingInfo.instance.error(
-        'Error: $error, StackTrace: $stackTrace',
-        methodName: StackTrace.current.toString(),
+        error.toString(),
+        methodName: stackTrace.toString(),
       );
     },
   );
