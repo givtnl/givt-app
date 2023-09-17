@@ -4,6 +4,10 @@ enum CreateRecurringDonationStatus {
   initial,
   loading,
   fieldChanged,
+  amountTooLow,
+  amountTooHigh,
+  notInternet,
+  duplicateDonation,
   success,
   error
 }

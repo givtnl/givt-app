@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,9 +11,11 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/recurring_donations/create/cubit/create_recurring_donation_cubit.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class CreateRecurringDonationBottomSheet extends StatelessWidget {
@@ -56,15 +59,16 @@ class _CreateRecurringDonationBottomSheetViewState
       locals.setupRecurringGiftYear,
     ];
     final cubit = context.watch<CreateRecurringDonationCubit>();
+    final currencySymbol = NumberFormat.simpleCurrency(
+      name: country.currency,
+    ).currencySymbol;
     return BottomSheetLayout(
       title: Text(locals.setupRecurringGiftTitle),
       bottomSheet: ElevatedButton(
         onPressed: isEnabled
             ? cubit.state.status == CreateRecurringDonationStatus.loading
                 ? null
-                : () {
-                    //todo save recurring donation
-                  }
+                : () async => await cubit.submit()
             : null,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Colors.grey,
@@ -77,7 +81,66 @@ class _CreateRecurringDonationBottomSheetViewState
         child: BlocConsumer<CreateRecurringDonationCubit,
             CreateRecurringDonationState>(
           listener: (context, state) {
-            // TODO: implement listener
+            if (state.status == CreateRecurringDonationStatus.success) {
+              context.pop();
+            }
+            if (state.status == CreateRecurringDonationStatus.error) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: context.l10n.errorOccurred,
+                  content: context.l10n.setupRecurringDonationFailed,
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
+            if (state.status ==
+                CreateRecurringDonationStatus.duplicateDonation) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title:
+                      context.l10n.setupRecurringDonationFailedDuplicateTitle,
+                  content: context.l10n.setupRecurringDonationFailedDuplicate,
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
+
+            if (state.status == CreateRecurringDonationStatus.amountTooHigh) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: context.l10n.amountTooHigh,
+                  content: context.l10n.amountLimitExceededRecurringDonation,
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () => context.pop(),
+                      child: Text(context.l10n.chooseLowerAmount),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () {
+                        /// process further
+                      },
+                      child: Text(context.l10n.continueKey),
+                    ),
+                  ],
+                ),
+              );
+            }
+
+            if (state.status == CreateRecurringDonationStatus.amountTooLow) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: context.l10n.amountTooLow,
+                  content: context.l10n.givtNotEnough(
+                    '$currencySymbol ${Util.getLowerLimitByCountry(country)}',
+                  ),
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
           },
           builder: (context, state) {
             return Column(

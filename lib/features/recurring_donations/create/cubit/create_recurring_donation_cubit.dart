@@ -64,7 +64,7 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
     );
   }
 
-  void submit() {
+  Future<void> submit() async {
     emit(state.copyWith(status: CreateRecurringDonationStatus.loading));
     //todo save recurring donation
     try {} catch (e) {
