@@ -357,9 +357,7 @@ class AppRouter {
                           getIt(),
                           getIt(),
                           getIt(),
-                        )..add(
-                            const GiveCheckLastDonation(),
-                          ),
+                        ),
                       ),
                       BlocProvider(
                         create: (_) => OrganisationBloc(
@@ -369,6 +367,7 @@ class AppRouter {
                         )..add(
                             OrganisationFetch(
                               user.accountType,
+                              showLastDonated: false,
                               type: state.extra != null && state.extra is int
                                   ? state.extra! as int
                                   : -1,

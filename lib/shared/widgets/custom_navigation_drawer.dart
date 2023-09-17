@@ -108,7 +108,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
             title: locals.menuItemRecurringDonation,
-            icon: Icons.screen_rotation_alt_outlined,
+            icon: Icons.autorenew,
             onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => context.goNamed(Pages.recurringDonations.name),

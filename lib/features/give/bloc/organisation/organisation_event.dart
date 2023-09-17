@@ -11,13 +11,15 @@ class OrganisationFetch extends OrganisationEvent {
   const OrganisationFetch(
     this.accountType, {
     this.type = -1,
+    this.showLastDonated = true,
   });
 
   final AccountType accountType;
   final int type;
+  final bool showLastDonated;
 
   @override
-  List<Object> get props => [accountType, type];
+  List<Object> get props => [accountType, type, showLastDonated];
 }
 
 class OrganisationFetchForSelection extends OrganisationEvent {

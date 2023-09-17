@@ -40,8 +40,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      final lastDonatedOrganisation =
-          await _campaignRepository.getLastOrganisationDonated();
       final unFiltered = await _collectGroupRepository.getCollectGroupList();
       final userAccountType = await _getAccountType(event.accountType);
       final organisations = unFiltered
@@ -50,25 +48,31 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           )
           .toList();
       var selectedGroup = state.selectedCollectGroup;
-      if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
-        selectedGroup = organisations.firstWhere(
-          (organisation) => lastDonatedOrganisation.mediumId!.contains(
-            organisation.nameSpace,
-          ),
-          orElse: () => const CollectGroup.empty(),
-        );
-        if (selectedGroup.nameSpace.isNotEmpty) {
-          organisations
-            ..removeWhere(
-              (organisation) =>
-                  organisation.nameSpace == lastDonatedOrganisation.mediumId,
-            )
-            ..insert(
-              0,
-              selectedGroup,
-            );
+      if (event.showLastDonated) {
+        final lastDonatedOrganisation =
+            await _campaignRepository.getLastOrganisationDonated();
+
+        if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
+          selectedGroup = organisations.firstWhere(
+            (organisation) => lastDonatedOrganisation.mediumId!.contains(
+              organisation.nameSpace,
+            ),
+            orElse: () => const CollectGroup.empty(),
+          );
+          if (selectedGroup.nameSpace.isNotEmpty) {
+            organisations
+              ..removeWhere(
+                (organisation) =>
+                    organisation.nameSpace == lastDonatedOrganisation.mediumId,
+              )
+              ..insert(
+                0,
+                selectedGroup,
+              );
+          }
         }
       }
+
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
@@ -117,7 +121,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           filteredOrganisations: organisations,
         ),
       );
-      
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;

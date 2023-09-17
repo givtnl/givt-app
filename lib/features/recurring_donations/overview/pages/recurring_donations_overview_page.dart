@@ -109,7 +109,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                     context: context,
                     useSafeArea: true,
                     isScrollControlled: true,
-                    builder: (_) => CreateRecurringDonationBottomSheet(),
+                    builder: (_) => const CreateRecurringDonationBottomSheet(),
                   ),
                 ),
                 const SizedBox(height: 5),

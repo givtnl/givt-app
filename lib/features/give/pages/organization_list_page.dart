@@ -5,11 +5,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
+import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -85,11 +87,20 @@ class OrganizationListPage extends StatelessWidget {
                       title: state.filteredOrganisations[index].orgName,
                       isSelected: state.selectedCollectGroup.nameSpace ==
                           state.filteredOrganisations[index].nameSpace,
-                      onTap: () => context.read<OrganisationBloc>().add(
-                            OrganisationSelectionChanged(
-                              state.filteredOrganisations[index].nameSpace,
-                            ),
-                          ),
+                      onTap: () {
+                        if (isChooseCategory) {
+                          _buildActionSheet(
+                            context,
+                            state.filteredOrganisations[index].nameSpace,
+                          );
+                          return;
+                        }
+                        context.read<OrganisationBloc>().add(
+                              OrganisationSelectionChanged(
+                                state.filteredOrganisations[index].nameSpace,
+                              ),
+                            );
+                      },
                     ),
                   ),
                 )
@@ -113,22 +124,6 @@ class OrganizationListPage extends StatelessWidget {
                                   (element) =>
                                       element.nameSpace ==
                                       state.selectedCollectGroup.nameSpace,
-                                ),
-                              );
-                              return;
-                            }
-
-                            if (isChooseCategory) {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                builder: (_) => BlocProvider.value(
-                                  value: context.read<GiveBloc>(),
-                                  child: EnterAmountBottomSheet(
-                                    collectGroupNameSpace:
-                                        state.selectedCollectGroup.nameSpace,
-                                  ),
                                 ),
                               );
                               return;
@@ -169,26 +164,29 @@ class OrganizationListPage extends StatelessWidget {
     return title;
   }
 
-  Expanded _buildGivingButton({
+  Widget _buildGivingButton({
     required String title,
     bool isLoading = false,
     VoidCallback? onPressed,
   }) {
-    return Expanded(
-      flex: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: !isLoading
-            ? ElevatedButton(
-                onPressed: onPressed,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
+    return Visibility(
+      visible: !isChooseCategory,
+      child: Expanded(
+        flex: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: !isLoading
+              ? ElevatedButton(
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    disabledBackgroundColor: Colors.grey,
+                  ),
+                  child: Text(title),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 ),
-                child: Text(title),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
+        ),
       ),
     );
   }
@@ -282,5 +280,111 @@ class OrganizationListPage extends StatelessWidget {
       default:
         return AppTheme.givtLightBlue;
     }
+  }
+
+  void _buildActionSheet(BuildContext context, String nameSpace) {
+    final locals = context.l10n;
+    if (Platform.isIOS) {
+      showCupertinoModalPopup<void>(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+          actions: <CupertinoActionSheetAction>[
+            CupertinoActionSheetAction(
+              onPressed: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => BlocProvider.value(
+                  value: context.read<GiveBloc>(),
+                  child: EnterAmountBottomSheet(
+                    collectGroupNameSpace: nameSpace,
+                  ),
+                ),
+              ),
+              child: Text(locals.discoverOrAmountActionSheetOnce),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (_) => const CreateRecurringDonationBottomSheet(),
+                );
+              },
+              child: Text(locals.discoverOrAmountActionSheetRecurring),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () => context.pop(context),
+            child: Text(
+              locals.cancel,
+              style: const TextStyle(
+                color: AppTheme.givtRed,
+              ),
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (_) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(
+              FontAwesomeIcons.handHoldingHeart,
+              color: AppTheme.givtBlue,
+            ),
+            title: Text(locals.discoverOrAmountActionSheetOnce),
+            onTap: () {
+              context.pop(context);
+              showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => BlocProvider.value(
+                  value: context.read<GiveBloc>(),
+                  child: EnterAmountBottomSheet(
+                    collectGroupNameSpace: nameSpace,
+                  ),
+                ),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.autorenew,
+              color: AppTheme.givtBlue,
+            ),
+            title: Text(locals.discoverOrAmountActionSheetRecurring),
+            onTap: () {
+              context.pop(context);
+              showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => const CreateRecurringDonationBottomSheet(),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.cancel,
+              color: AppTheme.givtRed,
+            ),
+            title: Text(
+              locals.cancel,
+              style: const TextStyle(
+                color: AppTheme.givtRed,
+              ),
+            ),
+            onTap: () => context.pop(context),
+          ),
+        ],
+      ),
+    );
   }
 }
