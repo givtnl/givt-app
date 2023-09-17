@@ -24,7 +24,7 @@ class CreateRecurringDonationBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CreateRecurringDonationCubit(),
+      create: (_) => CreateRecurringDonationCubit(getIt()),
       child: const CreateRecurringDonationBottomSheetView(),
     );
   }
@@ -68,7 +68,12 @@ class _CreateRecurringDonationBottomSheetViewState
         onPressed: isEnabled
             ? cubit.state.status == CreateRecurringDonationStatus.loading
                 ? null
-                : () async => await cubit.submit()
+                : () async => cubit.submit(
+                      guid: user.guid,
+                      country: country.countryCode,
+                      lowerLimit: Util.getLowerLimitByCountry(country),
+                      maxLimit: user.amountLimit,
+                    )
             : null,
         style: ElevatedButton.styleFrom(
           disabledBackgroundColor: Colors.grey,
@@ -137,6 +142,17 @@ class _CreateRecurringDonationBottomSheetViewState
                   content: context.l10n.givtNotEnough(
                     '$currencySymbol ${Util.getLowerLimitByCountry(country)}',
                   ),
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
+
+            if (state.status == CreateRecurringDonationStatus.notInternet) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => WarningDialog(
+                  title: context.l10n.offlineGiftsTitle,
+                  content: context.l10n.noInternet,
                   onConfirm: () => context.pop(),
                 ),
               );

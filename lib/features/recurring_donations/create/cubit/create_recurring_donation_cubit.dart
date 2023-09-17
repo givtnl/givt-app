@@ -1,13 +1,19 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
+import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 
 part 'create_recurring_donation_state.dart';
 
 class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
-  CreateRecurringDonationCubit()
-      : super(
+  CreateRecurringDonationCubit(
+    this._createRecurringDonationRepository,
+  ) : super(
           CreateRecurringDonationState(
             startDate: DateTime.now().add(
               const Duration(days: 1),
@@ -17,6 +23,8 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
             ),
           ),
         );
+
+  final CreateRecurringDonationRepository _createRecurringDonationRepository;
 
   void setRecipient(CollectGroup recipient) {
     emit(state.copyWith(recipient: recipient));
@@ -64,10 +72,50 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
     );
   }
 
-  Future<void> submit() async {
+  Future<void> submit({
+    required String guid,
+    required String country,
+    required double lowerLimit,
+    required int maxLimit,
+  }) async {
     emit(state.copyWith(status: CreateRecurringDonationStatus.loading));
-    //todo save recurring donation
-    try {} catch (e) {
+
+    if (state.amount < lowerLimit) {
+      emit(state.copyWith(status: CreateRecurringDonationStatus.amountTooLow));
+      return;
+    }
+
+    if (state.amount > maxLimit) {
+      emit(
+        state.copyWith(status: CreateRecurringDonationStatus.amountTooHigh),
+      );
+      return;
+    }
+
+    try {
+      final recurringDonation = RecurringDonation(
+        amountPerTurn: state.amount,
+        startDate: state.startDate,
+        frequency: state.frequency.index,
+        endsAfterTurns: state.turns,
+        userId: guid,
+        namespace: state.recipient.nameSpace,
+        country: country,
+      );
+      final isSuccess = await _createRecurringDonationRepository
+          .createRecurringDonation(recurringDonation);
+      if (!isSuccess) {
+        emit(state.copyWith(status: CreateRecurringDonationStatus.error));
+        return;
+      }
+      emit(state.copyWith(status: CreateRecurringDonationStatus.success));
+    } on SocketException {
+      emit(state.copyWith(status: CreateRecurringDonationStatus.notInternet));
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.warning(
+        'Error while creating recurring donation, $e',
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: CreateRecurringDonationStatus.error));
     }
   }
