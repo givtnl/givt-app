@@ -381,20 +381,6 @@ class AppRouter {
                     ),
                   );
                 },
-                // routes: [
-                //   GoRoute(
-                //     path: Pages.chooseCategoryEnterAmount.path,
-                //     name: Pages.chooseCategoryEnterAmount.name,
-                //     builder: (context, state) => BlocProvider.value(
-                //       value: state.extra! as GiveBloc
-                //         ..add(
-                //           const GiveCheckLastDonation(),
-                //         ),
-                //       child: const OrganizationListPage(),
-                //     ),
-                //   ),
-
-                // ],
               ),
               GoRoute(
                 path: Pages.overview.path,
