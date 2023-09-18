@@ -51,24 +51,26 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       if (event.showLastDonated) {
         final lastDonatedOrganisation =
             await _campaignRepository.getLastOrganisationDonated();
-
-        if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
-          selectedGroup = organisations.firstWhere(
-            (organisation) => lastDonatedOrganisation.mediumId!.contains(
-              organisation.nameSpace,
-            ),
-            orElse: () => const CollectGroup.empty(),
-          );
-          if (selectedGroup.nameSpace.isNotEmpty) {
-            organisations
-              ..removeWhere(
-                (organisation) =>
-                    organisation.nameSpace == lastDonatedOrganisation.mediumId,
-              )
-              ..insert(
-                0,
-                selectedGroup,
-              );
+        if (lastDonatedOrganisation.mediumId != null) {
+          if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
+            selectedGroup = organisations.firstWhere(
+              (organisation) => lastDonatedOrganisation.mediumId!.contains(
+                organisation.nameSpace,
+              ),
+              orElse: () => const CollectGroup.empty(),
+            );
+            if (selectedGroup.nameSpace.isNotEmpty) {
+              organisations
+                ..removeWhere(
+                  (organisation) =>
+                      organisation.nameSpace ==
+                      lastDonatedOrganisation.mediumId,
+                )
+                ..insert(
+                  0,
+                  selectedGroup,
+                );
+            }
           }
         }
       }
