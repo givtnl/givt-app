@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation.dart';
 import 'package:givt_app/features/recurring_donations/create/models/recurring_donation_frequency.dart';
@@ -27,15 +28,30 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
   final CreateRecurringDonationRepository _createRecurringDonationRepository;
 
   void setRecipient(CollectGroup recipient) {
-    emit(state.copyWith(recipient: recipient));
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.fieldChanged,
+        recipient: recipient,
+      ),
+    );
   }
 
   void setAmount(double amount) {
-    emit(state.copyWith(amount: amount));
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.fieldChanged,
+        amount: amount,
+      ),
+    );
   }
 
   void setTurns(int turns, {bool calculateEndDate = true}) {
-    emit(state.copyWith(turns: turns));
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.fieldChanged,
+        turns: turns,
+      ),
+    );
     if (calculateEndDate) {
       _calculateAndInsertEndDate();
     }
@@ -43,16 +59,32 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
 
   void setStartDate(DateTime startDate) {
     if (startDate.isAfter(state.endDate)) {
-      emit(state.copyWith(endDate: startDate, startDate: startDate));
+      emit(
+        state.copyWith(
+          status: CreateRecurringDonationStatus.fieldChanged,
+          endDate: startDate,
+          startDate: startDate,
+        ),
+      );
       _calculateAndInsertTimesToStop();
       return;
     }
-    emit(state.copyWith(startDate: startDate));
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.fieldChanged,
+        startDate: startDate,
+      ),
+    );
     _calculateAndInsertTimesToStop();
   }
 
   void setEndDate(DateTime endDate) {
-    emit(state.copyWith(endDate: endDate));
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.fieldChanged,
+        endDate: endDate,
+      ),
+    );
     _calculateAndInsertTimesToStop();
   }
 
@@ -72,12 +104,21 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
     );
   }
 
+  void setAmountTooHighConfirmed() {
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.amountTooHighConfirmed,
+      ),
+    );
+  }
+
   Future<void> submit({
     required String guid,
     required String country,
     required double lowerLimit,
     required int maxLimit,
   }) async {
+    final prevState = state;
     emit(state.copyWith(status: CreateRecurringDonationStatus.loading));
 
     if (state.amount < lowerLimit) {
@@ -85,7 +126,9 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
       return;
     }
 
-    if (state.amount > maxLimit) {
+    if (state.amount > maxLimit &&
+        prevState.status !=
+            CreateRecurringDonationStatus.amountTooHighConfirmed) {
       emit(
         state.copyWith(status: CreateRecurringDonationStatus.amountTooHigh),
       );
@@ -112,6 +155,16 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
     } on SocketException {
       emit(state.copyWith(status: CreateRecurringDonationStatus.notInternet));
     } catch (e, stackTrace) {
+      if (e is GivtServerFailure) {
+        if (e.statusCode == 409) {
+          emit(
+            state.copyWith(
+              status: CreateRecurringDonationStatus.duplicateDonation,
+            ),
+          );
+          return;
+        }
+      }
       await LoggingInfo.instance.warning(
         'Error while creating recurring donation, $e',
         methodName: stackTrace.toString(),
@@ -187,6 +240,11 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
         }
     }
 
-    setEndDate(tempDate);
+    emit(
+      state.copyWith(
+        status: CreateRecurringDonationStatus.fieldChanged,
+        endDate: tempDate,
+      ),
+    );
   }
 }

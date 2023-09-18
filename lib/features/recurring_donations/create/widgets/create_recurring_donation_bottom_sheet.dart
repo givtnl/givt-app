@@ -40,9 +40,15 @@ class CreateRecurringDonationBottomSheetView extends StatefulWidget {
 
 class _CreateRecurringDonationBottomSheetViewState
     extends State<CreateRecurringDonationBottomSheetView> {
+  late TextEditingController amountController;
+
   @override
   void initState() {
     super.initState();
+    amountController = TextEditingController(
+      text:
+          context.read<CreateRecurringDonationCubit>().state.amount.toString(),
+    );
   }
 
   @override
@@ -64,24 +70,29 @@ class _CreateRecurringDonationBottomSheetViewState
     ).currencySymbol;
     return BottomSheetLayout(
       title: Text(locals.setupRecurringGiftTitle),
-      bottomSheet: ElevatedButton(
-        onPressed: isEnabled
-            ? cubit.state.status == CreateRecurringDonationStatus.loading
-                ? null
-                : () async => cubit.submit(
-                      guid: user.guid,
-                      country: country.countryCode,
-                      lowerLimit: Util.getLowerLimitByCountry(country),
-                      maxLimit: user.amountLimit,
-                    )
-            : null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: Colors.grey,
-        ),
-        child: Text(
-          locals.give,
-        ),
-      ),
+      bottomSheet: cubit.state.status == CreateRecurringDonationStatus.loading
+          ? const Center(child: CircularProgressIndicator.adaptive())
+          : ElevatedButton(
+              onPressed: isEnabled
+                  ? () async {
+                      cubit.setAmount(
+                        double.parse(
+                          amountController.text.replaceAll(',', '.'),
+                        ),
+                      );
+                      return cubit.submit(
+                        guid: user.guid,
+                        country: country.countryCode,
+                        lowerLimit: Util.getLowerLimitByCountry(country),
+                        maxLimit: user.amountLimit,
+                      );
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                disabledBackgroundColor: Colors.grey,
+              ),
+              child: Text(locals.give),
+            ),
       child: SingleChildScrollView(
         child: BlocConsumer<CreateRecurringDonationCubit,
             CreateRecurringDonationState>(
@@ -125,7 +136,15 @@ class _CreateRecurringDonationBottomSheetViewState
                     ),
                     CupertinoDialogAction(
                       onPressed: () {
-                        /// process further
+                        context.pop();
+                        context.read<CreateRecurringDonationCubit>()
+                          ..setAmountTooHighConfirmed()
+                          ..submit(
+                            guid: user.guid,
+                            country: country.countryCode,
+                            lowerLimit: Util.getLowerLimitByCountry(country),
+                            maxLimit: user.amountLimit,
+                          );
                       },
                       child: Text(context.l10n.continueKey),
                     ),
@@ -194,11 +213,11 @@ class _CreateRecurringDonationBottomSheetViewState
                           decimal: true,
                         ),
                         style: Theme.of(context).textTheme.titleLarge,
-                        controller: TextEditingController(
-                          text: state.amount.toString().replaceAll('.', ','),
-                        ),
+                        controller: amountController,
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
+                            /// Allow only numbers and one comma or dot
+                            /// Like 123, 123.45, 12,05, 12,5
                             RegExp(r'^\d+([,.]\d{0,2})?'),
                           ),
                         ],
@@ -209,9 +228,6 @@ class _CreateRecurringDonationBottomSheetViewState
                           if (value.contains(',')) {
                             value = value.replaceAll(',', '.');
                           }
-                          context
-                              .read<CreateRecurringDonationCubit>()
-                              .setAmount(double.parse(value));
                         },
                         decoration: InputDecoration(
                           prefixIcon: Icon(
@@ -234,6 +250,10 @@ class _CreateRecurringDonationBottomSheetViewState
                       ),
                       readOnly: true,
                       onTap: () async {
+                        /// Because this is a special field and go_router doesn't supports
+                        /// results from a route but you have to use the cubits/blocs to manage that
+                        /// I opted for using the Navigator directly as it's a simple use case
+                        /// and it requried minimal changes for the [organization_list_page.dart]
                         final selectedRecipient =
                             await Navigator.of(context).push<CollectGroup>(
                           MaterialPageRoute(
@@ -442,11 +462,6 @@ class _CreateRecurringDonationBottomSheetViewState
 
   bool get isEnabled {
     final state = context.watch<CreateRecurringDonationCubit>().state;
-    final auth = context.watch<AuthCubit>().state;
-    final lowerLimit =
-        Util.getLowerLimitByCountry(Country.fromCode(auth.user.country));
-    return state.recipient.orgName.isNotEmpty &&
-        (state.amount >= lowerLimit && state.amount <= auth.user.amountLimit) &&
-        state.turns >= 1;
+    return state.recipient.orgName.isNotEmpty && state.turns >= 1;
   }
 }

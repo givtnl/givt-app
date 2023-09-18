@@ -6,6 +6,7 @@ enum CreateRecurringDonationStatus {
   fieldChanged,
   amountTooLow,
   amountTooHigh,
+  amountTooHighConfirmed,
   notInternet,
   duplicateDonation,
   success,
