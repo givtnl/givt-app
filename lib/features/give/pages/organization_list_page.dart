@@ -290,28 +290,11 @@ class OrganizationListPage extends StatelessWidget {
         builder: (_) => CupertinoActionSheet(
           actions: <CupertinoActionSheetAction>[
             CupertinoActionSheetAction(
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<GiveBloc>(),
-                  child: EnterAmountBottomSheet(
-                    collectGroupNameSpace: nameSpace,
-                  ),
-                ),
-              ),
+              onPressed: () => _showEnterAmountBottomSheet(context, nameSpace),
               child: Text(locals.discoverOrAmountActionSheetOnce),
             ),
             CupertinoActionSheetAction(
-              onPressed: () {
-                showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (_) => const CreateRecurringDonationBottomSheet(),
-                );
-              },
+              onPressed: () => _showCreateRecurringDonationBottomSheet(context),
               child: Text(locals.discoverOrAmountActionSheetRecurring),
             ),
           ],
@@ -341,17 +324,7 @@ class OrganizationListPage extends StatelessWidget {
             title: Text(locals.discoverOrAmountActionSheetOnce),
             onTap: () {
               context.pop(context);
-              showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<GiveBloc>(),
-                  child: EnterAmountBottomSheet(
-                    collectGroupNameSpace: nameSpace,
-                  ),
-                ),
-              );
+              _showEnterAmountBottomSheet(context, nameSpace);
             },
           ),
           ListTile(
@@ -362,12 +335,7 @@ class OrganizationListPage extends StatelessWidget {
             title: Text(locals.discoverOrAmountActionSheetRecurring),
             onTap: () {
               context.pop(context);
-              showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (_) => const CreateRecurringDonationBottomSheet(),
-              );
+              _showCreateRecurringDonationBottomSheet(context);
             },
           ),
           ListTile(
@@ -384,6 +352,30 @@ class OrganizationListPage extends StatelessWidget {
             onTap: () => context.pop(context),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<void> _showCreateRecurringDonationBottomSheet(BuildContext context) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => const CreateRecurringDonationBottomSheet(),
+    );
+  }
+
+  Future<void> _showEnterAmountBottomSheet(
+      BuildContext context, String nameSpace) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider.value(
+        value: context.read<GiveBloc>(),
+        child: EnterAmountBottomSheet(
+          collectGroupNameSpace: nameSpace,
+        ),
       ),
     );
   }
