@@ -171,16 +171,38 @@ class AuthRepositoyImpl with AuthRepositoy {
     if (session.accessToken.isEmpty) {
       return null;
     }
+
+    final userExtString = _prefs.getString(UserExt.tag);
+    if (userExtString == null) {
+      return null;
+    }
+
+    if (userExtString.isEmpty) {
+      return null;
+    }
+
+    final decodedJson = jsonDecode(userExtString);
+    if (decodedJson is! Map<String, dynamic>) {
+      return null;
+    }
+
+    final userExt = UserExt.fromJson(decodedJson);
+
+    if (userExt.guid.isEmpty) {
+      return null;
+    }
+    if (userExt.email.isEmpty) {
+      return null;
+    }
+    if (userExt.country.isEmpty) {
+      return null;
+    }
+
     // if (DateTime.parse(session.expires).isBefore(DateTime.now())) {
     //   return false;
     // }
 
-    return (
-      UserExt.fromJson(
-        jsonDecode(_prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
-      ),
-      session
-    );
+    return (userExt, session);
   }
 
   @override
