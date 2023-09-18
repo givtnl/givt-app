@@ -197,6 +197,9 @@ class AuthRepositoyImpl with AuthRepositoy {
     if (userExt.country.isEmpty) {
       return null;
     }
+    if (userExt.needRegistration && !userExt.tempUser) {
+      return null;
+    }
 
     // if (DateTime.parse(session.expires).isBefore(DateTime.now())) {
     //   return false;
