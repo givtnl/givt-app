@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -31,6 +32,7 @@ class _AppState extends State<App> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
   }
 
   @override

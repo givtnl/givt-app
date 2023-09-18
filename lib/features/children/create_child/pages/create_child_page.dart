@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
@@ -14,6 +15,7 @@ import 'package:givt_app/features/children/create_child/widgets/giving_allowance
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -112,6 +114,13 @@ class _CreateChildPageState extends State<CreateChildPage> {
       allowance: allowance,
     );
     context.read<CreateChildCubit>().createChild(child: child);
+    AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.createChildProfileClicked,
+        eventProperties: {
+          'name': name,
+          'dateOfBirth': dateOfBirth?.toIso8601String(),
+          'allowance': allowance,
+        });
   }
 
   void _updateInputFields(Child? child, String currencySymbol) {
@@ -140,6 +149,8 @@ class _CreateChildPageState extends State<CreateChildPage> {
               ),
         ),
         onPressed: () {
+          AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.infoGivingAllowanceClicked);
           showModalBottomSheet<void>(
             context: context,
             backgroundColor: AppTheme.givtPurple,
