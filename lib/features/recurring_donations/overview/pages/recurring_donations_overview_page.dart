@@ -93,7 +93,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
         builder: (context, state) {
           if (state is RecurringDonationsFetchingState) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator.adaptive(),
             );
           }
           final recurringDonations = <RecurringDonation>[];
@@ -105,12 +105,18 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
             child: Column(
               children: [
                 CreateRecurringDonationButton(
-                  onClick: () => showModalBottomSheet<void>(
-                    context: context,
-                    useSafeArea: true,
-                    isScrollControlled: true,
-                    builder: (_) => const CreateRecurringDonationBottomSheet(),
-                  ),
+                  onClick: () async {
+                    await showModalBottomSheet<void>(
+                      context: context,
+                      useSafeArea: true,
+                      isScrollControlled: true,
+                      builder: (_) =>
+                          const CreateRecurringDonationBottomSheet(),
+                    );
+                    if (context.mounted) {
+                      await _fetchRecurringDonations(context);
+                    }
+                  },
                 ),
                 const SizedBox(height: 5),
                 Card(
