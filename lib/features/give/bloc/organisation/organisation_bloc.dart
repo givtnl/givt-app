@@ -113,7 +113,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: state.organisations,
+            filteredOrganisations: filteredOrganisations,
           ),
         );
         return;
