@@ -194,7 +194,7 @@ class _HomePageViewState extends State<_HomePageView> {
           ),
         ),
         ColoredBox(
-          color: Colors.white,
+          color: Colors.transparent,
           child: Padding(
             padding: const EdgeInsets.only(
               right: 15,
