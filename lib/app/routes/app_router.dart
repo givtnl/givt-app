@@ -59,162 +59,157 @@ class AppRouter {
           final auth = context.read<AuthCubit>().state;
           final code = state.queryParameters['code'];
           if (auth is AuthSuccess) {
-            return '/${Pages.home.path}?code=$code';
+            return '${Pages.home.path}?code=$code';
           }
-          return '/${Pages.welcome.path}?code=$code';
+          return '${Pages.welcome.path}?code=$code';
         },
       ),
       GoRoute(
         path: Pages.splash.path,
         name: Pages.splash.name,
+        builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) => _checkAndRedirectAuth(state, context, routerState),
+          child: const SplashPage(),
+        ),
+      ),
+      GoRoute(
+        path: Pages.home.path,
+        name: Pages.home.name,
         routes: [
           GoRoute(
-            path: Pages.home.path,
-            name: Pages.home.name,
-            routes: [
-              GoRoute(
-                path: Pages.personalSummary.path,
-                name: Pages.personalSummary.name,
-                builder: (context, state) => BlocProvider(
-                  create: (_) => PersonalSummaryBloc(
-                    loggedInUserExt: context.read<AuthCubit>().state.user,
-                    givtRepo: getIt(),
-                  )..add(
-                      const PersonalSummaryInit(),
-                    ),
-                  child: const PersonalSummary(),
+            path: Pages.personalSummary.path,
+            name: Pages.personalSummary.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => PersonalSummaryBloc(
+                loggedInUserExt: context.read<AuthCubit>().state.user,
+                givtRepo: getIt(),
+              )..add(
+                  const PersonalSummaryInit(),
                 ),
+              child: const PersonalSummary(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.personalInfoEdit.path,
+            name: Pages.personalInfoEdit.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => PersonalInfoEditBloc(
+                loggedInUserExt: context.read<AuthCubit>().state.user,
+                authRepositoy: getIt(),
               ),
-              GoRoute(
-                path: Pages.personalInfoEdit.path,
-                name: Pages.personalInfoEdit.name,
-                builder: (context, state) => BlocProvider(
-                  create: (_) => PersonalInfoEditBloc(
-                    loggedInUserExt: context.read<AuthCubit>().state.user,
-                    authRepositoy: getIt(),
-                  ),
-                  child: const PersonalInfoEditPage(),
+              child: const PersonalInfoEditPage(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.childrenOverview.path,
+            name: Pages.childrenOverview.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => ChildrenOverviewCubit(getIt())
+                ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+              child: const ChildrenOverviewPage(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.giveVPC.path,
+            name: Pages.giveVPC.name,
+            builder: (context, state) {
+              context.read<VPCCubit>().showVPCInfo();
+              return const GiveVPCPage();
+            },
+          ),
+          GoRoute(
+            path: Pages.createChild.path,
+            name: Pages.createChild.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) =>
+                  CreateChildCubit(getIt(), AppLocalizations.of(context)),
+              child: const CreateChildPage(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.recurringDonations.path,
+            name: Pages.recurringDonations.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => RecurringDonationsCubit(getIt(), getIt())
+                ..fetchRecurringDonations(
+                  context.read<AuthCubit>().state.user.guid,
                 ),
-              ),
-              GoRoute(
-                path: Pages.childrenOverview.path,
-                name: Pages.childrenOverview.name,
-                builder: (context, state) => BlocProvider(
-                  create: (_) => ChildrenOverviewCubit(getIt())
-                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
-                  child: const ChildrenOverviewPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.giveVPC.path,
-                name: Pages.giveVPC.name,
-                builder: (context, state) {
-                  context.read<VPCCubit>().showVPCInfo();
-                  return const GiveVPCPage();
-                },
-              ),
-              GoRoute(
-                path: Pages.createChild.path,
-                name: Pages.createChild.name,
-                builder: (context, state) => BlocProvider(
-                  create: (_) =>
-                      CreateChildCubit(getIt(), AppLocalizations.of(context)),
-                  child: const CreateChildPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.recurringDonations.path,
-                name: Pages.recurringDonations.name,
-                builder: (context, state) => BlocProvider(
-                  create: (_) => RecurringDonationsCubit(getIt(), getIt())
-                    ..fetchRecurringDonations(
-                      context.read<AuthCubit>().state.user.guid,
-                    ),
-                  child: const RecurringDonationsOverviewPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.registration.path,
-                name: Pages.registration.name,
-                builder: (context, state) {
-                  final email = state.queryParameters['email'] ?? '';
+              child: const RecurringDonationsOverviewPage(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.registration.path,
+            name: Pages.registration.name,
+            builder: (context, state) {
+              final email = state.queryParameters['email'] ?? '';
 
-                  final createStripe =
-                      state.queryParameters['createStripe'] ?? 'false';
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create: (context) => StripeCubit(
-                          authRepositoy: getIt(),
-                          authCubit: context.read<AuthCubit>(),
-                        ),
-                      ),
-                      BlocProvider(
-                        create: (context) => RegistrationBloc(
-                          authCubit: context.read<AuthCubit>(),
-                          authRepositoy: getIt(),
-                        ),
-                      ),
-                    ],
-                    child: SignUpPage(
-                      email: email,
-                      createStripe: createStripe,
+              final createStripe =
+                  state.queryParameters['createStripe'] ?? 'false';
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => StripeCubit(
+                      authRepositoy: getIt(),
+                      authCubit: context.read<AuthCubit>(),
                     ),
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: Pages.personalInfo.path,
-                    name: Pages.personalInfo.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as RegistrationBloc,
-                      child: const PersonalInfoPage(),
+                  ),
+                  BlocProvider(
+                    create: (context) => RegistrationBloc(
+                      authCubit: context.read<AuthCubit>(),
+                      authRepositoy: getIt(),
                     ),
                   ),
                 ],
+                child: SignUpPage(
+                  email: email,
+                  createStripe: createStripe,
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: Pages.personalInfo.path,
+                name: Pages.personalInfo.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const PersonalInfoPage(),
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: Pages.sepaMandateExplanation.path,
+            name: Pages.sepaMandateExplanation.name,
+            routes: [
+              GoRoute(
+                path: Pages.signSepaMandate.path,
+                name: Pages.signSepaMandate.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const SignSepaMandatePage(),
+                ),
               ),
               GoRoute(
-                path: Pages.sepaMandateExplanation.path,
-                name: Pages.sepaMandateExplanation.name,
+                path: Pages.bacsMandateExplanation.path,
+                name: Pages.bacsMandateExplanation.name,
                 routes: [
                   GoRoute(
-                    path: Pages.signSepaMandate.path,
-                    name: Pages.signSepaMandate.name,
+                    path: Pages.signBacsMandate.path,
+                    name: Pages.signBacsMandate.name,
                     builder: (context, state) => BlocProvider.value(
                       value: state.extra! as RegistrationBloc,
-                      child: const SignSepaMandatePage(),
+                      child: const SignBacsMandatePage(),
                     ),
                   ),
                   GoRoute(
-                    path: Pages.bacsMandateExplanation.path,
-                    name: Pages.bacsMandateExplanation.name,
-                    routes: [
-                      GoRoute(
-                        path: Pages.signBacsMandate.path,
-                        name: Pages.signBacsMandate.name,
-                        builder: (context, state) => BlocProvider.value(
-                          value: state.extra! as RegistrationBloc,
-                          child: const SignBacsMandatePage(),
-                        ),
-                      ),
-                      GoRoute(
-                        path: Pages.giftAid.path,
-                        name: Pages.giftAid.name,
-                        builder: (context, state) => BlocProvider(
-                          create: (context) => RegistrationBloc(
-                            authCubit: context.read<AuthCubit>(),
-                            authRepositoy: getIt(),
-                          )..add(const RegistrationInit()),
-                          child: const GiftAidRequestPage(),
-                        ),
-                      ),
-                    ],
+                    path: Pages.giftAid.path,
+                    name: Pages.giftAid.name,
                     builder: (context, state) => BlocProvider(
                       create: (context) => RegistrationBloc(
                         authCubit: context.read<AuthCubit>(),
                         authRepositoy: getIt(),
                       )..add(const RegistrationInit()),
-                      child: const BacsExplanationPage(),
+                      child: const GiftAidRequestPage(),
                     ),
                   ),
                 ],
@@ -223,141 +218,91 @@ class AppRouter {
                     authCubit: context.read<AuthCubit>(),
                     authRepositoy: getIt(),
                   )..add(const RegistrationInit()),
-                  child: const MandateExplanationPage(),
+                  child: const BacsExplanationPage(),
                 ),
               ),
-              GoRoute(
-                path: Pages.selectGivingWay.path,
-                name: Pages.selectGivingWay.name,
-                builder: (context, state) => BlocProvider(
-                  create: (_) {
-                    final extra = state.extra! as Map<String, dynamic>;
-                    final auth = context.read<AuthCubit>().state;
-                    final bloc = GiveBloc(
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                    )..add(
-                        GiveAmountChanged(
-                          firstCollectionAmount:
-                              extra['firstCollection'] as double,
-                          secondCollectionAmount:
-                              extra['secondCollection'] as double,
-                          thirdCollectionAmount:
-                              extra['thirdCollection'] as double,
-                        ),
-                      );
-                    if ((extra['code'] as String).isNotEmpty) {
-                      bloc.add(
-                        GiveQRCodeScannedOutOfApp(
-                          extra['code'] as String,
-                          auth.user.guid,
-                        ),
-                      );
-                    }
-                    return bloc;
-                  },
-                  child: const SelectGivingWayPage(),
-                ),
-                routes: [
-                  GoRoute(
-                    path: Pages.giveByBeacon.path,
-                    name: Pages.giveByBeacon.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc
-                        ..add(
-                          const GiveCheckLastDonation(),
-                        ),
-                      child: const BTScanPage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giveByLocation.path,
-                    name: Pages.giveByLocation.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc
-                        ..add(
-                          const GiveCheckLastDonation(),
-                        ),
-                      child: const GPSScanPage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giveByQrCode.path,
-                    name: Pages.giveByQrCode.name,
-                    builder: (context, state) => BlocProvider.value(
-                      value: state.extra! as GiveBloc,
-                      child: const QrCodeScanPage(),
-                    ),
-                  ),
-                  GoRoute(
-                    path: Pages.giveByList.path,
-                    name: Pages.giveByList.name,
-                    builder: (context, state) {
-                      final user = context.read<AuthCubit>().state.user;
-                      return MultiBlocProvider(
-                        providers: [
-                          BlocProvider.value(
-                            value: state.extra! as GiveBloc
-                              ..add(
-                                const GiveCheckLastDonation(),
-                              ),
-                          ),
-                          BlocProvider(
-                            create: (_) => OrganisationBloc(
-                              getIt(),
-                              getIt(),
-                              getIt(),
-                            )..add(
-                                OrganisationFetch(
-                                  user.accountType,
-                                ),
-                              ),
-                          )
-                        ],
-                        child: const OrganizationListPage(),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              GoRoute(
-                path: Pages.give.path,
-                name: Pages.give.name,
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as GiveBloc,
-                  child: const GivingPage(),
-                ),
-              ),
-              GoRoute(
-                path: Pages.giveOffline.path,
-                name: Pages.giveOffline.name,
-                builder: (context, state) {
-                  final extra = state.extra! as GiveBloc;
-                  return BlocProvider.value(
-                    value: extra,
-                    child: SuccessOfflineDonationPage(
-                      organisationName:
-                          extra.state.organisation.organisationName!,
+            ],
+            builder: (context, state) => BlocProvider(
+              create: (context) => RegistrationBloc(
+                authCubit: context.read<AuthCubit>(),
+                authRepositoy: getIt(),
+              )..add(const RegistrationInit()),
+              child: const MandateExplanationPage(),
+            ),
+          ),
+          GoRoute(
+            path: Pages.selectGivingWay.path,
+            name: Pages.selectGivingWay.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) {
+                final extra = state.extra! as Map<String, dynamic>;
+                final auth = context.read<AuthCubit>().state;
+                final bloc = GiveBloc(
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                )..add(
+                    GiveAmountChanged(
+                      firstCollectionAmount: extra['firstCollection'] as double,
+                      secondCollectionAmount:
+                          extra['secondCollection'] as double,
+                      thirdCollectionAmount: extra['thirdCollection'] as double,
                     ),
                   );
-                },
+                if ((extra['code'] as String).isNotEmpty) {
+                  bloc.add(
+                    GiveQRCodeScannedOutOfApp(
+                      extra['code'] as String,
+                      auth.user.guid,
+                    ),
+                  );
+                }
+                return bloc;
+              },
+              child: const SelectGivingWayPage(),
+            ),
+            routes: [
+              GoRoute(
+                path: Pages.giveByBeacon.path,
+                name: Pages.giveByBeacon.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as GiveBloc
+                    ..add(
+                      const GiveCheckLastDonation(),
+                    ),
+                  child: const BTScanPage(),
+                ),
               ),
               GoRoute(
-                path: Pages.chooseCategoryList.path,
-                name: Pages.chooseCategoryList.name,
+                path: Pages.giveByLocation.path,
+                name: Pages.giveByLocation.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as GiveBloc
+                    ..add(
+                      const GiveCheckLastDonation(),
+                    ),
+                  child: const GPSScanPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.giveByQrCode.path,
+                name: Pages.giveByQrCode.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as GiveBloc,
+                  child: const QrCodeScanPage(),
+                ),
+              ),
+              GoRoute(
+                path: Pages.giveByList.path,
+                name: Pages.giveByList.name,
                 builder: (context, state) {
                   final user = context.read<AuthCubit>().state.user;
                   return MultiBlocProvider(
                     providers: [
-                      BlocProvider(
-                        create: (_) => GiveBloc(
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                          getIt(),
-                        )..add(
+                      BlocProvider.value(
+                        value: state.extra! as GiveBloc
+                          ..add(
                             const GiveCheckLastDonation(),
                           ),
                       ),
@@ -369,78 +314,141 @@ class AppRouter {
                         )..add(
                             OrganisationFetch(
                               user.accountType,
-                              type: state.extra != null && state.extra is int
-                                  ? state.extra! as int
-                                  : -1,
                             ),
                           ),
                       )
                     ],
-                    child: const OrganizationListPage(
-                      isChooseCategory: true,
-                    ),
+                    child: const OrganizationListPage(),
                   );
                 },
-              ),
-              GoRoute(
-                path: Pages.overview.path,
-                name: Pages.overview.name,
-                builder: (context, state) {
-                  return BlocProvider(
-                    create: (_) => GivtBloc(
-                      getIt(),
-                    )..add(
-                        const GivtInit(),
-                      ),
-                    child: const OverviewPage(),
-                  );
-                },
-              ),
-              GoRoute(
-                path: Pages.unregister.path,
-                name: Pages.unregister.name,
-                builder: (_, state) => BlocProvider(
-                  create: (_) => UnregisterCubit(
-                    getIt(),
-                  ),
-                  child: const UnregisterPage(),
-                ),
               ),
             ],
-            builder: (context, state) => BlocProvider(
-              create: (_) => RemoteDataSourceSyncBloc(
-                getIt(),
-                getIt(),
-              )..add(const RemoteDataSourceSyncRequested()),
-              child: HomePage(
-                code: state.queryParameters['code'] ?? '',
-                given: state.queryParameters.containsKey('given'),
-              ),
+          ),
+          GoRoute(
+            path: Pages.give.path,
+            name: Pages.give.name,
+            builder: (context, state) => BlocProvider.value(
+              value: state.extra! as GiveBloc,
+              child: const GivingPage(),
             ),
           ),
           GoRoute(
-            path: Pages.welcome.path,
-            name: Pages.welcome.name,
-            builder: (context, state) => WelcomePage(
-              prefs: getIt(),
+            path: Pages.giveOffline.path,
+            name: Pages.giveOffline.name,
+            builder: (context, state) {
+              final extra = state.extra! as GiveBloc;
+              return BlocProvider.value(
+                value: extra,
+                child: SuccessOfflineDonationPage(
+                  organisationName: extra.state.organisation.organisationName!,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.chooseCategoryList.path,
+            name: Pages.chooseCategoryList.name,
+            builder: (context, state) {
+              final user = context.read<AuthCubit>().state.user;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => GiveBloc(
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                    )..add(
+                        const GiveCheckLastDonation(),
+                      ),
+                  ),
+                  BlocProvider(
+                    create: (_) => OrganisationBloc(
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                    )..add(
+                        OrganisationFetch(
+                          user.accountType,
+                          type: state.extra != null && state.extra is int
+                              ? state.extra! as int
+                              : -1,
+                        ),
+                      ),
+                  )
+                ],
+                child: const OrganizationListPage(
+                  isChooseCategory: true,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.overview.path,
+            name: Pages.overview.name,
+            builder: (context, state) {
+              return BlocProvider(
+                create: (_) => GivtBloc(
+                  getIt(),
+                )..add(
+                    const GivtInit(),
+                  ),
+                child: const OverviewPage(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.unregister.path,
+            name: Pages.unregister.name,
+            builder: (_, state) => BlocProvider(
+              create: (_) => UnregisterCubit(
+                getIt(),
+              ),
+              child: const UnregisterPage(),
             ),
           ),
         ],
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {
-            if (state is AuthSuccess) {
-              context.goNamed(
-                Pages.home.name,
-                queryParameters: routerState.queryParameters,
-              );
-            }
-            if (state is AuthLogout || state is AuthUnknown) {
-              context.goNamed(Pages.welcome.name);
-            }
-          },
-          child: const SplashPage(),
+          listener: (context, state) => _checkAndRedirectAuth(state, context, routerState),
+          child: BlocProvider(
+            create: (_) => RemoteDataSourceSyncBloc(
+              getIt(),
+              getIt(),
+            )..add(const RemoteDataSourceSyncRequested()),
+            child: HomePage(
+              code: routerState.queryParameters['code'] ?? '',
+              given: routerState.queryParameters.containsKey('given'),
+            ),
+          ),
+        ),
+      ),
+      GoRoute(
+        path: Pages.welcome.path,
+        name: Pages.welcome.name,
+        builder: (_, routerState) => BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) => _checkAndRedirectAuth(state, context, routerState),
+          child: WelcomePage(
+            prefs: getIt(),
+          ),
         ),
       ),
     ],
   );
+
+  /// Check if the user is authenticated and redirect to the correct page
+  static void _checkAndRedirectAuth(
+    AuthState state,
+    BuildContext context,
+    GoRouterState routerState,
+  ) {
+    if (state is AuthSuccess) {
+      context.goNamed(
+        Pages.home.name,
+        queryParameters: routerState.queryParameters,
+      );
+    }
+    if (state is AuthLogout || state is AuthUnknown) {
+      context.goNamed(Pages.welcome.name);
+    }
+  }
 }
