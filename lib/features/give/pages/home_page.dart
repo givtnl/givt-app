@@ -33,64 +33,54 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    return WillPopScope(
-      onWillPop: () async {
-        if (_key.currentState != null && _key.currentState!.isDrawerOpen) {
-          Navigator.of(context).pop();
-          return false;
-        }
-        return false;
-      },
-      child: Scaffold(
-        key: _key,
-        appBar: AppBar(
-          title:
-              Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
-          actions: [
-            IconButton(
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                showDragHandle: true,
-                backgroundColor: AppTheme.givtPurple,
-                builder: (_) => const FAQBottomSheet(),
-              ),
-              icon: const Icon(
-                Icons.question_mark_outlined,
-                size: 26,
-              ),
+    return Scaffold(
+      key: _key,
+      appBar: AppBar(
+        title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
+        actions: [
+          IconButton(
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              showDragHandle: true,
+              backgroundColor: AppTheme.givtPurple,
+              builder: (_) => const FAQBottomSheet(),
             ),
-          ],
-        ),
-        drawer: const CustomNavigationDrawer(),
-        body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-          listener: (context, state) {
-            if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
-                  ),
+            icon: const Icon(
+              Icons.question_mark_outlined,
+              size: 26,
+            ),
+          ),
+        ],
+      ),
+      drawer: const CustomNavigationDrawer(),
+      body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+        listener: (context, state) {
+          if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
                 ),
-              );
-            }
-            if (state is RemoteDataSourceSyncInProgress) {
-              if (!auth.user.needRegistration || auth.user.mandateSigned) {
-                return;
-              }
-              _buildNeedsRegistrationDialog(context);
-            }
-          },
-          child: SafeArea(
-            child: _HomePageView(
-              given: widget.given,
-              code: widget.code,
-              onPageChanged: () => setState(
-                () {
-                  isGive = !isGive;
-                },
               ),
+            );
+          }
+          if (state is RemoteDataSourceSyncInProgress) {
+            if (!auth.user.needRegistration || auth.user.mandateSigned) {
+              return;
+            }
+            _buildNeedsRegistrationDialog(context);
+          }
+        },
+        child: SafeArea(
+          child: _HomePageView(
+            given: widget.given,
+            code: widget.code,
+            onPageChanged: () => setState(
+              () {
+                isGive = !isGive;
+              },
             ),
           ),
         ),
