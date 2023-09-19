@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
@@ -13,8 +12,6 @@ import 'package:givt_app/features/children/create_child/models/child.dart';
 import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/create_child/widgets/giving_allowance_info_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/util.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -27,59 +24,23 @@ class CreateChildPage extends StatefulWidget {
 }
 
 class _CreateChildPageState extends State<CreateChildPage> {
-  void _showDataPickerDialog() {
+  Future<void> _showDataPickerDialog() async {
     final today = DateTime.now();
     final maximumDate = today;
     final minimumDate = DateTime(today.year - 18);
-    var currentDate = _selectedDate;
 
-    showCupertinoModalPopup<void>(
+    final pickedDate = await showDatePicker(
       context: context,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.35,
-        margin: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-        ),
-        color: CupertinoColors.systemBackground.resolveFrom(context),
-        child: SafeArea(
-          top: false,
-          child: Stack(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 60),
-                child: CupertinoDatePicker(
-                  initialDateTime: currentDate,
-                  maximumDate: maximumDate,
-                  minimumDate: minimumDate,
-                  mode: CupertinoDatePickerMode.date,
-                  onDateTimeChanged: (DateTime newDate) {
-                    currentDate = newDate;
-                  },
-                ),
-              ),
-              Positioned(
-                right: 10,
-                top: 10,
-                child: TextButton(
-                  child: Text(
-                    AppLocalizations.of(context).next,
-                    style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                          color: AppTheme.sliderIndicatorFilled,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  onPressed: () {
-                    _selectedDate = currentDate;
-                    _setDateOfBirthText(_selectedDate);
-                    context.pop();
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      initialDate: _selectedDate,
+      firstDate: minimumDate,
+      lastDate: maximumDate,
     );
+
+    if (pickedDate != null) {
+      log('picked date: ${pickedDate.toIso8601String()}');
+      _selectedDate = pickedDate;
+      _setDateOfBirthText(_selectedDate);
+    }
   }
 
   final _nameController = TextEditingController();
