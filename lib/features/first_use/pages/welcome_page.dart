@@ -79,29 +79,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    final country =
-                        await get_it.getIt<CountryIsoInfo>().checkCountryIso;
-                    if (!mounted) {
-                      return;
-                    }
-                    if (country == Country.us.countryCode) {
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => WarningDialog(
-                          title: 'Oops',
-                          content:
-                              'At the moment we are not able to process new users in the USA. Please try again later.',
-                          onConfirm: () => context.pop(),
-                        ),
-                      );
-                      return;
-                    }
-
-                    await Navigator.of(context).push(
-                      EmailSignupPage.route(),
-                    );
-                  },
+                  onPressed: () => Navigator.of(context).push(EmailSignupPage.route()),
                   onLongPress: hackUSASIM,
                   child: Text(
                     locals.welcomeContinue,
