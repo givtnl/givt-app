@@ -259,7 +259,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
             onTap: () => {
-              context.goNamed(Pages.giveVPC.name),
+              context.goNamed(Pages.childrenOverview.name),
               AnalyticsHelper.logEvent(eventName: AmplitudeEvents.familyClicked)
             },
           ),
