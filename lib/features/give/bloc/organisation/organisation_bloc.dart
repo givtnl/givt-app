@@ -75,12 +75,12 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           selectedCollectGroup: selectedGroup,
         ),
       );
-      if (event.type == CollecGroupType.none.index) {
+      if (event.type == CollectGroupType.none.index) {
         emit(
           state.copyWith(selectedType: event.type),
         );
       }
-      if (event.type != -1 && event.type != CollecGroupType.none.index) {
+      if (event.type != -1 && event.type != CollectGroupType.none.index) {
         add(OrganisationTypeChanged(event.type));
       }
     } on GivtServerFailure catch (e, stackTrace) {
@@ -119,7 +119,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         );
         return;
       }
-      if (state.selectedType != CollecGroupType.none.index &&
+      if (state.selectedType != CollectGroupType.none.index &&
           event.query.isEmpty) {
         filteredOrganisations = filteredOrganisations
             .where(
@@ -170,40 +170,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         filteredOrganisations: orgs,
       ),
     );
-
-    // if (state.status == OrganisationStatus.filtered) {
-    //   var orgs = state.selectedType == event.type
-    //       ? state.filteredOrganisations
-    //       : state.organisations
-    //           .where((organisation) => organisation.type.index == event.type)
-    //           .toList();
-    //   if (state.previousSearchQuery.isNotEmpty) {
-    //     orgs = orgs
-    //         .where(
-    //           (organisation) => organisation.orgName.toLowerCase().contains(
-    //                 state.previousSearchQuery.toLowerCase(),
-    //               ),
-    //         )
-    //         .toList();
-    //   }
-    //   emit(
-    //     state.copyWith(
-    //       selectedType: state.selectedType == event.type ? -1 : event.type,
-    //       filteredOrganisations: orgs,
-    //     ),
-    //   );
-    //   return;
-    // }
-    // emit(
-    //   state.copyWith(
-    //     selectedType: state.selectedType == event.type ? -1 : event.type,
-    //     filteredOrganisations: state.selectedType == event.type
-    //         ? state.organisations
-    //         : state.organisations
-    //             .where((organisation) => organisation.type.index == event.type)
-    //             .toList(),
-    //   ),
-    // );
   }
 
   FutureOr<void> _onSelectionChanged(
