@@ -101,7 +101,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      final filteredOrganisations = state.organisations
+      var filteredOrganisations = state.organisations
           .where(
             (organisation) => organisation.orgName.toLowerCase().contains(
                   event.query.toLowerCase(),
@@ -114,14 +114,24 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           state.copyWith(
             status: OrganisationStatus.filtered,
             filteredOrganisations: filteredOrganisations,
+            previousSearchQuery: event.query,
           ),
         );
         return;
+      }
+      if (state.selectedType != CollecGroupType.none.index &&
+          event.query.isEmpty) {
+        filteredOrganisations = filteredOrganisations
+            .where(
+              (organisation) => organisation.type.index == state.selectedType,
+            )
+            .toList();
       }
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
           filteredOrganisations: filteredOrganisations,
+          previousSearchQuery: event.query,
         ),
       );
     } catch (e, stackTrace) {
@@ -136,17 +146,64 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   FutureOr<void> _onTypeChanged(
     OrganisationTypeChanged event,
     Emitter<OrganisationState> emit,
-  ) {
+  ) async {
+    var orgs = state.organisations;
+    if (state.selectedType != event.type) {
+      orgs = state.organisations
+          .where((organisation) => organisation.type.index == event.type)
+          .toList();
+    }
+
+    if (state.previousSearchQuery.isNotEmpty) {
+      orgs = orgs
+          .where(
+            (organisation) => organisation.orgName.toLowerCase().contains(
+                  state.previousSearchQuery.toLowerCase(),
+                ),
+          )
+          .toList();
+    }
+
     emit(
       state.copyWith(
         selectedType: state.selectedType == event.type ? -1 : event.type,
-        filteredOrganisations: state.selectedType == event.type
-            ? state.organisations
-            : state.organisations
-                .where((organisation) => organisation.type.index == event.type)
-                .toList(),
+        filteredOrganisations: orgs,
       ),
     );
+
+    // if (state.status == OrganisationStatus.filtered) {
+    //   var orgs = state.selectedType == event.type
+    //       ? state.filteredOrganisations
+    //       : state.organisations
+    //           .where((organisation) => organisation.type.index == event.type)
+    //           .toList();
+    //   if (state.previousSearchQuery.isNotEmpty) {
+    //     orgs = orgs
+    //         .where(
+    //           (organisation) => organisation.orgName.toLowerCase().contains(
+    //                 state.previousSearchQuery.toLowerCase(),
+    //               ),
+    //         )
+    //         .toList();
+    //   }
+    //   emit(
+    //     state.copyWith(
+    //       selectedType: state.selectedType == event.type ? -1 : event.type,
+    //       filteredOrganisations: orgs,
+    //     ),
+    //   );
+    //   return;
+    // }
+    // emit(
+    //   state.copyWith(
+    //     selectedType: state.selectedType == event.type ? -1 : event.type,
+    //     filteredOrganisations: state.selectedType == event.type
+    //         ? state.organisations
+    //         : state.organisations
+    //             .where((organisation) => organisation.type.index == event.type)
+    //             .toList(),
+    //   ),
+    // );
   }
 
   FutureOr<void> _onSelectionChanged(
