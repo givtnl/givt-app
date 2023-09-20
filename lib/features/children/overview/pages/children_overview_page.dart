@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/overview/cubit/children_overview_cubi
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/widgets/child_item.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/features/children/vpc/widgets/vpc_intro_item_image.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -93,21 +94,24 @@ class ChildrenOverviewPage extends StatelessWidget {
                           country: Country.fromCode(user.country),
                         ),
                       );
-
-                      return SingleChildScrollView(
-                        child: Column(
-                          children: state.profiles
-                              .map(
-                                (profile) => ChildItem(
-                                  name: profile.firstName,
-                                  total: profile.wallet.balance,
-                                  currencySymbol: currency.currencySymbol,
-                                  pending: profile.wallet.pending,
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      );
+                      if (state.profiles.isEmpty) {
+                        return _buildNoChildrenWidget(context);
+                      } else {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: state.profiles
+                                .map(
+                                  (profile) => ChildItem(
+                                    name: profile.firstName,
+                                    total: profile.wallet.balance,
+                                    currencySymbol: currency.currencySymbol,
+                                    pending: profile.wallet.pending,
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        );
+                      }
                     } else {
                       return Container();
                     }
@@ -141,6 +145,22 @@ class ChildrenOverviewPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildNoChildrenWidget(BuildContext context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+              'Once you create a child profile, you will be able see them here and use the Givt4Kids companion app.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium),
+          const Spacer(flex: 1),
+          const VPCIntroItemImage(
+            background: 'assets/images/vpc_intro_givt4kids_bg.svg',
+            foreground: 'assets/images/vpc_intro_givt4kids.svg',
+          ),
+          const Spacer(flex: 2),
+        ],
+      );
 
   Widget _buildDisclaimer(AppLocalizations locals, BuildContext context,
           List<Profile> profiles) =>

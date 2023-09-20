@@ -26,59 +26,57 @@ class _VPCIntroPageState extends State<VPCIntroPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 35),
-        width: double.infinity,
-        child: Column(
-          children: [
-            Image.asset(
-              'assets/images/logo.png',
-              height: size.height * 0.035,
-            ),
-            Container(
-              padding: const EdgeInsets.all(20),
-              height: size.height * 0.855,
-              child: CarouselSlider(
-                carouselController: _carouselController,
-                options: CarouselOptions(
-                  height: double.infinity,
-                  enableInfiniteScroll: false,
-                  enlargeCenterPage: true,
-                  viewportFraction: 1,
-                  onPageChanged: (index, resaon) {
-                    setState(() {
-                      _currentPageIndex = index;
-                    });
-                  },
-                ),
-                items: pages,
+    return Container(
+      padding: const EdgeInsets.only(top: 30),
+      width: double.infinity,
+      child: Column(
+        children: [
+          Image.asset(
+            'assets/images/logo.png',
+            height: size.height * 0.035,
+          ),
+          Container(
+            padding: const EdgeInsets.all(20),
+            height: size.height * 0.85,
+            child: CarouselSlider(
+              carouselController: _carouselController,
+              options: CarouselOptions(
+                height: double.infinity,
+                enableInfiniteScroll: false,
+                enlargeCenterPage: true,
+                viewportFraction: 1,
+                onPageChanged: (index, resaon) {
+                  setState(() {
+                    _currentPageIndex = index;
+                  });
+                },
               ),
+              items: pages,
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: pages.map((page) {
-                return GestureDetector(
-                  onTap: () {
-                    _carouselController.animateToPage(pages.indexOf(page));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                    width: size.width * 0.25,
-                    height: 8,
-                    decoration: BoxDecoration(
-                      color: _currentPageIndex >= pages.indexOf(page)
-                          ? AppTheme.sliderIndicatorFilled
-                          : AppTheme.sliderIndicatorNotFilled,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: pages.map((page) {
+              return GestureDetector(
+                onTap: () {
+                  _carouselController.animateToPage(pages.indexOf(page));
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  width: size.width * 0.25,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: _currentPageIndex >= pages.indexOf(page)
+                        ? AppTheme.sliderIndicatorFilled
+                        : AppTheme.sliderIndicatorNotFilled,
+                    borderRadius: BorderRadius.circular(25),
                   ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
