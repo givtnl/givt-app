@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
@@ -35,7 +36,13 @@ class ChildrenOverviewPage extends StatelessWidget {
           children: [
             Row(
               children: [
-                BackButton(),
+                BackButton(
+                  onPressed: () {
+                    context.pop();
+                    AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.backClicked);
+                  },
+                ),
                 Expanded(
                   child: Center(
                     child: SvgPicture.asset(
@@ -116,6 +123,8 @@ class ChildrenOverviewPage extends StatelessWidget {
         padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
         child: ElevatedButton(
           onPressed: () {
+            AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.addChildProfile);
             if (context.read<VPCCubit>().vpcGained) {
               context.goNamed(Pages.createChild.name);
             } else {
@@ -185,6 +194,8 @@ class ChildrenOverviewPage extends StatelessWidget {
                   context
                       .read<ChildrenOverviewCubit>()
                       .removeDisclaimer(profiles);
+                  AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.infoGivingAllowanceDismissed);
                 },
                 icon: SvgPicture.asset(
                   'assets/images/notification_kids_allowance_dismiss.svg',
