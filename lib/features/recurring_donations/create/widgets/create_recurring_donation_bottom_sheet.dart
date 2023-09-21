@@ -303,7 +303,7 @@ class _CreateRecurringDonationBottomSheetViewState
                         contentPadding: const EdgeInsets.all(20),
                         prefixIcon: state.recipient.orgName.isNotEmpty
                             ? Icon(
-                                CollecGroupType.getIconByType(
+                                CollectGroupType.getIconByType(
                                   state.recipient.type,
                                 ),
                                 color: AppTheme.givtBlue,
