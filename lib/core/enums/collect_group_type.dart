@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-enum CollecGroupType {
+enum CollectGroupType {
   church(
     icon: 'assets/images/church.png',
     activeIcon: 'assets/images/church_focus.png',
@@ -27,7 +27,7 @@ enum CollecGroupType {
   debug(icon: '', activeIcon: '', color: Colors.grey),
   none(icon: '', activeIcon: '', color: Colors.grey);
 
-  const CollecGroupType({
+  const CollectGroupType({
     required this.icon,
     required this.activeIcon,
     required this.color,
@@ -36,11 +36,11 @@ enum CollecGroupType {
   final String activeIcon;
   final Color color;
 
-  static CollecGroupType fromInt(int value) {
-    if (value >= 0 && value < CollecGroupType.none.index) {
-      return CollecGroupType.values[value];
+  static CollectGroupType fromInt(int value) {
+    if (value >= 0 && value < CollectGroupType.none.index) {
+      return CollectGroupType.values[value];
     } else {
-      return CollecGroupType.none;
+      return CollectGroupType.none;
     }
   }
 }
