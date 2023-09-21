@@ -17,7 +17,7 @@ class CollectGroup extends Equatable {
       : nameSpace = '',
         orgName = '',
         hasCelebration = false,
-        type = CollecGroupType.none,
+        type = CollectGroupType.none,
         locations = const [],
         multiUseAllocations = const [],
         qrCodes = const [];
@@ -57,7 +57,7 @@ class CollectGroup extends Equatable {
       nameSpace: json['NS'] as String,
       orgName: json['N'] as String,
       hasCelebration: json['C'] as bool,
-      type: CollecGroupType.values.firstWhere(
+      type: CollectGroupType.values.firstWhere(
         (e) => e.index == json['T'],
       ),
       locations: locations,
@@ -69,7 +69,7 @@ class CollectGroup extends Equatable {
   final String nameSpace;
   final String orgName;
   final bool hasCelebration;
-  final CollecGroupType type;
+  final CollectGroupType type;
   final List<Location> locations;
   final List<MultiUseAllocation> multiUseAllocations;
   final List<QrCode> qrCodes;

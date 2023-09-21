@@ -36,7 +36,7 @@ class ChooseCategory extends StatelessWidget {
                   icon: FontAwesomeIcons.magnifyingGlass,
                   onPressed: () => context.goNamed(
                     Pages.chooseCategoryList.name,
-                    extra: CollecGroupType.none.index,
+                    extra: CollectGroupType.none.index,
                   ),
                 ),
               ),
@@ -58,36 +58,36 @@ class ChooseCategory extends StatelessWidget {
               Expanded(
                 child: FilterSuggestionCard(
                   isFocused: false,
-                  color: CollecGroupType.charities.color,
+                  color: CollectGroupType.charities.color,
                   title: _getCategoryName(
-                    type: CollecGroupType.charities,
+                    type: CollectGroupType.charities,
                     context: context,
                   ),
-                  activeIcon: CollecGroupType.charities.activeIcon,
-                  icon: CollecGroupType.charities.icon,
+                  activeIcon: CollectGroupType.charities.activeIcon,
+                  icon: CollectGroupType.charities.icon,
                   width: size.width * 0.4,
                   height: size.height * 0.3,
                   onTap: () => context.goNamed(
                     Pages.chooseCategoryList.name,
-                    extra: CollecGroupType.charities.index,
+                    extra: CollectGroupType.charities.index,
                   ),
                 ),
               ),
               Expanded(
                 child: FilterSuggestionCard(
                   isFocused: false,
-                  color: CollecGroupType.church.color,
+                  color: CollectGroupType.church.color,
                   title: _getCategoryName(
-                    type: CollecGroupType.church,
+                    type: CollectGroupType.church,
                     context: context,
                   ),
-                  activeIcon: CollecGroupType.church.activeIcon,
-                  icon: CollecGroupType.church.icon,
+                  activeIcon: CollectGroupType.church.activeIcon,
+                  icon: CollectGroupType.church.icon,
                   width: size.width * 0.4,
                   height: size.height * 0.3,
                   onTap: () => context.goNamed(
                     Pages.chooseCategoryList.name,
-                    extra: CollecGroupType.church.index,
+                    extra: CollectGroupType.church.index,
                   ),
                 ),
               ),
@@ -99,18 +99,18 @@ class ChooseCategory extends StatelessWidget {
               Expanded(
                 child: FilterSuggestionCard(
                   isFocused: false,
-                  color: CollecGroupType.campaign.color,
+                  color: CollectGroupType.campaign.color,
                   title: _getCategoryName(
-                    type: CollecGroupType.campaign,
+                    type: CollectGroupType.campaign,
                     context: context,
                   ),
-                  activeIcon: CollecGroupType.campaign.activeIcon,
-                  icon: CollecGroupType.campaign.icon,
+                  activeIcon: CollectGroupType.campaign.activeIcon,
+                  icon: CollectGroupType.campaign.icon,
                   width: size.width * 0.4,
                   height: size.height * 0.3,
                   onTap: () => context.goNamed(
                     Pages.chooseCategoryList.name,
-                    extra: CollecGroupType.campaign.index,
+                    extra: CollectGroupType.campaign.index,
                   ),
                 ),
               ),
@@ -118,18 +118,18 @@ class ChooseCategory extends StatelessWidget {
                 child: FilterSuggestionCard(
                   visible: Platform.isIOS,
                   isFocused: false,
-                  color: CollecGroupType.artists.color,
+                  color: CollectGroupType.artists.color,
                   title: _getCategoryName(
-                    type: CollecGroupType.artists,
+                    type: CollectGroupType.artists,
                     context: context,
                   ),
-                  activeIcon: CollecGroupType.artists.activeIcon,
-                  icon: CollecGroupType.artists.icon,
+                  activeIcon: CollectGroupType.artists.activeIcon,
+                  icon: CollectGroupType.artists.icon,
                   width: size.width * 0.4,
                   height: size.height * 0.3,
                   onTap: () => context.goNamed(
                     Pages.chooseCategoryList.name,
-                    extra: CollecGroupType.artists.index,
+                    extra: CollectGroupType.artists.index,
                   ),
                 ),
               ),
@@ -141,17 +141,17 @@ class ChooseCategory extends StatelessWidget {
   }
 
   String _getCategoryName({
-    required CollecGroupType type,
+    required CollectGroupType type,
     required BuildContext context,
   }) {
     switch (type) {
-      case CollecGroupType.charities:
+      case CollectGroupType.charities:
         return context.l10n.charity;
-      case CollecGroupType.church:
+      case CollectGroupType.church:
         return context.l10n.church;
-      case CollecGroupType.campaign:
+      case CollectGroupType.campaign:
         return context.l10n.campaign;
-      case CollecGroupType.artists:
+      case CollectGroupType.artists:
         return context.l10n.artists;
       default:
         return '';

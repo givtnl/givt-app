@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class VPCSuccessPage extends StatelessWidget {
@@ -71,6 +73,8 @@ class VPCSuccessPage extends StatelessWidget {
                 onPressed: () {
                   context.read<VPCCubit>().resetVPC();
                   context.goNamed(Pages.createChild.name);
+                  AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.setUpChildProfileClicked);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.sliderIndicatorFilled,

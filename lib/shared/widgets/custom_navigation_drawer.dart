@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -17,6 +18,7 @@ import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/auth_utils.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
@@ -256,7 +258,10 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
-            onTap: () => context.goNamed(Pages.childrenOverview.name),
+            onTap: () => {
+              context.goNamed(Pages.childrenOverview.name),
+              AnalyticsHelper.logEvent(eventName: AmplitudeEvents.familyClicked)
+            },
           ),
           _buildEmptySpace(),
           _buildMenuItem(
@@ -265,7 +270,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.info,
             onTap: () => showModalBottomSheet<void>(
               context: context,
-              showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
               builder: (_) => const AboutGivtBottomSheet(),
