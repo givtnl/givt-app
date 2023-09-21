@@ -106,7 +106,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           .where(
             (organisation) =>
                 _removeDiacritics(organisation.orgName.toLowerCase()).contains(
-              event.query.toLowerCase(),
+              _removeDiacritics(event.query.toLowerCase()),
             ),
           )
           .toList();
@@ -161,7 +161,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           .where(
             (organisation) =>
                 _removeDiacritics(organisation.orgName.toLowerCase()).contains(
-              state.previousSearchQuery.toLowerCase(),
+              _removeDiacritics(state.previousSearchQuery.toLowerCase()),
             ),
           )
           .toList();
