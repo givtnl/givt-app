@@ -396,13 +396,7 @@ class APIService {
       '/givtservice/v1/PaymentProvider/checkoutsession/$guid/parent-control-validation',
     );
 
-    final response = await client.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/problem+json',
-      },
-    );
+    final response = await client.get(url);
 
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
