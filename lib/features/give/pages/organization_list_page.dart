@@ -56,7 +56,7 @@ class OrganizationListPage extends StatelessWidget {
         },
         builder: (context, state) {
           final focusNode = FocusNode();
-          if (state.selectedType == CollecGroupType.none.index) {
+          if (state.selectedType == CollectGroupType.none.index) {
             focusNode.requestFocus();
           }
           return Column(
@@ -113,7 +113,7 @@ class OrganizationListPage extends StatelessWidget {
                 isLoading: context.watch<GiveBloc>().state.status ==
                     GiveStatus.loading,
                 onPressed:
-                    state.selectedCollectGroup.type == CollecGroupType.none
+                    state.selectedCollectGroup.type == CollectGroupType.none
                         ? null
                         : () {
                             final userGUID =
@@ -145,17 +145,19 @@ class OrganizationListPage extends StatelessWidget {
 
   String _buildTitle(int selectedType, AppLocalizations locals) {
     var title = locals.chooseWhoYouWantToGiveTo;
+
     if (isSelection) {
       title = locals.selectRecipient;
     }
-    switch (CollecGroupType.fromInt(selectedType)) {
-      case CollecGroupType.church:
+
+    switch (CollectGroupType.fromInt(selectedType)) {
+      case CollectGroupType.church:
         title = locals.church;
-      case CollecGroupType.charities:
+      case CollectGroupType.charities:
         title = locals.charity;
-      case CollecGroupType.campaign:
+      case CollectGroupType.campaign:
         title = locals.campaign;
-      case CollecGroupType.artists:
+      case CollectGroupType.artists:
         title = locals.artist;
       default:
         break;
@@ -195,7 +197,7 @@ class OrganizationListPage extends StatelessWidget {
     required VoidCallback onTap,
     required bool isSelected,
     required String title,
-    required CollecGroupType type,
+    required CollectGroupType type,
   }) =>
       ListTile(
         key: UniqueKey(),
@@ -203,7 +205,7 @@ class OrganizationListPage extends StatelessWidget {
         selected: isSelected,
         selectedTileColor: getHighlightColor(type),
         leading: Icon(
-          CollecGroupType.getIconByType(type),
+          CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
         title: Text(title),
@@ -214,68 +216,69 @@ class OrganizationListPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FilterSuggestionCard(
-            isFocused: bloc.state.selectedType == CollecGroupType.church.index,
+            isFocused: bloc.state.selectedType == CollectGroupType.church.index,
             title: locals.church,
-            icon: CollecGroupType.church.icon,
-            activeIcon: CollecGroupType.church.activeIcon,
-            color: CollecGroupType.church.color,
+            icon: CollectGroupType.church.icon,
+            activeIcon: CollectGroupType.church.activeIcon,
+            color: CollectGroupType.church.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.church.index,
+                CollectGroupType.church.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             isFocused:
-                bloc.state.selectedType == CollecGroupType.charities.index,
+                bloc.state.selectedType == CollectGroupType.charities.index,
             title: locals.charity,
-            icon: CollecGroupType.charities.icon,
-            activeIcon: CollecGroupType.charities.activeIcon,
-            color: CollecGroupType.charities.color,
+            icon: CollectGroupType.charities.icon,
+            activeIcon: CollectGroupType.charities.activeIcon,
+            color: CollectGroupType.charities.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.charities.index,
+                CollectGroupType.charities.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             isFocused:
-                bloc.state.selectedType == CollecGroupType.campaign.index,
+                bloc.state.selectedType == CollectGroupType.campaign.index,
             title: locals.campaign,
-            icon: CollecGroupType.campaign.icon,
-            activeIcon: CollecGroupType.campaign.activeIcon,
-            color: CollecGroupType.campaign.color,
+            icon: CollectGroupType.campaign.icon,
+            activeIcon: CollectGroupType.campaign.activeIcon,
+            color: CollectGroupType.campaign.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.campaign.index,
+                CollectGroupType.campaign.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             visible: Platform.isIOS,
-            isFocused: bloc.state.selectedType == CollecGroupType.artists.index,
+            isFocused:
+                bloc.state.selectedType == CollectGroupType.artists.index,
             title: locals.artist,
-            icon: CollecGroupType.artists.icon,
-            activeIcon: CollecGroupType.artists.activeIcon,
-            color: CollecGroupType.artists.color,
+            icon: CollectGroupType.artists.icon,
+            activeIcon: CollectGroupType.artists.activeIcon,
+            color: CollectGroupType.artists.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.artists.index,
+                CollectGroupType.artists.index,
               ),
             ),
           ),
         ],
       );
 
-  Color getHighlightColor(CollecGroupType type) {
+  Color getHighlightColor(CollectGroupType type) {
     switch (type) {
-      case CollecGroupType.church:
+      case CollectGroupType.church:
         return AppTheme.givtLightBlue;
-      case CollecGroupType.charities:
+      case CollectGroupType.charities:
         return AppTheme.givtYellow;
-      case CollecGroupType.campaign:
+      case CollectGroupType.campaign:
         return AppTheme.givtOrange;
-      case CollecGroupType.artists:
+      case CollectGroupType.artists:
         return AppTheme.givtDarkGreen;
       default:
         return AppTheme.givtLightBlue;

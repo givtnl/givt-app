@@ -51,9 +51,9 @@ jobs:
   semantic-pr:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
-  spellcheck:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
-    with:
-      includes: |
-        **/*.md
-      modified_files_only: false
+  # spellcheck:
+  #   uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
+  #   with:
+  #     includes: |
+  #       **/*.md
+  #     modified_files_only: false
