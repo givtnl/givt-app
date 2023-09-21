@@ -23,6 +23,13 @@ class AuthTempAccountWarning extends AuthState {
   List<Object> get props => [];
 }
 
+class AuthNoInternet extends AuthState {
+  const AuthNoInternet();
+
+  @override
+  List<Object> get props => [];
+}
+
 class AuthLoginRedirect extends AuthState {
   const AuthLoginRedirect({super.email});
 

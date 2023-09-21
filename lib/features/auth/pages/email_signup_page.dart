@@ -6,8 +6,10 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
 
 class EmailSignupPage extends StatefulWidget {
   const EmailSignupPage({super.key});
@@ -58,6 +60,17 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 useSafeArea: true,
                 builder: (BuildContext context) => LoginPage(
                   email: state.email.trim(),
+                ),
+              );
+            }
+
+            if (state is AuthNoInternet) {
+              showDialog<void>(
+                context: context,
+                builder: (context) => WarningDialog(
+                  title: locals.noInternetConnectionTitle,
+                  content: locals.noInternet,
+                  onConfirm: () => context.pop(),
                 ),
               );
             }
