@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 
 class FAQBottomSheet extends StatelessWidget {
   const FAQBottomSheet({super.key});
@@ -11,19 +12,17 @@ class FAQBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final userCountry = context.read<AuthCubit>().state.user.country;
-    return Container(
-      padding: const EdgeInsets.all(20),
+    return BottomSheetLayout(
+      title: Text(
+        locals.needHelpTitle,
+        style: const TextStyle(
+          fontSize: 22,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       child: Column(
         children: [
-          Text(
-            locals.needHelpTitle,
-            style: const TextStyle(
-              fontSize: 22,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 20),
           Text(
             locals.findAnswersToYourQuestions,
             style: const TextStyle(
