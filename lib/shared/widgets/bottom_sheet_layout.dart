@@ -29,7 +29,7 @@ class BottomSheetLayout extends StatelessWidget {
             title: title,
             leading: BackButton(
               onPressed: onBackPressed,
-              color: backButtonColor ?? Colors.white,
+              color: backButtonColor,
             ),
             backgroundColor: backgroundColor ?? Colors.transparent,
           ),

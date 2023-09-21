@@ -21,6 +21,7 @@ class FAQBottomSheet extends StatelessWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
+      backButtonColor: Colors.white,
       child: Column(
         children: [
           Text(
