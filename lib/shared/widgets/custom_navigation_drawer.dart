@@ -15,9 +15,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
-import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/auth_utils.dart';
-import 'package:givt_app/utils/util.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,8 +30,7 @@ class CustomNavigationDrawer extends StatelessWidget {
     final auth = context.watch<AuthCubit>().state;
     const apiURL = String.fromEnvironment('API_URL_US');
 
-    final showFamilyItem = apiURL.contains('dev') &&
-        auth.user.country == Country.us.countryCode &&
+    final showFamilyItem = auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
         auth.user.mandateSigned;
     return Drawer(
