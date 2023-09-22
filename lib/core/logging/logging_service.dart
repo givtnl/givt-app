@@ -11,6 +11,7 @@ import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:ios_utsname_ext/extension.dart' as extensionIOS;
 
 mixin ILoggingInfo {
   Future<void> debug(String message);
@@ -71,7 +72,8 @@ class LoggingInfo implements ILoggingInfo {
       final iosInfo = await DeviceInfoPlugin().iosInfo;
       final systemName = iosInfo.systemName;
       final version = iosInfo.systemVersion;
-      final name = iosInfo.name;
+      final machineId = iosInfo.utsname.machine;
+      final name = machineId.iOSProductName;
       final model = iosInfo.model;
       final os = 'iOS $systemName $version';
       final device = '$name $model';
