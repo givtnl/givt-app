@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -314,6 +315,7 @@ class AppRouter {
                         )..add(
                             OrganisationFetch(
                               user.accountType,
+                              type: CollectGroupType.none.index,
                             ),
                           ),
                       )
@@ -372,7 +374,7 @@ class AppRouter {
                           user.accountType,
                           type: state.extra != null && state.extra is int
                               ? state.extra! as int
-                              : -1,
+                              : CollectGroupType.none.index,
                         ),
                       ),
                   )

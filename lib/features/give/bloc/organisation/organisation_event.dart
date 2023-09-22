@@ -10,7 +10,7 @@ abstract class OrganisationEvent extends Equatable {
 class OrganisationFetch extends OrganisationEvent {
   const OrganisationFetch(
     this.accountType, {
-    this.type = -1,
+    required this.type,
   });
 
   final AccountType accountType;

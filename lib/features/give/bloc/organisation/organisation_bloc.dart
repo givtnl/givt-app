@@ -81,7 +81,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           state.copyWith(selectedType: event.type),
         );
       }
-      if (event.type != -1 && event.type != CollectGroupType.none.index) {
+      if (event.type != CollectGroupType.none.index) {
         add(OrganisationTypeChanged(event.type));
       }
     } on GivtServerFailure catch (e, stackTrace) {
@@ -169,7 +169,9 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
     emit(
       state.copyWith(
-        selectedType: state.selectedType == event.type ? -1 : event.type,
+        selectedType: state.selectedType == event.type
+            ? CollectGroupType.none.index
+            : event.type,
         filteredOrganisations: orgs,
       ),
     );
