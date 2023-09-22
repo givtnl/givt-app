@@ -139,8 +139,14 @@ class AppTheme {
       color: lightColorScheme.primary,
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(givtLightGreen),
-      checkColor: MaterialStateProperty.all(givtLightGreen),
+      fillColor: MaterialStateProperty.resolveWith(
+        (states) {
+          if (states.contains(MaterialState.selected)) {
+            return givtLightGreen;
+          }
+          return Colors.white;
+        },
+      ),
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
