@@ -43,6 +43,27 @@ class SelectGivingWayPage extends StatelessWidget {
                     extra: context.read<GiveBloc>(),
                   );
                 }
+                if (state.status == GiveStatus.error) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.errorOccurred,
+                      content: locals.errorContactGivt,
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
+                }
+                if (state.status ==
+                    GiveStatus.donatedToSameOrganisationInLessThan30Seconds) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.notSoFast,
+                      content: locals.giftBetween30Sec,
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
+                }
                 if (state.status == GiveStatus.readyToConfirmGPS) {
                   _buildGivingDialog(
                     context,
