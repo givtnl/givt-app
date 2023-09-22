@@ -43,7 +43,6 @@ class _HomePageState extends State<HomePage> {
               context: context,
               isScrollControlled: true,
               useSafeArea: true,
-              showDragHandle: true,
               backgroundColor: AppTheme.givtPurple,
               builder: (_) => const FAQBottomSheet(),
             ),

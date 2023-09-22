@@ -270,7 +270,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.info,
             onTap: () => showModalBottomSheet<void>(
               context: context,
-              showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
               builder: (_) => const AboutGivtBottomSheet(),
