@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
@@ -103,9 +104,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     try {
       var filteredOrganisations = state.organisations
           .where(
-            (organisation) => organisation.orgName.toLowerCase().contains(
-                  event.query.toLowerCase(),
-                ),
+            (organisation) =>
+                _removeDiacritics(organisation.orgName.toLowerCase()).contains(
+              _removeDiacritics(event.query.toLowerCase()),
+            ),
           )
           .toList();
 
@@ -157,9 +159,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     if (state.previousSearchQuery.isNotEmpty) {
       orgs = orgs
           .where(
-            (organisation) => organisation.orgName.toLowerCase().contains(
-                  state.previousSearchQuery.toLowerCase(),
-                ),
+            (organisation) =>
+                _removeDiacritics(organisation.orgName.toLowerCase()).contains(
+              _removeDiacritics(state.previousSearchQuery.toLowerCase()),
+            ),
           )
           .toList();
     }
@@ -211,4 +214,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     }
     return AccountType.sepa;
   }
+
+  String _removeDiacritics(String string) => removeDiacritics(string);
 }
