@@ -105,7 +105,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               if (user.needRegistration) {
                 final createStripe = user.personalInfoRegistered &&
-                    Country.fromCode(user.countryCode.toString()) == Country.us;
+                    user.country == Country.us.countryCode;
                 context
                   ..goNamed(
                     Pages.registration.name,
