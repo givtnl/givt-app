@@ -297,10 +297,18 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
-      await LoggingInfo.instance.error(
+      await LoggingInfo.instance.warning(
         body.toString(),
         methodName: stackTrace.toString(),
       );
+      if (statusCode == 417) {
+        emit(
+          state.copyWith(
+            status: GiveStatus.donatedToSameOrganisationInLessThan30Seconds,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(status: GiveStatus.error),
       );
