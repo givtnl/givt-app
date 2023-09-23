@@ -9,29 +9,27 @@ class VPCIntroItemFamily extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
-    return SizedBox.expand(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 70),
-            child: Text(
-              locals.vpcIntroFamilyText,
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(color: AppTheme.sliderIndicatorFilled),
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: Text(
+            locals.vpcIntroFamilyText,
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
+                .copyWith(color: AppTheme.sliderIndicatorFilled),
           ),
-          const VPCIntroItemImage(
-            background: 'assets/images/vpc_intro_family_bg.svg',
-            foreground: 'assets/images/vpc_intro_family.svg',
-          ),
-          const Spacer(),
-        ],
-      ),
+        ),
+        const Spacer(flex: 1),
+        const VPCIntroItemImage(
+          background: 'assets/images/vpc_intro_family_bg.svg',
+          foreground: 'assets/images/vpc_intro_family.svg',
+        ),
+        const Spacer(flex: 2),
+      ],
     );
   }
 }
