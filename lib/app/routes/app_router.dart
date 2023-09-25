@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -54,22 +56,26 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
+        path: '/',
+        name: 'custom_url',
+        redirect: _redirectFromExternalLink,
+      ),
+      GoRoute(
+        path: '/givt',
+        name: 'givt',
+        redirect: _redirectFromExternalLink,
+      ),
+      GoRoute(
         path: '/download',
         name: 'download',
-        redirect: (context, state) {
-          final auth = context.read<AuthCubit>().state;
-          final code = state.queryParameters['code'];
-          if (auth is AuthSuccess) {
-            return '${Pages.home.path}?code=$code';
-          }
-          return '${Pages.welcome.path}?code=$code';
-        },
+        redirect: _redirectFromExternalLink,
       ),
       GoRoute(
         path: Pages.splash.path,
         name: Pages.splash.name,
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) => _checkAndRedirectAuth(state, context, routerState),
+          listener: (context, state) =>
+              _checkAndRedirectAuth(state, context, routerState),
           child: const SplashPage(),
         ),
       ),
@@ -411,7 +417,8 @@ class AppRouter {
           ),
         ],
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) => _checkAndRedirectAuth(state, context, routerState),
+          listener: (context, state) =>
+              _checkAndRedirectAuth(state, context, routerState),
           child: BlocProvider(
             create: (_) => RemoteDataSourceSyncBloc(
               getIt(),
@@ -428,7 +435,8 @@ class AppRouter {
         path: Pages.welcome.path,
         name: Pages.welcome.name,
         builder: (_, routerState) => BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) => _checkAndRedirectAuth(state, context, routerState),
+          listener: (context, state) =>
+              _checkAndRedirectAuth(state, context, routerState),
           child: WelcomePage(
             prefs: getIt(),
           ),
@@ -436,6 +444,36 @@ class AppRouter {
       ),
     ],
   );
+
+  /// This method is used to redirect the user to the correct page after
+  /// clicking on a link in an email
+  static FutureOr<String?> _redirectFromExternalLink(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    final auth = context.read<AuthCubit>().state;
+    var code = '';
+    if (state.queryParameters.containsKey('code')) {
+      code = state.queryParameters['code']!;
+    }
+
+    /// If user comes from a custome url_scheme
+    /// we have mediumId instead of
+    /// code and needs to be encoded
+    if (state.queryParameters.containsKey('mediumId')) {
+      code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
+    }
+    if (auth is AuthSuccess) {
+      if (code.isEmpty) {
+        return Pages.home.path;
+      }
+      return '${Pages.home.path}?code=$code';
+    }
+    if (code.isEmpty) {
+      return Pages.welcome.path;
+    }
+    return '${Pages.welcome.path}?code=$code';
+  }
 
   /// Check if the user is authenticated and redirect to the correct page
   static void _checkAndRedirectAuth(
