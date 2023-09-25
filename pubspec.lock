@@ -467,6 +467,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  ios_utsname_ext:
+    dependency: "direct main"
+    description:
+      name: ios_utsname_ext
+      sha256: b5fe4ac6fc9d5d86d9cd62039a2cb4bac9962d3c017861d0c0eab113ff4c854c
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.0"
   jiffy:
     dependency: "direct main"
     description:
