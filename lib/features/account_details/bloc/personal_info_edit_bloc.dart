@@ -61,6 +61,7 @@ class PersonalInfoEditBloc
       await authRepositoy.updateUser(
         guid: state.loggedInUserExt.guid,
         newUserExt: {
+          'amountLimit': state.loggedInUserExt.amountLimit,
           'email': event.email,
         },
       );
@@ -74,13 +75,19 @@ class PersonalInfoEditBloc
       await LoggingInfo.instance.error(e.toString());
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+      await LoggingInfo.instance.warning(e.toString());
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,
           error: e.body.toString(),
         ),
       );
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: PersonalInfoEditStatus.error));
     }
   }
 
