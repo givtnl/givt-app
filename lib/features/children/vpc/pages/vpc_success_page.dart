@@ -19,52 +19,42 @@ class VPCSuccessPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.vpcSuccessBackground,
-      body: Container(
-        padding: const EdgeInsets.only(top: 35),
-        width: double.infinity,
+      body: SafeArea(
         child: Column(
           children: [
             SvgPicture.asset(
               'assets/images/logo_white.svg',
               height: size.height * 0.035,
             ),
-            Container(
-              padding: const EdgeInsets.all(40),
-              height: size.height * 0.81,
-              child: SizedBox.expand(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SvgPicture.asset(
-                      'assets/images/white_badge_check.svg',
-                    ),
-                    const SizedBox(
-                      height: 60,
-                    ),
-                    Text(
-                      locals.vpcSuccessTitle,
-                      style:
-                          Theme.of(context).textTheme.headlineMedium!.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                    ),
-                    Text(
-                      locals.vpcSuccessText,
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
-                    Expanded(
-                      child: Center(
-                        child: SvgPicture.asset('assets/images/vpc_givy.svg'),
-                      ),
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: size.height * 0.03),
+                  SvgPicture.asset(
+                    'assets/images/white_badge_check.svg',
+                  ),
+                  SizedBox(height: size.height * 0.02),
+                  Text(
+                    locals.vpcSuccessTitle,
+                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  Text(
+                    locals.vpcSuccessText,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: SvgPicture.asset('assets/images/vpc_givy.svg'),
               ),
             ),
             Padding(

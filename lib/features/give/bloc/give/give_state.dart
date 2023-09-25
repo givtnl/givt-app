@@ -8,6 +8,7 @@ enum GiveStatus {
   readyToGive,
   processingBeaconData,
   noInternetConnection,
+  donatedToSameOrganisationInLessThan30Seconds,
   beaconNotActive,
   success,
   error,

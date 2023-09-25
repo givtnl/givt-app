@@ -33,6 +33,7 @@ class AppTheme {
   static const inputFieldBorderSelected = Color(0xFF355070);
 
   static const childItemBackground = Color(0xFF54A1EE);
+  static const childItemBlueLight = Color(0xFFBFDBFC);
   static const childItemPendingBackground = Color(0xFFE28D4D);
 
   static const vpcSuccessBackground = Color(0xFF7DBDA1);
@@ -139,8 +140,14 @@ class AppTheme {
       color: lightColorScheme.primary,
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(givtLightGreen),
-      checkColor: MaterialStateProperty.all(givtLightGreen),
+      fillColor: MaterialStateProperty.resolveWith(
+        (states) {
+          if (states.contains(MaterialState.selected)) {
+            return givtLightGreen;
+          }
+          return Colors.white;
+        },
+      ),
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(

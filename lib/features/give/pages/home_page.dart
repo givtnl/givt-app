@@ -57,10 +57,15 @@ class _HomePageState extends State<HomePage> {
       body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
         listener: (context, state) {
           if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+            var syncString =
+                'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}';
+            if (widget.code.isNotEmpty) {
+              syncString += ' with mediumId/code ${widget.code}';
+            }
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}',
+                  syncString,
                 ),
               ),
             );
@@ -105,7 +110,7 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               if (user.needRegistration) {
                 final createStripe = user.personalInfoRegistered &&
-                    Country.fromCode(user.countryCode.toString()) == Country.us;
+                    user.country == Country.us.countryCode;
                 context
                   ..goNamed(
                     Pages.registration.name,

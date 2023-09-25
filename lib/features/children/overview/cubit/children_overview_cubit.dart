@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
-import 'package:native_shared_preferences/original_shared_preferences/original_shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'children_overview_state.dart';
 

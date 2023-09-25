@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -42,6 +44,11 @@ class AuthCubit extends Cubit<AuthState> {
           e.toString(),
           methodName: stackTrace.toString(),
         );
+      } else if (e is SocketException) {
+        emit(
+          const AuthNoInternet(),
+        );
+        return;
       } else {
         await LoggingInfo.instance.error(
           e.toString(),
@@ -132,6 +139,12 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(AuthSuccess(user: unRegisteredUserExt));
     } catch (e, stackTrace) {
+      if (e is SocketException) {
+        emit(
+          const AuthNoInternet(),
+        );
+        return;
+      }
       await LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
@@ -141,14 +154,15 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> refreshUser() async {
-    final guid = state.user.guid;
+    final prevState = state;
     emit(AuthLoading());
     try {
-      final userExt = await _authRepositoy.fetchUserExtension(guid);
+      final userExt =
+          await _authRepositoy.fetchUserExtension(prevState.user.guid);
       emit(
         AuthRefreshed(
           user: userExt,
-          session: state.session,
+          session: prevState.session,
         ),
       );
     } catch (e, stackTrace) {

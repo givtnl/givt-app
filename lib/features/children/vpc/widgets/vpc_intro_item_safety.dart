@@ -46,6 +46,7 @@ class VPCIntroItemSafety extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   locals.seeDirectNoticeButtonText,
@@ -55,7 +56,8 @@ class VPCIntroItemSafety extends StatelessWidget {
                       .copyWith(color: AppTheme.sliderIndicatorFilled),
                 ),
                 const SizedBox(width: 5),
-                const Icon(Icons.info_outline),
+                const Icon(Icons.info_rounded,
+                    color: AppTheme.sliderIndicatorFilled, size: 20),
               ],
             ),
           ),
