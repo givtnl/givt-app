@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 enum CollectGroupType {
@@ -42,5 +43,20 @@ enum CollectGroupType {
     } else {
       return CollectGroupType.none;
     }
+  }
+
+  static IconData getIconByType(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return FontAwesomeIcons.placeOfWorship;
+      case CollectGroupType.charities:
+        return FontAwesomeIcons.heart;
+      case CollectGroupType.campaign:
+        return FontAwesomeIcons.handHoldingHeart;
+      case CollectGroupType.artists:
+        return FontAwesomeIcons.guitar;
+      default:
+    }
+    return FontAwesomeIcons.church;
   }
 }

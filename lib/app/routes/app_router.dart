@@ -308,10 +308,7 @@ class AppRouter {
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider.value(
-                        value: state.extra! as GiveBloc
-                          ..add(
-                            const GiveCheckLastDonation(),
-                          ),
+                        value: state.extra! as GiveBloc,
                       ),
                       BlocProvider(
                         create: (_) => OrganisationBloc(
@@ -321,6 +318,10 @@ class AppRouter {
                         )..add(
                             OrganisationFetch(
                               user.accountType,
+                              /// Disable last donated organisation
+                              /// in the discover flow as it's
+                              /// not present in the native app
+                              showLastDonated: false,
                               type: CollectGroupType.none.index,
                             ),
                           ),
