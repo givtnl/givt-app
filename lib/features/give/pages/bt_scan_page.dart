@@ -36,18 +36,10 @@ class _BTScanPageState extends State<BTScanPage> {
 
   void _onPeripheralsDetectedData(List<ScanResult> results) {
     for (final scanResult in results) {
-      /// Givt beacons have a name, manufacturer data, service data,
-      /// and a service UUID.
+
       if (scanResult.advertisementData.localName.isEmpty) {
         continue;
       }
-
-      // var hex = StringBuffer();
-      // for (final b in scanResult.advertisementData.serviceData["0000feaf-0000-1000-8000-00805f9b34fb"]!) {
-      //   hex.write(sprintf('%02x', [b]));
-      // }
-      // final beaconData = hex.toString();
-
 
       if (scanResult.advertisementData.serviceData.isEmpty) {
         continue;
