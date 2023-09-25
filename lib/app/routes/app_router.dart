@@ -1,7 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -53,16 +56,19 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
+        path: '/',
+        name: 'custom_url',
+        redirect: _redirectFromExternalLink,
+      ),
+      GoRoute(
+        path: '/givt',
+        name: 'givt',
+        redirect: _redirectFromExternalLink,
+      ),
+      GoRoute(
         path: '/download',
         name: 'download',
-        redirect: (context, state) {
-          final auth = context.read<AuthCubit>().state;
-          final code = state.queryParameters['code'];
-          if (auth is AuthSuccess) {
-            return '${Pages.home.path}?code=$code';
-          }
-          return '${Pages.welcome.path}?code=$code';
-        },
+        redirect: _redirectFromExternalLink,
       ),
       GoRoute(
         path: Pages.splash.path,
@@ -316,6 +322,7 @@ class AppRouter {
                               /// in the discover flow as it's
                               /// not present in the native app
                               showLastDonated: false,
+                              type: CollectGroupType.none.index,
                             ),
                           ),
                       )
@@ -374,7 +381,7 @@ class AppRouter {
                           user.accountType,
                           type: state.extra != null && state.extra is int
                               ? state.extra! as int
-                              : -1,
+                              : CollectGroupType.none.index,
                         ),
                       ),
                   )
@@ -438,6 +445,36 @@ class AppRouter {
       ),
     ],
   );
+
+  /// This method is used to redirect the user to the correct page after
+  /// clicking on a link in an email
+  static FutureOr<String?> _redirectFromExternalLink(
+    BuildContext context,
+    GoRouterState state,
+  ) {
+    final auth = context.read<AuthCubit>().state;
+    var code = '';
+    if (state.queryParameters.containsKey('code')) {
+      code = state.queryParameters['code']!;
+    }
+
+    /// If user comes from a custome url_scheme
+    /// we have mediumId instead of
+    /// code and needs to be encoded
+    if (state.queryParameters.containsKey('mediumId')) {
+      code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
+    }
+    if (auth is AuthSuccess) {
+      if (code.isEmpty) {
+        return Pages.home.path;
+      }
+      return '${Pages.home.path}?code=$code';
+    }
+    if (code.isEmpty) {
+      return Pages.welcome.path;
+    }
+    return '${Pages.welcome.path}?code=$code';
+  }
 
   /// Check if the user is authenticated and redirect to the correct page
   static void _checkAndRedirectAuth(

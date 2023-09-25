@@ -78,6 +78,16 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
           }
+          if (state is AuthNoInternet) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: locals.noInternetConnectionTitle,
+                content: locals.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(
