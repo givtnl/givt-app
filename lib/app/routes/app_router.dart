@@ -452,15 +452,25 @@ class AppRouter {
     GoRouterState state,
   ) {
     final auth = context.read<AuthCubit>().state;
-    var code = state.queryParameters['code'];
-    /// If user comes from a custome url_scheme 
+    var code = '';
+    if (state.queryParameters.containsKey('code')) {
+      code = state.queryParameters['code']!;
+    }
+
+    /// If user comes from a custome url_scheme
     /// we have mediumId instead of
     /// code and needs to be encoded
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
     if (auth is AuthSuccess) {
+      if (code.isEmpty) {
+        return Pages.home.path;
+      }
       return '${Pages.home.path}?code=$code';
+    }
+    if (code.isEmpty) {
+      return Pages.welcome.path;
     }
     return '${Pages.welcome.path}?code=$code';
   }
