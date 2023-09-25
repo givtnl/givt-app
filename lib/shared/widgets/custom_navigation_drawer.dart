@@ -28,7 +28,6 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    const apiURL = String.fromEnvironment('API_URL_US');
 
     final showFamilyItem = auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
