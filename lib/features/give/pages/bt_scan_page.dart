@@ -7,6 +7,8 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logging/logging.dart';
+import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
   const BTScanPage({super.key});
@@ -16,35 +18,29 @@ class BTScanPage extends StatefulWidget {
 }
 
 class _BTScanPageState extends State<BTScanPage> {
-  late FlutterBluePlus flutterBlue;
   bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    flutterBlue = FlutterBluePlus.instance;
-    flutterBlue
-      ..startScan(timeout: const Duration(seconds: 30)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          setState(() {
-            _isVisible = !_isVisible;
-          });
-        },
-      )
-      ..scanResults.listen((results) {}).onData(_onPeripheralsDetectedData);
+
+    FlutterBluePlus.startScan(timeout: const Duration(seconds: 30), androidUsesFineLocation: true);
+    FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
+
+    Future.delayed(const Duration(seconds: 10), () {
+      setState(() {
+        _isVisible = true;
+      });
+    });
   }
 
   void _onPeripheralsDetectedData(List<ScanResult> results) {
     for (final scanResult in results) {
-      /// Givt beacons have a name, manufacturer data, service data,
-      /// and a service UUID.
-      if (scanResult.device.name.isEmpty) {
+
+      if (scanResult.advertisementData.localName.isEmpty) {
         continue;
       }
-      if (scanResult.advertisementData.manufacturerData.isNotEmpty) {
-        continue;
-      }
+
       if (scanResult.advertisementData.serviceData.isEmpty) {
         continue;
       }
@@ -56,7 +52,7 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      if (scanResult.rssi < -75 || scanResult.rssi < -67) {
+      if (scanResult.rssi < -67) {
         continue;
       }
 
@@ -78,7 +74,6 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   void dispose() {
     super.dispose();
-    flutterBlue.stopScan();
   }
 
   @override
