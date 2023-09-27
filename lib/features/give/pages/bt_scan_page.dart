@@ -7,8 +7,6 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logging/logging.dart';
-import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
   const BTScanPage({super.key});
@@ -62,7 +60,7 @@ class _BTScanPageState extends State<BTScanPage> {
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
               userGUID: context.read<AuthCubit>().state.user.guid,
-              macAddress: scanResult.device.id.toString(),
+              macAddress: scanResult.device.remoteId.toString(),
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
               serviceData: scanResult.advertisementData.serviceData,
