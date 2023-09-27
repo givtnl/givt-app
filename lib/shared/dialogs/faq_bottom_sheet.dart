@@ -12,6 +12,8 @@ class FAQBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final userCountry = context.read<AuthCubit>().state.user.country;
+    final isUs = userCountry == Country.us.countryCode;
+    final isUk = Country.unitedKingdomCodes().contains(userCountry);
     return BottomSheetLayout(
       title: Text(
         locals.needHelpTitle,
@@ -39,9 +41,7 @@ class FAQBottomSheet extends StatelessWidget {
                 children: [
                   _buildQuestionTile(
                     question: locals.feedbackTitle,
-                    answer: userCountry == Country.us.countryCode
-                        ? locals.faQantwoord0Us
-                        : locals.faQantwoord0,
+                    answer: isUs ? locals.faQantwoord0Us : locals.faQantwoord0,
                   ),
                   _buildQuestionTile(
                     question: locals.faqHowDoesGivingWork,
@@ -67,46 +67,40 @@ class FAQBottomSheet extends StatelessWidget {
                     question: locals.faqVraag16,
                     answer: locals.faqAntwoord16,
                   ),
-                  _buildQuestionTile(
-                    question: locals.faQvraag5,
-                    answer: locals.faQantwoord5,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.faqQuestion12,
-                    answer: locals.faqAnswer12,
-                  ),
+                  if (isUk)
+                    _buildQuestionTile(
+                      question: locals.faqQuestion12,
+                      answer: locals.faqAnswer12Gb,
+                    ),
+                  if (!isUs && !isUk)
+                    _buildQuestionTile(
+                      question: locals.faqQuestion12,
+                      answer: locals.faqAnswer12,
+                    ),
                   _buildQuestionTile(
                     question: locals.faQvraag9,
                     answer: locals.faQantwoord9,
                   ),
-                  _buildQuestionTile(
-                    question: locals.faQvraag15,
-                    answer: locals.faQantwoord15,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.faQvraag15,
-                    answer: locals.faQantwoord15,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.questionHowDoesRegisteringWorks,
-                    answer: locals.answerHowDoesRegistrationWork,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.faqQuestion11,
-                    answer: locals.faqAnswer11,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.faqVraag10,
-                    answer: locals.faqAntwoord10,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.faQvraag3,
-                    answer: locals.faQantwoord3,
-                  ),
-                  _buildQuestionTile(
-                    question: locals.faQvraag8,
-                    answer: locals.faQantwoord8,
-                  ),
+                  if (isUk)
+                    _buildQuestionTile(
+                      question: locals.faQvraag15Gb,
+                      answer: locals.faQantwoord15Gb,
+                    ),
+                  if (!isUs && !isUk)
+                    _buildQuestionTile(
+                      question: locals.faQvraag15,
+                      answer: locals.faQantwoord15,
+                    ),
+                  if (isUk)
+                    _buildQuestionTile(
+                      question: locals.questionHowDoesRegisteringWorks,
+                      answer: locals.answerHowDoesRegistrationWorkGb,
+                    ),
+                  if (!isUs && !isUk)
+                    _buildQuestionTile(
+                      question: locals.questionHowDoesRegisteringWorks,
+                      answer: locals.answerHowDoesRegistrationWork,
+                    ),
                   _buildQuestionTile(
                     question: locals.faQvraag1,
                     answer: locals.faQantwoord1,
@@ -116,42 +110,75 @@ class FAQBottomSheet extends StatelessWidget {
                     answer: locals.faQantwoord2,
                   ),
                   _buildQuestionTile(
+                    question: locals.faQvraag3,
+                    answer: locals.faQantwoord3,
+                  ),
+                  _buildQuestionTile(
                     question: locals.faQvraag4,
                     answer: locals.faQantwoord4,
                   ),
+                  if (isUk)
+                    _buildQuestionTile(
+                      question: locals.faQvraag5,
+                      answer: locals.faQantwoord5Gb,
+                    ),
+                  if (!isUs && !isUk)
+                    _buildQuestionTile(
+                      question: locals.faQvraag5,
+                      answer: locals.faQantwoord5,
+                    ),
                   _buildQuestionTile(
                     question: locals.faQvraag6,
                     answer: locals.faQantwoord6,
                   ),
+                  if (isUk)
+                    _buildQuestionTile(
+                      question: locals.faQvraag7,
+                      answer: locals.faQantwoord7Gb,
+                    ),
+                  if (!isUk && !isUs)
+                    _buildQuestionTile(
+                      question: locals.faQvraag7,
+                      answer: locals.faQantwoord7,
+                    ),
                   _buildQuestionTile(
-                    question: locals.faQvraag7,
-                    answer: locals.faQantwoord7,
+                    question: locals.faQvraag8,
+                    answer: locals.faQantwoord8,
                   ),
                   // _buildQuestionTile(
                   //   question: locals.faQuestAnonymity,
                   //   answer: locals.faQanswerAnonymity,
                   // ),
                   _buildQuestionTile(
+                    question: locals.faqVraag10,
+                    answer: locals.faqAntwoord10,
+                  ),
+                  _buildQuestionTile(
+                    question: locals.faqQuestion11,
+                    answer: locals.faqAnswer11,
+                  ),
+                  _buildQuestionTile(
                     question: locals.questionWhyAreMyDataStored,
                     answer: locals.answerWhyAreMyDataStored,
                   ),
-                  _buildQuestionTile(
-                    question: locals.faQvraag18,
-                    answer: locals.faqAntwoord18,
-                  ),
+                  if (isUk)
+                    _buildQuestionTile(
+                      question: locals.faqVraagDdi,
+                      answer: locals.faqAntwoordDdi,
+                    ),
                   _buildQuestionTile(
                     question: locals.termsTitle,
-                    answer: userCountry == Country.us.countryCode
+                    answer: isUs
                         ? locals.termsTextUs
-                        : Country.unitedKingdomCodes().contains(userCountry)
+                        : isUk
                             ? locals.termsTextGb
                             : locals.termsText,
                   ),
                   _buildQuestionTile(
                     question: locals.privacyTitle,
-                    answer: userCountry == Country.us.countryCode
+                    answer: isUs
                         ? locals.policyTextUs
-                        : Country.unitedKingdomCodes().contains(userCountry)
+                        : isUk
                             ? locals.policyTextGb
                             : locals.policyText,
                   ),
