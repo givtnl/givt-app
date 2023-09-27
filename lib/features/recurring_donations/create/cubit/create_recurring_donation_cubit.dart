@@ -210,7 +210,7 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
 
   void _calculateAndInsertEndDate() {
     var counter = 1;
-    var tempDate = state.endDate;
+    var tempDate = state.startDate;
 
     switch (state.frequency) {
       case RecurringDonationFrequency.week:
