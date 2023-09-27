@@ -13,9 +13,11 @@ part 'create_recurring_donation_state.dart';
 
 class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
   CreateRecurringDonationCubit(
-    this._createRecurringDonationRepository,
-  ) : super(
+    this._createRecurringDonationRepository, {
+    bool showSuccessScreen = false,
+  }) : super(
           CreateRecurringDonationState(
+            showSuccessScreen: showSuccessScreen,
             startDate: DateTime.now().add(
               const Duration(days: 1),
             ),

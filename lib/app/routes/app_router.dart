@@ -23,7 +23,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
-import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
+import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
@@ -318,6 +318,7 @@ class AppRouter {
                         )..add(
                             OrganisationFetch(
                               user.accountType,
+
                               /// Disable last donated organisation
                               /// in the discover flow as it's
                               /// not present in the native app
@@ -342,15 +343,13 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: Pages.giveOffline.path,
-            name: Pages.giveOffline.name,
+            path: Pages.giveSucess.path,
+            name: Pages.giveSucess.name,
             builder: (context, state) {
-              final extra = state.extra! as GiveBloc;
-              return BlocProvider.value(
-                value: extra,
-                child: SuccessOfflineDonationPage(
-                  organisationName: extra.state.organisation.organisationName!,
-                ),
+              final extra = state.extra! as Map<String, dynamic>;
+              return SuccessDonationPage(
+                organisationName: extra['orgName'] as String,
+                isRecurringDonation: extra['isRecurringDonation'] as bool,
               );
             },
           ),

@@ -4,7 +4,7 @@ enum Pages {
   welcome,
   selectGivingWay,
   give,
-  giveOffline,
+  giveSucess,
   giveByList,
   chooseCategoryList,
   chooseCategoryEnterAmount,
@@ -41,7 +41,7 @@ extension AppPageExtension on Pages {
         return 'select-giving-way';
       case Pages.give:
         return 'give';
-      case Pages.giveOffline:
+      case Pages.giveSucess:
         return 'give-offline';
       case Pages.signSepaMandate:
         return 'sign-sepa-mandate';
@@ -100,7 +100,7 @@ extension AppPageExtension on Pages {
         return 'GIVING-WAY';
       case Pages.give:
         return 'GIVE';
-      case Pages.giveOffline:
+      case Pages.giveSucess:
         return 'GIVE-OFFLINE';
       case Pages.signSepaMandate:
         return 'SIGN-SEPA-MANDATE';

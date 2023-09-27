@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/give/give.dart';
@@ -28,27 +29,30 @@ class CreateRecurringDonationBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = CreateRecurringDonationCubit(getIt());
+    final cubit = CreateRecurringDonationCubit(
+      getIt(),
+      showSuccessScreen: recipient != null,
+    );
     if (recipient != null) {
       cubit.setRecipient(recipient!);
     }
     return BlocProvider(
       create: (_) => cubit,
-      child: const CreateRecurringDonationBottomSheetView(),
+      child: const _CreateRecurringDonationBottomSheetView(),
     );
   }
 }
 
-class CreateRecurringDonationBottomSheetView extends StatefulWidget {
-  const CreateRecurringDonationBottomSheetView({super.key});
+class _CreateRecurringDonationBottomSheetView extends StatefulWidget {
+  const _CreateRecurringDonationBottomSheetView();
 
   @override
-  State<CreateRecurringDonationBottomSheetView> createState() =>
+  State<_CreateRecurringDonationBottomSheetView> createState() =>
       _CreateRecurringDonationBottomSheetViewState();
 }
 
 class _CreateRecurringDonationBottomSheetViewState
-    extends State<CreateRecurringDonationBottomSheetView> {
+    extends State<_CreateRecurringDonationBottomSheetView> {
   late TextEditingController amountController;
   late TextEditingController turnsController;
 
@@ -117,6 +121,16 @@ class _CreateRecurringDonationBottomSheetViewState
             CreateRecurringDonationState>(
           listener: (context, state) {
             if (state.status == CreateRecurringDonationStatus.success) {
+              if (state.showSuccessScreen) {
+                context.goNamed(
+                  Pages.giveSucess.name,
+                  extra: {
+                    'isRecurringDonation': true,
+                    'orgName': state.recipient.orgName,
+                  },
+                );
+                return;
+              }
               context.pop();
             }
             if (state.status == CreateRecurringDonationStatus.error) {
