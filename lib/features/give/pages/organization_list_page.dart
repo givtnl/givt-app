@@ -13,6 +13,7 @@ import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -91,7 +92,7 @@ class OrganizationListPage extends StatelessWidget {
                         if (isChooseCategory) {
                           _buildActionSheet(
                             context,
-                            state.filteredOrganisations[index].nameSpace,
+                            state.filteredOrganisations[index],
                           );
                           return;
                         }
@@ -203,7 +204,7 @@ class OrganizationListPage extends StatelessWidget {
         key: UniqueKey(),
         onTap: onTap,
         selected: isSelected,
-        selectedTileColor: getHighlightColor(type),
+        selectedTileColor: CollectGroupType.getHighlightColor(type),
         leading: Icon(
           CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
@@ -270,22 +271,7 @@ class OrganizationListPage extends StatelessWidget {
         ],
       );
 
-  Color getHighlightColor(CollectGroupType type) {
-    switch (type) {
-      case CollectGroupType.church:
-        return AppTheme.givtLightBlue;
-      case CollectGroupType.charities:
-        return AppTheme.givtYellow;
-      case CollectGroupType.campaign:
-        return AppTheme.givtOrange;
-      case CollectGroupType.artists:
-        return AppTheme.givtDarkGreen;
-      default:
-        return AppTheme.givtLightBlue;
-    }
-  }
-
-  void _buildActionSheet(BuildContext context, String nameSpace) {
+  void _buildActionSheet(BuildContext context, CollectGroup recipient) {
     final locals = context.l10n;
     if (Platform.isIOS) {
       showCupertinoModalPopup<void>(
@@ -293,11 +279,17 @@ class OrganizationListPage extends StatelessWidget {
         builder: (_) => CupertinoActionSheet(
           actions: <CupertinoActionSheetAction>[
             CupertinoActionSheetAction(
-              onPressed: () => _showEnterAmountBottomSheet(context, nameSpace),
+              onPressed: () => _showEnterAmountBottomSheet(
+                context,
+                recipient.nameSpace,
+              ),
               child: Text(locals.discoverOrAmountActionSheetOnce),
             ),
             CupertinoActionSheetAction(
-              onPressed: () => _showCreateRecurringDonationBottomSheet(context),
+              onPressed: () => _showCreateRecurringDonationBottomSheet(
+                context,
+                recipient: recipient,
+              ),
               child: Text(locals.discoverOrAmountActionSheetRecurring),
             ),
           ],
@@ -327,7 +319,7 @@ class OrganizationListPage extends StatelessWidget {
             title: Text(locals.discoverOrAmountActionSheetOnce),
             onTap: () {
               context.pop(context);
-              _showEnterAmountBottomSheet(context, nameSpace);
+              _showEnterAmountBottomSheet(context, recipient.nameSpace);
             },
           ),
           ListTile(
@@ -338,7 +330,10 @@ class OrganizationListPage extends StatelessWidget {
             title: Text(locals.discoverOrAmountActionSheetRecurring),
             onTap: () {
               context.pop(context);
-              _showCreateRecurringDonationBottomSheet(context);
+              _showCreateRecurringDonationBottomSheet(
+                context,
+                recipient: recipient,
+              );
             },
           ),
           ListTile(
@@ -359,12 +354,17 @@ class OrganizationListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _showCreateRecurringDonationBottomSheet(BuildContext context) {
+  Future<void> _showCreateRecurringDonationBottomSheet(
+    BuildContext context, {
+    required CollectGroup recipient,
+  }) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => const CreateRecurringDonationBottomSheet(),
+      builder: (_) => CreateRecurringDonationBottomSheet(
+        recipient: recipient,
+      ),
     );
   }
 

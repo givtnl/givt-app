@@ -22,6 +22,7 @@ class CreateRecurringDonationState extends Equatable {
     this.frequency = RecurringDonationFrequency.week,
     this.amount = 0,
     this.turns = 1,
+    this.showSuccessScreen = false,
   });
 
   final CreateRecurringDonationStatus status;
@@ -31,6 +32,7 @@ class CreateRecurringDonationState extends Equatable {
   final int turns;
   final DateTime startDate;
   final DateTime endDate;
+  final bool showSuccessScreen;
 
   CreateRecurringDonationState copyWith({
     CreateRecurringDonationStatus? status,
@@ -40,6 +42,7 @@ class CreateRecurringDonationState extends Equatable {
     DateTime? startDate,
     DateTime? endDate,
     RecurringDonationFrequency? frequency,
+    bool? showSuccessScreen,
   }) {
     return CreateRecurringDonationState(
       status: status ?? this.status,
@@ -49,6 +52,7 @@ class CreateRecurringDonationState extends Equatable {
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       frequency: frequency ?? this.frequency,
+      showSuccessScreen: showSuccessScreen ?? this.showSuccessScreen,
     );
   }
 
@@ -61,5 +65,6 @@ class CreateRecurringDonationState extends Equatable {
         startDate,
         endDate,
         frequency,
+        showSuccessScreen,
       ];
 }
