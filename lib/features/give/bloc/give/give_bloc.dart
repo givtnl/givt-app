@@ -53,6 +53,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final BeaconRepository _beaconRepository;
   final CollectGroupRepository _collectGroupRepository;
 
+  @override
+  void onTransition(Transition<GiveEvent, GiveState> transition) {
+    log(transition.toString());
+    super.onTransition(transition);
+  }
+
   FutureOr<void> _qrCodeScanned(
     GiveQRCodeScanned event,
     Emitter<GiveState> emit,
@@ -528,13 +534,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     final namespace = mediumId.split('.').first;
     final instance = mediumId.split('.').last;
-    return collectGroupList
+    final qrCode = collectGroupList
         .where((org) => org.nameSpace.startsWith(namespace))
         .expand((org) => org.qrCodes)
         .firstWhere(
           (element) => element.instance.endsWith(instance),
           orElse: () => const QrCode.empty(),
         );
+    return qrCode;
   }
 
   /// Search for the qrCode that belongs to the given [mediumId]
@@ -542,6 +549,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String mediumId,
     required Emitter<GiveState> emit,
   }) async {
+    /// if the mediumId is accessed from the link the instanceName
+    /// is already known and can be returned and not check
+    if (mediumId.split('.').last.contains('b6')) {
+      return;
+    }
     final qrCode = await _getCollectGroupInstanceName(mediumId);
 
     if (qrCode.instance.isEmpty) {
