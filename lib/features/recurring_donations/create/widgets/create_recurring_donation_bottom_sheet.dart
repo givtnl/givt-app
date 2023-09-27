@@ -41,6 +41,7 @@ class CreateRecurringDonationBottomSheetView extends StatefulWidget {
 class _CreateRecurringDonationBottomSheetViewState
     extends State<CreateRecurringDonationBottomSheetView> {
   late TextEditingController amountController;
+  late TextEditingController turnsController;
 
   @override
   void initState() {
@@ -48,6 +49,9 @@ class _CreateRecurringDonationBottomSheetViewState
     amountController = TextEditingController(
       text:
           context.read<CreateRecurringDonationCubit>().state.amount.toString(),
+    );
+    turnsController = TextEditingController(
+      text: context.read<CreateRecurringDonationCubit>().state.turns.toString(),
     );
   }
 
@@ -184,6 +188,7 @@ class _CreateRecurringDonationBottomSheetViewState
             }
           },
           builder: (context, state) {
+            turnsController.text = state.turns.toString();
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -421,9 +426,7 @@ class _CreateRecurringDonationBottomSheetViewState
                     SizedBox(
                       width: 50,
                       child: TextFormField(
-                        controller: TextEditingController(
-                          text: state.turns.toString(),
-                        ),
+                        controller: turnsController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(hintText: 'X'),
                         onChanged: (value) {
