@@ -59,4 +59,19 @@ enum CollectGroupType {
     }
     return FontAwesomeIcons.church;
   }
+
+  static Color getHighlightColor(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return AppTheme.givtLightBlue;
+      case CollectGroupType.charities:
+        return AppTheme.givtYellow;
+      case CollectGroupType.campaign:
+        return AppTheme.givtOrange;
+      case CollectGroupType.artists:
+        return AppTheme.givtDarkGreen;
+      default:
+    }
+    return AppTheme.givtLightBlue;
+  }
 }

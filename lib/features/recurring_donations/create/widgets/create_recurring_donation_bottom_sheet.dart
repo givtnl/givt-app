@@ -19,12 +19,21 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class CreateRecurringDonationBottomSheet extends StatelessWidget {
-  const CreateRecurringDonationBottomSheet({super.key});
+  const CreateRecurringDonationBottomSheet({
+    super.key,
+    this.recipient,
+  });
+
+  final CollectGroup? recipient;
 
   @override
   Widget build(BuildContext context) {
+    final cubit = CreateRecurringDonationCubit(getIt());
+    if (recipient != null) {
+      cubit.setRecipient(recipient!);
+    }
     return BlocProvider(
-      create: (_) => CreateRecurringDonationCubit(getIt()),
+      create: (_) => cubit,
       child: const CreateRecurringDonationBottomSheetView(),
     );
   }
