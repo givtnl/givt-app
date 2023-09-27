@@ -68,6 +68,12 @@ class _CreateRecurringDonationBottomSheetViewState
     final currencySymbol = NumberFormat.simpleCurrency(
       name: country.currency,
     ).currencySymbol;
+
+    if (user.country != Country.us.countryCode ||
+        !Country.unitedKingdomCodes().contains(user.country)) {
+      amountController.text = amountController.text.replaceAll('.', ',');
+    }
+    amountController.text = amountController.text;
     return BottomSheetLayout(
       title: Text(locals.setupRecurringGiftTitle),
       bottomSheet: cubit.state.status == CreateRecurringDonationStatus.loading
