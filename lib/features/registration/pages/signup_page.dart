@@ -69,8 +69,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         context: context,
                         isScrollControlled: true,
                         useSafeArea: true,
-                        showDragHandle: true,
-                        backgroundColor: Theme.of(context).colorScheme.tertiary,
+                        backgroundColor: AppTheme.givtBlue,
                         builder: (_) => const FAQBottomSheet(),
                       ),
                       icon: const Icon(
@@ -328,11 +327,10 @@ class _SignUpPageState extends State<SignUpPage> {
     return GestureDetector(
       onTap: () => showModalBottomSheet<void>(
         context: context,
-        showDragHandle: true,
         isScrollControlled: true,
         useSafeArea: true,
         backgroundColor: AppTheme.givtPurple,
-        builder: (BuildContext context) => const TermsAndConditionsDialog(
+        builder: (_) => const TermsAndConditionsDialog(
           typeOfTerms: TypeOfTerms.privacyPolicy,
         ),
       ),

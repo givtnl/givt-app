@@ -22,7 +22,6 @@ class AuthUtils {
       return;
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
-      // ignore: use_build_context_synchronously
       if (!context.mounted) {
         return;
       }
@@ -34,7 +33,6 @@ class AuthUtils {
       if (!hasAuthenticated) {
         return;
       }
-      // ignore: use_build_context_synchronously
       if (!context.mounted) {
         return;
       }
@@ -44,7 +42,14 @@ class AuthUtils {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
       );
-      // ignore: use_build_context_synchronously
+      if (!context.mounted) {
+        return;
+      }
+      _displayLoginBottomSheet(context, navigate: navigate);
+    } catch (e) {
+      await LoggingInfo.instance.error(
+        'Error while authenticating with biometrics: $e',
+      );
       if (!context.mounted) {
         return;
       }
