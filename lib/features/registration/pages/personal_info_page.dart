@@ -351,7 +351,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               },
             ),
           ),
-          if (_selectedCountry == Country.us) const SizedBox(height: 10),
+          const SizedBox(height: 10),
           MobileNumberFormField(
             phone: _phone,
             selectedCountryPrefix: _selectedCountry.prefix,
@@ -369,7 +369,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             formatter: (_selectedCountry == Country.us)
                 ? [
                     FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(10)
+                    LengthLimitingTextInputFormatter(10),
                   ]
                 : null,
             validator: (String? value) {
@@ -431,19 +431,19 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     });
     if (_selectedCountry == Country.us) {
       context.read<RegistrationBloc>().add(
-          RegistrationPersonalInfoSubmitted(
-            address: Util.defaultAdress,
-            city: Util.defaultCity,
-            postalCode: Util.defaultPostCode,
-            country: _selectedCountry.countryCode,
-            phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
-            iban: Util.defaultIban,
-            sortCode: sortCode.text,
-            accountNumber: bankAccount.text,
-            appLanguage: Localizations.localeOf(context).languageCode,
-            countryCode: _selectedCountry.countryCode,
-          ),
-        );
+            RegistrationPersonalInfoSubmitted(
+              address: Util.defaultAdress,
+              city: Util.defaultCity,
+              postalCode: Util.defaultPostCode,
+              country: _selectedCountry.countryCode,
+              phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
+              iban: Util.defaultIban,
+              sortCode: sortCode.text,
+              accountNumber: bankAccount.text,
+              appLanguage: Localizations.localeOf(context).languageCode,
+              countryCode: _selectedCountry.countryCode,
+            ),
+          );
       return;
     }
     context.read<RegistrationBloc>().add(
