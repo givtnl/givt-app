@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 
 class TermsAndConditionsDialog extends StatelessWidget {
   const TermsAndConditionsDialog({
@@ -63,20 +64,20 @@ class TermsAndConditionsDialog extends StatelessWidget {
           title = locals.giftAidInfoTitle;
           termsAndConditions = locals.giftAidInfoBody;
         }
-        return Padding(
-          padding: const EdgeInsets.all(20),
+        return BottomSheetLayout(
+          backButtonColor: Colors.white,
+          title: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
                 const SizedBox(height: 20),
                 Text(
                   termsAndConditions,
