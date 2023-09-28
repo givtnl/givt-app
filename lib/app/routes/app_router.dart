@@ -318,11 +318,6 @@ class AppRouter {
                         )..add(
                             OrganisationFetch(
                               user.accountType,
-
-                              /// Disable last donated organisation
-                              /// in the discover flow as it's
-                              /// not present in the native app
-                              showLastDonated: false,
                               type: CollectGroupType.none.index,
                             ),
                           ),
@@ -378,6 +373,10 @@ class AppRouter {
                     )..add(
                         OrganisationFetch(
                           user.accountType,
+                          /// Disable last donated organisation
+                          /// in the discover flow as it's
+                          /// not present in the native app
+                          showLastDonated: false,
                           type: state.extra != null && state.extra is int
                               ? state.extra! as int
                               : CollectGroupType.none.index,

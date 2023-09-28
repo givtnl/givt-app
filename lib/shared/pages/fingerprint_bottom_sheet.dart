@@ -91,6 +91,13 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
                       useFingerprint = value;
                     });
                   } catch (e) {
+                    await LoggingInfo.instance.error(
+                      e.toString(),
+                      methodName: StackTrace.current.toString(),
+                    );
+                    if (!mounted) {
+                      return;
+                    }
                     await showDialog<void>(
                       context: context,
                       builder: (_) => WarningDialog(
@@ -98,10 +105,6 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
                         content: locals.errorContactGivt,
                         onConfirm: () => context.pop(),
                       ),
-                    );
-                    await LoggingInfo.instance.error(
-                      e.toString(),
-                      methodName: StackTrace.current.toString(),
                     );
                   }
                 },
