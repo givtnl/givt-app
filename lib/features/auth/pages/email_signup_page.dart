@@ -53,7 +53,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
         child: BlocListener<AuthCubit, AuthState>(
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
-            if (state is AuthLoginRedirect) {
+            if (state.status == AuthStatus.loginRedirect) {
               showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
@@ -64,7 +64,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               );
             }
 
-            if (state is AuthNoInternet) {
+            if (state.status == AuthStatus.noInternet) {
               showDialog<void>(
                 context: context,
                 builder: (context) => WarningDialog(

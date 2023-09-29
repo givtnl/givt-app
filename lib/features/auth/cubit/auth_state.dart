@@ -1,113 +1,66 @@
 part of 'auth_cubit.dart';
 
-abstract class AuthState extends Equatable {
+enum AuthStatus {
+  loading,
+  unknown,
+  authenticated,
+  unauthenticated,
+  noInternet,
+  tempAccountWarning,
+  loginRedirect,
+  failure,
+  changePasswordSuccess,
+  changePasswordFailure,
+  changePasswordWrongEmail,
+  lockedOut,
+  twoAttemptsLeft,
+  oneAttemptLeft,
+}
+
+class AuthState extends Equatable {
   const AuthState({
+    this.status = AuthStatus.unknown,
     this.user = const UserExt.empty(),
     this.session = const Session.empty(),
     this.email = '',
+    this.message = '',
   });
   final UserExt user;
   final Session session;
   final String email;
-
-  @override
-  List<Object> get props => [user, session, email];
-}
-
-class AuthLoading extends AuthState {}
-
-class AuthTempAccountWarning extends AuthState {
-  const AuthTempAccountWarning({super.email});
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthNoInternet extends AuthState {
-  const AuthNoInternet();
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthLoginRedirect extends AuthState {
-  const AuthLoginRedirect({super.email});
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthSuccess extends AuthState {
-  const AuthSuccess({
-    super.user,
-    super.session,
-  });
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthRefreshed extends AuthState {
-  const AuthRefreshed({
-    super.user,
-    super.session,
-  });
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthLogout extends AuthState {
-  const AuthLogout({
-    super.user,
-    super.session,
-  });
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthUnknown extends AuthState {
-  const AuthUnknown({
-    super.email,
-  });
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthFailure extends AuthState {
-  const AuthFailure({
-    this.message = '',
-    super.session,
-    super.user,
-  });
-
   final String message;
+  final AuthStatus status;
+
+  AuthState copyWith({
+    required AuthStatus status,
+    UserExt? user,
+    Session? session,
+    String? email,
+    String? message,
+  }) {
+    if (status == AuthStatus.authenticated) {
+      email = '';
+      message = '';
+    }
+    if (status == AuthStatus.unauthenticated) {
+      user = const UserExt.empty();
+      session = const Session.empty();
+    }
+    return AuthState(
+      user: user ?? this.user,
+      session: session ?? this.session,
+      email: email ?? this.email,
+      message: message ?? this.message,
+      status: status,
+    );
+  }
 
   @override
-  List<Object> get props => [message];
-}
-
-class AuthChangePasswordSuccess extends AuthState {
-  const AuthChangePasswordSuccess({super.user});
-
-  @override
-  List<Object> get props => [];
-}
-
-class AuthChangePasswordFailure extends AuthState {
-  const AuthChangePasswordFailure({this.message = ''});
-
-  final String message;
-
-  @override
-  List<Object> get props => [message];
-}
-
-class AuthChangePasswordWrongEmail extends AuthState {
-  const AuthChangePasswordWrongEmail({super.email});
-
-  @override
-  List<Object> get props => [];
+  List<Object> get props => [
+        user,
+        session,
+        email,
+        message,
+        status,
+      ];
 }

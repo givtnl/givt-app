@@ -462,7 +462,7 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
-    if (auth is AuthSuccess) {
+    if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;
       }
@@ -480,13 +480,14 @@ class AppRouter {
     BuildContext context,
     GoRouterState routerState,
   ) {
-    if (state is AuthSuccess) {
+    if (state.status == AuthStatus.authenticated) {
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.queryParameters,
       );
     }
-    if (state is AuthLogout || state is AuthUnknown) {
+    if (state.status == AuthStatus.unauthenticated ||
+        state.status == AuthStatus.unknown) {
       context.goNamed(Pages.welcome.name);
     }
   }
