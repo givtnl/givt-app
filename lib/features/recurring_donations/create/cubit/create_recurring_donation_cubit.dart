@@ -176,7 +176,7 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
   }
 
   void _calculateAndInsertTimesToStop() {
-    var counter = 1;
+    var counter = 0;
     var tempDate = state.startDate;
 
     switch (state.frequency) {
