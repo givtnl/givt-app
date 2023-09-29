@@ -473,6 +473,9 @@ class _CreateRecurringDonationBottomSheetViewState
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 50,
+                ),
               ],
             );
           },
