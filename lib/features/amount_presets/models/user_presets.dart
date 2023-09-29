@@ -47,7 +47,7 @@ class UserPresets extends Equatable {
         ];
 
   factory UserPresets.fromJson(Map<String, dynamic> json) => UserPresets(
-        guid: json['guid'] as String,
+        guid: json.containsKey('guid') ? json['guid'] as String : '',
         isEnabled: json['isEnabled'] as bool,
         presets: (json['amountPresets'] as List<dynamic>)
             .map((e) => Preset.fromJson(e as Map<String, dynamic>))
