@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
@@ -80,8 +81,32 @@ class AuthRepositoyImpl with AuthRepositoy {
         newSession.toJson(),
       ),
     );
-    
+    await _fetchUserExtension();
     return newSession;
+  }
+
+  Future<void> _fetchUserExtension() async {
+    try {
+      if (!_prefs.containsKey(UserExt.tag)) {
+        return;
+      }
+      final userExt = UserExt.fromJson(
+        jsonDecode(
+          _prefs.getString(UserExt.tag)!,
+        ) as Map<String, dynamic>,
+      );
+      final response = await _apiService.getUserExtension(userExt.guid);
+      final newUserExt = UserExt.fromJson(response);
+      await _prefs.setString(
+        UserExt.tag,
+        jsonEncode(newUserExt.toJson()),
+      );
+    } catch (e, stacktrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stacktrace.toString(),
+      );
+    }
   }
 
   @override
