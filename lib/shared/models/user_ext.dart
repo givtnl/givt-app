@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 
 class UserExt extends Equatable {
   const UserExt({
@@ -32,7 +33,7 @@ class UserExt extends Equatable {
     this.sortCode = '',
     this.accountNumber = '',
     /// TODO commented out for now until the server will support such a funnctionality to give user a better experience
-    // this.presets = const UserPresets.empty(),
+    this.presets = const UserPresets.empty(),
   });
 
   const UserExt.empty()
@@ -63,8 +64,8 @@ class UserExt extends Equatable {
         accountType = AccountType.none,
         appLanguage = '',
         sortCode = '',
-        accountNumber = '';
-  // presets = const UserPresets.empty();
+        accountNumber = '',
+        presets = const UserPresets.empty();
 
   factory UserExt.fromJson(Map<String, dynamic> json) => UserExt(
         email: json['Email'] as String,
@@ -95,9 +96,9 @@ class UserExt extends Equatable {
         mandateSigned: json.containsKey('mandateSigned')
             ? json['mandateSigned'] as bool
             : json['PayProvMandate'] != null,
-        // presets: json.containsKey('presets')
-        //     ? UserPresets.fromJson(json['presets'] as Map<String, dynamic>)
-        //     : const UserPresets.empty(),
+        presets: json.containsKey('presets')
+            ? UserPresets.fromJson(json['presets'] as Map<String, dynamic>)
+            : const UserPresets.empty(),
       );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -128,7 +129,7 @@ class UserExt extends Equatable {
         'personalInfoRegistered': personalInfoRegistered,
         'pinSet': pinSet,
         'multipleCollectsAccepted': multipleCollectsAccepted,
-        // 'presets': presets.toJson(),
+        'presets': presets.toJson(),
       };
 
   Map<String, dynamic> toUpdateJson() {
@@ -181,7 +182,7 @@ class UserExt extends Equatable {
 
   final bool multipleCollectsAccepted;
 
-  // final UserPresets presets;
+  final UserPresets presets;
 
   UserExt copyWith({
     String? email,
@@ -212,7 +213,7 @@ class UserExt extends Equatable {
     bool? personalInfoRegistered,
     bool? pinSet,
     bool? multipleCollectsAccepted,
-    // UserPresets? presets,
+    UserPresets? presets,
   }) {
     return UserExt(
       email: email ?? this.email,
@@ -245,7 +246,7 @@ class UserExt extends Equatable {
       pinSet: pinSet ?? this.pinSet,
       multipleCollectsAccepted:
           multipleCollectsAccepted ?? this.multipleCollectsAccepted,
-      // presets: presets ?? this.presets,
+      presets: presets ?? this.presets,
     );
   }
 

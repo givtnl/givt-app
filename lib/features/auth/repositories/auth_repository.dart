@@ -40,7 +40,7 @@ mixin AuthRepositoy {
 
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
 
-  Future<bool> updateLocalUserExt({
+  Future<bool> updateLocalUserPresets({
     required UserPresets newUserPresets,
   });
 
@@ -207,9 +207,26 @@ class AuthRepositoyImpl with AuthRepositoy {
       return (userExt, session, const UserPresets.empty());
     }
 
+    /// If user has the presets enabled, we need to update the local presets
+    if (userExt.presets.isEnabled) {
+      await updateLocalUserPresets(newUserPresets: userExt.presets);
+    }
+
+    /// if the amount presets are not present in the cache set it to empty
+    if (!_prefs.containsKey(AmountPresets.tag)) {
+      await _prefs.setString(
+        AmountPresets.tag,
+        jsonEncode(
+          const AmountPresets.empty().toJson(),
+        ),
+      );
+    }
+
+    final amountPresetsString = _prefs.getString(AmountPresets.tag);
+
     final amountPresets = AmountPresets.fromJson(
       jsonDecode(
-        _prefs.getString(AmountPresets.tag)!,
+        amountPresetsString!,
       ) as Map<String, dynamic>,
     );
 
@@ -357,7 +374,7 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<bool> updateLocalUserExt({
+  Future<bool> updateLocalUserPresets({
     required UserPresets newUserPresets,
   }) async {
     if (!_prefs.containsKey(AmountPresets.tag)) {

@@ -104,6 +104,7 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStatus.authenticated,
           user: userExt,
           session: session,
+          presets: amountPresets,
         ),
       );
     } catch (e, stackTrace) {
@@ -278,7 +279,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> updatePresets({required UserPresets presets}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      await _authRepositoy.updateLocalUserExt(
+      await _authRepositoy.updateLocalUserPresets(
         newUserPresets: presets.copyWith(
           guid: state.user.guid,
         ),
