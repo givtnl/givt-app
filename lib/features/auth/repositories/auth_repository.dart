@@ -80,6 +80,7 @@ class AuthRepositoyImpl with AuthRepositoy {
         newSession.toJson(),
       ),
     );
+    
     return newSession;
   }
 

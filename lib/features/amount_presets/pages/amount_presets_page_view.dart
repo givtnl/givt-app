@@ -103,7 +103,7 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
             SizedBox(
               height: size.height * 0.20,
             ),
-            if (context.watch<AuthCubit>().state is AuthLoading)
+            if (context.watch<AuthCubit>().state.status == AuthStatus.loading)
               const Center(
                 child: CircularProgressIndicator(),
               )
