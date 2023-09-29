@@ -78,7 +78,8 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).push(EmailSignupPage.route()),
+                  onPressed: () =>
+                      Navigator.of(context).push(EmailSignupPage.route()),
                   onLongPress: hackUSASIM,
                   child: Text(
                     locals.welcomeContinue,
@@ -112,7 +113,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                       isScrollControlled: true,
                       useSafeArea: true,
                       builder: (_) => LoginPage(
-                        email: auth.user.email,
+                        email: auth.email,
                       ),
                     );
                     return;

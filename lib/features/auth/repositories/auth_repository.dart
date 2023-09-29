@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/features/amount_presets/models/user_presets.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -11,7 +12,7 @@ mixin AuthRepositoy {
   Future<Session> refreshToken();
   Future<Session> login(String email, String password);
   Future<UserExt> fetchUserExtension(String guid);
-  Future<(UserExt, Session)?> isAuthenticated();
+  Future<(UserExt, Session, UserPresets)?> isAuthenticated();
   Future<bool> logout();
   Future<bool> checkTld(String email);
   Future<String> checkEmail(String email);
@@ -40,7 +41,7 @@ mixin AuthRepositoy {
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
 
   Future<bool> updateLocalUserExt({
-    required UserExt newUserExt,
+    required UserPresets newUserPresets,
   });
 
   Future<void> checkUserExt({
@@ -161,7 +162,7 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<(UserExt, Session)?> isAuthenticated() async {
+  Future<(UserExt, Session, UserPresets)?> isAuthenticated() async {
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
       return null;
@@ -202,11 +203,33 @@ class AuthRepositoyImpl with AuthRepositoy {
       return null;
     }
 
+    if (!_prefs.containsKey(AmountPresets.tag)) {
+      return (userExt, session, const UserPresets.empty());
+    }
+
+    final amountPresets = AmountPresets.fromJson(
+      jsonDecode(
+        _prefs.getString(AmountPresets.tag)!,
+      ) as Map<String, dynamic>,
+    );
+
+    if (amountPresets.presets.isEmpty) {
+      return (userExt, session, const UserPresets.empty());
+    }
+    final userPreset = amountPresets.presets.firstWhere(
+      (element) => element.guid == userExt.guid,
+      orElse: () => const UserPresets.empty(),
+    );
+
+    if (userPreset.guid.isEmpty) {
+      return (userExt, session, userPreset.copyWith(guid: userExt.guid));
+    }
+
     // if (DateTime.parse(session.expires).isBefore(DateTime.now())) {
     //   return false;
     // }
 
-    return (userExt, session);
+    return (userExt, session, userPreset);
   }
 
   @override
@@ -333,11 +356,36 @@ class AuthRepositoyImpl with AuthRepositoy {
     return stripeResponse;
   }
 
+  @override
   Future<bool> updateLocalUserExt({
-    required UserExt newUserExt,
-  }) async =>
-      _prefs.setString(
-        UserExt.tag,
-        jsonEncode(newUserExt),
+    required UserPresets newUserPresets,
+  }) async {
+    if (!_prefs.containsKey(AmountPresets.tag)) {
+      await _prefs.setString(
+        AmountPresets.tag,
+        jsonEncode(
+          AmountPresets(
+            presets: [newUserPresets],
+          ).toJson(),
+        ),
       );
+    }
+
+    final amountPresets = AmountPresets.fromJson(
+      jsonDecode(
+        _prefs.getString(AmountPresets.tag)!,
+      ) as Map<String, dynamic>,
+    );
+
+    for (final userPreset in amountPresets.presets) {
+      if (userPreset.guid == newUserPresets.guid) {
+        userPreset.copyWith(presets: newUserPresets.presets);
+      }
+    }
+
+    return _prefs.setString(
+      AmountPresets.tag,
+      jsonEncode(amountPresets.toJson()),
+    );
+  }
 }

@@ -31,7 +31,7 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
 
   @override
   void initState() {
-    final presets = context.read<AuthCubit>().state.user.presets;
+    final presets = context.read<AuthCubit>().state.presets;
     firstPreset = TextEditingController(
       text: presets.presets[0].amount.toStringAsFixed(2).replaceAll('.', ','),
     );

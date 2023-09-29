@@ -54,8 +54,8 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
           country: Country.fromCode(auth.user.country),
           amountLimit: auth.user.amountLimit,
           hasGiven: false,
-          arePresetsEnabled: auth.user.presets.isEnabled,
-          presets: auth.user.presets.presets,
+          arePresetsEnabled: auth.presets.isEnabled,
+          presets: auth.presets.presets,
           showAddCollectionButton: false,
           onAmountChanged:
               (firstCollection, secondCollection, thirdCollection) {
