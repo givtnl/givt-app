@@ -133,7 +133,7 @@ class AddExternalDonationPage extends StatelessWidget {
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: true,
                     ),
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.bodyLarge,
                     controller: TextEditingController(),
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
