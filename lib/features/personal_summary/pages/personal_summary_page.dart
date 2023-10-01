@@ -387,7 +387,7 @@ class PersonalSummary extends StatelessWidget {
               TextButton(
                 onPressed: () => showDialog<String>(
                   context: context,
-                  builder: (BuildContext context) => _buildMonthlyHistoryDialog(
+                  builder: (_) => _buildMonthlyHistoryDialog(
                     country: userCountry,
                     context: context,
                     size: size,
