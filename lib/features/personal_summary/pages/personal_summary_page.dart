@@ -306,6 +306,7 @@ class PersonalSummary extends StatelessWidget {
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(10),
@@ -330,14 +331,11 @@ class PersonalSummary extends StatelessWidget {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  locals.budgetSummaryGivt,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                locals.budgetSummaryGivt,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
@@ -360,19 +358,30 @@ class PersonalSummary extends StatelessWidget {
                                 ],
                               ),
                             ),
-                        if (state.monthlyGivts.length > 2)
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text('...'),
-                          ),
+                        const Divider(),
                         Align(
-                          alignment: Alignment.centerRight,
-                          child: _buildAddExternalDonation(
-                            onPressed: () => context.goNamed(
-                              Pages.addExternalDonation.name,
-                              extra: context.read<PersonalSummaryBloc>(),
-                            ),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            locals.budgetExternalGiftsTitle,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
+                        ),
+                        Row(
+                          children: [
+                            const Text('...'),
+                            Expanded(
+                              child: Container(),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: _buildAddExternalDonation(
+                                onPressed: () => context.goNamed(
+                                  Pages.addExternalDonation.name,
+                                  extra: context.read<PersonalSummaryBloc>(),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ]
                     : [
@@ -384,22 +393,24 @@ class PersonalSummary extends StatelessWidget {
               ),
             ),
             if (state.monthlyGivts.length > 2)
-              TextButton(
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (_) => _buildMonthlyHistoryDialog(
-                    country: userCountry,
+              Align(
+                child: TextButton(
+                  onPressed: () => showDialog<String>(
                     context: context,
-                    size: size,
-                    locals: locals,
-                    state: state,
-                    countryCharacter: countryCharacter,
+                    builder: (_) => _buildMonthlyHistoryDialog(
+                      country: userCountry,
+                      context: context,
+                      size: size,
+                      locals: locals,
+                      state: state,
+                      countryCharacter: countryCharacter,
+                    ),
                   ),
-                ),
-                child: Text(
-                  locals.budgetSummaryShowAll,
-                  style: const TextStyle(
-                    decoration: TextDecoration.underline,
+                  child: Text(
+                    locals.budgetSummaryShowAll,
+                    style: const TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
               ),
