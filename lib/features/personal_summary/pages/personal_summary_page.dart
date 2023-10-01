@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
@@ -15,7 +16,7 @@ class PersonalSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
     final userCountry = Country.fromCode(user.country);
@@ -262,8 +263,10 @@ class PersonalSummary extends StatelessWidget {
         ),
       );
 
-  Widget _buildGiveNowButton(
-          {required AppLocalizations locals, required VoidCallback onTap}) =>
+  Widget _buildGiveNowButton({
+    required AppLocalizations locals,
+    required VoidCallback onTap,
+  }) =>
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
         child: ElevatedButton(
@@ -278,6 +281,7 @@ class PersonalSummary extends StatelessWidget {
           ),
         ),
       );
+
   Widget _buildMonthlyHistory({
     required BuildContext context,
     required Size size,
@@ -321,13 +325,15 @@ class PersonalSummary extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8),
                 child: Text(
                   locals.budgetSummaryGivt,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -356,8 +362,18 @@ class PersonalSummary extends StatelessWidget {
                             ),
                         if (state.monthlyGivts.length > 2)
                           const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text('...')),
+                            alignment: Alignment.centerLeft,
+                            child: Text('...'),
+                          ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: _buildAddExternalDonation(
+                            onPressed: () => context.goNamed(
+                              Pages.addExternalDonation.name,
+                              extra: context.read<PersonalSummaryBloc>(),
+                            ),
+                          ),
+                        ),
                       ]
                     : [
                         Text(
@@ -370,26 +386,43 @@ class PersonalSummary extends StatelessWidget {
             if (state.monthlyGivts.length > 2)
               TextButton(
                 onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => _buildMonthlyHistoryDialog(
+                    country: userCountry,
                     context: context,
-                    builder: (BuildContext context) =>
-                        _buildMonthlyHistoryDialog(
-                          country: userCountry,
-                          context: context,
-                          size: size,
-                          locals: locals,
-                          state: state,
-                          countryCharacter: countryCharacter,
-                        )),
+                    size: size,
+                    locals: locals,
+                    state: state,
+                    countryCharacter: countryCharacter,
+                  ),
+                ),
                 child: Text(
                   locals.budgetSummaryShowAll,
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
                 ),
-              )
+              ),
           ],
         ),
       );
+
+  TextButton _buildAddExternalDonation({
+    required VoidCallback onPressed,
+  }) =>
+      TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(5),
+          backgroundColor: AppTheme.givtLightGreen,
+          shape: const CircleBorder(),
+        ),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      );
+
   Widget _buildMonthlyHistoryDialog({
     required BuildContext context,
     required Size size,
@@ -430,7 +463,7 @@ class PersonalSummary extends StatelessWidget {
             Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10),
+                padding: const EdgeInsets.only(top: 20, left: 20),
                 child: Text(
                   locals.budgetSummaryGivt,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -438,7 +471,7 @@ class PersonalSummary extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -460,13 +493,38 @@ class PersonalSummary extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(
+            _buildManageExternalDonations(
+              locals,
               onPressed: () {
-                Navigator.pop(context);
+                /// always pop the dialog before navigating
+                context
+                  ..pop()
+                  ..goNamed(
+                    Pages.addExternalDonation.name,
+                    extra: context.read<PersonalSummaryBloc>(),
+                  );
               },
-              child: const Text('Close'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Padding _buildManageExternalDonations(
+    AppLocalizations locals, {
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+          backgroundColor: AppTheme.givtBlue,
+        ),
+        child: Text(
+          locals.budgetExternalGiftsListAddEditButton,
         ),
       ),
     );
