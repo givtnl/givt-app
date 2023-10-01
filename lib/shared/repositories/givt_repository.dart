@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/overview/models/givt.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,6 +18,12 @@ mixin GivtRepository {
   Future<void> syncOfflineGivts();
 
   Future<List<Givt>> fetchGivts();
+
+  Future<List<ExternalDonation>> fetchExternalDonations({
+    required String guid,
+    required String fromDate,
+    required String tillDate,
+  });
 
   Future<bool> deleteGivt(List<dynamic> ids);
 
@@ -152,6 +159,22 @@ class GivtRepositoryImpl with GivtRepository {
     };
     final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
     return MonthlySummaryItem.fromJsonList(
+      decodedJson,
+    );
+  }
+
+  @override
+  Future<List<ExternalDonation>> fetchExternalDonations({
+    required String guid,
+    required String fromDate,
+    required String tillDate,
+  }) async {
+    final params = {
+      'fromDate': fromDate,
+      'tillDate': tillDate,
+    };
+    final decodedJson = await apiClient.fetchExternalDonations(params: params);
+    return ExternalDonation.fromJsonList(
       decodedJson,
     );
   }

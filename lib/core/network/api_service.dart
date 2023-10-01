@@ -531,6 +531,25 @@ class APIService {
     return response.statusCode == 201;
   }
 
+  Future<List<dynamic>> fetchExternalDonations({
+    required Map<String, dynamic> params,
+  }) async {
+    final url = Uri.https(apiURLAWS, '/external-donations', params);
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['result'] as List<dynamic>;
+  }
+
   Future<List<dynamic>> fetchMonthlySummary(
     String guid,
     Map<String, String> params,

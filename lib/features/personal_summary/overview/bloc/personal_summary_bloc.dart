@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/models.dart';
 import 'package:givt_app/shared/models/monthly_summary_item.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
@@ -40,10 +41,18 @@ class PersonalSummaryBloc
         fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: now.toIso8601String(),
       );
-      emit(state.copyWith(
-        status: PersonalSummaryStatus.success,
-        monthlyGivts: monthlyGivts,
-      ));
+      final externalDonations = await givtRepo.fetchExternalDonations(
+        guid: state.loggedInUserExt.guid,
+        fromDate: firstDayOfMonth.toIso8601String(),
+        tillDate: now.toIso8601String(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.success,
+          monthlyGivts: monthlyGivts,
+          externalDonations: externalDonations,
+        ),
+      );
     } on GivtServerFailure catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -88,11 +97,20 @@ class PersonalSummaryBloc
         fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: current.toIso8601String(),
       );
-      emit(state.copyWith(
-        status: PersonalSummaryStatus.success,
-        dateTime: current.toIso8601String(),
-        monthlyGivts: monthlyGivts,
-      ));
+
+      final externalDonations = await givtRepo.fetchExternalDonations(
+        guid: state.loggedInUserExt.guid,
+        fromDate: firstDayOfMonth.toIso8601String(),
+        tillDate: current.toIso8601String(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.success,
+          monthlyGivts: monthlyGivts,
+          externalDonations: externalDonations,
+          dateTime: current.toIso8601String(),
+        ),
+      );
     } on GivtServerFailure catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
