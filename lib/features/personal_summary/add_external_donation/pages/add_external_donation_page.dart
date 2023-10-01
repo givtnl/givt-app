@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/models.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/widgets/card_banner.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -57,30 +58,9 @@ class AddExternalDonationPage extends StatelessWidget {
 
   Widget _buildBanner(BuildContext context) {
     final locals = context.l10n;
-    return Card(
-      color: AppTheme.givtLightGreen,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Text(
-              locals.budgetExternalGiftsInfoBold,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              locals.budgetExternalGiftsInfo,
-              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.white,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    return CardBanner(
+      title: locals.budgetExternalGiftsInfoBold,
+      subtitle: locals.budgetExternalGiftsInfo,
     );
   }
 
