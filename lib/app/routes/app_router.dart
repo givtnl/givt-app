@@ -29,7 +29,7 @@ import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/pages/add_external_donation_page.dart';
 import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
-import 'package:givt_app/features/personal_summary/pages/personal_summary_page.dart';
+import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';

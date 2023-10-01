@@ -8,6 +8,7 @@ class AddExternalDonationState extends Equatable {
   });
 
   final AddExternalDonationStatus status;
+  
 
   @override
   List<Object> get props => [status];
