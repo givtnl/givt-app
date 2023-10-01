@@ -127,8 +127,6 @@ class AddExternalDonationPage extends StatelessWidget {
                 Expanded(
                   child: DropdownButtonFormField<ExternalDonationFrequency>(
                     hint: Text(locals.budgetExternalGiftsTime),
-                    isExpanded: true,
-                    isDense: false,
                     value: ExternalDonationFrequency.yearly,
                     onChanged: (ExternalDonationFrequency? newValue) {
                       if (newValue == null) {
@@ -141,7 +139,10 @@ class AddExternalDonationPage extends StatelessWidget {
                       return DropdownMenuItem<ExternalDonationFrequency>(
                         value: value,
                         alignment: Alignment.centerLeft,
-                        child: Text(frequncies[value.index]),
+                        child: Text(
+                          frequncies[value.index],
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       );
                     }).toList(),
                   ),
