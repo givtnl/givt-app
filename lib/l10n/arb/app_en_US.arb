@@ -728,7 +728,7 @@
         "description": "Klopt dit?\n Na inloggen komt er een melding in het scherm met ‘Verstuur openstaande Givts’. Door op deze melding te klikken geef je alsnog het bedrag dat je tijdens de collecte wilde geven. \n  Antwoord op FAQ vraag2",
         "type": "text"
     },
-    "faQantwoord3": "You can access the app menu by tapping the menu at the top left of the ‘Amount’ screen. To change your settings, you have to log in using your e-mail address and password, or when activated; a passcode, fingerprint/Touch ID or a FaceID. In the menu you can find an overview of your donations, adjust your maximum amount, review and/or change your personal information, change your amount presets, set a passcode, fingerprint/Touch ID or FaceID, or terminate your Givt account.",
+    "faQantwoord3": "You can access the app menu by tapping the menu at the top left of the ‘Amount’ screen. To change your settings, you have to log in using your e-mail address and password, fingerprint/Touch ID or a FaceID. In the menu you can find an overview of your donations, adjust your maximum amount, review and/or change your personal information, change your amount presets, fingerprint/Touch ID or FaceID, or terminate your Givt account.",
     "@faQantwoord3": {
         "description": "Je komt nu meteen in het betaalscherm. (ipv je komt nu gelijk in het betaalscherm) \n  Antwoord op FAQ vraag3",
         "type": "text"
@@ -903,17 +903,17 @@
         "description": "Waar kan ik het overzicht van mijn giften bekijken?",
         "type": "text"
     },
-    "faQantwoord9": "Press the menu at the top left to access your app menu. To get access you have to login using your e-mail address and password or passcode. Choose ‘Donations history’ to find an overview of your recent activity. This list consists of the name of the recipient, time, and date. The coloured line indicates the status of the donation: In process, processed, refused by bank, or cancelled by user.\n You can request an overview of your donations for your tax filing at the end of each year.",
+    "faQantwoord9": "Press the menu at the top left to access your app menu. To get access you have to login using your e-mail address and password. Choose ‘Donations history’ to find an overview of your recent activity. This list consists of the name of the recipient, time, and date. The coloured line indicates the status of the donation: In process, processed, refused by bank, or cancelled by user.\n You can request an overview of your donations for your tax filing at the end of each year.",
     "@faQantwoord9": {
         "description": "antwoord-Waar kan ik het overzicht van mijn giften bekijken?",
         "type": "text"
     },
-    "faqQuestion11": "How do I set my passcode, Touch ID and Face ID?",
+    "faqQuestion11": "How do I set my Touch ID or Face ID?",
     "@faqQuestion11": {
         "description": "Question about passcode",
         "type": "text"
     },
-    "faqAnswer11": "Go to your settings by pressing menu in the top left of the screen. There you can protect your Givt app with a passcode, fingerprint/Touch ID or a FaceID. \n \n\n When one of these settings is activated, you can use it to access your settings instead of using your e-mail address and password. However, when you've forgotten your passcode, you need your e-mail address and password to make a new one.",
+    "faqAnswer11": "Go to your settings by pressing menu in the top left of the screen. There you can protect your Givt app with a fingerprint/Touch ID or a FaceID (only available on certain iPhones). \n \n\n When one of these settings is activated, you can use it to access your settings instead of using your e-mail address and password.",
     "@faqAnswer11": {
         "description": "Answer Passcode",
         "type": "text"
