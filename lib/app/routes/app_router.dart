@@ -23,7 +23,7 @@ import 'package:givt_app/features/give/pages/home_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
-import 'package:givt_app/features/give/pages/success_offline_donation_page.dart';
+import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
@@ -308,10 +308,7 @@ class AppRouter {
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider.value(
-                        value: state.extra! as GiveBloc
-                          ..add(
-                            const GiveCheckLastDonation(),
-                          ),
+                        value: state.extra! as GiveBloc,
                       ),
                       BlocProvider(
                         create: (_) => OrganisationBloc(
@@ -341,15 +338,13 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: Pages.giveOffline.path,
-            name: Pages.giveOffline.name,
+            path: Pages.giveSucess.path,
+            name: Pages.giveSucess.name,
             builder: (context, state) {
-              final extra = state.extra! as GiveBloc;
-              return BlocProvider.value(
-                value: extra,
-                child: SuccessOfflineDonationPage(
-                  organisationName: extra.state.organisation.organisationName!,
-                ),
+              final extra = state.extra! as Map<String, dynamic>;
+              return SuccessDonationPage(
+                organisationName: extra['orgName'] as String,
+                isRecurringDonation: extra['isRecurringDonation'] as bool,
               );
             },
           ),
@@ -378,6 +373,10 @@ class AppRouter {
                     )..add(
                         OrganisationFetch(
                           user.accountType,
+                          /// Disable last donated organisation
+                          /// in the discover flow as it's
+                          /// not present in the native app
+                          showLastDonated: false,
                           type: state.extra != null && state.extra is int
                               ? state.extra! as int
                               : CollectGroupType.none.index,
@@ -463,7 +462,7 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
-    if (auth is AuthSuccess) {
+    if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;
       }
@@ -481,13 +480,14 @@ class AppRouter {
     BuildContext context,
     GoRouterState routerState,
   ) {
-    if (state is AuthSuccess) {
+    if (state.status == AuthStatus.authenticated) {
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.queryParameters,
       );
     }
-    if (state is AuthLogout || state is AuthUnknown) {
+    if (state.status == AuthStatus.unauthenticated ||
+        state.status == AuthStatus.unknown) {
       context.goNamed(Pages.welcome.name);
     }
   }

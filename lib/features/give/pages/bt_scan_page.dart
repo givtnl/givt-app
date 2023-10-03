@@ -16,35 +16,29 @@ class BTScanPage extends StatefulWidget {
 }
 
 class _BTScanPageState extends State<BTScanPage> {
-  late FlutterBluePlus flutterBlue;
   bool _isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    flutterBlue = FlutterBluePlus.instance;
-    flutterBlue
-      ..startScan(timeout: const Duration(seconds: 30)).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          setState(() {
-            _isVisible = !_isVisible;
-          });
-        },
-      )
-      ..scanResults.listen((results) {}).onData(_onPeripheralsDetectedData);
+
+    FlutterBluePlus.startScan(timeout: const Duration(seconds: 30), androidUsesFineLocation: true);
+    FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
+
+    Future.delayed(const Duration(seconds: 10), () {
+      setState(() {
+        _isVisible = true;
+      });
+    });
   }
 
   void _onPeripheralsDetectedData(List<ScanResult> results) {
     for (final scanResult in results) {
-      /// Givt beacons have a name, manufacturer data, service data,
-      /// and a service UUID.
-      if (scanResult.device.name.isEmpty) {
+
+      if (scanResult.advertisementData.localName.isEmpty) {
         continue;
       }
-      if (scanResult.advertisementData.manufacturerData.isNotEmpty) {
-        continue;
-      }
+
       if (scanResult.advertisementData.serviceData.isEmpty) {
         continue;
       }
@@ -56,7 +50,7 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      if (scanResult.rssi < -75 || scanResult.rssi < -67) {
+      if (scanResult.rssi < -67) {
         continue;
       }
 
@@ -66,7 +60,7 @@ class _BTScanPageState extends State<BTScanPage> {
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
               userGUID: context.read<AuthCubit>().state.user.guid,
-              macAddress: scanResult.device.id.toString(),
+              macAddress: scanResult.device.remoteId.toString(),
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
               serviceData: scanResult.advertisementData.serviceData,
@@ -78,7 +72,6 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   void dispose() {
     super.dispose();
-    flutterBlue.stopScan();
   }
 
   @override

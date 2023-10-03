@@ -5,6 +5,7 @@ class BottomSheetLayout extends StatelessWidget {
     required this.child,
     this.onBackPressed,
     this.title,
+    this.bottomSheet,
     this.backgroundColor,
     this.backButtonColor,
     super.key,
@@ -12,6 +13,7 @@ class BottomSheetLayout extends StatelessWidget {
 
   final Widget child;
   final Widget? title;
+  final Widget? bottomSheet;
   final VoidCallback? onBackPressed;
   final Color? backgroundColor;
   final Color? backButtonColor;
@@ -33,6 +35,7 @@ class BottomSheetLayout extends StatelessWidget {
             ),
             backgroundColor: backgroundColor ?? Colors.transparent,
           ),
+          bottomSheet: bottomSheet,
           backgroundColor: backgroundColor ?? Colors.transparent,
           body: child,
         ),

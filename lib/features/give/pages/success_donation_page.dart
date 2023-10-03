@@ -5,18 +5,20 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
-class SuccessOfflineDonationPage extends StatelessWidget {
-  const SuccessOfflineDonationPage({
+class SuccessDonationPage extends StatelessWidget {
+  const SuccessDonationPage({
     required this.organisationName,
+    this.isRecurringDonation = false,
     super.key,
   });
 
   final String organisationName;
+  final bool isRecurringDonation;
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -77,6 +79,10 @@ class SuccessOfflineDonationPage extends StatelessWidget {
   }
 
   Widget _buildText(AppLocalizations locals, BuildContext context) {
+    var text = locals.offlineGegevenGivtMessageWithOrg(organisationName);
+    if (isRecurringDonation) {
+      text = locals.reccurringGivtIsBeingProcessed(organisationName);
+    }
     return Column(
       children: [
         Text(
@@ -89,7 +95,7 @@ class SuccessOfflineDonationPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          locals.offlineGegevenGivtMessageWithOrg(organisationName),
+          text,
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                 fontSize: 16,
                 wordSpacing: 1.5,

@@ -11,16 +11,21 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
+import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class OrganizationListPage extends StatelessWidget {
   const OrganizationListPage({
     super.key,
     this.isChooseCategory = false,
+    this.isSelection = false,
   });
 
   final bool isChooseCategory;
+  final bool isSelection;
 
   @override
   Widget build(BuildContext context) {
@@ -83,11 +88,20 @@ class OrganizationListPage extends StatelessWidget {
                       title: state.filteredOrganisations[index].orgName,
                       isSelected: state.selectedCollectGroup.nameSpace ==
                           state.filteredOrganisations[index].nameSpace,
-                      onTap: () => context.read<OrganisationBloc>().add(
-                            OrganisationSelectionChanged(
-                              state.filteredOrganisations[index].nameSpace,
-                            ),
-                          ),
+                      onTap: () {
+                        if (isChooseCategory) {
+                          _buildActionSheet(
+                            context,
+                            state.filteredOrganisations[index],
+                          );
+                          return;
+                        }
+                        context.read<OrganisationBloc>().add(
+                              OrganisationSelectionChanged(
+                                state.filteredOrganisations[index].nameSpace,
+                              ),
+                            );
+                      },
                     ),
                   ),
                 )
@@ -96,7 +110,7 @@ class OrganizationListPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               _buildGivingButton(
-                title: locals.give,
+                title: isSelection ? locals.selectReceiverButton : locals.give,
                 isLoading: context.watch<GiveBloc>().state.status ==
                     GiveStatus.loading,
                 onPressed:
@@ -105,18 +119,12 @@ class OrganizationListPage extends StatelessWidget {
                         : () {
                             final userGUID =
                                 context.read<AuthCubit>().state.user.guid;
-
-                            if (isChooseCategory) {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                isScrollControlled: true,
-                                useSafeArea: true,
-                                builder: (_) => BlocProvider.value(
-                                  value: context.read<GiveBloc>(),
-                                  child: EnterAmountBottomSheet(
-                                    collectGroupNameSpace:
-                                        state.selectedCollectGroup.nameSpace,
-                                  ),
+                            if (isSelection) {
+                              context.pop(
+                                state.filteredOrganisations.firstWhere(
+                                  (element) =>
+                                      element.nameSpace ==
+                                      state.selectedCollectGroup.nameSpace,
                                 ),
                               );
                               return;
@@ -138,6 +146,11 @@ class OrganizationListPage extends StatelessWidget {
 
   String _buildTitle(int selectedType, AppLocalizations locals) {
     var title = locals.chooseWhoYouWantToGiveTo;
+
+    if (isSelection) {
+      title = locals.selectRecipient;
+    }
+
     switch (CollectGroupType.fromInt(selectedType)) {
       case CollectGroupType.church:
         title = locals.church;
@@ -154,26 +167,29 @@ class OrganizationListPage extends StatelessWidget {
     return title;
   }
 
-  Expanded _buildGivingButton({
+  Widget _buildGivingButton({
     required String title,
     bool isLoading = false,
     VoidCallback? onPressed,
   }) {
-    return Expanded(
-      flex: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: !isLoading
-            ? ElevatedButton(
-                onPressed: onPressed,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
+    return Visibility(
+      visible: !isChooseCategory,
+      child: Expanded(
+        flex: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: !isLoading
+              ? ElevatedButton(
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    disabledBackgroundColor: Colors.grey,
+                  ),
+                  child: Text(title),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 ),
-                child: Text(title),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
+        ),
       ),
     );
   }
@@ -188,9 +204,9 @@ class OrganizationListPage extends StatelessWidget {
         key: UniqueKey(),
         onTap: onTap,
         selected: isSelected,
-        selectedTileColor: getHighlightColor(type),
+        selectedTileColor: CollectGroupType.getHighlightColor(type),
         leading: Icon(
-          getIconByType(type),
+          CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
         title: Text(title),
@@ -255,33 +271,115 @@ class OrganizationListPage extends StatelessWidget {
         ],
       );
 
-  Color getHighlightColor(CollectGroupType type) {
-    switch (type) {
-      case CollectGroupType.church:
-        return AppTheme.givtLightBlue;
-      case CollectGroupType.charities:
-        return AppTheme.givtYellow;
-      case CollectGroupType.campaign:
-        return AppTheme.givtOrange;
-      case CollectGroupType.artists:
-        return AppTheme.givtDarkGreen;
-      default:
-        return AppTheme.givtLightBlue;
+  void _buildActionSheet(BuildContext context, CollectGroup recipient) {
+    final locals = context.l10n;
+    if (Platform.isIOS) {
+      showCupertinoModalPopup<void>(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+          actions: <CupertinoActionSheetAction>[
+            CupertinoActionSheetAction(
+              onPressed: () => _showEnterAmountBottomSheet(
+                context,
+                recipient.nameSpace,
+              ),
+              child: Text(locals.discoverOrAmountActionSheetOnce),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () => _showCreateRecurringDonationBottomSheet(
+                context,
+                recipient: recipient,
+              ),
+              child: Text(locals.discoverOrAmountActionSheetRecurring),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () => context.pop(context),
+            child: Text(
+              locals.cancel,
+              style: const TextStyle(
+                color: AppTheme.givtRed,
+              ),
+            ),
+          ),
+        ),
+      );
+      return;
     }
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (_) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(
+              FontAwesomeIcons.handHoldingHeart,
+              color: AppTheme.givtBlue,
+            ),
+            title: Text(locals.discoverOrAmountActionSheetOnce),
+            onTap: () {
+              context.pop(context);
+              _showEnterAmountBottomSheet(context, recipient.nameSpace);
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.autorenew,
+              color: AppTheme.givtBlue,
+            ),
+            title: Text(locals.discoverOrAmountActionSheetRecurring),
+            onTap: () {
+              context.pop(context);
+              _showCreateRecurringDonationBottomSheet(
+                context,
+                recipient: recipient,
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.cancel,
+              color: AppTheme.givtRed,
+            ),
+            title: Text(
+              locals.cancel,
+              style: const TextStyle(
+                color: AppTheme.givtRed,
+              ),
+            ),
+            onTap: () => context.pop(context),
+          ),
+        ],
+      ),
+    );
   }
 
-  IconData getIconByType(CollectGroupType type) {
-    switch (type) {
-      case CollectGroupType.church:
-        return FontAwesomeIcons.placeOfWorship;
-      case CollectGroupType.charities:
-        return FontAwesomeIcons.heart;
-      case CollectGroupType.campaign:
-        return FontAwesomeIcons.handHoldingHeart;
-      case CollectGroupType.artists:
-        return FontAwesomeIcons.guitar;
-      default:
-        return FontAwesomeIcons.church;
-    }
+  Future<void> _showCreateRecurringDonationBottomSheet(
+    BuildContext context, {
+    required CollectGroup recipient,
+  }) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => CreateRecurringDonationBottomSheet(
+        recipient: recipient,
+      ),
+    );
+  }
+
+  Future<void> _showEnterAmountBottomSheet(
+      BuildContext context, String nameSpace) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider.value(
+        value: context.read<GiveBloc>(),
+        child: EnterAmountBottomSheet(
+          collectGroupNameSpace: nameSpace,
+        ),
+      ),
+    );
   }
 }

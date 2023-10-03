@@ -39,8 +39,11 @@ class SelectGivingWayPage extends StatelessWidget {
               listener: (context, state) {
                 if (state.status == GiveStatus.noInternetConnection) {
                   context.goNamed(
-                    Pages.giveOffline.name,
-                    extra: context.read<GiveBloc>(),
+                    Pages.giveSucess.name,
+                    extra: {
+                      'isRecurringDonation': false,
+                      'orgName': state.organisation.organisationName,
+                    },
                   );
                 }
                 if (state.status == GiveStatus.error) {

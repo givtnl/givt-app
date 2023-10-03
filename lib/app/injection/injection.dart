@@ -12,6 +12,7 @@ import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart'
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
+import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
@@ -127,6 +128,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<DetailRecurringDonationsRepository>(
       () => DetailRecurringDonationsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<CreateRecurringDonationRepository>(
+      () => CreateRecurringDonationRepositoryImpl(
         getIt(),
       ),
     )
