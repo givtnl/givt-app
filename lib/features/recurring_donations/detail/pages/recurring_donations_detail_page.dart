@@ -40,7 +40,7 @@ class RecurringDonationsDetailPage extends StatelessWidget {
             context: context,
             icon: const Icon(Icons.info_rounded),
             child: const DonationTypeExplanationSheet(),
-          )
+          ),
         ],
       ),
       body: BlocConsumer<DetailedRecurringDonationsCubit,

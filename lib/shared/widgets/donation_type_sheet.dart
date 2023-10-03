@@ -11,50 +11,53 @@ class DonationTypeExplanationSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final user = context.read<AuthCubit>().state.user;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          locals.historyInfoTitle,
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.all(25),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            locals.historyInfoTitle,
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        _buildColorExplanationRow(
-          color: const Color(0xFF494871),
-          text: locals.historyAmountAccepted,
-        ),
-        const SizedBox(height: 20),
-        _buildColorExplanationRow(
-          color: AppTheme.givtLightGreen,
-          text: locals.historyAmountCollected,
-        ),
-        const SizedBox(height: 20),
-        _buildColorExplanationRow(
-          color: AppTheme.givtRed,
-          text: locals.historyAmountDenied,
-        ),
-        const SizedBox(height: 20),
-        _buildColorExplanationRow(
-          color: AppTheme.givtLightGray,
-          text: locals.historyAmountCancelled,
-        ),
-        Visibility(
-          visible: user.isGiftAidEnabled,
-          child: Column(
-            children: [
-              const Divider(color: Colors.white),
-              _buildColorExplanationRow(
-                image: 'assets/images/gift_aid_yellow.png',
-                text: locals.giftOverviewGiftAidBanner(''),
-              ),
-            ],
+          const SizedBox(height: 20),
+          _buildColorExplanationRow(
+            color: const Color(0xFF494871),
+            text: locals.historyAmountAccepted,
           ),
-        ),
-      ],
+          const SizedBox(height: 20),
+          _buildColorExplanationRow(
+            color: AppTheme.givtLightGreen,
+            text: locals.historyAmountCollected,
+          ),
+          const SizedBox(height: 20),
+          _buildColorExplanationRow(
+            color: AppTheme.givtRed,
+            text: locals.historyAmountDenied,
+          ),
+          const SizedBox(height: 20),
+          _buildColorExplanationRow(
+            color: AppTheme.givtLightGray,
+            text: locals.historyAmountCancelled,
+          ),
+          Visibility(
+            visible: user.isGiftAidEnabled,
+            child: Column(
+              children: [
+                const Divider(color: Colors.white),
+                _buildColorExplanationRow(
+                  image: 'assets/images/gift_aid_yellow.png',
+                  text: locals.giftOverviewGiftAidBanner(''),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
