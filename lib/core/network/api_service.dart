@@ -550,6 +550,22 @@ class APIService {
     return decodedBody['result'] as List<dynamic>;
   }
 
+  Future<bool> deleteExternalDonation(String id) async {
+    final url = Uri.https(apiURLAWS, '/external-donations/$id');
+
+    final response = await client.delete(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
   Future<List<dynamic>> fetchMonthlySummary(
     String guid,
     Map<String, String> params,

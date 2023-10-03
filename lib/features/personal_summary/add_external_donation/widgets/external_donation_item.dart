@@ -14,7 +14,7 @@ class ExternalDonationItem extends StatelessWidget {
   });
 
   final String title;
-  final String amount;
+  final double amount;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
 

@@ -42,10 +42,14 @@ class PersonalSummaryBloc
         tillDate: now.toIso8601String(),
       );
       final externalDonations = await givtRepo.fetchExternalDonations(
-        guid: state.loggedInUserExt.guid,
         fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: now.toIso8601String(),
       );
+      externalDonations.sort((first, second) {
+        final firstDate = DateTime.parse(first.creationDate);
+        final secondDate = DateTime.parse(second.creationDate);
+        return secondDate.compareTo(firstDate);
+      });
       emit(
         state.copyWith(
           status: PersonalSummaryStatus.success,
@@ -99,7 +103,6 @@ class PersonalSummaryBloc
       );
 
       final externalDonations = await givtRepo.fetchExternalDonations(
-        guid: state.loggedInUserExt.guid,
         fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: current.toIso8601String(),
       );

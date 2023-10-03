@@ -20,10 +20,11 @@ mixin GivtRepository {
   Future<List<Givt>> fetchGivts();
 
   Future<List<ExternalDonation>> fetchExternalDonations({
-    required String guid,
     required String fromDate,
     required String tillDate,
   });
+
+  Future<bool> deleteExternalDonation(String id);
 
   Future<bool> deleteGivt(List<dynamic> ids);
 
@@ -165,7 +166,6 @@ class GivtRepositoryImpl with GivtRepository {
 
   @override
   Future<List<ExternalDonation>> fetchExternalDonations({
-    required String guid,
     required String fromDate,
     required String tillDate,
   }) async {
@@ -177,5 +177,10 @@ class GivtRepositoryImpl with GivtRepository {
     return ExternalDonation.fromJsonList(
       decodedJson,
     );
+  }
+
+  @override
+  Future<bool> deleteExternalDonation(String id) async {
+    return apiClient.deleteExternalDonation(id);
   }
 }
