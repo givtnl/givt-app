@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -32,7 +33,7 @@ class ExternalDonationItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               trailing: Text(
-                '${Util.getCurrencySymbol(countryCode: countryCode)} $amount',
+                '${Util.getCurrencySymbol(countryCode: countryCode)} ${Util.formatNumberComma(amount, Country.fromCode(countryCode))}',
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

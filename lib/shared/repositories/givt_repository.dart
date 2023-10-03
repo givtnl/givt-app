@@ -30,6 +30,15 @@ mixin GivtRepository {
 
   Future<bool> downloadYearlyOverview({required Map<String, dynamic> body});
 
+  Future<bool> addExternalDonation({
+    required Map<String, dynamic> body,
+  });
+
+  Future<bool> updateExternalDonation({
+    required String id,
+    required Map<String, dynamic> body,
+  });
+
   Future<List<MonthlySummaryItem>> fetchMonthlySummary({
     required String guid,
     required String fromDate,
@@ -182,5 +191,20 @@ class GivtRepositoryImpl with GivtRepository {
   @override
   Future<bool> deleteExternalDonation(String id) async {
     return apiClient.deleteExternalDonation(id);
+  }
+
+  @override
+  Future<bool> addExternalDonation({
+    required Map<String, dynamic> body,
+  }) async {
+    return apiClient.addExternalDonation(body);
+  }
+
+  @override
+  Future<bool> updateExternalDonation({
+    required String id,
+    required Map<String, dynamic> body,
+  }) async {
+    return apiClient.updateExternalDonation(id, body);
   }
 }

@@ -101,17 +101,23 @@ class AppRouter {
               GoRoute(
                 path: Pages.addExternalDonation.path,
                 name: Pages.addExternalDonation.name,
-                builder: (context, state) => MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(
-                      value: state.extra! as PersonalSummaryBloc,
-                    ),
-                    BlocProvider(
-                      create: (context) => AddExternalDonationCubit(),
-                    ),
-                  ],
-                  child: const AddExternalDonationPage(),
-                ),
+                builder: (context, state) {
+                  final summaryBloc = state.extra! as PersonalSummaryBloc;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: summaryBloc,
+                      ),
+                      BlocProvider(
+                        create: (context) => AddExternalDonationCubit(
+                          dateTime: summaryBloc.state.dateTime,
+                          givtRepository: getIt(),
+                        )..init(),
+                      ),
+                    ],
+                    child: const AddExternalDonationPage(),
+                  );
+                },
               ),
             ],
           ),

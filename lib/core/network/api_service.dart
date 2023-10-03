@@ -553,7 +553,12 @@ class APIService {
   Future<bool> deleteExternalDonation(String id) async {
     final url = Uri.https(apiURLAWS, '/external-donations/$id');
 
-    final response = await client.delete(url);
+    final response = await client.delete(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -563,7 +568,55 @@ class APIService {
             : null,
       );
     }
-    return response.statusCode == 200;
+    return response.statusCode == 200 || response.statusCode == 204;
+  }
+
+  Future<bool> addExternalDonation(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURLAWS, '/external-donations');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return response.statusCode == 201;
+  }
+
+  Future<bool> updateExternalDonation(
+    String id,
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(apiURLAWS, '/external-donations/$id');
+
+    final response = await client.patch(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 204;
   }
 
   Future<List<dynamic>> fetchMonthlySummary(

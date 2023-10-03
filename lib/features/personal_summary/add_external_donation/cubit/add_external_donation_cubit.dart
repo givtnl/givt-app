@@ -38,13 +38,80 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
           externalDonations: externalDonations,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.warning(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: AddExternalDonationStatus.error));
     }
   }
 
-  void addExternalDonation() {
-    // todo
+  Future<void> addExternalDonation(ExternalDonation externalDonation) async {
+    emit(state.copyWith(status: AddExternalDonationStatus.loading));
+    try {
+      final dateTime = DateTime.parse(state.dateTime);
+
+      final toBeAdded = state.currentExternalDonation.copyWith(
+        creationDate: dateTime.toIso8601String(),
+        description: externalDonation.description,
+        amount: externalDonation.amount,
+        frequency: externalDonation.frequency,
+        taxDeductable: externalDonation.taxDeductable,
+      );
+
+      if (state.isEdit) {
+        final isUpdated = await givtRepository.updateExternalDonation(
+          id: state.currentExternalDonation.id,
+          body: toBeAdded.toJson(),
+        );
+
+        if (!isUpdated) {
+          emit(state.copyWith(status: AddExternalDonationStatus.error));
+          return;
+        }
+
+        final indexOfCurrent = state.externalDonations.indexWhere(
+          (element) => element.id == state.currentExternalDonation.id,
+        );
+
+        emit(
+          state.copyWith(
+            status: AddExternalDonationStatus.success,
+            externalDonations: state.externalDonations
+              ..removeWhere(
+                  (element) => element.id == state.currentExternalDonation.id)
+              ..insert(indexOfCurrent, toBeAdded),
+            currentExternalDonation: const ExternalDonation.empty(),
+            isEdit: false,
+          ),
+        );
+        return;
+      }
+
+      final isAdded = await givtRepository.addExternalDonation(
+        body: toBeAdded.toJson(),
+      );
+
+      if (!isAdded) {
+        emit(state.copyWith(status: AddExternalDonationStatus.error));
+        return;
+      }
+
+      emit(
+        state.copyWith(
+          status: AddExternalDonationStatus.success,
+          externalDonations: state.externalDonations..insert(0, toBeAdded),
+          currentExternalDonation: const ExternalDonation.empty(),
+        ),
+      );
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.warning(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: AddExternalDonationStatus.error));
+    }
   }
 
   Future<void> removeExternalDonation({
@@ -81,7 +148,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
     }
   }
 
-  void updateExternalDonation({
+  void updateCurrentExternalDonation({
     required int index,
   }) {
     emit(
@@ -90,12 +157,5 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         isEdit: true,
       ),
     );
-  }
-
-  void save() {
-    emit(state.copyWith(status: AddExternalDonationStatus.loading));
-    try {} catch (e) {
-      emit(state.copyWith(status: AddExternalDonationStatus.error));
-    }
   }
 }
