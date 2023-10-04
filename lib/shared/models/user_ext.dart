@@ -88,9 +88,8 @@ class UserExt extends Equatable {
         appLanguage: (json['AppLanguage'] ?? '') as String,
         accountType:
             AccountType.fromString((json['AccountType'] ?? '') as String),
-        needRegistration: json.containsKey('PayProvMandateStatus')
-            ? json['PayProvMandateStatus'] != 'closed.completed'
-            : json['IsTempUser'] as bool,
+        needRegistration:
+            (json['PayProvMandateStatus'] ?? json['TempUser']) as bool,
         personalInfoRegistered: json['FirstName'] != null,
         payProvMandateStatus: (json['PayProvMandateStatus'] ?? '') as String,
         payProvMandate: json['PayProvMandate'] != null
