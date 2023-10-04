@@ -51,7 +51,7 @@ class _ChangeAmountPresetsBottomSheetState
             onAmountPresetsChanged: ({bool changed = false}) {
               final auth = context.read<AuthCubit>();
               auth.updatePresets(
-                presets: auth.state.user.presets.copyWith(
+                presets: auth.state.presets.copyWith(
                   isEnabled: changed,
                 ),
               );
@@ -64,7 +64,7 @@ class _ChangeAmountPresetsBottomSheetState
           AmountPresetsPageView(
             onAmountPresetsChanged: (first, second, third) {
               final auth = context.read<AuthCubit>();
-              final presets = auth.state.user.presets;
+              final presets = auth.state.presets;
               auth
                   .updatePresets(
                     presets: presets.copyWith(

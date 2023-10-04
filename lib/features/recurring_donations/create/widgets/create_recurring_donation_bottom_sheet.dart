@@ -395,7 +395,7 @@ class _CreateRecurringDonationBottomSheetViewState
                       context: context,
                       initialDate: state.startDate,
                       firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 366)),
+                      lastDate: DateTime.now().add(const Duration(days: 3660)),
                     );
                     if (fromDate == null) {
                       return;
@@ -423,7 +423,7 @@ class _CreateRecurringDonationBottomSheetViewState
                             initialDate: state.endDate,
                             firstDate: state.startDate,
                             lastDate:
-                                DateTime.now().add(const Duration(days: 366)),
+                                DateTime.now().add(const Duration(days: 3660)),
                           );
                           if (untilDate == null) {
                             return;
@@ -472,6 +472,9 @@ class _CreateRecurringDonationBottomSheetViewState
                       ),
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 50,
                 ),
               ],
             );

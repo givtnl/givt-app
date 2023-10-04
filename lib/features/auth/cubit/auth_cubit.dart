@@ -88,8 +88,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuth() async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final (userExt, session) =
-          await _authRepositoy.isAuthenticated() ?? (null, null);
+      final (userExt, session, amountPresets) =
+          await _authRepositoy.isAuthenticated() ?? (null, null, null);
       if (userExt == null || session == null) {
         emit(state.copyWith(status: AuthStatus.unknown));
         return;
@@ -104,6 +104,7 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStatus.authenticated,
           user: userExt,
           session: session,
+          presets: amountPresets,
         ),
       );
     } catch (e, stackTrace) {
@@ -121,7 +122,12 @@ class AuthCubit extends Cubit<AuthState> {
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
 
-    emit(state.copyWith(status: AuthStatus.unauthenticated));
+    emit(
+      state.copyWith(
+        status: AuthStatus.unauthenticated,
+        email: state.user.email,
+      ),
+    );
   }
 
   Future<void> register({
@@ -273,16 +279,15 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> updatePresets({required UserPresets presets}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final user = state.user.copyWith(
-        presets: presets,
-      );
-      await _authRepositoy.updateLocalUserExt(
-        newUserExt: user,
+      await _authRepositoy.updateLocalUserPresets(
+        newUserPresets: presets.copyWith(
+          guid: state.user.guid,
+        ),
       );
       emit(
         state.copyWith(
           status: AuthStatus.authenticated,
-          user: user,
+          presets: presets,
         ),
       );
     } catch (e, stackTrace) {

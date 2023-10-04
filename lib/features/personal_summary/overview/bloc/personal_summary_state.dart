@@ -10,17 +10,19 @@ enum PersonalSummaryStatus {
 
 class PersonalSummaryState extends Equatable {
   const PersonalSummaryState({
+    required this.dateTime,
     this.status = PersonalSummaryStatus.initial,
     this.loggedInUserExt = const UserExt.empty(),
     this.error = '',
-    this.dateTime = '2023-01-01T00:00:00.000Z',
     this.monthlyGivts = const [],
+    this.externalDonations = const [],
   });
   final PersonalSummaryStatus status;
   final UserExt loggedInUserExt;
   final String error;
   final String dateTime;
   final List<MonthlySummaryItem> monthlyGivts;
+  final List<ExternalDonation> externalDonations;
 
   PersonalSummaryState copyWith({
     PersonalSummaryStatus? status,
@@ -28,6 +30,7 @@ class PersonalSummaryState extends Equatable {
     String? error,
     String? dateTime,
     List<MonthlySummaryItem>? monthlyGivts,
+    List<ExternalDonation>? externalDonations,
   }) {
     return PersonalSummaryState(
       status: status ?? this.status,
@@ -35,6 +38,7 @@ class PersonalSummaryState extends Equatable {
       error: error ?? this.error,
       dateTime: dateTime ?? this.dateTime,
       monthlyGivts: monthlyGivts ?? this.monthlyGivts,
+      externalDonations: externalDonations ?? this.externalDonations,
     );
   }
 
@@ -45,5 +49,6 @@ class PersonalSummaryState extends Equatable {
         error,
         dateTime,
         monthlyGivts,
+        externalDonations,
       ];
 }

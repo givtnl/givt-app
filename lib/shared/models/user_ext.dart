@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/amount_presets/models/user_presets.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 
 class UserExt extends Equatable {
   const UserExt({
@@ -32,6 +32,7 @@ class UserExt extends Equatable {
     this.appLanguage = '',
     this.sortCode = '',
     this.accountNumber = '',
+    /// TODO commented out for now until the server will support such a funnctionality to give user a better experience
     this.presets = const UserPresets.empty(),
   });
 
@@ -84,7 +85,8 @@ class UserExt extends Equatable {
         sortCode: (json['SortCode'] ?? '') as String,
         accountNumber: (json['AccountNumber'] ?? '') as String,
         appLanguage: (json['AppLanguage'] ?? '') as String,
-        accountType: AccountType.fromString((json['AccountType'] ?? '') as String),
+        accountType:
+            AccountType.fromString((json['AccountType'] ?? '') as String),
         needRegistration: (json['IsTempUser'] ?? json['TempUser']) as bool,
         personalInfoRegistered: json['FirstName'] != null,
         payProvMandateStatus: (json['PayProvMandateStatus'] ?? '') as String,
@@ -93,7 +95,7 @@ class UserExt extends Equatable {
             : '',
         mandateSigned: json.containsKey('mandateSigned')
             ? json['mandateSigned'] as bool
-            : json['PayProvMandate'] != null,
+            : json['PayProvMandateStatus'] == 'closed.completed',
         presets: json.containsKey('presets')
             ? UserPresets.fromJson(json['presets'] as Map<String, dynamic>)
             : const UserPresets.empty(),
@@ -276,7 +278,7 @@ class UserExt extends Equatable {
         personalInfoRegistered,
         pinSet,
         multipleCollectsAccepted,
-        presets,
+        // presets,
       ];
 
   static String tag = 'UserExt';

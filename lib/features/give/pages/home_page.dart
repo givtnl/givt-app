@@ -179,8 +179,8 @@ class _HomePageViewState extends State<_HomePageView> {
                 country: Country.fromCode(auth.user.country),
                 amountLimit: auth.user.amountLimit,
                 hasGiven: widget.given,
-                arePresetsEnabled: auth.user.presets.isEnabled,
-                presets: auth.user.presets.presets,
+                arePresetsEnabled: auth.presets.isEnabled,
+                presets: auth.presets.presets,
                 onAmountChanged:
                     (firstCollection, secondCollection, thirdCollection) =>
                         context.goNamed(

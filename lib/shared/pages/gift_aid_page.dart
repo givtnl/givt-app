@@ -58,32 +58,38 @@ class _GiftAidPageState extends State<GiftAidPage> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          Align(
-            child: Image.asset(
-              'assets/images/givy_gift_aid.png',
-              width: size.width * 0.4,
+      bottomSheet: ElevatedButton(
+        onPressed: () => widget.onGiftAidChanged(
+          useGiftAid,
+        ),
+        child: Text(locals.save),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Align(
+              child: Image.asset(
+                'assets/images/givy_gift_aid.png',
+                width: size.width * 0.4,
+              ),
             ),
-          ),
-          const Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                locals.giftAidSetting,
-              ),
-              Switch.adaptive(
-                onChanged: (bool value) => setState(() {
-                  useGiftAid = value;
-                }),
-                value: useGiftAid,
-              ),
-            ],
-          ),
-          const Divider(),
-          SingleChildScrollView(
-            child: Column(
+            const Divider(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  locals.giftAidSetting,
+                ),
+                Switch.adaptive(
+                  onChanged: (bool value) => setState(() {
+                    useGiftAid = value;
+                  }),
+                  value: useGiftAid,
+                ),
+              ],
+            ),
+            const Divider(),
+            Column(
               children: [
                 Text(
                   locals.giftAidInfo,
@@ -100,17 +106,13 @@ class _GiftAidPageState extends State<GiftAidPage> {
                 Text(
                   locals.giftAidBodyDisclaimer,
                 ),
+                const SizedBox(
+                  height: 60,
+                ),
               ],
             ),
-          ),
-          const Spacer(),
-          ElevatedButton(
-            onPressed: () => widget.onGiftAidChanged(
-              useGiftAid,
-            ),
-            child: Text(locals.save),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
