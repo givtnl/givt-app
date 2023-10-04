@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/overview/models/givt.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,9 +19,25 @@ mixin GivtRepository {
 
   Future<List<Givt>> fetchGivts();
 
+  Future<List<ExternalDonation>> fetchExternalDonations({
+    required String fromDate,
+    required String tillDate,
+  });
+
+  Future<bool> deleteExternalDonation(String id);
+
   Future<bool> deleteGivt(List<dynamic> ids);
 
   Future<bool> downloadYearlyOverview({required Map<String, dynamic> body});
+
+  Future<bool> addExternalDonation({
+    required Map<String, dynamic> body,
+  });
+
+  Future<bool> updateExternalDonation({
+    required String id,
+    required Map<String, dynamic> body,
+  });
 
   Future<List<MonthlySummaryItem>> fetchMonthlySummary({
     required String guid,
@@ -154,5 +171,40 @@ class GivtRepositoryImpl with GivtRepository {
     return MonthlySummaryItem.fromJsonList(
       decodedJson,
     );
+  }
+
+  @override
+  Future<List<ExternalDonation>> fetchExternalDonations({
+    required String fromDate,
+    required String tillDate,
+  }) async {
+    final params = {
+      'fromDate': fromDate,
+      'tillDate': tillDate,
+    };
+    final decodedJson = await apiClient.fetchExternalDonations(params: params);
+    return ExternalDonation.fromJsonList(
+      decodedJson,
+    );
+  }
+
+  @override
+  Future<bool> deleteExternalDonation(String id) async {
+    return apiClient.deleteExternalDonation(id);
+  }
+
+  @override
+  Future<bool> addExternalDonation({
+    required Map<String, dynamic> body,
+  }) async {
+    return apiClient.addExternalDonation(body);
+  }
+
+  @override
+  Future<bool> updateExternalDonation({
+    required String id,
+    required Map<String, dynamic> body,
+  }) async {
+    return apiClient.updateExternalDonation(id, body);
   }
 }

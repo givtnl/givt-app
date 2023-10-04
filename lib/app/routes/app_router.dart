@@ -26,8 +26,10 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
-import 'package:givt_app/features/personal_summary/bloc/personal_summary_bloc.dart';
-import 'package:givt_app/features/personal_summary/pages/personal_summary_page.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/pages/add_external_donation_page.dart';
+import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -95,6 +97,29 @@ class AppRouter {
                 ),
               child: const PersonalSummary(),
             ),
+            routes: [
+              GoRoute(
+                path: Pages.addExternalDonation.path,
+                name: Pages.addExternalDonation.name,
+                builder: (context, state) {
+                  final summaryBloc = state.extra! as PersonalSummaryBloc;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: summaryBloc,
+                      ),
+                      BlocProvider(
+                        create: (context) => AddExternalDonationCubit(
+                          dateTime: summaryBloc.state.dateTime,
+                          givtRepository: getIt(),
+                        )..init(),
+                      ),
+                    ],
+                    child: const AddExternalDonationPage(),
+                  );
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: Pages.personalInfoEdit.path,
@@ -373,6 +398,7 @@ class AppRouter {
                     )..add(
                         OrganisationFetch(
                           user.accountType,
+
                           /// Disable last donated organisation
                           /// in the discover flow as it's
                           /// not present in the native app
