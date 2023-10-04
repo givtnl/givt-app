@@ -17,7 +17,7 @@ import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
-class OrganizationListPage extends StatelessWidget {
+class OrganizationListPage extends StatefulWidget {
   const OrganizationListPage({
     super.key,
     this.isChooseCategory = false,
@@ -26,6 +26,19 @@ class OrganizationListPage extends StatelessWidget {
 
   final bool isChooseCategory;
   final bool isSelection;
+
+  @override
+  State<OrganizationListPage> createState() => _OrganizationListPageState();
+}
+
+class _OrganizationListPageState extends State<OrganizationListPage> {
+  final focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,6 @@ class OrganizationListPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final focusNode = FocusNode();
           if (state.selectedType == CollectGroupType.none.index) {
             focusNode.requestFocus();
           }
@@ -89,7 +101,7 @@ class OrganizationListPage extends StatelessWidget {
                       isSelected: state.selectedCollectGroup.nameSpace ==
                           state.filteredOrganisations[index].nameSpace,
                       onTap: () {
-                        if (isChooseCategory) {
+                        if (widget.isChooseCategory) {
                           _buildActionSheet(
                             context,
                             state.filteredOrganisations[index],
@@ -110,7 +122,9 @@ class OrganizationListPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               _buildGivingButton(
-                title: isSelection ? locals.selectReceiverButton : locals.give,
+                title: widget.isSelection
+                    ? locals.selectReceiverButton
+                    : locals.give,
                 isLoading: context.watch<GiveBloc>().state.status ==
                     GiveStatus.loading,
                 onPressed:
@@ -119,7 +133,7 @@ class OrganizationListPage extends StatelessWidget {
                         : () {
                             final userGUID =
                                 context.read<AuthCubit>().state.user.guid;
-                            if (isSelection) {
+                            if (widget.isSelection) {
                               context.pop(
                                 state.filteredOrganisations.firstWhere(
                                   (element) =>
@@ -147,7 +161,7 @@ class OrganizationListPage extends StatelessWidget {
   String _buildTitle(int selectedType, AppLocalizations locals) {
     var title = locals.chooseWhoYouWantToGiveTo;
 
-    if (isSelection) {
+    if (widget.isSelection) {
       title = locals.selectRecipient;
     }
 
@@ -173,7 +187,7 @@ class OrganizationListPage extends StatelessWidget {
     VoidCallback? onPressed,
   }) {
     return Visibility(
-      visible: !isChooseCategory,
+      visible: !widget.isChooseCategory,
       child: Expanded(
         flex: 0,
         child: Padding(

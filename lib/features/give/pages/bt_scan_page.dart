@@ -22,7 +22,8 @@ class _BTScanPageState extends State<BTScanPage> {
   void initState() {
     super.initState();
 
-    FlutterBluePlus.startScan(timeout: const Duration(seconds: 30), androidUsesFineLocation: true);
+    FlutterBluePlus.startScan(
+        timeout: const Duration(seconds: 30), androidUsesFineLocation: true);
     FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
 
     Future.delayed(const Duration(seconds: 10), () {
@@ -34,7 +35,6 @@ class _BTScanPageState extends State<BTScanPage> {
 
   void _onPeripheralsDetectedData(List<ScanResult> results) {
     for (final scanResult in results) {
-
       if (scanResult.advertisementData.localName.isEmpty) {
         continue;
       }
@@ -99,6 +99,7 @@ class _BTScanPageState extends State<BTScanPage> {
                 ),
                 const SizedBox(height: 50),
                 Container(
+                  height: size.height * 0.3,
                   padding: const EdgeInsets.all(10),
                   child: Image.asset('assets/images/givt_animation.gif'),
                 ),

@@ -95,7 +95,7 @@ class UserExt extends Equatable {
             : '',
         mandateSigned: json.containsKey('mandateSigned')
             ? json['mandateSigned'] as bool
-            : json['PayProvMandate'] != null,
+            : json['PayProvMandateStatus'] == 'closed.completed',
         presets: json.containsKey('presets')
             ? UserPresets.fromJson(json['presets'] as Map<String, dynamic>)
             : const UserPresets.empty(),
