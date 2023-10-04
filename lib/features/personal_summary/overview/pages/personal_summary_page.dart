@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
@@ -204,6 +205,7 @@ class PersonalSummary extends StatelessWidget {
                         '$countryCharacter'
                         '${getTotalSumPerMonth(
                           state.monthlyGivts,
+                          state.externalDonations,
                           userCountry,
                         )}',
                         style: const TextStyle(
@@ -401,22 +403,26 @@ class PersonalSummary extends StatelessWidget {
                     locals.budgetSummaryNoGiftsExternal,
                     textAlign: TextAlign.center,
                   ),
-                Row(
-                  children: [
-                    const Text('...'),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: _buildAddExternalDonation(
-                        onPressed: () => context.goNamed(
-                          Pages.addExternalDonation.name,
-                          extra: context.read<PersonalSummaryBloc>(),
+                Visibility(
+                  visible: DateTime.parse(state.dateTime).month ==
+                      DateTime.now().month,
+                  child: Row(
+                    children: [
+                      const Text('...'),
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: _buildAddExternalDonation(
+                          onPressed: () => context.goNamed(
+                            Pages.addExternalDonation.name,
+                            extra: context.read<PersonalSummaryBloc>(),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -552,6 +558,8 @@ class PersonalSummary extends StatelessWidget {
             ),
             _buildManageExternalDonations(
               locals,
+              visible:
+                  DateTime.parse(state.dateTime).month == DateTime.now().month,
               onPressed: () {
                 /// always pop the dialog before navigating
                 context
@@ -571,17 +579,21 @@ class PersonalSummary extends StatelessWidget {
   Widget _buildManageExternalDonations(
     AppLocalizations locals, {
     required VoidCallback onPressed,
+    required bool visible,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          shape: const StadiumBorder(),
-          backgroundColor: AppTheme.givtBlue,
-        ),
-        child: Text(
-          locals.budgetExternalGiftsListAddEditButton,
+    return Visibility(
+      visible: visible,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            shape: const StadiumBorder(),
+            backgroundColor: AppTheme.givtBlue,
+          ),
+          child: Text(
+            locals.budgetExternalGiftsListAddEditButton,
+          ),
         ),
       ),
     );
@@ -589,10 +601,13 @@ class PersonalSummary extends StatelessWidget {
 
   String getTotalSumPerMonth(
     List<MonthlySummaryItem> monthlyGivts,
+    List<ExternalDonation> externalDonations,
     Country country,
   ) {
     final totalDouble =
-        monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount);
+        monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount) +
+            externalDonations.fold<double>(0, (sum, item) => sum + item.amount);
+
     return Util.formatNumberComma(totalDouble, country);
   }
 }
