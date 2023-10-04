@@ -32,6 +32,7 @@ class UserExt extends Equatable {
     this.appLanguage = '',
     this.sortCode = '',
     this.accountNumber = '',
+
     /// TODO commented out for now until the server will support such a funnctionality to give user a better experience
     this.presets = const UserPresets.empty(),
   });
@@ -87,7 +88,9 @@ class UserExt extends Equatable {
         appLanguage: (json['AppLanguage'] ?? '') as String,
         accountType:
             AccountType.fromString((json['AccountType'] ?? '') as String),
-        needRegistration: (json['IsTempUser'] ?? json['TempUser']) as bool,
+        needRegistration: json.containsKey('PayProvMandateStatus')
+            ? json['PayProvMandateStatus'] != 'closed.completed'
+            : json['IsTempUser'] as bool,
         personalInfoRegistered: json['FirstName'] != null,
         payProvMandateStatus: (json['PayProvMandateStatus'] ?? '') as String,
         payProvMandate: json['PayProvMandate'] != null
@@ -95,7 +98,7 @@ class UserExt extends Equatable {
             : '',
         mandateSigned: json.containsKey('mandateSigned')
             ? json['mandateSigned'] as bool
-            : json['PayProvMandate'] != null,
+            : json['PayProvMandateStatus'] == 'closed.completed',
         presets: json.containsKey('presets')
             ? UserPresets.fromJson(json['presets'] as Map<String, dynamic>)
             : const UserPresets.empty(),
