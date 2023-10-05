@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   context: context,
                   builder: (_) => WarningDialog(
                     title: 'Debug Panel',
-                    content: '$auth\n$prefsStrings',
+                    content: '$auth\n Shared Preferences: \n$prefsStrings',
                     onConfirm: () => context.pop(),
                   ),
                 );
