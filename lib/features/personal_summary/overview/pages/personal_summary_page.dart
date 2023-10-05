@@ -56,7 +56,8 @@ class PersonalSummary extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           child: BlocBuilder<PersonalSummaryBloc, PersonalSummaryState>(
             builder: (context, state) {
-              if (state.status == PersonalSummaryStatus.loading) {
+              if (state.status == PersonalSummaryStatus.loading ||
+                  state.status == PersonalSummaryStatus.initial) {
                 return const Center(child: CircularProgressIndicator());
               }
               return Column(
@@ -403,26 +404,22 @@ class PersonalSummary extends StatelessWidget {
                     locals.budgetSummaryNoGiftsExternal,
                     textAlign: TextAlign.center,
                   ),
-                Visibility(
-                  visible: DateTime.parse(state.dateTime).month ==
-                      DateTime.now().month,
-                  child: Row(
-                    children: [
-                      const Text('...'),
-                      Expanded(
-                        child: Container(),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: _buildAddExternalDonation(
-                          onPressed: () => context.goNamed(
-                            Pages.addExternalDonation.name,
-                            extra: context.read<PersonalSummaryBloc>(),
-                          ),
+                Row(
+                  children: [
+                    const Text('...'),
+                    Expanded(
+                      child: Container(),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: _buildAddExternalDonation(
+                        onPressed: () => context.goNamed(
+                          Pages.addExternalDonation.name,
+                          extra: context.read<PersonalSummaryBloc>(),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -509,7 +506,8 @@ class PersonalSummary extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            Padding(
+            Container(
+              height: size.height * 0.35,
               padding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 child: Column(
@@ -558,8 +556,6 @@ class PersonalSummary extends StatelessWidget {
             ),
             _buildManageExternalDonations(
               locals,
-              visible:
-                  DateTime.parse(state.dateTime).month == DateTime.now().month,
               onPressed: () {
                 /// always pop the dialog before navigating
                 context
@@ -579,21 +575,17 @@ class PersonalSummary extends StatelessWidget {
   Widget _buildManageExternalDonations(
     AppLocalizations locals, {
     required VoidCallback onPressed,
-    required bool visible,
   }) {
-    return Visibility(
-      visible: visible,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            shape: const StadiumBorder(),
-            backgroundColor: AppTheme.givtBlue,
-          ),
-          child: Text(
-            locals.budgetExternalGiftsListAddEditButton,
-          ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          shape: const StadiumBorder(),
+          backgroundColor: AppTheme.givtBlue,
+        ),
+        child: Text(
+          locals.budgetExternalGiftsListAddEditButton,
         ),
       ),
     );

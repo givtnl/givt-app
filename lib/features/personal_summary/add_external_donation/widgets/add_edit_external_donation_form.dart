@@ -63,7 +63,7 @@ class _AddEditExternalDonationFormState
       description: descriptionController.text,
       cronExpression: '',
       creationDate: DateTime.now().toIso8601String(),
-      taxDeductable: taxDeductable,
+      taxDeductible: taxDeductable,
     );
 
     externalDonation = externalDonation.copyWith(
@@ -109,7 +109,7 @@ class _AddEditExternalDonationFormState
               state.currentExternalDonation.amount,
               country,
             );
-            taxDeductable = state.currentExternalDonation.taxDeductable;
+            taxDeductable = state.currentExternalDonation.taxDeductible;
             frequency = state.currentExternalDonation.frequency;
             isEdit = state.isEdit;
           });
