@@ -14,6 +14,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.code, required this.given, super.key});
@@ -49,6 +50,34 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(
               Icons.question_mark_outlined,
               size: 26,
+            ),
+          ),
+          Visibility(
+            // ignore: avoid_redundant_argument_values
+            visible: kDebugMode,
+            child: IconButton(
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                if (!context.mounted) {
+                  return;
+                }
+                var prefsStrings = '';
+                prefs.getKeys().forEach((element) {
+                  prefsStrings += '$element: ${prefs.get(element)}\n';
+                });
+                await showDialog<void>(
+                  context: context,
+                  builder: (_) => WarningDialog(
+                    title: 'Debug Panel',
+                    content: '$auth\n$prefsStrings',
+                    onConfirm: () => context.pop(),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.admin_panel_settings,
+                size: 26,
+              ),
             ),
           ),
         ],
