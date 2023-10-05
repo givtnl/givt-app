@@ -6,6 +6,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -65,11 +66,13 @@ class _HomePageState extends State<HomePage> {
                 prefs.getKeys().forEach((element) {
                   prefsStrings += '$element: ${prefs.get(element)}\n';
                 });
+                final apiUrl = getIt<APIService>().apiURL;
                 await showDialog<void>(
                   context: context,
                   builder: (_) => WarningDialog(
                     title: 'Debug Panel',
-                    content: '$auth\n Shared Preferences: \n$prefsStrings',
+                    content:
+                        'API Url: $apiUrl\n$auth\n Shared Preferences: \n$prefsStrings',
                     onConfirm: () => context.pop(),
                   ),
                 );
