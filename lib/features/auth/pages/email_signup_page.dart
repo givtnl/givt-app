@@ -115,7 +115,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   GestureDetector(
                     onTap: () => showModalBottomSheet<void>(
                       context: context,
-                      showDragHandle: true,
                       isScrollControlled: true,
                       useSafeArea: true,
                       backgroundColor: AppTheme.givtPurple,

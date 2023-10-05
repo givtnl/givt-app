@@ -20,7 +20,8 @@ class PersonalSummaryBloc
   }) : super(
           PersonalSummaryState(
             loggedInUserExt: loggedInUserExt,
-            dateTime: DateTime.now().toIso8601String(),
+            dateTime: DateTime(DateTime.now().year, DateTime.now().month)
+                .toIso8601String(),
           ),
         ) {
     on<PersonalSummaryInit>(_onPersonalSummaryInit);
@@ -33,17 +34,18 @@ class PersonalSummaryBloc
     Emitter<PersonalSummaryState> emit,
   ) async {
     emit(state.copyWith(status: PersonalSummaryStatus.loading));
-    final now = DateTime.now();
+    final now = DateTime.parse(state.dateTime);
     final firstDayOfMonth = DateTime(now.year, now.month);
+    final untilDate = DateTime(now.year, now.month + 1);
     try {
       final monthlyGivts = await givtRepo.fetchMonthlySummary(
         guid: state.loggedInUserExt.guid,
         fromDate: firstDayOfMonth.toIso8601String(),
-        tillDate: now.toIso8601String(),
+        tillDate: untilDate.toIso8601String(),
       );
       final externalDonations = await givtRepo.fetchExternalDonations(
         fromDate: firstDayOfMonth.toIso8601String(),
-        tillDate: now.toIso8601String(),
+        tillDate: untilDate.toIso8601String(),
       );
       externalDonations.sort((first, second) {
         final firstDate = DateTime.parse(first.creationDate);
@@ -94,24 +96,25 @@ class PersonalSummaryBloc
       }
     }
 
-    final firstDayOfMonth = DateTime(current.year, current.month);
+    final fromDate = DateTime(current.year, current.month);
+    final untilDate = DateTime(current.year, current.month + 1);
     try {
       final monthlyGivts = await givtRepo.fetchMonthlySummary(
         guid: state.loggedInUserExt.guid,
-        fromDate: firstDayOfMonth.toIso8601String(),
-        tillDate: current.toIso8601String(),
+        fromDate: fromDate.toIso8601String(),
+        tillDate: untilDate.toIso8601String(),
       );
 
       final externalDonations = await givtRepo.fetchExternalDonations(
-        fromDate: firstDayOfMonth.toIso8601String(),
-        tillDate: current.toIso8601String(),
+        fromDate: fromDate.toIso8601String(),
+        tillDate: untilDate.toIso8601String(),
       );
       emit(
         state.copyWith(
           status: PersonalSummaryStatus.success,
           monthlyGivts: monthlyGivts,
           externalDonations: externalDonations,
-          dateTime: current.toIso8601String(),
+          dateTime: fromDate.toIso8601String(),
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {

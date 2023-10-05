@@ -8,7 +8,7 @@ class ExternalDonation extends Equatable {
     required this.description,
     required this.cronExpression,
     required this.creationDate,
-    required this.taxDeductable,
+    required this.taxDeductible,
   });
 
   factory ExternalDonation.fromJson(Map<String, dynamic> json) =>
@@ -18,7 +18,7 @@ class ExternalDonation extends Equatable {
         description: json['description'] as String,
         cronExpression: json['cronExpression'] as String,
         creationDate: json['creationDate'] as String,
-        taxDeductable: json['taxDeductable'] as bool,
+        taxDeductible: json['taxDeductable'] as bool,
       );
 
   const ExternalDonation.empty()
@@ -27,14 +27,14 @@ class ExternalDonation extends Equatable {
         description = '',
         cronExpression = '',
         creationDate = '',
-        taxDeductable = false;
+        taxDeductible = false;
 
   final String id;
   final double amount;
   final String description;
   final String cronExpression;
   final String creationDate;
-  final bool taxDeductable;
+  final bool taxDeductible;
 
   ExternalDonationFrequency get frequency {
     if (cronExpression.isEmpty) {
@@ -64,7 +64,7 @@ class ExternalDonation extends Equatable {
         'description': description,
         'cronExpression': cronExpression,
         'creationDate': creationDate,
-        'taxDeductable': taxDeductable,
+        'taxDeductable': taxDeductible,
       };
 
   static List<ExternalDonation> fromJsonList(List<dynamic> json) {
@@ -85,7 +85,7 @@ class ExternalDonation extends Equatable {
     String? description,
     String? cronExpression,
     String? creationDate,
-    bool? taxDeductable,
+    bool? taxDeductible,
     ExternalDonationFrequency? frequency,
   }) {
     if (frequency != null &&
@@ -101,7 +101,7 @@ class ExternalDonation extends Equatable {
       description: description ?? this.description,
       cronExpression: cronExpression ?? this.cronExpression,
       creationDate: creationDate ?? this.creationDate,
-      taxDeductable: taxDeductable ?? this.taxDeductable,
+      taxDeductible: taxDeductible ?? this.taxDeductible,
     );
   }
 
@@ -174,5 +174,5 @@ class ExternalDonation extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, amount, description, cronExpression, creationDate, taxDeductable];
+      [id, amount, description, cronExpression, creationDate, taxDeductible];
 }

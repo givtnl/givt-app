@@ -297,10 +297,9 @@ class _CreateRecurringDonationBottomSheetViewState
                                   create: (_) => OrganisationBloc(
                                     getIt(),
                                     getIt(),
-                                    getIt(),
                                   )..add(
                                       OrganisationFetchForSelection(
-                                        user.accountType,
+                                        Country.fromCode(user.country),
                                       ),
                                     ),
                                 ),

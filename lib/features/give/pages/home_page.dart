@@ -6,6 +6,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -14,6 +15,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({required this.code, required this.given, super.key});
@@ -49,6 +51,36 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(
               Icons.question_mark_outlined,
               size: 26,
+            ),
+          ),
+          Visibility(
+            // ignore: avoid_redundant_argument_values
+            visible: kDebugMode,
+            child: IconButton(
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                if (!context.mounted) {
+                  return;
+                }
+                var prefsStrings = '';
+                prefs.getKeys().forEach((element) {
+                  prefsStrings += '$element: ${prefs.get(element)}\n';
+                });
+                final apiUrl = getIt<APIService>().apiURL;
+                await showDialog<void>(
+                  context: context,
+                  builder: (_) => WarningDialog(
+                    title: 'Debug Panel',
+                    content:
+                        'API Url: $apiUrl\n$auth\n Shared Preferences: \n$prefsStrings',
+                    onConfirm: () => context.pop(),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.admin_panel_settings,
+                size: 26,
+              ),
             ),
           ),
         ],
