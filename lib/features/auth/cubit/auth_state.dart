@@ -64,4 +64,9 @@ class AuthState extends Equatable {
         status,
         presets,
       ];
+
+  @override
+  String toString() {
+    return 'AuthState{user: $user, session: $session, email: $email, message: $message, status: $status, presets: $presets}';
+  }
 }

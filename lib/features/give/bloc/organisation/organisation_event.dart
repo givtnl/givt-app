@@ -9,26 +9,26 @@ abstract class OrganisationEvent extends Equatable {
 
 class OrganisationFetch extends OrganisationEvent {
   const OrganisationFetch(
-    this.accountType, {
-    this.showLastDonated = true,
+    this.country, {
     required this.type,
+    this.showLastDonated = true,
   });
 
-  final AccountType accountType;
+  final Country country;
   final int type;
   final bool showLastDonated;
 
   @override
-  List<Object> get props => [accountType, type, showLastDonated];
+  List<Object> get props => [country, type, showLastDonated];
 }
 
 class OrganisationFetchForSelection extends OrganisationEvent {
-  const OrganisationFetchForSelection(this.accountType);
+  const OrganisationFetchForSelection(this.country);
 
-  final AccountType accountType;
+  final Country country;
 
   @override
-  List<Object> get props => [accountType];
+  List<Object> get props => [country];
 }
 
 class OrganisationTypeChanged extends OrganisationEvent {
