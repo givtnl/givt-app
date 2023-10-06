@@ -39,7 +39,7 @@ mixin GivtRepository {
     required Map<String, dynamic> body,
   });
 
-  Future<List<MonthlySummaryItem>> fetchMonthlySummary({
+  Future<List<MonthlySummaryItem>> fetchSummary({
     required String guid,
     required String fromDate,
     required String tillDate,
@@ -153,19 +153,21 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<List<MonthlySummaryItem>> fetchMonthlySummary({
+  Future<List<MonthlySummaryItem>> fetchSummary({
     required String guid,
     required String fromDate,
     required String tillDate,
+    String orderType = '3',
+    String groupType = '2',
   }) async {
     final params = {
-      'OrderType': '3',
-      'GroupType': '2',
+      'OrderType': orderType,
+      'GroupType': groupType,
       'FromDate': fromDate,
       'TillDate': tillDate,
-      'TransactionStatusses': '1',
-      'TransactionStatusses': '2',
-      'TransactionStatusses': '3',
+      // 'TransactionStatusses': '1',
+      // 'TransactionStatusses': '2',
+      // 'TransactionStatusses': '3',
     };
     final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
     return MonthlySummaryItem.fromJsonList(

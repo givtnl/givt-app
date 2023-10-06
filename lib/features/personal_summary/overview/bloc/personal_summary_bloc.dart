@@ -38,7 +38,7 @@ class PersonalSummaryBloc
     final firstDayOfMonth = DateTime(now.year, now.month);
     final untilDate = DateTime(now.year, now.month + 1);
     try {
-      final monthlyGivts = await givtRepo.fetchMonthlySummary(
+      final monthlyGivts = await givtRepo.fetchSummary(
         guid: state.loggedInUserExt.guid,
         fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: untilDate.toIso8601String(),
@@ -99,7 +99,7 @@ class PersonalSummaryBloc
     final fromDate = DateTime(current.year, current.month);
     final untilDate = DateTime(current.year, current.month + 1);
     try {
-      final monthlyGivts = await givtRepo.fetchMonthlySummary(
+      final monthlyGivts = await givtRepo.fetchSummary(
         guid: state.loggedInUserExt.guid,
         fromDate: fromDate.toIso8601String(),
         tillDate: untilDate.toIso8601String(),
