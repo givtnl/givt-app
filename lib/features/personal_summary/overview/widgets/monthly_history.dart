@@ -4,6 +4,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -26,20 +27,7 @@ class MonthlyHistory extends StatelessWidget {
 
     return BlocBuilder<PersonalSummaryBloc, PersonalSummaryState>(
       builder: (context, state) {
-        return Container(
-          width: size.width * 0.9,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.givtGraycece,
-                offset: Offset(0, 5),
-                blurRadius: 10,
-              ),
-            ],
-          ),
+        return CardLayout(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
