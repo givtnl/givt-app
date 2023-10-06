@@ -29,11 +29,10 @@ class MonthlyHistory extends StatelessWidget {
         return Container(
           width: size.width * 0.9,
           margin: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.transparent),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            boxShadow: const [
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+            boxShadow: [
               BoxShadow(
                 color: AppTheme.givtGraycece,
                 offset: Offset(0, 5),
@@ -182,9 +181,7 @@ class MonthlyHistory extends StatelessWidget {
         );
       },
     );
-    
   }
-
 
   Widget _buildAddExternalDonation({
     required VoidCallback onPressed,
