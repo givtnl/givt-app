@@ -79,7 +79,7 @@ class PersonalSummary extends StatelessWidget {
                   //   locals: locals,
                   //   onTap: () {},
                   // ),
-                  const MonthlyHistory(),
+                  const MonthlyHistoryCard(),
                 ],
               );
             },
