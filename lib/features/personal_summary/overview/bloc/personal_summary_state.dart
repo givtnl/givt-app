@@ -24,6 +24,10 @@ class PersonalSummaryState extends Equatable {
   final List<MonthlySummaryItem> monthlyGivts;
   final List<ExternalDonation> externalDonations;
 
+  double get totalSumPerMonth =>
+      monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount) +
+      externalDonations.fold<double>(0, (sum, item) => sum + item.amount);
+
   PersonalSummaryState copyWith({
     PersonalSummaryStatus? status,
     UserExt? loggedInUserExt,

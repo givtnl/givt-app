@@ -1,28 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
-import 'package:givt_app/shared/models/monthly_summary_item.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class PersonalSummary extends StatelessWidget {
   const PersonalSummary({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
-    final userCountry = Country.fromCode(user.country);
-    final countryCharacter = NumberFormat.simpleCurrency(
-      name: userCountry.currency,
-    ).currencySymbol;
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.budgetMenuView),
@@ -60,28 +52,24 @@ class PersonalSummary extends StatelessWidget {
               }
               return Column(
                 children: [
-                  _buildMonthHeader(state: state, context: context),
+                  MonthHeader(
+                    dateTime: state.dateTime,
+                    onLeftArrowPressed: (increase) =>
+                        context.read<PersonalSummaryBloc>().add(
+                              PersonalSummaryMonthChange(increase: increase),
+                            ),
+                    onRightArrowPressed: (decrease) =>
+                        context.read<PersonalSummaryBloc>().add(
+                              PersonalSummaryMonthChange(increase: decrease),
+                            ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildNarrowWidget(
-                          left: true,
-                          size: size,
-                          locals: locals,
-                          countryCharacter: countryCharacter,
-                          userCountry: userCountry,
-                          state: state,
-                        ),
-                        _buildNarrowWidget(
-                          left: false,
-                          size: size,
-                          locals: locals,
-                          userCountry: userCountry,
-                          countryCharacter: countryCharacter,
-                          state: state,
-                        ),
+                        NarrowCard(isLeft: true, userCountry: user.country),
+                        NarrowCard(isLeft: false, userCountry: user.country),
                       ],
                     ),
                   ),
@@ -90,179 +78,12 @@ class PersonalSummary extends StatelessWidget {
                   //   locals: locals,
                   //   onTap: () {},
                   // ),
-                  _buildMonthlyHistory(
-                    context: context,
-                    size: size,
-                    locals: locals,
-                    state: state,
-                    countryCharacter: countryCharacter,
-                    userCountry: userCountry,
-                  ),
+                  const MonthlyHistory(),
                 ],
               );
             },
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildMonthHeader(
-          {required BuildContext context,
-          required PersonalSummaryState state}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildArrowButton(isLeft: true, context: context),
-            Text(
-              Util.getMonthName(
-                state.dateTime,
-                Util.getLanguageTageFromLocale(context),
-              ),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            if (DateTime.parse(state.dateTime).month == DateTime.now().month)
-              const SizedBox(width: 25)
-            else
-              _buildArrowButton(isLeft: false, context: context),
-          ],
-        ),
-      );
-
-  Widget _buildArrowButton({
-    required BuildContext context,
-    required bool isLeft,
-  }) {
-    return Container(
-      height: 25,
-      width: 25,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.transparent),
-        borderRadius: const BorderRadius.all(Radius.circular(30)),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0, 5),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: IconButton(
-        onPressed: () => context
-            .read<PersonalSummaryBloc>()
-            .add(PersonalSummaryMonthChange(increase: !isLeft)),
-        padding: EdgeInsets.zero,
-        alignment: isLeft ? Alignment.centerRight : Alignment.center,
-        icon: Icon(
-          isLeft ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
-          color: AppTheme.givtBlue,
-          size: 17,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNarrowWidget({
-    required Size size,
-    required AppLocalizations locals,
-    required bool left,
-    required String countryCharacter,
-    required Country userCountry,
-    required PersonalSummaryState state,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: left ? AppTheme.givtLightGreen : Colors.white,
-        border: Border.all(color: Colors.transparent),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0, 5),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: SizedBox(
-        height: 150,
-        width: left ? size.width * 0.32 : size.width * 0.4,
-        child: left
-            ? Column(
-                children: [
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '$countryCharacter'
-                        '${getTotalSumPerMonth(
-                          state.monthlyGivts,
-                          userCountry,
-                        )}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      locals.budgetSummaryBalance,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Image.asset(
-                    'assets/images/givy_money.png',
-                    height: 60,
-                  ),
-                  RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: locals.budgetSummarySetGoalBold,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: AppTheme.givtBlue,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: AppTheme.fontFamily,
-                          ),
-                        ),
-                        const TextSpan(
-                          //locals.budgetSummarySetGoal
-                          text: '\nGiving goal feature coming soon!',
-                          style: TextStyle(
-                            color: AppTheme.givtBlue,
-                            fontFamily: AppTheme.fontFamily,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
       ),
     );
   }
@@ -286,313 +107,166 @@ class PersonalSummary extends StatelessWidget {
         ),
       );
 
-  Widget _buildMonthlyHistory({
-    required BuildContext context,
-    required Size size,
-    required AppLocalizations locals,
-    required PersonalSummaryState state,
-    required String countryCharacter,
-    required Country userCountry,
-  }) {
-    return Container(
-      width: size.width * 0.9,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.transparent),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
-        boxShadow: const [
-          BoxShadow(
-            color: AppTheme.givtGraycece,
-            offset: Offset(0, 5),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppTheme.givtLightGreen,
-              border: Border.all(color: Colors.transparent),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            width: double.maxFinite,
-            child: Text(
-              Util.getMonthName(
-                state.dateTime,
-                Util.getLanguageTageFromLocale(context),
-              ),
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              locals.budgetSummaryGivt,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              children: state.monthlyGivts.isNotEmpty
-                  ? [
-                      ...state.monthlyGivts.take(2).map(
-                            (e) => Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(e.organisationName),
-                                Text(
-                                  '$countryCharacter ${Util.formatNumberComma(e.amount, userCountry)}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                    ]
-                  : [
-                      Text(
-                        locals.budgetSummaryNoGifts,
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Divider(),
-                Text(
-                  locals.budgetSummaryNotGivt,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                if (state.externalDonations.isNotEmpty)
-                  ...state.externalDonations.take(2).map(
-                        (externalDonation) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(externalDonation.description),
-                            Text(
-                              '$countryCharacter ${Util.formatNumberComma(externalDonation.amount, userCountry)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                const SizedBox(height: 10),
-                if (state.externalDonations.isEmpty)
-                  Text(
-                    locals.budgetSummaryNoGiftsExternal,
-                    textAlign: TextAlign.center,
-                  ),
-                Row(
-                  children: [
-                    const Text('...'),
-                    Expanded(
-                      child: Container(),
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: _buildAddExternalDonation(
-                        onPressed: () => context.goNamed(
-                          Pages.addExternalDonation.name,
-                          extra: context.read<PersonalSummaryBloc>(),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          if (state.monthlyGivts.length > 2 ||
-              state.externalDonations.length > 2)
-            Align(
-              child: TextButton(
-                onPressed: () => showDialog<String>(
-                  context: context,
-                  builder: (_) => _buildMonthlyHistoryDialog(
-                    country: userCountry,
-                    context: context,
-                    size: size,
-                    locals: locals,
-                    state: state,
-                    countryCharacter: countryCharacter,
-                  ),
-                ),
-                child: Text(
-                  locals.budgetSummaryShowAll,
-                  style: const TextStyle(
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAddExternalDonation({
-    required VoidCallback onPressed,
-  }) =>
-      TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          padding: const EdgeInsets.all(5),
-          backgroundColor: AppTheme.givtLightGreen,
-          shape: const CircleBorder(),
-        ),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-      );
-
-  Widget _buildMonthlyHistoryDialog({
-    required BuildContext context,
-    required Size size,
-    required AppLocalizations locals,
-    required PersonalSummaryState state,
-    required String countryCharacter,
-    required Country country,
-  }) {
-    return Dialog(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          minHeight: size.height * 0.1,
-          maxHeight: size.height * 0.5,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppTheme.givtGraycece,
-                border: Border.all(color: Colors.transparent),
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(4),
-                  topRight: Radius.circular(4),
-                ),
-              ),
-              width: double.maxFinite,
-              child: Text(
-                Util.getMonthName(
-                  state.dateTime,
-                  Util.getLanguageTageFromLocale(context),
-                ),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      locals.budgetSummaryGivt,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ...state.monthlyGivts.map(
-                      (e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(e.organisationName),
-                          Text(
-                            '$countryCharacter ${Util.formatNumberComma(e.amount, country)}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      locals.budgetSummaryNotGivt,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ...state.externalDonations.map(
-                      (e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(e.description),
-                          Text(
-                            '$countryCharacter ${Util.formatNumberComma(e.amount, country)}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            _buildManageExternalDonations(
-              locals,
-              onPressed: () {
-                /// always pop the dialog before navigating
-                context
-                  ..pop()
-                  ..goNamed(
-                    Pages.addExternalDonation.name,
-                    extra: context.read<PersonalSummaryBloc>(),
-                  );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildManageExternalDonations(
-    AppLocalizations locals, {
-    required VoidCallback onPressed,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          shape: const StadiumBorder(),
-          backgroundColor: AppTheme.givtBlue,
-        ),
-        child: Text(
-          locals.budgetExternalGiftsListAddEditButton,
-        ),
-      ),
-    );
-  }
-
-  String getTotalSumPerMonth(
-    List<MonthlySummaryItem> monthlyGivts,
-    Country country,
-  ) {
-    final totalDouble =
-        monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount);
-    return Util.formatNumberComma(totalDouble, country);
-  }
+  // Widget _buildMonthlyHistory({
+  //   required BuildContext context,
+  //   required Size size,
+  //   required AppLocalizations locals,
+  //   required PersonalSummaryState state,
+  //   required String countryCharacter,
+  //   required Country userCountry,
+  // }) {
+  //   return Container(
+  //     width: size.width * 0.9,
+  //     margin: const EdgeInsets.symmetric(vertical: 10),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       border: Border.all(color: Colors.transparent),
+  //       borderRadius: const BorderRadius.all(Radius.circular(10)),
+  //       boxShadow: const [
+  //         BoxShadow(
+  //           color: AppTheme.givtGraycece,
+  //           offset: Offset(0, 5),
+  //           blurRadius: 10,
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Container(
+  //           padding: const EdgeInsets.all(10),
+  //           decoration: BoxDecoration(
+  //             color: AppTheme.givtLightGreen,
+  //             border: Border.all(color: Colors.transparent),
+  //             borderRadius: const BorderRadius.only(
+  //               topLeft: Radius.circular(10),
+  //               topRight: Radius.circular(10),
+  //             ),
+  //           ),
+  //           width: double.maxFinite,
+  //           child: Text(
+  //             Util.getMonthName(
+  //               state.dateTime,
+  //               Util.getLanguageTageFromLocale(context),
+  //             ),
+  //             textAlign: TextAlign.center,
+  //             style: const TextStyle(
+  //               color: Colors.white,
+  //               fontWeight: FontWeight.bold,
+  //             ),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.all(8),
+  //           child: Text(
+  //             locals.budgetSummaryGivt,
+  //             style: const TextStyle(fontWeight: FontWeight.bold),
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 10),
+  //           child: Column(
+  //             children: state.monthlyGivts.isNotEmpty
+  //                 ? [
+  //                     ...state.monthlyGivts.take(2).map(
+  //                           (e) => Row(
+  //                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                             children: [
+  //                               Text(e.organisationName),
+  //                               Text(
+  //                                 '$countryCharacter ${Util.formatNumberComma(e.amount, userCountry)}',
+  //                                 style: const TextStyle(
+  //                                   fontWeight: FontWeight.bold,
+  //                                 ),
+  //                               ),
+  //                             ],
+  //                           ),
+  //                         ),
+  //                   ]
+  //                 : [
+  //                     Text(
+  //                       locals.budgetSummaryNoGifts,
+  //                       textAlign: TextAlign.center,
+  //                     ),
+  //                   ],
+  //           ),
+  //         ),
+  //         Padding(
+  //           padding: const EdgeInsets.symmetric(horizontal: 10),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               const Divider(),
+  //               Text(
+  //                 locals.budgetSummaryNotGivt,
+  //                 style: const TextStyle(fontWeight: FontWeight.bold),
+  //               ),
+  //               if (state.externalDonations.isNotEmpty)
+  //                 ...state.externalDonations.take(2).map(
+  //                       (externalDonation) => Row(
+  //                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                         children: [
+  //                           Text(externalDonation.description),
+  //                           Text(
+  //                             '$countryCharacter ${Util.formatNumberComma(externalDonation.amount, userCountry)}',
+  //                             style: const TextStyle(
+  //                               fontWeight: FontWeight.bold,
+  //                             ),
+  //                           ),
+  //                         ],
+  //                       ),
+  //                     ),
+  //               const SizedBox(height: 10),
+  //               if (state.externalDonations.isEmpty)
+  //                 Text(
+  //                   locals.budgetSummaryNoGiftsExternal,
+  //                   textAlign: TextAlign.center,
+  //                 ),
+  //               Row(
+  //                 children: [
+  //                   const Text('...'),
+  //                   Expanded(
+  //                     child: Container(),
+  //                   ),
+  //                   Align(
+  //                     alignment: Alignment.centerRight,
+  //                     child: _buildAddExternalDonation(
+  //                       onPressed: () => context.goNamed(
+  //                         Pages.addExternalDonation.name,
+  //                         extra: context.read<PersonalSummaryBloc>(),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         if (state.monthlyGivts.length > 2 ||
+  //             state.externalDonations.length > 2)
+  //           Align(
+  //             child: TextButton(
+  //               onPressed: () => showDialog<String>(
+  //                 context: context,
+  //                 builder: (_) => _buildMonthlyHistoryDialog(
+  //                   country: userCountry,
+  //                   context: context,
+  //                   size: size,
+  //                   locals: locals,
+  //                   state: state,
+  //                   countryCharacter: countryCharacter,
+  //                 ),
+  //               ),
+  //               child: Text(
+  //                 locals.budgetSummaryShowAll,
+  //                 style: const TextStyle(
+  //                   decoration: TextDecoration.underline,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
