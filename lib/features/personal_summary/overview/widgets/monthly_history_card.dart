@@ -28,32 +28,13 @@ class MonthlyHistoryCard extends StatelessWidget {
     return BlocBuilder<PersonalSummaryBloc, PersonalSummaryState>(
       builder: (context, state) {
         return CardLayout(
+          title: Util.getMonthName(
+            state.dateTime,
+            Util.getLanguageTageFromLocale(context),
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppTheme.givtLightGreen,
-                  border: Border.all(color: Colors.transparent),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                width: double.maxFinite,
-                child: Text(
-                  Util.getMonthName(
-                    state.dateTime,
-                    Util.getLanguageTageFromLocale(context),
-                  ),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
