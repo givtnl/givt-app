@@ -121,7 +121,7 @@ class AddExternalDonationPage extends StatelessWidget {
             state.currentExternalDonation.amount,
             Country.fromCode(country),
           ),
-          taxDeductable: state.currentExternalDonation.taxDeductable,
+          taxDeductable: state.currentExternalDonation.taxDeductible,
           frequency: state.currentExternalDonation.frequency,
           onSave: (savedDonation) {
             context

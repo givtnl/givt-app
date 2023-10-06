@@ -728,7 +728,7 @@
         "description": "Klopt dit?\n Na inloggen komt er een melding in het scherm met ‘Verstuur openstaande Givts’. Door op deze melding te klikken geef je alsnog het bedrag dat je tijdens de collecte wilde geven. \n  Antwoord op FAQ vraag2",
         "type": "text"
     },
-    "faQantwoord3": "Du kannst auf das App-Menü zugreifen, indem du auf das Menü oben links im Bildschirm \"Betrag\" tippst. Um deine Einstellungen zu ändern, musst du dich zunächst mit deiner E-Mail-Adresse und Passwort oder falls aktiviert via PIN, Fingerabdruck / Touch-ID oder FaceID anmelden. Im Menü findest du eine Übersicht über deine Spenden, kannst deinen Maximalbetrag anpassen, deine persönlichen Daten überprüfen und / oder ändern, die Betragsvoreinstellungen ändern, den Pin, Fingerabdruck / Touch-ID oder FaceID festlegen oder das Givt-Konto kündigen.",
+    "faQantwoord3": "Du kannst auf das App-Menü zugreifen, indem du auf das Menü oben links im Bildschirm \"Betrag\" tippst. Um deine Einstellungen zu ändern, musst du dich zunächst mit deiner E-Mail-Adresse und Passwort oder falls aktiviert via PIN, Fingerabdruck / Touch-ID oder FaceID anmelden. Im Menü findest du eine Übersicht über deine Spenden, kannst deinen Maximalbetrag anpassen, deine persönlichen Daten überprüfen und / oder ändern, die Betragsvoreinstellungen ändern, Fingerabdruck / Touch-ID oder FaceID festlegen oder das Givt-Konto kündigen.",
     "@faQantwoord3": {
         "description": "Je komt nu meteen in het betaalscherm. (ipv je komt nu gelijk in het betaalscherm) \n  Antwoord op FAQ vraag3",
         "type": "text"
@@ -913,7 +913,7 @@
         "description": "Question about passcode",
         "type": "text"
     },
-    "faqAnswer11": "Gehe in die Einstellungen, indem du oben links auf dem Bildschirm auf Menü klickst. Dort kannst du die Givt-App mit einem Passcode, einem Fingerabdruck /Touch-ID oder FaceID (nur auf bestimmten iPhones verfügbar) schützen.\n \n\n Wenn eine dieser Einstellungen aktiviert ist, kannst du damit direkt auf deine Einstellungen zugreifen, anstatt erst deine E-Mail-Adresse und Ihr Kennwort zu verwenden. Falls du jedoch deinen Passcode vergessen hast, benötigst du deine E-Mail-Adresse und Passwort, um einen Neuen erstellen zu können.",
+    "faqAnswer11": "Gehe in die Einstellungen, indem du oben links auf dem Bildschirm auf Menü klickst. Dort kannst du die Givt-App mit einem Fingerabdruck /Touch-ID oder FaceID (nur auf bestimmten iPhones verfügbar) schützen.\n \n\n Wenn eine dieser Einstellungen aktiviert ist, kannst du damit direkt auf deine Einstellungen zugreifen, anstatt erst deine E-Mail-Adresse und Ihr Kennwort zu verwenden.",
     "@faqAnswer11": {
         "description": "Answer Passcode",
         "type": "text"

@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               context: context,
               builder: (context) => WarningDialog(
                 title: locals.loginFailure,
-                content: locals.pincodeWrongPinFirstTry,
+                content: locals.wrongCredentials,
                 onConfirm: () => context.pop(),
               ),
             );
@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
               context: context,
               builder: (context) => WarningDialog(
                 title: locals.loginFailure,
-                content: locals.pincodeWrongPinSecondTry,
+                content: locals.wrongCredentials,
                 onConfirm: () => context.pop(),
               ),
             );

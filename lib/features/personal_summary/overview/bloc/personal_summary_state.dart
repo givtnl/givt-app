@@ -10,10 +10,10 @@ enum PersonalSummaryStatus {
 
 class PersonalSummaryState extends Equatable {
   const PersonalSummaryState({
+    this.dateTime = '',
     this.status = PersonalSummaryStatus.initial,
     this.loggedInUserExt = const UserExt.empty(),
     this.error = '',
-    this.dateTime = '2023-01-01T00:00:00.000Z',
     this.monthlyGivts = const [],
     this.externalDonations = const [],
   });

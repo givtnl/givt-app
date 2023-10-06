@@ -63,7 +63,7 @@ class _AddEditExternalDonationFormState
       description: descriptionController.text,
       cronExpression: '',
       creationDate: DateTime.now().toIso8601String(),
-      taxDeductable: taxDeductable,
+      taxDeductible: taxDeductable,
     );
 
     externalDonation = externalDonation.copyWith(
@@ -109,7 +109,7 @@ class _AddEditExternalDonationFormState
               state.currentExternalDonation.amount,
               country,
             );
-            taxDeductable = state.currentExternalDonation.taxDeductable;
+            taxDeductable = state.currentExternalDonation.taxDeductible;
             frequency = state.currentExternalDonation.frequency;
             isEdit = state.isEdit;
           });
@@ -127,6 +127,9 @@ class _AddEditExternalDonationFormState
                 CustomTextFormField(
                   hintText: locals.budgetExternalGiftsOrg,
                   controller: descriptionController,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
                   validator: (newValue) {
                     if (newValue == null) {
                       return '';
@@ -193,6 +196,7 @@ class _AddEditExternalDonationFormState
                             RegExp(r'^\d+([,.]\d{0,2})?'),
                           ),
                         ],
+                        onChanged: (value) => setState(() {}),
                         validator: (newValue) {
                           if (newValue == null) {
                             return '';
@@ -241,7 +245,7 @@ class _AddEditExternalDonationFormState
                       : Text(
                           isEdit
                               ? locals.budgetExternalGiftsEdit
-                              : locals.budgetExternalGiftsAdd,
+                              : locals.budgetExternalGiftsSave,
                         ),
                 ),
               ],
@@ -257,6 +261,10 @@ class _AddEditExternalDonationFormState
       return false;
     }
     if (amountController.text.isEmpty) {
+      return false;
+    }
+    final amount = double.parse(amountController.text.replaceAll(',', '.'));
+    if (amount <= 0 || amount > 99999) {
       return false;
     }
 
