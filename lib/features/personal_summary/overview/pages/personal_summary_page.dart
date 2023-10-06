@@ -89,68 +89,6 @@ class PersonalSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildMonthHeader(
-          {required BuildContext context,
-          required PersonalSummaryState state}) =>
-      Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _buildArrowButton(isLeft: true, context: context),
-            Text(
-              Util.getMonthName(
-                state.dateTime,
-                Util.getLanguageTageFromLocale(context),
-              ),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            if (DateTime.parse(state.dateTime).month == DateTime.now().month)
-              const SizedBox(width: 25)
-            else
-              _buildArrowButton(isLeft: false, context: context),
-          ],
-        ),
-      );
-
-  Widget _buildArrowButton({
-    required BuildContext context,
-    required bool isLeft,
-  }) {
-    return Container(
-      height: 25,
-      width: 25,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.transparent),
-        borderRadius: const BorderRadius.all(Radius.circular(30)),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0, 5),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      alignment: Alignment.center,
-      child: IconButton(
-        onPressed: () => context
-            .read<PersonalSummaryBloc>()
-            .add(PersonalSummaryMonthChange(increase: !isLeft)),
-        padding: EdgeInsets.zero,
-        alignment: isLeft ? Alignment.centerRight : Alignment.center,
-        icon: Icon(
-          isLeft ? Icons.arrow_back_ios : Icons.arrow_forward_ios,
-          color: AppTheme.givtBlue,
-          size: 17,
-        ),
-      ),
-    );
-  }
-
   Widget _buildGiveNowButton({
     required AppLocalizations locals,
     required VoidCallback onTap,
