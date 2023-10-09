@@ -352,10 +352,15 @@ class AuthRepositoyImpl with AuthRepositoy {
   @override
   Future<bool> unregisterUser({
     required String email,
-  }) async =>
-      _apiService.unregisterUser({
+  }) async {
+    final isSuccess = await _apiService.unregisterUser({
         'email': email,
       });
+    if (isSuccess) {
+      await _prefs.clear();
+    }
+    return isSuccess;
+  }
 
   @override
   Future<bool> updateUser({
