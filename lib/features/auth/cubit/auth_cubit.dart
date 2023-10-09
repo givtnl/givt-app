@@ -136,6 +136,10 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
+      /// check if user is trying to login with a different account.
+      /// if so delete the current user and login with the new one
+      await _authRepositoy.checkUserExt(email: email);
+
       if (!await _authRepositoy.checkTld(email)) {
         emit(state.copyWith(status: AuthStatus.failure));
         return;
