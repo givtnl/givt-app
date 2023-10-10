@@ -207,15 +207,6 @@ class AuthRepositoyImpl with AuthRepositoy {
       return (userExt, session, const UserPresets.empty());
     }
 
-    /// If user has the presets enabled, we need to update the local presets
-    if (userExt.presets.isEnabled) {
-      await updateLocalUserPresets(
-        newUserPresets: userExt.presets.copyWith(
-          guid: userExt.guid,
-        ),
-      );
-    }
-
     /// if the amount presets are not present in the cache set it to empty
     if (!_prefs.containsKey(AmountPresets.tag)) {
       await _prefs.setString(
