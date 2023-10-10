@@ -392,10 +392,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: edbceb4c06758652fc9d12e58edb371cd977011b032e298dae0eb357167baad2
+      sha256: "1bd28265168045adb2df3da178bdbd44d37dddca0e7cfc867f8665d4f6b31f0c"
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.1"
+    version: "11.1.3"
   http:
     dependency: "direct main"
     description:
