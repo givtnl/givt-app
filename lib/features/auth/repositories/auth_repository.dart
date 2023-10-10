@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/amount_presets/models/user_presets.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -391,13 +391,19 @@ class AuthRepositoyImpl with AuthRepositoy {
 
     for (final userPreset in amountPresets.presets) {
       if (userPreset.guid == newUserPresets.guid) {
-        userPreset.copyWith(presets: newUserPresets.presets);
+        amountPresets.updateUserPresets(
+          userPreset.copyWith(
+            presets: newUserPresets.presets,
+          ),
+        );
       }
     }
 
-    return _prefs.setString(
+    final isSuccess = _prefs.setString(
       AmountPresets.tag,
       jsonEncode(amountPresets.toJson()),
     );
+
+    return isSuccess;
   }
 }
