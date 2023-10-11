@@ -94,7 +94,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuth() async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      
       final (userExt, session, amountPresets) =
           await _authRepositoy.isAuthenticated() ?? (null, null, null);
 
@@ -129,6 +128,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(state.copyWith(status: AuthStatus.loading));
     await LoggingInfo.instance.info('User is logging out');
+
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
 
@@ -189,9 +189,11 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } catch (e, stackTrace) {
       if (e is SocketException) {
-        emit(state.copyWith(
-          status: AuthStatus.noInternet,
-        ));
+        emit(
+          state.copyWith(
+            status: AuthStatus.noInternet,
+          ),
+        );
         return;
       }
       await LoggingInfo.instance.error(
@@ -265,10 +267,12 @@ class AuthCubit extends Cubit<AuthState> {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(state.copyWith(
-          status: AuthStatus.tempAccountWarning,
-          email: email,
-        ));
+        emit(
+          state.copyWith(
+            status: AuthStatus.tempAccountWarning,
+            email: email,
+          ),
+        );
         return;
       }
       if (result.contains('false')) {
@@ -294,7 +298,6 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> updatePresets({required UserPresets presets}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-
       await LoggingInfo.instance.info('Updating user presets');
       await _authRepositoy.updateLocalUserPresets(
         newUserPresets: presets.copyWith(
