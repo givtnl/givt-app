@@ -248,9 +248,12 @@ class AuthRepositoyImpl with AuthRepositoy {
   Future<bool> logout() async {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
+
+    // If the data is already gone, just continue :)
     if (sessionString == null) {
-      throw Exception('No session found');
+      return true;
     }
+    
     final session = Session.fromJson(
       jsonDecode(sessionString) as Map<String, dynamic>,
     );
