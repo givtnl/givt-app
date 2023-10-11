@@ -61,6 +61,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
   int selectedField = 0;
   bool reset = false;
 
+  String _comma = ',';
+  final String _zero = '0';
+
   @override
   void dispose() {
     super.dispose();
@@ -72,6 +75,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
   @override
   Widget build(BuildContext context) {
+    // US & UK should have a . instead ,
+    if (widget.country.countryCode == Country.us.countryCode||
+        Country.unitedKingdomCodes().contains(widget.country.countryCode)) {
+      _comma = '.';
+    }
+
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     if (widget.hasGiven && !reset) {
@@ -360,9 +369,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
       ),
     );
   }
-
-  final String _comma = ',';
-  final String _zero = '0';
 
   void onBackspaceTapped() {
     /// if text has 1 digit then it will be 0
