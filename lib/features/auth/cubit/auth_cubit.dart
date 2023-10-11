@@ -216,10 +216,15 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       final session = await _authRepositoy.refreshToken();
+
+      final (userExt, _, amountPresets) =
+          await _authRepositoy.isAuthenticated() ?? (null, null, null);
       emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           session: session,
+          user: userExt,
+          presets: amountPresets,
         ),
       );
       return true;
