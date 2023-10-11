@@ -76,7 +76,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   @override
   Widget build(BuildContext context) {
     // US & UK should have a . instead ,
-    if (widget.country.countryCode == 'US' ||
+    if (widget.country.countryCode == Country.us.countryCode||
         Country.unitedKingdomCodes().contains(widget.country.countryCode)) {
       _comma = '.';
     }

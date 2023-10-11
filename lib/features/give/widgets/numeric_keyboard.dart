@@ -66,7 +66,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     final countryCode = context.read<AuthCubit>().state.user.country;
 
     // US & UK should have a . instead ,
-    if (countryCode == 'US' ||
+    if (countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(countryCode)) {
       _comma = '.';
     }
