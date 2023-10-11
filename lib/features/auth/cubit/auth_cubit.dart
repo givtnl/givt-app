@@ -22,6 +22,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login({required String email, required String password}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
+      await LoggingInfo.instance.info('User is trying to login with $email');
+
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
@@ -31,10 +33,14 @@ class AuthCubit extends Cubit<AuthState> {
         password,
       );
 
+      final userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
+
+      await LoggingInfo.instance.info('User logged in with $userExt');
+
       emit(
         state.copyWith(
           status: AuthStatus.authenticated,
-          user: await _authRepositoy.fetchUserExtension(session.userGUID),
+          user: userExt,
           session: session,
         ),
       );
@@ -88,12 +94,16 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuth() async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
+      
       final (userExt, session, amountPresets) =
           await _authRepositoy.isAuthenticated() ?? (null, null, null);
+
       if (userExt == null || session == null) {
         emit(state.copyWith(status: AuthStatus.unknown));
         return;
       }
+
+      await LoggingInfo.instance.info('CheckedAuth for $userExt');
       if (!session.isLoggedIn) {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
         return;
@@ -118,7 +128,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logout() async {
     emit(state.copyWith(status: AuthStatus.loading));
-
+    await LoggingInfo.instance.info('User is logging out');
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
 
@@ -232,6 +242,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> refreshSession() async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
+      await LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
       emit(
         state.copyWith(
@@ -283,6 +294,8 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> updatePresets({required UserPresets presets}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
+
+      await LoggingInfo.instance.info('Updating user presets');
       await _authRepositoy.updateLocalUserPresets(
         newUserPresets: presets.copyWith(
           guid: state.user.guid,
