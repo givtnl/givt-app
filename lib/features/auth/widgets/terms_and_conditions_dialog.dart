@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';

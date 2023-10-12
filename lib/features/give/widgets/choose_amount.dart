@@ -476,7 +476,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
           padding: const EdgeInsets.all(6),
           child: ElevatedButton.icon(
             onPressed: onPressed,
-            onLongPress: showApiUrl,
             icon: const Icon(Icons.add_circle_outlined),
             label: Text(label),
             style: ElevatedButton.styleFrom(
@@ -486,19 +485,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void showApiUrl() {
-    const apiURL = String.fromEnvironment('API_URL_US');
-    if (!apiURL.contains('dev')) {
-      return;
-    }
-    final currentUrl = getIt<APIService>().apiURL;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(currentUrl),
       ),
     );
   }

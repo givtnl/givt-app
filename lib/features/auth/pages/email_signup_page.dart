@@ -1,7 +1,13 @@
+import 'dart:developer';
+
+import 'package:device_region/device_region.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart' as get_it;
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
@@ -28,6 +34,7 @@ class EmailSignupPage extends StatefulWidget {
 class _EmailSignupPageState extends State<EmailSignupPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  Country selectedCountry = Country.nl;
   bool _isLoading = false;
 
   void toggleLoading() {
@@ -37,8 +44,29 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      _emailController.text = context.read<AuthCubit>().state.email;
+    });
+
+    setDefaultCountry();
+  }
+
+  Future<void> setDefaultCountry() async {
+    final countryCode = await DeviceRegion.getSIMCountryCode();
+    if (countryCode != null && countryCode.isNotEmpty) {
+      setState(() {
+        selectedCountry = Country.fromCode(countryCode);
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -91,6 +119,37 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   const SizedBox(height: 12),
                   Text(locals.weWontSendAnySpam),
                   const Spacer(),
+                  DropdownButtonFormField<Country>(
+                    value: selectedCountry,
+                    decoration: InputDecoration(
+                      labelText: locals.country,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
+                    ),
+                    menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
+                    items: Country.sortedCountries()
+                        .where((element) => element != Country.unknown)
+                        .map(
+                          (Country country) => DropdownMenuItem(
+                            value: country,
+                            child: Text(
+                              Country.getCountryIncludingEmoji(
+                                country.countryCode,
+                                locals,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (Country? newValue) {
+                      setState(() {
+                        selectedCountry = newValue!;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 12),
                   TextFormField(
                     controller: _emailController,
                     onChanged: (value) {
@@ -147,7 +206,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           ? () async {
                               toggleLoading();
                               if (_formKey.currentState!.validate()) {
+                                // Update country
+                                _updateCountry();
+
                                 await context.read<AuthCubit>().register(
+                                      country: selectedCountry,
                                       email: _emailController.value.text.trim(),
                                       locale: Localizations.localeOf(context)
                                           .languageCode,
@@ -163,19 +226,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                         locals.continueKey,
                       ),
                     ),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () => showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      builder: (BuildContext context) => const LoginPage(),
-                    ),
-                    child: _buildAlreadyHaveAnAccount(locals, context),
-                  ),
                 ],
               ),
             ),
@@ -191,27 +241,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     return _emailController.text.isNotEmpty;
   }
 
-  Text _buildAlreadyHaveAnAccount(
-    AppLocalizations locals,
-    BuildContext context,
-  ) =>
-      Text.rich(
-        TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              text: locals.alreadyAnAccount,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(),
-            ),
-            const TextSpan(text: ' '),
-            TextSpan(
-              text: locals.login,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    decoration: TextDecoration.underline,
-                  ),
-            ),
-          ],
-        ),
-        textAlign: TextAlign.center,
-      );
+  void _updateCountry() {
+    var baseUrl = const String.fromEnvironment('API_URL_EU');
+    var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
+
+    if (selectedCountry == Country.us) {
+      baseUrl = const String.fromEnvironment('API_URL_US');
+      baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
+    }
+
+    log('Using API URL: $baseUrl');
+    get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+  }
 }
