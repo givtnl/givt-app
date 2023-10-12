@@ -1,35 +1,37 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.givtapp.droid">
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Always include this permission -->
-   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-   <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
-   <queries>
-       <!-- tel:<phone-number> -->
-       <intent>
-           <action android:name="android.intent.action.DIAL" />
-           <data android:scheme="tel" />
-       </intent>
-       <!-- mailto:<email>?subject=<subject-email>&body=<email-body> -->
-       <intent>
-           <action android:name="android.intent.action.SEND" />
-           <data android:mimeType="*/*" />
-       </intent>
-   </queries>
-   <!-- Include only if your app benefits from precise location access. -->
-   <!-- Allow Bluetooth -->
-   <uses-feature
-       android:name="android.hardware.bluetooth_le"
-       android:required="true" />
-   <!-- Request legacy Bluetooth permissions on older devices. -->
-   <uses-permission android:name="android.permission.BLUETOOTH"
-       android:maxSdkVersion="30" />
-   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
-       android:maxSdkVersion="30" />
-   <uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> 
-   <uses-permission android:name="android.permission.VIBRATE"/>
-   <application
+    <queries>
+        <!-- tel:<phone-number> -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <!-- mailto:<email>?subject=<subject-email>&body=<email-body> -->
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+    <!-- Include only if your app benefits from precise location access. -->
+    <!-- Allow Bluetooth -->
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <application
         android:label="${appName}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round">
@@ -48,7 +50,7 @@
             <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
             <intent-filter
                 android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -56,7 +58,7 @@
                 <data
                     android:host="www.givtapp.net"
                     android:path="/download"
-                    android:scheme="https"/>
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter
                 android:autoVerify="true">
@@ -68,18 +70,31 @@
                 <data
                     android:host="www.givt.app"
                     android:path="/download"
-                    android:scheme="https"/>
+                    android:scheme="https" />
             </intent-filter>
-            <intent-filter android:autoVerify="true">
+            <intent-filter
+                android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="www.givtapp.net"
+                    android:host="givt.app"
                     android:path="/download"
-                    android:scheme="https"/>
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="givtapp.net"
+                    android:path="/download"
+                    android:scheme="https" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -90,7 +105,15 @@
                 <data
                     android:host="www.givtapp.net"
                     android:path="/en/download"
-                    android:scheme="https"/>
+                    android:scheme="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="givt" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -101,17 +124,6 @@
                 <data
                     android:host="www.givtapp.net"
                     android:path="/en-gb/download"
-                    android:scheme="https"/>
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="api.givtapp.net"
-                    android:path="/givt"
                     android:scheme="https" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
@@ -121,42 +133,20 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="givt-debug-api.azurewebsites.net"
-                    android:path="/givt"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="backend.givtapp.net"
-                    android:path="/givt"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="dev-backend.givtapp.net"
+                    android:host="*.givtapp.net"
                     android:path="/givt"
                     android:scheme="https" />
             </intent-filter>
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
-              <!-- <meta-data
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme"
+            />
+            <!-- <meta-data
                 android:name="flutterEmbedding"
                 android:value="2" /> -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

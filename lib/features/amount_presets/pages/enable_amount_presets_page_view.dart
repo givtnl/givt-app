@@ -25,7 +25,7 @@ class _EnableAmountPresetsPageViewState
 
   @override
   void initState() {
-    useAmountPresets = context.read<AuthCubit>().state.user.presets.isEnabled;
+    useAmountPresets = context.read<AuthCubit>().state.presets.isEnabled;
     super.initState();
   }
 

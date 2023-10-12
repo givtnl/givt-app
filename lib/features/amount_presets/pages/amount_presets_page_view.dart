@@ -28,18 +28,21 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
   late TextEditingController secondPreset;
   late TextEditingController thirdPreset;
   final formKey = GlobalKey<FormState>();
+  late Country countryCode;
 
   @override
   void initState() {
-    final presets = context.read<AuthCubit>().state.user.presets;
+    countryCode = Country.fromCode(context.read<AuthCubit>().state.user.country);
+
+    final presets = context.read<AuthCubit>().state.presets;
     firstPreset = TextEditingController(
-      text: presets.presets[0].amount.toStringAsFixed(2).replaceAll('.', ','),
+      text: Util.formatNumberComma(presets.presets[0].amount, countryCode),
     );
     secondPreset = TextEditingController(
-      text: presets.presets[1].amount.toStringAsFixed(2).replaceAll('.', ','),
+      text: Util.formatNumberComma(presets.presets[1].amount, countryCode),
     );
     thirdPreset = TextEditingController(
-      text: presets.presets[2].amount.toStringAsFixed(2).replaceAll('.', ','),
+      text: Util.formatNumberComma(presets.presets[2].amount, countryCode),
     );
     super.initState();
   }
@@ -49,12 +52,10 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
     final locals = context.l10n;
     final size = MediaQuery.sizeOf(context);
     final amountLimit = context.read<AuthCubit>().state.user.amountLimit;
-    final country =
-        Country.fromCode(context.read<AuthCubit>().state.user.country);
 
-    final lowerLimit = Util.getLowerLimitByCountry(country);
+    final lowerLimit = Util.getLowerLimitByCountry(countryCode);
     final currency = NumberFormat.simpleCurrency(
-      name: country.currency,
+      name: countryCode.currency,
     ).currencySymbol;
 
     return Form(
@@ -103,7 +104,7 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
             SizedBox(
               height: size.height * 0.20,
             ),
-            if (context.watch<AuthCubit>().state is AuthLoading)
+            if (context.watch<AuthCubit>().state.status == AuthStatus.loading)
               const Center(
                 child: CircularProgressIndicator(),
               )

@@ -728,7 +728,7 @@
         "description": "Klopt dit?\n Na inloggen komt er een melding in het scherm met ‘Verstuur openstaande Givts’. Door op deze melding te klikken geef je alsnog het bedrag dat je tijdens de collecte wilde geven. \n  Antwoord op FAQ vraag2",
         "type": "text"
     },
-    "faQantwoord3": "Je kunt je app-menu bereiken door links bovenin het bedragscherm op het menu te drukken. Om je instellingen te wijzigen wordt je gevraagd in te loggen met je e-mailadres en wachtwoord of een andere beveiligingsmethode (toegangscode, vingerafdruk of FaceID) als je die hebt ingesteld.\n \n\n In je menu kun je het overzicht van je giften inzien, je geeflimiet aanpassen, je persoonlijke gegevens wijzigen, je voorkeursbedragen aanpassen, een extra beveilgingsmethode instellen (toegangscode, vingerafdruk of FaceID) of je account opzeggen.",
+    "faQantwoord3": "Je kunt je app-menu bereiken door links bovenin het bedragscherm op het menu te drukken. Om je instellingen te wijzigen wordt je gevraagd in te loggen met je e-mailadres en wachtwoord of een andere beveiligingsmethode (vingerafdruk of FaceID) als je die hebt ingesteld.\n \n\n In je menu kun je het overzicht van je giften inzien, je geeflimiet aanpassen, je persoonlijke gegevens wijzigen, je voorkeursbedragen aanpassen, een extra beveilgingsmethode instellen (vingerafdruk of FaceID) of je account opzeggen.",
     "@faQantwoord3": {
         "description": "Je komt nu meteen in het betaalscherm. (ipv je komt nu gelijk in het betaalscherm) \n  Antwoord op FAQ vraag3",
         "type": "text"
@@ -903,17 +903,17 @@
         "description": "Waar kan ik het overzicht van mijn giften bekijken?",
         "type": "text"
     },
-    "faQantwoord9": "Druk op het menu linksbovenin om je app-menu te openen. Om toegang te krijgen wordt je gevraagd in te loggen met je e-mailadres en wachtwoord of met je toegangscode. Kies voor 'Giftenoverzicht' om een overzicht van je giften weer te geven. Je kunt hier ook een jaarlijks giftenoverzicht downloaden voor de belastingaangifte.\n \n\n De giften staan in een lijst met naam van de ontvanger, tijd en datum. Aan de gekleurde streep (links van je gift) zie je direct wat de status is: wordt verwerkt, verwerkt, geweigerd door bank of geannuleerd door gever.",
+    "faQantwoord9": "Druk op het menu linksbovenin om je app-menu te openen. Om toegang te krijgen wordt je gevraagd in te loggen met je e-mailadres en wachtwoord. Kies voor 'Giftenoverzicht' om een overzicht van je giften weer te geven. Je kunt hier ook een jaarlijks giftenoverzicht downloaden voor de belastingaangifte.\n \n\n De giften staan in een lijst met naam van de ontvanger, tijd en datum. Aan de gekleurde streep (links van je gift) zie je direct wat de status is: wordt verwerkt, verwerkt, geweigerd door bank of geannuleerd door gever.",
     "@faQantwoord9": {
         "description": "antwoord-Waar kan ik het overzicht van mijn giften bekijken?",
         "type": "text"
     },
-    "faqQuestion11": "Hoe stel ik mijn toegangscode, Touch ID of Face ID in?",
+    "faqQuestion11": "Hoe stel ik mijn Touch ID of Face ID in?",
     "@faqQuestion11": {
         "description": "Question about passcode",
         "type": "text"
     },
-    "faqAnswer11": "Je kunt je app-menu bereiken door links bovenin het bedragscherm op het menu te drukken. Kies daar voor ‘Toegangscode’, ‘Vingerafdruk’/’Touch ID’ of ‘FaceID’ (enkel beschikbaar voor iPhone), afhankelijk van hoe je de Givt-app wilt beveiligen. \n \n\n Wanneer deze instelling actief is, kun je je toegangscode/TouchID/FaceID in plaats van je e-mailadres en wachtwoord gebruiken om in te loggen. Wanneer je je toegangscode vergeten bent, heb je je e-mailadres en wachtwoord nodig om dit opnieuw in te stellen.",
+    "faqAnswer11": "Je kunt je app-menu bereiken door links bovenin het bedragscherm op het menu te drukken. Kies daar voor ‘Vingerafdruk’/’Touch ID’ of ‘FaceID’ (enkel beschikbaar voor iPhone), afhankelijk van hoe je de Givt-app wilt beveiligen. \n \n\n Wanneer deze instelling actief is, kun je je TouchID/FaceID in plaats van je e-mailadres en wachtwoord gebruiken om in te loggen.",
     "@faqAnswer11": {
         "description": "Answer Passcode",
         "type": "text"
@@ -1421,5 +1421,7 @@
     "createChildAddProfileButton": "Add child profile",
     "childOverviewTotalAvailable": "Total available:",
     "childOverviewPendingApproval": "Pending approval:",
-    "vpcSuccessTitle": "Great!"
+    "vpcSuccessTitle": "Great!",
+    "cannotSeeAllowance": "Cannot see the giving allowance? ",
+    "allowanceTakesTime": "It can take a couple hours to be processed through our system."
 }

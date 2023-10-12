@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 
 typedef KeyboardTapCallback = void Function(String text);
 
@@ -55,8 +59,18 @@ class NumericKeyboard extends StatefulWidget {
 }
 
 class _NumericKeyboardState extends State<NumericKeyboard> {
+  String _comma = ',';
+
   @override
   Widget build(BuildContext context) {
+    final countryCode = context.read<AuthCubit>().state.user.country;
+
+    // US & UK should have a . instead ,
+    if (countryCode == Country.us.countryCode ||
+        Country.unitedKingdomCodes().contains(countryCode)) {
+      _comma = '.';
+    }
+
     final size = MediaQuery.sizeOf(context);
     return Container(
       padding: const EdgeInsets.all(8),
@@ -79,8 +93,10 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
               child: Column(
                 children: widget.presets.map(
                   (preset) {
-                    final amount =
-                        preset.amount.toStringAsFixed(2).replaceAll('.', ',');
+                    final amount = Util.formatNumberComma(
+                      preset.amount,
+                      Country.fromCode(countryCode),
+                    );
                     return _buildPresetAmount(
                       preset: amount,
                       onTap: () => widget.onPresetTap(
@@ -123,7 +139,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: [
                     _calcButton(
-                      ',',
+                      _comma,
                       onTap: widget.leftButtonFn,
                     ),
                     _calcButton('0'),
@@ -147,21 +163,29 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     void Function()? onTap,
     Widget? child,
   }) {
+    final size = MediaQuery.sizeOf(context);
+
+    var fontSize = 18.0;
+    if (size.height < 600 && widget.presets.isNotEmpty) {
+      fontSize = 12;
+    }
     final onButtonTap = onTap ?? () => widget.onKeyboardTap(value);
     final valueWidget = child ??
         Text(
           value,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: widget.textColor,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontSize: fontSize,
+                fontWeight: FontWeight.bold,
+                color: widget.textColor,
+              ),
         );
-    final size = MediaQuery.sizeOf(context);
     var padding = 14.0;
     if (size.height < 700) {
       padding = 7.5;
+    }
+    if (size.height < 560) {
+      padding = 2;
     }
     return Expanded(
       child: InkWell(
@@ -186,28 +210,34 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
   Widget _buildPresetAmount({
     required String preset,
     required VoidCallback onTap,
-  }) =>
-      Expanded(
-        child: InkWell(
-          borderRadius: BorderRadius.circular(45),
-          onTap: onTap,
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            padding: const EdgeInsets.all(12),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: AppTheme.presetsButtonColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              '${widget.currencySymbol} $preset',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+  }) {
+    final size = MediaQuery.sizeOf(context);
+    var padding = 11.5;
+    if (size.height < 600) {
+      padding = 6;
+    }
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(45),
+        onTap: onTap,
+        child: Container(
+          margin: const EdgeInsets.all(10),
+          padding: EdgeInsets.all(padding),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: AppTheme.presetsButtonColor,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            '${widget.currencySymbol} $preset',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
         ),
-      );
+      ),
+    );
+  }
 }

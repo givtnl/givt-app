@@ -32,6 +32,12 @@ class Util {
     /// api.development.givtapp.net
     /// api.production.givtapp.net
     '87DCD4DC74640A322CD205552506D1BE64F12596258096544986B4850BC72706',
+
+    /// aws dev
+    'B6BC0A83BABC3AB4A0DACF492F88A5BB878EE2FD0291A65117B8E305B71604CF',
+
+    /// aws prod
+    'D8A8F6D46EAC49E08F1DD9E99379EFCCE1A34F7D27811744122D024BF423B9F3',
   ];
 
   static final ukPostCodeRegEx = RegExp(
@@ -63,12 +69,23 @@ class Util {
     return icon;
   }
 
+  // todo remove this
   static String getCurrencyName({required Country country}) {
     return country == Country.us
         ? 'USD'
         : Country.unitedKingdomCodes().contains(country.countryCode)
             ? 'GBP'
             : 'EUR';
+  }
+
+  static String getCurrencySymbol({required String countryCode}) {
+    final currencySymbol = NumberFormat.simpleCurrency(
+      name: Country.fromCode(
+        countryCode,
+      ).currency,
+    ).currencySymbol;
+
+    return currencySymbol;
   }
 
   static double getLowerLimitByCountry(Country country) {
@@ -82,7 +99,7 @@ class Util {
   }
 
   static String formatNumberComma(double number, Country country) {
-    if (country.countryCode == 'US' ||
+    if (country.countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(country.countryCode)) {
       return number.toStringAsFixed(2);
     }

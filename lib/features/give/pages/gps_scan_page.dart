@@ -25,7 +25,15 @@ class _GPSScanPageState extends State<GPSScanPage> {
   @override
   void initState() {
     super.initState();
-    _permissionCheck();
+    Geolocator.requestPermission().then(
+      (persmission) {
+        if (persmission == LocationPermission.whileInUse ||
+            persmission == LocationPermission.always) {
+          return;
+        }
+        _permissionCheck();
+      },
+    );
     Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
@@ -62,6 +70,22 @@ class _GPSScanPageState extends State<GPSScanPage> {
   }
 
   Future<void> _permissionCheck() async {
+    await Geolocator.isLocationServiceEnabled().then((isEnabled) {
+      if (isEnabled) {
+        return;
+      }
+      showDialog<void>(
+        context: context,
+        builder: (_) => WarningDialog(
+          title: context.l10n.allowGivtLocationTitle,
+          content: context.l10n.locationEnabledMessage,
+          onConfirm: () {
+            openAppSettings();
+            context.pop();
+          },
+        ),
+      );
+    });
     await Geolocator.checkPermission().then((permission) {
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
@@ -81,23 +105,6 @@ class _GPSScanPageState extends State<GPSScanPage> {
         );
         return;
       }
-    });
-
-    await Geolocator.isLocationServiceEnabled().then((isEnabled) {
-      if (isEnabled) {
-        return;
-      }
-      showDialog<void>(
-        context: context,
-        builder: (_) => WarningDialog(
-          title: context.l10n.allowGivtLocationTitle,
-          content: context.l10n.locationEnabledMessage,
-          onConfirm: () {
-            openAppSettings();
-            context.pop();
-          },
-        ),
-      );
     });
   }
 

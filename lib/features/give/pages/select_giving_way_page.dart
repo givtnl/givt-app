@@ -39,8 +39,32 @@ class SelectGivingWayPage extends StatelessWidget {
               listener: (context, state) {
                 if (state.status == GiveStatus.noInternetConnection) {
                   context.goNamed(
-                    Pages.giveOffline.name,
-                    extra: context.read<GiveBloc>(),
+                    Pages.giveSucess.name,
+                    extra: {
+                      'isRecurringDonation': false,
+                      'orgName': state.organisation.organisationName,
+                    },
+                  );
+                }
+                if (state.status == GiveStatus.error) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.errorOccurred,
+                      content: locals.errorContactGivt,
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
+                }
+                if (state.status ==
+                    GiveStatus.donatedToSameOrganisationInLessThan30Seconds) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.notSoFast,
+                      content: locals.giftBetween30Sec,
+                      onConfirm: () => context.pop(),
+                    ),
                   );
                 }
                 if (state.status == GiveStatus.readyToConfirmGPS) {
@@ -167,7 +191,7 @@ class SelectGivingWayPage extends StatelessWidget {
         ),
         trailing: const Icon(
           Icons.arrow_forward_ios,
-          size: 18,
+          size: 20,
         ),
         title: title,
         subtitle: subtitle,

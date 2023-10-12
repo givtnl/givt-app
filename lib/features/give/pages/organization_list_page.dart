@@ -9,12 +9,36 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
+import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
-class OrganizationListPage extends StatelessWidget {
-  const OrganizationListPage({super.key});
+class OrganizationListPage extends StatefulWidget {
+  const OrganizationListPage({
+    super.key,
+    this.isChooseCategory = false,
+    this.isSelection = false,
+  });
+
+  final bool isChooseCategory;
+  final bool isSelection;
+
+  @override
+  State<OrganizationListPage> createState() => _OrganizationListPageState();
+}
+
+class _OrganizationListPageState extends State<OrganizationListPage> {
+  final focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +69,16 @@ class OrganizationListPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
+          if (state.selectedType == CollectGroupType.none.index) {
+            focusNode.requestFocus();
+          }
           return Column(
             children: [
               _buildFilterType(bloc, locals),
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: CupertinoSearchTextField(
+                  focusNode: focusNode,
                   onChanged: (value) => context
                       .read<OrganisationBloc>()
                       .add(OrganisationFilterQueryChanged(value)),
@@ -72,11 +100,20 @@ class OrganizationListPage extends StatelessWidget {
                       title: state.filteredOrganisations[index].orgName,
                       isSelected: state.selectedCollectGroup.nameSpace ==
                           state.filteredOrganisations[index].nameSpace,
-                      onTap: () => context.read<OrganisationBloc>().add(
-                            OrganisationSelectionChanged(
-                              state.filteredOrganisations[index].nameSpace,
-                            ),
-                          ),
+                      onTap: () {
+                        if (widget.isChooseCategory) {
+                          _buildActionSheet(
+                            context,
+                            state.filteredOrganisations[index],
+                          );
+                          return;
+                        }
+                        context.read<OrganisationBloc>().add(
+                              OrganisationSelectionChanged(
+                                state.filteredOrganisations[index].nameSpace,
+                              ),
+                            );
+                      },
                     ),
                   ),
                 )
@@ -85,16 +122,27 @@ class OrganizationListPage extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 ),
               _buildGivingButton(
-                title: locals.give,
+                title: widget.isSelection
+                    ? locals.selectReceiverButton
+                    : locals.give,
                 isLoading: context.watch<GiveBloc>().state.status ==
                     GiveStatus.loading,
                 onPressed:
-                    state.selectedCollectGroup.type == CollecGroupType.none
+                    state.selectedCollectGroup.type == CollectGroupType.none
                         ? null
                         : () {
                             final userGUID =
                                 context.read<AuthCubit>().state.user.guid;
-
+                            if (widget.isSelection) {
+                              context.pop(
+                                state.filteredOrganisations.firstWhere(
+                                  (element) =>
+                                      element.nameSpace ==
+                                      state.selectedCollectGroup.nameSpace,
+                                ),
+                              );
+                              return;
+                            }
                             context.read<GiveBloc>().add(
                                   GiveOrganisationSelected(
                                     state.selectedCollectGroup.nameSpace,
@@ -112,19 +160,20 @@ class OrganizationListPage extends StatelessWidget {
 
   String _buildTitle(int selectedType, AppLocalizations locals) {
     var title = locals.chooseWhoYouWantToGiveTo;
-    switch (CollecGroupType.fromInt(selectedType)) {
-      case CollecGroupType.church:
+
+    if (widget.isSelection) {
+      title = locals.selectRecipient;
+    }
+
+    switch (CollectGroupType.fromInt(selectedType)) {
+      case CollectGroupType.church:
         title = locals.church;
-        break;
-      case CollecGroupType.charities:
+      case CollectGroupType.charities:
         title = locals.charity;
-        break;
-      case CollecGroupType.campaign:
+      case CollectGroupType.campaign:
         title = locals.campaign;
-        break;
-      case CollecGroupType.artists:
+      case CollectGroupType.artists:
         title = locals.artist;
-        break;
       default:
         break;
     }
@@ -132,26 +181,29 @@ class OrganizationListPage extends StatelessWidget {
     return title;
   }
 
-  Expanded _buildGivingButton({
+  Widget _buildGivingButton({
     required String title,
     bool isLoading = false,
     VoidCallback? onPressed,
   }) {
-    return Expanded(
-      flex: 0,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: !isLoading
-            ? ElevatedButton(
-                onPressed: onPressed,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
+    return Visibility(
+      visible: !widget.isChooseCategory,
+      child: Expanded(
+        flex: 0,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: !isLoading
+              ? ElevatedButton(
+                  onPressed: onPressed,
+                  style: ElevatedButton.styleFrom(
+                    disabledBackgroundColor: Colors.grey,
+                  ),
+                  child: Text(title),
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 ),
-                child: Text(title),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
-              ),
+        ),
       ),
     );
   }
@@ -160,15 +212,15 @@ class OrganizationListPage extends StatelessWidget {
     required VoidCallback onTap,
     required bool isSelected,
     required String title,
-    required CollecGroupType type,
+    required CollectGroupType type,
   }) =>
       ListTile(
         key: UniqueKey(),
         onTap: onTap,
         selected: isSelected,
-        selectedTileColor: getHighlightColor(type),
+        selectedTileColor: CollectGroupType.getHighlightColor(type),
         leading: Icon(
-          getIconByType(type),
+          CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
         title: Text(title),
@@ -179,89 +231,169 @@ class OrganizationListPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FilterSuggestionCard(
-            isFocused: bloc.state.selectedType == CollecGroupType.church.index,
+            isFocused: bloc.state.selectedType == CollectGroupType.church.index,
             title: locals.church,
-            icon: CollecGroupType.church.icon,
-            activeIcon: CollecGroupType.church.activeIcon,
-            color: CollecGroupType.church.color,
+            icon: CollectGroupType.church.icon,
+            activeIcon: CollectGroupType.church.activeIcon,
+            color: CollectGroupType.church.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.church.index,
+                CollectGroupType.church.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             isFocused:
-                bloc.state.selectedType == CollecGroupType.charities.index,
+                bloc.state.selectedType == CollectGroupType.charities.index,
             title: locals.charity,
-            icon: CollecGroupType.charities.icon,
-            activeIcon: CollecGroupType.charities.activeIcon,
-            color: CollecGroupType.charities.color,
+            icon: CollectGroupType.charities.icon,
+            activeIcon: CollectGroupType.charities.activeIcon,
+            color: CollectGroupType.charities.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.charities.index,
+                CollectGroupType.charities.index,
               ),
             ),
           ),
           FilterSuggestionCard(
             isFocused:
-                bloc.state.selectedType == CollecGroupType.campaign.index,
+                bloc.state.selectedType == CollectGroupType.campaign.index,
             title: locals.campaign,
-            icon: CollecGroupType.campaign.icon,
-            activeIcon: CollecGroupType.campaign.activeIcon,
-            color: CollecGroupType.campaign.color,
+            icon: CollectGroupType.campaign.icon,
+            activeIcon: CollectGroupType.campaign.activeIcon,
+            color: CollectGroupType.campaign.color,
             onTap: () => bloc.add(
               OrganisationTypeChanged(
-                CollecGroupType.campaign.index,
+                CollectGroupType.campaign.index,
               ),
             ),
           ),
-          Visibility(
+          FilterSuggestionCard(
             visible: Platform.isIOS,
-            child: FilterSuggestionCard(
-              isFocused:
-                  bloc.state.selectedType == CollecGroupType.artists.index,
-              title: locals.artist,
-              icon: CollecGroupType.artists.icon,
-              activeIcon: CollecGroupType.artists.activeIcon,
-              color: CollecGroupType.artists.color,
-              onTap: () => bloc.add(
-                OrganisationTypeChanged(
-                  CollecGroupType.artists.index,
-                ),
+            isFocused:
+                bloc.state.selectedType == CollectGroupType.artists.index,
+            title: locals.artist,
+            icon: CollectGroupType.artists.icon,
+            activeIcon: CollectGroupType.artists.activeIcon,
+            color: CollectGroupType.artists.color,
+            onTap: () => bloc.add(
+              OrganisationTypeChanged(
+                CollectGroupType.artists.index,
               ),
             ),
           ),
         ],
       );
 
-  Color getHighlightColor(CollecGroupType type) {
-    switch (type) {
-      case CollecGroupType.church:
-        return AppTheme.givtLightBlue;
-      case CollecGroupType.charities:
-        return AppTheme.givtYellow;
-      case CollecGroupType.campaign:
-        return AppTheme.givtOrange;
-      case CollecGroupType.artists:
-        return AppTheme.givtDarkGreen;
-      default:
-        return AppTheme.givtLightBlue;
+  void _buildActionSheet(BuildContext context, CollectGroup recipient) {
+    final locals = context.l10n;
+    if (Platform.isIOS) {
+      showCupertinoModalPopup<void>(
+        context: context,
+        builder: (_) => CupertinoActionSheet(
+          actions: <CupertinoActionSheetAction>[
+            CupertinoActionSheetAction(
+              onPressed: () => _showEnterAmountBottomSheet(
+                context,
+                recipient.nameSpace,
+              ),
+              child: Text(locals.discoverOrAmountActionSheetOnce),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () => _showCreateRecurringDonationBottomSheet(
+                context,
+                recipient: recipient,
+              ),
+              child: Text(locals.discoverOrAmountActionSheetRecurring),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () => context.pop(context),
+            child: Text(
+              locals.cancel,
+              style: const TextStyle(
+                color: AppTheme.givtRed,
+              ),
+            ),
+          ),
+        ),
+      );
+      return;
     }
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (_) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(
+              FontAwesomeIcons.handHoldingHeart,
+              color: AppTheme.givtBlue,
+            ),
+            title: Text(locals.discoverOrAmountActionSheetOnce),
+            onTap: () {
+              context.pop(context);
+              _showEnterAmountBottomSheet(context, recipient.nameSpace);
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.autorenew,
+              color: AppTheme.givtBlue,
+            ),
+            title: Text(locals.discoverOrAmountActionSheetRecurring),
+            onTap: () {
+              context.pop(context);
+              _showCreateRecurringDonationBottomSheet(
+                context,
+                recipient: recipient,
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.cancel,
+              color: AppTheme.givtRed,
+            ),
+            title: Text(
+              locals.cancel,
+              style: const TextStyle(
+                color: AppTheme.givtRed,
+              ),
+            ),
+            onTap: () => context.pop(context),
+          ),
+        ],
+      ),
+    );
   }
 
-  IconData getIconByType(CollecGroupType type) {
-    switch (type) {
-      case CollecGroupType.church:
-        return FontAwesomeIcons.placeOfWorship;
-      case CollecGroupType.charities:
-        return FontAwesomeIcons.heart;
-      case CollecGroupType.campaign:
-        return FontAwesomeIcons.handHoldingHeart;
-      case CollecGroupType.artists:
-        return FontAwesomeIcons.guitar;
-      default:
-        return FontAwesomeIcons.church;
-    }
+  Future<void> _showCreateRecurringDonationBottomSheet(
+    BuildContext context, {
+    required CollectGroup recipient,
+  }) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => CreateRecurringDonationBottomSheet(
+        recipient: recipient,
+      ),
+    );
+  }
+
+  Future<void> _showEnterAmountBottomSheet(
+      BuildContext context, String nameSpace) {
+    return showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (_) => BlocProvider.value(
+        value: context.read<GiveBloc>(),
+        child: EnterAmountBottomSheet(
+          collectGroupNameSpace: nameSpace,
+        ),
+      ),
+    );
   }
 }

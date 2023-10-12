@@ -10,6 +10,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
+import 'package:givt_app/utils/utils.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';
@@ -28,6 +29,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationGiftAidChanged>(_onGiftAidChanged);
 
     on<RegistrationStripeSuccess>(_onStripeSuccess);
+
     on<RegistrationStripeInit>(_onStripeInit);
   }
 
@@ -90,7 +92,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         );
         return;
       }
-      if (event.iban.isNotEmpty) {
+      if (event.iban.isNotEmpty && event.iban != Util.defaultIban) {
         emit(
           state.copyWith(
             status: RegistrationStatus.sepaMandateExplanation,
@@ -103,11 +105,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.bacsDirectDebitMandateExplanation,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: RegistrationStatus.failure),
@@ -143,13 +145,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.success,
         ),
       );
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());
       await LoggingInfo.instance.error(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       if (statusCode == 409) {
         emit(
@@ -256,11 +258,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.giftAidChanged,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: RegistrationStatus.failure),

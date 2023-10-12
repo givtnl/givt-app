@@ -37,9 +37,10 @@ class RecurringDonationsDetailPage extends StatelessWidget {
         ),
         actions: [
           _buildAppBarItem(
-              context: context,
-              icon: const Icon(Icons.info_rounded),
-              child: const DonationTypeExplanationSheet())
+            context: context,
+            icon: const Icon(Icons.info_rounded),
+            child: const DonationTypeExplanationSheet(),
+          ),
         ],
       ),
       body: BlocConsumer<DetailedRecurringDonationsCubit,
@@ -58,7 +59,7 @@ class RecurringDonationsDetailPage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is DetailedRecurringDonationsLoading) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           }
           final recurringDonationsDetails = <RecurringDonationDetail>[];
           if (state is DetailedInstancesFetched) {
@@ -196,8 +197,7 @@ class RecurringDonationsDetailPage extends StatelessWidget {
           isScrollControlled: true,
           useSafeArea: true,
           backgroundColor: color ?? AppTheme.givtBlue,
-          builder: (context) =>
-              Container(padding: const EdgeInsets.all(20), child: child),
+          builder: (context) => child,
         ),
       ),
     );

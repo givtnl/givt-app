@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
+import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
@@ -17,9 +17,10 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   OrganisationBloc(
     this._collectGroupRepository,
     this._campaignRepository,
-    this._countryIsoInfo,
   ) : super(const OrganisationState()) {
     on<OrganisationFetch>(_onOrganisationFetch);
+
+    on<OrganisationFetchForSelection>(_onOrganisationFetchForSelection);
 
     on<OrganisationFilterQueryChanged>(_onFilterQueryChanged);
 
@@ -30,7 +31,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
 
   final CollectGroupRepository _collectGroupRepository;
   final CampaignRepository _campaignRepository;
-  final CountryIsoInfo _countryIsoInfo;
 
   FutureOr<void> _onOrganisationFetch(
     OrganisationFetch event,
@@ -38,35 +38,41 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      final lastDonatedOrganisation =
-          await _campaignRepository.getLastOrganisationDonated();
       final unFiltered = await _collectGroupRepository.getCollectGroupList();
-      final userAccountType = await _getAccountType(event.accountType);
+      final userAccountType = await _getAccountType(event.country);
       final organisations = unFiltered
           .where(
             (organisation) => organisation.accountType == userAccountType,
           )
           .toList();
       var selectedGroup = state.selectedCollectGroup;
-      if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
-        selectedGroup = organisations.firstWhere(
-          (organisation) => lastDonatedOrganisation.mediumId!.contains(
-            organisation.nameSpace,
-          ),
-          orElse: () => const CollectGroup.empty(),
-        );
-        if (selectedGroup.nameSpace.isNotEmpty) {
-          organisations
-            ..removeWhere(
-              (organisation) =>
-                  organisation.nameSpace == lastDonatedOrganisation.mediumId,
-            )
-            ..insert(
-              0,
-              selectedGroup,
+      if (event.showLastDonated) {
+        final lastDonatedOrganisation =
+            await _campaignRepository.getLastOrganisationDonated();
+        if (lastDonatedOrganisation.mediumId != null) {
+          if (lastDonatedOrganisation.mediumId!.isNotEmpty) {
+            selectedGroup = organisations.firstWhere(
+              (organisation) => lastDonatedOrganisation.mediumId!.contains(
+                organisation.nameSpace,
+              ),
+              orElse: () => const CollectGroup.empty(),
             );
+            if (selectedGroup.nameSpace.isNotEmpty) {
+              organisations
+                ..removeWhere(
+                  (organisation) =>
+                      organisation.nameSpace ==
+                      lastDonatedOrganisation.mediumId,
+                )
+                ..insert(
+                  0,
+                  selectedGroup,
+                );
+            }
+          }
         }
       }
+
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
@@ -75,13 +81,59 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
           selectedCollectGroup: selectedGroup,
         ),
       );
-    } on GivtServerFailure catch (e) {
+      if (event.type == CollectGroupType.none.index) {
+        emit(
+          state.copyWith(selectedType: event.type),
+        );
+      }
+      if (event.type != CollectGroupType.none.index) {
+        add(OrganisationTypeChanged(event.type));
+      }
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
       await LoggingInfo.instance.error(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: OrganisationStatus.error));
+    }
+  }
+
+  FutureOr<void> _onOrganisationFetchForSelection(
+    OrganisationFetchForSelection event,
+    Emitter<OrganisationState> emit,
+  ) async {
+    emit(state.copyWith(status: OrganisationStatus.loading));
+    try {
+      final unFiltered = await _collectGroupRepository.getCollectGroupList();
+      final userAccountType = await _getAccountType(event.country);
+      final organisations = unFiltered
+          .where(
+            (organisation) => organisation.accountType == userAccountType,
+          )
+          .toList();
+      emit(
+        state.copyWith(
+          status: OrganisationStatus.filtered,
+          organisations: organisations,
+          filteredOrganisations: organisations,
+        ),
+      );
+    } on GivtServerFailure catch (e, stackTrace) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      log('StatusCode:$statusCode Body:$body');
+      await LoggingInfo.instance.warning(
+        body.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: OrganisationStatus.error));
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
@@ -93,11 +145,12 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   ) async {
     emit(state.copyWith(status: OrganisationStatus.loading));
     try {
-      final filteredOrganisations = state.organisations
+      var filteredOrganisations = state.organisations
           .where(
-            (organisation) => organisation.orgName.toLowerCase().contains(
-                  event.query.toLowerCase(),
-                ),
+            (organisation) =>
+                _removeDiacritics(organisation.orgName.toLowerCase()).contains(
+              _removeDiacritics(event.query.toLowerCase()),
+            ),
           )
           .toList();
 
@@ -105,21 +158,31 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         emit(
           state.copyWith(
             status: OrganisationStatus.filtered,
-            filteredOrganisations: state.organisations,
+            filteredOrganisations: filteredOrganisations,
+            previousSearchQuery: event.query,
           ),
         );
         return;
+      }
+      if (state.selectedType != CollectGroupType.none.index &&
+          event.query.isEmpty) {
+        filteredOrganisations = filteredOrganisations
+            .where(
+              (organisation) => organisation.type.index == state.selectedType,
+            )
+            .toList();
       }
       emit(
         state.copyWith(
           status: OrganisationStatus.filtered,
           filteredOrganisations: filteredOrganisations,
+          previousSearchQuery: event.query,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     }
@@ -128,15 +191,31 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
   FutureOr<void> _onTypeChanged(
     OrganisationTypeChanged event,
     Emitter<OrganisationState> emit,
-  ) {
+  ) async {
+    var orgs = state.organisations;
+    if (state.selectedType != event.type) {
+      orgs = state.organisations
+          .where((organisation) => organisation.type.index == event.type)
+          .toList();
+    }
+
+    if (state.previousSearchQuery.isNotEmpty) {
+      orgs = orgs
+          .where(
+            (organisation) =>
+                _removeDiacritics(organisation.orgName.toLowerCase()).contains(
+              _removeDiacritics(state.previousSearchQuery.toLowerCase()),
+            ),
+          )
+          .toList();
+    }
+
     emit(
       state.copyWith(
-        selectedType: state.selectedType == event.type ? -1 : event.type,
-        filteredOrganisations: state.selectedType == event.type
-            ? state.organisations
-            : state.organisations
-                .where((organisation) => organisation.type.index == event.type)
-                .toList(),
+        selectedType: state.selectedType == event.type
+            ? CollectGroupType.none.index
+            : event.type,
+        filteredOrganisations: orgs,
       ),
     );
   }
@@ -161,17 +240,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     );
   }
 
-  Future<AccountType> _getAccountType(AccountType accountType) async {
-    if (accountType != AccountType.none) {
-      return accountType;
-    }
-    final countryIso = await _countryIsoInfo.checkCountryIso;
-
-    final country = Country.values.firstWhere(
-      (country) => country.countryCode == countryIso,
-      orElse: () => Country.unknown,
-    );
-
+  Future<AccountType> _getAccountType(Country country) async {
     if (country.isBACS) {
       return AccountType.bacs;
     }
@@ -180,4 +249,6 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     }
     return AccountType.sepa;
   }
+
+  String _removeDiacritics(String string) => removeDiacritics(string);
 }

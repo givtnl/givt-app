@@ -23,12 +23,12 @@ class UnregisterCubit extends Cubit<UnregisterState> {
       await Future.delayed(const Duration(seconds: 5), () {
         emit(const UnregisterSuccess());
       });
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       if (statusCode >= 300 && body != null) {
         if (!body.containsKey('AdditionalInformation')) {
@@ -56,18 +56,18 @@ class UnregisterCubit extends Cubit<UnregisterState> {
           e.toString(),
         ),
       );
-    } on SocketException catch (e) {
+    } on SocketException catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         const UnregisterNoInternet(),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         UnregisterFailure(

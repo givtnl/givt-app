@@ -37,16 +37,20 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
       locals.setupRecurringGiftMonth,
       locals.setupRecurringGiftQuarter,
       locals.setupRecurringGiftHalfYear,
-      locals.setupRecurringGiftYear
+      locals.setupRecurringGiftYear,
     ];
     String getFrequencyText() {
-      final user = context.read<AuthCubit>().state.user;
-      final currency = NumberFormat.simpleCurrency(
-        name: Util.getCurrencyName(country: Country.fromCode(user.country)),
-      );
+      final countryCode =
+          Country.fromCode(context.read<AuthCubit>().state.user.country);
 
-      final result =
-          '${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol} ${widget.recurringDonation.amountPerTurn.toStringAsFixed(2)}';
+      final currency = NumberFormat.simpleCurrency(
+        name: Util.getCurrencyName(country: countryCode),
+      );
+      final amount = Util.formatNumberComma(
+          widget.recurringDonation.amountPerTurn.toDouble(), countryCode);
+
+      final result = '''
+${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol} $amount''';
 
       return result;
     }

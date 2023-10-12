@@ -4,11 +4,12 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
+import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/features/recurring_donations/detail/cubit/detailed_recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/detail/pages/recurring_donations_detail_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/models/recurring_donation.dart';
-//import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
+import 'package:givt_app/features/recurring_donations/overview/widgets/create_recurring_donation_button.dart';
 import 'package:givt_app/features/recurring_donations/overview/widgets/recurring_donations_list.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -83,7 +84,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                   locals.somethingWentWrong,
                   textAlign: TextAlign.center,
                 ),
-                backgroundColor: Theme.of(context).errorColor,
+                backgroundColor: Theme.of(context).colorScheme.error,
               ),
             );
             context.pop();
@@ -92,7 +93,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
         builder: (context, state) {
           if (state is RecurringDonationsFetchingState) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator.adaptive(),
             );
           }
           final recurringDonations = <RecurringDonation>[];
@@ -103,12 +104,21 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                // Hide inactive button
-                // CreateRecurringDonationButton(
-                //   onClick: () {},
-                //   locals: locals,
-                // ),
-                const SizedBox(height: 20),
+                CreateRecurringDonationButton(
+                  onClick: () async {
+                    await showModalBottomSheet<void>(
+                      context: context,
+                      useSafeArea: true,
+                      isScrollControlled: true,
+                      builder: (_) =>
+                          const CreateRecurringDonationBottomSheet(),
+                    );
+                    if (context.mounted) {
+                      await _fetchRecurringDonations(context);
+                    }
+                  },
+                ),
+                const SizedBox(height: 5),
                 Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

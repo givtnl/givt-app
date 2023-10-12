@@ -4,8 +4,10 @@ enum Pages {
   welcome,
   selectGivingWay,
   give,
-  giveOffline,
+  giveSucess,
   giveByList,
+  chooseCategoryList,
+  chooseCategoryEnterAmount,
   giveByQrCode,
   giveByLocation,
   giveByBeacon,
@@ -22,6 +24,7 @@ enum Pages {
   unregister,
   createChild,
   personalSummary,
+  addExternalDonation,
   recurringDonations,
   childrenOverview
 }
@@ -32,14 +35,14 @@ extension AppPageExtension on Pages {
       case Pages.splash:
         return '/';
       case Pages.home:
-        return 'home';
+        return '/home';
       case Pages.welcome:
-        return 'welcome';
+        return '/welcome';
       case Pages.selectGivingWay:
         return 'select-giving-way';
       case Pages.give:
         return 'give';
-      case Pages.giveOffline:
+      case Pages.giveSucess:
         return 'give-offline';
       case Pages.signSepaMandate:
         return 'sign-sepa-mandate';
@@ -75,10 +78,16 @@ extension AppPageExtension on Pages {
         return 'create-child';
       case Pages.personalSummary:
         return 'personal-summary';
+      case Pages.addExternalDonation:
+        return 'add-external-donation';
       case Pages.recurringDonations:
         return 'recurring-donations';
       case Pages.childrenOverview:
         return 'children-overview';
+      case Pages.chooseCategoryList:
+        return 'choose-category-list';
+      case Pages.chooseCategoryEnterAmount:
+        return 'choose-category-enter-amount';
     }
   }
 
@@ -94,7 +103,7 @@ extension AppPageExtension on Pages {
         return 'GIVING-WAY';
       case Pages.give:
         return 'GIVE';
-      case Pages.giveOffline:
+      case Pages.giveSucess:
         return 'GIVE-OFFLINE';
       case Pages.signSepaMandate:
         return 'SIGN-SEPA-MANDATE';
@@ -130,10 +139,16 @@ extension AppPageExtension on Pages {
         return 'CREATE-CHILD';
       case Pages.personalSummary:
         return 'PERSONAL-SUMMARY';
+      case Pages.addExternalDonation:
+        return 'ADD-EXTERNAL-DONATION';
       case Pages.recurringDonations:
         return 'RECURRING-DONATIONS';
       case Pages.childrenOverview:
         return 'CHILDREN-OVERVIEW';
+      case Pages.chooseCategoryList:
+        return 'CHOOSE-CATEGORY-LIST';
+      case Pages.chooseCategoryEnterAmount:
+        return 'CHOOSE-CATEGORY-ENTER-AMOUNT';
     }
   }
 }

@@ -61,4 +61,6 @@ class Profile extends Equatable {
       }
     };
   }
+
+  static String number = 'kid_profiles_nr';
 }

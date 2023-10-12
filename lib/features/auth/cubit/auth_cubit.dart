@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -12,16 +14,16 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepositoy, this._countryIsoInfo)
-      : super(const AuthUnknown());
+      : super(const AuthState());
 
   final AuthRepositoy _authRepositoy;
   final CountryIsoInfo _countryIsoInfo;
 
   Future<void> login({required String email, required String password}) async {
-    final prevState = state;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
-      
+      await LoggingInfo.instance.info('User is trying to login with $email');
+
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
@@ -31,69 +33,125 @@ class AuthCubit extends Cubit<AuthState> {
         password,
       );
 
+      final userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
+
+      await LoggingInfo.instance.info('User logged in with $userExt');
+
       emit(
-        AuthSuccess(
-          user: await _authRepositoy.fetchUserExtension(session.userGUID),
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: userExt,
           session: session,
         ),
       );
-    } catch (e) {
-      await LoggingInfo.instance.error(
-        e.toString(),
-        methodName: StackTrace.current.toString(),
-      );
+    } catch (e, stackTrace) {
+      if (e.toString().contains('invalid_grant')) {
+        await LoggingInfo.instance.warning(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
+        if (e.toString().contains('TwoAttemptsLeft')) {
+          emit(
+            state.copyWith(status: AuthStatus.twoAttemptsLeft),
+          );
+          return;
+        }
+        if (e.toString().contains('OneAttemptLeft')) {
+          emit(
+            state.copyWith(status: AuthStatus.oneAttemptLeft),
+          );
+          return;
+        }
+        if (e.toString().contains('LockedOut')) {
+          emit(
+            state.copyWith(status: AuthStatus.lockedOut),
+          );
+          return;
+        }
+      } else if (e is SocketException) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.noInternet,
+          ),
+        );
+        return;
+      } else {
+        await LoggingInfo.instance.error(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
+      }
+
       emit(
-        AuthFailure(
+        state.copyWith(
+          status: AuthStatus.failure,
           message: e.toString(),
-          user: prevState.user,
-          session: prevState.session,
         ),
       );
     }
   }
 
   Future<void> checkAuth() async {
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final (userExt, session) =
-          await _authRepositoy.isAuthenticated() ?? (null, null);
+      final (userExt, session, amountPresets) =
+          await _authRepositoy.isAuthenticated() ?? (null, null, null);
+
       if (userExt == null || session == null) {
-        emit(const AuthUnknown());
-        return;
-      }
-      if (!session.isLoggedIn) {
-        emit(AuthLogout(user: userExt, session: session));
+        emit(state.copyWith(status: AuthStatus.unknown));
         return;
       }
 
-      emit(AuthSuccess(user: userExt, session: session));
-    } catch (e) {
+      await LoggingInfo.instance.info('CheckedAuth for $userExt');
+      if (!session.isLoggedIn) {
+        emit(state.copyWith(status: AuthStatus.unauthenticated));
+        return;
+      }
+
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: userExt,
+          session: session,
+          presets: amountPresets,
+        ),
+      );
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
-      emit(const AuthFailure());
+      emit(state.copyWith(status: AuthStatus.failure));
     }
   }
 
   Future<void> logout() async {
-    final prevState = state;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
+    await LoggingInfo.instance.info('User is logging out');
 
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
 
-    emit(AuthLogout(user: prevState.user, session: prevState.session));
+    emit(
+      state.copyWith(
+        status: AuthStatus.unauthenticated,
+        email: state.user.email,
+      ),
+    );
   }
 
   Future<void> register({
     required String email,
     required String locale,
   }) async {
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
+      /// check if user is trying to login with a different account.
+      /// if so delete the current user and login with the new one
+      await _authRepositoy.checkUserExt(email: email);
+
       if (!await _authRepositoy.checkTld(email)) {
-        emit(const AuthFailure());
+        emit(state.copyWith(status: AuthStatus.failure));
         return;
       }
       // check email
@@ -103,7 +161,7 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
       if (result.contains('true')) {
-        emit(AuthLoginRedirect(email: email));
+        emit(state.copyWith(status: AuthStatus.loginRedirect));
         return;
       }
 
@@ -123,125 +181,149 @@ class AuthCubit extends Cubit<AuthState> {
         isTempUser: true,
       );
 
-      emit(AuthSuccess(user: unRegisteredUserExt));
-    } catch (e) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          user: unRegisteredUserExt,
+        ),
+      );
+    } catch (e, stackTrace) {
+      if (e is SocketException) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.noInternet,
+          ),
+        );
+        return;
+      }
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
-      emit(const AuthFailure());
+      emit(state.copyWith(status: AuthStatus.failure));
     }
   }
 
   Future<void> refreshUser() async {
-    final guid = state.user.guid;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final userExt = await _authRepositoy.fetchUserExtension(guid);
+      final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
       emit(
-        AuthRefreshed(
+        state.copyWith(
+          status: AuthStatus.authenticated,
           user: userExt,
           session: state.session,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
-      emit(const AuthFailure());
+      emit(state.copyWith(status: AuthStatus.failure));
     }
   }
 
   Future<bool> authenticate() async {
-    final prevState = state;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
       final session = await _authRepositoy.refreshToken();
+
+      final (userExt, _, amountPresets) =
+          await _authRepositoy.isAuthenticated() ?? (null, null, null);
       emit(
-        AuthSuccess(
-          user: prevState.user,
+        state.copyWith(
+          status: AuthStatus.authenticated,
           session: session,
+          user: userExt,
+          presets: amountPresets,
         ),
       );
       return true;
     } catch (e) {
-      emit(const AuthFailure());
+      emit(state.copyWith(status: AuthStatus.failure));
     }
     return false;
   }
 
   Future<void> refreshSession() async {
-    final user = state.user;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
+      await LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
       emit(
-        AuthRefreshed(
-          user: user,
+        state.copyWith(
+          status: AuthStatus.authenticated,
           session: session,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
-      emit(const AuthFailure());
+      emit(state.copyWith(status: AuthStatus.failure));
     }
   }
 
   Future<void> changePassword({required String email}) async {
-    final prevState = state;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
       // check email
       final result = await _authRepositoy.checkEmail(email);
       if (result.contains('temp')) {
-        emit(AuthTempAccountWarning(email: email));
+        emit(
+          state.copyWith(
+            status: AuthStatus.tempAccountWarning,
+            email: email,
+          ),
+        );
         return;
       }
       if (result.contains('false')) {
-        emit(AuthChangePasswordWrongEmail(email: email));
+        emit(
+          state.copyWith(
+            status: AuthStatus.changePasswordWrongEmail,
+            email: email,
+          ),
+        );
         return;
       }
       await _authRepositoy.resetPassword(email);
-      emit(AuthChangePasswordSuccess(user: prevState.user));
-    } catch (e) {
+      emit(state.copyWith(status: AuthStatus.changePasswordSuccess));
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
-      emit(const AuthChangePasswordFailure());
+      emit(state.copyWith(status: AuthStatus.changePasswordFailure));
     }
   }
 
   Future<void> updatePresets({required UserPresets presets}) async {
-    final prevState = state;
-    emit(AuthLoading());
+    emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final user = prevState.user.copyWith(
-        presets: presets,
-      );
-      await _authRepositoy.updateLocalUserExt(
-        newUserExt: user,
-      );
-      emit(
-        AuthSuccess(
-          user: user,
-          session: prevState.session,
+      await LoggingInfo.instance.info('Updating user presets');
+      await _authRepositoy.updateLocalUserPresets(
+        newUserPresets: presets.copyWith(
+          guid: state.user.guid,
         ),
       );
-    } catch (e) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          presets: presets,
+        ),
+      );
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
-        AuthFailure(
+        state.copyWith(
           message: e.toString(),
-          user: prevState.user,
-          session: prevState.session,
+          status: AuthStatus.failure,
         ),
       );
     }

@@ -46,11 +46,14 @@ class _LoginPageState extends State<LoginPage> {
             )
             .whenComplete(() {
           if (widget.popWhenSuccess &&
-              context.read<AuthCubit>().state is AuthSuccess) {
+              context.read<AuthCubit>().state.status ==
+                  AuthStatus.authenticated) {
             context.pop();
           }
         });
       } catch (e) {
+        if (!context.mounted) return;
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(e.toString()),
@@ -68,12 +71,52 @@ class _LoginPageState extends State<LoginPage> {
     return SafeArea(
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthFailure) {
+          if (state.status == AuthStatus.failure) {
             showDialog<void>(
               context: context,
               builder: (context) => WarningDialog(
                 title: locals.loginFailure,
                 content: locals.wrongCredentials,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          if (state.status == AuthStatus.noInternet) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: locals.noInternetConnectionTitle,
+                content: locals.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          if (state.status == AuthStatus.twoAttemptsLeft) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: locals.loginFailure,
+                content: locals.wrongCredentials,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          if (state.status == AuthStatus.oneAttemptLeft) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: locals.loginFailure,
+                content: locals.wrongCredentials,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+          if (state.status == AuthStatus.lockedOut) {
+            showDialog<void>(
+              context: context,
+              builder: (context) => WarningDialog(
+                title: locals.loginFailure,
+                content: locals.wrongPasswordLockedOut,
                 onConfirm: () => context.pop(),
               ),
             );
@@ -100,6 +143,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   readOnly: widget.popWhenSuccess,
+                  autofillHints: const [AutofillHints.username],
                   onChanged: (value) {
                     _formKey.currentState!.validate();
                   },
@@ -116,6 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 15),
                 CustomTextFormField(
                   controller: _passwordController,
+                  autofillHints: const [AutofillHints.password],
                   keyboardType: TextInputType.visiblePassword,
                   onChanged: (value) {
                     _formKey.currentState!.validate();
@@ -172,7 +217,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 Expanded(child: Container()),
-                if (context.watch<AuthCubit>().state is AuthLoading)
+                if (context.watch<AuthCubit>().state.status ==
+                    AuthStatus.loading)
                   const Center(child: CircularProgressIndicator())
                 else
                   ElevatedButton(

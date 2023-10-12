@@ -55,8 +55,11 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
+    final isUs = _selectedCountry == Country.us;
+    final isUk =
+        Country.unitedKingdomCodes().contains(_selectedCountry.countryCode);
     return Scaffold(
       appBar: RegistrationAppBar(
         actions: [
@@ -76,51 +79,52 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         ],
       ),
       bottomSheet: Container(
-          margin: const EdgeInsets.only(
-            bottom: 30,
-            left: 20,
-            right: 20,
-            top: 20,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (isLoading)
-                const Center(child: CircularProgressIndicator())
-              else if (_selectedCountry == Country.us)
-                Directionality(
-                  textDirection: TextDirection.rtl,
-                  child: TextButton.icon(
-                    onPressed: () => showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      showDragHandle: true,
-                      backgroundColor: AppTheme.givtBlue,
-                      builder: (_) => const StripeInfoSheet(),
-                    ),
-                    icon: const Icon(
-                      Icons.info_rounded,
-                      size: 20,
-                    ),
-                    label: Text(locals.moreInformationAboutStripe),
+        margin: const EdgeInsets.only(
+          bottom: 30,
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isLoading)
+              const Center(child: CircularProgressIndicator())
+            else if (isUs)
+              Directionality(
+                textDirection: TextDirection.rtl,
+                child: TextButton.icon(
+                  onPressed: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    showDragHandle: true,
+                    backgroundColor: AppTheme.givtBlue,
+                    builder: (_) => const StripeInfoSheet(),
                   ),
-                )
-              else
-                const SizedBox(),
-              ElevatedButton(
-                onPressed: isEnabled ? _onNext : null,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
+                  icon: const Icon(
+                    Icons.info_rounded,
+                    size: 20,
+                  ),
+                  label: Text(locals.moreInformationAboutStripe),
                 ),
-                child: Text(
-                  _selectedCountry == Country.us
-                      ? locals.enterPaymentDetails
-                      : locals.next,
-                ),
+              )
+            else
+              const SizedBox(),
+            ElevatedButton(
+              onPressed: isEnabled ? _onNext : null,
+              style: ElevatedButton.styleFrom(
+                disabledBackgroundColor: Colors.grey,
               ),
-            ],
-          )),
+              child: Text(
+                _selectedCountry == Country.us
+                    ? locals.enterPaymentDetails
+                    : locals.next,
+              ),
+            ),
+          ],
+        ),
+      ),
       body: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
           if (state.status == RegistrationStatus.failure) {
@@ -145,51 +149,55 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               child: Column(
                 children: [
                   Text(locals.registerPersonalPage),
-                  if (!(_selectedCountry == Country.us))
-                    _buildTextFormField(
-                      hintText: locals.streetAndHouseNumber,
-                      controller: _address,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '';
-                        }
+                  _buildTextFormField(
+                    isVisible: !isUs,
+                    hintText: locals.streetAndHouseNumber,
+                    controller: _address,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildTextFormField(
+                    isVisible: !isUs,
+                    hintText: locals.postalCode,
+                    controller: _postalCode,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      if (!isUk) {
                         return null;
-                      },
-                    ),
-                  if (!(_selectedCountry == Country.us))
-                    _buildTextFormField(
-                      hintText: locals.postalCode,
-                      controller: _postalCode,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '';
-                        }
-                        if (!Country.unitedKingdomCodes().contains(
-                          _selectedCountry.countryCode,
-                        )) {
-                          return null;
-                        }
+                      }
 
-                        if (!Util.ukPostCodeRegEx.hasMatch(value)) {
-                          return '';
-                        }
-                        return null;
-                      },
-                    ),
-                  if (!(_selectedCountry == Country.us))
-                    _buildTextFormField(
-                      hintText: locals.city,
-                      controller: _city,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return '';
-                        }
-                        return null;
-                      },
-                    ),
-                  _buildCountryAndMobileNumber(size, locals, context),
-                  if (!(_selectedCountry == Country.us))
-                    PaymentSystemTab(
+                      if (!Util.ukPostCodeRegEx.hasMatch(value)) {
+                        return '';
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildTextFormField(
+                    isVisible: !isUs,
+                    hintText: locals.city,
+                    controller: _city,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '';
+                      }
+                      return null;
+                    },
+                  ),
+                  _buildCountryAndMobileNumber(
+                    size,
+                    locals,
+                    context,
+                    isVisible: !isUs,
+                  ),
+                  Visibility(
+                    visible: !isUs,
+                    child: PaymentSystemTab(
                       bankAccount: bankAccount,
                       ibanNumber: ibanNumber,
                       sortCode: sortCode,
@@ -198,8 +206,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         if (value == 0) {
                           bankAccount.clear();
                           sortCode.clear();
-                          if (Country.unitedKingdomCodes()
-                              .contains(_selectedCountry.countryCode)) {
+                          if (isUk) {
                             showDialog<void>(
                               context: context,
                               builder: (context) => _buildWarningDialog(
@@ -215,8 +222,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                           setState(() {});
                           return;
                         }
-                        if (!Country.unitedKingdomCodes()
-                            .contains(_selectedCountry.countryCode)) {
+                        if (!isUk) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => _buildWarningDialog(
@@ -232,6 +238,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                         setState(ibanNumber.clear);
                       },
                     ),
+                  ),
                   SizedBox(
                     height: size.height * 0.2,
                   ),
@@ -248,7 +255,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     BuildContext context,
   ) {
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.sizeOf(context).height,
       margin: const EdgeInsets.all(20),
       child: Column(
         children: [
@@ -294,11 +301,13 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Widget _buildCountryAndMobileNumber(
     Size size,
     AppLocalizations locals,
-    BuildContext context,
-  ) {
-    return Column(
-      children: [
-        if (!(_selectedCountry == Country.us))
+    BuildContext context, {
+    bool isVisible = true,
+  }) {
+    return Visibility(
+      visible: isVisible,
+      child: Column(
+        children: [
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: DropdownButtonFormField<Country>(
@@ -342,72 +351,73 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               },
             ),
           ),
-        if (_selectedCountry == Country.us) const SizedBox(height: 10),
-        MobileNumberFormField(
-          phone: _phone,
-          selectedCountryPrefix: _selectedCountry.prefix,
-          hintText: _selectedCountry != Country.us
-              ? locals.phoneNumber
-              : locals.mobileNumberUsDigits,
-          onPhoneChanged: (String value) => setState(() {}),
-          onPrefixChanged: (String selected) {
-            setState(() {
-              _selectedCountry = Country.sortedCountries().firstWhere(
-                (Country country) => country.countryCode == selected,
-              );
-            });
-          },
-          formatter: (_selectedCountry == Country.us)
-              ? [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(10)
-                ]
-              : null,
-          validator: (String? value) {
-            if (value == null || value.isEmpty) {
-              return '';
-            }
-
-            if (Country.unitedKingdomCodes()
-                .contains(_selectedCountry.countryCode)) {
-              if (!Util.ukPhoneNumberRegEx
-                  .hasMatch('${_selectedCountry.prefix}$value')) {
+          const SizedBox(height: 10),
+          MobileNumberFormField(
+            phone: _phone,
+            selectedCountryPrefix: _selectedCountry.prefix,
+            hintText: _selectedCountry != Country.us
+                ? locals.phoneNumber
+                : locals.mobileNumberUsDigits,
+            onPhoneChanged: (String value) => setState(() {}),
+            onPrefixChanged: (String selected) {
+              setState(() {
+                _selectedCountry = Country.sortedCountries().firstWhere(
+                  (Country country) => country.countryCode == selected,
+                );
+              });
+            },
+            formatter: (_selectedCountry == Country.us)
+                ? [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(10),
+                  ]
+                : null,
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
                 return '';
               }
+
+              if (Country.unitedKingdomCodes()
+                  .contains(_selectedCountry.countryCode)) {
+                if (!Util.ukPhoneNumberRegEx
+                    .hasMatch('${_selectedCountry.prefix}$value')) {
+                  return '';
+                }
+                return null;
+              }
+              if (Country.us != _selectedCountry &&
+                  !Country.unitedKingdomCodes()
+                      .contains(_selectedCountry.countryCode)) {
+                final prefix = _selectedCountry.prefix.replaceAll('+', '');
+                if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
+                  return '';
+                }
+              }
+              if (Country.us == _selectedCountry) {
+                final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+                var formatted = '';
+                if (numericOnly.length == 10) {
+                  final chunkSize = [3, 3, 4];
+                  var startIndex = 0;
+
+                  final chunks = chunkSize.map((size) {
+                    final chunk =
+                        numericOnly.substring(startIndex, startIndex + size);
+                    startIndex += size;
+                    return chunk;
+                  });
+                  formatted = chunks.join('-');
+                }
+                if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
+                  return '';
+                }
+              }
+
               return null;
-            }
-            if (Country.us != _selectedCountry &&
-                !Country.unitedKingdomCodes()
-                    .contains(_selectedCountry.countryCode)) {
-              final prefix = _selectedCountry.prefix.replaceAll('+', '');
-              if (!Util.phoneNumberRegEx(prefix).hasMatch('+$prefix$value')) {
-                return '';
-              }
-            }
-            if (Country.us == _selectedCountry) {
-              final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
-              var formatted = '';
-              if (numericOnly.length == 10) {
-                final chunkSize = [3, 3, 4];
-                var startIndex = 0;
-
-                final chunks = chunkSize.map((size) {
-                  final chunk =
-                      numericOnly.substring(startIndex, startIndex + size);
-                  startIndex += size;
-                  return chunk;
-                });
-                formatted = chunks.join('-');
-              }
-              if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
-                return '';
-              }
-            }
-
-            return null;
-          },
-        ),
-      ],
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -419,16 +429,31 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     setState(() {
       isLoading = true;
     });
+    if (_selectedCountry == Country.us) {
+      context.read<RegistrationBloc>().add(
+            RegistrationPersonalInfoSubmitted(
+              address: Util.defaultAdress,
+              city: Util.defaultCity,
+              postalCode: Util.defaultPostCode,
+              country: _selectedCountry.countryCode,
+              phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
+              iban: Util.defaultIban,
+              sortCode: sortCode.text,
+              accountNumber: bankAccount.text,
+              appLanguage: Localizations.localeOf(context).languageCode,
+              countryCode: _selectedCountry.countryCode,
+            ),
+          );
+      return;
+    }
     context.read<RegistrationBloc>().add(
           RegistrationPersonalInfoSubmitted(
-            address: _address.text.isEmpty ? Util.defaultAdress : _address.text,
-            city: _city.text.isEmpty ? Util.defaultCity : _city.text,
-            postalCode: _postalCode.text.isEmpty
-                ? Util.defaultPostCode
-                : _postalCode.text,
+            address: _address.text,
+            city: _city.text,
+            postalCode: _postalCode.text,
             country: _selectedCountry.countryCode,
             phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
-            iban: ibanNumber.text.isEmpty ? Util.defaultIban : ibanNumber.text,
+            iban: ibanNumber.text,
             sortCode: sortCode.text,
             accountNumber: bankAccount.text,
             appLanguage: Localizations.localeOf(context).languageCode,
@@ -448,15 +473,19 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     required TextEditingController controller,
     required String? Function(String?) validator,
     bool toUpperCase = false,
+    bool isVisible = true,
   }) {
-    return CustomTextFormField(
-      controller: controller,
-      hintText: hintText,
-      inputFormatters: toUpperCase ? [UpperCaseTextFormatter()] : [],
-      onChanged: (value) => setState(() {
-        _formKey.currentState!.validate();
-      }),
-      validator: validator,
+    return Visibility(
+      visible: isVisible,
+      child: CustomTextFormField(
+        controller: controller,
+        hintText: hintText,
+        inputFormatters: toUpperCase ? [UpperCaseTextFormatter()] : [],
+        onChanged: (value) => setState(() {
+          _formKey.currentState!.validate();
+        }),
+        validator: validator,
+      ),
     );
   }
 

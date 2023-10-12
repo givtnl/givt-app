@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_intro_item_image.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_notice_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class VPCIntroItemSafety extends StatelessWidget {
   const VPCIntroItemSafety({super.key});
@@ -31,6 +33,8 @@ class VPCIntroItemSafety extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
+              AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.directNoticeClicked);
               showModalBottomSheet<void>(
                 context: context,
                 backgroundColor: AppTheme.givtPurple,
@@ -42,6 +46,7 @@ class VPCIntroItemSafety extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   locals.seeDirectNoticeButtonText,
@@ -51,7 +56,8 @@ class VPCIntroItemSafety extends StatelessWidget {
                       .copyWith(color: AppTheme.sliderIndicatorFilled),
                 ),
                 const SizedBox(width: 5),
-                const Icon(Icons.info_outline),
+                const Icon(Icons.info_rounded,
+                    color: AppTheme.sliderIndicatorFilled, size: 20),
               ],
             ),
           ),

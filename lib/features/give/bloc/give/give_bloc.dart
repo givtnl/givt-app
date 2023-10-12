@@ -53,6 +53,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final BeaconRepository _beaconRepository;
   final CollectGroupRepository _collectGroupRepository;
 
+  @override
+  void onTransition(Transition<GiveEvent, GiveState> transition) {
+    log(transition.toString());
+    super.onTransition(transition);
+  }
+
   FutureOr<void> _qrCodeScanned(
     GiveQRCodeScanned event,
     Emitter<GiveState> emit,
@@ -73,10 +79,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -138,10 +144,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -178,10 +184,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -255,10 +261,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           emit: emit,
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -293,14 +299,22 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
-      await LoggingInfo.instance.error(
+      await LoggingInfo.instance.warning(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
+      if (statusCode == 417) {
+        emit(
+          state.copyWith(
+            status: GiveStatus.donatedToSameOrganisationInLessThan30Seconds,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(status: GiveStatus.error),
       );
@@ -366,10 +380,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           givtTransactions: transactionList,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -391,11 +405,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
       );
       emit(state.copyWith(status: GiveStatus.readyToGive));
-    } on SocketException catch (e) {
+    } on SocketException catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(
@@ -481,10 +495,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           ),
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -501,10 +515,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -520,13 +534,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     final namespace = mediumId.split('.').first;
     final instance = mediumId.split('.').last;
-    return collectGroupList
+    final qrCode = collectGroupList
         .where((org) => org.nameSpace.startsWith(namespace))
         .expand((org) => org.qrCodes)
         .firstWhere(
           (element) => element.instance.endsWith(instance),
           orElse: () => const QrCode.empty(),
         );
+    return qrCode;
   }
 
   /// Search for the qrCode that belongs to the given [mediumId]
@@ -534,6 +549,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String mediumId,
     required Emitter<GiveState> emit,
   }) async {
+    /// if the mediumId is accessed from the link the instanceName
+    /// is already known and can be returned and not check
+    if (mediumId.split('.').last.contains('b6')) {
+      return;
+    }
     final qrCode = await _getCollectGroupInstanceName(mediumId);
 
     if (qrCode.instance.isEmpty) {

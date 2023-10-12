@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class App extends StatefulWidget {
   const App({
@@ -31,6 +32,7 @@ class _AppState extends State<App> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
   }
 
   @override
@@ -66,9 +68,32 @@ class _AppView extends StatelessWidget {
       theme: AppTheme.lightTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      localeResolutionCallback: (locale, supportedLocales) {
+        // Check if the current device locale is US, then always return en_US
+        if(locale!.countryCode == 'US') {
+          return const Locale('en', 'US');
+        }
+
+        for (final supportedLocale in supportedLocales.where((element) => element.countryCode != 'US')) {
+          if (supportedLocale.languageCode == locale!.languageCode) {
+            return supportedLocale;
+          }
+        }
+
+        // Return a default locale if we don't support the user's locale
+        return supportedLocales
+            .where((element) => element.languageCode == 'en')
+            .first;
+      },
       routeInformationProvider: AppRouter.router.routeInformationProvider,
       routeInformationParser: AppRouter.router.routeInformationParser,
       routerDelegate: AppRouter.router.routerDelegate,
+      builder: (context, child) {
+        return MediaQuery(
+          child: child!,
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        );
+      },
     );
   }
 }

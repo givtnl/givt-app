@@ -12,7 +12,6 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,29 +78,8 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: ElevatedButton(
-                  onPressed: () async {
-                    final country =
-                        await get_it.getIt<CountryIsoInfo>().checkCountryIso;
-                    if (!mounted) {
-                      return;
-                    }
-                    if (country == Country.us.countryCode) {
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => WarningDialog(
-                          title: 'Oops',
-                          content:
-                              'At the moment we are not able to process new users in the USA. Please try again later.',
-                          onConfirm: () => context.pop(),
-                        ),
-                      );
-                      return;
-                    }
-
-                    await Navigator.of(context).push(
-                      EmailSignupPage.route(),
-                    );
-                  },
+                  onPressed: () =>
+                      Navigator.of(context).push(EmailSignupPage.route()),
                   onLongPress: hackUSASIM,
                   child: Text(
                     locals.welcomeContinue,
@@ -135,7 +113,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                       isScrollControlled: true,
                       useSafeArea: true,
                       builder: (_) => LoginPage(
-                        email: auth.user.email,
+                        email: auth.email,
                       ),
                     );
                     return;

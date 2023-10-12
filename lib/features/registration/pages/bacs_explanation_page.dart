@@ -35,36 +35,38 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                showDragHandle: true,
-                isScrollControlled: true,
-                useSafeArea: true,
-                backgroundColor: AppTheme.givtPurple,
-                builder: (context) => Container(
-                    height: MediaQuery.of(context).size.height,
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          locals.bacsHelpTitle,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          locals.bacsHelpBody,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ))),
+              context: context,
+              showDragHandle: true,
+              isScrollControlled: true,
+              useSafeArea: true,
+              backgroundColor: AppTheme.givtPurple,
+              builder: (context) => Container(
+                height: MediaQuery.of(context).size.height * 0.3,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      locals.bacsHelpTitle,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      locals.bacsHelpBody,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
             icon: const Icon(
               Icons.question_mark_outlined,
             ),

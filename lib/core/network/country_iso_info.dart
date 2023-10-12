@@ -32,6 +32,8 @@ class CountryIsoInfoImpl implements CountryIsoInfo {
       }
     } on PlatformException catch (e) {
       log(e.toString());
+    } catch (e) {
+      log(e.toString());
     }
     return _countryIso;
   }

@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -14,9 +15,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
-import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/auth_utils.dart';
-import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
@@ -29,10 +28,8 @@ class CustomNavigationDrawer extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final auth = context.watch<AuthCubit>().state;
-    const apiURL = String.fromEnvironment('API_URL_US');
 
-    final showFamilyItem = apiURL.contains('dev') &&
-        auth.user.country == Country.us.countryCode &&
+    final showFamilyItem = auth.user.country == Country.us.countryCode &&
         !auth.user.needRegistration &&
         auth.user.mandateSigned;
     return Drawer(
@@ -108,7 +105,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildMenuItem(
             isVisible: !auth.user.needRegistration,
             title: locals.menuItemRecurringDonation,
-            icon: Icons.screen_rotation_alt_outlined,
+            icon: Icons.autorenew,
             onTap: () => AuthUtils.checkToken(
               context,
               navigate: () => context.goNamed(Pages.recurringDonations.name),
@@ -195,7 +192,8 @@ class CustomNavigationDrawer extends StatelessWidget {
               final isFaceIdAvailable = data[1];
 
               return _buildMenuItem(
-                isVisible: isFingerprintAvailable || isFaceIdAvailable,
+                isVisible: (isFingerprintAvailable || isFaceIdAvailable) &&
+                    !auth.user.tempUser,
                 title: isFingerprintAvailable
                     ? Platform.isAndroid
                         ? locals.fingerprintTitle
@@ -235,19 +233,30 @@ class CustomNavigationDrawer extends StatelessWidget {
             showUnderline: false,
             title: locals.unregister,
             icon: FontAwesomeIcons.userXmark,
-            onTap: () => AuthUtils.checkToken(
-              context,
-              navigate: () => context.goNamed(
-                Pages.unregister.name,
-              ),
-            ),
+            onTap: () {
+              if (auth.user.tempUser) {
+                context.goNamed(
+                  Pages.unregister.name,
+                );
+                return;
+              }
+              AuthUtils.checkToken(
+                context,
+                navigate: () => context.goNamed(
+                  Pages.unregister.name,
+                ),
+              );
+            },
           ),
           if (showFamilyItem) _buildEmptySpace(),
           _buildMenuItem(
             isVisible: showFamilyItem,
             title: locals.familyMenuItem,
             icon: Icons.family_restroom_rounded,
-            onTap: () => context.goNamed(Pages.childrenOverview.name),
+            onTap: () => {
+              context.goNamed(Pages.childrenOverview.name),
+              AnalyticsHelper.logEvent(eventName: AmplitudeEvents.familyClicked)
+            },
           ),
           _buildEmptySpace(),
           _buildMenuItem(
@@ -256,7 +265,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.info,
             onTap: () => showModalBottomSheet<void>(
               context: context,
-              showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
               builder: (_) => const AboutGivtBottomSheet(),
