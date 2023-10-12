@@ -99,7 +99,7 @@ class Util {
   }
 
   static String formatNumberComma(double number, Country country) {
-    if (country.countryCode == 'US' ||
+    if (country.countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(country.countryCode)) {
       return number.toStringAsFixed(2);
     }

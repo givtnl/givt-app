@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/util.dart';
 
 typedef KeyboardTapCallback = void Function(String text);
 
@@ -55,8 +59,18 @@ class NumericKeyboard extends StatefulWidget {
 }
 
 class _NumericKeyboardState extends State<NumericKeyboard> {
+  String _comma = ',';
+
   @override
   Widget build(BuildContext context) {
+    final countryCode = context.read<AuthCubit>().state.user.country;
+
+    // US & UK should have a . instead ,
+    if (countryCode == Country.us.countryCode ||
+        Country.unitedKingdomCodes().contains(countryCode)) {
+      _comma = '.';
+    }
+
     final size = MediaQuery.sizeOf(context);
     return Container(
       padding: const EdgeInsets.all(8),
@@ -79,8 +93,10 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
               child: Column(
                 children: widget.presets.map(
                   (preset) {
-                    final amount =
-                        preset.amount.toStringAsFixed(2).replaceAll('.', ',');
+                    final amount = Util.formatNumberComma(
+                      preset.amount,
+                      Country.fromCode(countryCode),
+                    );
                     return _buildPresetAmount(
                       preset: amount,
                       onTap: () => widget.onPresetTap(
@@ -123,7 +139,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: [
                     _calcButton(
-                      ',',
+                      _comma,
                       onTap: widget.leftButtonFn,
                     ),
                     _calcButton('0'),
