@@ -269,4 +269,10 @@ class UserExt extends Equatable {
       ];
 
   static String tag = 'UserExt';
+
+  @override
+  String toString() {
+    // ignore: lines_longer_than_80_chars
+    return 'UserExt{tempUser: $tempUser, needRegistration: $needRegistration, mandateSigned: $mandateSigned}';
+  }
 }
