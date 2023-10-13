@@ -193,7 +193,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     size,
                     locals,
                     context,
-                    isVisible: !isUs,
                   ),
                   Visibility(
                     visible: !isUs,
@@ -334,6 +333,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               ),
               menuMaxHeight: size.height * 0.3,
               items: Country.sortedCountries()
+                  .where((element) => element.isUS == _selectedCountry.isUS)
                   .map(
                     (Country country) => DropdownMenuItem(
                       value: country,
