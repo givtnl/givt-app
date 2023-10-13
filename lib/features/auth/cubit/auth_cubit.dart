@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -13,8 +14,7 @@ import 'package:givt_app/shared/models/models.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy)
-      : super(const AuthState());
+  AuthCubit(this._authRepositoy) : super(const AuthState());
 
   final AuthRepositoy _authRepositoy;
 
@@ -155,7 +155,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(state.copyWith(status: AuthStatus.failure));
         return;
       }
-      
+
       // Get information about emailadres
       final result = await _authRepositoy.checkEmail(email);
 
@@ -244,7 +244,27 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
       return true;
-    } catch (e) {
+    } on SocketException {
+      final (userExt, session, amountPresets) =
+          await _authRepositoy.isAuthenticated() ?? (null, null, null);
+      if (userExt == null || session == null) {
+        emit(state.copyWith(status: AuthStatus.unknown));
+        return false;
+      }
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          session: session,
+          user: userExt,
+          presets: amountPresets,
+        ),
+      );
+      return true;
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: AuthStatus.failure));
     }
     return false;
@@ -261,6 +281,8 @@ class AuthCubit extends Cubit<AuthState> {
           session: session,
         ),
       );
+    } on SocketException {
+      log('No internet connection');
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
