@@ -116,6 +116,7 @@ class _ChangeMaxAmountBottomSheetViewState
             builder: (_) => WarningDialog(
               title: locals.noInternetConnectionTitle,
               content: locals.noInternet,
+              onConfirm: () => context.pop(),
             ),
           );
         }
@@ -125,6 +126,7 @@ class _ChangeMaxAmountBottomSheetViewState
             builder: (_) => WarningDialog(
               title: locals.errorOccurred,
               content: locals.errorContactGivt,
+              onConfirm: () => context.pop(),
             ),
           );
         }
