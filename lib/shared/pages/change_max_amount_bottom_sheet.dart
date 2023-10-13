@@ -110,12 +110,23 @@ class _ChangeMaxAmountBottomSheetViewState
               .refreshUser()
               .whenComplete(() => context.pop());
         }
+        if (state.status == PersonalInfoEditStatus.noInternet) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: locals.noInternetConnectionTitle,
+              content: locals.noInternet,
+              onConfirm: () => context.pop(),
+            ),
+          );
+        }
         if (state.status == PersonalInfoEditStatus.error) {
           showDialog<void>(
             context: context,
             builder: (_) => WarningDialog(
               title: locals.errorOccurred,
               content: locals.errorContactGivt,
+              onConfirm: () => context.pop(),
             ),
           );
         }

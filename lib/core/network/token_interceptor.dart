@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -57,9 +58,20 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
     ///This is where we need to update our token on 401 response
     if (response.statusCode == 401) {
-      await getIt<AuthRepositoy>().refreshToken();
+      await _refreshToken();
       return true;
     }
     return false;
+  }
+
+  /// This method will be called 
+  /// when a request fails and the [shouldAttemptRetryOnResponse]
+  /// Handle the [SocketException] when there is no internet connection
+  Future<void> _refreshToken() async {
+    try {
+      await getIt<AuthRepositoy>().refreshToken();
+    } catch (e) {
+      log('No internet connection');
+    }
   }
 }
