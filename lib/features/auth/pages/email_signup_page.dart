@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:device_region/device_region.dart';
@@ -13,9 +14,11 @@ import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailSignupPage extends StatefulWidget {
   const EmailSignupPage({super.key});
@@ -46,15 +49,38 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      _emailController.text = context.read<AuthCubit>().state.email;
-    });
-
+    setEmail();
     setDefaultCountry();
   }
 
+  Future<void> setEmail() async {
+    var email = context.read<AuthCubit>().state.email;
+    final prefs = await SharedPreferences.getInstance();
+
+    if (email.isEmpty && prefs.containsKey(UserExt.tag)) {
+      final user = UserExt.fromJson(
+        jsonDecode(prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
+      );
+      email = user.email;
+    }
+
+    setState(() {
+      _emailController.text = email;
+    });
+  }
+
   Future<void> setDefaultCountry() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(UserExt.tag)) {
+      final user = UserExt.fromJson(
+        jsonDecode(prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
+      );
+      setState(() {
+        selectedCountry = Country.fromCode(user.country);
+      });
+      return;
+    }
+
     final countryCode = await DeviceRegion.getSIMCountryCode();
     if (countryCode != null && countryCode.isNotEmpty) {
       setState(() {
@@ -65,7 +91,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
+    final locals = context.l10n;
 
     return Scaffold(
       appBar: AppBar(
@@ -119,37 +145,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                   const SizedBox(height: 12),
                   Text(locals.weWontSendAnySpam),
                   const Spacer(),
-                  DropdownButtonFormField<Country>(
-                    value: selectedCountry,
-                    decoration: InputDecoration(
-                      labelText: locals.country,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 15,
-                      ),
-                    ),
-                    menuMaxHeight: MediaQuery.of(context).size.height * 0.3,
-                    items: Country.sortedCountries()
-                        .where((element) => element != Country.unknown)
-                        .map(
-                          (Country country) => DropdownMenuItem(
-                            value: country,
-                            child: Text(
-                              Country.getCountryIncludingEmoji(
-                                country.countryCode,
-                                locals,
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    onChanged: (Country? newValue) {
-                      setState(() {
-                        selectedCountry = newValue!;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: 12),
                   TextFormField(
                     controller: _emailController,
                     onChanged: (value) {
@@ -168,6 +163,37 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                         return context.l10n.invalidEmail;
                       }
                       return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<Country>(
+                    value: selectedCountry,
+                    decoration: InputDecoration(
+                      labelText: locals.country,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
+                    ),
+                    menuMaxHeight: MediaQuery.sizeOf(context).height * 0.3,
+                    items: Country.sortedCountries()
+                        .where((element) => element != Country.unknown)
+                        .map(
+                          (Country country) => DropdownMenuItem(
+                            value: country,
+                            child: Text(
+                              Country.getCountryIncludingEmoji(
+                                country.countryCode,
+                                locals,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (Country? newValue) {
+                      setState(() {
+                        selectedCountry = newValue!;
+                      });
                     },
                   ),
                   const Spacer(),

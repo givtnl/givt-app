@@ -1,9 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -223,7 +221,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 onKeyboardTap: onNumberTapped,
                 leftButtonFn: onCommaTapped,
                 rightButtonFn: onBackspaceTapped,
-              )
+              ),
             ],
           ),
         ),
@@ -311,7 +309,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                     ),
                   ).whenComplete(() => context.pop()),
                 ),
-              )
+              ),
             ],
           ),
         );

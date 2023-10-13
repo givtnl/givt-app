@@ -7,7 +7,6 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class App extends StatefulWidget {
@@ -85,8 +84,8 @@ class _AppView extends StatelessWidget {
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
         return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
           child: child!,
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         );
       },
     );
