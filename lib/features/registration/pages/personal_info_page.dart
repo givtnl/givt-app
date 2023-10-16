@@ -88,9 +88,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isLoading)
-              const Center(child: CircularProgressIndicator())
-            else if (isUs)
+            if (isUs)
               Directionality(
                 textDirection: TextDirection.rtl,
                 child: TextButton.icon(
@@ -111,17 +109,20 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               )
             else
               const SizedBox(),
-            ElevatedButton(
-              onPressed: isEnabled ? _onNext : null,
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
+            if (isLoading)
+              const Center(child: CircularProgressIndicator())
+            else
+              ElevatedButton(
+                onPressed: isEnabled ? _onNext : null,
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: Text(
+                  _selectedCountry == Country.us
+                      ? locals.enterPaymentDetails
+                      : locals.next,
+                ),
               ),
-              child: Text(
-                _selectedCountry == Country.us
-                    ? locals.enterPaymentDetails
-                    : locals.next,
-              ),
-            ),
           ],
         ),
       ),
@@ -136,9 +137,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             setState(() {
               isLoading = false;
             });
-          }
-          if (state.status == RegistrationStatus.createStripeAccount) {
-            context.pop();
           }
         },
         child: Padding(
