@@ -52,9 +52,12 @@ class MonthlyHistoryCard extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(e.organisationName),
+                                    Text(e.key),
                                     Text(
-                                      '$currency ${Util.formatNumberComma(e.amount, userCountry)}',
+                                      '$currency ${Util.formatNumberComma(
+                                        e.amount,
+                                        userCountry,
+                                      )}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -88,7 +91,10 @@ class MonthlyHistoryCard extends StatelessWidget {
                               children: [
                                 Text(externalDonation.description),
                                 Text(
-                                  '$currency ${Util.formatNumberComma(externalDonation.amount, userCountry)}',
+                                  '$currency ${Util.formatNumberComma(
+                                    externalDonation.amount,
+                                    userCountry,
+                                  )}',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -220,9 +226,12 @@ class MonthlyHistoryCard extends StatelessWidget {
                       (e) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(e.organisationName),
+                          Text(e.key),
                           Text(
-                            '$countryCharacter ${Util.formatNumberComma(e.amount, country)}',
+                            '$countryCharacter ${Util.formatNumberComma(
+                              e.amount,
+                              country,
+                            )}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
@@ -241,7 +250,10 @@ class MonthlyHistoryCard extends StatelessWidget {
                         children: [
                           Text(e.description),
                           Text(
-                            '$countryCharacter ${Util.formatNumberComma(e.amount, country)}',
+                            '$countryCharacter ${Util.formatNumberComma(
+                              e.amount,
+                              country,
+                            )}',
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),

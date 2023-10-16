@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/models.dart';
-import 'package:givt_app/shared/models/monthly_summary_item.dart';
+import 'package:givt_app/shared/models/summary_item.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 

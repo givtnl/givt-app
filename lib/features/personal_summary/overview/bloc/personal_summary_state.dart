@@ -16,12 +16,15 @@ class PersonalSummaryState extends Equatable {
     this.error = '',
     this.monthlyGivts = const [],
     this.externalDonations = const [],
+    this.annualGivts = const [],
   });
   final PersonalSummaryStatus status;
   final UserExt loggedInUserExt;
   final String error;
   final String dateTime;
-  final List<MonthlySummaryItem> monthlyGivts;
+  final List<SummaryItem> monthlyGivts;
+  // final List<SummaryItem> 
+  final List<SummaryItem> annualGivts;
   final List<ExternalDonation> externalDonations;
 
   double get totalSumPerMonth =>
@@ -33,7 +36,7 @@ class PersonalSummaryState extends Equatable {
     UserExt? loggedInUserExt,
     String? error,
     String? dateTime,
-    List<MonthlySummaryItem>? monthlyGivts,
+    List<SummaryItem>? monthlyGivts,
     List<ExternalDonation>? externalDonations,
   }) {
     return PersonalSummaryState(
