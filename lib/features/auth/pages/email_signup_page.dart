@@ -82,11 +82,19 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     }
 
     final countryCode = await DeviceRegion.getSIMCountryCode();
-    if (countryCode != null && countryCode.isNotEmpty) {
-      setState(() {
-        selectedCountry = Country.fromCode(countryCode);
-      });
+
+    if (countryCode == null) {
+      return;
     }
+    if (countryCode.isEmpty) {
+      return;
+    }
+    if (Country.fromCode(countryCode) == Country.unknown) {
+      return;
+    }
+    setState(() {
+      selectedCountry = Country.fromCode(countryCode);
+    });
   }
 
   @override
