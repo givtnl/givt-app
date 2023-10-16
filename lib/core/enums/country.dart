@@ -1,4 +1,5 @@
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/country_emoji.dart';
 
 enum Country {
   be('+32', 'BE'),
@@ -34,11 +35,14 @@ enum Country {
     this.isCreditCard = false,
     this.currency = 'EUR',
   });
+
   final String prefix;
   final String currency;
   final String countryCode;
   final bool isBACS;
   final bool isCreditCard;
+
+  bool get isUS => countryCode == Country.us.countryCode;
 
   static List<Country> sortedCountries() {
     return Country.values.toList()
@@ -66,7 +70,7 @@ enum Country {
 
   static Country fromCode(String code) {
     return Country.values.firstWhere(
-      (country) => country.countryCode == code,
+      (country) => country.countryCode.toUpperCase() == code.toUpperCase(),
       orElse: () => Country.unknown,
     );
   }
@@ -74,7 +78,6 @@ enum Country {
   ///To-do this should be done straight from the localizations.
   ///Delete all the countries and
   ///add only one unified string separated by commas and then split it
-
   static String getCountry(String countryCode, AppLocalizations locals) {
     switch (countryCode) {
       case 'JE':
@@ -128,5 +131,10 @@ enum Country {
       default:
         return '';
     }
+  }
+
+  static String getCountryIncludingEmoji(
+      String countryCode, AppLocalizations locals) {
+    return '${CountryEmoji.getEmoji(countryCode)} ${getCountry(countryCode, locals)}';
   }
 }

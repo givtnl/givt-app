@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/amount_presets/models/user_presets.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -135,7 +135,9 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<void> checkUserExt({required String email}) async {
+  Future<void> checkUserExt({
+    required String email,
+  }) async {
     if (!_prefs.containsKey(UserExt.tag)) {
       return;
     }
@@ -207,15 +209,6 @@ class AuthRepositoyImpl with AuthRepositoy {
       return (userExt, session, const UserPresets.empty());
     }
 
-    /// If user has the presets enabled, we need to update the local presets
-    if (userExt.presets.isEnabled) {
-      await updateLocalUserPresets(
-        newUserPresets: userExt.presets.copyWith(
-          guid: userExt.guid,
-        ),
-      );
-    }
-
     /// if the amount presets are not present in the cache set it to empty
     if (!_prefs.containsKey(AmountPresets.tag)) {
       await _prefs.setString(
@@ -257,9 +250,12 @@ class AuthRepositoyImpl with AuthRepositoy {
   Future<bool> logout() async {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
+
+    // If the data is already gone, just continue :)
     if (sessionString == null) {
-      throw Exception('No session found');
+      return true;
     }
+    
     final session = Session.fromJson(
       jsonDecode(sessionString) as Map<String, dynamic>,
     );
@@ -352,10 +348,15 @@ class AuthRepositoyImpl with AuthRepositoy {
   @override
   Future<bool> unregisterUser({
     required String email,
-  }) async =>
-      _apiService.unregisterUser({
-        'email': email,
-      });
+  }) async {
+    final isSuccess = await _apiService.unregisterUser({
+      'email': email,
+    });
+    if (isSuccess) {
+      await _prefs.clear();
+    }
+    return isSuccess;
+  }
 
   @override
   Future<bool> updateUser({
@@ -400,13 +401,19 @@ class AuthRepositoyImpl with AuthRepositoy {
 
     for (final userPreset in amountPresets.presets) {
       if (userPreset.guid == newUserPresets.guid) {
-        userPreset.copyWith(presets: newUserPresets.presets);
+        amountPresets.updateUserPresets(
+          userPreset.copyWith(
+            presets: newUserPresets.presets,
+          ),
+        );
       }
     }
 
-    return _prefs.setString(
+    final isSuccess = _prefs.setString(
       AmountPresets.tag,
       jsonEncode(amountPresets.toJson()),
     );
+
+    return isSuccess;
   }
 }

@@ -31,6 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    // _country = widget.country;
     _emailController = TextEditingController(text: widget.email);
     _passwordController = TextEditingController();
   }
@@ -230,7 +231,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontWeight: FontWeight.w600,
                           ),
                     ),
-                  )
+                  ),
               ],
             ),
           ),

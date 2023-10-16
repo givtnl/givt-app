@@ -1,9 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -61,6 +59,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
   int selectedField = 0;
   bool reset = false;
 
+  String _comma = ',';
+  final String _zero = '0';
+
   @override
   void dispose() {
     super.dispose();
@@ -72,6 +73,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
   @override
   Widget build(BuildContext context) {
+    // US & UK should have a . instead ,
+    if (widget.country.countryCode == Country.us.countryCode||
+        Country.unitedKingdomCodes().contains(widget.country.countryCode)) {
+      _comma = '.';
+    }
+
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     if (widget.hasGiven && !reset) {
@@ -223,7 +230,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 onKeyboardTap: onNumberTapped,
                 leftButtonFn: onCommaTapped,
                 rightButtonFn: onBackspaceTapped,
-              )
+              ),
             ],
           ),
         ),
@@ -311,7 +318,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                     ),
                   ).whenComplete(() => context.pop()),
                 ),
-              )
+              ),
             ],
           ),
         );
@@ -360,9 +367,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
       ),
     );
   }
-
-  final String _comma = ',';
-  final String _zero = '0';
 
   void onBackspaceTapped() {
     /// if text has 1 digit then it will be 0
@@ -476,7 +480,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
           padding: const EdgeInsets.all(6),
           child: ElevatedButton.icon(
             onPressed: onPressed,
-            onLongPress: showApiUrl,
             icon: const Icon(Icons.add_circle_outlined),
             label: Text(label),
             style: ElevatedButton.styleFrom(
@@ -486,19 +489,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  void showApiUrl() {
-    const apiURL = String.fromEnvironment('API_URL_US');
-    if (!apiURL.contains('dev')) {
-      return;
-    }
-    final currentUrl = getIt<APIService>().apiURL;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(currentUrl),
       ),
     );
   }

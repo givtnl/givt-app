@@ -17,6 +17,7 @@ enum Pages {
   personalInfo,
   sepaMandateExplanation,
   bacsMandateExplanation,
+  creditCardDetail,
   registration,
   overview,
   personalInfoEdit,
@@ -56,6 +57,8 @@ extension AppPageExtension on Pages {
         return 'sepa-mandate-explanation';
       case Pages.bacsMandateExplanation:
         return 'bacs-mandate-explanation';
+      case Pages.creditCardDetail:
+        return 'credit-card-detail';
       case Pages.registration:
         return 'registration';
       case Pages.giveByList:
@@ -117,6 +120,8 @@ extension AppPageExtension on Pages {
         return 'SEPA-MANDATE-EXPLANATION';
       case Pages.bacsMandateExplanation:
         return 'BACS-MANDATE-EXPLANATION';
+      case Pages.creditCardDetail:
+        return 'CREDIT-CARD-DETAIL';
       case Pages.registration:
         return 'REGISTRATION';
       case Pages.giveByList:

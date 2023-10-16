@@ -35,6 +35,7 @@ import 'package:givt_app/features/recurring_donations/overview/pages/recurring_d
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
+import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/personal_info_page.dart';
@@ -176,25 +177,26 @@ class AppRouter {
               final email = state.queryParameters['email'] ?? '';
 
               final createStripe =
-                  state.queryParameters['createStripe'] ?? 'false';
+                  bool.parse(state.queryParameters['createStripe'] ?? 'false');
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => StripeCubit(
-                      authRepositoy: getIt(),
-                      authCubit: context.read<AuthCubit>(),
-                    ),
-                  ),
-                  BlocProvider(
-                    create: (context) => RegistrationBloc(
-                      authCubit: context.read<AuthCubit>(),
-                      authRepositoy: getIt(),
-                    ),
+                    create: (_) {
+                      final registrationBloc = RegistrationBloc(
+                        authCubit: context.read<AuthCubit>(),
+                        authRepositoy: getIt(),
+                      );
+
+                      if (createStripe) {
+                        registrationBloc.add(const RegistrationStripeInit());
+                      }
+
+                      return registrationBloc;
+                    },
                   ),
                 ],
                 child: SignUpPage(
                   email: email,
-                  createStripe: createStripe,
                 ),
               );
             },
@@ -206,6 +208,26 @@ class AppRouter {
                   value: state.extra! as RegistrationBloc,
                   child: const PersonalInfoPage(),
                 ),
+              ),
+              GoRoute(
+                path: Pages.creditCardDetail.path,
+                name: Pages.creditCardDetail.name,
+                builder: (context, state) {
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: state.extra! as RegistrationBloc,
+                      ),
+                      BlocProvider(
+                        create: (_) => StripeCubit(
+                          authRepositoy: getIt(),
+                          authCubit: context.read<AuthCubit>(),
+                        )..fetchStripeCustomerCreationURLs(),
+                      ),
+                    ],
+                    child: const CreditCardDetailsPage(),
+                  );
+                },
               ),
             ],
           ),
