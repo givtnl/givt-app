@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:go_router/go_router.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -74,6 +77,23 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 padding: const EdgeInsets.only(top: 15),
                 child: ElevatedButton(
                   onPressed: () async {
+                    if (!await getIt<InternetConnectionCheckerPlus>()
+                        .hasConnection) {
+                      if (!context.mounted) {
+                        return;
+                      }
+                      await showDialog<void>(
+                        context: context,
+                        builder: (_) => WarningDialog(
+                          title: locals.noInternetConnectionTitle,
+                          content: locals.noInternet,
+                        ),
+                      );
+                      return;
+                    }
+                    if (!context.mounted) {
+                      return;
+                    }
                     // Without biometrics we use the regular route to login
                     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
                       if (!mounted) {
@@ -104,7 +124,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                     if (!mounted) {
                       return;
                     }
-                    
+
                     context.goNamed(Pages.home.name);
                   },
                   child: Text(
