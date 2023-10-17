@@ -22,8 +22,14 @@ class _BTScanPageState extends State<BTScanPage> {
   void initState() {
     super.initState();
 
-    FlutterBluePlus.startScan(
-        timeout: const Duration(seconds: 30), androidUsesFineLocation: true);
+    initBluetooth();
+  }
+
+  Future<void> initBluetooth() async {
+    await FlutterBluePlus.startScan(
+      timeout: const Duration(seconds: 30),
+      androidUsesFineLocation: true,
+    );
     FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
 
     Future.delayed(const Duration(seconds: 10), () {
