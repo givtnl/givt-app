@@ -43,7 +43,7 @@ class CreditCardDetailsPage extends StatelessWidget {
                 },
                 onLoadStart: (controller, url) {
                   if (url == Uri.parse(response.cancelUrl)) {
-                    context.pop();
+                    context.goNamed(Pages.home.name);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Registration cancelled'),
