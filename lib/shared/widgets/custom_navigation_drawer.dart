@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -13,10 +14,12 @@ import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bot
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({
@@ -44,7 +47,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.edit,
             onTap: () {
               if (auth.user.needRegistration) {
-                final auth = context.read<AuthCubit>().state;
                 final createStripe = auth.user.personalInfoRegistered &&
                     (auth.user.country == Country.us.countryCode);
                 context
@@ -52,7 +54,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     Pages.registration.name,
                     queryParameters: {
                       'email': auth.user.email,
-                      'createStripe': createStripe.toString()
+                      'createStripe': createStripe.toString(),
                     },
                   )
                   ..pop();
@@ -226,7 +228,25 @@ class CustomNavigationDrawer extends StatelessWidget {
             isVisible: true,
             title: locals.logOut,
             icon: Icons.logout_sharp,
-            onTap: () async => context.read<AuthCubit>().logout(),
+            onTap: () async {
+              if (!await getIt<InternetConnectionCheckerPlus>().hasConnection) {
+                if (!context.mounted) {
+                  return;
+                }
+                await showDialog<void>(
+                  context: context,
+                  builder: (_) => WarningDialog(
+                    title: locals.noInternetConnectionTitle,
+                    content: locals.noInternet,
+                  ),
+                );
+                return;
+              }
+              if (!context.mounted) {
+                return;
+              }
+              return context.read<AuthCubit>().logout();
+            },
           ),
           _buildMenuItem(
             isVisible: true,

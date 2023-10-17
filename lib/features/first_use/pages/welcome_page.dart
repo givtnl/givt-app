@@ -3,16 +3,15 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart' as get_it;
-import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/route_utils.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
-import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
-import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:go_router/go_router.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -42,7 +41,6 @@ class _WelcomePageViewState extends State<WelcomePageView> {
     final size = MediaQuery.of(context).size;
     final locale = Platform.localeName;
     final locals = AppLocalizations.of(context);
-    final auth = context.read<AuthCubit>().state;
 
     final imageNames = [
       'givy_welcome',
@@ -76,88 +74,67 @@ class _WelcomePageViewState extends State<WelcomePageView> {
               ),
               _buildAnimatedBottomIndexes(imageNames, size, context),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.only(top: 15),
                 child: ElevatedButton(
-                  onPressed: () =>
-                      Navigator.of(context).push(EmailSignupPage.route()),
-                  onLongPress: hackUSASIM,
+                  onPressed: () async {
+                    if (!await getIt<InternetConnectionCheckerPlus>()
+                        .hasConnection) {
+                      if (!context.mounted) {
+                        return;
+                      }
+                      await showDialog<void>(
+                        context: context,
+                        builder: (_) => WarningDialog(
+                          title: locals.noInternetConnectionTitle,
+                          content: locals.noInternet,
+                        ),
+                      );
+                      return;
+                    }
+                    if (!context.mounted) {
+                      return;
+                    }
+                    // Without biometrics we use the regular route to login
+                    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+                      if (!mounted) {
+                        return;
+                      }
+                      await Navigator.of(context).push(EmailSignupPage.route());
+                      return;
+                    }
+
+                    final hasAuthenticated =
+                        await LocalAuthInfo.instance.authenticate();
+
+                    // When not authenticated we go to the regular route
+                    if (!hasAuthenticated) {
+                      if (!mounted) {
+                        return;
+                      }
+
+                      await Navigator.of(context).push(EmailSignupPage.route());
+                      return;
+                    }
+
+                    // When authenticated we go to the home route
+                    if (!mounted) {
+                      return;
+                    }
+                    await context.read<AuthCubit>().authenticate();
+                    if (!mounted) {
+                      return;
+                    }
+
+                    context.goNamed(Pages.home.name);
+                  },
                   child: Text(
                     locals.welcomeContinue,
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () async {
-                  if (!await LocalAuthInfo.instance.canCheckBiometrics) {
-                    if (!mounted) {
-                      return;
-                    }
-                    await showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => LoginPage(
-                        email: auth.user.email,
-                      ),
-                    );
-                    return;
-                  }
-                  final hasAuthenticated =
-                      await LocalAuthInfo.instance.authenticate();
-                  if (!hasAuthenticated) {
-                    if (!mounted) {
-                      return;
-                    }
-                    await showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => LoginPage(
-                        email: auth.email,
-                      ),
-                    );
-                    return;
-                  }
-                  if (!mounted) {
-                    return;
-                  }
-                  await context.read<AuthCubit>().authenticate();
-                  if (!mounted) {
-                    return;
-                  }
-                  context.goNamed(Pages.home.name);
-                },
-                child: _buildAlreadyAnAccountLogin(context, locals),
-              ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildAlreadyAnAccountLogin(
-    BuildContext context,
-    AppLocalizations locals,
-  ) {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: Theme.of(context).textTheme.titleSmall,
-        children: [
-          TextSpan(
-            text: locals.alreadyAnAccount,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(),
-          ),
-          const TextSpan(text: ' '),
-          TextSpan(
-            text: locals.login,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  decoration: TextDecoration.underline,
-                ),
-          ),
-        ],
       ),
     );
   }
@@ -277,38 +254,8 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: isFirst ? FontWeight.w300 : FontWeight.bold,
               ),
-        )
+        ),
       ],
     );
-  }
-
-  Future<void> hackUSASIM() async {
-    const apiURL = String.fromEnvironment('API_URL_US');
-    if (!apiURL.contains('dev')) {
-      return;
-    }
-    if (widget.prefs.getString('countryIso') == Country.us.countryCode) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Hack removed'),
-        ),
-      );
-      await widget.prefs.remove('countryIso');
-      const baseUrl = String.fromEnvironment('API_URL_EU');
-      const baseUrlAWS = String.fromEnvironment('API_URL_AWS_EU');
-      get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
-
-      return;
-    }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('App hacked for USA'),
-      ),
-    );
-
-    const baseUrl = String.fromEnvironment('API_URL_US');
-    const baseUrlAWS = String.fromEnvironment('API_URL_AWS_US');
-    get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
-    await widget.prefs.setString('countryIso', Country.us.countryCode);
   }
 }

@@ -1,10 +1,11 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -13,11 +14,9 @@ import 'package:givt_app/shared/models/models.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy, this._countryIsoInfo)
-      : super(const AuthState());
+  AuthCubit(this._authRepositoy) : super(const AuthState());
 
   final AuthRepositoy _authRepositoy;
-  final CountryIsoInfo _countryIsoInfo;
 
   Future<void> login({required String email, required String password}) async {
     emit(state.copyWith(status: AuthStatus.loading));
@@ -141,10 +140,12 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> register({
+    required Country country,
     required String email,
     required String locale,
   }) async {
     emit(state.copyWith(status: AuthStatus.loading));
+
     try {
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
@@ -154,28 +155,31 @@ class AuthCubit extends Cubit<AuthState> {
         emit(state.copyWith(status: AuthStatus.failure));
         return;
       }
-      // check email
+
+      // Get information about emailadres
       final result = await _authRepositoy.checkEmail(email);
+
+      // When this is a temp user, we skip the login page
       if (result.contains('temp')) {
         await login(email: email, password: TempUser.defaultPassword);
         return;
       }
+
+      // When this is a registered user, we show the login page
       if (result.contains('true')) {
-        emit(state.copyWith(status: AuthStatus.loginRedirect));
+        emit(state.copyWith(status: AuthStatus.loginRedirect, email: email));
         return;
       }
 
-      final countryIso = await _countryIsoInfo.checkCountryIso;
-
+      // Otherwise we create a temp user
       final tempUser = TempUser.prefilled(
         email: email,
-        country: countryIso,
+        country: country.countryCode,
         appLanguage: locale,
         timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
-        amountLimit: _countryIsoInfo.isUS ? 4999 : 499,
+        amountLimit: country.isUS ? 4999 : 499,
       );
 
-      // register temp user
       final unRegisteredUserExt = await _authRepositoy.registerUser(
         tempUser: tempUser,
         isTempUser: true,
@@ -240,7 +244,27 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
       return true;
-    } catch (e) {
+    } on SocketException {
+      final (userExt, session, amountPresets) =
+          await _authRepositoy.isAuthenticated() ?? (null, null, null);
+      if (userExt == null || session == null) {
+        emit(state.copyWith(status: AuthStatus.unknown));
+        return false;
+      }
+      emit(
+        state.copyWith(
+          status: AuthStatus.authenticated,
+          session: session,
+          user: userExt,
+          presets: amountPresets,
+        ),
+      );
+      return true;
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(state.copyWith(status: AuthStatus.failure));
     }
     return false;
@@ -257,6 +281,8 @@ class AuthCubit extends Cubit<AuthState> {
           session: session,
         ),
       );
+    } on SocketException {
+      log('No internet connection');
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
