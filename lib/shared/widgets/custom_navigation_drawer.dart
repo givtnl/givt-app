@@ -44,7 +44,6 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.edit,
             onTap: () {
               if (auth.user.needRegistration) {
-                final auth = context.read<AuthCubit>().state;
                 final createStripe = auth.user.personalInfoRegistered &&
                     (auth.user.country == Country.us.countryCode);
                 context
@@ -52,7 +51,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     Pages.registration.name,
                     queryParameters: {
                       'email': auth.user.email,
-                      'createStripe': createStripe.toString()
+                      'createStripe': createStripe.toString(),
                     },
                   )
                   ..pop();
