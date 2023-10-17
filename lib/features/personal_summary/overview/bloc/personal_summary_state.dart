@@ -23,7 +23,6 @@ class PersonalSummaryState extends Equatable {
   final String error;
   final String dateTime;
   final List<SummaryItem> monthlyGivts;
-  // final List<SummaryItem> 
   final List<SummaryItem> annualGivts;
   final List<ExternalDonation> externalDonations;
 
@@ -37,6 +36,7 @@ class PersonalSummaryState extends Equatable {
     String? error,
     String? dateTime,
     List<SummaryItem>? monthlyGivts,
+    List<SummaryItem>? annualGivts,
     List<ExternalDonation>? externalDonations,
   }) {
     return PersonalSummaryState(
@@ -45,6 +45,7 @@ class PersonalSummaryState extends Equatable {
       error: error ?? this.error,
       dateTime: dateTime ?? this.dateTime,
       monthlyGivts: monthlyGivts ?? this.monthlyGivts,
+      annualGivts: annualGivts ?? this.annualGivts,
       externalDonations: externalDonations ?? this.externalDonations,
     );
   }
@@ -56,6 +57,7 @@ class PersonalSummaryState extends Equatable {
         error,
         dateTime,
         monthlyGivts,
+        annualGivts,
         externalDonations,
       ];
 }

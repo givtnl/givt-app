@@ -13,7 +13,8 @@ class SummaryItem extends Equatable {
       key: json['Key'] as String,
       amount: json['Value'] as double,
       count: json['Count'] as double,
-      taxDeductable: json['TaxDeductable'] as bool,
+      taxDeductable:
+          json['TaxDeductable'] == null ? false : json['TaxDeductable'] as bool,
     );
   }
   static List<SummaryItem> fromJsonList(List<dynamic> jsonList) => jsonList
@@ -27,8 +28,8 @@ class SummaryItem extends Equatable {
   final String key;
   final double amount;
   final double count;
-  final bool? taxDeductable;
+  final bool taxDeductable;
 
   @override
-  List<Object> get props => [key, amount, count, taxDeductable ?? false];
+  List<Object> get props => [key, amount, count, taxDeductable];
 }

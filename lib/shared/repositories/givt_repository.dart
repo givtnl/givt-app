@@ -43,6 +43,8 @@ mixin GivtRepository {
     required String guid,
     required String fromDate,
     required String tillDate,
+    required String orderType ,
+    required String groupType,
   });
 }
 
@@ -157,8 +159,8 @@ class GivtRepositoryImpl with GivtRepository {
     required String guid,
     required String fromDate,
     required String tillDate,
-    String orderType = '3',
-    String groupType = '2',
+    required String orderType,
+    required String groupType,
   }) async {
     final params = {
       'OrderType': orderType,
