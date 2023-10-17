@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:go_router/go_router.dart';
 
 class WarningDialog extends StatelessWidget {
   const WarningDialog({
@@ -22,7 +23,7 @@ class WarningDialog extends StatelessWidget {
       actions: actions ??
           [
             CupertinoDialogAction(
-              onPressed: onConfirm,
+              onPressed: onConfirm ?? () => context.pop(),
               child: const Text('Ok'),
             ),
           ],
