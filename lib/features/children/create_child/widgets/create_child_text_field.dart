@@ -16,6 +16,7 @@ class CreateChildTextField extends StatelessWidget {
     this.readOnly = false,
     this.inputFormatters,
     this.errorText,
+    this.enabled,
   });
 
   final String? labelText;
@@ -29,10 +30,12 @@ class CreateChildTextField extends StatelessWidget {
   final bool readOnly;
   final List<TextInputFormatter>? inputFormatters;
   final String? errorText;
+  final bool? enabled;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      enabled: enabled,
       maxLength: maxLength,
       controller: controller,
       onTap: onTap,

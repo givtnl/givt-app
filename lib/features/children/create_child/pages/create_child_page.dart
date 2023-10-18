@@ -3,14 +3,16 @@ import 'dart:developer';
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
+import 'package:givt_app/features/children/create_child/mixins/child_name_validator.dart';
 import 'package:givt_app/features/children/create_child/models/child.dart';
 import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/create_child/widgets/giving_allowance_info_bottom_sheet.dart';
+import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -25,15 +27,11 @@ class CreateChildPage extends StatefulWidget {
 
 class _CreateChildPageState extends State<CreateChildPage> {
   Future<void> _showDataPickerDialog() async {
-    final today = DateTime.now();
-    final maximumDate = today;
-    final minimumDate = DateTime(today.year - 18);
-
     final pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: minimumDate,
-      lastDate: maximumDate,
+      firstDate: ChildDateUtils.minimumDate,
+      lastDate: ChildDateUtils.maximumDate,
     );
 
     if (pickedDate != null) {
@@ -46,12 +44,11 @@ class _CreateChildPageState extends State<CreateChildPage> {
   final _nameController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
   final _allowanceController = TextEditingController();
-  final _dateFormatter = DateFormat('MM-dd-yyyy');
   var _selectedDate = DateTime.now();
 
   void _setDateOfBirthText(DateTime? date) {
     _dateOfBirthController.text =
-        date != null ? _dateFormatter.format(date) : '';
+        date != null ? ChildDateUtils.dateFormatter.format(date) : '';
   }
 
   void _createChildProfile() {
@@ -76,12 +73,13 @@ class _CreateChildPageState extends State<CreateChildPage> {
     );
     context.read<CreateChildCubit>().createChild(child: child);
     AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.createChildProfileClicked,
-        eventProperties: {
-          'name': name,
-          'dateOfBirth': dateOfBirth?.toIso8601String(),
-          'allowance': allowance,
-        });
+      eventName: AmplitudeEvents.createChildProfileClicked,
+      eventProperties: {
+        'name': name,
+        'dateOfBirth': dateOfBirth?.toIso8601String(),
+        'allowance': allowance,
+      },
+    );
   }
 
   void _updateInputFields(Child? child, String currencySymbol) {
@@ -192,7 +190,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                             height: 40,
                           ),
                           CreateChildTextField(
-                            maxLength: 20,
+                            maxLength: ChildNameValidator.nameMaxLength,
                             errorText: state is CreateChildInputErrorState
                                 ? state.nameErrorMessage
                                 : null,

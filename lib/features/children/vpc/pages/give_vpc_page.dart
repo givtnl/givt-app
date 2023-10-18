@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/children/vpc/models/vps_response.dart';
 import 'package:givt_app/features/children/vpc/pages/vpc_intro_page.dart';
