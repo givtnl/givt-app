@@ -25,7 +25,8 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
       );
     } on GivtServerFailure catch (error) {
       await LoggingInfo.instance.error(error.toString());
-
+      emit(ChildDetailsErrorState(errorMessage: error.toString()));
+    } catch (error) {
       emit(ChildDetailsErrorState(errorMessage: error.toString()));
     }
   }
