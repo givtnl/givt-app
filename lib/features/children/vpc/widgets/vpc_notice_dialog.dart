@@ -6,13 +6,11 @@ class VPCNoticeDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Text(
-          locals.directNoticeText,
+          context.l10n.directNoticeText,
           style: Theme.of(context)
               .textTheme
               .titleMedium!

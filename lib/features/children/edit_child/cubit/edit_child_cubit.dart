@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/create_child/mixins/child_giving_allowance_validator.dart';
-import 'package:givt_app/features/children/create_child/mixins/child_name_validator.dart';
+import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/children/create_child/mixins/mixins.dart';
 import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
@@ -66,9 +66,15 @@ class EditChildCubit extends Cubit<EditChildState>
         );
       } else {
         //TODO: POEditor
-        throw Exception('Cannot update child profile. Please try again later.');
+        emit(
+          const EditChildExternalErrorState(
+              errorMessage:
+                  'Cannot update child profile. Please try again later.'),
+        );
       }
     } catch (error) {
+      await LoggingInfo.instance.error(error.toString());
+
       emit(
         EditChildExternalErrorState(errorMessage: error.toString()),
       );

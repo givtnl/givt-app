@@ -157,7 +157,6 @@ class _CreateChildPageState extends State<CreateChildPage> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is CreateChildInputState ||
               state is CreateChildInputErrorState) {
-            final locals = AppLocalizations.of(context);
             return Container(
               padding: const EdgeInsets.only(top: 35),
               width: double.infinity,
@@ -177,7 +176,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 30),
                             child: Text(
-                              locals.createChildPageTitle,
+                              context.l10n.createChildPageTitle,
                               textAlign: TextAlign.center,
                               style: Theme.of(context)
                                   .textTheme
@@ -195,7 +194,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                                 ? state.nameErrorMessage
                                 : null,
                             controller: _nameController,
-                            labelText: locals.firstName,
+                            labelText: context.l10n.firstName,
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.name,
                           ),
@@ -207,7 +206,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                             errorText: state is CreateChildInputErrorState
                                 ? state.dateErrorMessage
                                 : null,
-                            labelText: locals.dateOfBirth,
+                            labelText: context.l10n.dateOfBirth,
                             onTap: _showDataPickerDialog,
                             showCursor: true,
                             textInputAction: TextInputAction.next,
@@ -217,7 +216,8 @@ class _CreateChildPageState extends State<CreateChildPage> {
                             height: 40,
                           ),
                           CreateChildTextField(
-                            labelText: locals.createChildGivingAllowanceHint,
+                            labelText:
+                                context.l10n.createChildGivingAllowanceHint,
                             errorText: state is CreateChildInputErrorState
                                 ? state.allowanceErrorMessage
                                 : null,
@@ -248,7 +248,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                       child: ElevatedButton(
                         onPressed: _createChildProfile,
                         child: Text(
-                          locals.createChildProfileButton,
+                          context.l10n.createChildProfileButton,
                           style: Theme.of(context)
                               .textTheme
                               .headlineSmall!

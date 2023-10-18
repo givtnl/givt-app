@@ -16,8 +16,6 @@ class GiveVPCPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     return Scaffold(
       body: BlocConsumer<VPCCubit, VPCState>(
         listener: (context, state) {
@@ -26,7 +24,7 @@ class GiveVPCPage extends StatelessWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  locals.vpcErrorText,
+                  context.l10n.vpcErrorText,
                   textAlign: TextAlign.center,
                 ),
                 backgroundColor: Theme.of(context).errorColor,

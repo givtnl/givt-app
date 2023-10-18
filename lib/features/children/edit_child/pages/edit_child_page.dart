@@ -4,7 +4,6 @@ import 'package:currency_text_input_formatter/currency_text_input_formatter.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
@@ -16,7 +15,6 @@ import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class EditChildPage extends StatefulWidget {
   const EditChildPage({super.key});
@@ -64,12 +62,8 @@ class _EditChildPageState extends State<EditChildPage> {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     final user = context.read<AuthCubit>().state.user;
-    final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
-    );
+    final currency = Util.getCurrency(countryCode: user.country);
 
     return BlocConsumer<EditChildCubit, EditChildState>(
       listener: (context, state) {
@@ -109,7 +103,7 @@ class _EditChildPageState extends State<EditChildPage> {
                   child: TextButton.icon(
                     icon: const Icon(Icons.arrow_back_ios_new_sharp),
                     label: Text(
-                      locals.cancel,
+                      context.l10n.cancel,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppTheme.inputFieldBorderSelected,
@@ -162,7 +156,7 @@ class _EditChildPageState extends State<EditChildPage> {
                                         ? state.nameErrorMessage
                                         : null,
                                     controller: _nameController,
-                                    labelText: locals.firstName,
+                                    labelText: context.l10n.firstName,
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.name,
                                   ),
@@ -172,15 +166,15 @@ class _EditChildPageState extends State<EditChildPage> {
                                   CreateChildTextField(
                                     enabled: false,
                                     controller: _dateOfBirthController,
-                                    labelText: locals.dateOfBirth,
+                                    labelText: context.l10n.dateOfBirth,
                                     showCursor: true,
                                     textInputAction: TextInputAction.next,
                                     readOnly: true,
                                   ),
                                   const SizedBox(height: 40),
                                   CreateChildTextField(
-                                    labelText:
-                                        locals.createChildGivingAllowanceHint,
+                                    labelText: context
+                                        .l10n.createChildGivingAllowanceHint,
                                     errorText: state is EditChildInputErrorState
                                         ? state.allowanceErrorMessage
                                         : null,
@@ -220,7 +214,7 @@ class _EditChildPageState extends State<EditChildPage> {
               ),
               onPressed: state is! EditChildUploadingState ? _editChild : null,
               child: Text(
-                locals.save,
+                context.l10n.save,
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       color: Colors.white,
                     ),

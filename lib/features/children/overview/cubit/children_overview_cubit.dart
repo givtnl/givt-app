@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +33,8 @@ class ChildrenOverviewCubit extends Cubit<ChildrenOverviewState> {
 
       await prefs.setInt(Profile.number, response.length);
     } catch (error) {
+      await LoggingInfo.instance.error(error.toString());
+
       emit(ChildrenOverviewErrorState(errorMessage: error.toString()));
     }
   }

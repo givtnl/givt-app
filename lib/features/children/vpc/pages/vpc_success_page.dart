@@ -13,8 +13,7 @@ class VPCSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
+    final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
       backgroundColor: AppTheme.vpcSuccessBackground,
@@ -36,14 +35,14 @@ class VPCSuccessPage extends StatelessWidget {
                   ),
                   SizedBox(height: size.height * 0.02),
                   Text(
-                    locals.vpcSuccessTitle,
+                    context.l10n.vpcSuccessTitle,
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    locals.vpcSuccessText,
+                    context.l10n.vpcSuccessText,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Colors.white,
                         ),
@@ -69,7 +68,7 @@ class VPCSuccessPage extends StatelessWidget {
                   backgroundColor: AppTheme.sliderIndicatorFilled,
                 ),
                 child: Text(
-                  locals.setupChildProfileButtonText,
+                  context.l10n.setupChildProfileButtonText,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         color: Colors.white,
                       ),

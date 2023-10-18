@@ -19,8 +19,6 @@ class ChildrenOverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -54,7 +52,7 @@ class ChildrenOverviewPage extends StatelessWidget {
             builder: (context, state) {
               if (state is ChildrenOverviewUpdatedState &&
                   state.displayAllowanceInfo) {
-                return _buildDisclaimer(locals, context, state.profiles);
+                return _buildDisclaimer(context.l10n, context, state.profiles);
               } else {
                 return const SizedBox();
               }
@@ -121,7 +119,7 @@ class ChildrenOverviewPage extends StatelessWidget {
             }
           },
           child: Text(
-            locals.createChildAddProfileButton,
+            context.l10n.createChildAddProfileButton,
             style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Colors.white,
                 ),

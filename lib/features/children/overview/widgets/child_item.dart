@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class ChildItem extends StatelessWidget {
   const ChildItem({
@@ -19,14 +17,8 @@ class ChildItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     final user = context.read<AuthCubit>().state.user;
-    final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(
-        country: Country.fromCode(user.country),
-      ),
-    );
+    final currencySymbol = Util.getCurrencySymbol(countryCode: user.country);
 
     return InkWell(
       onTap: () => context.pushNamed(
@@ -81,7 +73,7 @@ class ChildItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              locals.childOverviewTotalAvailable,
+                              context.l10n.childOverviewTotalAvailable,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelLarge!
@@ -90,7 +82,7 @@ class ChildItem extends StatelessWidget {
                                   ),
                             ),
                             Text(
-                              '${currency.currencySymbol} ${profile.wallet.total.toStringAsFixed(0)}',
+                              '$currencySymbol ${profile.wallet.total.toStringAsFixed(0)}',
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium!
@@ -122,14 +114,14 @@ class ChildItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        locals.childOverviewPendingApproval,
+                        context.l10n.childOverviewPendingApproval,
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
                       Text(
-                        '${currency.currencySymbol} ${profile.wallet.pending.toStringAsFixed(0)}',
+                        '$currencySymbol ${profile.wallet.pending.toStringAsFixed(0)}',
                         style: Theme.of(context).textTheme.labelLarge!.copyWith(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

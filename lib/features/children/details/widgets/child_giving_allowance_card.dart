@@ -17,8 +17,6 @@ class ChildGivingAllowanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     final nextTopUpDate =
         DateTime.parse(profileDetails.givingAllowance.nextGivingAllowanceDate);
 
@@ -75,7 +73,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 10),
                   Text(
-                    locals.createChildGivingAllowanceTitle,
+                    context.l10n.createChildGivingAllowanceTitle,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: AppTheme.inputFieldBorderSelected,
                           fontWeight: FontWeight.bold,

@@ -8,14 +8,13 @@ class VPCIntroItemFamily extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Text(
-            locals.vpcIntroFamilyText,
+            context.l10n.vpcIntroFamilyText,
             textAlign: TextAlign.center,
             style: Theme.of(context)
                 .textTheme

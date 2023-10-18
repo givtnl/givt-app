@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
@@ -492,7 +491,6 @@ class APIService {
 
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['item'] as Map<String, dynamic>;
-    log(itemMap.toString());
     return itemMap;
   }
 

@@ -16,7 +16,6 @@ class ChildDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
     return BlocBuilder<ChildDetailsCubit, ChildDetailsState>(
       builder: (context, state) {
         return Scaffold(
@@ -35,7 +34,7 @@ class ChildDetailsPage extends StatelessWidget {
                 TextButton.icon(
                   icon: const Icon(Icons.edit),
                   label: Text(
-                    locals.budgetExternalGiftsEdit,
+                    context.l10n.budgetExternalGiftsEdit,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppTheme.inputFieldBorderSelected,

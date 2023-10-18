@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:intl/intl.dart';
 
 class ChildDetailsItem extends StatelessWidget {
   const ChildDetailsItem({
@@ -18,12 +16,7 @@ class ChildDetailsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
-    final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(
-        country: Country.fromCode(user.country),
-      ),
-    );
-
+    final currency = Util.getCurrency(countryCode: user.country);
     final size = MediaQuery.sizeOf(context);
 
     return Padding(
