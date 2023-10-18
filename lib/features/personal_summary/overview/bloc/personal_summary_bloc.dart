@@ -46,7 +46,6 @@ class PersonalSummaryBloc
       );
 
       final annualSummaryGivts = await _fetchAnnualSummaryGivts(
-        fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: untilDate.toIso8601String(),
       );
 
@@ -134,12 +133,11 @@ class PersonalSummaryBloc
   }
 
   Future<List<SummaryItem>> _fetchAnnualSummaryGivts({
-    required String fromDate,
     required String tillDate,
   }) async {
     final annualGivts = await givtRepo.fetchSummary(
       guid: state.loggedInUserExt.guid,
-      fromDate: fromDate,
+      fromDate: DateTime(2017).toIso8601String(),
       tillDate: tillDate,
       orderType: SummaryOrderType.donationDate.type,
       groupType: SummaryGroupType.perYear.type,
