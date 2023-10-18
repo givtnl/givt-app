@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -30,9 +32,20 @@ class _BTScanPageState extends State<BTScanPage> {
       timeout: const Duration(seconds: 30),
       androidUsesFineLocation: true,
     );
+    if (Platform.isIOS) {
+      Future.delayed(const Duration(seconds: 2), () async {
+        await FlutterBluePlus.startScan(
+          timeout: const Duration(seconds: 30),
+          androidUsesFineLocation: true,
+        );
+      });
+    }
     FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
 
     Future.delayed(const Duration(seconds: 10), () {
+      if (!mounted) {
+        return;
+      }
       setState(() {
         _isVisible = true;
       });
