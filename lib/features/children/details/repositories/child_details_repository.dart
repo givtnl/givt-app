@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/children/details/models/giving_allowance.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 
@@ -16,9 +13,6 @@ class ChildDetailsRepositoryImpl with ChildDetailsRepository {
   @override
   Future<ProfileExt> fetchChildDetails(Profile profile) async {
     final response = await apiService.fetchChildDetails(profile.id);
-    final givingAllowance = GivingAllowance.fromMap(response);
-    log(givingAllowance.toString());
-
-    return ProfileExt(profile: profile, givingAllowance: givingAllowance);
+    return ProfileExt.fromMap(profile, response);
   }
 }

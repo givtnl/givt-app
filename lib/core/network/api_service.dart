@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
@@ -491,10 +492,8 @@ class APIService {
 
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['item'] as Map<String, dynamic>;
-    final walletMap = itemMap['wallet'] as Map<String, dynamic>;
-    final givingAllowanceMap =
-        walletMap['givingAllowance'] as Map<String, dynamic>;
-    return givingAllowanceMap;
+    log(itemMap.toString());
+    return itemMap;
   }
 
   Future<List<dynamic>> fetchRecurringDonations({

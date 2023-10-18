@@ -3,17 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class ChildDetailsItem extends StatelessWidget {
   const ChildDetailsItem({
-    required this.profile,
+    required this.profileDetails,
     super.key,
   });
 
-  final Profile profile;
+  final ProfileExt profileDetails;
 
   @override
   Widget build(BuildContext context) {
@@ -34,14 +34,14 @@ class ChildDetailsItem extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: SvgPicture.network(
-              profile.pictureURL,
+              profileDetails.profile.pictureURL,
               width: size.width * 0.25,
               height: size.width * 0.25,
             ),
           ),
           const SizedBox(height: 5),
           Text(
-            profile.firstName,
+            profileDetails.firstName,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
@@ -52,7 +52,7 @@ class ChildDetailsItem extends StatelessWidget {
           ),
           Text(
             //TODO: POEditor
-            '${currency.currencySymbol}${profile.wallet.balance.toStringAsFixed(0)} in Wallet',
+            '${currency.currencySymbol}${profileDetails.profile.wallet.balance.toStringAsFixed(0)} in Wallet',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppTheme.inputFieldBorderSelected,

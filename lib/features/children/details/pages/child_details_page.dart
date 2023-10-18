@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,6 +16,7 @@ class ChildDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locals = AppLocalizations.of(context);
     return BlocBuilder<ChildDetailsCubit, ChildDetailsState>(
       builder: (context, state) {
         return Scaffold(
@@ -33,8 +35,7 @@ class ChildDetailsPage extends StatelessWidget {
                 TextButton.icon(
                   icon: const Icon(Icons.edit),
                   label: Text(
-                    //TODO: POEditor
-                    'Edit',
+                    locals.budgetExternalGiftsEdit,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppTheme.inputFieldBorderSelected,
@@ -68,7 +69,7 @@ class ChildDetailsPage extends StatelessWidget {
                             width: double.maxFinite,
                             color: state.profileDetails.profile.monsterColor,
                             child: ChildDetailsItem(
-                              profile: state.profileDetails.profile,
+                              profileDetails: state.profileDetails,
                             ),
                           ),
                         ),

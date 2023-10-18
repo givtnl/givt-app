@@ -55,8 +55,7 @@ class _EditChildPageState extends State<EditChildPage> {
   ) {
     _nameController.text = child.firstName;
     _dateOfBirthController.text = ChildDateUtils.dateFormatter.format(
-      //TODO replace with real date of birth
-      DateTime.parse(profileDetails.givingAllowance.nextGivingAllowanceDate),
+      DateTime.parse(profileDetails.dateOfBirth),
     );
     final allowanceText =
         '$currencySymbol${child.allowance.toStringAsFixed(0)}';
