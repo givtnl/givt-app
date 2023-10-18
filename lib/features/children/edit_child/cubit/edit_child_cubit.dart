@@ -65,11 +65,10 @@ class EditChildCubit extends Cubit<EditChildState>
           EditChildSuccessState(profileDetails: _profileDetails),
         );
       } else {
-        //TODO: POEditor
         emit(
-          const EditChildExternalErrorState(
-              errorMessage:
-                  'Cannot update child profile. Please try again later.'),
+          EditChildExternalErrorState(
+            errorMessage: _locals.childEditProfileErrorText,
+          ),
         );
       }
     } catch (error) {

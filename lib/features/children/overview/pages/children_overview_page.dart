@@ -133,8 +133,7 @@ class ChildrenOverviewPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            //TODO: POEditor
-            'Once you create a child profile, you will be able see them here and use the Givt4Kids companion app.',
+            context.l10n.noChildProfilesError,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium,
           ),

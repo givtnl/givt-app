@@ -82,8 +82,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
                 ],
               ),
               Text(
-                //TODO: POEditor
-                'The next top up: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
+                '${context.l10n.childNextTopUpPrefix}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: AppTheme.inputFieldBorderSelected,
                     ),

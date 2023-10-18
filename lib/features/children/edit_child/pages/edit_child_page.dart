@@ -121,8 +121,7 @@ class _EditChildPageState extends State<EditChildPage> {
               Expanded(
                 child: Center(
                   child: Text(
-                    //TODO: POEditor
-                    'Edit Profile',
+                    context.l10n.childEditProfile,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChildDetailsItem extends StatelessWidget {
@@ -44,8 +45,7 @@ class ChildDetailsItem extends StatelessWidget {
                 ),
           ),
           Text(
-            //TODO: POEditor
-            '${currency.currencySymbol}${profileDetails.profile.wallet.balance.toStringAsFixed(0)} in Wallet',
+            '${currency.currencySymbol}${profileDetails.profile.wallet.balance.toStringAsFixed(0)}${context.l10n.childInWalletPostfix}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppTheme.inputFieldBorderSelected,
