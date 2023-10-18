@@ -1428,6 +1428,5 @@
     "childNextTopUpPrefix": "The next top up: ",
     "childEditProfileErrorText": "Cannot update child profile. Please try again later.",
     "childEditProfile": "Edit Profile",
-    "noChildProfilesError": "Once you create a child profile, you will be able see them here and use the Givt4Kids companion app.",
-    "Testterm": "sdisdisaf"
+    "noChildProfilesError": "Once you create a child profile, you will be able see them here and use the Givt4Kids companion app."
 }
