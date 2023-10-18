@@ -3,7 +3,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_intro_item_image.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_notice_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class VPCIntroItemSafety extends StatelessWidget {
@@ -11,7 +10,6 @@ class VPCIntroItemSafety extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
     return SizedBox.expand(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -19,7 +17,7 @@ class VPCIntroItemSafety extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
             child: Text(
-              locals.vpcIntroSafetyText,
+              context.l10n.vpcIntroSafetyText,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
@@ -49,7 +47,7 @@ class VPCIntroItemSafety extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  locals.seeDirectNoticeButtonText,
+                  context.l10n.seeDirectNoticeButtonText,
                   style: Theme.of(context)
                       .textTheme
                       .titleSmall!

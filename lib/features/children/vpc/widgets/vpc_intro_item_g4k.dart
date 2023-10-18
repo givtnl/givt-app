@@ -5,7 +5,6 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_intro_item_image.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class VPCIntroItemG4K extends StatelessWidget {
@@ -13,7 +12,6 @@ class VPCIntroItemG4K extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
     return SizedBox.expand(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -21,7 +19,7 @@ class VPCIntroItemG4K extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
             child: Text(
-              locals.vpcIntroG4KText,
+              context.l10n.vpcIntroG4KText,
               textAlign: TextAlign.center,
               style: Theme.of(context)
                   .textTheme
@@ -44,7 +42,7 @@ class VPCIntroItemG4K extends StatelessWidget {
                     .fetchURL(context.read<AuthCubit>().state.user.guid);
               },
               child: Text(
-                locals.enterCardDetailsButtonText,
+                context.l10n.enterCardDetailsButtonText,
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                       color: Colors.white,
                     ),
