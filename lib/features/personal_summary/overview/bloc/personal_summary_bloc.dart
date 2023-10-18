@@ -139,7 +139,7 @@ class PersonalSummaryBloc
       guid: state.loggedInUserExt.guid,
       fromDate: DateTime(2017).toIso8601String(),
       tillDate: tillDate,
-      orderType: SummaryOrderType.donationDate.type,
+      orderType: SummaryOrderType.key.type,
       groupType: SummaryGroupType.perYear.type,
     );
     return annualGivts;

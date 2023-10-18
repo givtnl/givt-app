@@ -43,7 +43,7 @@ mixin GivtRepository {
     required String guid,
     required String fromDate,
     required String tillDate,
-    required String orderType ,
+    required String orderType,
     required String groupType,
   });
 }
@@ -167,9 +167,9 @@ class GivtRepositoryImpl with GivtRepository {
       'GroupType': groupType,
       'FromDate': fromDate,
       'TillDate': tillDate,
-      // 'TransactionStatusses': '1',
-      // 'TransactionStatusses': '2',
-      // 'TransactionStatusses': '3',
+      'TransactionStatusses': '1',
+      'TransactionStatusses': '2',
+      'TransactionStatusses': '3',
     };
     final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
     return SummaryItem.fromJsonList(
