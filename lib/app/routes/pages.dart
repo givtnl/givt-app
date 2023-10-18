@@ -44,6 +44,7 @@ enum Pages {
   childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
   childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
   editChild(path: 'edit-child', name: 'EDIT-CHILD'),
+  creditCardDetail(path: 'credit-card-detail', name: 'CREDIT-CARD-DETAIL'),
   ;
 
   const Pages({

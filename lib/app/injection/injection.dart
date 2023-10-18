@@ -58,17 +58,20 @@ Future<void> initAPIService() async {
 
 /// Check if there is a user extension set in the shared preferences.
 /// If there is, return the country of the user extension.
-/// If there is not, return the country of the device.
+/// If there is not, return a default country (NL).
 Future<String> _checkCountry() async {
   final prefs = await SharedPreferences.getInstance();
 
   if (prefs.containsKey(UserExt.tag)) {
     final userExtString = prefs.getString(UserExt.tag);
-    final user =
-        UserExt.fromJson(jsonDecode(userExtString!) as Map<String, dynamic>);
-    return user.country;
+    if (userExtString != null) {
+      final user =
+          UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
+      return user.country;
+    }
   }
-  return getIt<CountryIsoInfo>().checkCountryIso;
+
+  return Country.nl.countryCode;
 }
 
 Future<void> _initCoreDependencies() async {
