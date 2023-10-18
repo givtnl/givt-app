@@ -50,8 +50,8 @@ dependencies:
   url_launcher: ^6.1.12
   vibration: ^1.8.1
   jiffy: ^6.2.1
-  firebase_messaging: ^14.6.7
-  firebase_core: ^2.15.1
+  firebase_messaging: ^14.7.0
+  firebase_core: ^2.18.0
   diacritic: ^0.1.4
   ios_utsname_ext: ^2.2.0
 
