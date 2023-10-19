@@ -179,7 +179,7 @@ class _EditChildPageState extends State<EditChildPage> {
                                   const SizedBox(height: 40),
                                   CreateChildTextField(
                                     labelText: context
-                                        .l10n.createChildGivingAllowanceHint,
+                                        .l10n.createChildGivingAllowanceTitle,
                                     errorText: state is EditChildInputErrorState
                                         ? state.allowanceErrorMessage
                                         : null,
@@ -197,6 +197,21 @@ class _EditChildPageState extends State<EditChildPage> {
                                     ],
                                     keyboardType: TextInputType.number,
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      //TODO POEditor
+                                      "Monthly giving allowance can be an amount between 1 to 999.",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                            color: AppTheme
+                                                .childGivingAllowanceHint,
+                                          ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
                                   const GivingAllowanceInfoButton(),
                                   const SizedBox(
                                     height: 80,

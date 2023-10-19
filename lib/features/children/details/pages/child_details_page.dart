@@ -42,16 +42,19 @@ class ChildDetailsPage extends StatelessWidget {
               ),
               const Spacer(),
               if (state is ChildDetailsFetchedState)
-                TextButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: Text(
-                    context.l10n.budgetExternalGiftsEdit,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.inputFieldBorderSelected,
-                        ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 14),
+                  child: TextButton.icon(
+                    icon: const Icon(Icons.edit),
+                    label: Text(
+                      context.l10n.budgetExternalGiftsEdit,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.inputFieldBorderSelected,
+                          ),
+                    ),
+                    onPressed: () => _pushToEdit(context),
                   ),
-                  onPressed: () => _pushToEdit(context),
                 ),
             ],
             automaticallyImplyLeading: false,
