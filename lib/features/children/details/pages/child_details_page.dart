@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
+import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,16 @@ class ChildDetailsPage extends StatelessWidget {
   const ChildDetailsPage({
     super.key,
   });
+
+  void _pushToEdit(BuildContext context) {
+    context.pushNamed(
+      Pages.editChild.name,
+      extra: [
+        context.read<ChildrenOverviewCubit>(),
+        context.read<ChildDetailsCubit>(),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +51,7 @@ class ChildDetailsPage extends StatelessWidget {
                           color: AppTheme.inputFieldBorderSelected,
                         ),
                   ),
-                  onPressed: () {
-                    context.pushNamed(
-                      Pages.editChild.name,
-                      extra: context.read<ChildDetailsCubit>(),
-                    );
-                  },
+                  onPressed: () => _pushToEdit(context),
                 ),
             ],
             automaticallyImplyLeading: false,
@@ -75,12 +81,7 @@ class ChildDetailsPage extends StatelessWidget {
                         Expanded(
                           child: ChildGivingAllowanceCard(
                             profileDetails: state.profileDetails,
-                            onPressed: () {
-                              context.pushNamed(
-                                Pages.editChild.name,
-                                extra: context.read<ChildDetailsCubit>(),
-                              );
-                            },
+                            onPressed: () => _pushToEdit(context),
                           ),
                         ),
                         const Spacer(),
