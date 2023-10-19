@@ -52,7 +52,6 @@ dependencies:
   jiffy: ^6.2.1
   diacritic: ^0.1.4
   ios_utsname_ext: ^2.2.0
-  fl_chart: ^0.64.0
 
 dev_dependencies:
   bloc_test: ^9.1.1
