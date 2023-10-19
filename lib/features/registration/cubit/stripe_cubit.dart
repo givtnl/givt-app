@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -29,14 +27,13 @@ class StripeCubit extends Cubit<StripeState> {
           stripeObject: response,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       emit(
         state.copyWith(stripeStatus: StripeObjectStatus.failure),
       );
-      log('${e}, ALSO user email: $email \nuser country: ${authCubit.state.user.country}');
       await LoggingInfo.instance.error(
-        '${e}, ALSO user email: $email \nuser country: ${authCubit.state.user.country}',
-        methodName: StackTrace.current.toString(),
+        '$e, ALSO user email: $email \nuser country: ${authCubit.state.user.country}',
+        methodName: stackTrace.toString(),
       );
     }
   }

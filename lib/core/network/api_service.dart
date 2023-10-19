@@ -430,6 +430,26 @@ class APIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> editChild(String childGUID, Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/givtservice/v1/ChildProfile/$childGUID');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
   Future<List<dynamic>> fetchChildren(String parentGuid) async {
     final url = Uri.https(
       apiURL,
@@ -451,6 +471,26 @@ class APIService {
 
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['items'] as List<dynamic>;
+    return itemMap;
+  }
+
+  Future<Map<String, dynamic>> fetchChildDetails(String childGuid) async {
+    final url = Uri.https(
+      apiURL,
+      '/givtservice/v1/ChildProfile/$childGuid',
+    );
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item'] as Map<String, dynamic>;
     return itemMap;
   }
 

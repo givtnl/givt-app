@@ -135,7 +135,9 @@ class AuthRepositoyImpl with AuthRepositoy {
   }
 
   @override
-  Future<void> checkUserExt({required String email}) async {
+  Future<void> checkUserExt({
+    required String email,
+  }) async {
     if (!_prefs.containsKey(UserExt.tag)) {
       return;
     }
@@ -348,8 +350,8 @@ class AuthRepositoyImpl with AuthRepositoy {
     required String email,
   }) async {
     final isSuccess = await _apiService.unregisterUser({
-        'email': email,
-      });
+      'email': email,
+    });
     if (isSuccess) {
       await _prefs.clear();
     }

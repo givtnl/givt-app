@@ -313,10 +313,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_blue_plus
-      sha256: "2901ab602d29b8103a4229b524e394900b33bbdab90a4c037fa0b51dab414adb"
+      sha256: "9b38005158b22dffb8a04b5837934e9cf1c0c52192623c88cbcc8a04876b6d81"
       url: "https://pub.dev"
     source: hosted
-    version: "1.20.1"
+    version: "1.19.0"
   flutter_inappwebview:
     dependency: "direct main"
     description:

@@ -1,16 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
 import 'package:givt_app/features/children/create_child/pages/create_child_page.dart';
+import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
+import 'package:givt_app/features/children/details/pages/child_details_page.dart';
+import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
+import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/children/vpc/pages/give_vpc_page.dart';
@@ -35,6 +41,7 @@ import 'package:givt_app/features/recurring_donations/overview/pages/recurring_d
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
+import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
 import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
 import 'package:givt_app/features/registration/pages/personal_info_page.dart';
@@ -142,6 +149,40 @@ class AppRouter {
             ),
           ),
           GoRoute(
+            path: Pages.childDetails.path,
+            name: Pages.childDetails.name,
+            builder: (context, state) {
+              return BlocProvider(
+                create: (_) => ChildDetailsCubit(getIt())
+                  ..fetchChildDetails(state.extra! as Profile),
+                child: const ChildDetailsPage(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.editChild.path,
+            name: Pages.editChild.name,
+            builder: (context, state) {
+              final childDetailsCubit = state.extra! as ChildDetailsCubit;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: childDetailsCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => EditChildCubit(
+                      getIt(),
+                      AppLocalizations.of(context),
+                      (childDetailsCubit.state as ChildDetailsFetchedState)
+                          .profileDetails,
+                    ),
+                  ),
+                ],
+                child: const EditChildPage(),
+              );
+            },
+          ),
+          GoRoute(
             path: Pages.giveVPC.path,
             name: Pages.giveVPC.name,
             builder: (context, state) {
@@ -176,25 +217,26 @@ class AppRouter {
               final email = state.queryParameters['email'] ?? '';
 
               final createStripe =
-                  state.queryParameters['createStripe'] ?? 'false';
+                  bool.parse(state.queryParameters['createStripe'] ?? 'false');
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
-                    create: (context) => StripeCubit(
-                      authRepositoy: getIt(),
-                      authCubit: context.read<AuthCubit>(),
-                    ),
-                  ),
-                  BlocProvider(
-                    create: (context) => RegistrationBloc(
-                      authCubit: context.read<AuthCubit>(),
-                      authRepositoy: getIt(),
-                    ),
+                    create: (_) {
+                      final registrationBloc = RegistrationBloc(
+                        authCubit: context.read<AuthCubit>(),
+                        authRepositoy: getIt(),
+                      );
+
+                      if (createStripe) {
+                        registrationBloc.add(const RegistrationStripeInit());
+                      }
+
+                      return registrationBloc;
+                    },
                   ),
                 ],
                 child: SignUpPage(
                   email: email,
-                  createStripe: createStripe,
                 ),
               );
             },
@@ -206,6 +248,26 @@ class AppRouter {
                   value: state.extra! as RegistrationBloc,
                   child: const PersonalInfoPage(),
                 ),
+              ),
+              GoRoute(
+                path: Pages.creditCardDetail.path,
+                name: Pages.creditCardDetail.name,
+                builder: (context, state) {
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: state.extra! as RegistrationBloc,
+                      ),
+                      BlocProvider(
+                        create: (_) => StripeCubit(
+                          authRepositoy: getIt(),
+                          authCubit: context.read<AuthCubit>(),
+                        )..fetchStripeCustomerCreationURLs(),
+                      ),
+                    ],
+                    child: const CreditCardDetailsPage(),
+                  );
+                },
               ),
             ],
           ),
