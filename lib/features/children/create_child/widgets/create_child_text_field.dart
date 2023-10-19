@@ -45,10 +45,10 @@ class CreateChildTextField extends StatelessWidget {
       textInputAction: textInputAction,
       keyboardType: keyboardType,
       onChanged: onChanged,
-      style: Theme.of(context)
-          .textTheme
-          .titleLarge!
-          .copyWith(color: AppTheme.sliderIndicatorFilled),
+      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+            color:
+                enabled ?? true ? AppTheme.sliderIndicatorFilled : Colors.grey,
+          ),
       decoration: InputDecoration(
         label: labelText != null ? Text(labelText!) : null,
         errorText: errorText,
