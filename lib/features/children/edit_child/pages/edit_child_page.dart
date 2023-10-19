@@ -118,7 +118,7 @@ class _EditChildPageState extends State<EditChildPage> {
                     onPressed: () {
                       context.pop();
                       AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.backClicked,
+                        eventName: AmplitudeEvents.childEditCancelClicked,
                       );
                     },
                   ),

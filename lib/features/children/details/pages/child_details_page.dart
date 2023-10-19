@@ -53,7 +53,19 @@ class ChildDetailsPage extends StatelessWidget {
                             color: AppTheme.inputFieldBorderSelected,
                           ),
                     ),
-                    onPressed: () => _pushToEdit(context),
+                    onPressed: () {
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.childDetailsEditAppBarClicked,
+                        eventProperties: {
+                          'child_name': state.profileDetails.firstName,
+                          'giving_allowance':
+                              state.profileDetails.givingAllowance.amount,
+                        },
+                      );
+
+                      _pushToEdit(context);
+                    },
                   ),
                 ),
             ],
@@ -84,7 +96,18 @@ class ChildDetailsPage extends StatelessWidget {
                         Expanded(
                           child: ChildGivingAllowanceCard(
                             profileDetails: state.profileDetails,
-                            onPressed: () => _pushToEdit(context),
+                            onPressed: () {
+                              AnalyticsHelper.logEvent(
+                                eventName:
+                                    AmplitudeEvents.childDetailsEditCardClicked,
+                                eventProperties: {
+                                  'child_name': state.profileDetails.firstName,
+                                  'giving_allowance': state
+                                      .profileDetails.givingAllowance.amount,
+                                },
+                              );
+                              _pushToEdit(context);
+                            },
                           ),
                         ),
                         const Spacer(),
