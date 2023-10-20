@@ -9,15 +9,20 @@ import 'package:givt_app/features/children/overview/models/profile.dart';
 part 'child_details_state.dart';
 
 class ChildDetailsCubit extends Cubit<ChildDetailsState> {
-  ChildDetailsCubit(this._childDetailsRepository)
-      : super(const ChildDetailsInitialState());
+  ChildDetailsCubit(
+    this._childDetailsRepository,
+    this._profile,
+  ) : super(const ChildDetailsInitialState());
 
   final ChildDetailsRepository _childDetailsRepository;
+  final Profile _profile;
 
-  Future<void> fetchChildDetails(Profile profile) async {
+  Future<void> fetchChildDetails() async {
     emit(const ChildDetailsFetchingState());
     try {
-      final response = await _childDetailsRepository.fetchChildDetails(profile);
+      final response = await _childDetailsRepository.fetchChildDetails(
+        _profile,
+      );
       emit(
         ChildDetailsFetchedState(
           profileDetails: response,

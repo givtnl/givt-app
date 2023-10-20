@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
+import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -60,6 +61,13 @@ class _EditChildPageState extends State<EditChildPage> {
     _allowanceController.text = allowanceText;
   }
 
+  void _refreshProfiles() {
+    context.read<ChildDetailsCubit>().fetchChildDetails();
+    context.read<ChildrenOverviewCubit>().fetchChildren(
+          context.read<AuthCubit>().state.user.guid,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
@@ -86,9 +94,7 @@ class _EditChildPageState extends State<EditChildPage> {
             currency.currencySymbol,
           );
         } else if (state is EditChildSuccessState) {
-          context
-              .read<ChildDetailsCubit>()
-              .fetchChildDetails(state.profileDetails.profile);
+          _refreshProfiles();
           context.pop();
         }
       },
@@ -112,7 +118,7 @@ class _EditChildPageState extends State<EditChildPage> {
                     onPressed: () {
                       context.pop();
                       AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.backClicked,
+                        eventName: AmplitudeEvents.childEditCancelClicked,
                       );
                     },
                   ),
@@ -173,7 +179,7 @@ class _EditChildPageState extends State<EditChildPage> {
                                   const SizedBox(height: 40),
                                   CreateChildTextField(
                                     labelText: context
-                                        .l10n.createChildGivingAllowanceHint,
+                                        .l10n.createChildGivingAllowanceTitle,
                                     errorText: state is EditChildInputErrorState
                                         ? state.allowanceErrorMessage
                                         : null,
@@ -191,6 +197,21 @@ class _EditChildPageState extends State<EditChildPage> {
                                     ],
                                     keyboardType: TextInputType.number,
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      context.l10n
+                                          .childMonthlyGivingAllowanceRange,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium!
+                                          .copyWith(
+                                            color: AppTheme
+                                                .childGivingAllowanceHint,
+                                          ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
                                   const GivingAllowanceInfoButton(),
                                   const SizedBox(
                                     height: 80,

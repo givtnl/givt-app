@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -23,7 +24,10 @@ class ChildItem extends StatelessWidget {
     return InkWell(
       onTap: () => context.pushNamed(
         Pages.childDetails.name,
-        extra: profile,
+        extra: [
+          context.read<ChildrenOverviewCubit>(),
+          profile,
+        ],
       ),
       child: Card(
         shape: RoundedRectangleBorder(
