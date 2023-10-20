@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
+import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -14,9 +15,32 @@ class ChildDetailsPage extends StatelessWidget {
     super.key,
   });
 
+  void _pushToEdit(BuildContext context) {
+    context.pushNamed(
+      Pages.editChild.name,
+      extra: [
+        context.read<ChildrenOverviewCubit>(),
+        context.read<ChildDetailsCubit>(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChildDetailsCubit, ChildDetailsState>(
+    return BlocConsumer<ChildDetailsCubit, ChildDetailsState>(
+      listener: (context, state) {
+        if (state is ChildDetailsErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+              backgroundColor: Theme.of(context).errorColor,
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -31,21 +55,31 @@ class ChildDetailsPage extends StatelessWidget {
               ),
               const Spacer(),
               if (state is ChildDetailsFetchedState)
-                TextButton.icon(
-                  icon: const Icon(Icons.edit),
-                  label: Text(
-                    context.l10n.budgetExternalGiftsEdit,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.inputFieldBorderSelected,
-                        ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 14),
+                  child: TextButton.icon(
+                    icon: const Icon(Icons.edit),
+                    label: Text(
+                      context.l10n.budgetExternalGiftsEdit,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppTheme.inputFieldBorderSelected,
+                          ),
+                    ),
+                    onPressed: () {
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.childDetailsEditAppBarClicked,
+                        eventProperties: {
+                          'child_name': state.profileDetails.firstName,
+                          'giving_allowance':
+                              state.profileDetails.givingAllowance.amount,
+                        },
+                      );
+
+                      _pushToEdit(context);
+                    },
                   ),
-                  onPressed: () {
-                    context.pushNamed(
-                      Pages.editChild.name,
-                      extra: context.read<ChildDetailsCubit>(),
-                    );
-                  },
                 ),
             ],
             automaticallyImplyLeading: false,
@@ -76,10 +110,16 @@ class ChildDetailsPage extends StatelessWidget {
                           child: ChildGivingAllowanceCard(
                             profileDetails: state.profileDetails,
                             onPressed: () {
-                              context.pushNamed(
-                                Pages.editChild.name,
-                                extra: context.read<ChildDetailsCubit>(),
+                              AnalyticsHelper.logEvent(
+                                eventName:
+                                    AmplitudeEvents.childDetailsEditCardClicked,
+                                eventProperties: {
+                                  'child_name': state.profileDetails.firstName,
+                                  'giving_allowance': state
+                                      .profileDetails.givingAllowance.amount,
+                                },
                               );
+                              _pushToEdit(context);
                             },
                           ),
                         ),

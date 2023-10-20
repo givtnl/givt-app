@@ -33,8 +33,8 @@ class GivingAllowanceInfoButton extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            AppLocalizations.of(context).createChildGivingAllowanceInfoButton,
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+            context.l10n.createChildGivingAllowanceTitle,
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   color: AppTheme.sliderIndicatorFilled,
                   fontWeight: FontWeight.bold,
                 ),

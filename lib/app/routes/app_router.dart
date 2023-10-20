@@ -152,9 +152,21 @@ class AppRouter {
             path: Pages.childDetails.path,
             name: Pages.childDetails.name,
             builder: (context, state) {
-              return BlocProvider(
-                create: (_) => ChildDetailsCubit(getIt())
-                  ..fetchChildDetails(state.extra! as Profile),
+              final extras = state.extra! as List<dynamic>;
+              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childProfile = extras[1] as Profile;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: childrenOverviewCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => ChildDetailsCubit(
+                      getIt(),
+                      childProfile,
+                    )..fetchChildDetails(),
+                  )
+                ],
                 child: const ChildDetailsPage(),
               );
             },
@@ -163,11 +175,16 @@ class AppRouter {
             path: Pages.editChild.path,
             name: Pages.editChild.name,
             builder: (context, state) {
-              final childDetailsCubit = state.extra! as ChildDetailsCubit;
+              final extras = state.extra! as List<dynamic>;
+              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childDetailsCubit = extras[1] as ChildDetailsCubit;
               return MultiBlocProvider(
                 providers: [
                   BlocProvider.value(
                     value: childDetailsCubit,
+                  ),
+                  BlocProvider.value(
+                    value: childrenOverviewCubit,
                   ),
                   BlocProvider(
                     create: (_) => EditChildCubit(
@@ -548,6 +565,11 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
+    
+    if (state.queryParameters.containsKey('mediumid')) {
+      code = base64Encode(utf8.encode(state.queryParameters['mediumid']!));
+    }
+    
     if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;

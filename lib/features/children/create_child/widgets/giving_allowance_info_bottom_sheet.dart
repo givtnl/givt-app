@@ -8,7 +8,7 @@ class GivingAllowanceInfoBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 50),
         child: Column(
           children: [
             Text(

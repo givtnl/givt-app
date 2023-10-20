@@ -45,6 +45,8 @@ class AppTheme {
 
   static const childGivingAllowanceCardBorder = Color(0xFFECF1F1);
 
+  static const childGivingAllowanceHint = Color(0xFF617793);
+
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
     fontFamily: 'AvenirLTStd',

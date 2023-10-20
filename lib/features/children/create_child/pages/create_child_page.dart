@@ -11,7 +11,7 @@ import 'package:givt_app/features/children/create_child/cubit/create_child_cubit
 import 'package:givt_app/features/children/create_child/mixins/child_name_validator.dart';
 import 'package:givt_app/features/children/create_child/models/child.dart';
 import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
-import 'package:givt_app/features/children/create_child/widgets/giving_allowance_info_bottom_sheet.dart';
+import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -90,36 +90,6 @@ class _CreateChildPageState extends State<CreateChildPage> {
       allowanceText = '$currencySymbol${child.allowance}';
     }
     _allowanceController.text = allowanceText;
-  }
-
-  Widget _createGivingAllowanceInfoButton() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 5),
-      child: TextButton.icon(
-        icon: const Icon(
-          Icons.info_rounded,
-          size: 20,
-          color: AppTheme.sliderIndicatorFilled,
-        ),
-        label: Text(
-          AppLocalizations.of(context).createChildGivingAllowanceInfoButton,
-          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: AppTheme.sliderIndicatorFilled,
-              ),
-        ),
-        onPressed: () {
-          AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.infoGivingAllowanceClicked);
-          showModalBottomSheet<void>(
-            context: context,
-            backgroundColor: AppTheme.givtPurple,
-            showDragHandle: true,
-            useSafeArea: true,
-            builder: (context) => const GivingAllowanceInfoBottomSheet(),
-          );
-        },
-      ),
-    );
   }
 
   @override
@@ -235,7 +205,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
                             ],
                             keyboardType: TextInputType.number,
                           ),
-                          _createGivingAllowanceInfoButton(),
+                          const GivingAllowanceInfoButton(),
                         ],
                       ),
                     ),
