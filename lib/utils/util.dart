@@ -78,14 +78,16 @@ class Util {
             : 'EUR';
   }
 
-  static String getCurrencySymbol({required String countryCode}) {
-    final currencySymbol = NumberFormat.simpleCurrency(
+  static NumberFormat getCurrency({required String countryCode}) {
+    return NumberFormat.simpleCurrency(
       name: Country.fromCode(
         countryCode,
       ).currency,
-    ).currencySymbol;
+    );
+  }
 
-    return currencySymbol;
+  static String getCurrencySymbol({required String countryCode}) {
+    return getCurrency(countryCode: countryCode).currencySymbol;
   }
 
   static double getLowerLimitByCountry(Country country) {

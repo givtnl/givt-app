@@ -6,22 +6,20 @@ class GivingAllowanceInfoBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
-
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(left: 30, top: 5, right: 30, bottom: 50),
         child: Column(
           children: [
             Text(
-              locals.createChildGivingAllowanceTitle,
+              context.l10n.createChildGivingAllowanceTitle,
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     color: Colors.white,
                   ),
             ),
             const SizedBox(height: 15),
             Text(
-              locals.createChildGivingAllowanceText,
+              context.l10n.createChildGivingAllowanceText,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                     color: Colors.white,
                   ),

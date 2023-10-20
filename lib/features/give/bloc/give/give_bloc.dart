@@ -74,6 +74,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 
+      if (state.status == GiveStatus.beaconNotActive) {
+        return;
+      }
+
       await _processGivts(
         namespace: mediumId,
         userGUID: event.userGUID,
@@ -367,6 +371,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 
+      if (state.status == GiveStatus.beaconNotActive) {
+        return;
+      }
+
       final organisation = await _getOrganisation(mediumId);
       final transactionList = _createTransationList(
         mediumId,
@@ -554,6 +562,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (mediumId.split('.').last.contains('b6')) {
       return;
     }
+    if (mediumId.split('.').last.startsWith('6')) {
+      return;
+    }
+
     final qrCode = await _getCollectGroupInstanceName(mediumId);
 
     if (qrCode.instance.isEmpty) {

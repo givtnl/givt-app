@@ -11,7 +11,14 @@ enum AmplitudeEvents {
   infoGivingAllowanceDismissed('info_giving_allowance_dismissed'),
   setUpChildProfileClicked('set_up_child_profile_clicked'),
   vpcSuccess('vpc_successful'),
-  vpcCancelled('vpc_cancelled');
+  vpcCancelled('vpc_cancelled'),
+  childDetailsEditAppBarClicked('child_details_edit_app_bar_clicked'),
+  childDetailsEditCardClicked(
+    'child_details_edit_card_clicked',
+  ),
+  childEditSaveClicked('child_edit_save_clicked'),
+  childEditCancelClicked('child_edit_cancel_clicked'),
+  ;
 
   const AmplitudeEvents(this.value);
   final String value;
