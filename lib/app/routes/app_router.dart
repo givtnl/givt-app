@@ -565,6 +565,11 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
+    
+    if (state.queryParameters.containsKey('mediumid')) {
+      code = base64Encode(utf8.encode(state.queryParameters['mediumid']!));
+    }
+    
     if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;
