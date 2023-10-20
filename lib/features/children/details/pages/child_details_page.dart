@@ -27,7 +27,20 @@ class ChildDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ChildDetailsCubit, ChildDetailsState>(
+    return BlocConsumer<ChildDetailsCubit, ChildDetailsState>(
+      listener: (context, state) {
+        if (state is ChildDetailsErrorState) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.errorMessage,
+                textAlign: TextAlign.center,
+              ),
+              backgroundColor: Theme.of(context).errorColor,
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
