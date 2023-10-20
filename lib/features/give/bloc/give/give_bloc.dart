@@ -554,6 +554,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (mediumId.split('.').last.contains('b6')) {
       return;
     }
+    if (mediumId.split('.').last.startsWith('6')) {
+      return;
+    }
+
     final qrCode = await _getCollectGroupInstanceName(mediumId);
 
     if (qrCode.instance.isEmpty) {
