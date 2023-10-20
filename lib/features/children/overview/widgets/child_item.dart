@@ -86,7 +86,7 @@ class ChildItem extends StatelessWidget {
                                   ),
                             ),
                             Text(
-                              '$currencySymbol ${profile.wallet.total.toStringAsFixed(0)}',
+                              '$currencySymbol ${profile.wallet.balance.toStringAsFixed(0)}',
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium!
