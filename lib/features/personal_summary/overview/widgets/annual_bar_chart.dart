@@ -31,6 +31,10 @@ class AnnualBarChart extends StatelessWidget {
             var width = constraints.maxWidth * amount / double.parse(yearGoal);
             final isCurrentYear = DateTime.now().year.toString() == year;
             final isGoalAchieved = amount >= double.parse(yearGoal);
+
+            /// If the bar chart is overflowing, we need to reduce the width of the bar chart
+            /// the -50 given by the padding and margins used in the widget and
+            /// space for the amount text
             final isOverflowing = width > constraints.maxWidth - 50;
             width = isOverflowing ? constraints.maxWidth - 50 : width;
             return Row(

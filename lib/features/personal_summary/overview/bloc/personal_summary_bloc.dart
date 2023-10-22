@@ -10,6 +10,7 @@ import 'package:givt_app/features/personal_summary/overview/models/summary_order
 import 'package:givt_app/shared/models/summary_item.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
+import 'package:intl/intl.dart';
 
 part 'personal_summary_event.dart';
 part 'personal_summary_state.dart';
@@ -58,6 +59,7 @@ class PersonalSummaryBloc
           status: PersonalSummaryStatus.success,
           monthlyGivts: monthlyGivts,
           annualGivts: annualSummaryGivts,
+          pastTwelveMonths: await _fetchPastTwelveMonths(),
           externalDonations: externalDonations,
         ),
       );
@@ -159,6 +161,56 @@ class PersonalSummaryBloc
       groupType: SummaryGroupType.perDestination.type,
     );
     return monthlyGivts;
+  }
+
+  /// Fetches past twelve months and sorts them by creation date
+  Future<List<SummaryItem>> _fetchPastTwelveMonths() async {
+    final today = DateTime.now();
+
+    final fromDate = DateTime(today.year, today.month - 11).toIso8601String();
+    final pastTwelveMonths = await givtRepo.fetchSummary(
+      guid: state.loggedInUserExt.guid,
+      fromDate: fromDate,
+      tillDate: DateTime(
+        today.year,
+        today.month + 1,
+        today.day,
+      ).toIso8601String(),
+      orderType: SummaryOrderType.sum.type,
+      groupType: SummaryGroupType.perMonth.type,
+    );
+    return _checkForMissingMonths(pastTwelveMonths);
+  }
+
+  /// Adds missing months to the list of past twelve months
+  /// and sorts them by creation date
+  List<SummaryItem> _checkForMissingMonths(List<SummaryItem> currentList) {
+    final pastTwelveMonths = <SummaryItem>[];
+    final dateFormat = DateFormat('yyyy-MM');
+    var currentDate = DateTime.now();
+
+    /// Add missing months to the list
+    for (var i = 1; i <= 12; i++) {
+      final stringMonth = dateFormat.format(currentDate);
+      final currentMonth = currentList.firstWhere(
+        (x) => x.key == stringMonth,
+        orElse: () => const SummaryItem.empty(),
+      );
+      if (currentMonth.key == stringMonth) {
+        pastTwelveMonths.add(currentMonth);
+      } else {
+        pastTwelveMonths.add(
+          const SummaryItem.empty().copyWith(
+            key: stringMonth,
+          ),
+        );
+      }
+      currentDate = currentDate.subtract(const Duration(days: 30));
+    }
+
+    pastTwelveMonths.sort((first, second) => first.key.compareTo(second.key));
+
+    return pastTwelveMonths;
   }
 
   /// Fetches external donations and sorts them by creation date

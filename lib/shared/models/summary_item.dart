@@ -8,6 +8,12 @@ class SummaryItem extends Equatable {
     required this.taxDeductable,
   });
 
+  const SummaryItem.empty()
+      : key = '',
+        amount = 0,
+        count = 0,
+        taxDeductable = false;
+
   factory SummaryItem.fromJson(Map<String, dynamic> json) {
     return SummaryItem(
       key: json['Key'] as String,
@@ -29,6 +35,19 @@ class SummaryItem extends Equatable {
   final double amount;
   final double count;
   final bool taxDeductable;
+
+  SummaryItem copyWith({
+    String? key,
+    double? amount,
+    double? count,
+    bool? taxDeductable,
+  }) =>
+      SummaryItem(
+        key: key ?? this.key,
+        amount: amount ?? this.amount,
+        count: count ?? this.count,
+        taxDeductable: taxDeductable ?? this.taxDeductable,
+      );
 
   @override
   List<Object> get props => [key, amount, count, taxDeductable];
