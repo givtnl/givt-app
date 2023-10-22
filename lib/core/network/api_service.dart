@@ -634,4 +634,21 @@ class APIService {
     }
     return jsonDecode(response.body) as List<dynamic>;
   }
+
+  Future<Map<String, dynamic>> fetchGivingGoal() async {
+    final url = Uri.https(apiURLAWS, '/giving-goal');
+
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
 }

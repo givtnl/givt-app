@@ -7,6 +7,7 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/overview/models/givt.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/external_donation.dart';
+import 'package:givt_app/features/personal_summary/overview/models/giving_goal.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -46,6 +47,8 @@ mixin GivtRepository {
     required String orderType,
     required String groupType,
   });
+
+  Future<GivingGoal> fetchGivingGoal();
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -210,5 +213,11 @@ class GivtRepositoryImpl with GivtRepository {
     required Map<String, dynamic> body,
   }) async {
     return apiClient.updateExternalDonation(id, body);
+  }
+
+  @override
+  Future<GivingGoal> fetchGivingGoal() async {
+    final decodedJson = await apiClient.fetchGivingGoal();
+    return GivingGoal.fromJson(decodedJson);
   }
 }
