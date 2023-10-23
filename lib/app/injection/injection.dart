@@ -9,6 +9,7 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
+import 'package:givt_app/features/children/family_history/family_history_logic/family_history_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
 import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
@@ -159,6 +160,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<CreateRecurringDonationRepository>(
       () => CreateRecurringDonationRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<FamilyHistoryRepository>(
+      () => FamilyHistoryRepositoryImpl(
         getIt(),
       ),
     )

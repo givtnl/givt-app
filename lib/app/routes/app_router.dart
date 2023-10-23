@@ -15,6 +15,7 @@ import 'package:givt_app/features/children/details/cubit/child_details_cubit.dar
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
+import 'package:givt_app/features/children/family_history/family_history_logic/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
@@ -142,9 +143,18 @@ class AppRouter {
           GoRoute(
             path: Pages.childrenOverview.path,
             name: Pages.childrenOverview.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => ChildrenOverviewCubit(getIt())
-                ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+            builder: (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => ChildrenOverviewCubit(getIt())
+                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+                ),
+                BlocProvider(
+                    create: (context) => FamilyHistoryCubit(getIt())
+                      ..fetchHistory('209fa5c5-c92a-43b3-ba28-abbb9a5fb6d6'
+                          // context.read<AuthCubit>().state.user.guid
+                          ))
+              ],
               child: const ChildrenOverviewPage(),
             ),
           ),
@@ -565,11 +575,11 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
-    
+
     if (state.queryParameters.containsKey('mediumid')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumid']!));
     }
-    
+
     if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;
