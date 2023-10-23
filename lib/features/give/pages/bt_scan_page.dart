@@ -36,11 +36,6 @@ class _BTScanPageState extends State<BTScanPage> {
       return;
     }
 
-    if (Platform.isAndroid) {
-      await LoggingInfo.instance.info('Trying to turn on bluetooth adapter');
-      await FlutterBluePlus.turnOn();
-    }
-
     // Set listen method for scan results
     FlutterBluePlus.scanResults.listen(
       _onPeripheralsDetectedData,
@@ -61,6 +56,10 @@ class _BTScanPageState extends State<BTScanPage> {
           await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
         case BluetoothAdapterState.off:
           await LoggingInfo.instance.info('Bluetooth adapter is off');
+          if (Platform.isAndroid) {
+            await LoggingInfo.instance.info('Trying to turn it on...');
+            await FlutterBluePlus.turnOn();
+          }
 
         // We don't want to handle other cases at the moment, so:
         // ignore: no_default_cases
