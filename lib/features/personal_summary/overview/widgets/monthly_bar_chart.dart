@@ -21,7 +21,7 @@ class MonthlyBarChart extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final height = 100 * amount / 1000;
+          final height = 70 * amount / 1000;
           return Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
