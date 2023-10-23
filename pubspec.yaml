@@ -21,7 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
-  flutter_blue_plus: ^1.19.0
+  flutter_blue_plus: ^1.20.4
   flutter_inappwebview: ^5.7.2+3
   flutter_localizations:
     sdk: flutter
@@ -79,5 +79,5 @@ flutter:
         - asset: assets/fonts/AvenirLTStd-Oblique.otf
         - asset: assets/fonts/AvenirLTStd-Roman.otf
   assets:
-    - assets/images/        
+    - assets/images/
     - assets/ca/

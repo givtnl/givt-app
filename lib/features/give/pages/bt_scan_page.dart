@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -28,19 +29,45 @@ class _BTScanPageState extends State<BTScanPage> {
   }
 
   Future<void> initBluetooth() async {
-    await FlutterBluePlus.startScan(
-      timeout: const Duration(seconds: 30),
-      androidUsesFineLocation: true,
-    );
-    if (Platform.isIOS) {
-      Future.delayed(const Duration(seconds: 2), () async {
-        await FlutterBluePlus.startScan(
-          timeout: const Duration(seconds: 30),
-          androidUsesFineLocation: true,
-        );
-      });
+    await LoggingInfo.instance.info('initBluetooth');
+
+    if (await FlutterBluePlus.isSupported == false) {
+      await LoggingInfo.instance.info('Bluetooth not supported on this device');
+      return;
     }
-    FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
+
+    if (Platform.isAndroid) {
+      await LoggingInfo.instance.info('Trying to turn on bluetooth adapter');
+      await FlutterBluePlus.turnOn();
+    }
+
+    // Set listen method for scan results
+    FlutterBluePlus.scanResults.listen(
+      _onPeripheralsDetectedData,
+      onError: (e) {
+        LoggingInfo.instance.error('Error while scanning for peripherals: $e');
+      },
+    );
+
+    // Listen to scan mode changes
+    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
+      switch (state) {
+        case BluetoothAdapterState.on:
+          await FlutterBluePlus.startScan(
+            timeout: const Duration(seconds: 30),
+            androidUsesFineLocation: true,
+          );
+        case BluetoothAdapterState.unauthorized:
+          await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
+        case BluetoothAdapterState.off:
+          await LoggingInfo.instance.info('Bluetooth adapter is off');
+
+        // We don't want to handle other cases at the moment, so:
+        // ignore: no_default_cases
+        default:
+          break;
+      }
+    });
 
     Future.delayed(const Duration(seconds: 10), () {
       if (!mounted) {
