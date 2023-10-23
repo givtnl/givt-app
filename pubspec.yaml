@@ -40,7 +40,7 @@ dependencies:
   intl: ^0.18.0
   local_auth: ^2.1.7
   logging: ^1.2.0
-  mobile_scanner: ^2.1.0
+  mobile_scanner: ^3.5.0
   package_info_plus: ^4.0.2
   permission_handler: ^10.4.3
   share_plus: ^7.0.2
