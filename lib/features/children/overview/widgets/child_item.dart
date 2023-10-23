@@ -39,7 +39,7 @@ class ChildItem extends StatelessWidget {
             color: AppTheme.childItemBackground,
             borderRadius: BorderRadius.circular(15),
           ),
-          width: double.infinity,
+          width: 80,
           height: profile.wallet.pending != 0 ? 100 : 75,
           child: Column(
             children: [
