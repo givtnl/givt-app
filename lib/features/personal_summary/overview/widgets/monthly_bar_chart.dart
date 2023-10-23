@@ -21,16 +21,21 @@ class MonthlyBarChart extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final height = constraints.maxHeight * amount / 1000;
+          final height = 100 * amount / 1000;
           return Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
-                height: height,
-                width: 20,
-                color: isCurrentMonth
-                    ? AppTheme.givtPurple.withOpacity(0.2)
-                    : AppTheme.givtPurple,
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 100,
+                ),
+                child: Container(
+                  height: height,
+                  width: 20,
+                  color: isCurrentMonth
+                      ? AppTheme.givtPurple.withOpacity(0.2)
+                      : AppTheme.givtPurple,
+                ),
               ),
               const SizedBox(height: 5),
               Text(

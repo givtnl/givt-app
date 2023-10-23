@@ -168,18 +168,43 @@ class PersonalSummaryBloc
     final today = DateTime.now();
 
     final fromDate = DateTime(today.year, today.month - 11).toIso8601String();
-    final pastTwelveMonths = await givtRepo.fetchSummary(
+    final tillDate = DateTime(
+      today.year,
+      today.month + 1,
+      today.day,
+    ).toIso8601String();
+    var pastTwelveMonths = await givtRepo.fetchSummary(
       guid: state.loggedInUserExt.guid,
       fromDate: fromDate,
-      tillDate: DateTime(
-        today.year,
-        today.month + 1,
-        today.day,
-      ).toIso8601String(),
+      tillDate: tillDate,
       orderType: SummaryOrderType.sum.type,
       groupType: SummaryGroupType.perMonth.type,
     );
-    return _checkForMissingMonths(pastTwelveMonths);
+
+    pastTwelveMonths = _checkForMissingMonths(pastTwelveMonths);
+
+    final externalDonations = await _fetchExternalDonations(
+      fromDate: fromDate,
+      tillDate: tillDate,
+    );
+
+    final pastTwelveMonthsWithExternalDonations = <SummaryItem>[];
+    for (var element in pastTwelveMonths) {
+      final donation = externalDonations.where(
+        (x) => x.creationDate.contains(element.key),
+      );
+      element = element.copyWith(
+        amount: element.amount +
+            donation.fold(
+              element.amount,
+              (previousValue, element) => previousValue + element.amount,
+            ),
+      );
+
+      pastTwelveMonthsWithExternalDonations.add(element);
+    }
+
+    return pastTwelveMonthsWithExternalDonations;
   }
 
   /// Adds missing months to the list of past twelve months
