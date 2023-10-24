@@ -25,6 +25,13 @@ mixin GivtRepository {
     required String tillDate,
   });
 
+  Future<List<SummaryItem>> fetchExternalDonationSummary({
+    required String fromDate,
+    required String tillDate,
+    required String orderType,
+    required String groupType,
+  });
+
   Future<bool> deleteExternalDonation(String id);
 
   Future<bool> deleteGivt(List<dynamic> ids);
@@ -191,6 +198,27 @@ class GivtRepositoryImpl with GivtRepository {
     };
     final decodedJson = await apiClient.fetchExternalDonations(params: params);
     return ExternalDonation.fromJsonList(
+      decodedJson,
+    );
+  }
+
+  @override
+  Future<List<SummaryItem>> fetchExternalDonationSummary({
+    required String fromDate,
+    required String tillDate,
+    required String orderType,
+    required String groupType,
+  }) async {
+    final params = {
+      'fromDate': fromDate,
+      'tillDate': tillDate,
+      'orderType': orderType,
+      'groupType': groupType,
+    };
+    final decodedJson = await apiClient.fetchExternalDonationsSummary(
+      params: params,
+    );
+    return SummaryItem.fromJsonList(
       decodedJson,
     );
   }

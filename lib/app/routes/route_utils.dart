@@ -25,6 +25,7 @@ enum Pages {
   unregister,
   createChild,
   personalSummary,
+  yearlyOverview,
   addExternalDonation,
   recurringDonations,
   childrenOverview
@@ -81,6 +82,8 @@ extension AppPageExtension on Pages {
         return 'create-child';
       case Pages.personalSummary:
         return 'personal-summary';
+      case Pages.yearlyOverview:
+        return 'yearly-overview';
       case Pages.addExternalDonation:
         return 'add-external-donation';
       case Pages.recurringDonations:
@@ -144,6 +147,8 @@ extension AppPageExtension on Pages {
         return 'CREATE-CHILD';
       case Pages.personalSummary:
         return 'PERSONAL-SUMMARY';
+      case Pages.yearlyOverview:
+        return 'YEARLY-OVERVIEW';
       case Pages.addExternalDonation:
         return 'ADD-EXTERNAL-DONATION';
       case Pages.recurringDonations:

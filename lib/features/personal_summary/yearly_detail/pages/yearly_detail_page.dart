@@ -1,8 +1,9 @@
 
+
 import 'package:flutter/material.dart';
 
-class YearDetailBottomSheet extends StatelessWidget {
-  const YearDetailBottomSheet({super.key});
+class YearlyDetailPage extends StatelessWidget {
+  const YearlyDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {

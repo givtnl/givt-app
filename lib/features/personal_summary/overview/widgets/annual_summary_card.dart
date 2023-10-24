@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/annual_bar_chart.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class AnnualSummaryCard extends StatelessWidget {
   const AnnualSummaryCard({super.key});
@@ -38,7 +40,12 @@ class AnnualSummaryCard extends StatelessWidget {
                     amount: item.amount,
                     currency: currency,
                     yearGoal: referenceValue.toStringAsFixed(2),
-                    onTap: () {},
+                    onTap: () => context.goNamed(
+                      Pages.yearlyOverview.name,
+                      queryParameters: {
+                        'year': item.key,
+                      },
+                    ),
                   ),
                 )
                 .toList(),

@@ -16,11 +16,22 @@ class SummaryItem extends Equatable {
 
   factory SummaryItem.fromJson(Map<String, dynamic> json) {
     return SummaryItem(
-      key: json['Key'] as String,
-      amount: json['Value'] as double,
-      count: json['Count'] as double,
-      taxDeductable:
-          json['TaxDeductable'] == null ? false : json['TaxDeductable'] as bool,
+      key: json.containsKey('Key')
+          ? json['Key'] as String
+          : json['key'] as String,
+      amount: json.containsKey('Value')
+          ? json['Value'] as double
+          : json['value'] as double,
+      count: json.containsKey('Count')
+          ? json['Count'] as double
+          : json['count'] as double,
+      taxDeductable: json.containsKey('TaxDeductable')
+          ? (json['TaxDeductable'] == null
+              ? false
+              : json['TaxDeductable'] as bool)
+          : (json['taxDeductable'] == null
+              ? false
+              : json['taxDeductable'] as bool),
     );
   }
   static List<SummaryItem> fromJsonList(List<dynamic> jsonList) => jsonList
