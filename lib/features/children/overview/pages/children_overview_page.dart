@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/widgets/child_item.dart';
+import 'package:givt_app/features/children/overview/widgets/children_overview_widget.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_intro_item_image.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -20,8 +20,11 @@ class ChildrenOverviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
+          //TODFO: POEditor
           'My Family',
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
         ),
         leading: BackButton(
           onPressed: () {
@@ -32,7 +35,18 @@ class ChildrenOverviewPage extends StatelessWidget {
           },
         ),
         actions: [
-          TextButton(
+          Padding(
+            padding: const EdgeInsets.only(right: 14),
+            child: TextButton.icon(
+              icon: const Icon(Icons.add),
+              label: Text(
+                //TODO: POEditor
+                'Add child',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.givtBlue,
+                    ),
+              ),
               onPressed: () {
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.addChildProfile,
@@ -43,12 +57,13 @@ class ChildrenOverviewPage extends StatelessWidget {
                   context.goNamed(Pages.giveVPC.name);
                 }
               },
-              child: Text('+ Add Child')),
+            ),
+          ),
         ],
         automaticallyImplyLeading: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: BlocConsumer<ChildrenOverviewCubit, ChildrenOverviewState>(
           listener: (context, state) {
             log('children overview state changed on $state');
@@ -73,17 +88,8 @@ class ChildrenOverviewPage extends StatelessWidget {
               } else {
                 return Column(
                   children: [
-                    // PROFILE ROW
-                    SingleChildScrollView(
-                      child: Row(
-                        children: state.profiles
-                            .map(
-                              (profile) => ChildItem(
-                                profile: profile,
-                              ),
-                            )
-                            .toList(),
-                      ),
+                    ChildrenOverviewWidget(
+                      profiles: state.profiles, //.take(2).toList(),
                     ),
 
                     /// HISTORY WIDGET GOES HERE
