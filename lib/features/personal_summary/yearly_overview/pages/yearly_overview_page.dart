@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/personal_summary/yearly_detail/pages/yearly_detail_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -33,7 +34,18 @@ class YearlyOverviewPage extends StatelessWidget {
               previousYear:
                   (int.parse(yearlyOverviewBlocState.year) - 1).toString(),
             ),
-            _buildDownloadAnnualOverviewButton(context: context, onTap: () {}),
+            _buildDownloadAnnualOverviewButton(
+              context: context,
+              onTap: () => showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                builder: (_) => BlocProvider.value(
+                  value: context.read<YearlyOverviewCubit>(),
+                  child: const YearlyDetailBottomSheet(),
+                ),
+              ),
+            ),
             SummaryCard(
               totalWithinGivt: yearlyOverviewBlocState.totalWithinGivt,
               totalOutsideGivt: yearlyOverviewBlocState.totalOutsideGivt,

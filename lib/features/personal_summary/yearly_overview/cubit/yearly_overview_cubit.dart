@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failures.dart';
@@ -105,6 +107,31 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
           status: YearlyOverviewStatus.error,
         ),
       );
+    }
+  }
+
+  Future<void> downloadSummary() async {
+    emit(state.copyWith(status: YearlyOverviewStatus.loading));
+    try {
+      final fromDate = DateTime.parse('${state.year}-01-01').toIso8601String();
+      final tillDate = DateTime.parse('${int.parse(state.year) + 1}-01-01')
+          .toIso8601String();
+      final isSuccess = await _givtRepository.downloadYearlyOverview(
+        body: {'fromDate': fromDate, 'tillDate': tillDate},
+      );
+      if (!isSuccess) {
+        emit(state.copyWith(status: YearlyOverviewStatus.error));
+        return;
+      }
+      emit(state.copyWith(status: YearlyOverviewStatus.summaryDownloaded));
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.body.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(state.copyWith(status: YearlyOverviewStatus.error));
+    } on SocketException {
+      emit(state.copyWith(status: YearlyOverviewStatus.noInternet));
     }
   }
 }

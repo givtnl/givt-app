@@ -1,6 +1,6 @@
 part of 'yearly_overview_cubit.dart';
 
-enum YearlyOverviewStatus { initial, loading, loaded, error }
+enum YearlyOverviewStatus { initial, summaryDownloaded, loading, loaded, error, noInternet }
 
 final class YearlyOverviewState extends Equatable {
   const YearlyOverviewState({
@@ -45,6 +45,24 @@ final class YearlyOverviewState extends Equatable {
         .fold(0.0, (previousValue, element) => previousValue + element);
 
     return totalTaxReliefOutsideGivt + totalTaxReliefWithinGivt;
+  }
+
+  double get taxReliefOutsideGivt {
+    return externalDonations
+        .where((element) => element.taxDeductable == true)
+        .fold(
+          0,
+          (previousValue, element) => previousValue + element.amount,
+        );
+  }
+
+  double get taxReliefWithinGivt {
+    return monthlyByOrganisation
+        .where((element) => element.taxDeductable == true)
+        .fold(
+          0,
+          (previousValue, element) => previousValue + element.amount,
+        );
   }
 
   List<SummaryItem> get monthlyTotalSummaryMergedList {

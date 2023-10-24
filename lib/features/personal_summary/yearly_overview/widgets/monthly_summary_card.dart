@@ -76,7 +76,7 @@ class MonthlySummaryCard extends StatelessWidget {
   Widget _buildCharts(BuildContext context) {
     return BlocBuilder<YearlyOverviewCubit, YearlyOverviewState>(
       builder: (context, state) {
-        if (state.status != YearlyOverviewStatus.loaded) {
+        if (state.status == YearlyOverviewStatus.loading) {
           return const Center(
             child: Padding(
               padding: EdgeInsets.all(8),
@@ -135,7 +135,7 @@ class MonthlySummaryCard extends StatelessWidget {
   }
 
   /// Returns a row with a title and a value
-  /// 
+  ///
   Widget _buildChart(
     SummaryItem viaGivt,
     double referenceValue,

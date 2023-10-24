@@ -22,7 +22,7 @@ class PerOrganisationCard extends StatelessWidget {
       title: locals.budgetYearlyOverviewPerOrganisation,
       child: BlocBuilder<YearlyOverviewCubit, YearlyOverviewState>(
         builder: (context, state) {
-          if (state.status != YearlyOverviewStatus.loaded) {
+          if (state.status == YearlyOverviewStatus.loading) {
             return const Center(
               child: Padding(
                 padding: EdgeInsets.all(8),
