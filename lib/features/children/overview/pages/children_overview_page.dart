@@ -9,6 +9,7 @@ import 'package:givt_app/features/children/overview/widgets/children_available_p
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,8 +37,7 @@ class ChildrenOverviewPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              //TODFO: POEditor
-              'My Family',
+              context.l10n.childrenMyFamily,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -58,8 +58,7 @@ class ChildrenOverviewPage extends StatelessWidget {
                   child: TextButton.icon(
                     icon: const Icon(Icons.add),
                     label: Text(
-                      //TODO: POEditor
-                      'Add child',
+                      context.l10n.childrenAddChild,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: AppTheme.givtBlue,

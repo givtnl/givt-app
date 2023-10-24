@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class NoChildrenPage extends StatelessWidget {
   const NoChildrenPage({
@@ -22,8 +23,7 @@ class NoChildrenPage extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onAddNewChildPressed,
             child: Text(
-              //TODO: POEditor
-              '+ Add a child profile',
+              context.l10n.childrenAddChildProfile,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
