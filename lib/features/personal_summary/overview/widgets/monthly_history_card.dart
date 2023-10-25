@@ -212,56 +212,61 @@ class MonthlyHistoryCard extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      locals.budgetSummaryGivt,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ...state.monthlyGivts.map(
-                      (e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(e.key),
-                          Text(
-                            '$countryCharacter ${Util.formatNumberComma(
-                              e.amount,
-                              country,
-                            )}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: size.height * 0.3,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        locals.budgetSummaryGivt,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      locals.budgetSummaryNotGivt,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    ...state.externalDonations.map(
-                      (e) => Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(e.description),
-                          Text(
-                            '$countryCharacter ${Util.formatNumberComma(
-                              e.amount,
-                              country,
-                            )}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                      ...state.monthlyGivts.map(
+                        (e) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(e.key),
+                            Text(
+                              '$countryCharacter ${Util.formatNumberComma(
+                                e.amount,
+                                country,
+                              )}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Text(
+                        locals.budgetSummaryNotGivt,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      ...state.externalDonations.map(
+                        (e) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(e.description),
+                            Text(
+                              '$countryCharacter ${Util.formatNumberComma(
+                                e.amount,
+                                country,
+                              )}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -288,7 +293,7 @@ class MonthlyHistoryCard extends StatelessWidget {
     required VoidCallback onPressed,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
