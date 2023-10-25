@@ -36,6 +36,7 @@ enum Pages {
   unregister(path: 'unregister', name: 'UNREGISTER'),
   createChild(path: 'create-child', name: 'CREATE-CHILD'),
   personalSummary(path: 'personal-summary', name: 'PERSONAL-SUMMARY'),
+  yearlyOverview(path: 'yearly-overview', name: 'YEARLY-OVERVIEW'),
   addExternalDonation(
     path: 'add-external-donation',
     name: 'ADD-EXTERNAL-DONATION',
