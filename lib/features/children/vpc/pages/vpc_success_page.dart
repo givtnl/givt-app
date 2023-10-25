@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,8 +13,7 @@ class VPCSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final locals = AppLocalizations.of(context);
+    final size = MediaQuery.sizeOf(context);
 
     return Scaffold(
       backgroundColor: AppTheme.vpcSuccessBackground,
@@ -37,14 +35,14 @@ class VPCSuccessPage extends StatelessWidget {
                   ),
                   SizedBox(height: size.height * 0.02),
                   Text(
-                    locals.vpcSuccessTitle,
+                    context.l10n.vpcSuccessTitle,
                     style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
-                    locals.vpcSuccessText,
+                    context.l10n.vpcSuccessText,
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: Colors.white,
                         ),
@@ -70,7 +68,7 @@ class VPCSuccessPage extends StatelessWidget {
                   backgroundColor: AppTheme.sliderIndicatorFilled,
                 ),
                 child: Text(
-                  locals.setupChildProfileButtonText,
+                  context.l10n.setupChildProfileButtonText,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         color: Colors.white,
                       ),

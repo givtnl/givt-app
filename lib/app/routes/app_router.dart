@@ -1,16 +1,22 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/app/routes/route_utils.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
 import 'package:givt_app/features/children/create_child/pages/create_child_page.dart';
+import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
+import 'package:givt_app/features/children/details/pages/child_details_page.dart';
+import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
+import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/features/children/vpc/pages/give_vpc_page.dart';
@@ -163,6 +169,57 @@ class AppRouter {
                 ..fetchChildren(context.read<AuthCubit>().state.user.guid),
               child: const ChildrenOverviewPage(),
             ),
+          ),
+          GoRoute(
+            path: Pages.childDetails.path,
+            name: Pages.childDetails.name,
+            builder: (context, state) {
+              final extras = state.extra! as List<dynamic>;
+              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childProfile = extras[1] as Profile;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: childrenOverviewCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => ChildDetailsCubit(
+                      getIt(),
+                      childProfile,
+                    )..fetchChildDetails(),
+                  )
+                ],
+                child: const ChildDetailsPage(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.editChild.path,
+            name: Pages.editChild.name,
+            builder: (context, state) {
+              final extras = state.extra! as List<dynamic>;
+              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childDetailsCubit = extras[1] as ChildDetailsCubit;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: childDetailsCubit,
+                  ),
+                  BlocProvider.value(
+                    value: childrenOverviewCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => EditChildCubit(
+                      getIt(),
+                      AppLocalizations.of(context),
+                      (childDetailsCubit.state as ChildDetailsFetchedState)
+                          .profileDetails,
+                    ),
+                  ),
+                ],
+                child: const EditChildPage(),
+              );
+            },
           ),
           GoRoute(
             path: Pages.giveVPC.path,
@@ -530,6 +587,11 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
+    
+    if (state.queryParameters.containsKey('mediumid')) {
+      code = base64Encode(utf8.encode(state.queryParameters['mediumid']!));
+    }
+    
     if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;

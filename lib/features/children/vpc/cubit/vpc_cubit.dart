@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/children/vpc/models/vps_response.dart';
 import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -23,6 +24,7 @@ class VPCCubit extends Cubit<VPCState> {
           await _vpcRepository.getVerifiableParentalConsentURL(guid);
       emit(VPCWebViewState(response: response));
     } catch (error) {
+      await LoggingInfo.instance.error(error.toString());
       emit(VPCErrorState(error: error.toString()));
     }
   }

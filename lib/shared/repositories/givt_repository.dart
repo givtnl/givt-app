@@ -3,6 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:givt_app/core/failures/failures.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/givt_transaction.dart';
 import 'package:givt_app/features/overview/models/givt.dart';
@@ -117,33 +119,48 @@ class GivtRepositoryImpl with GivtRepository {
 
   @override
   Future<void> syncOfflineGivts() async {
-    final givtsString = prefs.getString(
-      GivtTransaction.givtTransactions,
-    );
-    if (givtsString == null) {
-      return;
-    }
-    if (givtsString.isEmpty) {
-      return;
-    }
+    try {
+      final givtsString = prefs.getString(
+        GivtTransaction.givtTransactions,
+      );
+      if (givtsString == null) {
+        return;
+      }
+      if (givtsString.isEmpty) {
+        return;
+      }
 
-    final givts = jsonDecode(givtsString) as Map<String, dynamic>;
-    if (givts.isEmpty) {
-      return;
+      final givts = jsonDecode(givtsString) as Map<String, dynamic>;
+      if (givts.isEmpty) {
+        return;
+      }
+      if ((givts['donations'] as List<dynamic>).isEmpty) {
+        return;
+      }
+      final firstTransaction = GivtTransaction.fromJsonList(
+        givts['donations'] as List<dynamic>,
+      ).first;
+      await apiClient.submitGivts(
+        body: givts,
+        guid: firstTransaction.guid,
+      );
+      await prefs.remove(
+        GivtTransaction.givtTransactions,
+      );
+    } on GivtServerFailure catch (e, stackTrace) {
+      final statusCode = e.statusCode;
+      final body = e.body;
+      await LoggingInfo.instance.error(
+        body.toString(),
+        methodName: stackTrace.toString(),
+      );
+      if (statusCode == 417) {
+        await prefs.remove(
+          GivtTransaction.givtTransactions,
+        );
+      }
+      rethrow;
     }
-    if ((givts['donations'] as List<dynamic>).isEmpty) {
-      return;
-    }
-    final firstTransaction = GivtTransaction.fromJsonList(
-      givts['donations'] as List<dynamic>,
-    ).first;
-    await apiClient.submitGivts(
-      body: givts,
-      guid: firstTransaction.guid,
-    );
-    await prefs.remove(
-      GivtTransaction.givtTransactions,
-    );
   }
 
   @override

@@ -38,6 +38,15 @@ class AppTheme {
 
   static const vpcSuccessBackground = Color(0xFF7DBDA1);
 
+  static const childMonsterPurple = Color(0xFFAD81E1);
+  static const childMonsterGreen = Color(0xFFA7CB42);
+  static const childMonsterOrange = Color(0xFFFEAD1D);
+  static const childMonsterBlue = Color(0xFF69A9D3);
+
+  static const childGivingAllowanceCardBorder = Color(0xFFECF1F1);
+
+  static const childGivingAllowanceHint = Color(0xFF617793);
+
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
     fontFamily: 'AvenirLTStd',

@@ -247,13 +247,7 @@ class OverviewPage extends StatelessWidget {
     Color? color,
     String? giftAidTitle,
   }) {
-    final currency = NumberFormat.simpleCurrency(
-      name: country == Country.us.countryCode
-          ? 'USD'
-          : Country.unitedKingdomCodes().contains(country)
-              ? 'GBP'
-              : 'EUR',
-    );
+    final currencySymbol = Util.getCurrencySymbol(countryCode: country);
     final headerTitle = timesStamp == null
         ? giftAidTitle
         : "${Util.getMonthName(
@@ -275,7 +269,7 @@ class OverviewPage extends StatelessWidget {
             ),
           ),
           Text(
-            '${currency.currencySymbol} ${Util.formatNumberComma(amount, Country.fromCode(country))}',
+            '$currencySymbol ${Util.formatNumberComma(amount, Country.fromCode(country))}',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 18,

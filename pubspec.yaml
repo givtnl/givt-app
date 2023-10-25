@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.0.9
+version: 4.0.11
 publish_to: none
 
 environment:
@@ -21,7 +21,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
-  flutter_blue_plus: ^1.15.8
+  flutter_blue_plus: ^1.19.0
   flutter_inappwebview: ^5.7.2+3
   flutter_localizations:
     sdk: flutter
@@ -38,7 +38,7 @@ dependencies:
   iban: ^1.0.1
   internet_connection_checker_plus: ^1.0.1
   intl: ^0.18.0
-  local_auth: ^2.1.6
+  local_auth: ^2.1.7
   logging: ^1.2.0
   mobile_scanner: ^2.1.0
   package_info_plus: ^4.0.2

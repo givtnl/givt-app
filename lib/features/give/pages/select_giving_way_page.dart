@@ -106,21 +106,7 @@ class SelectGivingWayPage extends StatelessWidget {
                 }
 
                 if (state.status == GiveStatus.beaconNotActive) {
-                  showDialog<void>(
-                    context: context,
-                    builder: (_) => WarningDialog(
-                      title: context.l10n.invalidQRcodeTitle,
-                      content: context.l10n.invalidQRcodeMessage(
-                        state.organisation.organisationName!,
-                      ),
-                      onConfirm: () => context.read<GiveBloc>().add(
-                            GiveOrganisationSelected(
-                              state.organisation.mediumId!,
-                              user.guid,
-                            ),
-                          ),
-                    ),
-                  );
+                  _buildInvalidQRCodeDialog(context, state, user.guid);
                 }
               },
               child: Column(
@@ -170,6 +156,47 @@ class SelectGivingWayPage extends StatelessWidget {
                     image: 'assets/images/select_location.png',
                   ),
                 ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _buildInvalidQRCodeDialog(
+    BuildContext context,
+    GiveState state,
+    String guid,
+  ) {
+    return showDialog<void>(
+      context: context,
+      builder: (_) => WarningDialog(
+        title: context.l10n.invalidQRcodeTitle,
+        content: context.l10n.invalidQRcodeMessage(
+          state.organisation.organisationName!,
+        ),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => context.pop(),
+            child: Text(
+              context.l10n.cancel,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          CupertinoDialogAction(
+            onPressed: () => context.read<GiveBloc>().add(
+                  GiveOrganisationSelected(
+                    state.organisation.mediumId!,
+                    guid,
+                  ),
+                ),
+            child: Text(
+              context.l10n.yesPlease,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
