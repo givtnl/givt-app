@@ -21,7 +21,7 @@ class GivingGoalRepositoryImpl with GivingGoalRepository {
   @override
   Future<GivingGoal> fetchGivingGoal() async {
     final decodedJson = await apiClient.fetchGivingGoal();
-    return GivingGoal.fromJson(decodedJson);
+    return GivingGoal.fromJson(decodedJson['result'] as Map<String, dynamic>);
   }
 
   @override

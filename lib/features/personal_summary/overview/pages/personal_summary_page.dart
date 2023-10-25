@@ -70,7 +70,17 @@ class PersonalSummary extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         NarrowCard(isLeft: true, userCountry: user.country),
-                        NarrowCard(isLeft: false, userCountry: user.country),
+                        Visibility(
+                          visible: state.givingGoal.amount != 0,
+                          child: const MonthlyGivingGoalProgress(),
+                        ),
+                        Visibility(
+                          visible: state.givingGoal.amount == 0,
+                          child: NarrowCard(
+                            isLeft: false,
+                            userCountry: user.country,
+                          ),
+                        ),
                       ],
                     ),
                   ),

@@ -20,6 +20,13 @@ class GivingGoal extends Equatable {
   final int amount;
   final int periodicity;
 
+  double get monthlyGivingGoal {
+    if (periodicity == 0) {
+      return amount.toDouble();
+    }
+    return amount.toDouble() / 12;
+  }
+
   GivingGoal copyWith({
     int? amount,
     int? periodicity,

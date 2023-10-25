@@ -696,7 +696,12 @@ class APIService {
   Future<Map<String, dynamic>> fetchGivingGoal() async {
     final url = Uri.https(apiURLAWS, '/giving-goal');
 
-    final response = await client.get(url);
+    final response = await client.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
     if (response.statusCode >= 400) {
       throw GivtServerFailure(

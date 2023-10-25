@@ -14,6 +14,7 @@ class PersonalSummaryState extends Equatable {
     this.status = PersonalSummaryStatus.initial,
     this.loggedInUserExt = const UserExt.empty(),
     this.error = '',
+    this.givingGoal = const GivingGoal.empty(),
     this.monthlyGivts = const [],
     this.pastTwelveMonths = const [],
     this.externalDonations = const [],
@@ -23,6 +24,7 @@ class PersonalSummaryState extends Equatable {
   final UserExt loggedInUserExt;
   final String error;
   final String dateTime;
+  final GivingGoal givingGoal;
   final List<SummaryItem> monthlyGivts;
   final List<SummaryItem> annualGivts;
   final List<SummaryItem> pastTwelveMonths;
@@ -37,6 +39,7 @@ class PersonalSummaryState extends Equatable {
     UserExt? loggedInUserExt,
     String? error,
     String? dateTime,
+    GivingGoal? givingGoal,
     List<SummaryItem>? monthlyGivts,
     List<SummaryItem>? annualGivts,
     List<SummaryItem>? pastTwelveMonths,
@@ -51,6 +54,7 @@ class PersonalSummaryState extends Equatable {
       annualGivts: annualGivts ?? this.annualGivts,
       pastTwelveMonths: pastTwelveMonths ?? this.pastTwelveMonths,
       externalDonations: externalDonations ?? this.externalDonations,
+      givingGoal: givingGoal ?? this.givingGoal,
     );
   }
 
@@ -64,5 +68,6 @@ class PersonalSummaryState extends Equatable {
         annualGivts,
         pastTwelveMonths,
         externalDonations,
+        givingGoal,
       ];
 }

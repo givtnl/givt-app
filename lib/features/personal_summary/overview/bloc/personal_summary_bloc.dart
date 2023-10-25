@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/models/models.dart';
+import 'package:givt_app/features/personal_summary/overview/models/giving_goal.dart';
 import 'package:givt_app/features/personal_summary/overview/models/summary_group_type.dart';
 import 'package:givt_app/features/personal_summary/overview/models/summary_order_type.dart';
 import 'package:givt_app/shared/models/summary_item.dart';
@@ -19,6 +21,7 @@ class PersonalSummaryBloc
     extends Bloc<PersonalSummaryEvent, PersonalSummaryState> {
   PersonalSummaryBloc({
     required this.givtRepo,
+    required this.givingGoalRepository,
     required UserExt loggedInUserExt,
   }) : super(
           PersonalSummaryState(
@@ -29,8 +32,11 @@ class PersonalSummaryBloc
         ) {
     on<PersonalSummaryInit>(_onPersonalSummaryInit);
     on<PersonalSummaryMonthChange>(_onPersonalSummaryMonthChange);
+    on<PersonalSummaryGoalRemove>(_onPersonalSummaryGoalRemove);
+    on<PersonalSummaryGoalAdd>(_onPersonalSummaryGoalAdd);
   }
   final GivtRepository givtRepo;
+  final GivingGoalRepository givingGoalRepository;
 
   FutureOr<void> _onPersonalSummaryInit(
     PersonalSummaryInit event,
@@ -54,6 +60,8 @@ class PersonalSummaryBloc
         fromDate: firstDayOfMonth.toIso8601String(),
         tillDate: untilDate.toIso8601String(),
       );
+
+      final givingGoal = await _fetchGivingGoal();
       emit(
         state.copyWith(
           status: PersonalSummaryStatus.success,
@@ -61,6 +69,7 @@ class PersonalSummaryBloc
           annualGivts: annualSummaryGivts,
           pastTwelveMonths: await _fetchPastTwelveMonths(),
           externalDonations: externalDonations,
+          givingGoal: givingGoal,
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
@@ -256,5 +265,76 @@ class PersonalSummaryBloc
     });
 
     return externalDonations;
+  }
+
+  /// Fetches the giving goal of the user
+  Future<GivingGoal> _fetchGivingGoal() async =>
+      givingGoalRepository.fetchGivingGoal();
+
+  FutureOr<void> _onPersonalSummaryGoalRemove(
+    PersonalSummaryGoalRemove event,
+    Emitter<PersonalSummaryState> emit,
+  ) async {
+    try {
+      await givingGoalRepository.removeGivingGoal();
+      emit(
+        state.copyWith(
+          givingGoal: const GivingGoal.empty(),
+        ),
+      );
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.error,
+          error: e.body.toString(),
+        ),
+      );
+    } on SocketException {
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.noInternet,
+        ),
+      );
+    }
+  }
+
+  FutureOr<void> _onPersonalSummaryGoalAdd(
+    PersonalSummaryGoalAdd event,
+    Emitter<PersonalSummaryState> emit,
+  ) async {
+    try {
+      final givingGoal = await givingGoalRepository.addGivingGoal(
+        body: GivingGoal(
+          amount: event.amount,
+          periodicity: event.periodicity,
+        ).toJson(),
+      );
+      emit(
+        state.copyWith(
+          givingGoal: givingGoal,
+        ),
+      );
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.error,
+          error: e.body.toString(),
+        ),
+      );
+    } on SocketException {
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.noInternet,
+        ),
+      );
+    }
   }
 }
