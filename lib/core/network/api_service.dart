@@ -726,6 +726,9 @@ class APIService {
     final response = await client.post(
       url,
       body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     );
 
     if (response.statusCode >= 400) {
@@ -743,7 +746,13 @@ class APIService {
   Future<bool> removeGivingGoal() {
     final url = Uri.https(apiURLAWS, '/giving-goal');
 
-    return client.delete(url, body: '').then((response) {
+    return client.delete(
+      url,
+      body: '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    ).then((response) {
       if (response.statusCode >= 400) {
         throw GivtServerFailure(
           statusCode: response.statusCode,

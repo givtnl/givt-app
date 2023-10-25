@@ -83,6 +83,12 @@ class PersonalSummaryBloc
           error: e.body.toString(),
         ),
       );
+    } on SocketException {
+      emit(
+        state.copyWith(
+          status: PersonalSummaryStatus.noInternet,
+        ),
+      );
     }
   }
 
@@ -268,8 +274,21 @@ class PersonalSummaryBloc
   }
 
   /// Fetches the giving goal of the user
-  Future<GivingGoal> _fetchGivingGoal() async =>
-      givingGoalRepository.fetchGivingGoal();
+  Future<GivingGoal> _fetchGivingGoal() async {
+    try {
+      final givingGoal = await givingGoalRepository.fetchGivingGoal();
+      return givingGoal;
+    } on GivtServerFailure catch (e) {
+      /// Because the server is throwing a 404
+      /// when there's no giving goal set
+      /// we catch the error and
+      /// return an empty giving goal model in the state
+      if (e.statusCode == 404) {
+        return const GivingGoal.empty();
+      }
+      rethrow;
+    }
+  }
 
   FutureOr<void> _onPersonalSummaryGoalRemove(
     PersonalSummaryGoalRemove event,
