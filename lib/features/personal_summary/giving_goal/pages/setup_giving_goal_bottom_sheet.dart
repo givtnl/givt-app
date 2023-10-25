@@ -46,16 +46,19 @@ class _SetupGivingGoalBottomSheetState
       bottomSheet: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          TextButton(
-            onPressed: () => context
-                .read<PersonalSummaryBloc>()
-                .add(const PersonalSummaryGoalRemove()),
-            child: Text(
-              locals.budgetGivingGoalRemove,
-              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                    decoration: TextDecoration.underline,
-                    color: AppTheme.givtPurple,
-                  ),
+          Visibility(
+            visible: personalSummaryState.givingGoal.monthlyGivingGoal != 0,
+            child: TextButton(
+              onPressed: () => context
+                  .read<PersonalSummaryBloc>()
+                  .add(const PersonalSummaryGoalRemove()),
+              child: Text(
+                locals.budgetGivingGoalRemove,
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      decoration: TextDecoration.underline,
+                      color: AppTheme.givtPurple,
+                    ),
+              ),
             ),
           ),
           Visibility(
