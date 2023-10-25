@@ -715,7 +715,7 @@ class APIService {
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
-  Future<Map<String, dynamic>> addGivingGoal({
+  Future<bool> addGivingGoal({
     required Map<String, dynamic> body,
   }) async {
     final url = Uri.https(
@@ -740,7 +740,7 @@ class APIService {
       );
     }
 
-    return jsonDecode(response.body) as Map<String, dynamic>;
+    return response.statusCode == 201;
   }
 
   Future<bool> removeGivingGoal() {

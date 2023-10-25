@@ -325,6 +325,7 @@ class PersonalSummaryBloc
     PersonalSummaryGoalAdd event,
     Emitter<PersonalSummaryState> emit,
   ) async {
+    emit(state.copyWith(status: PersonalSummaryStatus.loading));
     try {
       final givingGoal = await givingGoalRepository.addGivingGoal(
         body: GivingGoal(
@@ -334,6 +335,7 @@ class PersonalSummaryBloc
       );
       emit(
         state.copyWith(
+          status: PersonalSummaryStatus.success,
           givingGoal: givingGoal,
         ),
       );

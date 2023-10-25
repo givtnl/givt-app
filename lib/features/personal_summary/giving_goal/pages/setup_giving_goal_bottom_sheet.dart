@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/widgets/widgets.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -49,9 +50,11 @@ class _SetupGivingGoalBottomSheetState
           Visibility(
             visible: personalSummaryState.givingGoal.monthlyGivingGoal != 0,
             child: TextButton(
-              onPressed: () => context
-                  .read<PersonalSummaryBloc>()
-                  .add(const PersonalSummaryGoalRemove()),
+              onPressed: () {
+                context
+                    .read<PersonalSummaryBloc>()
+                    .add(const PersonalSummaryGoalRemove());
+              },
               child: Text(
                 locals.budgetGivingGoalRemove,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
@@ -83,17 +86,35 @@ class _SetupGivingGoalBottomSheetState
           ),
         ],
       ),
-      child: Column(
-        children: [
-          CardBanner(
-            title: locals.budgetGivingGoalInfoBold,
-            subtitle: locals.budgetGivingGoalInfo,
-          ),
-          _buildFieldTitle(locals.budgetGivingGoalMine),
-          _buildTextField(context, country),
-          _buildFieldTitle(locals.budgetGivingGoalTime),
-          _buildPeriodDropdown(context: context),
-        ],
+      child: BlocListener<PersonalSummaryBloc, PersonalSummaryState>(
+        listener: (context, state) {
+          if (state.status == PersonalSummaryStatus.noInternet) {
+            showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: locals.noInternetConnectionTitle,
+                content: locals.noInternet,
+                onConfirm: () => context.pop(),
+              ),
+            );
+          }
+
+          if (state.status == PersonalSummaryStatus.success) {
+            context.pop();
+          }
+        },
+        child: Column(
+          children: [
+            CardBanner(
+              title: locals.budgetGivingGoalInfoBold,
+              subtitle: locals.budgetGivingGoalInfo,
+            ),
+            _buildFieldTitle(locals.budgetGivingGoalMine),
+            _buildTextField(context, country),
+            _buildFieldTitle(locals.budgetGivingGoalTime),
+            _buildPeriodDropdown(context: context),
+          ],
+        ),
       ),
     );
   }
@@ -105,9 +126,6 @@ class _SetupGivingGoalBottomSheetState
   ) {
     final locals = context.l10n;
     return TextFormField(
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-      ),
       style: Theme.of(context).textTheme.bodyLarge,
       controller: amountController,
       inputFormatters: [
@@ -122,7 +140,7 @@ class _SetupGivingGoalBottomSheetState
         if (newValue == null) {
           return '';
         }
-        final amount = double.parse(newValue.replaceAll(',', '.'));
+        final amount = int.parse(newValue);
         if (amount <= 0 || amount > 99999) {
           return '';
         }
@@ -178,13 +196,12 @@ class _SetupGivingGoalBottomSheetState
   }
 
   void onSave(BuildContext context) {
-    // final state = context.read<PersonalSummaryBloc>().state;
-    // context.read<PersonalSummaryBloc>().add(
-    //       PersonalSummaryEvent.setGivingGoal(
-    //         state.givingGoal!,
-    //       ),
-    //     );
-    context.pop();
+    context.read<PersonalSummaryBloc>().add(
+          PersonalSummaryGoalAdd(
+            amount: int.parse(amountController.text),
+            periodicity: frequency,
+          ),
+        );
   }
 
   Widget _buildFieldTitle(

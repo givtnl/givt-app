@@ -28,8 +28,9 @@ class GivingGoalRepositoryImpl with GivingGoalRepository {
   Future<GivingGoal> addGivingGoal({
     required Map<String, dynamic> body,
   }) async {
-    final decodedJson = await apiClient.addGivingGoal(body: body);
-    return GivingGoal.fromJson(decodedJson);
+    await apiClient.addGivingGoal(body: body);
+    
+    return GivingGoal.fromJson(body);
   }
 
   @override
