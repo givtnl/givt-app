@@ -709,4 +709,45 @@ class APIService {
 
     return jsonDecode(response.body) as Map<String, dynamic>;
   }
+
+  Future<Map<String, dynamic>> addGivingGoal({
+    required Map<String, dynamic> body,
+  }) async {
+    final url = Uri.https(
+      apiURLAWS,
+      '/giving-goal',
+    );
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
+  Future<bool> removeGivingGoal() {
+    final url = Uri.https(apiURLAWS, '/giving-goal');
+
+    return client.delete(url, body: '').then((response) {
+      if (response.statusCode >= 400) {
+        throw GivtServerFailure(
+          statusCode: response.statusCode,
+          body: response.body.isNotEmpty
+              ? jsonDecode(response.body) as Map<String, dynamic>
+              : null,
+        );
+      }
+      return response.statusCode == 200;
+    });
+  }
 }

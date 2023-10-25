@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
-import 'package:givt_app/features/personal_summary/add_external_donation/widgets/add_edit_external_donation_form.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/widgets/widgets.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
