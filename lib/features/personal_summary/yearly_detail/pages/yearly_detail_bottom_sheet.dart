@@ -169,11 +169,52 @@ class YearlyDetailBottomSheet extends StatelessWidget {
                 )}',
                 backgroundColor: AppTheme.givtLightGreen,
               ),
+              _buildTipCard(context),
               const SizedBox(
                 height: 80,
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTipCard(BuildContext context) {
+    final locals = context.l10n;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              'assets/images/givy_money.png',
+              height: 60,
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    locals.budgetYearlyOverviewDetailTipBold,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                    textAlign: TextAlign.left,
+                  ),
+                  Text(
+                    locals.budgetYearlyOverviewDetailTipNormal,
+                    softWrap: true,
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
