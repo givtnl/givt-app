@@ -12,6 +12,13 @@ on:
         required: true
       LOGIT_API_KEY:
           required: true
+    inputs:
+      ruby-version:
+        required: true
+        type: string
+      flutter-version:
+        required: true
+        type: string
 
 jobs:
   build-ios: 
@@ -50,7 +57,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1.118.0
         with: 
-          ruby-version: '3.0'
+          ruby-version: ${{ inputs.ruby-version }}
           bundler-cache: true
 
       - name: Auth codesigning
@@ -62,6 +69,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version: ${{ inputs.flutter-version }}
 
       - name: Run Fastlane
         uses: maierj/fastlane-action@v2.3.0
