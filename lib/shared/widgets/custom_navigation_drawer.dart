@@ -90,7 +90,7 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
           _buildMenuItem(
             isVisible: showFamilyItem,
-            title: locals.familyMenuItem,
+            title: locals.childrenMyFamily,
             icon: Icons.family_restroom_rounded,
             onTap: () => AuthUtils.checkToken(
               context,
