@@ -51,7 +51,7 @@ class _SetupGivingGoalBottomSheetState
                 .read<PersonalSummaryBloc>()
                 .add(const PersonalSummaryGoalRemove()),
             child: Text(
-              locals.budgetSummaryGivingGoalEdit,
+              locals.budgetGivingGoalRemove,
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     decoration: TextDecoration.underline,
                     color: AppTheme.givtPurple,
