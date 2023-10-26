@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-class DecisionResponse extends Equatable {
-  const DecisionResponse({
+class ParentalApprovalResponse extends Equatable {
+  const ParentalApprovalResponse({
     required this.isError,
     required this.errorMessage,
     required this.detailResponse,
   });
 
-  factory DecisionResponse.fromMap(Map<String, dynamic> map) {
+  factory ParentalApprovalResponse.fromMap(Map<String, dynamic> map) {
     final holder = map['item'] as Map<String, dynamic>;
-    return DecisionResponse(
+    return ParentalApprovalResponse(
       isError: map['isError'] as bool,
       errorMessage: map['errorMessage'] as String,
       detailResponse: DetailResponse.fromMap(

@@ -65,13 +65,15 @@ class FamilyHistory extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     if (state.history[index].type == HistoryTypes.allowance) {
                       return AllowanceItemWidget(
-                          allowance: state.history[index] as Allowance);
+                        allowance: state.history[index] as Allowance,
+                      );
                     }
                     return Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: size.width * 0.05),
                       child: DonationItemWidget(
-                          donation: state.history[index] as ChildDonation),
+                        donation: state.history[index] as ChildDonation,
+                      ),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {

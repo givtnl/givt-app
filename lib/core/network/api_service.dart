@@ -210,7 +210,9 @@ class APIService {
     String email,
   ) async {
     final url = Uri.https(
-        apiURL, '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate');
+      apiURL,
+      '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate',
+    );
 
     final response = await client.post(
       url,
@@ -494,7 +496,7 @@ class APIService {
     return itemMap;
   }
 
-  Future<Map<String, dynamic>> submitChildTransactionDecision({
+  Future<Map<String, dynamic>> submitParentalApprovalDecision({
     required String childId,
     required Map<String, dynamic> body,
   }) async {
@@ -507,7 +509,6 @@ class APIService {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
       },
       body: jsonEncode(body),
     );
@@ -515,7 +516,9 @@ class APIService {
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
+        body: response.body.isEmpty
+            ? {}
+            : jsonDecode(response.body) as Map<String, dynamic>,
       );
     } else {
       return jsonDecode(response.body) as Map<String, dynamic>;
