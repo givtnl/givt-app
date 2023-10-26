@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class ParentalApprovalDeclinedPage extends StatelessWidget {
@@ -18,8 +19,7 @@ class ParentalApprovalDeclinedPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          //TODO: POEditor
-          "You have declined ${donation.name}' request",
+          '${context.l10n.childParentalApprovalDeclinedTitlePrefix}${donation.name}${context.l10n.childParentalApprovalDeclinedTitlePostfix}',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,
@@ -38,8 +38,7 @@ class ParentalApprovalDeclinedPage extends StatelessWidget {
           height: 35,
         ),
         Text(
-          //TODO: POEditor
-          'Maybe next time?',
+          context.l10n.childParentalApprovalDeclinedSubTitle,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,

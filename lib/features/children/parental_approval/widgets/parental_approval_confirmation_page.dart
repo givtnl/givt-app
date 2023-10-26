@@ -31,8 +31,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          //TODO: POEditor
-          '${donation.name} would love to give',
+          '${donation.name}${context.l10n.childParentalApprovalConfirmationTitle}',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,
@@ -64,8 +63,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          //TODO: POEditor
-          'to ${donation.organizationName} on ${donation.date.formatDate(context.l10n)}',
+          '${context.l10n.childParentalApprovalTo}${donation.organizationName}${context.l10n.childParentalApprovalOn}${donation.date.formatDate(context.l10n)}',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,
@@ -80,8 +78,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
             TextButton(
               onPressed: () => _submitDecision(context, DonationState.declined),
               child: Text(
-                //TODO: POEditor
-                'Decline',
+                context.l10n.childParentalApprovalConfirmationDecline,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppTheme.childParentalApprovalDecline,
                       fontWeight: FontWeight.bold,
@@ -100,8 +97,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  //TODO: POEditor
-                  'Approve',
+                  context.l10n.childParentalApprovalConfirmationApprove,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppTheme.childHistoryApproved,
                         fontWeight: FontWeight.bold,
