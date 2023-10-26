@@ -5,6 +5,7 @@ class Allowance extends HistoryItem {
     required super.amount,
     required super.date,
     required super.type,
+    required super.name,
   });
 
   @override
@@ -15,10 +16,13 @@ class Allowance extends HistoryItem {
           amount: 0,
           date: DateTime.now(),
           type: HistoryTypes.donation,
+          name: '',
         );
 
   factory Allowance.fromMap(Map<String, dynamic> map) {
     return Allowance(
+        name: 'Name',
+        // map['donor']['firstName'].toString(),
         amount: double.tryParse(map['amount'].toString()) ?? 0,
         date:
             DateTime.tryParse(map['donationDate'].toString()) ?? DateTime.now(),
@@ -31,6 +35,7 @@ class Allowance extends HistoryItem {
       'amount': amount,
       'donationDate': date.toString(),
       'donationType': type.value,
+      'donor': {'firstName': name}
     };
   }
 }

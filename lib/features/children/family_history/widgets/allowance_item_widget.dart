@@ -21,16 +21,17 @@ class AllowanceItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '+ \$${allowance.amount.toStringAsFixed(2)}',
+                '+ \$${allowance.amount.toStringAsFixed(2)} to ${allowance.name}',
                 style: const TextStyle(
                     color: Color(0xFF06509B),
                     fontFamily: 'Roboto',
+                    fontWeight: FontWeight.w800,
                     fontSize: 16),
               ),
               SizedBox(
                 width: size.width * 0.70,
                 child: const Text(
-                  'Awesome! Your parents added more allowance',
+                  'Yay! Johnny can continue making a difference',
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,

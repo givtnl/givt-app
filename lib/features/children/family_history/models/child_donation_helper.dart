@@ -51,7 +51,7 @@ enum DonationState {
       case DonationState.approved:
         return const Color(0xFF006C47);
       case DonationState.pending:
-        return const Color(0xFF48260C);
+        return const Color(0xFFA77F2C);
       case DonationState.declined:
         return const Color(0xFF780F0F);
     }

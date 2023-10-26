@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/children/family_history/family_history.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/widgets/children_overview_widget.dart';
 
@@ -19,7 +20,7 @@ class ChildrenAvailablePage extends StatelessWidget {
         ),
 
         /// HISTORY WIDGET GOES HERE
-        /// FamilyHistory(children: state.profiles)
+        FamilyHistory(children: profiles)
       ],
     );
   }

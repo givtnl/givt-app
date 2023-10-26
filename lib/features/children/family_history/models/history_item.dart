@@ -5,14 +5,16 @@ abstract class HistoryItem extends Equatable {
     required this.amount,
     required this.date,
     required this.type,
+    required this.name,
   });
 
   final double amount;
   final DateTime date;
   final HistoryTypes type;
+  final String name;
 
   @override
-  List<Object?> get props => [amount, date, type];
+  List<Object?> get props => [amount, date, type, name];
 }
 
 enum HistoryTypes {

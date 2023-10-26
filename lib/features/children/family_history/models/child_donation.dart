@@ -9,6 +9,7 @@ class ChildDonation extends HistoryItem {
     required this.state,
     required this.medium,
     required super.type,
+    required super.name,
   });
 
   ChildDonation.empty()
@@ -19,10 +20,13 @@ class ChildDonation extends HistoryItem {
           state: DonationState.pending,
           medium: DonationMediumType.qr,
           type: HistoryTypes.donation,
+          name: '',
         );
 
   factory ChildDonation.fromMap(Map<String, dynamic> map) {
     return ChildDonation(
+      name: 'Name',
+      // map['donor']['firstName'].toString(),
       amount: double.tryParse(map['amount'].toString()) ?? 0,
       date: DateTime.tryParse(map['donationDate'].toString()) ?? DateTime.now(),
       organizationName: map['collectGroupName'].toString(),
@@ -48,6 +52,7 @@ class ChildDonation extends HistoryItem {
         organizationName,
         state,
         medium,
+        name,
       ];
   Map<String, dynamic> toJson() {
     return {
@@ -57,6 +62,7 @@ class ChildDonation extends HistoryItem {
       'status': DonationState.getDonationStateString(state),
       'mediumType': medium.type,
       'donationType': type.value,
+      'donor': {'firstName': name},
     };
   }
 }
