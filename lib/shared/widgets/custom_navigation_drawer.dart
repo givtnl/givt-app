@@ -95,8 +95,8 @@ class CustomNavigationDrawer extends StatelessWidget {
             imageIcon: Container(
               padding: const EdgeInsets.all(10),
               width: 90,
-              child: Image.asset(
-                'assets/images/g4k_app_icon.jpg',
+              child: SvgPicture.asset(
+                'assets/images/givt4kids_logo.svg',
               ),
             ),
             icon: Icons.family_restroom_rounded,
