@@ -1438,5 +1438,7 @@
     "childHistoryToBeApproved": "To be approved",
     "childHistoryCanContinueMakingADifference": "'can continue making a difference'",
     "childHistoryYay": "Yay!",
-    "childHistoryAllGivts": "All givts"
+    "childHistoryAllGivts": "All givts",
+    "today": "Today",
+    "yesterday": "Yesterday"
 }
