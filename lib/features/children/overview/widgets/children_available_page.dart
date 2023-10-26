@@ -18,11 +18,12 @@ class ChildrenAvailablePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: size.height * 0.20,
+          height: size.height * 0.23,
           child: ChildrenOverviewWidget(
             profiles: profiles,
           ),
         ),
+        Spacer(),
         FamilyHistory(children: profiles)
       ],
     );

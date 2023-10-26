@@ -30,6 +30,7 @@ class FamilyHistory extends StatelessWidget {
     });
     final locals = context.l10n;
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
@@ -44,7 +45,7 @@ class FamilyHistory extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: size.height * 0.64,
+          height: size.height * 0.61,
           child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
             builder: (context, state) {
               if (state.status == HistroryStatus.loading &&
