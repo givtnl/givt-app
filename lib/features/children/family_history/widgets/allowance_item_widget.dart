@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/family_history/models/allowance.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -9,8 +10,8 @@ class AllowanceItemWidget extends StatelessWidget {
   final Allowance allowance;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
+    final size = MediaQuery.of(context).size;
+    final locals = context.l10n;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
       color: Colors.white,
@@ -22,7 +23,7 @@ class AllowanceItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '+ \$${allowance.amount.toStringAsFixed(2)} to ${allowance.name}',
+                '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
                 style: const TextStyle(
                     color: AppTheme.childHistoryAllowance,
                     fontFamily: 'Roboto',
@@ -31,12 +32,12 @@ class AllowanceItemWidget extends StatelessWidget {
               ),
               SizedBox(
                 width: size.width * 0.70,
-                child: const Text(
-                  'Yay! Johnny can continue making a difference',
+                child: Text(
+                  '${locals.childHistoryBy} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppTheme.givtBlue,
                     fontFamily: 'Raleway',
                     fontWeight: FontWeight.bold,

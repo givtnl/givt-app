@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/datetime_extension.dart';
 
@@ -12,6 +13,8 @@ class PendingDonationWidget extends StatelessWidget {
   final Size size;
   @override
   Widget build(BuildContext context) {
+    final locals = context.l10n;
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: DottedBorder(
@@ -32,7 +35,7 @@ class PendingDonationWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '\$${donation.amount.toStringAsFixed(2)} by ${donation.name}',
+                    '\$${donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${donation.name}',
                     style: TextStyle(
                       color: DonationState.getAmountColor(donation.state),
                       fontFamily: 'Roboto',
@@ -58,7 +61,7 @@ class PendingDonationWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${donation.date.formatDate()} - To be approved',
+                    '${donation.date.formatDate()} - ${locals.childHistoryToBeApproved}',
                     style: TextStyle(
                       color: donation.state == DonationState.pending
                           ? DonationState.getAmountColor(donation.state)
