@@ -24,6 +24,7 @@ class GiveBTBeaconScanned extends GiveEvent {
     required this.serviceUUID,
     required this.serviceData,
     required this.userGUID,
+    required this.beaconData,
     this.threshold = true,
   });
 
@@ -33,6 +34,7 @@ class GiveBTBeaconScanned extends GiveEvent {
   final Map<String, List<int>> serviceData;
   final String userGUID;
   final bool threshold;
+  final String beaconData;
 
   @override
   List<Object> get props => [
@@ -42,6 +44,7 @@ class GiveBTBeaconScanned extends GiveEvent {
         userGUID,
         serviceUUID,
         serviceData,
+        beaconData
       ];
 }
 
