@@ -84,7 +84,7 @@ class ChildDetailsPage extends StatelessWidget {
             ],
             automaticallyImplyLeading: false,
             backgroundColor: state is ChildDetailsFetchedState
-                ? state.profileDetails.profile.monsterColor
+                ? state.profileDetails.profile.monsterColorWithAlpha
                 : null,
           ),
           body: state is ChildDetailsFetchingState
@@ -100,7 +100,8 @@ class ChildDetailsPage extends StatelessWidget {
                           child: Container(
                             alignment: Alignment.center,
                             width: double.maxFinite,
-                            color: state.profileDetails.profile.monsterColor,
+                            color: state
+                                .profileDetails.profile.monsterColorWithAlpha,
                             child: ChildDetailsItem(
                               profileDetails: state.profileDetails,
                             ),

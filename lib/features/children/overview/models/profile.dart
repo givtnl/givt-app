@@ -81,6 +81,10 @@ class Profile extends Equatable {
     } else {
       monsterColor = Colors.transparent;
     }
+    return monsterColor;
+  }
+
+  Color get monsterColorWithAlpha {
     return monsterColor.withAlpha((255 * 0.1).toInt());
   }
 }
