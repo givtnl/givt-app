@@ -1,25 +1,29 @@
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:intl/intl.dart';
 
-extension DateTimeExtension on DateTime {
+extension StringDateTimeExtension on String {
   String formatDate(AppLocalizations locals) {
+    final date = DateTime.tryParse(this) ?? DateTime.now();
+
     final now = DateTime.now();
 
     // Check if the date is today
-    if (year == now.year && month == now.month && day == now.day) {
+    if (date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day) {
       return locals.today;
     }
 
     // Check if the date is yesterday
     final yesterday = now.subtract(const Duration(days: 1));
-    if (year == yesterday.year &&
-        month == yesterday.month &&
-        day == yesterday.day) {
+    if (date.year == yesterday.year &&
+        date.month == yesterday.month &&
+        date.day == yesterday.day) {
       return locals.yesterday;
     }
 
     final formatter = DateFormat('MM/dd');
 
-    return formatter.format(this);
+    return formatter.format(date);
   }
 }

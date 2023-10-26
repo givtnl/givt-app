@@ -10,29 +10,36 @@ class ChildDonation extends HistoryItem {
     required this.medium,
     required super.type,
     required super.name,
+    required this.userId,
+    required this.id,
   });
 
-  ChildDonation.empty()
+  const ChildDonation.empty()
       : this(
           amount: 0,
-          date: DateTime.now(),
+          date: '',
           organizationName: '',
           state: DonationState.pending,
           medium: DonationMediumType.qr,
           type: HistoryTypes.donation,
           name: '',
+          userId: '',
+          id: -1,
         );
 
   factory ChildDonation.fromMap(Map<String, dynamic> map) {
     return ChildDonation(
-      name: map['donor']['firstName'].toString(),
+      name: (map['donor'] as Map<String, dynamic>)['firstName'].toString(),
       amount: double.tryParse(map['amount'].toString()) ?? 0,
-      date: DateTime.tryParse(map['donationDate'].toString()) ?? DateTime.now(),
+      date: map['donationDate'].toString(),
       organizationName: map['collectGroupName'].toString(),
       state: DonationState.getState(map['status'].toString()),
+      userId: map['userId'].toString(),
+      id: map['id'] as int,
       medium: DonationMediumType.values.firstWhere(
-          (element) => element.type == map['mediumType'],
-          orElse: () => DonationMediumType.unknown),
+        (element) => element.type == map['mediumType'],
+        orElse: () => DonationMediumType.unknown,
+      ),
       type: HistoryTypes.values.firstWhere(
         (element) => element.value == map['donationType'],
         orElse: () => HistoryTypes.donation,
@@ -43,6 +50,8 @@ class ChildDonation extends HistoryItem {
   final String organizationName;
   final DonationState state;
   final DonationMediumType medium;
+  final String userId;
+  final int id;
 
   @override
   List<Object?> get props => [
@@ -53,17 +62,7 @@ class ChildDonation extends HistoryItem {
         medium,
         name,
         type,
+        userId,
+        id,
       ];
-
-  Map<String, dynamic> toJson() {
-    return {
-      'amount': amount,
-      'donationDate': date.toString(),
-      'collectGroupName': organizationName,
-      'status': DonationState.getDonationStateString(state),
-      'mediumType': medium.type,
-      'donationType': type.value,
-      'donor': {'firstName': name},
-    };
-  }
 }

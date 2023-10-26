@@ -4,7 +4,7 @@ import 'package:givt_app/features/children/family_history/models/child_donation.
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/datetime_extension.dart';
+import 'package:givt_app/utils/string_datetime_extension.dart';
 
 class PendingDonationWidget extends StatelessWidget {
   const PendingDonationWidget(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/family_history/models/allowance.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/datetime_extension.dart';
+import 'package:givt_app/utils/string_datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AllowanceItemWidget extends StatelessWidget {

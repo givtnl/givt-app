@@ -505,7 +505,10 @@ class APIService {
 
     final response = await client.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
       body: jsonEncode(body),
     );
 
@@ -704,11 +707,11 @@ class APIService {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/ChildProfile/all/transactions');
 
-    var response = await client.post(
+    final response = await client.post(
       url,
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: jsonEncode(body),
     );
@@ -719,7 +722,7 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     } else {
-      var decodedBody = jsonDecode(response.body);
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
       final itemMap = decodedBody['items'];
       return itemMap as List<dynamic>;
     }
