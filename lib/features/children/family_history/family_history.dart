@@ -55,7 +55,8 @@ class FamilyHistory extends StatelessWidget {
                 );
               }
               // Display List of donations and allowances in descending date order
-              return ListView.separated(
+              return Stack(children: [
+                ListView.separated(
                   padding: EdgeInsets.zero,
                   controller: scrollController,
                   itemCount: state.history.length,
@@ -72,53 +73,63 @@ class FamilyHistory extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
-                    if (state.history[index].type == HistoryTypes.donation) {
-                      final holder = state.history[index] as ChildDonation;
-                      final nextIndex = index + 1;
-
-                      if (nextIndex < state.history.length &&
-                          state.history[nextIndex].type ==
-                              HistoryTypes.donation) {
-                        final next = state.history[nextIndex] as ChildDonation;
-                        if (next.state == DonationState.pending) {
-                          return const Divider(
-                            thickness: 0,
-                            height: 0,
-                            color: Colors.transparent,
-                            endIndent: 20,
-                            indent: 20,
-                          );
-                        }
-                      }
-
-                      final thickness =
-                          (holder.state == DonationState.pending) ? 0 : 1;
-                      final height =
-                          (holder.state == DonationState.pending) ? 0 : 1;
-                      final color = (holder.state == DonationState.pending)
-                          ? Colors.transparent
-                          : AppTheme.givtGraycece;
-
-                      return Divider(
-                        thickness: thickness.toDouble(),
-                        height: height.toDouble(),
-                        color: color,
-                        endIndent: 20,
-                        indent: 20,
-                      );
-                    } else {
-                      return const Divider(
-                        thickness: 1,
-                        height: 1,
-                        endIndent: 20,
-                        indent: 20,
-                      );
-                    }
-                  });
+                    return getDivider(state, index);
+                  },
+                ),
+                if (state.status == HistroryStatus.loading &&
+                    historyCubit.state.pageNr > 1)
+                  Positioned(
+                    bottom: 20,
+                    left: size.width * 0.5 - 20,
+                    child: const CircularProgressIndicator(),
+                  )
+              ]);
             },
           ),
         ),
       ],
     );
+  }
+
+  Widget getDivider(FamilyHistoryState state, int index) {
+    if (state.history[index].type == HistoryTypes.donation) {
+      final holder = state.history[index] as ChildDonation;
+      final nextIndex = index + 1;
+
+      if (nextIndex < state.history.length &&
+          state.history[nextIndex].type == HistoryTypes.donation) {
+        final next = state.history[nextIndex] as ChildDonation;
+        if (next.state == DonationState.pending) {
+          return const Divider(
+            thickness: 0,
+            height: 0,
+            color: Colors.transparent,
+            endIndent: 20,
+            indent: 20,
+          );
+        }
+      }
+
+      final thickness = (holder.state == DonationState.pending) ? 0 : 1;
+      final height = (holder.state == DonationState.pending) ? 0 : 1;
+      final color = (holder.state == DonationState.pending)
+          ? Colors.transparent
+          : AppTheme.givtGraycece;
+
+      return Divider(
+        thickness: thickness.toDouble(),
+        height: height.toDouble(),
+        color: color,
+        endIndent: 20,
+        indent: 20,
+      );
+    } else {
+      return const Divider(
+        thickness: 1,
+        height: 1,
+        endIndent: 20,
+        indent: 20,
+      );
+    }
   }
 }
