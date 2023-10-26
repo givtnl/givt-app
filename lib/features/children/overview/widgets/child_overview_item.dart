@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
@@ -37,6 +38,11 @@ class ChildOverviewItem extends StatelessWidget {
           backgroundColor: profile.monsterColorWithAlpha,
         ),
         onPressed: () {
+          AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.childProfileClicked,
+              eventProperties: {
+                'name': profile.firstName,
+              });
           context.pushNamed(
             Pages.childDetails.name,
             extra: [
