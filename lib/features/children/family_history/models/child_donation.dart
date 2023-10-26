@@ -52,7 +52,9 @@ class ChildDonation extends HistoryItem {
         state,
         medium,
         name,
+        type,
       ];
+
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,

@@ -7,14 +7,13 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/datetime_extension.dart';
 
 class ActionedDonationWidget extends StatelessWidget {
-  const ActionedDonationWidget(
-      {required this.donation, required this.size, super.key});
+  const ActionedDonationWidget({required this.donation, super.key});
   final ChildDonation donation;
-  final Size size;
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+    final size = MediaQuery.sizeOf(context);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -28,12 +27,11 @@ class ActionedDonationWidget extends StatelessWidget {
             children: [
               Text(
                 '\$${donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${donation.name}',
-                style: TextStyle(
-                  color: DonationState.getAmountColor(donation.state),
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: DonationState.getAmountColor(donation.state),
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w500,
+                    ),
               ),
               SizedBox(
                 width: donation.medium == DonationMediumType.nfc
@@ -44,24 +42,22 @@ class ActionedDonationWidget extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
-                  style: const TextStyle(
-                    color: AppTheme.givtBlue,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                 ),
               ),
               Text(
                 donation.date.formatDate(locals),
-                style: TextStyle(
-                  color: donation.state == DonationState.pending
-                      ? DonationState.getAmountColor(donation.state)
-                      : AppTheme.givtBlue,
-                  fontFamily: 'Raleway',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: donation.state == DonationState.pending
+                          ? DonationState.getAmountColor(donation.state)
+                          : AppTheme.givtBlue,
+                      fontFamily: 'Raleway',
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),

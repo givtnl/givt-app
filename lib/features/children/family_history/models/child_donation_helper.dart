@@ -7,6 +7,8 @@ enum DonationState {
   approved,
   declined;
 
+  static const int pageSize = 20;
+
   static DonationState getState(String? state) {
     switch (state) {
       case 'ParentApprovalPending':

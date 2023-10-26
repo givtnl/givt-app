@@ -36,12 +36,11 @@ class PendingDonationWidget extends StatelessWidget {
                 children: [
                   Text(
                     '\$${donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${donation.name}',
-                    style: TextStyle(
-                      color: DonationState.getAmountColor(donation.state),
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: DonationState.getAmountColor(donation.state),
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
                   SizedBox(
                     width: donation.medium == DonationMediumType.nfc
@@ -52,24 +51,22 @@ class PendingDonationWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
-                      style: const TextStyle(
-                        color: AppTheme.childHistoryPendingDark,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: AppTheme.childHistoryPendingDark,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                     ),
                   ),
                   Text(
                     '${donation.date.formatDate(locals)} - ${locals.childHistoryToBeApproved}',
-                    style: TextStyle(
-                      color: donation.state == DonationState.pending
-                          ? DonationState.getAmountColor(donation.state)
-                          : AppTheme.givtPurple,
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: donation.state == DonationState.pending
+                              ? DonationState.getAmountColor(donation.state)
+                              : AppTheme.givtPurple,
+                          fontFamily: 'Raleway',
+                        ),
                   ),
                 ],
               ),

@@ -2,20 +2,21 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/family_history/family_history_logic/family_history_repository.dart';
+import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
 part 'family_history_state.dart';
 
 class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   FamilyHistoryCubit(this.historyRepo) : super(const FamilyHistoryState());
-  final FamilyHistoryRepository historyRepo;
+  final FamilyDonationHistoryRepository historyRepo;
 
   FutureOr<void> fetchHistory() async {
     emit(state.copyWith(status: HistroryStatus.loading));
 
     try {
-      List<HistoryItem> history = [];
+      final history = <HistoryItem>[];
+      // ignore: cascade_invocations
       history.addAll(state.history);
       // fetch donations
       final donationHistory = await historyRepo.fetchHistory(

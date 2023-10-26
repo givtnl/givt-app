@@ -1,15 +1,16 @@
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/children/family_history/models/allowance.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
+import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
-mixin FamilyHistoryRepository {
+mixin FamilyDonationHistoryRepository {
   Future<List<HistoryItem>> fetchHistory(
       {required int pageNumber, required HistoryTypes type});
 }
 
-class FamilyHistoryRepositoryImpl with FamilyHistoryRepository {
-  FamilyHistoryRepositoryImpl(
+class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
+  FamilyDonationHistoryRepositoryImpl(
     this._apiService,
   );
 
@@ -22,7 +23,7 @@ class FamilyHistoryRepositoryImpl with FamilyHistoryRepository {
   }) async {
     final body = <String, dynamic>{
       'pageNumber': pageNumber,
-      'pageSize': 20,
+      'pageSize': DonationState.pageSize,
       'type': [type.value]
     };
     final response = await _apiService.fetchHistory(body);

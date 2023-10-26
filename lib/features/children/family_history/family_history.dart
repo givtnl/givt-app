@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/children/family_history/family_history_logic/family_history_cubit.dart';
+import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/allowance.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
@@ -37,11 +37,10 @@ class FamilyHistory extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
           child: Text(
             locals.childHistoryAllGivts,
-            style: const TextStyle(
-              fontFamily: 'Raleway',
-              fontWeight: FontWeight.w800,
-              fontSize: 16,
-            ),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontFamily: 'Raleway',
+                  fontWeight: FontWeight.w800,
+                ),
           ),
         ),
         SizedBox(

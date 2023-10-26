@@ -8,9 +8,6 @@ class Allowance extends HistoryItem {
     required super.name,
   });
 
-  @override
-  List<Object?> get props => [amount, date, type];
-
   Allowance.empty()
       : this(
           amount: 0,

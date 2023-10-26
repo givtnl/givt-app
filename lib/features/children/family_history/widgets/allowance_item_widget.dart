@@ -24,11 +24,11 @@ class AllowanceItemWidget extends StatelessWidget {
             children: [
               Text(
                 '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
-                style: const TextStyle(
-                    color: AppTheme.childHistoryAllowance,
-                    fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: AppTheme.childHistoryAllowance,
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
               SizedBox(
                 width: size.width * 0.70,
@@ -37,21 +37,19 @@ class AllowanceItemWidget extends StatelessWidget {
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: AppTheme.givtBlue,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                 ),
               ),
               Text(
                 allowance.date.formatDate(locals),
-                style: const TextStyle(
-                    color: AppTheme.givtBlue,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontFamily: 'Raleway',
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
