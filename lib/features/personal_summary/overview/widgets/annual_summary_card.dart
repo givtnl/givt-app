@@ -29,9 +29,9 @@ class AnnualSummaryCard extends StatelessWidget {
                         value.amount > element.amount ? value : element,
                   )
                   .amount;
-          // if (referenceValue < 300) {
-          //   referenceValue = 400;
-          // }
+          if (referenceValue < state.givingGoal.yearlyGivingGoal) {
+            referenceValue = state.givingGoal.yearlyGivingGoal;
+          }
           return Column(
             children: state.annualGivts
                 .map(
