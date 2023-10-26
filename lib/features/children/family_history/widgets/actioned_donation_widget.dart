@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/datetime_extension.dart';
 
 class ActionedDonationWidget extends StatelessWidget {
@@ -41,7 +42,7 @@ class ActionedDonationWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   softWrap: true,
                   style: const TextStyle(
-                    color: Color(0xFF2E2957),
+                    color: AppTheme.givtBlue,
                     fontFamily: 'Raleway',
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
@@ -53,7 +54,7 @@ class ActionedDonationWidget extends StatelessWidget {
                 style: TextStyle(
                   color: donation.state == DonationState.pending
                       ? DonationState.getAmountColor(donation.state)
-                      : const Color(0xFF2E2957),
+                      : AppTheme.givtBlue,
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w600,
                   fontSize: 16,

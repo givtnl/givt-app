@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:givt_app/utils/utils.dart';
+
 enum DonationState {
   pending,
   approved,
@@ -49,11 +51,11 @@ enum DonationState {
   static Color getAmountColor(DonationState status) {
     switch (status) {
       case DonationState.approved:
-        return const Color(0xFF006C47);
+        return AppTheme.childHistoryApproved;
       case DonationState.pending:
-        return const Color(0xFFA77F2C);
+        return AppTheme.childHistoryPending;
       case DonationState.declined:
-        return const Color(0xFF780F0F);
+        return AppTheme.childHistoryDeclined;
     }
   }
 }

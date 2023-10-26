@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/datetime_extension.dart';
 
 class PendingDonationWidget extends StatelessWidget {
@@ -18,11 +19,11 @@ class PendingDonationWidget extends StatelessWidget {
         dashPattern: const [4, 4],
         radius: const Radius.circular(20),
         strokeWidth: 2,
-        color: const Color(0xFFF2DF7F),
+        color: AppTheme.childHistoryPendingLight,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
-              color: const Color(0xFFF2DF7F).withOpacity(0.1),
+              color: AppTheme.childHistoryPendingLight.withOpacity(0.1),
               borderRadius: const BorderRadius.all(Radius.circular(20))),
           child: Row(
             children: [
@@ -49,7 +50,7 @@ class PendingDonationWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style: const TextStyle(
-                        color: Color(0xFF654B14),
+                        color: AppTheme.childHistoryPendingDark,
                         fontFamily: 'Raleway',
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
@@ -61,7 +62,7 @@ class PendingDonationWidget extends StatelessWidget {
                     style: TextStyle(
                       color: donation.state == DonationState.pending
                           ? DonationState.getAmountColor(donation.state)
-                          : const Color(0xFF2E2957),
+                          : AppTheme.givtPurple,
                       fontFamily: 'Raleway',
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
