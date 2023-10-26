@@ -17,24 +17,26 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
     emit(state.copyWith(status: HistroryStatus.loading));
 
     try {
-      final temporaryHistory = <HistoryItem>[];
-      final arrangedHistory = <HistoryItem>[];
+      final tempHistory = <HistoryItem>[];
       final pendingHistory = <HistoryItem>[];
-      final decidedHistory = <HistoryItem>[];
+      final history = <HistoryItem>[];
 
+      // sort previous history into pending
       if (state.history.isNotEmpty) {
-        final previousDonation = <HistoryItem>[];
-        final previousPending = <HistoryItem>[];
-        previousDonation.addAll(state.history
-            .where((element) => element.type == HistoryTypes.donation));
-        previousPending.addAll(previousDonation.where((element) {
-          final e = element as ChildDonation;
-          return e.state == DonationState.pending;
-        }));
-        final previousDecided = state.history
-            .where((element) => !previousPending.contains(element));
-        temporaryHistory.addAll(previousDecided);
-        pendingHistory.addAll(previousPending);
+        final previousDonation = state.history
+            .where((element) => element.type == HistoryTypes.donation)
+            .cast<ChildDonation>()
+            .toList();
+        pendingHistory.addAll(
+          previousDonation
+              .where((element) => element.state == DonationState.pending)
+              .toList(),
+        );
+        tempHistory.addAll(
+          previousDonation
+              .where((element) => element.state != DonationState.pending)
+              .toList(),
+        );
       }
 
       // fetch donations
@@ -47,34 +49,36 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
           return e.state == DonationState.pending;
         }),
       );
-      decidedHistory.addAll(
+      tempHistory.addAll(
         donationHistory.where((element) {
           final e = element as ChildDonation;
           return e.state != DonationState.pending;
         }),
       );
-      temporaryHistory.addAll(decidedHistory);
       // fetch allowances
       final allowanceHistory = await historyRepo.fetchHistory(
           pageNumber: state.pageNr, type: HistoryTypes.allowance);
-      temporaryHistory.addAll(allowanceHistory);
+      tempHistory.addAll(allowanceHistory);
+
       // sort from newest to oldest
       pendingHistory.sort((a, b) => b.date.compareTo(a.date));
-      temporaryHistory.sort((a, b) => b.date.compareTo(a.date));
-      arrangedHistory
+      tempHistory.sort((a, b) => b.date.compareTo(a.date));
+
+      // add pending donations first then all history chronologically
+      history
         ..addAll(pendingHistory)
-        ..addAll(temporaryHistory);
+        ..addAll(tempHistory);
+
       // check if they reached end of history
       // if end of history do not increment page nr
       if (donationHistory.isEmpty && allowanceHistory.isEmpty) {
-        emit(state.copyWith(
-            status: HistroryStatus.loaded, history: arrangedHistory));
+        emit(state.copyWith(status: HistroryStatus.loaded, history: history));
         return;
       }
       // update state
       emit(state.copyWith(
           status: HistroryStatus.loaded,
-          history: arrangedHistory,
+          history: history,
           pageNr: state.pageNr + 1));
     } catch (e) {
       emit(state.copyWith(status: HistroryStatus.error, error: e.toString()));
