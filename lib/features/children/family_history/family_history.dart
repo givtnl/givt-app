@@ -32,8 +32,8 @@ class FamilyHistory extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Padding(
-          padding:const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
           child: Text(
             locals.childHistoryAllGivts,
             style: const TextStyle(
@@ -44,7 +44,7 @@ class FamilyHistory extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: size.height * 0.66,
+          height: size.height * 0.64,
           child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
             builder: (context, state) {
               if (state.status == HistroryStatus.loading &&

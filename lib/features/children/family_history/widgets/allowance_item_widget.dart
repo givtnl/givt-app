@@ -33,7 +33,7 @@ class AllowanceItemWidget extends StatelessWidget {
               SizedBox(
                 width: size.width * 0.70,
                 child: Text(
-                  '${locals.childHistoryBy} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
+                  '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
