@@ -53,7 +53,7 @@ class ActionedDonationWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                donation.date.formatDate(),
+                donation.date.formatDate(locals),
                 style: TextStyle(
                   color: donation.state == DonationState.pending
                       ? DonationState.getAmountColor(donation.state)

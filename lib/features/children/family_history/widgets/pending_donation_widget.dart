@@ -61,7 +61,7 @@ class PendingDonationWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${donation.date.formatDate()} - ${locals.childHistoryToBeApproved}',
+                    '${donation.date.formatDate(locals)} - ${locals.childHistoryToBeApproved}',
                     style: TextStyle(
                       color: donation.state == DonationState.pending
                           ? DonationState.getAmountColor(donation.state)

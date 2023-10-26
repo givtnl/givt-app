@@ -46,7 +46,7 @@ class AllowanceItemWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                allowance.date.formatDate(),
+                allowance.date.formatDate(locals),
                 style: const TextStyle(
                     color: AppTheme.givtBlue,
                     fontFamily: 'Raleway',
