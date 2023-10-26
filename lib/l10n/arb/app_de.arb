@@ -1432,5 +1432,13 @@
     "childMonthlyGivingAllowanceRange": "Monthly giving allowance can be an amount between $1 to $999.",
     "childrenMyFamily": "My Family",
     "childrenAddChild": "Add child",
-    "childrenAddChildProfile": "+ Add a child profile"
+    "childrenAddChildProfile": "+ Add a child profile",
+    "childHistoryBy": "by",
+    "childHistoryTo": "to",
+    "childHistoryToBeApproved": "To be approved",
+    "childHistoryCanContinueMakingADifference": "'can continue making a difference'",
+    "childHistoryYay": "Yay!",
+    "childHistoryAllGivts": "All givts",
+    "today": "Today",
+    "yesterday": "Yesterday"
 }
