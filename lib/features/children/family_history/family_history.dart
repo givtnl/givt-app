@@ -44,7 +44,7 @@ class FamilyHistory extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: size.height * 0.61,
+          height: size.height * 0.60,
           child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
             builder: (context, state) {
               if (state.status == HistroryStatus.loading &&

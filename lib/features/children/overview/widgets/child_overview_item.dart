@@ -71,6 +71,7 @@ class ChildOverviewItem extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontFamily: 'Raleway',
                       fontWeight: FontWeight.bold,
                       color: AppTheme.givtBlue,
                     ),

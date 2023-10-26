@@ -13,12 +13,12 @@ class ChildrenAvailablePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: size.height * 0.23,
+          height: size.height * 0.219,
           child: ChildrenOverviewWidget(
             profiles: profiles,
           ),
