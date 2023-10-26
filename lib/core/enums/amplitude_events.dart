@@ -18,7 +18,7 @@ enum AmplitudeEvents {
   ),
   childEditSaveClicked('child_edit_save_clicked'),
   childEditCancelClicked('child_edit_cancel_clicked'),
-  ;
+  childProfileClicked('child_profile_clicked');
 
   const AmplitudeEvents(this.value);
   final String value;
