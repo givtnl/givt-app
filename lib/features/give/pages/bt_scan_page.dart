@@ -10,6 +10,7 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
   const BTScanPage({super.key});
@@ -68,7 +69,7 @@ class _BTScanPageState extends State<BTScanPage> {
       }
     });
 
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 5), () {
       if (!mounted) {
         return;
       }
@@ -102,6 +103,23 @@ class _BTScanPageState extends State<BTScanPage> {
       if (!mounted) {
         return;
       }
+
+      // Check if its really a Givt beacon
+      final hex = StringBuffer();
+      for (final b in scanResult.advertisementData
+          .serviceData[scanResult.advertisementData.serviceUuids.first]!) {
+        hex.write(sprintf('%02x', [b]));
+      }
+
+      final beaconData = hex.toString();
+      final contains = beaconData.contains('61f7ed01') ||
+          beaconData.contains('61f7ed02') ||
+          beaconData.contains('61f7ed03');
+
+      if (!contains) {
+        return;
+      }
+
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
               userGUID: context.read<AuthCubit>().state.user.guid,
@@ -109,6 +127,7 @@ class _BTScanPageState extends State<BTScanPage> {
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
               serviceData: scanResult.advertisementData.serviceData,
+              beaconData: beaconData
             ),
           );
     }
