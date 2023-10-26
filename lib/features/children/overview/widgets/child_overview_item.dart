@@ -20,16 +20,17 @@ class ChildOverviewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
     final currencySymbol = Util.getCurrencySymbol(countryCode: user.country);
-
+    final size = MediaQuery.sizeOf(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shadowColor: profile.monsterColorWithAlpha,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          padding: EdgeInsets.symmetric(
+              horizontal: 10, vertical: size.height * 0.025),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(8),
             side: BorderSide(
               width: 2,
               color: profile.monsterColor,
@@ -60,11 +61,11 @@ class ChildOverviewItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: SvgPicture.network(
                   profile.pictureURL,
-                  width: 70,
-                  height: 70,
+                  width: size.height * 0.09,
+                  height: size.height * 0.09,
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: size.height * 0.007),
               Text(
                 profile.firstName,
                 maxLines: 1,

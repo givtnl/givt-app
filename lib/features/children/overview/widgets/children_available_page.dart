@@ -18,7 +18,7 @@ class ChildrenAvailablePage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: size.height * 0.219,
+          height: size.height * 0.22,
           child: ChildrenOverviewWidget(
             profiles: profiles,
           ),
