@@ -18,7 +18,7 @@ class FamilyHistory extends StatelessWidget {
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
     final historyCubit = context.read<FamilyHistoryCubit>();
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {

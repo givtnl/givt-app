@@ -10,7 +10,7 @@ class AllowanceItemWidget extends StatelessWidget {
   final Allowance allowance;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
