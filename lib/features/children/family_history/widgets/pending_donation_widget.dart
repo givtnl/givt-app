@@ -1,13 +1,14 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/children/parental_approval/dialogs/parental_approval_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class PendingDonationWidget extends StatefulWidget {
   const PendingDonationWidget({
@@ -29,14 +30,25 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
 
     return InkWell(
       onTap: () async {
-        final decisionMade = await showDialog<bool>(
-          context: context,
-          builder: (context) => ParentalApprovalDialog(
-            donation: widget.donation,
-          ),
+        await AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.pendingDonationClicked,
+          eventProperties: {
+            'child_name': widget.donation.name,
+            'charity_name': widget.donation.organizationName,
+            'date': widget.donation.date,
+            'amount': widget.donation.amount,
+          },
         );
-        if (true == decisionMade && mounted) {
-          context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true);
+        if (mounted) {
+          final decisionMade = await showDialog<bool>(
+            context: context,
+            builder: (context) => ParentalApprovalDialog(
+              donation: widget.donation,
+            ),
+          );
+          if (true == decisionMade && mounted) {
+            context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true);
+          }
         }
       },
       borderRadius: const BorderRadius.all(Radius.circular(20)),

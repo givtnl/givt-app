@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/utils/utils.dart';
 
 part 'parental_approval_state.dart';
 
@@ -56,6 +58,19 @@ class ParentalApprovalCubit extends Cubit<ParentalApprovalState> {
               : DecisionStatus.declined,
         ),
       );
+
+      await AnalyticsHelper.logEvent(
+        eventName: decision == DonationState.approved
+            ? AmplitudeEvents.pendingDonationApproved
+            : AmplitudeEvents.pendingDonationDeclined,
+        eventProperties: {
+          'child_name': donation.name,
+          'charity_name': donation.organizationName,
+          'date': donation.date,
+          'amount': donation.amount,
+        },
+      );
+
       await _emitDelayedPopWithDecision(true);
     } catch (e) {
       emit(state.copyWith(status: DecisionStatus.error));
