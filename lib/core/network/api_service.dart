@@ -494,6 +494,31 @@ class APIService {
     return itemMap;
   }
 
+  Future<Map<String, dynamic>> submitChildTransactionDecision({
+    required String childId,
+    required Map<String, dynamic> body,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      'givtservice/v1/Transaction/$childId/donation-approval',
+    );
+
+    final response = await client.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
+  }
+
   Future<List<dynamic>> fetchRecurringDonations({
     required Map<String, dynamic> params,
   }) async {
