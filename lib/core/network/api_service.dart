@@ -677,15 +677,14 @@ class APIService {
 
   Future<List<dynamic>> fetchHistory(
       String childId, Map<String, dynamic> body) async {
-    //https://dev-backend.givt.app/givtservice/v1/ChildProfile/all/transactions
-    final url = Uri.https(_apiURL,
-        '/givt4kidsservice/v1/transaction/transaction-history/$childId');
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/ChildProfile/all/transactions');
 
     var response = await client.post(
       url,
       headers: {
         "Content-Type": "application/json",
-        "Accept": "application/json"
+        "Accept": "application/json",
       },
       body: jsonEncode(body),
     );

@@ -25,7 +25,7 @@ class AllowanceItemWidget extends StatelessWidget {
                 style: const TextStyle(
                     color: Color(0xFF06509B),
                     fontFamily: 'Roboto',
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),
               SizedBox(
@@ -37,6 +37,7 @@ class AllowanceItemWidget extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: Color(0xFF191C1D),
+                    fontFamily: 'Raleway',
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
@@ -46,6 +47,7 @@ class AllowanceItemWidget extends StatelessWidget {
                 allowance.date.formatDate(),
                 style: const TextStyle(
                     color: Color(0xFF404943),
+                    fontFamily: 'Raleway',
                     fontWeight: FontWeight.w600,
                     fontSize: 16),
               ),

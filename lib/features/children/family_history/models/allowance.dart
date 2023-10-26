@@ -21,8 +21,7 @@ class Allowance extends HistoryItem {
 
   factory Allowance.fromMap(Map<String, dynamic> map) {
     return Allowance(
-        name: 'Name',
-        // map['donor']['firstName'].toString(),
+        name: map['donor']['firstName'].toString(),
         amount: double.tryParse(map['amount'].toString()) ?? 0,
         date:
             DateTime.tryParse(map['donationDate'].toString()) ?? DateTime.now(),

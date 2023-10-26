@@ -18,14 +18,15 @@ class FamilyHistoryRepositoryImpl with FamilyHistoryRepository {
   final APIService _apiService;
 
   @override
-  Future<List<HistoryItem>> fetchHistory(
-      {required String childId,
-      required int pageNumber,
-      required HistoryTypes type}) async {
-    final Map<String, dynamic> body = {
+  Future<List<HistoryItem>> fetchHistory({
+    required String childId,
+    required int pageNumber,
+    required HistoryTypes type,
+  }) async {
+    final body = <String, dynamic>{
       'pageNumber': pageNumber,
-      'pageSize': 10,
-      'type': type.value
+      'pageSize': 20,
+      'type': [type.value]
     };
     final response = await _apiService.fetchHistory(childId, body);
 

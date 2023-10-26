@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/family_history/models/history_item.da
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyHistory extends StatelessWidget {
   const FamilyHistory({required this.children, super.key});
@@ -60,15 +61,34 @@ class FamilyHistory extends StatelessWidget {
               separatorBuilder: (BuildContext context, int index) {
                 if (state.history[index].type == HistoryTypes.donation) {
                   final holder = state.history[index] as ChildDonation;
-                  final double thickness =
+                  final nextIndex = index + 1;
+
+                  if (nextIndex < state.history.length &&
+                      state.history[nextIndex].type == HistoryTypes.donation) {
+                    final next = state.history[nextIndex] as ChildDonation;
+                    if (next.state == DonationState.pending) {
+                      return const Divider(
+                        thickness: 0,
+                        height: 0,
+                        color: Colors.transparent,
+                        endIndent: 20,
+                        indent: 20,
+                      );
+                    }
+                  }
+
+                  final thickness =
                       (holder.state == DonationState.pending) ? 0 : 1;
-                  final double height =
+                  final height =
                       (holder.state == DonationState.pending) ? 0 : 1;
+                  final color = (holder.state == DonationState.pending)
+                      ? Colors.transparent
+                      : AppTheme.givtGraycece;
 
                   return Divider(
-                    thickness: thickness,
-                    height: height,
-                    color: Colors.transparent,
+                    thickness: thickness.toDouble(),
+                    height: height.toDouble(),
+                    color: color,
                     endIndent: 20,
                     indent: 20,
                   );
