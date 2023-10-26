@@ -5,9 +5,7 @@ import 'package:givt_app/features/children/family_history/models/history_item.da
 
 mixin FamilyHistoryRepository {
   Future<List<HistoryItem>> fetchHistory(
-      {required String childId,
-      required int pageNumber,
-      required HistoryTypes type});
+      {required int pageNumber, required HistoryTypes type});
 }
 
 class FamilyHistoryRepositoryImpl with FamilyHistoryRepository {
@@ -19,7 +17,6 @@ class FamilyHistoryRepositoryImpl with FamilyHistoryRepository {
 
   @override
   Future<List<HistoryItem>> fetchHistory({
-    required String childId,
     required int pageNumber,
     required HistoryTypes type,
   }) async {
@@ -28,7 +25,7 @@ class FamilyHistoryRepositoryImpl with FamilyHistoryRepository {
       'pageSize': 20,
       'type': [type.value]
     };
-    final response = await _apiService.fetchHistory(childId, body);
+    final response = await _apiService.fetchHistory(body);
 
     List<HistoryItem> result = [];
 

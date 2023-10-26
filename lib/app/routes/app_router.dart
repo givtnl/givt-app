@@ -150,10 +150,9 @@ class AppRouter {
                     ..fetchChildren(context.read<AuthCubit>().state.user.guid),
                 ),
                 BlocProvider(
-                    create: (context) => FamilyHistoryCubit(getIt())
-                      ..fetchHistory('209fa5c5-c92a-43b3-ba28-abbb9a5fb6d6'
-                          // context.read<AuthCubit>().state.user.guid
-                          ))
+                  create: (context) =>
+                      FamilyHistoryCubit(getIt())..fetchHistory(),
+                )
               ],
               child: const ChildrenOverviewPage(),
             ),

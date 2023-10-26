@@ -16,8 +16,6 @@ class FamilyHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
-    final childId = children.first.id;
-    //context.read<ProfilesCubit>().state.activeProfile.id;
     final historyCubit = context.read<FamilyHistoryCubit>();
     final size = MediaQuery.of(context).size;
     scrollController.addListener(() {
@@ -25,84 +23,102 @@ class FamilyHistory extends StatelessWidget {
           scrollController.position.pixels) {
         if (historyCubit.state.status != HistroryStatus.loading) {
           // Scrolled to end of list try to fetch more data
-          historyCubit.fetchHistory(childId);
+          historyCubit.fetchHistory();
         }
       }
     });
-    return SizedBox(
-      height: size.height * 0.7,
-      child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
-        builder: (context, state) {
-          if (state.status == HistroryStatus.loading &&
-              historyCubit.state.pageNr < 2) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (state.status == HistroryStatus.error) {
-            return Center(
-              child: Text(state.error),
-            );
-          }
-          // Display List of donations and allowances in descending date order
-          return ListView.separated(
-              padding: EdgeInsets.zero,
-              controller: scrollController,
-              itemCount: state.history.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (state.history[index].type == HistoryTypes.allowance) {
-                  return AllowanceItemWidget(
-                      allowance: state.history[index] as Allowance);
-                }
-                return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                  child: DonationItemWidget(
-                      donation: state.history[index] as ChildDonation),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+          child: Text(
+            'All givts',
+            style: TextStyle(
+              fontFamily: 'Raleway',
+              fontWeight: FontWeight.w800,
+              fontSize: 16,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: size.height * 0.66,
+          child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
+            builder: (context, state) {
+              if (state.status == HistroryStatus.loading &&
+                  historyCubit.state.pageNr < 2) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (state.status == HistroryStatus.error) {
+                return Center(
+                  child: Text(state.error),
                 );
-              },
-              separatorBuilder: (BuildContext context, int index) {
-                if (state.history[index].type == HistoryTypes.donation) {
-                  final holder = state.history[index] as ChildDonation;
-                  final nextIndex = index + 1;
+              }
+              // Display List of donations and allowances in descending date order
+              return ListView.separated(
+                  padding: EdgeInsets.zero,
+                  controller: scrollController,
+                  itemCount: state.history.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (state.history[index].type == HistoryTypes.allowance) {
+                      return AllowanceItemWidget(
+                          allowance: state.history[index] as Allowance);
+                    }
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                      child: DonationItemWidget(
+                          donation: state.history[index] as ChildDonation),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    if (state.history[index].type == HistoryTypes.donation) {
+                      final holder = state.history[index] as ChildDonation;
+                      final nextIndex = index + 1;
 
-                  if (nextIndex < state.history.length &&
-                      state.history[nextIndex].type == HistoryTypes.donation) {
-                    final next = state.history[nextIndex] as ChildDonation;
-                    if (next.state == DonationState.pending) {
+                      if (nextIndex < state.history.length &&
+                          state.history[nextIndex].type ==
+                              HistoryTypes.donation) {
+                        final next = state.history[nextIndex] as ChildDonation;
+                        if (next.state == DonationState.pending) {
+                          return const Divider(
+                            thickness: 0,
+                            height: 0,
+                            color: Colors.transparent,
+                            endIndent: 20,
+                            indent: 20,
+                          );
+                        }
+                      }
+
+                      final thickness =
+                          (holder.state == DonationState.pending) ? 0 : 1;
+                      final height =
+                          (holder.state == DonationState.pending) ? 0 : 1;
+                      final color = (holder.state == DonationState.pending)
+                          ? Colors.transparent
+                          : AppTheme.givtGraycece;
+
+                      return Divider(
+                        thickness: thickness.toDouble(),
+                        height: height.toDouble(),
+                        color: color,
+                        endIndent: 20,
+                        indent: 20,
+                      );
+                    } else {
                       return const Divider(
-                        thickness: 0,
-                        height: 0,
-                        color: Colors.transparent,
+                        thickness: 1,
+                        height: 1,
                         endIndent: 20,
                         indent: 20,
                       );
                     }
-                  }
-
-                  final thickness =
-                      (holder.state == DonationState.pending) ? 0 : 1;
-                  final height =
-                      (holder.state == DonationState.pending) ? 0 : 1;
-                  final color = (holder.state == DonationState.pending)
-                      ? Colors.transparent
-                      : AppTheme.givtGraycece;
-
-                  return Divider(
-                    thickness: thickness.toDouble(),
-                    height: height.toDouble(),
-                    color: color,
-                    endIndent: 20,
-                    indent: 20,
-                  );
-                } else {
-                  return const Divider(
-                    thickness: 1,
-                    height: 1,
-                    endIndent: 20,
-                    indent: 20,
-                  );
-                }
-              });
-        },
-      ),
+                  });
+            },
+          ),
+        ),
+      ],
     );
   }
 }

@@ -675,8 +675,7 @@ class APIService {
     return jsonDecode(response.body) as List<dynamic>;
   }
 
-  Future<List<dynamic>> fetchHistory(
-      String childId, Map<String, dynamic> body) async {
+  Future<List<dynamic>> fetchHistory(Map<String, dynamic> body) async {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/ChildProfile/all/transactions');
 

@@ -11,7 +11,7 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   FamilyHistoryCubit(this.historyRepo) : super(const FamilyHistoryState());
   final FamilyHistoryRepository historyRepo;
 
-  FutureOr<void> fetchHistory(String childId) async {
+  FutureOr<void> fetchHistory() async {
     emit(state.copyWith(status: HistroryStatus.loading));
 
     try {
@@ -19,15 +19,11 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
       history.addAll(state.history);
       // fetch donations
       final donationHistory = await historyRepo.fetchHistory(
-          childId: childId,
-          pageNumber: state.pageNr,
-          type: HistoryTypes.donation);
+          pageNumber: state.pageNr, type: HistoryTypes.donation);
       history.addAll(donationHistory);
       // fetch allowances
       final allowanceHistory = await historyRepo.fetchHistory(
-          childId: childId,
-          pageNumber: state.pageNr,
-          type: HistoryTypes.allowance);
+          pageNumber: state.pageNr, type: HistoryTypes.allowance);
       history.addAll(allowanceHistory);
       // sort from newest to oldest
       history.sort((a, b) => b.date.compareTo(a.date));
