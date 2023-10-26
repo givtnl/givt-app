@@ -91,6 +91,14 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildMenuItem(
             isVisible: showFamilyItem,
             title: locals.childrenMyFamily,
+            isAccent: true,
+            imageIcon: Container(
+              padding: const EdgeInsets.all(10),
+              width: 90,
+              child: Image.asset(
+                'assets/images/g4k_app_icon.jpg',
+              ),
+            ),
             icon: Icons.family_restroom_rounded,
             onTap: () => AuthUtils.checkToken(
               context,
