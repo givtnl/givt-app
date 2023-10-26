@@ -45,6 +45,7 @@ class AnnualSummaryCard extends StatelessWidget {
                       queryParameters: {
                         'year': item.key,
                       },
+                      extra: context.read<PersonalSummaryBloc>(),
                     ),
                   ),
                 )

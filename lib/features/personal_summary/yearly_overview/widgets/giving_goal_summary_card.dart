@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/personal_summary/giving_goal/pages/setup_giving_goal_bottom_sheet.dart';
+import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
+import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -31,7 +36,7 @@ class GivingGoalSummaryCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
-              vertical: 16,
+              vertical: 32,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -67,56 +72,97 @@ class GivingGoalSummaryCard extends StatelessWidget {
   Widget _buildRightColumn(BuildContext context) {
     final locals = context.l10n;
     final textTheme = Theme.of(context).textTheme.bodySmall;
-    return Column(
-      children: [
-        Card(
-          elevation: 10,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
+    final yearlyOverviewState = context.read<YearlyOverviewCubit>().state;
+    return BlocBuilder<PersonalSummaryBloc, PersonalSummaryState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Visibility(
+              visible: state.givingGoal.monthlyGivingGoal > 0,
+              child: GivingGoalCard(
+                amount: '$currency ${Util.formatNumberComma(
+                  state.givingGoal.yearlyGivingGoal,
+                  country,
+                )}',
+                description: locals.budgetYearlyOverviewGivingGoalPerYear,
+                amountTextTheme:
+                    Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: AppTheme.givtPurple,
+                          fontWeight: FontWeight.bold,
+                        ),
+                descriptionTextTheme: Theme.of(context).textTheme.bodyMedium!,
+              ),
             ),
-            child: Column(
-              children: [
-                Text(
-                  locals.budgetSummarySetGoalBold,
-                  style: textTheme!.copyWith(
-                    fontWeight: FontWeight.bold,
+            Visibility(
+              visible: state.givingGoal.yearlyGivingGoal == 0,
+              child: GestureDetector(
+                onTap: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<PersonalSummaryBloc>(),
+                    child: const SetupGivingGoalBottomSheet(),
                   ),
-                  textAlign: TextAlign.center,
                 ),
-                Text(
-                  locals.budgetSummarySetGoal,
-                  style: textTheme,
-                  textAlign: TextAlign.center,
+                child: Card(
+                  elevation: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          locals.budgetSummarySetGoalBold,
+                          style: textTheme!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Text(
+                          locals.budgetSummarySetGoal,
+                          style: textTheme,
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-        // Card(
-        //   elevation: 10,
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(8),
-        //     child: Row(
-        //       children: [
-        //         Text(
-        //           '3166%',
-        //           style: Theme.of(context).textTheme.titleLarge!.copyWith(
-        //                 fontWeight: FontWeight.bold,
-        //               ),
-        //         ),
-        //         const SizedBox(width: 8),
-        //         Text(
-        //           '${locals.budgetYearlyOverviewRelativeTo} \n$previousYear',
-        //           style: textTheme,
-        //           softWrap: true,
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-      ],
+            Card(
+              elevation: 10,
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        state.givingGoal.yearlyGivingGoal == 0
+                            ? '${yearlyOverviewState.comparisonPercentageCurrentYear} %'
+                            : '''$currency ${state.givingGoal.yearlyGivingGoal > 0 ? Util.formatNumberComma(state.givingGoal.yearlyGivingGoal - totalGivenInYear, country) : Util.formatNumberComma(state.givingGoal.yearlyGivingGoal, country)}''',
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      state.givingGoal.yearlyGivingGoal > 0
+                          ? locals.budgetSummaryGivingGoalRest
+                          : '${locals.budgetYearlyOverviewRelativeTo} \n$previousYear',
+                      style: textTheme,
+                      softWrap: true,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

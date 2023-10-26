@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/personal_summary/giving_goal/pages/setup_giving_goal_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/widgets/giving_goal_card.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -66,54 +66,14 @@ class MonthlyGivingGoalProgress extends StatelessWidget {
     TextStyle descriptionTextTheme,
     BuildContext context,
   ) {
-    return Card(
-      elevation: 10,
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '$currency ${Util.formatNumberComma(
-                      state.givingGoal.monthlyGivingGoal,
-                      country,
-                    )}',
-                    style: amountTextTheme,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    locals.budgetSummaryGivingGoalMonth,
-                    style: descriptionTextTheme,
-                    softWrap: true,
-                  ),
-                ),
-              ],
-            ),
-            TextButton(
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<PersonalSummaryBloc>(),
-                  child: const SetupGivingGoalBottomSheet(),
-                ),
-              ),
-              child: Text(
-                locals.budgetSummaryGivingGoalEdit,
-                style: descriptionTextTheme.copyWith(
-                  fontSize: 12,
-                  decoration: TextDecoration.underline,
-                  color: AppTheme.givtLightPurple,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+    return GivingGoalCard(
+      amount: '$currency ${Util.formatNumberComma(
+        state.givingGoal.monthlyGivingGoal,
+        country,
+      )}',
+      description: locals.budgetSummaryGivingGoalMonth,
+      amountTextTheme: amountTextTheme,
+      descriptionTextTheme: descriptionTextTheme,
     );
   }
 

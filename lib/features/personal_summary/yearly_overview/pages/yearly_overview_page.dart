@@ -23,45 +23,54 @@ class YearlyOverviewPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            GivingGoalSummaryCard(
-              currency: currency,
-              country: country,
-              totalGivenInYear: yearlyOverviewBlocState.totalWithinGivt +
-                  yearlyOverviewBlocState.totalOutsideGivt,
-              currentYear: yearlyOverviewBlocState.year,
-              previousYear:
-                  (int.parse(yearlyOverviewBlocState.year) - 1).toString(),
-            ),
-            _buildDownloadAnnualOverviewButton(
-              context: context,
-              onTap: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<YearlyOverviewCubit>(),
-                  child: const YearlyDetailBottomSheet(),
+        child: BlocBuilder<YearlyOverviewCubit, YearlyOverviewState>(
+          builder: (context, state) {
+            if (state.status == YearlyOverviewStatus.loading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Column(
+              children: [
+                GivingGoalSummaryCard(
+                  currency: currency,
+                  country: country,
+                  totalGivenInYear: yearlyOverviewBlocState.totalWithinGivt +
+                      yearlyOverviewBlocState.totalOutsideGivt,
+                  currentYear: yearlyOverviewBlocState.year,
+                  previousYear:
+                      (int.parse(yearlyOverviewBlocState.year) - 1).toString(),
                 ),
-              ),
-            ),
-            SummaryCard(
-              totalWithinGivt: yearlyOverviewBlocState.totalWithinGivt,
-              totalOutsideGivt: yearlyOverviewBlocState.totalOutsideGivt,
-              totalTaxRelief: yearlyOverviewBlocState.totalTaxRelief,
-              currency: currency,
-              country: country,
-            ),
-            MonthlySummaryCard(
-              currency: currency,
-              country: country,
-            ),
-            PerOrganisationCard(
-              currency: currency,
-              country: country,
-            ),
-          ],
+                _buildDownloadAnnualOverviewButton(
+                  context: context,
+                  onTap: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => BlocProvider.value(
+                      value: context.read<YearlyOverviewCubit>(),
+                      child: const YearlyDetailBottomSheet(),
+                    ),
+                  ),
+                ),
+                SummaryCard(
+                  totalWithinGivt: yearlyOverviewBlocState.totalWithinGivt,
+                  totalOutsideGivt: yearlyOverviewBlocState.totalOutsideGivt,
+                  totalTaxRelief: yearlyOverviewBlocState.totalTaxRelief,
+                  currency: currency,
+                  country: country,
+                ),
+                MonthlySummaryCard(
+                  currency: currency,
+                  country: country,
+                ),
+                PerOrganisationCard(
+                  currency: currency,
+                  country: country,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

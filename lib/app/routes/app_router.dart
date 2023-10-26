@@ -134,8 +134,12 @@ class AppRouter {
                 name: Pages.yearlyOverview.name,
                 builder: (context, state) {
                   final guid = context.read<AuthCubit>().state.user.guid;
+                  final summaryBloc = state.extra! as PersonalSummaryBloc;
                   return MultiBlocProvider(
                     providers: [
+                      BlocProvider.value(
+                        value: summaryBloc,
+                      ),
                       BlocProvider(
                         create: (context) => YearlyOverviewCubit(
                           getIt(),

@@ -1,6 +1,13 @@
 part of 'yearly_overview_cubit.dart';
 
-enum YearlyOverviewStatus { initial, summaryDownloaded, loading, loaded, error, noInternet }
+enum YearlyOverviewStatus {
+  initial,
+  summaryDownloaded,
+  loading,
+  loaded,
+  error,
+  noInternet
+}
 
 final class YearlyOverviewState extends Equatable {
   const YearlyOverviewState({
@@ -46,6 +53,36 @@ final class YearlyOverviewState extends Equatable {
 
     return totalTaxReliefOutsideGivt + totalTaxReliefWithinGivt;
   }
+
+  double get totalWithinGivtPreviousYear {
+    return monthlyByOrganisationPreviousYear
+        .map((e) => e.amount)
+        .fold(0.0, (previousValue, element) => previousValue + element);
+  }
+
+  double get totalOutsideGivtPreviousYear {
+    return externalDonationsPreviousYear
+        .map((e) => e.amount)
+        .fold(0.0, (previousValue, element) => previousValue + element);
+  }
+
+  double get totalPreviousYear {
+    return totalWithinGivtPreviousYear + totalOutsideGivtPreviousYear;
+  }
+
+  int get comparisonPercentageCurrentYear {
+    return ((totalWithinGivt + totalOutsideGivt - totalPreviousYear) /
+            totalWithinGivtPreviousYear *
+            100)
+        .round();
+  }
+
+  // int get comparisonPercentageLastYear {
+  //   return (((totalWithinGivt + totalOutsideGivt - totalPreviousYear) /
+  //               totalPreviousYear) *
+  //           100)
+  //       .round();
+  // }
 
   double get taxReliefOutsideGivt {
     return externalDonations

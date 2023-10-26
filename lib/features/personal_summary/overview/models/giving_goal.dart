@@ -27,6 +27,13 @@ class GivingGoal extends Equatable {
     return amount.toDouble() / 12;
   }
 
+  double get yearlyGivingGoal {
+    if (periodicity == 1) {
+      return amount.toDouble();
+    }
+    return amount.toDouble() * 12;
+  }
+
   GivingGoal copyWith({
     int? amount,
     int? periodicity,
