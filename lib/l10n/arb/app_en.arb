@@ -1440,5 +1440,18 @@
     "childHistoryYay": "Yay!",
     "childHistoryAllGivts": "All givts",
     "today": "Today",
-    "yesterday": "Yesterday"
+    "yesterday": "Yesterday",
+    "childParentalApprovalApprovedTitlePrefix": "Yes, ",
+    "childParentalApprovalApprovedSubTitle": "Thank you",
+    "childParentalApprovalConfirmationTitle": " would love to give",
+    "childParentalApprovalTo": "to ",
+    "childParentalApprovalOn": " on ",
+    "childParentalApprovalConfirmationDecline": "Decline",
+    "childParentalApprovalConfirmationApprove": "Approve",
+    "childParentalApprovalDeclinedTitlePrefix": "You have declined ",
+    "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
+    "childParentalApprovalErrorTitle": "Oops, something went wrong!",
+    "childParentalApprovalErrorSubTitle": "Please try again later",
+    "childParentalApprovalApprovedTitlePostfix": " has made a difference!",
+    "childParentalApprovalDeclinedTitlePostfix": "' request"
 }
