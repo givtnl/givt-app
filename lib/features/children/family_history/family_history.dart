@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/family_history/models/history_item.da
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyHistory extends StatelessWidget {
@@ -27,14 +28,15 @@ class FamilyHistory extends StatelessWidget {
         }
       }
     });
+    final locals = context.l10n;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+         Padding(
+          padding:const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
           child: Text(
-            'All givts',
-            style: TextStyle(
+            locals.childHistoryAllGivts,
+            style: const TextStyle(
               fontFamily: 'Raleway',
               fontWeight: FontWeight.w800,
               fontSize: 16,
