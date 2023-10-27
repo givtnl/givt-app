@@ -19,7 +19,7 @@ class ParentalApprovalCubit extends Cubit<ParentalApprovalState> {
           ),
         );
 
-  static const _approvalResultDelay = Duration(seconds: 2);
+  static const _approvalResultDelay = Duration(seconds: 3);
 
   final ParentalApprovalRepository decisionRepository;
   final ChildDonation donation;
