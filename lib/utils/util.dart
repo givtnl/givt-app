@@ -133,4 +133,8 @@ class Util {
     }
     return AppTheme.givtPurple;
   }
+
+  /// Allow only numbers and one comma or dot
+  /// Like 123, 123.45, 12,05, 12,5
+  static RegExp numberInputFieldRegExp() => RegExp(r'^\d+([,.]\d{0,2})?');
 }

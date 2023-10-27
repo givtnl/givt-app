@@ -130,9 +130,7 @@ class _SetupGivingGoalBottomSheetState
       controller: amountController,
       inputFormatters: [
         FilteringTextInputFormatter.allow(
-          /// Allow only numbers and one comma or dot
-          /// Like 123, 123.45, 12,05, 12,5
-          RegExp(r'^\d+([,.]\d{0,2})?'),
+          Util.numberInputFieldRegExp(),
         ),
       ],
       onChanged: (value) => setState(() {}),
