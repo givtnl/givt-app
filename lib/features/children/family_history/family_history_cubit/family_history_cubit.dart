@@ -32,11 +32,17 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
               .where((element) => element.state == DonationState.pending)
               .toList(),
         );
-        tempHistory.addAll(
-          previousDonation
-              .where((element) => element.state != DonationState.pending)
-              .toList(),
-        );
+        tempHistory
+          ..addAll(
+            previousDonation
+                .where((element) => element.state != DonationState.pending)
+                .toList(),
+          )
+          ..addAll(
+            state.history
+                .where((element) => element.type == HistoryTypes.allowance)
+                .toList(),
+          );
       }
 
       // fetch donations
