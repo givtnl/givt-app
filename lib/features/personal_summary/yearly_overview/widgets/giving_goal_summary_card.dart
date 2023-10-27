@@ -73,6 +73,8 @@ class GivingGoalSummaryCard extends StatelessWidget {
     final locals = context.l10n;
     final textTheme = Theme.of(context).textTheme.bodySmall;
     final yearlyOverviewState = context.read<YearlyOverviewCubit>().state;
+    final isCurrentYear =
+        yearlyOverviewState.year == DateTime.now().year.toString();
     return BlocBuilder<PersonalSummaryBloc, PersonalSummaryState>(
       builder: (context, state) {
         return Column(
@@ -132,37 +134,61 @@ class GivingGoalSummaryCard extends StatelessWidget {
                 ),
               ),
             ),
-            Card(
-              elevation: 10,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        state.givingGoal.yearlyGivingGoal == 0
-                            ? '${yearlyOverviewState.comparisonPercentageCurrentYear} %'
-                            : '''$currency ${state.givingGoal.yearlyGivingGoal > 0 ? Util.formatNumberComma(state.givingGoal.yearlyGivingGoal - totalGivenInYear, country) : Util.formatNumberComma(state.givingGoal.yearlyGivingGoal, country)}''',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      state.givingGoal.yearlyGivingGoal > 0
-                          ? locals.budgetSummaryGivingGoalRest
-                          : '${locals.budgetYearlyOverviewRelativeTo} \n$previousYear',
-                      style: textTheme,
-                      softWrap: true,
-                    ),
-                  ],
-                ),
-              ),
+            _buildComparisonCard(
+              state: state,
+              yearlyOverviewState: yearlyOverviewState,
+              context: context,
+              locals: locals,
+              textTheme: textTheme,
+              comparisonResult: state.givingGoal.yearlyGivingGoal == 0
+                  ? isCurrentYear
+                      ? '${yearlyOverviewState.comparisonPercentageCurrentYear} %'
+                      : '${yearlyOverviewState.comparisonPercentageLastYear} %'
+                  : '''$currency ${state.givingGoal.yearlyGivingGoal > 0 ? Util.formatNumberComma(state.givingGoal.yearlyGivingGoal - totalGivenInYear, country) : Util.formatNumberComma(state.givingGoal.yearlyGivingGoal, country)}''',
+              description: state.givingGoal.yearlyGivingGoal > 0
+                  ? locals.budgetSummaryGivingGoalRest
+                  : isCurrentYear
+                      ? '${locals.budgetYearlyOverviewRelativeTo} \n$previousYear'
+                      : '${locals.budgetYearlyOverviewVersus} $previousYear',
             ),
           ],
         );
       },
+    );
+  }
+
+  Card _buildComparisonCard({
+    required PersonalSummaryState state,
+    required YearlyOverviewState yearlyOverviewState,
+    required BuildContext context,
+    required AppLocalizations locals,
+    required TextStyle textTheme,
+    required String comparisonResult,
+    required String description,
+  }) {
+    return Card(
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                comparisonResult,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              description,
+              style: textTheme,
+              softWrap: true,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

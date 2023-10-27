@@ -71,18 +71,16 @@ final class YearlyOverviewState extends Equatable {
   }
 
   int get comparisonPercentageCurrentYear {
-    return ((totalWithinGivt + totalOutsideGivt - totalPreviousYear) /
-            totalWithinGivtPreviousYear *
-            100)
+    return (((totalWithinGivt + totalOutsideGivt) / totalPreviousYear) * 100)
         .round();
   }
 
-  // int get comparisonPercentageLastYear {
-  //   return (((totalWithinGivt + totalOutsideGivt - totalPreviousYear) /
-  //               totalPreviousYear) *
-  //           100)
-  //       .round();
-  // }
+  int get comparisonPercentageLastYear {
+    return (((totalWithinGivt + totalOutsideGivt - totalPreviousYear) /
+                totalPreviousYear) *
+            100)
+        .round();
+  }
 
   double get taxReliefOutsideGivt {
     return externalDonations
