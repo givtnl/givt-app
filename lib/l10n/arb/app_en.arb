@@ -1447,7 +1447,7 @@
     "childParentalApprovalConfirmationSubTitle": "to {value0} on {value1}",
     "childParentalApprovalConfirmationDecline": "Decline",
     "childParentalApprovalConfirmationApprove": "Approve",
-    "childParentalApprovalDeclinedTitle": "You have declined {value0}’ request",
+    "childParentalApprovalDeclinedTitle": "You have declined {value0}’s request",
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
     "childParentalApprovalErrorSubTitle": "Please try again later"
