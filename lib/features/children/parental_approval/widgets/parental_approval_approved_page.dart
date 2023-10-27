@@ -19,7 +19,7 @@ class ParentalApprovalApprovedPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          '${context.l10n.childParentalApprovalApprovedTitlePrefix}${donation.name}${context.l10n.childParentalApprovalApprovedTitlePostfix}',
+          context.l10n.childParentalApprovalApprovedTitle(donation.name),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,

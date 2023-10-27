@@ -31,7 +31,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          '${donation.name}${context.l10n.childParentalApprovalConfirmationTitle}',
+          context.l10n.childParentalApprovalConfirmationTitle(donation.name),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,
@@ -63,7 +63,10 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          '${context.l10n.childParentalApprovalTo}${donation.organizationName}${context.l10n.childParentalApprovalOn}${donation.date.formatDate(context.l10n)}',
+          context.l10n.childParentalApprovalConfirmationSubTitle(
+            donation.organizationName,
+            donation.date.formatDate(context.l10n),
+          ),
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,
