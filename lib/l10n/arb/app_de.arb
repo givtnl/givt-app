@@ -1441,17 +1441,14 @@
     "childHistoryAllGivts": "All givts",
     "today": "Today",
     "yesterday": "Yesterday",
-    "childParentalApprovalApprovedTitlePrefix": "Yes, ",
+    "childParentalApprovalApprovedTitle": "Yes, {value0} has made a difference!",
     "childParentalApprovalApprovedSubTitle": "Thank you",
-    "childParentalApprovalConfirmationTitle": " would love to give",
-    "childParentalApprovalTo": "to ",
-    "childParentalApprovalOn": " on ",
+    "childParentalApprovalConfirmationTitle": "{value0} would love to give",
+    "childParentalApprovalConfirmationSubTitle": "to {value0} on {value1}",
     "childParentalApprovalConfirmationDecline": "Decline",
     "childParentalApprovalConfirmationApprove": "Approve",
-    "childParentalApprovalDeclinedTitlePrefix": "You have declined ",
+    "childParentalApprovalDeclinedTitle": "You have declined {value0}’ request",
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
-    "childParentalApprovalErrorSubTitle": "Please try again later",
-    "childParentalApprovalApprovedTitlePostfix": " has made a difference!",
-    "childParentalApprovalDeclinedTitlePostfix": "' request"
+    "childParentalApprovalErrorSubTitle": "Please try again later"
 }
