@@ -95,7 +95,7 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      // After some feedback from customer we decided to change the RSSI value to support a bigger range
+      // After some feedback from customer we decided to slightly change the RSSI value to support a bigger range
       if (scanResult.rssi < -70) {
         continue;
       }
