@@ -3,11 +3,12 @@ part of 'family_history_cubit.dart';
 enum HistroryStatus { initial, loading, loaded, error }
 
 class FamilyHistoryState extends Equatable {
-  const FamilyHistoryState(
-      {this.status = HistroryStatus.initial,
-      this.history = const [],
-      this.pageNr = 1,
-      this.error = ''});
+  const FamilyHistoryState({
+    this.status = HistroryStatus.initial,
+    this.history = const [],
+    this.pageNr = 1,
+    this.error = '',
+  });
 
   final HistroryStatus status;
   final List<HistoryItem> history;

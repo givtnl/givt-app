@@ -4,7 +4,7 @@ import 'package:givt_app/features/children/family_history/models/child_donation.
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/datetime_extension.dart';
+import 'package:givt_app/utils/string_datetime_extension.dart';
 
 class ActionedDonationWidget extends StatelessWidget {
   const ActionedDonationWidget({required this.donation, super.key});
@@ -66,8 +66,9 @@ class ActionedDonationWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 15),
               child: Opacity(
-                  opacity: donation.state == DonationState.pending ? 0.6 : 1,
-                  child: SvgPicture.asset('assets/images/coin.svg')),
+                opacity: donation.state == DonationState.pending ? 0.6 : 1,
+                child: SvgPicture.asset('assets/images/coin.svg'),
+              ),
             )
         ],
       ),

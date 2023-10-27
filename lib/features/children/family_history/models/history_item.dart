@@ -9,7 +9,7 @@ abstract class HistoryItem extends Equatable {
   });
 
   final double amount;
-  final DateTime date;
+  final String date;
   final HistoryTypes type;
   final String name;
 
@@ -21,6 +21,7 @@ enum HistoryTypes {
   donation('WalletDonation'),
   allowance('RecurringAllowance');
 
-  final String value;
   const HistoryTypes(this.value);
+
+  final String value;
 }
