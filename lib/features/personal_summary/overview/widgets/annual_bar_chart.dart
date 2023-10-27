@@ -14,7 +14,7 @@ class AnnualBarChart extends StatelessWidget {
   final String year;
   final double amount;
   final String currency;
-  final String yearGoal;
+  final double yearGoal;
   final VoidCallback onTap;
 
   @override
@@ -28,9 +28,9 @@ class AnnualBarChart extends StatelessWidget {
             context,
             constraints,
           ) {
-            var width = constraints.maxWidth * amount / double.parse(yearGoal);
+            var width = constraints.maxWidth * amount / yearGoal;
             final isCurrentYear = DateTime.now().year.toString() == year;
-            final isGoalAchieved = amount >= double.parse(yearGoal);
+            final isGoalAchieved = amount >= yearGoal;
 
             /// If the bar chart is overflowing, we need to reduce the width of the bar chart
             /// the -50 given by the padding and margins used in the widget and
@@ -128,7 +128,7 @@ class AnnualBarChart extends StatelessWidget {
       textColor = Colors.white;
     }
 
-    final isAlmostAchieved = amount >= double.parse(yearGoal) * 0.8;
+    final isAlmostAchieved = amount >= yearGoal * 0.8;
 
     return Row(
       children: [

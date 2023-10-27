@@ -39,7 +39,7 @@ class AnnualSummaryCard extends StatelessWidget {
                     year: item.key,
                     amount: item.amount,
                     currency: currency,
-                    yearGoal: referenceValue.toStringAsFixed(2),
+                    yearGoal: referenceValue,
                     onTap: () => context.goNamed(
                       Pages.yearlyOverview.name,
                       queryParameters: {
