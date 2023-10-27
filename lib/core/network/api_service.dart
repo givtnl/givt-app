@@ -764,4 +764,29 @@ class APIService {
       return response.statusCode == 200;
     });
   }
+
+  Future<List<dynamic>> fetchHistory(Map<String, dynamic> body) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/ChildProfile/all/transactions');
+
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      final decodedBody = jsonDecode(response.body);
+      final itemMap = decodedBody['items'];
+      return itemMap as List<dynamic>;
+    }
+  }
 }

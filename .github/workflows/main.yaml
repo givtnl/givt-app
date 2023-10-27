@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -37,6 +37,9 @@ jobs:
       GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
+    with:
+      flutter-version: '3.13.7'
+      ruby-version: '2.6.0'
 
   ios:
     needs: linter
@@ -47,6 +50,10 @@ jobs:
       APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
       GITHUB_API_TOKEN: ${{ secrets.PIPELINE_PAT }}
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
+    with:
+      flutter-version: '3.13.7'
+      ruby-version: '2.6.0'
+  
 
   semantic-pr:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1

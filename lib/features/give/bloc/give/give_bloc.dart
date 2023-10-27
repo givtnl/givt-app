@@ -206,24 +206,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     emit(state.copyWith(status: GiveStatus.processingBeaconData));
     try {
-      final hex = StringBuffer();
-      for (final b in event.serviceData[event.serviceUUID]!) {
-        hex.write(sprintf('%02x', [b]));
-      }
-
-      final beaconData = hex.toString();
-      final contains = beaconData.contains('61f7ed01') ||
-          beaconData.contains('61f7ed02') ||
-          beaconData.contains('61f7ed03');
-
-      if (!contains) {
-        emit(state.copyWith(status: GiveStatus.success));
-        return;
-      }
-
-      final startIndex = beaconData.indexOf('61f7ed');
-      final namespace = beaconData.substring(startIndex, startIndex + 20);
-      final instance = beaconData.substring(startIndex + 20, startIndex + 32);
+      final startIndex = event.beaconData.indexOf('61f7ed');
+      final namespace = event.beaconData.substring(startIndex, startIndex + 20);
+      final instance = event.beaconData.substring(startIndex + 20, startIndex + 32);
       final beaconId = '$namespace.$instance';
       final msg = 'Beacon detected $beaconId | RSSI: ${event.rssi}';
 
@@ -234,7 +219,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       await _checkBatteryVoltage(
         int.tryParse(
-          beaconData.substring(26, 30),
+          event.beaconData.substring(26, 30),
           radix: 16,
         ),
         msg,

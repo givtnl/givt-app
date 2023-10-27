@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
   const BTScanPage({super.key});
@@ -28,21 +30,46 @@ class _BTScanPageState extends State<BTScanPage> {
   }
 
   Future<void> initBluetooth() async {
-    await FlutterBluePlus.startScan(
-      timeout: const Duration(seconds: 30),
-      androidUsesFineLocation: true,
-    );
-    if (Platform.isIOS) {
-      Future.delayed(const Duration(seconds: 2), () async {
-        await FlutterBluePlus.startScan(
-          timeout: const Duration(seconds: 30),
-          androidUsesFineLocation: true,
-        );
-      });
-    }
-    FlutterBluePlus.scanResults.listen(_onPeripheralsDetectedData);
+    await LoggingInfo.instance.info('initBluetooth');
 
-    Future.delayed(const Duration(seconds: 10), () {
+    if (await FlutterBluePlus.isSupported == false) {
+      await LoggingInfo.instance.info('Bluetooth not supported on this device');
+      return;
+    }
+
+    // Set listen method for scan results
+    FlutterBluePlus.scanResults.listen(
+      _onPeripheralsDetectedData,
+      onError: (e) {
+        LoggingInfo.instance.error('Error while scanning for peripherals: $e');
+      },
+    );
+
+    // Listen to scan mode changes
+    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
+      switch (state) {
+        case BluetoothAdapterState.on:
+          await FlutterBluePlus.startScan(
+            timeout: const Duration(seconds: 30),
+            androidUsesFineLocation: true,
+          );
+        case BluetoothAdapterState.unauthorized:
+          await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
+        case BluetoothAdapterState.off:
+          await LoggingInfo.instance.info('Bluetooth adapter is off');
+          if (Platform.isAndroid) {
+            await LoggingInfo.instance.info('Trying to turn it on...');
+            await FlutterBluePlus.turnOn();
+          }
+
+        // We don't want to handle other cases at the moment, so:
+        // ignore: no_default_cases
+        default:
+          break;
+      }
+    });
+
+    Future.delayed(const Duration(seconds: 5), () {
       if (!mounted) {
         return;
       }
@@ -76,6 +103,23 @@ class _BTScanPageState extends State<BTScanPage> {
       if (!mounted) {
         return;
       }
+
+      // Check if its really a Givt beacon
+      final hex = StringBuffer();
+      for (final b in scanResult.advertisementData
+          .serviceData[scanResult.advertisementData.serviceUuids.first]!) {
+        hex.write(sprintf('%02x', [b]));
+      }
+
+      final beaconData = hex.toString();
+      final contains = beaconData.contains('61f7ed01') ||
+          beaconData.contains('61f7ed02') ||
+          beaconData.contains('61f7ed03');
+
+      if (!contains) {
+        return;
+      }
+
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
               userGUID: context.read<AuthCubit>().state.user.guid,
@@ -83,6 +127,7 @@ class _BTScanPageState extends State<BTScanPage> {
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
               serviceData: scanResult.advertisementData.serviceData,
+              beaconData: beaconData
             ),
           );
     }

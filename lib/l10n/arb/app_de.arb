@@ -1429,5 +1429,16 @@
     "childEditProfileErrorText": "Cannot update child profile. Please try again later.",
     "childEditProfile": "Edit Profile",
     "noChildProfilesError": "Once you create a child profile, you will be able see them here and use the Givt4Kids companion app.",
-    "childMonthlyGivingAllowanceRange": "Monthly giving allowance can be an amount between $1 to $999."
+    "childMonthlyGivingAllowanceRange": "Monthly giving allowance can be an amount between $1 to $999.",
+    "childrenMyFamily": "My Family",
+    "childrenAddChild": "Add child",
+    "childrenAddChildProfile": "+ Add a child profile",
+    "childHistoryBy": "by",
+    "childHistoryTo": "to",
+    "childHistoryToBeApproved": "To be approved",
+    "childHistoryCanContinueMakingADifference": "'can continue making a difference'",
+    "childHistoryYay": "Yay!",
+    "childHistoryAllGivts": "All givts",
+    "today": "Today",
+    "yesterday": "Yesterday"
 }
