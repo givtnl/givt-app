@@ -11,7 +11,7 @@ class ParentalApprovalResponse extends Equatable {
     final holder = map['item'] as Map<String, dynamic>;
     return ParentalApprovalResponse(
       isError: map['isError'] as bool,
-      errorMessage: map['errorMessage'] as String,
+      errorMessage: map['errorMessage']?.toString() ?? '',
       detailResponse: DetailResponse.fromMap(
         holder['transactionDetail'] as Map<String, dynamic>,
       ),

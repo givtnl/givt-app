@@ -505,7 +505,7 @@ class APIService {
       'givtservice/v1/Transaction/$childId/donation-approval',
     );
 
-    final response = await client.post(
+    final response = await client.put(
       url,
       headers: {
         'Content-Type': 'application/json',
@@ -520,9 +520,9 @@ class APIService {
             ? {}
             : jsonDecode(response.body) as Map<String, dynamic>,
       );
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
     }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
   Future<List<dynamic>> fetchRecurringDonations({
