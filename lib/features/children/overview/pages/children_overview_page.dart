@@ -55,14 +55,23 @@ class ChildrenOverviewPage extends StatelessWidget {
                   state.profiles.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.add),
-                    label: Text(
-                      context.l10n.childrenAddChild,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.givtBlue,
-                          ),
+                  child: TextButton(
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 2),
+                          child: Icon(Icons.add, size: 20),
+                        ),
+                        Text(
+                          context.l10n.childrenAddChild,
+                          textAlign: TextAlign.start,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.givtBlue,
+                                  ),
+                        ),
+                      ],
                     ),
                     onPressed: () => _addNewChild(context),
                   ),
