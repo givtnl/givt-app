@@ -21,7 +21,7 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
               children: state.pastTwelveMonths.map(
                 (item) {
                   return MonthlyBarChart(
-                    month: item.key,
+                    yearAndMonth: item.key,
                     amount: item.amount,
                   );
                 },

@@ -4,19 +4,20 @@ import 'package:intl/intl.dart';
 
 class MonthlyBarChart extends StatelessWidget {
   const MonthlyBarChart({
-    required this.month,
+    required this.yearAndMonth,
     required this.amount,
     super.key,
   });
 
-  final String month;
+  final String yearAndMonth;
   final double amount;
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = DateFormat.MMM().format(DateTime.parse('$month-01'));
+    final formattedDate =
+        DateFormat.MMM().format(DateTime.parse('$yearAndMonth-01'));
     final isCurrentMonth =
-        DateTime.now().month.toString() == month.split('-')[1];
+        DateTime.now().month.toString() == yearAndMonth.split('-')[1];
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: LayoutBuilder(
