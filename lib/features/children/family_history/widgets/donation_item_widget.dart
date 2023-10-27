@@ -9,9 +9,8 @@ class DonationItemWidget extends StatelessWidget {
   final ChildDonation donation;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     if (donation.state == DonationState.pending) {
-      return PendingDonationWidget(donation: donation, size: size);
+      return PendingDonationWidget(donation: donation);
     }
     return ActionedDonationWidget(donation: donation);
   }

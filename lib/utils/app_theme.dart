@@ -54,6 +54,8 @@ class AppTheme {
 
   static const childGivingAllowanceHint = Color(0xFF617793);
 
+  static const childParentalApprovalDecline = Color(0xFF9A3F3F);
+
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,
     fontFamily: 'AvenirLTStd',

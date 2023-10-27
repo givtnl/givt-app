@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
-import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 
 part 'family_history_state.dart';
 
@@ -13,8 +13,16 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   FamilyHistoryCubit(this.historyRepo) : super(const FamilyHistoryState());
   final FamilyDonationHistoryRepository historyRepo;
 
-  FutureOr<void> fetchHistory() async {
-    emit(state.copyWith(status: HistroryStatus.loading));
+  FutureOr<void> fetchHistory({
+    bool fromScratch = false,
+  }) async {
+    emit(
+      state.copyWith(
+        status: HistroryStatus.loading,
+        history: fromScratch ? [] : null,
+        pageNr: fromScratch ? 1 : null,
+      ),
+    );
 
     try {
       final tempHistory = <HistoryItem>[];
@@ -32,11 +40,17 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
               .where((element) => element.state == DonationState.pending)
               .toList(),
         );
-        tempHistory.addAll(
-          previousDonation
-              .where((element) => element.state != DonationState.pending)
-              .toList(),
-        );
+        tempHistory
+          ..addAll(
+            previousDonation
+                .where((element) => element.state != DonationState.pending)
+                .toList(),
+          )
+          ..addAll(
+            state.history
+                .where((element) => element.type == HistoryTypes.allowance)
+                .toList(),
+          );
       }
 
       // fetch donations
@@ -76,10 +90,13 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
         return;
       }
       // update state
-      emit(state.copyWith(
+      emit(
+        state.copyWith(
           status: HistroryStatus.loaded,
           history: history,
-          pageNr: state.pageNr + 1));
+          pageNr: state.pageNr + 1,
+        ),
+      );
     } catch (e) {
       emit(state.copyWith(status: HistroryStatus.error, error: e.toString()));
     }

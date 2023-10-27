@@ -210,7 +210,9 @@ class APIService {
     String email,
   ) async {
     final url = Uri.https(
-        apiURL, '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate');
+      apiURL,
+      '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate',
+    );
 
     final response = await client.post(
       url,
@@ -494,6 +496,35 @@ class APIService {
     return itemMap;
   }
 
+  Future<Map<String, dynamic>> submitParentalApprovalDecision({
+    required String childId,
+    required Map<String, dynamic> body,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      'givtservice/v1/Transaction/$childId/donation-approval',
+    );
+
+    final response = await client.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isEmpty
+            ? {}
+            : jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
+  }
+
   Future<List<dynamic>> fetchRecurringDonations({
     required Map<String, dynamic> params,
   }) async {
@@ -679,11 +710,11 @@ class APIService {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/ChildProfile/all/transactions');
 
-    var response = await client.post(
+    final response = await client.post(
       url,
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
       },
       body: jsonEncode(body),
     );
@@ -694,7 +725,7 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     } else {
-      var decodedBody = jsonDecode(response.body);
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
       final itemMap = decodedBody['items'];
       return itemMap as List<dynamic>;
     }
