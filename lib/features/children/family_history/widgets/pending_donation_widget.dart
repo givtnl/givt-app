@@ -1,10 +1,14 @@
+import 'dart:async';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
+import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/parental_approval/dialogs/parental_approval_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
@@ -46,8 +50,20 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
               donation: widget.donation,
             ),
           );
-          if (true == decisionMade && mounted) {
+          if (true == decisionMade) {
+            if (!mounted) {
+              return;
+            }
             context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true);
+
+            if (!mounted) {
+              return;
+            }
+            unawaited(
+              context
+                  .read<ChildrenOverviewCubit>()
+                  .fetchChildren(context.read<AuthCubit>().state.user.guid),
+            );
           }
         }
       },
