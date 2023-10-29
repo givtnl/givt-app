@@ -9,4 +9,7 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
+      with:
+        sparse-checkout: .github
     - uses: actions/labeler@v4
