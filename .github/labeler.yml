@@ -1,8 +1,0 @@
-enhancement:
-- any: ['feature/**']
-
-bug:
-- any: ['bug/**', 'bugfix/**']
-
-chore:
-- any: ['chore/**']
