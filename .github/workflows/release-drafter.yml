@@ -28,7 +28,7 @@ jobs:
 
       - name: Get version
         id: yq
-        uses: mikefarah/yq@v4
+        uses: mikefarah/yq@master
         with:
           cmd: yq -r '.version' 'pubspec.yaml'
   
