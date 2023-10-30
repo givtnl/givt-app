@@ -210,7 +210,9 @@ class APIService {
     String email,
   ) async {
     final url = Uri.https(
-        apiURL, '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate');
+      apiURL,
+      '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate',
+    );
 
     final response = await client.post(
       url,
@@ -492,6 +494,35 @@ class APIService {
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['item'] as Map<String, dynamic>;
     return itemMap;
+  }
+
+  Future<Map<String, dynamic>> submitParentalApprovalDecision({
+    required String childId,
+    required Map<String, dynamic> body,
+  }) async {
+    final url = Uri.https(
+      _apiURL,
+      'givtservice/v1/Transaction/$childId/donation-approval',
+    );
+
+    final response = await client.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isEmpty
+            ? {}
+            : jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
   Future<List<dynamic>> fetchRecurringDonations({
@@ -783,10 +814,9 @@ class APIService {
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
-    } else {
-      final decodedBody = jsonDecode(response.body);
-      final itemMap = decodedBody['items'];
-      return itemMap as List<dynamic>;
     }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['items'];
+    return itemMap as List<dynamic>;
   }
 }

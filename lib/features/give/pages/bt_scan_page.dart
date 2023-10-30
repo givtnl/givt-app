@@ -61,7 +61,6 @@ class _BTScanPageState extends State<BTScanPage> {
             await LoggingInfo.instance.info('Trying to turn it on...');
             await FlutterBluePlus.turnOn();
           }
-
         // We don't want to handle other cases at the moment, so:
         // ignore: no_default_cases
         default:
@@ -96,7 +95,8 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      if (scanResult.rssi < -67) {
+      // After some feedback from customer we decided to slightly change the RSSI value to support a bigger range
+      if (scanResult.rssi < -70) {
         continue;
       }
 
@@ -127,7 +127,7 @@ class _BTScanPageState extends State<BTScanPage> {
               rssi: scanResult.rssi,
               serviceUUID: scanResult.advertisementData.serviceUuids.first,
               serviceData: scanResult.advertisementData.serviceData,
-              beaconData: beaconData
+              beaconData: beaconData,
             ),
           );
     }

@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/create_child/repositories/create_chil
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
+import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
@@ -146,6 +147,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<ChildDetailsRepository>(
       () => ChildDetailsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<ParentalApprovalRepository>(
+      () => ParentalApprovalRepositoryImpl(
         getIt(),
       ),
     )

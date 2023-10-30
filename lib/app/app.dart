@@ -68,12 +68,13 @@ class _AppView extends StatelessWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {
         // Check if the current device locale is US, then always return en_US
-        if(locale!.countryCode == 'US') {
+        if (locale!.countryCode == 'US') {
           return const Locale('en', 'US');
         }
 
-        for (final supportedLocale in supportedLocales.where((element) => element.countryCode != 'US')) {
-          if (supportedLocale.languageCode == locale!.languageCode) {
+        for (final supportedLocale in supportedLocales
+            .where((element) => element.countryCode != 'US')) {
+          if (supportedLocale.languageCode == locale.languageCode) {
             return supportedLocale;
           }
         }

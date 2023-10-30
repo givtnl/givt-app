@@ -8,30 +8,22 @@ class Allowance extends HistoryItem {
     required super.name,
   });
 
-  Allowance.empty()
+  const Allowance.empty()
       : this(
           amount: 0,
-          date: DateTime.now(),
+          date: '',
           type: HistoryTypes.donation,
           name: '',
         );
 
   factory Allowance.fromMap(Map<String, dynamic> map) {
     return Allowance(
-        name: map['donor']['firstName'].toString(),
-        amount: double.tryParse(map['amount'].toString()) ?? 0,
-        date:
-            DateTime.tryParse(map['donationDate'].toString()) ?? DateTime.now(),
-        type: HistoryTypes.values.firstWhere(
-          (element) => element.value == map['donationType'],
-        ));
-  }
-  Map<String, dynamic> toJson() {
-    return {
-      'amount': amount,
-      'donationDate': date.toString(),
-      'donationType': type.value,
-      'donor': {'firstName': name}
-    };
+      name: (map['donor'] as Map<String, dynamic>)['firstName'].toString(),
+      amount: double.tryParse(map['amount'].toString()) ?? 0,
+      date: map['donationDate'].toString(),
+      type: HistoryTypes.values.firstWhere(
+        (element) => element.value == map['donationType'],
+      ),
+    );
   }
 }
