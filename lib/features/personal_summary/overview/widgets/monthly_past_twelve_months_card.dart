@@ -52,6 +52,17 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: state.pastTwelveMonths.map(
+                    (item) {
+                      return MonthlyBarChart(
+                        yearAndMonth: item.key,
+                        amount: item.amount,
+                      );
+                    },
+                  ).toList(),
+                ),
                 Visibility(
                   visible: isGivingGoalSet,
                   child: Positioned(
@@ -73,17 +84,6 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: state.pastTwelveMonths.map(
-                    (item) {
-                      return MonthlyBarChart(
-                        yearAndMonth: item.key,
-                        amount: item.amount,
-                      );
-                    },
-                  ).toList(),
                 ),
               ],
             ),
