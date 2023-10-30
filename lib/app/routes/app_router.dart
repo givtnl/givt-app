@@ -15,6 +15,7 @@ import 'package:givt_app/features/children/details/cubit/child_details_cubit.dar
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
+import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
@@ -36,6 +37,8 @@ import 'package:givt_app/features/personal_summary/add_external_donation/cubit/a
 import 'package:givt_app/features/personal_summary/add_external_donation/pages/add_external_donation_page.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
+import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
+import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -98,6 +101,7 @@ class AppRouter {
             builder: (context, state) => BlocProvider(
               create: (_) => PersonalSummaryBloc(
                 loggedInUserExt: context.read<AuthCubit>().state.user,
+                givingGoalRepository: getIt(),
                 givtRepo: getIt(),
               )..add(
                   const PersonalSummaryInit(),
@@ -126,6 +130,30 @@ class AppRouter {
                   );
                 },
               ),
+              GoRoute(
+                path: Pages.yearlyOverview.path,
+                name: Pages.yearlyOverview.name,
+                builder: (context, state) {
+                  final guid = context.read<AuthCubit>().state.user.guid;
+                  final summaryBloc = state.extra! as PersonalSummaryBloc;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: summaryBloc,
+                      ),
+                      BlocProvider(
+                        create: (context) => YearlyOverviewCubit(
+                          getIt(),
+                        )..init(
+                            year: state.queryParameters['year']!,
+                            guid: guid,
+                          ),
+                      ),
+                    ],
+                    child: const YearlyOverviewPage(),
+                  );
+                },
+              ),
             ],
           ),
           GoRoute(
@@ -142,9 +170,17 @@ class AppRouter {
           GoRoute(
             path: Pages.childrenOverview.path,
             name: Pages.childrenOverview.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => ChildrenOverviewCubit(getIt())
-                ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+            builder: (context, state) => MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => ChildrenOverviewCubit(getIt())
+                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                      FamilyHistoryCubit(getIt())..fetchHistory(),
+                )
+              ],
               child: const ChildrenOverviewPage(),
             ),
           ),
@@ -565,11 +601,11 @@ class AppRouter {
     if (state.queryParameters.containsKey('mediumId')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
     }
-    
+
     if (state.queryParameters.containsKey('mediumid')) {
       code = base64Encode(utf8.encode(state.queryParameters['mediumid']!));
     }
-    
+
     if (auth.status == AuthStatus.authenticated) {
       if (code.isEmpty) {
         return Pages.home.path;

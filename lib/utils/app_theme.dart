@@ -43,9 +43,18 @@ class AppTheme {
   static const childMonsterOrange = Color(0xFFFEAD1D);
   static const childMonsterBlue = Color(0xFF69A9D3);
 
+  static const childHistoryPending = Color(0xFFA77F2C);
+  static const childHistoryPendingLight = Color(0xFFF2DF7F);
+  static const childHistoryPendingDark = Color(0xFF654B14);
+  static const childHistoryApproved = Color(0xFF006C47);
+  static const childHistoryDeclined = Color(0xFF780F0F);
+  static const childHistoryAllowance = Color(0xFF06509B);
+
   static const childGivingAllowanceCardBorder = Color(0xFFECF1F1);
 
   static const childGivingAllowanceHint = Color(0xFF617793);
+
+  static const childParentalApprovalDecline = Color(0xFF9A3F3F);
 
   static final ThemeData lightTheme = ThemeData(
     // useMaterial3: true,

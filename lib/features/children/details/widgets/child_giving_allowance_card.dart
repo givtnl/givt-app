@@ -26,7 +26,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0,
-          shadowColor: profileDetails.profile.monsterColor,
+          shadowColor: profileDetails.profile.monsterColorWithAlpha,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
             side: const BorderSide(

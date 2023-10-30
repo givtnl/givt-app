@@ -89,6 +89,29 @@ class CustomNavigationDrawer extends StatelessWidget {
             ),
           ),
           _buildMenuItem(
+            isVisible: showFamilyItem,
+            title: locals.childrenMyFamily,
+            isAccent: true,
+            imageIcon: Container(
+              padding: const EdgeInsets.all(10),
+              width: 90,
+              child: SvgPicture.asset(
+                'assets/images/givt4kids_logo.svg',
+              ),
+            ),
+            icon: Icons.family_restroom_rounded,
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () {
+                context.goNamed(Pages.childrenOverview.name);
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.familyClicked,
+                );
+              },
+            ),
+          ),
+          if (showFamilyItem) _buildEmptySpace(),
+          _buildMenuItem(
             isVisible: !auth.user.needRegistration,
             title: locals.historyTitle,
             icon: FontAwesomeIcons.listUl,
@@ -266,16 +289,6 @@ class CustomNavigationDrawer extends StatelessWidget {
                   Pages.unregister.name,
                 ),
               );
-            },
-          ),
-          if (showFamilyItem) _buildEmptySpace(),
-          _buildMenuItem(
-            isVisible: showFamilyItem,
-            title: locals.familyMenuItem,
-            icon: Icons.family_restroom_rounded,
-            onTap: () => {
-              context.goNamed(Pages.childrenOverview.name),
-              AnalyticsHelper.logEvent(eventName: AmplitudeEvents.familyClicked)
             },
           ),
           _buildEmptySpace(),

@@ -14,22 +14,38 @@ class PersonalSummaryState extends Equatable {
     this.status = PersonalSummaryStatus.initial,
     this.loggedInUserExt = const UserExt.empty(),
     this.error = '',
+    this.givingGoal = const GivingGoal.empty(),
     this.monthlyGivts = const [],
+    this.pastTwelveMonths = const [],
     this.externalDonations = const [],
+    this.annualGivts = const [],
   });
   final PersonalSummaryStatus status;
   final UserExt loggedInUserExt;
   final String error;
   final String dateTime;
-  final List<MonthlySummaryItem> monthlyGivts;
+  final GivingGoal givingGoal;
+  final List<SummaryItem> monthlyGivts;
+  final List<SummaryItem> annualGivts;
+  final List<SummaryItem> pastTwelveMonths;
   final List<ExternalDonation> externalDonations;
+
+  double get totalSumPerMonth =>
+      monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount) +
+      externalDonations.fold<double>(0, (sum, item) => sum + item.amount);
+  
+  double get averageGiven => 
+      totalSumPerMonth / monthlyGivts.length;
 
   PersonalSummaryState copyWith({
     PersonalSummaryStatus? status,
     UserExt? loggedInUserExt,
     String? error,
     String? dateTime,
-    List<MonthlySummaryItem>? monthlyGivts,
+    GivingGoal? givingGoal,
+    List<SummaryItem>? monthlyGivts,
+    List<SummaryItem>? annualGivts,
+    List<SummaryItem>? pastTwelveMonths,
     List<ExternalDonation>? externalDonations,
   }) {
     return PersonalSummaryState(
@@ -38,7 +54,10 @@ class PersonalSummaryState extends Equatable {
       error: error ?? this.error,
       dateTime: dateTime ?? this.dateTime,
       monthlyGivts: monthlyGivts ?? this.monthlyGivts,
+      annualGivts: annualGivts ?? this.annualGivts,
+      pastTwelveMonths: pastTwelveMonths ?? this.pastTwelveMonths,
       externalDonations: externalDonations ?? this.externalDonations,
+      givingGoal: givingGoal ?? this.givingGoal,
     );
   }
 
@@ -49,6 +68,9 @@ class PersonalSummaryState extends Equatable {
         error,
         dateTime,
         monthlyGivts,
+        annualGivts,
+        pastTwelveMonths,
         externalDonations,
+        givingGoal,
       ];
 }
