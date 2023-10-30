@@ -37,11 +37,6 @@ class PersonalSummaryState extends Equatable {
   double get averageGiven => totalSumPerMonth / monthlyGivts.length;
 
   double get maxInPastTwelveMonths {
-    // if (goalSet) {
-    //            if (pastTwelveMonths.maxByOrNull { it.Value }!!.Value > thisYearGivingGoal/12) pastTwelveMonths.maxByOrNull { it.Value }!!.Value else thisYearGivingGoal/12
-    //         } else {
-    //             pastTwelveMonths.maxByOrNull { it.Value }!!.Value
-    //         }
     final maxPastTwelveMonthsCalc = pastTwelveMonths.fold<double>(
         0, (max, item) => max < item.amount ? item.amount : max);
     if (givingGoal.amount > 0) {
