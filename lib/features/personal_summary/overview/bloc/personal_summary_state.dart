@@ -33,9 +33,20 @@ class PersonalSummaryState extends Equatable {
   double get totalSumPerMonth =>
       monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount) +
       externalDonations.fold<double>(0, (sum, item) => sum + item.amount);
-  
-  double get averageGiven => 
-      totalSumPerMonth / monthlyGivts.length;
+
+  double get averageGiven => totalSumPerMonth / monthlyGivts.length;
+
+  double get maxInPastTwelveMonths {
+    final maxPastTwelveMonthsCalc = pastTwelveMonths.fold<double>(
+        0, (max, item) => max < item.amount ? item.amount : max);
+    if (givingGoal.amount > 0) {
+      return maxPastTwelveMonthsCalc > givingGoal.yearlyGivingGoal / 12
+          ? maxPastTwelveMonthsCalc
+          : givingGoal.yearlyGivingGoal / 12;
+    }
+
+    return maxPastTwelveMonthsCalc;
+  }
 
   PersonalSummaryState copyWith({
     PersonalSummaryStatus? status,

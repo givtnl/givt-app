@@ -22,12 +22,13 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
           final distanceLineFromBottom = (state.givingGoal.amount == 0
               ? state.averageGiven
               : state.givingGoal.yearlyGivingGoal / 12);
+          final isGivingGoalSet = state.givingGoal.amount > 0;
           return SizedBox(
             height: 150,
             child: Stack(
               children: [
                 Visibility(
-                  visible: state.givingGoal.amount > 0,
+                  visible: isGivingGoalSet,
                   child: Positioned(
                     top: 5,
                     right: 5,
@@ -51,22 +52,6 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: distanceLineFromBottom,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      color: AppTheme.givtLightGreen,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: AppTheme.givtLightGreen,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: state.pastTwelveMonths.map(
@@ -78,11 +63,40 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                     },
                   ).toList(),
                 ),
+                Visibility(
+                  visible: isGivingGoalSet,
+                  child: Positioned(
+                    top: _calculateAverageLine(
+                      distanceLineFromBottom,
+                      state.maxInPastTwelveMonths,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 1,
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        color: AppTheme.givtLightGreen,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: AppTheme.givtLightGreen,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           );
         },
       ),
     );
+  }
+
+  double _calculateAverageLine(double value, double maxInTwelveMonths) {
+    final percentageOfTotal = value / maxInTwelveMonths;
+
+    final lineBottomHeight = 120 - 150 * percentageOfTotal;
+    return lineBottomHeight;
   }
 }
