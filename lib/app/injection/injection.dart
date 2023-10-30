@@ -119,6 +119,12 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<GivingGoalRepository>(
+      () => GivingGoalRepositoryImpl(
+        getIt(),
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<BeaconRepository>(
       () => BeaconRepositoryImpl(
         getIt(),

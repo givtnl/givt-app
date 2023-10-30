@@ -76,7 +76,7 @@ class _AddEditExternalDonationFormState
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final frequncies = [
+    final frequencies = [
       locals.budgetExternalGiftsFrequencyOnce,
       locals.budgetExternalGiftsFrequencyMonthly,
       locals.budgetExternalGiftsFrequencyQuarterly,
@@ -164,7 +164,7 @@ class _AddEditExternalDonationFormState
                             value: value,
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              frequncies[value.index],
+                              frequencies[value.index],
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!

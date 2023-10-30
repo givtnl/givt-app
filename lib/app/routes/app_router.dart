@@ -37,6 +37,8 @@ import 'package:givt_app/features/personal_summary/add_external_donation/cubit/a
 import 'package:givt_app/features/personal_summary/add_external_donation/pages/add_external_donation_page.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/overview/pages/personal_summary_page.dart';
+import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
+import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_overview_page.dart';
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -99,6 +101,7 @@ class AppRouter {
             builder: (context, state) => BlocProvider(
               create: (_) => PersonalSummaryBloc(
                 loggedInUserExt: context.read<AuthCubit>().state.user,
+                givingGoalRepository: getIt(),
                 givtRepo: getIt(),
               )..add(
                   const PersonalSummaryInit(),
@@ -124,6 +127,30 @@ class AppRouter {
                       ),
                     ],
                     child: const AddExternalDonationPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: Pages.yearlyOverview.path,
+                name: Pages.yearlyOverview.name,
+                builder: (context, state) {
+                  final guid = context.read<AuthCubit>().state.user.guid;
+                  final summaryBloc = state.extra! as PersonalSummaryBloc;
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider.value(
+                        value: summaryBloc,
+                      ),
+                      BlocProvider(
+                        create: (context) => YearlyOverviewCubit(
+                          getIt(),
+                        )..init(
+                            year: state.queryParameters['year']!,
+                            guid: guid,
+                          ),
+                      ),
+                    ],
+                    child: const YearlyOverviewPage(),
                   );
                 },
               ),
