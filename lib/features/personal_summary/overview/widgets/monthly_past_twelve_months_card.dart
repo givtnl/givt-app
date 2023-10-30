@@ -22,12 +22,13 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
           final distanceLineFromBottom = (state.givingGoal.amount == 0
               ? state.averageGiven
               : state.givingGoal.yearlyGivingGoal / 12);
+          final isGivingGoalSet = state.givingGoal.amount > 0;
           return SizedBox(
             height: 150,
             child: Stack(
               children: [
                 Visibility(
-                  visible: state.givingGoal.amount > 0,
+                  visible: isGivingGoalSet,
                   child: Positioned(
                     top: 5,
                     right: 5,
@@ -52,7 +53,7 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                  visible: state.givingGoal.amount > 0,
+                  visible: isGivingGoalSet,
                   child: Positioned(
                     top: _calculateAverageLine(
                       distanceLineFromBottom,
