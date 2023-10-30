@@ -51,17 +51,23 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: distanceLineFromBottom,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 1,
-                    padding: const EdgeInsets.all(5),
-                    decoration: const BoxDecoration(
-                      color: AppTheme.givtLightGreen,
-                      border: Border(
-                        bottom: BorderSide(
-                          color: AppTheme.givtLightGreen,
+                Visibility(
+                  visible: state.givingGoal.amount > 0,
+                  child: Positioned(
+                    top: _calculateAverageLine(
+                      distanceLineFromBottom,
+                      state.maxInPastTwelveMonths,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 1,
+                      padding: const EdgeInsets.all(5),
+                      decoration: const BoxDecoration(
+                        color: AppTheme.givtLightGreen,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: AppTheme.givtLightGreen,
+                          ),
                         ),
                       ),
                     ),
@@ -84,5 +90,12 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
         },
       ),
     );
+  }
+
+  double _calculateAverageLine(double value, double maxInTwelveMonths) {
+    final percentageOfTotal = value / maxInTwelveMonths;
+
+    final lineBottomHeight = 120 - 150 * percentageOfTotal;
+    return lineBottomHeight;
   }
 }
