@@ -45,8 +45,7 @@ class PersonalSummaryState extends Equatable {
           : givingGoal.yearlyGivingGoal / 12;
     }
 
-    return pastTwelveMonths.fold<double>(
-        0, (max, item) => max < item.amount ? item.amount : max);
+    return maxPastTwelveMonthsCalc;
   }
 
   PersonalSummaryState copyWith({
