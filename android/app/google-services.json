@@ -32,10 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "847341799623-30a5r5la9da0uemecshl8r6r63looedh.apps.googleusercontent.com",
+              "client_id": "847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "net.givtapp.ios"
+                "bundle_id": "net.givtapp.ios.test"
               }
             }
           ]
@@ -68,10 +68,10 @@
               "client_type": 3
             },
             {
-              "client_id": "847341799623-30a5r5la9da0uemecshl8r6r63looedh.apps.googleusercontent.com",
+              "client_id": "847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "net.givtapp.ios"
+                "bundle_id": "net.givtapp.ios.test"
               }
             }
           ]
@@ -104,10 +104,10 @@
               "client_type": 3
             },
             {
-              "client_id": "847341799623-30a5r5la9da0uemecshl8r6r63looedh.apps.googleusercontent.com",
+              "client_id": "847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "net.givtapp.ios"
+                "bundle_id": "net.givtapp.ios.test"
               }
             }
           ]

@@ -25,14 +25,21 @@ class NotificationService implements INotificationService {
     await FirebaseMessaging.instance.requestPermission();
     await FirebaseMessaging.instance.subscribeToTopic('dev');
     await FirebaseMessaging.instance.subscribeToTopic('all');
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      await LoggingInfo.instance.info('Received push notification');
-      await _handleNotification(message.data);
-    });
+    await setupFlutterNotifications();
+  }
+
+  Future<void> setupFlutterNotifications() async {
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
   }
 
   @override
   Future<void> silentNotification(Map<String, dynamic> customData) async {
+    await LoggingInfo.instance.info('Received push notification');
     await _handleNotification(customData);
   }
 
