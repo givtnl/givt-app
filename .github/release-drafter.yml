@@ -15,6 +15,7 @@ autolabeler:
   - label: 'enhancement'
     branch:
       - '/feature\/.+/'
+      - '/feat\/.+/'
   - label: 'bug'
     branch:
       - '/bug\/.+/'
