@@ -82,7 +82,7 @@ Future<(String, FirebaseOptions)> get _firebaseOptions async {
   final info = await PackageInfo.fromPlatform();
   final isDebug = info.packageName.contains('test');
 
-  final name = isDebug ? 'givt-dev-pre' : 'givt-dev-pre';
+  final name = isDebug ? 'givt-dev-pre' : 'givtapp-ebde1';
   final options = isDebug
       ? firebase_dev_options.DefaultFirebaseOptions.currentPlatform
       : firebase_prod_options.DefaultFirebaseOptions.currentPlatform;
