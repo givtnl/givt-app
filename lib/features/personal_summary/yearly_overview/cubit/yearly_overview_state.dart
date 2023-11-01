@@ -71,6 +71,9 @@ final class YearlyOverviewState extends Equatable {
   }
 
   int get comparisonPercentageCurrentYear {
+    if (totalPreviousYear == 0) {
+      return 0;
+    }
     return (((totalWithinGivt + totalOutsideGivt) / totalPreviousYear) * 100)
         .round();
   }

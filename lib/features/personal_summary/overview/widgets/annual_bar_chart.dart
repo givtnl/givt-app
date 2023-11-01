@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AnnualBarChart extends StatelessWidget {
@@ -130,6 +133,9 @@ class AnnualBarChart extends StatelessWidget {
 
     final isAlmostAchieved = amount >= yearGoal * 0.8;
 
+    final user = context.read<AuthCubit>().state.user;
+    final country = Country.fromCode(user.country);
+
     return Row(
       children: [
         Visibility(
@@ -170,7 +176,7 @@ class AnnualBarChart extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  '$currency $amount',
+                  '$currency ${Util.formatNumberComma(amount, country)}',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: isAlmostAchieved
                             ? AppTheme.givtLightGreen
