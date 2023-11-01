@@ -708,6 +708,32 @@ class APIService {
     return response.statusCode == 204;
   }
 
+  Future<bool> updateNotificationId({
+    required String guid,
+    required Map<String, dynamic> body,
+  }) async {
+    final url = Uri.https(apiURL, '/api/v2/users/$guid/pushnotificationid');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
+
   Future<List<dynamic>> fetchMonthlySummary(
     String guid,
     Map<String, String> params,

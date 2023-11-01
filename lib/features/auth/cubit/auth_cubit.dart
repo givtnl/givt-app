@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -32,9 +33,18 @@ class AuthCubit extends Cubit<AuthState> {
         password,
       );
 
-      final userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
+      var userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
 
       await LoggingInfo.instance.info('User logged in with $userExt');
+
+      final newNotificationId = await _updateNotificationId(
+        guid: userExt.guid,
+        currentNotificationId: userExt.notificationId,
+      );
+
+      userExt = userExt.copyWith(
+        notificationId: newNotificationId,
+      );
 
       emit(
         state.copyWith(
@@ -180,9 +190,18 @@ class AuthCubit extends Cubit<AuthState> {
         amountLimit: country.isUS ? 4999 : 499,
       );
 
-      final unRegisteredUserExt = await _authRepositoy.registerUser(
+      var unRegisteredUserExt = await _authRepositoy.registerUser(
         tempUser: tempUser,
         isTempUser: true,
+      );
+
+      final newNotificationId = await _updateNotificationId(
+        guid: unRegisteredUserExt.guid,
+        currentNotificationId: unRegisteredUserExt.notificationId,
+      );
+
+      unRegisteredUserExt = unRegisteredUserExt.copyWith(
+        notificationId: newNotificationId,
       );
 
       emit(
@@ -352,6 +371,54 @@ class AuthCubit extends Cubit<AuthState> {
           status: AuthStatus.failure,
         ),
       );
+    }
+  }
+
+  Future<String> _updateNotificationId({
+    required String guid,
+    required String currentNotificationId,
+  }) async {
+    try {
+      await LoggingInfo.instance.info('Update Notification Id');
+
+      final notificationId = await FirebaseMessaging.instance.getToken();
+
+      await LoggingInfo.instance.info('New FCM token: $notificationId');
+
+      if (currentNotificationId == notificationId) {
+        await LoggingInfo.instance.info(
+          'FCM token: $notificationId is the same as the current one',
+        );
+
+        return currentNotificationId;
+      }
+
+      if (notificationId == null) {
+        await LoggingInfo.instance.warning(
+          'FCM token: is null',
+        );
+        return currentNotificationId;
+      }
+
+      await LoggingInfo.instance.info('Updating notification id');
+
+      await _authRepositoy.updateNotificationId(
+        notificationId: notificationId,
+        guid: state.user.guid,
+      );
+      return notificationId;
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(
+          message: e.toString(),
+          status: AuthStatus.failure,
+        ),
+      );
+      return currentNotificationId;
     }
   }
 }
