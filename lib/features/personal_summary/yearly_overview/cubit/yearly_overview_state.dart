@@ -113,7 +113,8 @@ final class YearlyOverviewState extends Equatable {
       );
     }
 
-    for (var it in mergedList) {
+    final copyOfMergedList = mergedList;
+    for (var it in copyOfMergedList) {
       final matchingNotViaGivt = externalDonationsPerMonth.firstWhere(
         (x) => x.key == it.key,
         orElse: SummaryItem.empty,
@@ -122,6 +123,9 @@ final class YearlyOverviewState extends Equatable {
         it = it.copyWith(
           amount: it.amount + matchingNotViaGivt.amount,
         );
+        mergedList
+          ..removeWhere((element) => element.key == it.key)
+          ..add(it);
       }
     }
 
