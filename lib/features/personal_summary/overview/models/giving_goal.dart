@@ -34,6 +34,8 @@ class GivingGoal extends Equatable {
     return amount.toDouble() * 12;
   }
 
+  bool get isMonthly => periodicity == 0;
+
   GivingGoal copyWith({
     int? amount,
     int? periodicity,
