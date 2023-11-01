@@ -61,6 +61,11 @@ class PersonalSummaryBloc
         tillDate: untilDate.toIso8601String(),
       );
 
+      final externalDonationsAllTime = await _fetchExternalDonations(
+        fromDate: DateTime(2017).toIso8601String(),
+        tillDate: untilDate.toIso8601String(),
+      );
+
       final givingGoal = await _fetchGivingGoal();
       emit(
         state.copyWith(
@@ -69,6 +74,7 @@ class PersonalSummaryBloc
           annualGivts: annualSummaryGivts,
           pastTwelveMonths: await _fetchPastTwelveMonths(),
           externalDonations: externalDonations,
+          externalDonationsAllTime: externalDonationsAllTime,
           givingGoal: givingGoal,
         ),
       );

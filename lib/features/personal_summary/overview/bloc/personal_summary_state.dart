@@ -19,6 +19,7 @@ class PersonalSummaryState extends Equatable {
     this.pastTwelveMonths = const [],
     this.externalDonations = const [],
     this.annualGivts = const [],
+    this.externalDonationsAllTime = const [],
   });
   final PersonalSummaryStatus status;
   final UserExt loggedInUserExt;
@@ -29,6 +30,7 @@ class PersonalSummaryState extends Equatable {
   final List<SummaryItem> annualGivts;
   final List<SummaryItem> pastTwelveMonths;
   final List<ExternalDonation> externalDonations;
+  final List<ExternalDonation> externalDonationsAllTime;
 
   double get totalSumPerMonth =>
       monthlyGivts.fold<double>(0, (sum, item) => sum + item.amount) +
@@ -48,6 +50,12 @@ class PersonalSummaryState extends Equatable {
     return maxPastTwelveMonthsCalc;
   }
 
+  double externalDonationsYearSum(int year) {
+    return externalDonationsAllTime
+        .where((element) => DateTime.parse(element.creationDate).year == year)
+        .fold<double>(0, (sum, item) => sum + item.amount);
+  }
+
   PersonalSummaryState copyWith({
     PersonalSummaryStatus? status,
     UserExt? loggedInUserExt,
@@ -57,6 +65,7 @@ class PersonalSummaryState extends Equatable {
     List<SummaryItem>? monthlyGivts,
     List<SummaryItem>? annualGivts,
     List<SummaryItem>? pastTwelveMonths,
+    List<ExternalDonation>? externalDonationsAllTime,
     List<ExternalDonation>? externalDonations,
   }) {
     return PersonalSummaryState(
@@ -69,6 +78,8 @@ class PersonalSummaryState extends Equatable {
       pastTwelveMonths: pastTwelveMonths ?? this.pastTwelveMonths,
       externalDonations: externalDonations ?? this.externalDonations,
       givingGoal: givingGoal ?? this.givingGoal,
+      externalDonationsAllTime:
+          externalDonationsAllTime ?? this.externalDonationsAllTime,
     );
   }
 
@@ -82,6 +93,7 @@ class PersonalSummaryState extends Equatable {
         annualGivts,
         pastTwelveMonths,
         externalDonations,
+        externalDonationsAllTime,
         givingGoal,
       ];
 }
