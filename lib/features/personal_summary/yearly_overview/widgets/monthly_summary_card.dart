@@ -90,7 +90,7 @@ class MonthlySummaryCard extends StatelessWidget {
         const maxHeight = 16.0;
         return LayoutBuilder(
           builder: (context, constraints) {
-            final maxWidth = constraints.maxWidth - 120;
+            final maxWidth = constraints.maxWidth - 200;
             return Padding(
               padding: const EdgeInsets.all(8),
               child: Column(

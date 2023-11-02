@@ -116,8 +116,7 @@ final class YearlyOverviewState extends Equatable {
       );
     }
 
-    final copyOfMergedList = mergedList;
-    for (var it in copyOfMergedList) {
+    for (var it in mergedList) {
       final matchingNotViaGivt = externalDonationsPerMonth.firstWhere(
         (x) => x.key == it.key,
         orElse: SummaryItem.empty,
