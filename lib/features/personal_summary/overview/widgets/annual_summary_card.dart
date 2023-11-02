@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
-import 'package:givt_app/features/personal_summary/overview/widgets/annual_bar_chart.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -33,23 +32,29 @@ class AnnualSummaryCard extends StatelessWidget {
             referenceValue = state.givingGoal.yearlyGivingGoal;
           }
           return Column(
-            children: state.annualGivts
-                .map(
-                  (item) => AnnualBarChart(
-                    year: item.key,
-                    amount: item.amount,
-                    currency: currency,
-                    yearGoal: referenceValue,
-                    onTap: () => context.goNamed(
-                      Pages.yearlyOverview.name,
-                      queryParameters: {
-                        'year': item.key,
-                      },
-                      extra: context.read<PersonalSummaryBloc>(),
-                    ),
+            children: state.annualGivts.map(
+              (item) {
+                final amount = item.amount +
+                    state.externalDonationsYearSum(
+                      int.parse(
+                        item.key,
+                      ),
+                    );
+                return AnnualBarChart(
+                  year: item.key,
+                  amount: amount,
+                  currency: currency,
+                  yearGoal: referenceValue,
+                  onTap: () => context.goNamed(
+                    Pages.yearlyOverview.name,
+                    queryParameters: {
+                      'year': item.key,
+                    },
+                    extra: context.read<PersonalSummaryBloc>(),
                   ),
-                )
-                .toList(),
+                );
+              },
+            ).toList(),
           );
         },
       ),

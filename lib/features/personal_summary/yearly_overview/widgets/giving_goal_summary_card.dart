@@ -116,6 +116,13 @@ class GivingGoalSummaryCard extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
+                        Visibility(
+                          visible: yearlyOverviewState.totalPreviousYear == 0,
+                          child: Image.asset(
+                            'assets/images/givy_money.png',
+                            height: 100,
+                          ),
+                        ),
                         Text(
                           locals.budgetSummarySetGoalBold,
                           style: textTheme!.copyWith(
@@ -135,6 +142,7 @@ class GivingGoalSummaryCard extends StatelessWidget {
               ),
             ),
             _buildComparisonCard(
+              isVisibile: yearlyOverviewState.totalPreviousYear > 0,
               state: state,
               yearlyOverviewState: yearlyOverviewState,
               context: context,
@@ -157,7 +165,8 @@ class GivingGoalSummaryCard extends StatelessWidget {
     );
   }
 
-  Card _buildComparisonCard({
+  Widget _buildComparisonCard({
+    required bool isVisibile,
     required PersonalSummaryState state,
     required YearlyOverviewState yearlyOverviewState,
     required BuildContext context,
@@ -166,27 +175,30 @@ class GivingGoalSummaryCard extends StatelessWidget {
     required String comparisonResult,
     required String description,
   }) {
-    return Card(
-      elevation: 10,
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                comparisonResult,
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Visibility(
+      visible: isVisibile,
+      child: Card(
+        elevation: 10,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  comparisonResult,
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              description,
-              style: textTheme,
-              softWrap: true,
-            ),
-          ],
+              const SizedBox(width: 10),
+              Text(
+                description,
+                style: textTheme,
+                softWrap: true,
+              ),
+            ],
+          ),
         ),
       ),
     );

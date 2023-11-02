@@ -87,72 +87,79 @@ class MonthlySummaryCard extends StatelessWidget {
         final mergedList = state.monthlyTotalSummaryMergedList;
         final referenceValue = _getReferenceValue(mergedList);
         final months = _getMonths(selectedYearInState: state.year);
-        const maxWidgth = 100;
         const maxHeight = 16.0;
-        return Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: months.map((monthName) {
-              final viaGivt = _getGivtFromList(
-                searchedList: state.monthlyByOrganisationPerMonth,
-                monthName: monthName,
-              );
-              final notViaGivt = _getGivtFromList(
-                searchedList: state.externalDonationsPerMonth,
-                monthName: monthName,
-              );
-              return Padding(
-                padding: const EdgeInsets.all(2),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 30,
-                      child: Text(monthName),
+        return LayoutBuilder(
+          builder: (context, constraints) {
+            final maxWidth = constraints.maxWidth - 200;
+            return Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: months.map((monthName) {
+                  final viaGivt = _getGivtFromList(
+                    searchedList: state.monthlyByOrganisationPerMonth,
+                    monthName: monthName,
+                  );
+                  final notViaGivt = _getGivtFromList(
+                    searchedList: state.externalDonationsPerMonth,
+                    monthName: monthName,
+                  );
+                  return Padding(
+                    padding: const EdgeInsets.all(2),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 30,
+                          child: Text(monthName),
+                        ),
+                        const SizedBox(width: 12),
+                        _buildChart(
+                          viaGivt,
+                          referenceValue,
+                          maxWidth,
+                          maxHeight,
+                          notViaGivt,
+                        ),
+                        Expanded(child: Container()),
+                        Text(
+                          '$currency ${Util.formatNumberComma(viaGivt.amount + notViaGivt.amount, country)}',
+                          style:
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 12),
-                    _buildChart(
-                      viaGivt,
-                      referenceValue,
-                      maxWidgth,
-                      maxHeight,
-                      notViaGivt,
-                    ),
-                    Expanded(child: Container()),
-                    Text(
-                      '$currency ${Util.formatNumberComma(viaGivt.amount + notViaGivt.amount, country)}',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
+                  );
+                }).toList(),
+              ),
+            );
+          },
         );
       },
     );
   }
 
   /// Returns a row with a title and a value
-  ///
   Widget _buildChart(
     SummaryItem viaGivt,
     double referenceValue,
-    int maxWidgth,
+    double maxWidth,
     double maxHeight,
     SummaryItem notViaGivt,
   ) {
+    final withinGivtWidth = viaGivt.amount / referenceValue * maxWidth;
+    final notWithinGivtWidth = notViaGivt.amount / referenceValue * maxWidth;
+
     return Row(
       children: [
         Container(
-          width: viaGivt.amount / referenceValue * maxWidgth,
+          width: withinGivtWidth,
           height: maxHeight,
           color: AppTheme.givtLightGreen,
         ),
         const SizedBox(height: 8),
         Container(
-          width: notViaGivt.amount / referenceValue * maxWidgth,
+          width: notWithinGivtWidth,
           height: maxHeight,
           color: AppTheme.givtBlue,
         ),
