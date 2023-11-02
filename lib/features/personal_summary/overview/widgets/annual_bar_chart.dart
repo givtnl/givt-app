@@ -40,6 +40,13 @@ class AnnualBarChart extends StatelessWidget {
             /// space for the amount text
             final isOverflowing = width > constraints.maxWidth - 50;
             width = isOverflowing ? constraints.maxWidth - 50 : width;
+
+            final user = context.read<AuthCubit>().state.user;
+            final country = Country.fromCode(user.country);
+            final amountString = Util.formatNumberComma(
+              amount,
+              country,
+            );
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -49,6 +56,7 @@ class AnnualBarChart extends StatelessWidget {
                       _buildUnachievedGoalChart(
                         context: context,
                         width: width,
+                        amountString: amountString,
                         isCurrentYear: isCurrentYear,
                         constraints: constraints,
                       )
@@ -56,6 +64,7 @@ class AnnualBarChart extends StatelessWidget {
                       _buildAchievedGoalChart(
                         context: context,
                         width: width,
+                        amountString: amountString,
                         isCurrentYear: isCurrentYear,
                         isOverflowing: isOverflowing,
                       ),
@@ -73,6 +82,7 @@ class AnnualBarChart extends StatelessWidget {
   Widget _buildAchievedGoalChart({
     required BuildContext context,
     required double width,
+    required String amountString,
     required bool isCurrentYear,
     bool isOverflowing = false,
   }) {
@@ -96,7 +106,7 @@ class AnnualBarChart extends StatelessWidget {
         ),
       ),
       Text(
-        '$currency $amount',
+        '$currency $amountString',
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               color: textColor,
               fontWeight: FontWeight.bold,
@@ -123,6 +133,7 @@ class AnnualBarChart extends StatelessWidget {
     required BuildContext context,
     required BoxConstraints constraints,
     required double width,
+    required String amountString,
     required bool isCurrentYear,
     bool isOverflowing = false,
   }) {
@@ -132,9 +143,6 @@ class AnnualBarChart extends StatelessWidget {
     }
 
     final isAlmostAchieved = amount >= yearGoal * 0.8;
-
-    final user = context.read<AuthCubit>().state.user;
-    final country = Country.fromCode(user.country);
 
     return Row(
       children: [
@@ -176,7 +184,7 @@ class AnnualBarChart extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  '$currency ${Util.formatNumberComma(amount, country)}',
+                  '$currency $amountString',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: isAlmostAchieved
                             ? AppTheme.givtLightGreen
