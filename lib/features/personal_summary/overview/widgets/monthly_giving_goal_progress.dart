@@ -88,7 +88,8 @@ class MonthlyGivingGoalProgress extends StatelessWidget {
     final remainingAmount = state.givingGoal.isMonthly
         ? (state.givingGoal.amount.toDouble()) - state.totalSumPerMonth
         : state.givingGoal.monthlyGivingGoal - state.totalSumPerMonth;
-    final isGoalAchieved = state.totalSumPerMonth >= state.givingGoal.amount;
+    final isGoalAchieved =
+        state.totalSumPerMonth >= state.givingGoal.monthlyGivingGoal;
     return Card(
       elevation: 10,
       child: Padding(
