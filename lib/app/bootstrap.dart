@@ -12,6 +12,8 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import 'package:timezone/data/latest.dart' as tz;
+
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
 
@@ -56,7 +58,7 @@ Future<void> bootstrap(
   await get_it.init();
   await get_it.getIt.allReady();
   FirebaseMessaging.onBackgroundMessage(_processOfflineDonations);
-
+  tz.initializeTimeZones();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };

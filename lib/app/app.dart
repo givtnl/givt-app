@@ -36,7 +36,8 @@ class _AppState extends State<App> {
     AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
 
     /// Setup firebase messaging for background notifications
-    NotificationService.instance.init().then(
+    final notificationService = getIt<NotificationService>();
+    notificationService.init().then(
           (_) => FirebaseMessaging.onMessage.listen(
             (RemoteMessage message) async {
               if (message.data.isEmpty) {
