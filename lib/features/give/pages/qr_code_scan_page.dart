@@ -121,9 +121,9 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
           children: [
             MobileScanner(
               controller: _controller,
-              onDetect: (barcode, args) async {
+              onDetect: (barcode) async {
                 await _controller.stop();
-                if (barcode.rawValue == null) {
+                if (barcode.raw == null) {
                   log('No Givt QR code detected');
                   return;
                 }
@@ -132,7 +132,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
                 final userGUID = context.read<AuthCubit>().state.user.guid;
                 context
                     .read<GiveBloc>()
-                    .add(GiveQRCodeScanned(barcode.rawValue!, userGUID));
+                    .add(GiveQRCodeScanned(barcode.raw!.toString(), userGUID));
               },
             ),
             const Positioned.fill(
