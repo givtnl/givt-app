@@ -145,7 +145,7 @@ class AppRouter {
                         create: (context) => YearlyOverviewCubit(
                           getIt(),
                         )..init(
-                            year: state.queryParameters['year']!,
+                            year: state.uri.queryParameters['year']!,
                             guid: guid,
                           ),
                       ),
@@ -267,10 +267,10 @@ class AppRouter {
             path: Pages.registration.path,
             name: Pages.registration.name,
             builder: (context, state) {
-              final email = state.queryParameters['email'] ?? '';
+              final email = state.uri.queryParameters['email'] ?? '';
 
               final createStripe =
-                  bool.parse(state.queryParameters['createStripe'] ?? 'false');
+                  bool.parse(state.uri.queryParameters['createStripe'] ?? 'false');
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
@@ -563,8 +563,8 @@ class AppRouter {
               getIt(),
             )..add(const RemoteDataSourceSyncRequested()),
             child: HomePage(
-              code: routerState.queryParameters['code'] ?? '',
-              given: routerState.queryParameters.containsKey('given'),
+              code: routerState.uri.queryParameters['code'] ?? '',
+              given: routerState.uri.queryParameters.containsKey('given'),
             ),
           ),
         ),
@@ -591,19 +591,19 @@ class AppRouter {
   ) {
     final auth = context.read<AuthCubit>().state;
     var code = '';
-    if (state.queryParameters.containsKey('code')) {
-      code = state.queryParameters['code']!;
+    if (state.uri.queryParameters.containsKey('code')) {
+      code = state.uri.queryParameters['code']!;
     }
 
     /// If user comes from a custome url_scheme
     /// we have mediumId instead of
     /// code and needs to be encoded
-    if (state.queryParameters.containsKey('mediumId')) {
-      code = base64Encode(utf8.encode(state.queryParameters['mediumId']!));
+    if (state.uri.queryParameters.containsKey('mediumId')) {
+      code = base64Encode(utf8.encode(state.uri.queryParameters['mediumId']!));
     }
 
-    if (state.queryParameters.containsKey('mediumid')) {
-      code = base64Encode(utf8.encode(state.queryParameters['mediumid']!));
+    if (state.uri.queryParameters.containsKey('mediumid')) {
+      code = base64Encode(utf8.encode(state.uri.queryParameters['mediumid']!));
     }
 
     if (auth.status == AuthStatus.authenticated) {
@@ -627,7 +627,7 @@ class AppRouter {
     if (state.status == AuthStatus.authenticated) {
       context.goNamed(
         Pages.home.name,
-        queryParameters: routerState.queryParameters,
+        queryParameters: routerState.uri.queryParameters,
       );
     }
     if (state.status == AuthStatus.unauthenticated ||

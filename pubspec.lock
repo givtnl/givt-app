@@ -309,6 +309,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_app_badger:
+    dependency: "direct main"
+    description:
+      name: flutter_app_badger
+      sha256: "64d4a279bab862ed28850431b9b446b9820aaae0bf363322d51077419f930fa8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.0"
   flutter_bloc:
     dependency: "direct main"
     description:
@@ -480,10 +488,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: edbceb4c06758652fc9d12e58edb371cd977011b032e298dae0eb357167baad2
+      sha256: "5098760d7478aabfe682a462bf121d61bc5dbe5df5aac8dad733564a0aee33bc"
       url: "https://pub.dev"
     source: hosted
-    version: "9.1.1"
+    version: "12.1.0"
   http:
     dependency: "direct main"
     description:
