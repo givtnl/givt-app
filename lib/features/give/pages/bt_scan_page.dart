@@ -136,6 +136,11 @@ class _BTScanPageState extends State<BTScanPage> {
           beaconData.contains('61f7ed03');
 
       if (!contains) {
+        continue;
+      }
+
+      // When not searching for a beacon we wanna ignore the scan results
+      if(!_isSearching){
         return;
       }
 
