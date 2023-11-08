@@ -35,6 +35,13 @@ class _BTScanPageState extends State<BTScanPage> {
     initBluetooth();
   }
 
+  Future<void> startBluetoothScan() async {
+    await FlutterBluePlus.startScan(
+      timeout: Duration(seconds: scanTimeout),
+      androidUsesFineLocation: true,
+    );
+  }
+
   Future<void> initBluetooth() async {
     await LoggingInfo.instance.info('initBluetooth');
 
@@ -56,10 +63,7 @@ class _BTScanPageState extends State<BTScanPage> {
     FlutterBluePlus.isScanning.listen((event) async {
       if (event == false && _isSearching) {
         await LoggingInfo.instance.info('Restart Scan');
-        await FlutterBluePlus.startScan(
-          timeout: Duration(seconds: scanTimeout),
-          androidUsesFineLocation: true,
-        );
+        await startBluetoothScan();
       }
     });
 
@@ -68,10 +72,7 @@ class _BTScanPageState extends State<BTScanPage> {
       switch (state) {
         case BluetoothAdapterState.on:
           await LoggingInfo.instance.info('Start Scan');
-          await FlutterBluePlus.startScan(
-            timeout: Duration(seconds: scanTimeout),
-            androidUsesFineLocation: true,
-          );
+          await startBluetoothScan();
         case BluetoothAdapterState.unauthorized:
           await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
         case BluetoothAdapterState.off:
@@ -140,7 +141,7 @@ class _BTScanPageState extends State<BTScanPage> {
       }
 
       // When not searching for a beacon we wanna ignore the scan results
-      if(!_isSearching){
+      if (!_isSearching) {
         return;
       }
 
