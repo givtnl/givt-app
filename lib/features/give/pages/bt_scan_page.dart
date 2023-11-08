@@ -22,6 +22,12 @@ class BTScanPage extends StatefulWidget {
 class _BTScanPageState extends State<BTScanPage> {
   bool _isVisible = false;
 
+  // We need to keep track of the scanning state to prevent scans when the user is going into the manual flow
+  bool _isSearching = false;
+
+  // Every 30 seconds we will restart the scan for new devices
+  final scanTimeout = 30;
+
   @override
   void initState() {
     super.initState();
@@ -37,6 +43,8 @@ class _BTScanPageState extends State<BTScanPage> {
       return;
     }
 
+    _isSearching = true;
+
     // Set listen method for scan results
     FlutterBluePlus.scanResults.listen(
       _onPeripheralsDetectedData,
@@ -45,12 +53,23 @@ class _BTScanPageState extends State<BTScanPage> {
       },
     );
 
+    FlutterBluePlus.isScanning.listen((event) async {
+      if (event == false && _isSearching) {
+        await LoggingInfo.instance.info('Restart Scan');
+        await FlutterBluePlus.startScan(
+          timeout: Duration(seconds: scanTimeout),
+          androidUsesFineLocation: true,
+        );
+      }
+    });
+
     // Listen to scan mode changes
     FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
       switch (state) {
         case BluetoothAdapterState.on:
+          await LoggingInfo.instance.info('Start Scan');
           await FlutterBluePlus.startScan(
-            timeout: const Duration(seconds: 30),
+            timeout: Duration(seconds: scanTimeout),
             androidUsesFineLocation: true,
           );
         case BluetoothAdapterState.unauthorized:
@@ -209,10 +228,14 @@ class _BTScanPageState extends State<BTScanPage> {
                       bottom: 10,
                     ),
                     child: TextButton(
-                      onPressed: () => context.goNamed(
-                        Pages.giveByList.name,
-                        extra: context.read<GiveBloc>(),
-                      ),
+                      onPressed: () {
+                        _isSearching = false;
+                        FlutterBluePlus.stopScan();
+                        context.goNamed(
+                          Pages.giveByList.name,
+                          extra: context.read<GiveBloc>(),
+                        );
+                      },
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
