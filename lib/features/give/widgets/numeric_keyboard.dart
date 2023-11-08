@@ -75,7 +75,6 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     return Container(
       padding: const EdgeInsets.all(8),
       width: size.width,
-      height: widget.presets.isNotEmpty ? size.height * 0.3 : null,
       decoration: BoxDecoration(
         color: Colors.grey.shade200,
         borderRadius: const BorderRadius.only(
@@ -90,21 +89,25 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
             visible: widget.presets.isNotEmpty,
             child: SizedBox(
               width: size.width * 0.3,
-              child: Column(
-                children: widget.presets.map(
-                  (preset) {
-                    final amount = Util.formatNumberComma(
-                      preset.amount,
-                      Country.fromCode(countryCode),
-                    );
-                    return _buildPresetAmount(
-                      preset: amount,
-                      onTap: () => widget.onPresetTap(
-                        amount,
-                      ),
-                    );
-                  },
-                ).toList(),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: widget.presets.map(
+                    (preset) {
+                      final amount = Util.formatNumberComma(
+                        preset.amount,
+                        Country.fromCode(countryCode),
+                      );
+                      return _buildPresetAmount(
+                        preset: amount,
+                        onTap: () => widget.onPresetTap(
+                          amount,
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
               ),
             ),
           ),
@@ -167,7 +170,7 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
 
     var fontSize = 18.0;
     if (size.height < 600 && widget.presets.isNotEmpty) {
-      fontSize = 12;
+      fontSize = fontSize * 0.9;
     }
     final onButtonTap = onTap ?? () => widget.onKeyboardTap(value);
     final valueWidget = child ??
@@ -175,24 +178,21 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
           value,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                fontSize: fontSize,
                 fontWeight: FontWeight.bold,
                 color: widget.textColor,
+                fontSize: fontSize,
               ),
         );
     var padding = 14.0;
     if (size.height < 700) {
       padding = 7.5;
     }
-    if (size.height < 560) {
-      padding = 2;
-    }
     return Expanded(
       child: InkWell(
         borderRadius: BorderRadius.circular(45),
         onTap: onButtonTap,
         child: Container(
-          margin: const EdgeInsets.all(4),
+          margin: EdgeInsets.all(size.height < 600 ? 2 : 4),
           padding: EdgeInsets.all(padding),
           alignment: Alignment.center,
           decoration: const BoxDecoration(
@@ -212,29 +212,32 @@ class _NumericKeyboardState extends State<NumericKeyboard> {
     required VoidCallback onTap,
   }) {
     final size = MediaQuery.sizeOf(context);
-    var padding = 11.5;
-    if (size.height < 600) {
-      padding = 6;
+    var padding = 14.0;
+    if (size.height < 700) {
+      padding = 10;
     }
-    return Expanded(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(45),
-        onTap: onTap,
-        child: Container(
-          margin: const EdgeInsets.all(10),
-          padding: EdgeInsets.all(padding),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: AppTheme.presetsButtonColor,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            '${widget.currencySymbol} $preset',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+
+    var fontSize = 18.0;
+    if (size.height < 600 && widget.presets.isNotEmpty) {
+      fontSize = fontSize * 0.8;
+    }
+
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(2, padding, 2, padding),
+        margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: AppTheme.presetsButtonColor,
+          borderRadius: BorderRadius.circular(45),
+        ),
+        child: Text(
+          '${widget.currencySymbol} $preset',
+          style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
