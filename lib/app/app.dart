@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
@@ -33,7 +34,10 @@ class _AppState extends State<App> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
     AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
+
+    resetAppBadge();
 
     /// Setup firebase messaging for background notifications
     final notificationService = getIt<NotificationService>();
@@ -72,6 +76,12 @@ class _AppState extends State<App> {
         ],
         child: const _AppView(),
       );
+
+  Future<void> resetAppBadge() async {
+    if (await FlutterAppBadger.isAppBadgeSupported()) {
+      await FlutterAppBadger.removeBadge();
+    }
+  }
 }
 
 class _AppView extends StatelessWidget {
