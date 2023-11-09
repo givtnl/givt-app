@@ -24,7 +24,7 @@ class _BTScanPageState extends State<BTScanPage> {
   bool _isSearching = false;
 
   // Every 30 seconds we will restart the scan for new devices
-  final scanTimeout = 6;
+  final scanTimeout = 30;
 
   @override
   void initState() {
