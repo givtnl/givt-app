@@ -20,8 +20,8 @@ class BTScanPage extends StatefulWidget {
 }
 
 class _BTScanPageState extends State<BTScanPage> {
-  bool _isVisible = false;
-  bool _isSearching = false;
+  bool isVisible = false;
+  bool isSearching = false;
 
   // Every 30 seconds we will restart the scan for new devices
   final scanTimeout = 30;
@@ -34,7 +34,7 @@ class _BTScanPageState extends State<BTScanPage> {
   }
 
   Future<void> startBluetoothScan() async {
-    _isSearching = true;
+    isSearching = true;
     await FlutterBluePlus.startScan(
       timeout: Duration(seconds: scanTimeout),
       androidUsesFineLocation: true,
@@ -58,7 +58,7 @@ class _BTScanPageState extends State<BTScanPage> {
     );
 
     FlutterBluePlus.isScanning.listen((event) async {
-      if (event == false && !FlutterBluePlus.isScanningNow && _isSearching) {
+      if (event == false && !FlutterBluePlus.isScanningNow && isSearching) {
         await LoggingInfo.instance.info('Restart Scan');
         await startBluetoothScan();
       }
@@ -92,7 +92,7 @@ class _BTScanPageState extends State<BTScanPage> {
         return;
       }
       setState(() {
-        _isVisible = true;
+        isVisible = true;
       });
     });
   }
@@ -139,12 +139,12 @@ class _BTScanPageState extends State<BTScanPage> {
       }
 
       // When not searching for a beacon we wanna ignore the rest of the scan results
-      if (!_isSearching) {
+      if (!isSearching) {
         return;
       }
 
       // We might have found something, so stop the scan
-      _isSearching = false;
+      isSearching = false;
       FlutterBluePlus.stopScan();
 
       context.read<GiveBloc>().add(
@@ -179,7 +179,7 @@ class _BTScanPageState extends State<BTScanPage> {
           listener: (context, state) async {
             if (state.status == GiveStatus.loading &&
                 !FlutterBluePlus.isScanningNow &&
-                _isSearching) {
+                isSearching) {
               await LoggingInfo.instance.info('Restart Scan');
               await startBluetoothScan();
             }
@@ -203,13 +203,13 @@ class _BTScanPageState extends State<BTScanPage> {
                 ),
                 Expanded(child: Container()),
                 Visibility(
-                  visible: _isVisible,
+                  visible: isVisible,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
                       onPressed: () {
                         if (orgName!.isNotEmpty) {
-                          _isSearching = false;
+                          isSearching = false;
                           FlutterBluePlus.stopScan();
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(
@@ -237,7 +237,7 @@ class _BTScanPageState extends State<BTScanPage> {
                   ),
                 ),
                 Visibility(
-                  visible: _isVisible && orgName.isNotEmpty,
+                  visible: isVisible && orgName.isNotEmpty,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 20,
@@ -246,7 +246,7 @@ class _BTScanPageState extends State<BTScanPage> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        _isSearching = false;
+                        isSearching = false;
                         FlutterBluePlus.stopScan();
                         context.goNamed(
                           Pages.giveByList.name,
