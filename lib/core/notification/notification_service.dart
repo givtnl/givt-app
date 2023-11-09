@@ -49,7 +49,7 @@ class NotificationService implements INotificationService {
           channel.id,
           channel.name,
           channelDescription: channel.description,
-          icon: 'launch_background',
+          icon: 'icon',
         ),
       );
 
@@ -173,8 +173,10 @@ class NotificationService implements INotificationService {
     required String? title,
     required String? payload,
     required tz.TZDateTime scheduledDate,
+    int? id,
   }) async {
-    final id = Random().nextInt(9999 - 1000) + 1000;
+    id ??= Random().nextInt(9999 - 1000) + 1000;
+
     await setupFlutterNotifications();
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
@@ -204,6 +206,7 @@ class NotificationService implements INotificationService {
     }
 
     await _scheduleNotifications(
+      id: 10,
       body: body,
       title: title,
       payload: 'monthly_summary',
@@ -228,9 +231,10 @@ class NotificationService implements INotificationService {
     }
 
     await _scheduleNotifications(
+      id: 20,
       body: body,
       title: title,
-      payload: 'monthly_summary',
+      payload: 'yearly_summary',
       scheduledDate: scheduledDate,
     );
   }
