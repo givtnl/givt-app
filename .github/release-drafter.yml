@@ -23,3 +23,8 @@ autolabeler:
   - label: 'chore'
     branch:
       - '/chore\/.+/'
+      - '/dependabot\/.+/'
+include-labels:
+  - 'enhancement'
+  - 'bug'
+  - 'chore'
