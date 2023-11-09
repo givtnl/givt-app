@@ -250,6 +250,7 @@ class UserExt extends Equatable {
       pinSet: pinSet ?? this.pinSet,
       multipleCollectsAccepted:
           multipleCollectsAccepted ?? this.multipleCollectsAccepted,
+      notificationId: notificationId ?? this.notificationId,
     );
   }
 
@@ -281,6 +282,7 @@ class UserExt extends Equatable {
         personalInfoRegistered,
         pinSet,
         multipleCollectsAccepted,
+        notificationId,
       ];
 
   static String tag = 'UserExt';
