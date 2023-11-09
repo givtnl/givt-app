@@ -11,7 +11,9 @@ on:
       CODESIGNING_DEPLOY_KEY:
         required: true
       LOGIT_API_KEY:
-          required: true
+        required: true
+      GOOGLE_SERVICES_PLIST:
+        required: true
     inputs:
       flutter-version:
         required: true
@@ -60,6 +62,10 @@ jobs:
         uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
+
+      - name: Replace GoogleService-Info.plist
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_PLIST }}" > ios/Runner/GoogleService-Info.plist
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2

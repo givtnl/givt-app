@@ -37,6 +37,7 @@ jobs:
       GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
     with:
       flutter-version: '3.13.x'
 
@@ -49,6 +50,7 @@ jobs:
       APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
       GITHUB_API_TOKEN: ${{ secrets.PIPELINE_PAT }}
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
+      GOOGLE_SERVICES_PLIST: ${{ secrets.GOOGLE_SERVICES_PLIST }}
     with:
       flutter-version: '3.13.x'
   
