@@ -178,7 +178,8 @@ class _BTScanPageState extends State<BTScanPage> {
         child: BlocConsumer<GiveBloc, GiveState>(
           listener: (context, state) async {
             if (state.status == GiveStatus.loading &&
-                !FlutterBluePlus.isScanningNow && _isSearching) {
+                !FlutterBluePlus.isScanningNow &&
+                _isSearching) {
               await LoggingInfo.instance.info('Restart Scan');
               await startBluetoothScan();
             }
@@ -208,6 +209,8 @@ class _BTScanPageState extends State<BTScanPage> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (orgName!.isNotEmpty) {
+                          _isSearching = false;
+                          FlutterBluePlus.stopScan();
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(
                                   context.read<AuthCubit>().state.user.guid,
