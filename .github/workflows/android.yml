@@ -9,7 +9,9 @@ on:
       MATCH_PASSWORD:
         required: true
       LOGIT_API_KEY:
-          required: true
+        required: true
+      GOOGLE_SERVICES_JSON:
+        required: true
     inputs:
       flutter-version:
         required: true
@@ -57,6 +59,10 @@ jobs:
         uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
+
+      - name: Replace google-services.json
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > android/app/google-services.json
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
