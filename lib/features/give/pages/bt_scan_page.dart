@@ -21,12 +21,10 @@ class BTScanPage extends StatefulWidget {
 
 class _BTScanPageState extends State<BTScanPage> {
   bool _isVisible = false;
-
-  // We need to keep track of the scanning state to prevent scans when the user is going into the manual flow
   bool _isSearching = false;
 
   // Every 30 seconds we will restart the scan for new devices
-  final scanTimeout = 30;
+  final scanTimeout = 6;
 
   @override
   void initState() {
@@ -36,6 +34,7 @@ class _BTScanPageState extends State<BTScanPage> {
   }
 
   Future<void> startBluetoothScan() async {
+    _isSearching = true;
     await FlutterBluePlus.startScan(
       timeout: Duration(seconds: scanTimeout),
       androidUsesFineLocation: true,
@@ -50,8 +49,6 @@ class _BTScanPageState extends State<BTScanPage> {
       return;
     }
 
-    _isSearching = true;
-
     // Set listen method for scan results
     FlutterBluePlus.scanResults.listen(
       _onPeripheralsDetectedData,
@@ -61,7 +58,7 @@ class _BTScanPageState extends State<BTScanPage> {
     );
 
     FlutterBluePlus.isScanning.listen((event) async {
-      if (event == false && _isSearching) {
+      if (event == false && !FlutterBluePlus.isScanningNow && _isSearching) {
         await LoggingInfo.instance.info('Restart Scan');
         await startBluetoothScan();
       }
@@ -71,8 +68,10 @@ class _BTScanPageState extends State<BTScanPage> {
     FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
       switch (state) {
         case BluetoothAdapterState.on:
-          await LoggingInfo.instance.info('Start Scan');
-          await startBluetoothScan();
+          if (!FlutterBluePlus.isScanningNow) {
+            await LoggingInfo.instance.info('Start Scan');
+            await startBluetoothScan();
+          }
         case BluetoothAdapterState.unauthorized:
           await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
         case BluetoothAdapterState.off:
@@ -140,10 +139,14 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      // When not searching for a beacon we wanna ignore the scan results
+      // When not searching for a beacon we wanna ignore the rest of the scan results
       if (!_isSearching) {
         return;
       }
+
+      // We might have found something, so stop the scan
+      _isSearching = false;
+      FlutterBluePlus.stopScan();
 
       context.read<GiveBloc>().add(
             GiveBTBeaconScanned(
@@ -174,7 +177,16 @@ class _BTScanPageState extends State<BTScanPage> {
       ),
       body: Center(
         child: BlocConsumer<GiveBloc, GiveState>(
-          listener: (context, state) {},
+          listener: (context, state) async {
+            if (state.status == GiveStatus.loading &&
+                !FlutterBluePlus.isScanningNow && _isSearching) {
+              await LoggingInfo.instance.info('Restart Scan');
+              await startBluetoothScan();
+            }
+            if(state.status != GiveStatus.loading) {
+              var x = 123;
+            }
+          },
           builder: (context, state) {
             var orgName = state.organisation.organisationName;
             orgName ??= '';
