@@ -47,6 +47,11 @@ mixin AuthRepositoy {
   Future<void> checkUserExt({
     required String email,
   });
+
+  Future<bool> updateNotificationId({
+    required String guid,
+    required String notificationId,
+  });
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -255,7 +260,7 @@ class AuthRepositoyImpl with AuthRepositoy {
     if (sessionString == null) {
       return true;
     }
-    
+
     final session = Session.fromJson(
       jsonDecode(sessionString) as Map<String, dynamic>,
     );
@@ -416,4 +421,17 @@ class AuthRepositoyImpl with AuthRepositoy {
 
     return isSuccess;
   }
+
+  @override
+  Future<bool> updateNotificationId({
+    required String guid,
+    required String notificationId,
+  }) =>
+      _apiService.updateNotificationId(
+        guid: guid,
+        body: {
+          'PushNotificationId': notificationId,
+          'OS': 1, // Always use firebase implementation from Android
+        },
+      );
 }

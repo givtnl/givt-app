@@ -7,6 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -32,8 +33,24 @@ class _HomePageState extends State<HomePage> {
   final _key = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+
+    getIt<NotificationService>()
+      ..scheduleMonthlySummaryNotification(
+        body: locals.budgetPushMonthly,
+        title: locals.budgetPushMonthlyBold,
+      )
+      ..scheduleYearlySummaryNotification(
+        body: locals.budgetPushYearlyNearlyEnd,
+        title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
+      );
+
     final auth = context.watch<AuthCubit>().state;
     return Scaffold(
       key: _key,

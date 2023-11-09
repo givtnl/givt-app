@@ -152,6 +152,11 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
               _removeDiacritics(event.query.toLowerCase()),
             ),
           )
+          .where(
+            (org) =>
+                state.selectedType == CollectGroupType.none.index ||
+                org.type.index == state.selectedType,
+          )
           .toList();
 
       if (filteredOrganisations.isEmpty) {

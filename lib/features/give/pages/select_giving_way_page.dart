@@ -169,7 +169,7 @@ class SelectGivingWayPage extends StatelessWidget {
     GiveState state,
     String guid,
   ) {
-    return showDialog<void>(
+    return showDialog<bool>(
       context: context,
       builder: (_) => WarningDialog(
         title: context.l10n.invalidQRcodeTitle,
@@ -178,7 +178,7 @@ class SelectGivingWayPage extends StatelessWidget {
         ),
         actions: [
           CupertinoDialogAction(
-            onPressed: () => context.pop(),
+            onPressed: () => context.pop(true),
             child: Text(
               context.l10n.cancel,
               style: const TextStyle(
@@ -202,7 +202,14 @@ class SelectGivingWayPage extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ).then((cancel) {
+      if (cancel == null) {
+        return;
+      }
+      if (cancel) {
+        context.pop();
+      }
+    });
   }
 
   Widget _buildListTile({

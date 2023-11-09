@@ -1,8 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
+import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -31,7 +34,25 @@ class _AppState extends State<App> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
     AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
+
+    resetAppBadge();
+
+    /// Setup firebase messaging for background notifications
+    final notificationService = getIt<NotificationService>();
+    notificationService.init().then(
+          (_) => FirebaseMessaging.onMessage.listen(
+            (RemoteMessage message) async {
+              if (message.data.isEmpty) {
+                return;
+              }
+              await NotificationService.instance.silentNotification(
+                message.data,
+              );
+            },
+          ),
+        );
   }
 
   @override
@@ -55,6 +76,12 @@ class _AppState extends State<App> {
         ],
         child: const _AppView(),
       );
+
+  Future<void> resetAppBadge() async {
+    if (await FlutterAppBadger.isAppBadgeSupported()) {
+      await FlutterAppBadger.removeBadge();
+    }
+  }
 }
 
 class _AppView extends StatelessWidget {
@@ -88,8 +115,11 @@ class _AppView extends StatelessWidget {
       routeInformationParser: AppRouter.router.routeInformationParser,
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
+        final mediaQueryData = MediaQuery.of(context);
+        final scale = mediaQueryData.textScaleFactor.clamp(1.0, 1.2);
+
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
+          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
           child: child!,
         );
       },

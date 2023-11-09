@@ -3,6 +3,6 @@ import 'package:givt_app/app/bootstrap.dart';
 
 void main() {
   bootstrap(
-    builder: () => const App(),
+    () => const App(),
   );
 }

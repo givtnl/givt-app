@@ -32,6 +32,7 @@ class UserExt extends Equatable {
     this.appLanguage = '',
     this.sortCode = '',
     this.accountNumber = '',
+    this.notificationId = '',
   });
 
   const UserExt.empty()
@@ -62,7 +63,8 @@ class UserExt extends Equatable {
         accountType = AccountType.none,
         appLanguage = '',
         sortCode = '',
-        accountNumber = '';
+        accountNumber = '',
+        notificationId = '';
 
   factory UserExt.fromJson(Map<String, dynamic> json) {
     final personalInfoRegistered = json['FirstName'] != Util.defaultFirstName &&
@@ -98,6 +100,9 @@ class UserExt extends Equatable {
       mandateSigned: json.containsKey('mandateSigned')
           ? json['mandateSigned'] as bool
           : json['PayProvMandateStatus'] == 'closed.completed',
+      notificationId: json['PushNotificationId'] != null
+          ? json['PushNotificationId'] as String
+          : '',
     );
   }
 
@@ -121,6 +126,7 @@ class UserExt extends Equatable {
         'AppLanguage': appLanguage,
         'SortCode': sortCode,
         'AccountNumber': accountNumber,
+        'PushNotificationId': notificationId,
         'mandateSigned': mandateSigned,
         'maxAmountRegistered': maxAmountRegistered,
         'multipleCollectsFirstBallon': multipleCollectsFirstBallon,
@@ -167,6 +173,7 @@ class UserExt extends Equatable {
   final bool isGiftAidEnabled;
   final AccountType accountType;
   final String? appLanguage;
+  final String notificationId;
 
   final bool tempUser;
   final bool mandateSigned;
@@ -200,6 +207,7 @@ class UserExt extends Equatable {
     String? appLanguage,
     String? payProvMandateStatus,
     String? payProvMandate,
+    String? notificationId,
     int? amountLimit,
     bool? tempUser,
     bool? mandateSigned,
@@ -242,6 +250,7 @@ class UserExt extends Equatable {
       pinSet: pinSet ?? this.pinSet,
       multipleCollectsAccepted:
           multipleCollectsAccepted ?? this.multipleCollectsAccepted,
+      notificationId: notificationId ?? this.notificationId,
     );
   }
 
@@ -273,6 +282,7 @@ class UserExt extends Equatable {
         personalInfoRegistered,
         pinSet,
         multipleCollectsAccepted,
+        notificationId,
       ];
 
   static String tag = 'UserExt';

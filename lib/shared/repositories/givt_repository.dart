@@ -26,6 +26,13 @@ mixin GivtRepository {
     required String tillDate,
   });
 
+  Future<List<SummaryItem>> fetchExternalDonationSummary({
+    required String fromDate,
+    required String tillDate,
+    required String orderType,
+    required String groupType,
+  });
+
   Future<bool> deleteExternalDonation(String id);
 
   Future<bool> deleteGivt(List<dynamic> ids);
@@ -41,10 +48,12 @@ mixin GivtRepository {
     required Map<String, dynamic> body,
   });
 
-  Future<List<MonthlySummaryItem>> fetchMonthlySummary({
+  Future<List<SummaryItem>> fetchSummary({
     required String guid,
     required String fromDate,
     required String tillDate,
+    required String orderType,
+    required String groupType,
   });
 }
 
@@ -170,14 +179,16 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<List<MonthlySummaryItem>> fetchMonthlySummary({
+  Future<List<SummaryItem>> fetchSummary({
     required String guid,
     required String fromDate,
     required String tillDate,
+    required String orderType,
+    required String groupType,
   }) async {
     final params = {
-      'OrderType': '3',
-      'GroupType': '2',
+      'OrderType': orderType,
+      'GroupType': groupType,
       'FromDate': fromDate,
       'TillDate': tillDate,
       'TransactionStatusses': '1',
@@ -185,7 +196,7 @@ class GivtRepositoryImpl with GivtRepository {
       'TransactionStatusses': '3',
     };
     final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
-    return MonthlySummaryItem.fromJsonList(
+    return SummaryItem.fromJsonList(
       decodedJson,
     );
   }
@@ -201,6 +212,27 @@ class GivtRepositoryImpl with GivtRepository {
     };
     final decodedJson = await apiClient.fetchExternalDonations(params: params);
     return ExternalDonation.fromJsonList(
+      decodedJson,
+    );
+  }
+
+  @override
+  Future<List<SummaryItem>> fetchExternalDonationSummary({
+    required String fromDate,
+    required String tillDate,
+    required String orderType,
+    required String groupType,
+  }) async {
+    final params = {
+      'fromDate': fromDate,
+      'tillDate': tillDate,
+      'orderType': orderType,
+      'groupType': groupType,
+    };
+    final decodedJson = await apiClient.fetchExternalDonationsSummary(
+      params: params,
+    );
+    return SummaryItem.fromJsonList(
       decodedJson,
     );
   }

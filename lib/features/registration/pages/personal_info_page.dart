@@ -195,6 +195,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                   Visibility(
                     visible: !isUs,
                     child: PaymentSystemTab(
+                      isUK: isUk,
                       bankAccount: bankAccount,
                       ibanNumber: ibanNumber,
                       sortCode: sortCode,

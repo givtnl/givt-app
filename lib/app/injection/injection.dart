@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
@@ -80,6 +81,7 @@ Future<void> _initCoreDependencies() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt
     ..registerLazySingleton(InternetConnectionCheckerPlus.new)
+    ..registerLazySingleton(NotificationService.new)
     ..registerLazySingleton(() => sharedPreferences)
     ..registerLazySingleton<CountryIsoInfo>(
       CountryIsoInfoImpl.new,
@@ -115,6 +117,12 @@ void initRepositories() {
     )
     ..registerLazySingleton<GivtRepository>(
       () => GivtRepositoryImpl(
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<GivingGoalRepository>(
+      () => GivingGoalRepositoryImpl(
         getIt(),
         getIt(),
       ),
