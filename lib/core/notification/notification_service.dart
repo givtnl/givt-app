@@ -204,8 +204,8 @@ class NotificationService implements INotificationService {
     }
 
     await _scheduleNotifications(
-      body: 'Your monthly summary is ready',
-      title: 'Monthly Summary',
+      body: body,
+      title: title,
       payload: 'monthly_summary',
       scheduledDate: scheduledDate,
     );
@@ -228,8 +228,8 @@ class NotificationService implements INotificationService {
     }
 
     await _scheduleNotifications(
-      body: 'Your yearly summary is ready',
-      title: 'yearly Summary',
+      body: body,
+      title: title,
       payload: 'monthly_summary',
       scheduledDate: scheduledDate,
     );

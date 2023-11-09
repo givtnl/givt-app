@@ -35,20 +35,22 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    getIt<NotificationService>().scheduleMonthlySummaryNotification(
-      body: 'locals.budgetPushMonthly',
-      title: 'locals.budgetPushMonthlyBold',
-    );
-    // ..scheduleYearlySummaryNotification(
-    //   body: locals.budgetPushYearlyNearlyEnd,
-    //   title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
-    // );
   }
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
+
+    getIt<NotificationService>()
+      ..scheduleMonthlySummaryNotification(
+        body: locals.budgetPushMonthly,
+        title: locals.budgetPushMonthlyBold,
+      )
+      ..scheduleYearlySummaryNotification(
+        body: locals.budgetPushYearlyNearlyEnd,
+        title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
+      );
+
     final auth = context.watch<AuthCubit>().state;
     return Scaffold(
       key: _key,
