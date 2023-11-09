@@ -183,9 +183,6 @@ class _BTScanPageState extends State<BTScanPage> {
               await LoggingInfo.instance.info('Restart Scan');
               await startBluetoothScan();
             }
-            if(state.status != GiveStatus.loading) {
-              var x = 123;
-            }
           },
           builder: (context, state) {
             var orgName = state.organisation.organisationName;
