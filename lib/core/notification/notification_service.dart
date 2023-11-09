@@ -162,8 +162,8 @@ class NotificationService implements INotificationService {
     final id = Random().nextInt(9999 - 1000) + 1000;
     await flutterLocalNotificationsPlugin.show(
       id,
-      message,
       title,
+      message,
       notificationDetailsAndroid,
     );
   }
