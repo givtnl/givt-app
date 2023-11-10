@@ -413,7 +413,7 @@ class APIService {
 
   Future<bool> createChild(Map<String, dynamic> body) async {
     final url =
-        Uri.https(apiURL, '/givt4kidsservice/v1/User/setup-child-profile');
+        Uri.https(apiURL, 'givtservice/v1/childprofile/setup-child-profile');
 
     final response = await client.post(
       url,

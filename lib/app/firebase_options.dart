@@ -24,10 +24,7 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
@@ -52,12 +49,18 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyDZxtLZNwYDqic_gB4mSVI5llyLwB2f9L4',
+    appId: '1:978122520533:android:c06e068ca17d0518',
+    messagingSenderId: '978122520533',
+    projectId: 'givtapp-ebde1',
+  );
+
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBZMryaoXNPv3OaRrI3TAfklBBeavnLhSE',
-    appId: '1:117496805169:ios:99cc3ef42cb7dd46186210',
-    messagingSenderId: '117496805169',
-    projectId: 'givt-dev-test',
-    storageBucket: 'givt-dev-test.appspot.com',
+    apiKey: 'AIzaSyDZxtLZNwYDqic_gB4mSVI5llyLwB2f9L4',
+    appId: '1:978122520533:ios:e0fa2cb84f9e7f67882f5c',
+    messagingSenderId: '978122520533',
+    projectId: 'givtapp-ebde1',
     iosClientId: '117496805169-u7anlg5v1dtjpa8c7b04d0nsd75ftk83.apps.googleusercontent.com',
     iosBundleId: 'net.givtapp.ios',
   );

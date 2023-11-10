@@ -7,7 +7,6 @@ class Child extends Equatable {
     this.lastName,
     this.dateOfBirth,
     this.allowance,
-    this.isChild = true,
   });
 
   final String parentId;
@@ -15,17 +14,15 @@ class Child extends Equatable {
   final String? lastName;
   final DateTime? dateOfBirth;
   final int? allowance;
-  final bool isChild;
 
   Map<String, dynamic> toJson() {
     return {
       'firstName': firstName,
       'lastName': lastName,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
-      'isChild': isChild,
-      'GivingAllowance': allowance,
+      'givingAllowance': allowance,
       'parent': {
-        'parentId': parentId,
+        'id': parentId,
       }
     };
   }
