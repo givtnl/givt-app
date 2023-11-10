@@ -37,10 +37,10 @@ packages:
     dependency: "direct main"
     description:
       name: animated_toggle_switch
-      sha256: d2c7a477dc2799645089838a9bfebcbfd7f829ea07909cd9dbdae2e857939746
+      sha256: "19afc84373ad0fca147869e1b984afb3778ea8080f8d0af4fd1ff604d41b2635"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.0"
+    version: "0.8.0"
   args:
     dependency: transitive
     description:
