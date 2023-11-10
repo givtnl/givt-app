@@ -195,14 +195,14 @@ class AuthCubit extends Cubit<AuthState> {
         isTempUser: true,
       );
 
-      final newNotificationId = await _updateNotificationId(
-        guid: unRegisteredUserExt.guid,
-        currentNotificationId: unRegisteredUserExt.notificationId,
-      );
+      // final newNotificationId = await _updateNotificationId(
+      //   guid: unRegisteredUserExt.guid,
+      //   currentNotificationId: unRegisteredUserExt.notificationId,
+      // );
 
-      unRegisteredUserExt = unRegisteredUserExt.copyWith(
-        notificationId: newNotificationId,
-      );
+      // unRegisteredUserExt = unRegisteredUserExt.copyWith(
+      //   notificationId: newNotificationId,
+      // );
 
       emit(
         state.copyWith(
