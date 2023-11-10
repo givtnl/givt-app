@@ -54,8 +54,6 @@ class DefaultFirebaseOptions {
     appId: '1:847341799623:android:d17fbc94692a011c5156e2',
     messagingSenderId: '847341799623',
     projectId: 'givt-dev-pre',
-    databaseURL: 'https://givt-dev-pre.firebaseio.com',
-    storageBucket: 'givt-dev-pre.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,8 +61,6 @@ class DefaultFirebaseOptions {
     appId: '1:847341799623:ios:dbf419704881d64d5156e2',
     messagingSenderId: '847341799623',
     projectId: 'givt-dev-pre',
-    databaseURL: 'https://givt-dev-pre.firebaseio.com',
-    storageBucket: 'givt-dev-pre.appspot.com',
     iosClientId: '847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com',
     iosBundleId: 'net.givtapp.ios.test',
   );
