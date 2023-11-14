@@ -15,6 +15,7 @@ import 'package:givt_app/features/recurring_donations/create/widgets/create_recu
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class OrganizationListPage extends StatefulWidget {
@@ -300,9 +301,12 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               child: Text(locals.discoverOrAmountActionSheetOnce),
             ),
             CupertinoActionSheetAction(
-              onPressed: () => _showCreateRecurringDonationBottomSheet(
+              onPressed: () => AuthUtils.checkToken(
                 context,
-                recipient: recipient,
+                navigate: () => _showCreateRecurringDonationBottomSheet(
+                  context,
+                  recipient: recipient,
+                ),
               ),
               child: Text(locals.discoverOrAmountActionSheetRecurring),
             ),
@@ -342,13 +346,13 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               color: AppTheme.givtBlue,
             ),
             title: Text(locals.discoverOrAmountActionSheetRecurring),
-            onTap: () {
-              context.pop(context);
-              _showCreateRecurringDonationBottomSheet(
+            onTap: () => AuthUtils.checkToken(
+              context,
+              navigate: () => _showCreateRecurringDonationBottomSheet(
                 context,
                 recipient: recipient,
-              );
-            },
+              ),
+            ),
           ),
           ListTile(
             leading: const Icon(
