@@ -15,7 +15,6 @@ import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:intl/intl.dart';
-import 'package:sprintf/sprintf.dart';
 
 part 'give_event.dart';
 part 'give_state.dart';
@@ -70,7 +69,14 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
       final uri = Uri.parse(event.rawValue);
-      final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
+      final encodedMediumId = uri.queryParameters['code'];
+      if (encodedMediumId == null) {
+        await LoggingInfo.instance
+            .info('code from QR-Code is empty rawValue: ${event.rawValue}');
+        return;
+      }
+
+      final mediumId = utf8.decode(base64.decode(encodedMediumId));
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 
@@ -208,7 +214,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     try {
       final startIndex = event.beaconData.indexOf('61f7ed');
       final namespace = event.beaconData.substring(startIndex, startIndex + 20);
-      final instance = event.beaconData.substring(startIndex + 20, startIndex + 32);
+      final instance =
+          event.beaconData.substring(startIndex + 20, startIndex + 32);
       final beaconId = '$namespace.$instance';
       final msg = 'Beacon detected $beaconId | RSSI: ${event.rssi}';
 
