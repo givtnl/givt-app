@@ -402,9 +402,16 @@ class AuthCubit extends Cubit<AuthState> {
 
       await LoggingInfo.instance.info('Updating notification id');
 
+      if (guid.isEmpty) {
+        await LoggingInfo.instance.warning(
+          'Tried to update notification id with empty guid',
+        );
+        return currentNotificationId;
+      }
+
       await _authRepositoy.updateNotificationId(
         notificationId: notificationId,
-        guid: state.user.guid,
+        guid: guid,
       );
       return notificationId;
     } catch (e, stackTrace) {
