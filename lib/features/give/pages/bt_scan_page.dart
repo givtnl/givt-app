@@ -52,7 +52,7 @@ class _BTScanPageState extends State<BTScanPage> {
     // Set listen method for scan results
     FlutterBluePlus.scanResults.listen(
       _onPeripheralsDetectedData,
-      onError: (e) {
+      onError: (dynamic e) {
         LoggingInfo.instance.error('Error while scanning for peripherals: $e');
       },
     );
@@ -163,12 +163,13 @@ class _BTScanPageState extends State<BTScanPage> {
   @override
   void dispose() {
     super.dispose();
+    FlutterBluePlus.stopScan();
   }
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
