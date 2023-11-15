@@ -4,11 +4,33 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/app_router.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:timezone/timezone.dart' as tz;
+
+/// Navigate to the screen based on the notification payload
+/// This is called when the user taps on the notification
+@pragma('vm:entry-point')
+Future<void> _navigateToScreen(NotificationResponse details) async {
+  final payload = details.payload;
+  switch (payload) {
+    case 'RecurringDonation':
+      await LoggingInfo.instance
+          .info('Navigating to recurring donation screen');
+    case 'ShowFeatureUpdate':
+      await LoggingInfo.instance.info('Navigating to feature update screen');
+    case 'ShowMonthlySummary':
+      await LoggingInfo.instance.info('Navigating to monthly summary screen');
+      AppRouter.router.goNamed(Pages.personalSummary.name);
+    case 'ShowYearlySummary':
+      await LoggingInfo.instance.info('Navigating to yearly summary screen');
+      AppRouter.router.goNamed(Pages.personalSummary.name);
+  }
+}
 
 mixin INotificationService {
   Future<void> init();
@@ -72,6 +94,15 @@ class NotificationService implements INotificationService {
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
+    await flutterLocalNotificationsPlugin.initialize(
+      const InitializationSettings(
+        android: AndroidInitializationSettings('icon'),
+        iOS: DarwinInitializationSettings(),
+      ),
+      onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
+      onDidReceiveNotificationResponse: _navigateToScreen,
+    );
+
     /// We use this channel in the `AndroidManifest.xml` file to override the
     /// default FCM channel to enable heads up notifications.
     await flutterLocalNotificationsPlugin
@@ -122,24 +153,28 @@ class NotificationService implements INotificationService {
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
+          payload: 'RecurringDonation',
         );
       case 'ShowFeatureUpdate':
         await LoggingInfo.instance.info('ShowFeatureUpdate received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
+          payload: 'ShowFeatureUpdate',
         );
       case 'ShowMonthlySummary':
         await LoggingInfo.instance.info('ShowMonthlySummary received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
+          payload: 'ShowMonthlySummary',
         );
       case 'ShowYearlySummary':
         await LoggingInfo.instance.info('ShowYearlySummary received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
+          payload: 'ShowYearlySummary',
         );
 
       default:
@@ -156,6 +191,7 @@ class NotificationService implements INotificationService {
 
   Future<void> _showNotification({
     required String message,
+    String payload = '',
     String? title,
   }) async {
     /// Notification id
@@ -165,6 +201,7 @@ class NotificationService implements INotificationService {
       title,
       message,
       notificationDetailsAndroid,
+      payload: payload,
     );
   }
 
@@ -186,6 +223,7 @@ class NotificationService implements INotificationService {
       notificationDetailsAndroid,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
+      payload: payload,
     );
   }
 
@@ -209,7 +247,7 @@ class NotificationService implements INotificationService {
       id: 10,
       body: body,
       title: title,
-      payload: 'monthly_summary',
+      payload: 'ShowMonthlySummary',
       scheduledDate: scheduledDate,
     );
   }
@@ -234,7 +272,7 @@ class NotificationService implements INotificationService {
       id: 20,
       body: body,
       title: title,
-      payload: 'yearly_summary',
+      payload: 'ShowYearlySummary',
       scheduledDate: scheduledDate,
     );
   }
