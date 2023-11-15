@@ -72,8 +72,10 @@ class _GivingPageState extends State<GivingPage> {
       name: giveBlocState.organisation.currency,
     );
     var orgName = giveBlocState.organisation.organisationName!;
-    if (giveBlocState.instanceName.isNotEmpty) {
-      orgName = '$orgName: ${giveBlocState.instanceName}';
+    final instanceName = giveBlocState.instanceName;
+    if (giveBlocState.instanceName.isNotEmpty &&
+        instanceName != orgName) {
+      orgName = '$orgName: $instanceName';
     }
     return WebViewInput(
       currency: format.currencySymbol,
