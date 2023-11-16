@@ -60,7 +60,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
 
     return Scaffold(
@@ -75,8 +75,6 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
       ),
       body: BlocConsumer<RecurringDonationsCubit, RecurringDonationsState>(
         listener: (context, state) {
-          LoggingInfo.instance
-              .info('recurring donations cubit state changed on $state');
           if (state is RecurringDonationsErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -17,11 +18,22 @@ import 'package:timezone/timezone.dart' as tz;
 @pragma('vm:entry-point')
 Future<void> _navigateToScreen(NotificationResponse details) async {
   final payload = details.payload;
-  switch (payload) {
+  if (payload == null) {
+    return;
+  }
+  final decodedPayload = jsonDecode(payload) as Map<String, dynamic>;
+  final type = decodedPayload['Type'];
+  switch (type) {
     case 'RecurringDonation':
       await LoggingInfo.instance
           .info('Navigating to recurring donation screen');
-      AppRouter.router.goNamed(Pages.recurringDonations.name);
+      AppRouter.router.goNamed(
+        Pages.recurringDonations.name,
+        queryParameters: {
+          'RecurringDonationId': decodedPayload['RecurringDonationId'],
+          'Organisation': decodedPayload['Organisation'],
+        },
+      );
     case 'ShowFeatureUpdate':
       await LoggingInfo.instance.info('Navigating to feature update screen');
     case 'ShowMonthlySummary':
@@ -154,28 +166,32 @@ class NotificationService implements INotificationService {
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
-          payload: 'RecurringDonation',
+          payload: {
+            'Type': 'RecurringDonation',
+            'RecurringDonationId': customData['RecurringDonationId'],
+            'Organisation': customData['Organisation'],
+          },
         );
       case 'ShowFeatureUpdate':
         await LoggingInfo.instance.info('ShowFeatureUpdate received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
-          payload: 'ShowFeatureUpdate',
+          payload: {'Type': 'ShowFeatureUpdate'},
         );
       case 'ShowMonthlySummary':
         await LoggingInfo.instance.info('ShowMonthlySummary received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
-          payload: 'ShowMonthlySummary',
+          payload: {'Type': 'ShowMonthlySummary'},
         );
       case 'ShowYearlySummary':
         await LoggingInfo.instance.info('ShowYearlySummary received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
-          payload: 'ShowYearlySummary',
+          payload: {'Type': 'ShowYearlySummary'},
         );
 
       default:
@@ -192,7 +208,7 @@ class NotificationService implements INotificationService {
 
   Future<void> _showNotification({
     required String message,
-    String payload = '',
+    Map<String, dynamic> payload = const {},
     String? title,
   }) async {
     /// Notification id
@@ -202,7 +218,7 @@ class NotificationService implements INotificationService {
       title,
       message,
       notificationDetailsAndroid,
-      payload: payload,
+      payload: jsonEncode(payload),
     );
   }
 
