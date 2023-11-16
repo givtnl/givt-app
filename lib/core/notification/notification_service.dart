@@ -21,6 +21,7 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
     case 'RecurringDonation':
       await LoggingInfo.instance
           .info('Navigating to recurring donation screen');
+      AppRouter.router.goNamed(Pages.recurringDonations.name);
     case 'ShowFeatureUpdate':
       await LoggingInfo.instance.info('Navigating to feature update screen');
     case 'ShowMonthlySummary':
