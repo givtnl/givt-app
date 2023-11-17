@@ -269,8 +269,8 @@ class AppRouter {
             builder: (context, state) {
               final email = state.uri.queryParameters['email'] ?? '';
 
-              final createStripe =
-                  bool.parse(state.uri.queryParameters['createStripe'] ?? 'false');
+              final createStripe = bool.parse(
+                  state.uri.queryParameters['createStripe'] ?? 'false');
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
