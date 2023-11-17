@@ -20,25 +20,25 @@ class GPSScanPage extends StatefulWidget {
 }
 
 class _GPSScanPageState extends State<GPSScanPage> {
-  bool _isVisible = false;
+  bool isVisible = false;
 
   @override
   void initState() {
     super.initState();
-    Geolocator.requestPermission().then(
-      (persmission) {
-        if (persmission == LocationPermission.whileInUse ||
-            persmission == LocationPermission.always) {
-          return;
-        }
-        _permissionCheck();
-      },
-    );
+    initGPS();
+  }
+
+  Future<void> initGPS() async {
+    final permission = await Geolocator.requestPermission();
+    if (permission != LocationPermission.whileInUse ||
+        permission != LocationPermission.always) {
+      await _permissionCheck();
+    }
     Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 2,
-        timeLimit: Duration(seconds: 30),
+        timeLimit: Duration(seconds: 120),
       ),
     ).listen(
       (Position? position) {
@@ -64,17 +64,18 @@ class _GPSScanPageState extends State<GPSScanPage> {
         return;
       }
       setState(() {
-        _isVisible = !_isVisible;
+        isVisible = !isVisible;
       });
     });
   }
 
   Future<void> _permissionCheck() async {
-    await Geolocator.isLocationServiceEnabled().then((isEnabled) {
-      if (isEnabled) {
+    final isEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!isEnabled) {
+      if (!mounted) {
         return;
       }
-      showDialog<void>(
+      await showDialog<void>(
         context: context,
         builder: (_) => WarningDialog(
           title: context.l10n.allowGivtLocationTitle,
@@ -85,7 +86,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
           },
         ),
       );
-    });
+    }
     await Geolocator.checkPermission().then((permission) {
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
@@ -136,7 +137,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
                 ),
                 Expanded(child: Container()),
                 Visibility(
-                  visible: _isVisible,
+                  visible: isVisible,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
@@ -168,7 +169,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
                   ),
                 ),
                 Visibility(
-                  visible: _isVisible && orgName.isNotEmpty,
+                  visible: isVisible && orgName.isNotEmpty,
                   child: Padding(
                     padding: const EdgeInsets.only(
                       left: 20,

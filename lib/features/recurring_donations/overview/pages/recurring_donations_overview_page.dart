@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/recurring_donations/cancel/widgets/cancel_recurring_donation_confirmation_dialog.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
@@ -60,7 +59,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
 
     return Scaffold(
@@ -75,8 +74,6 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
       ),
       body: BlocConsumer<RecurringDonationsCubit, RecurringDonationsState>(
         listener: (context, state) {
-          LoggingInfo.instance
-              .info('recurring donations cubit state changed on $state');
           if (state is RecurringDonationsErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -162,7 +159,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                                     width: size.width * 0.5,
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           )
                         else
