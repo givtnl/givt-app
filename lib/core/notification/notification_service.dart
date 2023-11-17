@@ -225,7 +225,7 @@ class NotificationService implements INotificationService {
   Future<void> _scheduleNotifications({
     required String body,
     required String? title,
-    required String? payload,
+    required Map<String, dynamic>? payload,
     required tz.TZDateTime scheduledDate,
     int? id,
   }) async {
@@ -240,7 +240,7 @@ class NotificationService implements INotificationService {
       notificationDetailsAndroid,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      payload: payload,
+      payload: jsonEncode(payload),
     );
   }
 
@@ -264,7 +264,7 @@ class NotificationService implements INotificationService {
       id: 10,
       body: body,
       title: title,
-      payload: 'ShowMonthlySummary',
+      payload: {'Type': 'ShowMonthlySummary'},
       scheduledDate: scheduledDate,
     );
   }
@@ -289,7 +289,7 @@ class NotificationService implements INotificationService {
       id: 20,
       body: body,
       title: title,
-      payload: 'ShowYearlySummary',
+      payload: {'Type': 'ShowYearlySummary'},
       scheduledDate: scheduledDate,
     );
   }
