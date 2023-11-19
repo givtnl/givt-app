@@ -1,30 +1,31 @@
-name-template: 'v$RESOLVED_VERSION'
-tag-template: 'v$RESOLVED_VERSION'
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
 categories:
-  - title: '🚀 Features'
-    label: 'enhancement'
-  - title: '🐛 Bug Fixes'
-    label: 'bug'
-  - title: '🧰 Maintenance'
-    label: 'chore'
+  - title: "🚀 Features"
+    label: "enhancement"
+  - title: "🐛 Bug Fixes"
+    label: "bug"
+  - title: "🧰 Maintenance"
+    label: "chore"
 template: |
   ## Changes
 
   $CHANGES
 autolabeler:
-  - label: 'enhancement'
+  - label: "enhancement"
     branch:
       - '/feature\/.+/'
       - '/feat\/.+/'
-  - label: 'bug'
+  - label: "bug"
     branch:
       - '/bug\/.+/'
       - '/bugfix\/.+/'
-  - label: 'chore'
+      - '/fix\/.+/'
+  - label: "chore"
     branch:
       - '/chore\/.+/'
       - '/dependabot\/.+/'
 include-labels:
-  - 'enhancement'
-  - 'bug'
-  - 'chore'
+  - "enhancement"
+  - "bug"
+  - "chore"
