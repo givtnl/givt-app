@@ -109,13 +109,7 @@ class AuthRepositoyImpl with AuthRepositoy {
         jsonEncode(newUserExt.toJson()),
       );
 
-      await AnalyticsHelper.setUserProperties(
-        userId: newUserExt.guid,
-        userProperties: {
-          'email': newUserExt.email,
-          'country': newUserExt.country,
-        },
-      );
+      await setUserProperties(newUserExt);
     } catch (e, stacktrace) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -175,13 +169,7 @@ class AuthRepositoyImpl with AuthRepositoy {
       jsonEncode(userExt.toJson()),
     );
 
-    await AnalyticsHelper.setUserProperties(
-      userId: userExt.guid,
-      userProperties: {
-        'email': userExt.email,
-        'country': userExt.country,
-      },
-    );
+    await setUserProperties(userExt);
     return userExt;
   }
 
@@ -451,4 +439,14 @@ class AuthRepositoyImpl with AuthRepositoy {
           'OS': 1, // Always use firebase implementation from Android
         },
       );
+
+  Future<void> setUserProperties(UserExt newUserExt) {
+    return AnalyticsHelper.setUserProperties(
+      userId: newUserExt.guid,
+      userProperties: {
+        'email': newUserExt.email,
+        'country': newUserExt.country,
+      },
+    );
+  }
 }
