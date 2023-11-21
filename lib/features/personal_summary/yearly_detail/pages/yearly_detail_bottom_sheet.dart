@@ -31,7 +31,12 @@ class YearlyDetailBottomSheet extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isLoading
               ? null
-              : () => context.read<YearlyOverviewCubit>().downloadSummary(),
+              : () {
+                  context.read<YearlyOverviewCubit>().downloadSummary();
+                  AnalyticsHelper.logEvent(
+                      eventName:
+                          AmplitudeEvents.annualOverviewReceiveViaMailClicked);
+                },
           child: isLoading
               ? const CircularProgressIndicator()
               : Text(locals.budgetYearlyOverviewDetailReceiveViaMail),

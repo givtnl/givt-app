@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/personal_summary/giving_goal/pages/setup_giving_goal_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -46,15 +47,21 @@ class GivingGoalCard extends StatelessWidget {
               ],
             ),
             TextButton(
-              onPressed: () => showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<PersonalSummaryBloc>(),
-                  child: const SetupGivingGoalBottomSheet(),
-                ),
-              ),
+              onPressed: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (_) => BlocProvider.value(
+                    value: context.read<PersonalSummaryBloc>(),
+                    child: const SetupGivingGoalBottomSheet(),
+                  ),
+                );
+                
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.editGivingGoalClicked,
+                );
+              },
               child: Text(
                 locals.budgetSummaryGivingGoalEdit,
                 style: descriptionTextTheme.copyWith(

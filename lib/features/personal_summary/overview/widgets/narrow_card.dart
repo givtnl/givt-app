@@ -85,6 +85,10 @@ class NarrowCard extends StatelessWidget {
             child: const SetupGivingGoalBottomSheet(),
           ),
         );
+
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.setGivingGoalClicked,
+        );
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
