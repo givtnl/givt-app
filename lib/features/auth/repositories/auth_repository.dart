@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
@@ -107,6 +108,14 @@ class AuthRepositoyImpl with AuthRepositoy {
         UserExt.tag,
         jsonEncode(newUserExt.toJson()),
       );
+
+      await AnalyticsHelper.setUserProperties(
+        userId: newUserExt.guid,
+        userProperties: {
+          'email': newUserExt.email,
+          'country': newUserExt.country,
+        },
+      );
     } catch (e, stacktrace) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -164,6 +173,14 @@ class AuthRepositoyImpl with AuthRepositoy {
     await _prefs.setString(
       UserExt.tag,
       jsonEncode(userExt.toJson()),
+    );
+
+    await AnalyticsHelper.setUserProperties(
+      userId: userExt.guid,
+      userProperties: {
+        'email': userExt.email,
+        'country': userExt.country,
+      },
     );
     return userExt;
   }
