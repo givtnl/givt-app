@@ -125,6 +125,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
+                visible: Country.us.countryCode != user.country,
                 icon: const Icon(
                   FontAwesomeIcons.house,
                   color: AppTheme.givtLightGreen,

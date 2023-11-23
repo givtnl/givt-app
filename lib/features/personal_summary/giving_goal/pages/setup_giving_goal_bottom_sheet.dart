@@ -54,6 +54,10 @@ class _SetupGivingGoalBottomSheetState
                 context
                     .read<PersonalSummaryBloc>()
                     .add(const PersonalSummaryGoalRemove());
+
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.removeGivingGoalClicked,
+                );
               },
               child: Text(
                 locals.budgetGivingGoalRemove,
@@ -200,6 +204,12 @@ class _SetupGivingGoalBottomSheetState
             periodicity: frequency,
           ),
         );
+
+    AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.givingGoalSaved, eventProperties: { 
+          'amount': amountController.text,
+          'periodicity': frequency,
+        });
   }
 
   Widget _buildFieldTitle(

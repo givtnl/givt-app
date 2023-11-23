@@ -83,9 +83,12 @@ class CustomNavigationDrawer extends StatelessWidget {
             ),
             onTap: () => AuthUtils.checkToken(
               context,
-              navigate: () => context.goNamed(
-                Pages.personalSummary.name,
-              ),
+              navigate: () {
+                context.goNamed(Pages.personalSummary.name);
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.personalSummaryClicked,
+                );
+              },
             ),
           ),
           _buildMenuItem(
@@ -133,7 +136,12 @@ class CustomNavigationDrawer extends StatelessWidget {
             icon: Icons.autorenew,
             onTap: () => AuthUtils.checkToken(
               context,
-              navigate: () => context.goNamed(Pages.recurringDonations.name),
+              navigate: () {
+                context.goNamed(Pages.recurringDonations.name);
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.recurringDonationsClicked,
+                );
+              },
             ),
           ),
           _buildMenuItem(
@@ -396,9 +404,10 @@ class CustomNavigationDrawer extends StatelessWidget {
                       title: Text(
                         title,
                         style: TextStyle(
-                            fontSize: 17,
-                            fontWeight:
-                                isAccent ? FontWeight.w900 : FontWeight.normal),
+                          fontSize: 17,
+                          fontWeight:
+                              isAccent ? FontWeight.w900 : FontWeight.normal,
+                        ),
                       ),
                       onTap: onTap,
                     ),

@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
@@ -107,6 +108,8 @@ class AuthRepositoyImpl with AuthRepositoy {
         UserExt.tag,
         jsonEncode(newUserExt.toJson()),
       );
+
+      await setUserProperties(newUserExt);
     } catch (e, stacktrace) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -165,6 +168,8 @@ class AuthRepositoyImpl with AuthRepositoy {
       UserExt.tag,
       jsonEncode(userExt.toJson()),
     );
+
+    await setUserProperties(userExt);
     return userExt;
   }
 
@@ -434,4 +439,14 @@ class AuthRepositoyImpl with AuthRepositoy {
           'OS': 1, // Always use firebase implementation from Android
         },
       );
+
+  Future<void> setUserProperties(UserExt newUserExt) {
+    return AnalyticsHelper.setUserProperties(
+      userId: newUserExt.guid,
+      userProperties: {
+        'email': newUserExt.email,
+        'country': newUserExt.country,
+      },
+    );
+  }
 }
