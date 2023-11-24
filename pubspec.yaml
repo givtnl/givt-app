@@ -21,7 +21,7 @@ dependencies:
   dotted_border: ^2.1.0
   equatable: ^2.0.5
   firebase_core: ^2.18.0
-  firebase_messaging: ^14.7.0
+  firebase_messaging: ^14.7.5
   flutter:
     sdk: flutter
   flutter_app_badger: ^1.5.0
@@ -31,8 +31,8 @@ dependencies:
   flutter_local_notifications: ^16.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_native_timezone: ^2.0.0
   flutter_svg: ^2.0.9
+  flutter_timezone: ^1.0.8
   font_awesome_flutter: ^10.5.0
   geolocator: ^9.0.2
   get_it: ^7.6.4
