@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
@@ -186,7 +186,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: email,
         country: country.countryCode,
         appLanguage: locale,
-        timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
+        timeZoneId: await FlutterTimezone.getLocalTimezone(),
         amountLimit: country.isUS ? 4999 : 499,
       );
 

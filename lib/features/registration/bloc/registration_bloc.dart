@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -63,7 +63,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         email: state.email,
         country: event.country,
         appLanguage: event.appLanguage,
-        timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
+        timeZoneId: await FlutterTimezone.getLocalTimezone(),
         amountLimit:
             event.country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
         address: event.address,
