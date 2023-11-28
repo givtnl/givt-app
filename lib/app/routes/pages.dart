@@ -1,6 +1,7 @@
 enum Pages {
   splash(path: '/', name: 'SPLASH'),
   home(path: '/home', name: 'HOME'),
+  loading(path: '/loading', name: 'LOADING'),
   welcome(path: '/welcome', name: 'WELCOME'),
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
