@@ -55,6 +55,7 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/widgets/loading_page.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
@@ -89,6 +90,15 @@ class AppRouter {
           listener: (context, state) =>
               _checkAndRedirectAuth(state, context, routerState),
           child: const SplashPage(),
+        ),
+      ),
+      GoRoute(
+        path: Pages.loading.path,
+        name: Pages.loading.name,
+        builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) =>
+              _checkAndRedirectAuth(state, context, routerState),
+          child: const LoadingPage(),
         ),
       ),
       GoRoute(
@@ -179,7 +189,7 @@ class AppRouter {
                 BlocProvider(
                   create: (context) =>
                       FamilyHistoryCubit(getIt())..fetchHistory(),
-                )
+                ),
               ],
               child: const ChildrenOverviewPage(),
             ),
@@ -201,7 +211,7 @@ class AppRouter {
                       getIt(),
                       childProfile,
                     )..fetchChildDetails(),
-                  )
+                  ),
                 ],
                 child: const ChildDetailsPage(),
               );
@@ -460,7 +470,7 @@ class AppRouter {
                               type: CollectGroupType.none.index,
                             ),
                           ),
-                      )
+                      ),
                     ],
                     child: const OrganizationListPage(),
                   );
@@ -521,7 +531,7 @@ class AppRouter {
                               : CollectGroupType.none.index,
                         ),
                       ),
-                  )
+                  ),
                 ],
                 child: const OrganizationListPage(
                   isChooseCategory: true,
@@ -565,6 +575,7 @@ class AppRouter {
             child: HomePage(
               code: routerState.uri.queryParameters['code'] ?? '',
               given: routerState.uri.queryParameters.containsKey('given'),
+              navigateTo: routerState.uri.queryParameters['page'] ?? '',
             ),
           ),
         ),
@@ -591,8 +602,14 @@ class AppRouter {
   ) {
     final auth = context.read<AuthCubit>().state;
     var code = '';
+    var navigatingPage = '';
+
     if (state.uri.queryParameters.containsKey('code')) {
       code = state.uri.queryParameters['code']!;
+    }
+
+    if (state.uri.queryParameters.containsKey('page')) {
+      navigatingPage = state.uri.queryParameters['page']!;
     }
 
     /// If user comes from a custome url_scheme
@@ -606,16 +623,30 @@ class AppRouter {
       code = base64Encode(utf8.encode(state.uri.queryParameters['mediumid']!));
     }
 
+    final params = <String, String>{};
+
+    if (code.isNotEmpty) {
+      params['code'] = code;
+    }
+
+    if (navigatingPage.isNotEmpty) {
+      params['page'] = navigatingPage;
+    }
+
+    final query = Uri(
+      queryParameters: params,
+    ).query;
+
+    /// Display the splash screen while checking the auth status
+    if (auth.status == AuthStatus.loading) {
+      return '${Pages.loading.path}?$query';
+    }
+
     if (auth.status == AuthStatus.authenticated) {
-      if (code.isEmpty) {
-        return Pages.home.path;
-      }
-      return '${Pages.home.path}?code=$code';
+      return '${Pages.home.path}?$query';
     }
-    if (code.isEmpty) {
-      return Pages.welcome.path;
-    }
-    return '${Pages.welcome.path}?code=$code';
+
+    return '${Pages.welcome.path}?$query';
   }
 
   /// Check if the user is authenticated and redirect to the correct page
