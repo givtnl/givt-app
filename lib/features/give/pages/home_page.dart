@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/network/country_iso_info.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -19,9 +19,15 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({required this.code, required this.given, super.key});
+  const HomePage({
+    required this.code,
+    required this.navigateTo,
+    required this.given,
+    super.key,
+  });
 
   final String code;
+  final String navigateTo;
   final bool given;
 
   @override
@@ -52,6 +58,17 @@ class _HomePageState extends State<HomePage> {
       );
 
     final auth = context.watch<AuthCubit>().state;
+
+    if (widget.navigateTo.isNotEmpty &&
+        auth.status == AuthStatus.authenticated) {
+      LoggingInfo.instance.info('Navigating to ${widget.navigateTo}');
+      final routeName = Pages.values
+          .firstWhere((element) => element.path == widget.navigateTo);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.goNamed(routeName.name);
+      });
+    }
+
     return Scaffold(
       key: _key,
       appBar: AppBar(
@@ -165,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                     Pages.registration.name,
                     queryParameters: {
                       'email': user.email,
-                      'createStripe': createStripe.toString()
+                      'createStripe': createStripe.toString(),
                     },
                   )
                   ..pop();
@@ -242,7 +259,7 @@ class _HomePageViewState extends State<_HomePageView> {
                   },
                 ),
               ),
-              const ChooseCategory()
+              const ChooseCategory(),
             ],
           ),
         ),
