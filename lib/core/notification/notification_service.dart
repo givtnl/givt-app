@@ -108,9 +108,18 @@ class NotificationService implements INotificationService {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings('icon'),
-        iOS: DarwinInitializationSettings(),
+      InitializationSettings(
+        android: const AndroidInitializationSettings('icon'),
+        iOS: DarwinInitializationSettings(
+          onDidReceiveLocalNotification: (id, title, body, payload) async =>
+              _navigateToScreen(
+            NotificationResponse(
+              payload: payload,
+              notificationResponseType:
+                  NotificationResponseType.selectedNotification,
+            ),
+          ),
+        ),
       ),
       onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
       onDidReceiveNotificationResponse: _navigateToScreen,
