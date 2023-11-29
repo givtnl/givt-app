@@ -47,6 +47,12 @@ class AnnualBarChart extends StatelessWidget {
               amount,
               country,
             );
+
+            var yearGoalString = Util.formatNumberComma(
+              yearGoal,
+              country,
+            );
+
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -57,6 +63,7 @@ class AnnualBarChart extends StatelessWidget {
                         context: context,
                         width: width,
                         amountString: amountString,
+                        yearGoalString: yearGoalString,
                         isCurrentYear: isCurrentYear,
                         constraints: constraints,
                       )
@@ -134,6 +141,7 @@ class AnnualBarChart extends StatelessWidget {
     required BoxConstraints constraints,
     required double width,
     required String amountString,
+    required String yearGoalString,
     required bool isCurrentYear,
     bool isOverflowing = false,
   }) {
@@ -196,7 +204,7 @@ class AnnualBarChart extends StatelessWidget {
                   width: 10,
                 ),
                 Text(
-                  '$currency $yearGoal',
+                  '$currency $yearGoalString',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

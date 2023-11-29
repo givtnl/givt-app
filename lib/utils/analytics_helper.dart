@@ -9,7 +9,6 @@ class AnalyticsHelper {
   static Future<void> init(String key) async {
     _amplitude = Amplitude.getInstance();
     await _amplitude!.init(key);
-    await _amplitude!.enableCoppaControl();
     await _amplitude!.trackingSessionEvents(true);
   }
 
@@ -23,5 +22,13 @@ class AnalyticsHelper {
     );
 
     log('${eventName.value} pressed with properties: $eventProperties');
+  }
+
+  static Future<void> setUserProperties({
+    required String userId,
+    required Map<String, dynamic> userProperties,
+  }) async {
+    await _amplitude?.setUserId(userId);
+    await _amplitude?.setUserProperties(userProperties);
   }
 }

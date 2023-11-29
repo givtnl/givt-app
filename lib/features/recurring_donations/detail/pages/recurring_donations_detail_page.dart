@@ -129,17 +129,12 @@ class RecurringDonationsDetailPage extends StatelessWidget {
   }
 
   RecurringDonationDetail _getUpcomingDonation({
-    RecurringDonationDetail? lastInstance,
     required RecurringDonation recurringDonation,
     required bool isGiftAidEnabled,
+    RecurringDonationDetail? lastInstance,
   }) {
-    var nextTime = DateTime.now();
-    if (lastInstance == null) {
-      final startDate = DateTime.parse(recurringDonation.startDate);
-      nextTime = recurringDonation
-          .getNextDonationDate(startDate)
-          .subtract(const Duration(days: 1));
-    }
+    var nextTime = DateTime.parse(recurringDonation.startDate);
+
     if (lastInstance != null) {
       nextTime = recurringDonation.getNextDonationDate(lastInstance.timestamp);
     }
@@ -187,18 +182,15 @@ class RecurringDonationsDetailPage extends StatelessWidget {
     required Icon icon,
     Color? color,
   }) {
-    return Visibility(
-      visible: true,
-      child: IconButton(
-        icon: icon,
-        onPressed: () => showModalBottomSheet<void>(
-          context: context,
-          showDragHandle: true,
-          isScrollControlled: true,
-          useSafeArea: true,
-          backgroundColor: color ?? AppTheme.givtBlue,
-          builder: (context) => child,
-        ),
+    return IconButton(
+      icon: icon,
+      onPressed: () => showModalBottomSheet<void>(
+        context: context,
+        showDragHandle: true,
+        isScrollControlled: true,
+        useSafeArea: true,
+        backgroundColor: color ?? AppTheme.givtBlue,
+        builder: (context) => child,
       ),
     );
   }

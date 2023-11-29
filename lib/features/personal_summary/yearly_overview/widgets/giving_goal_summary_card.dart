@@ -98,15 +98,21 @@ class GivingGoalSummaryCard extends StatelessWidget {
             Visibility(
               visible: state.givingGoal.yearlyGivingGoal == 0,
               child: GestureDetector(
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (_) => BlocProvider.value(
-                    value: context.read<PersonalSummaryBloc>(),
-                    child: const SetupGivingGoalBottomSheet(),
-                  ),
-                ),
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => BlocProvider.value(
+                      value: context.read<PersonalSummaryBloc>(),
+                      child: const SetupGivingGoalBottomSheet(),
+                    ),
+                  );
+
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.setGivingGoalClicked,
+                  );
+                },
                 child: Card(
                   elevation: 10,
                   child: Padding(

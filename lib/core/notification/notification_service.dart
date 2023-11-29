@@ -108,9 +108,18 @@ class NotificationService implements INotificationService {
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin.initialize(
-      const InitializationSettings(
-        android: AndroidInitializationSettings('icon'),
-        iOS: DarwinInitializationSettings(),
+      InitializationSettings(
+        android: const AndroidInitializationSettings('icon'),
+        iOS: DarwinInitializationSettings(
+          onDidReceiveLocalNotification: (id, title, body, payload) async =>
+              _navigateToScreen(
+            NotificationResponse(
+              payload: payload,
+              notificationResponseType:
+                  NotificationResponseType.selectedNotification,
+            ),
+          ),
+        ),
       ),
       onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
       onDidReceiveNotificationResponse: _navigateToScreen,
@@ -225,7 +234,7 @@ class NotificationService implements INotificationService {
   Future<void> _scheduleNotifications({
     required String body,
     required String? title,
-    required String? payload,
+    required Map<String, dynamic>? payload,
     required tz.TZDateTime scheduledDate,
     int? id,
   }) async {
@@ -240,7 +249,7 @@ class NotificationService implements INotificationService {
       notificationDetailsAndroid,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
-      payload: payload,
+      payload: jsonEncode(payload),
     );
   }
 
@@ -264,7 +273,7 @@ class NotificationService implements INotificationService {
       id: 10,
       body: body,
       title: title,
-      payload: 'ShowMonthlySummary',
+      payload: {'Type': 'ShowMonthlySummary'},
       scheduledDate: scheduledDate,
     );
   }
@@ -289,7 +298,7 @@ class NotificationService implements INotificationService {
       id: 20,
       body: body,
       title: title,
-      payload: 'ShowYearlySummary',
+      payload: {'Type': 'ShowYearlySummary'},
       scheduledDate: scheduledDate,
     );
   }

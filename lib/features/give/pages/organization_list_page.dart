@@ -14,6 +14,7 @@ import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -95,27 +96,60 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                       height: 0.1,
                     ),
                     shrinkWrap: true,
-                    itemCount: state.filteredOrganisations.length,
-                    itemBuilder: (context, index) => _buildListTile(
-                      type: state.filteredOrganisations[index].type,
-                      title: state.filteredOrganisations[index].orgName,
-                      isSelected: state.selectedCollectGroup.nameSpace ==
-                          state.filteredOrganisations[index].nameSpace,
-                      onTap: () {
-                        if (widget.isChooseCategory) {
-                          _buildActionSheet(
-                            context,
-                            state.filteredOrganisations[index],
-                          );
-                          return;
-                        }
-                        context.read<OrganisationBloc>().add(
-                              OrganisationSelectionChanged(
-                                state.filteredOrganisations[index].nameSpace,
-                              ),
+                    itemCount: state.filteredOrganisations.length + 1,
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return ListTile(
+                          key: UniqueKey(),
+                          onTap: () => showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (_) => AboutGivtBottomSheet(
+                              initialMessage:
+                                  locals.reportMissingOrganisationPrefilledText,
+                            ),
+                          ),
+
+                          /// To keep the symetry of the list
+                          leading: const Icon(
+                            Icons.add,
+                            color: Colors.transparent,
+                          ),
+                          trailing: const Icon(
+                            Icons.add,
+                            color: AppTheme.givtBlue,
+                          ),
+                          title: Text(
+                            locals.reportMissingOrganisationListItem,
+                            style: const TextStyle(
+                              color: AppTheme.givtBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      }
+                      return _buildListTile(
+                        type: state.filteredOrganisations[index].type,
+                        title: state.filteredOrganisations[index].orgName,
+                        isSelected: state.selectedCollectGroup.nameSpace ==
+                            state.filteredOrganisations[index].nameSpace,
+                        onTap: () {
+                          if (widget.isChooseCategory) {
+                            _buildActionSheet(
+                              context,
+                              state.filteredOrganisations[index],
                             );
-                      },
-                    ),
+                            return;
+                          }
+                          context.read<OrganisationBloc>().add(
+                                OrganisationSelectionChanged(
+                                  state.filteredOrganisations[index].nameSpace,
+                                ),
+                              );
+                        },
+                      );
+                    },
                   ),
                 )
               else
@@ -224,7 +258,12 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
           CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(
+            color: AppTheme.givtBlue,
+          ),
+        ),
       );
 
   Widget _buildFilterType(OrganisationBloc bloc, AppLocalizations locals) =>
