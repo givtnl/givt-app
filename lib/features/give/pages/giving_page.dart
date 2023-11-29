@@ -73,8 +73,7 @@ class _GivingPageState extends State<GivingPage> {
     );
     var orgName = giveBlocState.organisation.organisationName!;
     final instanceName = giveBlocState.instanceName;
-    if (giveBlocState.instanceName.isNotEmpty &&
-        instanceName != orgName) {
+    if (giveBlocState.instanceName.isNotEmpty && instanceName != orgName) {
       orgName = '$orgName: $instanceName';
     }
     return WebViewInput(
@@ -113,24 +112,26 @@ class _GivingPageState extends State<GivingPage> {
             'Opening browser with $givt',
           );
           browserIsOpened = true;
-          _customInAppBrowser.openUrlRequest(
-            urlRequest: URLRequest(
-              url: Uri.https(
-                getIt<APIService>().apiURL,
-                'confirm.html',
-                {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
-              ),
-            ),
-            options: InAppBrowserClassOptions(
-              crossPlatform: InAppBrowserOptions(
-                toolbarTopBackgroundColor: Colors.white,
-              ),
-              ios: IOSInAppBrowserOptions(
-                toolbarBottomBackgroundColor: Colors.white,
-                hideToolbarBottom: true,
-              ),
-            ),
-          );
+          _customInAppBrowser
+              .openUrlRequest(
+                urlRequest: URLRequest(
+                  url: Uri.https(
+                    getIt<APIService>().apiURL,
+                    'confirm.html',
+                    {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+                  ),
+                ),
+                options: InAppBrowserClassOptions(
+                  crossPlatform: InAppBrowserOptions(
+                    toolbarTopBackgroundColor: Colors.white,
+                  ),
+                  ios: IOSInAppBrowserOptions(
+                    toolbarBottomBackgroundColor: Colors.white,
+                    hideToolbarBottom: true,
+                  ),
+                ),
+              )
+              .whenComplete(() => context.pop());
           return const SizedBox.shrink();
         },
       ),
