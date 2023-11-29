@@ -5,11 +5,12 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/app_version.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 class AboutGivtBottomSheet extends StatefulWidget {
-  const AboutGivtBottomSheet({super.key});
+  const AboutGivtBottomSheet({this.initialMessage = '', super.key});
+
+  final String initialMessage;
 
   @override
   State<AboutGivtBottomSheet> createState() => _AboutGivtBottomSheetState();
@@ -18,13 +19,34 @@ class AboutGivtBottomSheet extends StatefulWidget {
 class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
   final _formKey = GlobalKey<FormState>();
 
-  final _messageController = TextEditingController();
+  final messageController = TextEditingController();
+  final messageFocusNode = FocusNode();
+  final scrollController = ScrollController();
+
+  @override
+  void initState() {
+    messageController.text = widget.initialMessage;
+    if (widget.initialMessage.isNotEmpty) {
+      messageFocusNode.requestFocus();
+
+      /// Ensure that the widget is rendered before scrolling
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final size = MediaQuery.sizeOf(context);
     final user = context.read<AuthCubit>().state.user;
+    final messageKey = GlobalKey();
     return BottomSheetLayout(
       title: Text(
         locals.titleAboutGivt,
@@ -60,72 +82,80 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
             builder: (context, state) {
               return Form(
                 key: _formKey,
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/logo.png',
-                      height: size.height * 0.03,
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      user.country == Country.us.countryCode
-                          ? locals.informationAboutUsUs
-                          : Country.unitedKingdomCodes().contains(user.country)
-                              ? locals.informationAboutUsGb
-                              : locals.informationAboutUs,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 16,
-                          ),
-                    ),
-                    const SizedBox(height: 20),
-                    const AppVersion(),
-                    SizedBox(
-                      height: size.height * 0.1,
-                    ),
-                    Text(
-                      locals.feedbackTitle,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: _messageController,
-                      minLines: 10,
-                      maxLines: 10,
-                      onChanged: (value) => setState(() {}),
-                      decoration: InputDecoration(
-                        hintText: locals.typeMessage,
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/logo.png',
+                        height: size.height * 0.03,
                       ),
-                      keyboardType: TextInputType.multiline,
-                    ),
-                    const SizedBox(height: 20),
-                    if (state is InfraLoading)
-                      const CircularProgressIndicator()
-                    else
-                      ElevatedButton(
-                        onPressed: isEnabled
-                            ? () async {
-                                if (!_formKey.currentState!.validate()) {
-                                  return;
+                      const SizedBox(height: 20),
+                      Text(
+                        user.country == Country.us.countryCode
+                            ? locals.informationAboutUsUs
+                            : Country.unitedKingdomCodes()
+                                    .contains(user.country)
+                                ? locals.informationAboutUsGb
+                                : locals.informationAboutUs,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 16,
+                            ),
+                      ),
+                      const SizedBox(height: 20),
+                      const AppVersion(),
+                      SizedBox(
+                        height: size.height * 0.1,
+                      ),
+                      Text(
+                        locals.feedbackTitle,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: messageKey,
+                        focusNode: messageFocusNode,
+                        controller: messageController,
+                        minLines: 10,
+                        maxLines: 10,
+                        onChanged: (value) => setState(() {}),
+                        decoration: InputDecoration(
+                          hintText: locals.typeMessage,
+                        ),
+                        keyboardType: TextInputType.multiline,
+                      ),
+                      const SizedBox(height: 20),
+                      if (state is InfraLoading)
+                        const CircularProgressIndicator()
+                      else
+                        ElevatedButton(
+                          onPressed: isEnabled
+                              ? () async {
+                                  if (!_formKey.currentState!.validate()) {
+                                    return;
+                                  }
+                                  await context
+                                      .read<InfraCubit>()
+                                      .contactSupport(
+                                        message: messageController.text,
+                                        appLanguage: locals.localeName,
+                                        email: user.email,
+                                        guid: user.guid,
+                                      );
                                 }
-                                await context.read<InfraCubit>().contactSupport(
-                                      message: _messageController.text,
-                                      appLanguage: locals.localeName,
-                                      email: user.email,
-                                      guid: user.guid,
-                                    );
-                              }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          disabledBackgroundColor: Colors.grey,
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            disabledBackgroundColor: Colors.grey,
+                          ),
+                          child: Text(
+                            locals.send,
+                          ),
                         ),
-                        child: Text(
-                          locals.send,
-                        ),
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -135,5 +165,5 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
     );
   }
 
-  bool get isEnabled => _messageController.text.isNotEmpty;
+  bool get isEnabled => messageController.text.isNotEmpty;
 }
