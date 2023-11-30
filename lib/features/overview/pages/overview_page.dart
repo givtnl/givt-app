@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
-import 'package:givt_app/features/overview/widgets/download_year_donation.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -14,8 +13,30 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
-class OverviewPage extends StatelessWidget {
+class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
+
+  @override
+  State<OverviewPage> createState() => _OverviewPageState();
+}
+
+class _OverviewPageState extends State<OverviewPage> {
+  late OverlayEntry overlayEntry;
+
+  @override
+  void initState() {
+    super.initState();
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => FeatureOverlay(
+        onDismiss: () {
+          overlayEntry
+            ..remove()
+            ..dispose();
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +103,10 @@ class OverviewPage extends StatelessWidget {
         if (state.givts.isEmpty) {
           return _buildEmptyScaffold(context);
         }
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Overlay.of(context).insert(overlayEntry);
+        });
         return _buildFilledScaffold(
           context,
           state,
