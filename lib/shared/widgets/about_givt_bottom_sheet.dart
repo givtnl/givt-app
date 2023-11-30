@@ -121,7 +121,6 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                         controller: messageController,
                         minLines: 10,
                         maxLines: 10,
-                        onChanged: (value) => setState(() {}),
                         decoration: InputDecoration(
                           hintText: locals.typeMessage,
                         ),
