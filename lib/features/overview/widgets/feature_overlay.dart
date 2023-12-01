@@ -54,7 +54,7 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
-                color: AppTheme.givtLightBlue.withOpacity(0.9),
+                color: AppTheme.givtShowcaseBlue.withOpacity(0.9),
               ),
             ),
             Positioned.fromRect(
@@ -68,6 +68,7 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       locals.cancelFeatureTitle,
