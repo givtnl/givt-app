@@ -6,9 +6,10 @@ import 'app_theme.dart';
 
 class Util {
 
-
+  /// Features overlay keys
+  static const String cancelFeatureOverlayKey = 'cancelFeatureOverlayKey';
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
-// Default user info
+  // Default user info
   static const String defaultAdress = 'Foobarstraat 5';
   static const String defaultCity = 'Foobar';
   static const String defaultPostCode = 'B3 1RD';
