@@ -5,6 +5,9 @@ import 'package:intl/intl.dart';
 import 'app_theme.dart';
 
 class Util {
+
+
+  static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
 // Default user info
   static const String defaultAdress = 'Foobarstraat 5';
   static const String defaultCity = 'Foobar';
