@@ -302,6 +302,17 @@ class CustomNavigationDrawer extends StatelessWidget {
           _buildEmptySpace(),
           _buildMenuItem(
             isVisible: true,
+            title: locals.featureMenuText,
+            icon: Icons.menu_book,
+            onTap: () => showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              useSafeArea: true,
+              builder: (_) => const FeaturesBottomSheet(),
+            ),
+          ),
+          _buildMenuItem(
+            isVisible: true,
             title: locals.titleAboutGivt,
             icon: Icons.info,
             onTap: () => showModalBottomSheet<void>(
