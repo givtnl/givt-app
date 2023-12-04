@@ -55,8 +55,7 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
-import 'package:givt_app/shared/widgets/loading_page.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/pages/pages.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
