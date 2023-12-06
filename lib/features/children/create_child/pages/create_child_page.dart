@@ -102,140 +102,139 @@ class _CreateChildPageState extends State<CreateChildPage> {
     );
 
     return Scaffold(
-      body: BlocConsumer<CreateChildCubit, CreateChildState>(
-        listener: (context, state) {
-          log('create child state changed on $state');
-          if (state is CreateChildExternalErrorState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  state.errorMessage,
-                  textAlign: TextAlign.center,
-                ),
-                backgroundColor: Theme.of(context).errorColor,
-              ),
-            );
-          } else if (state is CreateChildInputState ||
-              state is CreateChildInputErrorState) {
-            _updateInputFields(state.child, currency.currencySymbol);
-          } else if (state is CreateChildSuccessState) {
-            context.goNamed(Pages.childrenOverview.name);
-          }
-        },
-        builder: (context, state) {
-          if (state is CreateChildUploadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is CreateChildInputState ||
-              state is CreateChildInputErrorState) {
-            return Container(
-              padding: const EdgeInsets.only(top: 35),
-              width: double.infinity,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/images/logo.png',
-                      height: size.height * 0.035,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      height: size.height * 0.82,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 30),
-                            child: Text(
-                              context.l10n.createChildPageTitle,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                      color: AppTheme.sliderIndicatorFilled),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          CreateChildTextField(
-                            maxLength: ChildNameValidator.nameMaxLength,
-                            errorText: state is CreateChildInputErrorState
-                                ? state.nameErrorMessage
-                                : null,
-                            controller: _nameController,
-                            labelText: context.l10n.firstName,
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.name,
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          CreateChildTextField(
-                            controller: _dateOfBirthController,
-                            errorText: state is CreateChildInputErrorState
-                                ? state.dateErrorMessage
-                                : null,
-                            labelText: context.l10n.dateOfBirth,
-                            onTap: _showDataPickerDialog,
-                            showCursor: true,
-                            textInputAction: TextInputAction.next,
-                            readOnly: true,
-                          ),
-                          const SizedBox(
-                            height: 40,
-                          ),
-                          CreateChildTextField(
-                            labelText:
-                                context.l10n.createChildGivingAllowanceHint,
-                            errorText: state is CreateChildInputErrorState
-                                ? state.allowanceErrorMessage
-                                : null,
-                            controller: _allowanceController,
-                            maxLength: 4,
-                            textInputAction: TextInputAction.done,
-                            inputFormatters: [
-                              CurrencyTextInputFormatter(
-                                locale: currency.locale,
-                                decimalDigits: 0,
-                                turnOffGrouping: true,
-                                enableNegative: false,
-                                symbol: currency.currencySymbol,
-                              )
-                            ],
-                            keyboardType: TextInputType.number,
-                          ),
-                          const GivingAllowanceInfoButton(),
-                        ],
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        toolbarHeight: 0,
+      ),
+      body: SafeArea(
+        child: BlocConsumer<CreateChildCubit, CreateChildState>(
+          listener: (context, state) {
+            if (state is CreateChildExternalErrorState) {
+              SnackBarHelper.showMessage(
+                context,
+                text: state.errorMessage,
+                isError: true,
+              );
+            } else if (state is CreateChildInputState ||
+                state is CreateChildInputErrorState) {
+              _updateInputFields(state.child, currency.currencySymbol);
+            } else if (state is CreateChildSuccessState) {
+              context.goNamed(Pages.childrenOverview.name);
+            }
+          },
+          builder: (context, state) {
+            if (state is CreateChildUploadingState) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is CreateChildInputState ||
+                state is CreateChildInputErrorState) {
+              return Container(
+                padding: const EdgeInsets.only(top: 10),
+                width: double.infinity,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Image.asset(
+                        'assets/images/logo.png',
+                        height: size.height * 0.035,
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 35,
-                        right: 35,
-                        bottom: 30,
-                      ),
-                      child: ElevatedButton(
-                        onPressed: _createChildProfile,
-                        child: Text(
-                          context.l10n.createChildProfileButton,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(
-                                color: Colors.white,
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        height: size.height * 0.82,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 30),
+                              child: Text(
+                                context.l10n.createChildPageTitle,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                        color: AppTheme.sliderIndicatorFilled),
                               ),
+                            ),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            CreateChildTextField(
+                              maxLength: ChildNameValidator.nameMaxLength,
+                              errorText: state is CreateChildInputErrorState
+                                  ? state.nameErrorMessage
+                                  : null,
+                              controller: _nameController,
+                              labelText: context.l10n.firstName,
+                              textInputAction: TextInputAction.next,
+                              keyboardType: TextInputType.name,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            CreateChildTextField(
+                              controller: _dateOfBirthController,
+                              errorText: state is CreateChildInputErrorState
+                                  ? state.dateErrorMessage
+                                  : null,
+                              labelText: context.l10n.dateOfBirth,
+                              onTap: _showDataPickerDialog,
+                              showCursor: true,
+                              textInputAction: TextInputAction.next,
+                              readOnly: true,
+                            ),
+                            const SizedBox(
+                              height: 40,
+                            ),
+                            CreateChildTextField(
+                              labelText:
+                                  context.l10n.createChildGivingAllowanceHint,
+                              errorText: state is CreateChildInputErrorState
+                                  ? state.allowanceErrorMessage
+                                  : null,
+                              controller: _allowanceController,
+                              maxLength: 4,
+                              textInputAction: TextInputAction.done,
+                              inputFormatters: [
+                                CurrencyTextInputFormatter(
+                                  locale: currency.locale,
+                                  decimalDigits: 0,
+                                  turnOffGrouping: true,
+                                  enableNegative: false,
+                                  symbol: currency.currencySymbol,
+                                )
+                              ],
+                              keyboardType: TextInputType.number,
+                            ),
+                            const GivingAllowanceInfoButton(),
+                            const SizedBox(height: 80),
+                          ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return Container();
-          }
-        },
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
+        child: ElevatedButton(
+          onPressed: _createChildProfile,
+          child: Text(
+            context.l10n.createChildProfileButton,
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  color: Colors.white,
+                ),
+          ),
+        ),
       ),
     );
   }
