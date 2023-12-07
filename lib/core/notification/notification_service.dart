@@ -93,7 +93,8 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> init() async {
-    await FirebaseMessaging.instance.requestPermission();
+    await FirebaseMessaging.instance.subscribeToTopic('dev');
+    await FirebaseMessaging.instance.subscribeToTopic('all');
     await setupFlutterNotifications();
   }
 
