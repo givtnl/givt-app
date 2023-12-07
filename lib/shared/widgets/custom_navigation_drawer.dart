@@ -10,6 +10,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -19,7 +20,6 @@ import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({
@@ -260,7 +260,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             title: locals.logOut,
             icon: Icons.logout_sharp,
             onTap: () async {
-              if (!await getIt<InternetConnectionCheckerPlus>().hasConnection) {
+              if (!await getIt<NetworkInfo>().isConnected) {
                 if (!context.mounted) {
                   return;
                 }

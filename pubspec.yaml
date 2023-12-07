@@ -37,12 +37,12 @@ dependencies:
   geolocator: ^9.0.2
   get_it: ^7.6.4
   go_router: ^12.1.1
-  http: ^0.13.6
+  http: ^1.1.2
   http_certificate_pinning:
     path: ./packages/http_certificate_pinning
-  http_interceptor: ^1.0.2
+  http_interceptor: 2.0.0-beta.7
   iban: ^1.0.1
-  internet_connection_checker_plus: ^1.0.1
+  internet_connection_checker_plus: ^2.1.0
   intl: ^0.18.0
   ios_utsname_ext: ^2.2.0
   jiffy: ^6.2.1

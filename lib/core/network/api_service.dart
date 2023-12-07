@@ -3,8 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:http/http.dart';
-import 'package:http_interceptor/http/http.dart';
+import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {
   APIService({

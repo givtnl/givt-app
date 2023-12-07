@@ -10,18 +10,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenInterceptor implements InterceptorContract {
   @override
-  Future<RequestData> interceptRequest({required RequestData data}) async {
+  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final sessionString = prefs.getString(Session.tag);
 
-      if (!data.headers.containsKey('Content-Type')) {
-        data.headers['Content-Type'] = 'application/json';
+      if (!request.headers.containsKey('Content-Type')) {
+        request.headers['Content-Type'] = 'application/json';
       }
-      data.headers['Accept'] = 'application/json';
+      request.headers['Accept'] = 'application/json';
 
       if (sessionString == null) {
-        return data;
+        return request;
       }
 
       final session = Session.fromJson(
@@ -29,7 +29,7 @@ class TokenInterceptor implements InterceptorContract {
       );
 
       if (session.accessToken.isNotEmpty) {
-        data.headers['Authorization'] = 'Bearer ${session.accessToken}';
+        request.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
@@ -38,14 +38,22 @@ class TokenInterceptor implements InterceptorContract {
       );
     }
     await LoggingInfo.instance.info(
-      '${data.method}: ${data.baseUrl}${data.params}',
+      '${request.method}: ${request.url}',
     );
-    return data;
+    return request;
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async =>
-      data;
+  Future<BaseResponse> interceptResponse({
+    required BaseResponse response,
+  }) async =>
+      response;
+
+  @override
+  Future<bool> shouldInterceptRequest() => Future.value(true);
+
+  @override
+  Future<bool> shouldInterceptResponse() => Future.value(true);
 }
 
 /// This is the retry policy that will be used by the [InterceptedClient]
@@ -55,7 +63,7 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   int maxRetryAttempts = 2;
 
   @override
-  Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
+  Future<bool> shouldAttemptRetryOnResponse(BaseResponse response) async {
     ///This is where we need to update our token on 401 response
     if (response.statusCode == 401) {
       await _refreshToken();
@@ -64,7 +72,7 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
     return false;
   }
 
-  /// This method will be called 
+  /// This method will be called
   /// when a request fails and the [shouldAttemptRetryOnResponse]
   /// Handle the [SocketException] when there is no internet connection
   Future<void> _refreshToken() async {

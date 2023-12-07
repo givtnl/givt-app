@@ -11,7 +11,7 @@ dependencies:
   dio: ^5.0.0
   flutter:
     sdk: flutter
-  http: ^0.13.5
+  http: ^1.1.2
 
 dev_dependencies:
   flutter_lints: ^2.0.1
