@@ -23,6 +23,7 @@ import 'package:givt_app/features/recurring_donations/overview/repositories/recu
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -80,7 +81,7 @@ Future<String> _checkCountry() async {
 Future<void> _initCoreDependencies() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt
-    ..registerLazySingleton(InternetConnectionCheckerPlus.new)
+    ..registerLazySingleton(InternetConnection.new)
     ..registerLazySingleton(NotificationService.new)
     ..registerLazySingleton(() => sharedPreferences)
     ..registerLazySingleton<CountryIsoInfo>(
