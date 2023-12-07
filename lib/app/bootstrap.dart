@@ -57,6 +57,8 @@ Future<void> bootstrap(
   await LoggingInfo.instance.info('App started');
   await get_it.init();
   await get_it.getIt.allReady();
+  await FirebaseMessaging.instance.subscribeToTopic('dev');
+  await FirebaseMessaging.instance.subscribeToTopic('all');
   FirebaseMessaging.onBackgroundMessage(_processOfflineDonations);
   tz.initializeTimeZones();
   FlutterError.onError = (details) {
