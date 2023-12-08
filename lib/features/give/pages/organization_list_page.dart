@@ -98,7 +98,8 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                     shrinkWrap: true,
                     itemCount: state.filteredOrganisations.length + 1,
                     itemBuilder: (context, index) {
-                      if (index == 0) {
+                      final itemIndex = index - 1;
+                      if (itemIndex < 0){
                         return ListTile(
                           key: UniqueKey(),
                           onTap: () => showModalBottomSheet<void>(
@@ -130,21 +131,21 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                         );
                       }
                       return _buildListTile(
-                        type: state.filteredOrganisations[index].type,
-                        title: state.filteredOrganisations[index].orgName,
+                        type: state.filteredOrganisations[itemIndex].type,
+                        title: state.filteredOrganisations[itemIndex].orgName,
                         isSelected: state.selectedCollectGroup.nameSpace ==
-                            state.filteredOrganisations[index].nameSpace,
+                            state.filteredOrganisations[itemIndex].nameSpace,
                         onTap: () {
                           if (widget.isChooseCategory) {
                             _buildActionSheet(
                               context,
-                              state.filteredOrganisations[index],
+                              state.filteredOrganisations[itemIndex],
                             );
                             return;
                           }
                           context.read<OrganisationBloc>().add(
                                 OrganisationSelectionChanged(
-                                  state.filteredOrganisations[index].nameSpace,
+                                  state.filteredOrganisations[itemIndex].nameSpace,
                                 ),
                               );
                         },
