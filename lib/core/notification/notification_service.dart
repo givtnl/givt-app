@@ -16,7 +16,7 @@ import 'package:timezone/timezone.dart' as tz;
 /// Navigate to the screen based on the notification payload
 /// This is called when the user taps on the notification
 @pragma('vm:entry-point')
-Future<void> _navigateToScreen(NotificationResponse details) async {
+Future<void> navigateToScreen(NotificationResponse details) async {
   final payload = details.payload;
   if (payload == null) {
     return;
@@ -114,7 +114,7 @@ class NotificationService implements INotificationService {
         android: const AndroidInitializationSettings('icon'),
         iOS: DarwinInitializationSettings(
           onDidReceiveLocalNotification: (id, title, body, payload) async =>
-              _navigateToScreen(
+              navigateToScreen(
             NotificationResponse(
               payload: payload,
               notificationResponseType:
@@ -123,8 +123,8 @@ class NotificationService implements INotificationService {
           ),
         ),
       ),
-      onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
-      onDidReceiveNotificationResponse: _navigateToScreen,
+      onDidReceiveBackgroundNotificationResponse: navigateToScreen,
+      onDidReceiveNotificationResponse: navigateToScreen,
     );
 
     /// We use this channel in the `AndroidManifest.xml` file to override the
