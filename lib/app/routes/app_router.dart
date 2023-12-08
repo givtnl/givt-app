@@ -20,7 +20,7 @@ import 'package:givt_app/features/children/overview/cubit/children_overview_cubi
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/children/vpc/pages/give_vpc_page.dart';
+import 'package:givt_app/features/children/vpc/pages/give_vpc_main_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -55,8 +55,7 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
-import 'package:givt_app/shared/widgets/loading_page.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/shared/pages/pages.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -250,7 +249,7 @@ class AppRouter {
             name: Pages.giveVPC.name,
             builder: (context, state) {
               context.read<VPCCubit>().showVPCInfo();
-              return const GiveVPCPage();
+              return const GiveVPCMainPage();
             },
           ),
           GoRoute(

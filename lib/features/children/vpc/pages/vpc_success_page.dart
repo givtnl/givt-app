@@ -15,68 +15,68 @@ class VPCSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
 
-    return Scaffold(
-      backgroundColor: AppTheme.vpcSuccessBackground,
-      body: SafeArea(
-        child: Column(
-          children: [
-            SvgPicture.asset(
-              'assets/images/logo_white.svg',
-              height: size.height * 0.035,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: size.height * 0.03),
-                  SvgPicture.asset(
-                    'assets/images/white_badge_check.svg',
-                  ),
-                  SizedBox(height: size.height * 0.02),
-                  Text(
-                    context.l10n.vpcSuccessTitle,
-                    style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  Text(
-                    context.l10n.vpcSuccessText,
-                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: Center(
-                child: SvgPicture.asset('assets/images/vpc_givy.svg'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
-              child: ElevatedButton(
-                onPressed: () {
-                  context.read<VPCCubit>().resetVPC();
-                  context.goNamed(Pages.createChild.name);
-                  AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.setUpChildProfileClicked);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.sliderIndicatorFilled,
+    return Container(
+      padding: const EdgeInsets.only(top: 10),
+      width: double.infinity,
+      child: Column(
+        children: [
+          SvgPicture.asset(
+            'assets/images/logo_white.svg',
+            height: size.height * 0.035,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: size.height * 0.03),
+                SvgPicture.asset(
+                  'assets/images/white_badge_check.svg',
                 ),
-                child: Text(
-                  context.l10n.setupChildProfileButtonText,
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                SizedBox(height: size.height * 0.02),
+                Text(
+                  context.l10n.vpcSuccessTitle,
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  context.l10n.vpcSuccessText,
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         color: Colors.white,
                       ),
                 ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Center(
+              child: SvgPicture.asset('assets/images/vpc_givy.svg'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<VPCCubit>().resetVPC();
+                context.goNamed(Pages.createChild.name);
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.setUpChildProfileClicked,
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.sliderIndicatorFilled,
+              ),
+              child: Text(
+                context.l10n.setupChildProfileButtonText,
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      color: Colors.white,
+                    ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -9,17 +9,18 @@ import 'package:http_interceptor/http_interceptor.dart';
 
 class CertificateCheckInterceptor extends InterceptorContract {
   @override
-  Future<RequestData> interceptRequest({required RequestData data}) async {
+  Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     if (Platform.isIOS) {
-      return data;
+      return request;
     }
+
     /// Don't check for certificate if there is no internet connection
     if (await getIt<NetworkInfo>().isConnected == false) {
-      return data;
+      return request;
     }
 
     final secure = await HttpCertificatePinning.check(
-      serverURL: data.baseUrl,
+      serverURL: request.url.toString(),
       sha: SHA.SHA256,
       allowedSHAFingerprints: Util.allowedSHAFingerprints,
       timeout: 50,
@@ -28,15 +29,17 @@ class CertificateCheckInterceptor extends InterceptorContract {
 
     if (!secure.contains('CONNECTION_SECURE')) {
       await LoggingInfo.instance.error(
-        data.baseUrl,
+        request.url.toString(),
         methodName: StackTrace.current.toString(),
       );
       throw Exception('CONNECTION_NOT_SECURE');
     }
-    return data;
+    return request;
   }
 
   @override
-  Future<ResponseData> interceptResponse({required ResponseData data}) async =>
-      data;
+  Future<BaseResponse> interceptResponse({
+    required BaseResponse response,
+  }) async =>
+      response;
 }

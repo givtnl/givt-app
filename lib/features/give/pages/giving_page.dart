@@ -73,8 +73,7 @@ class _GivingPageState extends State<GivingPage> {
     );
     var orgName = giveBlocState.organisation.organisationName!;
     final instanceName = giveBlocState.instanceName;
-    if (giveBlocState.instanceName.isNotEmpty &&
-        instanceName != orgName) {
+    if (giveBlocState.instanceName.isNotEmpty && instanceName != orgName) {
       orgName = '$orgName: $instanceName';
     }
     return WebViewInput(
@@ -131,6 +130,7 @@ class _GivingPageState extends State<GivingPage> {
               ),
             ),
           );
+
           return const SizedBox.shrink();
         },
       ),

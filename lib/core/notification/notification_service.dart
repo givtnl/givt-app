@@ -42,6 +42,9 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
     case 'ShowYearlySummary':
       await LoggingInfo.instance.info('Navigating to yearly summary screen');
       AppRouter.router.goNamed(Pages.personalSummary.name);
+    case 'DonationApproval':
+      await LoggingInfo.instance.info('Navigating to family overview screen');
+      AppRouter.router.goNamed(Pages.childrenOverview.name);
   }
 }
 
@@ -90,7 +93,6 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> init() async {
-    await FirebaseMessaging.instance.requestPermission();
     await FirebaseMessaging.instance.subscribeToTopic('dev');
     await FirebaseMessaging.instance.subscribeToTopic('all');
     await setupFlutterNotifications();
@@ -201,6 +203,13 @@ class NotificationService implements INotificationService {
           message: customData['body'] as String,
           title: customData['title'] as String,
           payload: {'Type': 'ShowYearlySummary'},
+        );
+      case 'DonationApproval':
+        await LoggingInfo.instance.info('ShowYearlySummary received');
+        await _showNotification(
+          message: customData['body'] as String,
+          title: customData['title'] as String,
+          payload: {'Type': 'DonationApproval'},
         );
 
       default:

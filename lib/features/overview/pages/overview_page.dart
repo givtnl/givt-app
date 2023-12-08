@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
-import 'package:givt_app/features/overview/widgets/download_year_donation.dart';
 import 'package:givt_app/features/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -14,14 +13,34 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
-class OverviewPage extends StatelessWidget {
+class OverviewPage extends StatefulWidget {
   const OverviewPage({super.key});
+
+  @override
+  State<OverviewPage> createState() => _OverviewPageState();
+}
+
+class _OverviewPageState extends State<OverviewPage> {
+  late OverlayEntry overlayEntry;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // overlayEntry = OverlayEntry(
+    //   builder: (context) => FeatureOverlay(
+    //     onDismiss: () {
+    //       overlayEntry
+    //         ..remove()
+    //         ..dispose();
+    //     },
+    //   ),
+    // );
+  }
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final user = context.read<AuthCubit>().state.user;
-    final size = MediaQuery.of(context).size;
     return BlocConsumer<GivtBloc, GivtState>(
       listener: (context, state) {
         if (state is GivtNoInternet) {
@@ -79,167 +98,185 @@ class OverviewPage extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is GivtLoading) {
-          return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return _buildLoadingScaffold();
         }
         if (state.givts.isEmpty) {
-          return Scaffold(
-            appBar: AppBar(
-              leading: const BackButton(),
-            ),
-            body: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Text(
-                      locals.historyIsEmpty,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 40),
-                    Image.asset(
-                      'assets/images/givy_money.png',
-                      height: size.height * 0.3,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+          return _buildEmptyScaffold(context);
         }
-        final monthSections =
-            state.givtGroups.where((element) => element.givts.isEmpty).toList();
-        return Scaffold(
-          appBar: AppBar(
-            leading: const BackButton(),
-            actions: [
-              _buildAppBarItem(
-                context: context,
-                state: state,
-                color: Colors.white,
-                icon: const Icon(Icons.download),
-                child: DownloadYearOverviewSheet(
-                  state: state,
-                  givtbloc: context.read<GivtBloc>(),
-                ),
-              ),
-              _buildAppBarItem(
-                state: state,
-                context: context,
-                icon: const Icon(Icons.info_rounded),
-                child: const DonationTypeExplanationSheet(),
-              ),
-            ],
-          ),
-          body: ListView.builder(
-            itemCount: _getSectionCount(state),
-            itemBuilder: (_, int index) {
-              return StickyHeader(
-                key: Key(monthSections[index].timeStamp!.toString()),
-                header: Column(
-                  children: [
-                    Visibility(
-                      visible: user.isGiftAidEnabled,
-                      child: _buildHeader(
-                        context: context,
-                        amount: state.givtAided[
-                                monthSections[index].timeStamp!.year] ??
-                            0,
-                        country: user.country,
-                        color: AppTheme.givtYellow,
-                        giftAidTitle: locals.giftOverviewGiftAidBanner(
-                          "'${DateFormat('yy').format(
-                            monthSections[index].timeStamp!,
-                          )}",
-                        ),
-                      ),
-                    ),
-                    _buildHeader(
-                      context: context,
-                      timesStamp: monthSections[index].timeStamp,
-                      amount: monthSections[index].amount,
-                      country: user.country,
-                    )
-                  ],
-                ),
-                content: Column(
-                  children: state.givtGroups.map((givtGroup) {
-                    if (givtGroup.givts.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    if (givtGroup.timeStamp!.month !=
-                        monthSections[index].timeStamp!.month) {
-                      return const SizedBox.shrink();
-                    }
 
-                    if (givtGroup.timeStamp!.year !=
-                        monthSections[index].timeStamp!.year) {
-                      return const SizedBox.shrink();
-                    }
-
-                    return Column(
-                      children: [
-                        GivtListItem(
-                          givtGroup: givtGroup,
-                          onDismiss: (direction) {
-                            context.read<GivtBloc>().add(
-                                  GiveDelete(
-                                    timestamp: givtGroup.timeStamp!,
-                                  ),
-                                );
-                          },
-                          confirmDismiss: (direction) async {
-                            if (givtGroup.status == 1 ||
-                                givtGroup.status == 2) {
-                              return Future.value(
-                                await showDialog<bool>(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (_) => ConfirmationDialog(
-                                    title: locals.cancelGiftAlertTitle,
-                                    content: locals.cancelGiftAlertMessage,
-                                    onConfirm: () => context.pop(true),
-                                    onCancel: () => context.pop(false),
-                                    confirmText: locals.yes,
-                                    cancelText: locals.no,
-                                  ),
-                                ),
-                              );
-                            }
-
-                            return Future.value(
-                              await showDialog<bool>(
-                                    context: context,
-                                    builder: (_) => WarningDialog(
-                                      title: locals.cancelFailed,
-                                      content:
-                                          locals.cantCancelAlreadyProcessed,
-                                      onConfirm: () => context.pop(false),
-                                    ),
-                                  ) ??
-                                  false,
-                            );
-                          },
-                        ),
-                        const Divider(
-                          height: 0,
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                ),
-              );
-            },
-          ),
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        //   Overlay.of(context).insert(overlayEntry);
+        // });
+        return _buildFilledScaffold(
+          context,
+          state,
         );
       },
     );
   }
 
-  Container _buildHeader({
+  Widget _buildFilledScaffold(
+    BuildContext context,
+    GivtState state,
+  ) {
+    final locals = context.l10n;
+    final user = context.read<AuthCubit>().state.user;
+    final monthSections =
+        state.givtGroups.where((element) => element.givts.isEmpty).toList();
+    return Scaffold(
+      appBar: AppBar(
+        leading: const BackButton(),
+        actions: [
+          _buildAppBarItem(
+            context: context,
+            state: state,
+            color: Colors.white,
+            icon: const Icon(Icons.download),
+            child: DownloadYearOverviewSheet(
+              state: state,
+              givtbloc: context.read<GivtBloc>(),
+            ),
+          ),
+          _buildAppBarItem(
+            state: state,
+            context: context,
+            icon: const Icon(Icons.info_rounded),
+            child: const DonationTypeExplanationSheet(),
+          ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: _getSectionCount(state),
+        itemBuilder: (_, int index) {
+          return StickyHeader(
+            key: Key(monthSections[index].timeStamp!.toString()),
+            header: Column(
+              children: [
+                Visibility(
+                  visible: user.isGiftAidEnabled,
+                  child: _buildHeader(
+                    context: context,
+                    amount:
+                        state.givtAided[monthSections[index].timeStamp!.year] ??
+                            0,
+                    country: user.country,
+                    color: AppTheme.givtYellow,
+                    giftAidTitle: locals.giftOverviewGiftAidBanner(
+                      "'${DateFormat('yy').format(
+                        monthSections[index].timeStamp!,
+                      )}",
+                    ),
+                  ),
+                ),
+                _buildHeader(
+                  context: context,
+                  timesStamp: monthSections[index].timeStamp,
+                  amount: monthSections[index].amount,
+                  country: user.country,
+                ),
+              ],
+            ),
+            content: Column(
+              children: state.givtGroups.map((givtGroup) {
+                if (givtGroup.givts.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                if (givtGroup.timeStamp!.month !=
+                    monthSections[index].timeStamp!.month) {
+                  return const SizedBox.shrink();
+                }
+
+                if (givtGroup.timeStamp!.year !=
+                    monthSections[index].timeStamp!.year) {
+                  return const SizedBox.shrink();
+                }
+
+                return Column(
+                  children: [
+                    GivtListItem(
+                      givtGroup: givtGroup,
+                      onDismiss: (direction) {
+                        context.read<GivtBloc>().add(
+                              GiveDelete(
+                                timestamp: givtGroup.timeStamp!,
+                              ),
+                            );
+                      },
+                      confirmDismiss: (direction) async {
+                        if (givtGroup.status == 1 || givtGroup.status == 2) {
+                          return Future.value(
+                            await showDialog<bool>(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (_) => ConfirmationDialog(
+                                title: locals.cancelGiftAlertTitle,
+                                content: locals.cancelGiftAlertMessage,
+                                onConfirm: () => context.pop(true),
+                                onCancel: () => context.pop(false),
+                                confirmText: locals.yes,
+                                cancelText: locals.no,
+                              ),
+                            ),
+                          );
+                        }
+
+                        return Future.value(
+                          await showDialog<bool>(
+                                context: context,
+                                builder: (_) => WarningDialog(
+                                  title: locals.cancelFailed,
+                                  content: locals.cantCancelAlreadyProcessed,
+                                  onConfirm: () => context.pop(false),
+                                ),
+                              ) ??
+                              false,
+                        );
+                      },
+                    ),
+                    const Divider(
+                      height: 0,
+                    ),
+                  ],
+                );
+              }).toList(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildEmptyScaffold(BuildContext context) => Scaffold(
+        appBar: AppBar(
+          leading: const BackButton(),
+        ),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Text(
+                  context.l10n.historyIsEmpty,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 40),
+                Image.asset(
+                  'assets/images/givy_money.png',
+                  height: MediaQuery.sizeOf(context).height * 0.3,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+
+  Widget _buildLoadingScaffold() => const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+
+  Widget _buildHeader({
     required BuildContext context,
     required String country,
     required double amount,
