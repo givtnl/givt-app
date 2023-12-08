@@ -27,15 +27,15 @@ class _OverviewPageState extends State<OverviewPage> {
   void initState() {
     super.initState();
 
-    overlayEntry = OverlayEntry(
-      builder: (context) => FeatureOverlay(
-        onDismiss: () {
-          overlayEntry
-            ..remove()
-            ..dispose();
-        },
-      ),
-    );
+    // overlayEntry = OverlayEntry(
+    //   builder: (context) => FeatureOverlay(
+    //     onDismiss: () {
+    //       overlayEntry
+    //         ..remove()
+    //         ..dispose();
+    //     },
+    //   ),
+    // );
   }
 
   @override
@@ -104,9 +104,9 @@ class _OverviewPageState extends State<OverviewPage> {
           return _buildEmptyScaffold(context);
         }
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Overlay.of(context).insert(overlayEntry);
-        });
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        //   Overlay.of(context).insert(overlayEntry);
+        // });
         return _buildFilledScaffold(
           context,
           state,
