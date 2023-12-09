@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class OverviewPage extends StatefulWidget {
@@ -21,21 +23,41 @@ class OverviewPage extends StatefulWidget {
 }
 
 class _OverviewPageState extends State<OverviewPage> {
-  late OverlayEntry overlayEntry;
+  OverlayEntry? overlayEntry;
+  bool disposed = false;
 
   @override
   void initState() {
     super.initState();
 
+    initOverlay();
+  }
+
+  Future<void> initOverlay() async {
+    final prefs = getIt<SharedPreferences>();
+
+    if (prefs.getBool(Util.cancelFeatureOverlayKey) ?? false) {
+      return;
+    }
+
     overlayEntry = OverlayEntry(
       builder: (context) => FeatureOverlay(
         onDismiss: () {
-          overlayEntry
+          disposed = true;
+          overlayEntry!
             ..remove()
             ..dispose();
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    if (overlayEntry != null) {
+      overlayEntry!.dispose();
+    }
+    super.dispose();
   }
 
   @override
@@ -105,7 +127,11 @@ class _OverviewPageState extends State<OverviewPage> {
         }
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          Overlay.of(context).insert(overlayEntry);
+          if (overlayEntry == null || disposed) {
+            return;
+          }
+
+          Overlay.of(context).insert(overlayEntry!);
         });
         return _buildFilledScaffold(
           context,
