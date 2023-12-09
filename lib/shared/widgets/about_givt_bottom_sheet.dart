@@ -130,27 +130,30 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                       if (state is InfraLoading)
                         const CircularProgressIndicator()
                       else
-                        ElevatedButton(
-                          onPressed: isEnabled
-                              ? () async {
-                                  if (!_formKey.currentState!.validate()) {
-                                    return;
+                        ValueListenableBuilder(
+                          valueListenable: messageController,
+                          builder: (context, _, __) => ElevatedButton(
+                            onPressed: isEnabled
+                                ? () async {
+                                    if (!_formKey.currentState!.validate()) {
+                                      return;
+                                    }
+                                    await context
+                                        .read<InfraCubit>()
+                                        .contactSupport(
+                                          message: messageController.text,
+                                          appLanguage: locals.localeName,
+                                          email: user.email,
+                                          guid: user.guid,
+                                        );
                                   }
-                                  await context
-                                      .read<InfraCubit>()
-                                      .contactSupport(
-                                        message: messageController.text,
-                                        appLanguage: locals.localeName,
-                                        email: user.email,
-                                        guid: user.guid,
-                                      );
-                                }
-                              : null,
-                          style: ElevatedButton.styleFrom(
-                            disabledBackgroundColor: Colors.grey,
-                          ),
-                          child: Text(
-                            locals.send,
+                                : null,
+                            style: ElevatedButton.styleFrom(
+                              disabledBackgroundColor: Colors.grey,
+                            ),
+                            child: Text(
+                              locals.send,
+                            ),
                           ),
                         ),
                     ],
