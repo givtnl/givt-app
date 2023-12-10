@@ -16,7 +16,7 @@ import 'package:timezone/timezone.dart' as tz;
 /// Navigate to the screen based on the notification payload
 /// This is called when the user taps on the notification
 @pragma('vm:entry-point')
-Future<void> navigateToScreen(NotificationResponse details) async {
+Future<void> _navigateToScreen(NotificationResponse details) async {
   final payload = details.payload;
   if (payload == null) {
     return;
@@ -96,6 +96,18 @@ class NotificationService implements INotificationService {
     await FirebaseMessaging.instance.subscribeToTopic('dev');
     await FirebaseMessaging.instance.subscribeToTopic('all');
     await setupFlutterNotifications();
+
+    // When the app is launched from a notification
+    final notificationAppLaunchDetails = await FlutterLocalNotificationsPlugin()
+        .getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails != null &&
+        notificationAppLaunchDetails.didNotificationLaunchApp &&
+        notificationAppLaunchDetails.notificationResponse != null) {
+      await _navigateToScreen(
+        notificationAppLaunchDetails.notificationResponse!,
+      );
+    }
   }
 
   Future<void> setupFlutterNotifications() async {
@@ -114,7 +126,7 @@ class NotificationService implements INotificationService {
         android: const AndroidInitializationSettings('icon'),
         iOS: DarwinInitializationSettings(
           onDidReceiveLocalNotification: (id, title, body, payload) async =>
-              navigateToScreen(
+              _navigateToScreen(
             NotificationResponse(
               payload: payload,
               notificationResponseType:
@@ -123,8 +135,8 @@ class NotificationService implements INotificationService {
           ),
         ),
       ),
-      onDidReceiveBackgroundNotificationResponse: navigateToScreen,
-      onDidReceiveNotificationResponse: navigateToScreen,
+      onDidReceiveBackgroundNotificationResponse: _navigateToScreen,
+      onDidReceiveNotificationResponse: _navigateToScreen,
     );
 
     /// We use this channel in the `AndroidManifest.xml` file to override the

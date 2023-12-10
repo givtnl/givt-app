@@ -3,11 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -656,26 +654,11 @@ class AppRouter {
     BuildContext context,
     GoRouterState routerState,
   ) async {
-    print(_checkAndRedirectAuth);
-
     if (state.status == AuthStatus.authenticated) {
-      // When the app is launched from a notification
-      final notificationAppLaunchDetails =
-          await FlutterLocalNotificationsPlugin()
-              .getNotificationAppLaunchDetails();
-
-      if (notificationAppLaunchDetails != null &&
-          notificationAppLaunchDetails.didNotificationLaunchApp &&
-          notificationAppLaunchDetails.notificationResponse != null) {
-        await navigateToScreen(
-          notificationAppLaunchDetails.notificationResponse!,
-        );
-      } else {
-        context.goNamed(
-          Pages.home.name,
-          queryParameters: routerState.uri.queryParameters,
-        );
-      }
+      context.goNamed(
+        Pages.home.name,
+        queryParameters: routerState.uri.queryParameters,
+      ); 
     }
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {
