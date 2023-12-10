@@ -46,7 +46,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
     final locals = context.l10n;
     final size = MediaQuery.sizeOf(context);
     final user = context.read<AuthCubit>().state.user;
-    final messageKey = GlobalKey();
+    const messageKey = GlobalObjectKey('messageKey');
     return BottomSheetLayout(
       title: Text(
         locals.titleAboutGivt,
@@ -125,6 +125,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                           hintText: locals.typeMessage,
                         ),
                         keyboardType: TextInputType.multiline,
+                        onChanged: (_) => setState(() {}),
                       ),
                       const SizedBox(height: 20),
                       if (state is InfraLoading)
