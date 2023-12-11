@@ -36,7 +36,7 @@ class _OverviewPageState extends State<OverviewPage> {
     final prefs = getIt<SharedPreferences>();
 
     if (prefs.getBool(Util.cancelFeatureOverlayKey) ?? false) {
-      // return;
+      return;
     }
 
     overlayEntry = OverlayEntry(

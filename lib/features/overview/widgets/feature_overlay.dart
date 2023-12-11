@@ -27,11 +27,11 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
     final prefs = getIt<SharedPreferences>();
     final hasBeenShown = prefs.getBool(Util.cancelFeatureOverlayKey) ?? false;
 
-    // if (!hasBeenShown) {
+    if (!hasBeenShown) {
       setState(() {
         isVisible = true;
       });
-    // }
+    }
   }
 
   @override
