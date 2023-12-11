@@ -649,16 +649,16 @@ class AppRouter {
   }
 
   /// Check if the user is authenticated and redirect to the correct page
-  static void _checkAndRedirectAuth(
+  static Future<void> _checkAndRedirectAuth(
     AuthState state,
     BuildContext context,
     GoRouterState routerState,
-  ) {
+  ) async {
     if (state.status == AuthStatus.authenticated) {
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.uri.queryParameters,
-      );
+      ); 
     }
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {
