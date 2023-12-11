@@ -36,7 +36,7 @@ class _OverviewPageState extends State<OverviewPage> {
     final prefs = getIt<SharedPreferences>();
 
     if (prefs.getBool(Util.cancelFeatureOverlayKey) ?? false) {
-      return;
+      // return;
     }
 
     overlayEntry = OverlayEntry(
@@ -54,7 +54,10 @@ class _OverviewPageState extends State<OverviewPage> {
   @override
   void dispose() {
     if (overlayEntry != null) {
-      overlayEntry!.dispose();
+      if (overlayEntry!.mounted) {
+        overlayEntry!.remove();
+        overlayEntry!.dispose();
+      }
     }
     super.dispose();
   }
