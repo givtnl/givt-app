@@ -65,7 +65,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
                       lastDonatedOrganisation.mediumId,
                 )
                 ..insert(
-                  1,
+                  0,
                   selectedGroup,
                 );
             }
