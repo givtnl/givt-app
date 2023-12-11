@@ -96,6 +96,18 @@ class NotificationService implements INotificationService {
     await FirebaseMessaging.instance.subscribeToTopic('dev');
     await FirebaseMessaging.instance.subscribeToTopic('all');
     await setupFlutterNotifications();
+
+    // When the app is launched from a notification
+    final notificationAppLaunchDetails = await FlutterLocalNotificationsPlugin()
+        .getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails != null &&
+        notificationAppLaunchDetails.didNotificationLaunchApp &&
+        notificationAppLaunchDetails.notificationResponse != null) {
+      await _navigateToScreen(
+        notificationAppLaunchDetails.notificationResponse!,
+      );
+    }
   }
 
   Future<void> setupFlutterNotifications() async {
