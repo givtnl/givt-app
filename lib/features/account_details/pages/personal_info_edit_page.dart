@@ -186,7 +186,8 @@ class PersonalInfoEditPage extends StatelessWidget {
                   FontAwesomeIcons.creditCard,
                   color: AppTheme.givtOrange,
                 ),
-                value: '${user.accountBrand} ${user.accountNumber}',
+                value:
+                    '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
               ),
               _buildInfoRow(
                 visible: isUkUser,
