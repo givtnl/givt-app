@@ -32,6 +32,7 @@ class UserExt extends Equatable {
     this.appLanguage = '',
     this.sortCode = '',
     this.accountNumber = '',
+    this.accountBrand = '',
     this.notificationId = '',
   });
 
@@ -64,6 +65,7 @@ class UserExt extends Equatable {
         appLanguage = '',
         sortCode = '',
         accountNumber = '',
+        accountBrand = '',
         notificationId = '';
 
   factory UserExt.fromJson(Map<String, dynamic> json) {
@@ -88,6 +90,7 @@ class UserExt extends Equatable {
       isGiftAidEnabled: (json['GiftAidEnabled'] ?? false) as bool,
       sortCode: (json['SortCode'] ?? '') as String,
       accountNumber: (json['AccountNumber'] ?? '') as String,
+      accountBrand: (json['AccountBrand'] ?? '') as String,
       appLanguage: (json['AppLanguage'] ?? '') as String,
       accountType:
           AccountType.fromString((json['AccountType'] ?? '') as String),
@@ -126,6 +129,7 @@ class UserExt extends Equatable {
         'AppLanguage': appLanguage,
         'SortCode': sortCode,
         'AccountNumber': accountNumber,
+        'AccountBrand': accountBrand,
         'PushNotificationId': notificationId,
         'mandateSigned': mandateSigned,
         'maxAmountRegistered': maxAmountRegistered,
@@ -167,6 +171,7 @@ class UserExt extends Equatable {
   final String iban;
   final String sortCode;
   final String accountNumber;
+  final String accountBrand;
   final String payProvMandateStatus;
   final String payProvMandate;
 
@@ -203,6 +208,7 @@ class UserExt extends Equatable {
     bool? isGiftAidEnabled,
     String? sortCode,
     String? accountNumber,
+    String? accountBrand,
     AccountType? accountType,
     String? appLanguage,
     String? payProvMandateStatus,
@@ -234,6 +240,7 @@ class UserExt extends Equatable {
       iban: iban ?? this.iban,
       sortCode: sortCode ?? this.sortCode,
       accountNumber: accountNumber ?? this.accountNumber,
+      accountBrand: accountBrand ?? this.accountBrand,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,
       appLanguage: appLanguage ?? this.appLanguage,
       accountType: accountType ?? this.accountType,
@@ -270,6 +277,7 @@ class UserExt extends Equatable {
         iban,
         sortCode,
         accountNumber,
+        accountBrand,
         isGiftAidEnabled,
         accountType,
         appLanguage,

@@ -3,8 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:http/http.dart';
-import 'package:http_interceptor/http/http.dart';
+import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {
   APIService({
@@ -282,11 +281,11 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> contactSupport(Map<String, String> map) async {
+  Future<bool> contactSupport(Map<String, String> body) async {
     final url = Uri.https(apiURL, '/api/sendsupport');
     final response = await client.post(
       url,
-      body: jsonEncode(map),
+      body: jsonEncode(body),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -296,6 +295,30 @@ class APIService {
       throw Exception(response.statusCode);
     }
     return response.statusCode == 200;
+  }
+
+  Future<Map<String, dynamic>> checkAppUpdate(Map<String, String> body) async {
+    final url = Uri.https(apiURL, '/api/checkforupdate');
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    if (response.body.isEmpty) {
+      return {};
+    }
+
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
   Future<List<dynamic>> fetchGivts({Map<String, dynamic>? params}) async {

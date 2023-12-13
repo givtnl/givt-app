@@ -58,7 +58,7 @@ class AppTheme {
   static const childParentalApprovalDecline = Color(0xFF9A3F3F);
 
   static final ThemeData lightTheme = ThemeData(
-    // useMaterial3: true,
+    useMaterial3: false,
     fontFamily: 'AvenirLTStd',
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,

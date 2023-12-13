@@ -27,7 +27,7 @@ class _VPCIntroPageState extends State<VPCIntroPage> {
     final size = MediaQuery.of(context).size;
 
     return Container(
-      padding: const EdgeInsets.only(top: 30),
+      padding: const EdgeInsets.only(top: 10),
       width: double.infinity,
       child: Column(
         children: [
@@ -37,7 +37,7 @@ class _VPCIntroPageState extends State<VPCIntroPage> {
           ),
           Container(
             padding: const EdgeInsets.all(20),
-            height: size.height * 0.85,
+            height: size.height * 0.83,
             child: CarouselSlider(
               carouselController: _carouselController,
               options: CarouselOptions(

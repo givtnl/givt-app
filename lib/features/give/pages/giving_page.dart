@@ -112,26 +112,25 @@ class _GivingPageState extends State<GivingPage> {
             'Opening browser with $givt',
           );
           browserIsOpened = true;
-          _customInAppBrowser
-              .openUrlRequest(
-                urlRequest: URLRequest(
-                  url: Uri.https(
-                    getIt<APIService>().apiURL,
-                    'confirm.html',
-                    {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
-                  ),
-                ),
-                options: InAppBrowserClassOptions(
-                  crossPlatform: InAppBrowserOptions(
-                    toolbarTopBackgroundColor: Colors.white,
-                  ),
-                  ios: IOSInAppBrowserOptions(
-                    toolbarBottomBackgroundColor: Colors.white,
-                    hideToolbarBottom: true,
-                  ),
-                ),
-              )
-              .whenComplete(() => context.pop());
+          _customInAppBrowser.openUrlRequest(
+            urlRequest: URLRequest(
+              url: Uri.https(
+                getIt<APIService>().apiURL,
+                'confirm.html',
+                {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+              ),
+            ),
+            options: InAppBrowserClassOptions(
+              crossPlatform: InAppBrowserOptions(
+                toolbarTopBackgroundColor: Colors.white,
+              ),
+              ios: IOSInAppBrowserOptions(
+                toolbarBottomBackgroundColor: Colors.white,
+                hideToolbarBottom: true,
+              ),
+            ),
+          );
+
           return const SizedBox.shrink();
         },
       ),
