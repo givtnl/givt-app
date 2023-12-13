@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -71,6 +72,7 @@ class _ChangeAddressBottomSheetState extends State<ChangeAddressBottomSheet> {
                 _buildTextFormField(
                   hintText: locals.postalCode,
                   controller: postalCode,
+                  toUpperCase: true,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return '';
@@ -121,6 +123,7 @@ class _ChangeAddressBottomSheetState extends State<ChangeAddressBottomSheet> {
                   ),
                   menuMaxHeight: size.height * 0.3,
                   items: Country.sortedCountries()
+                      .where((element) => element.currency == selectedCountry.currency)
                       .map(
                         (Country country) => DropdownMenuItem(
                           value: country,
@@ -187,11 +190,13 @@ class _ChangeAddressBottomSheetState extends State<ChangeAddressBottomSheet> {
     required String hintText,
     required TextEditingController controller,
     required String? Function(String?) validator,
+    bool toUpperCase = false,
   }) {
     return CustomTextFormField(
       controller: controller,
       hintText: hintText,
       validator: validator,
+      inputFormatters: toUpperCase ? [UpperCaseTextFormatter()] : [],
       onChanged: (value) => setState(() {
         formKey.currentState!.validate();
       }),

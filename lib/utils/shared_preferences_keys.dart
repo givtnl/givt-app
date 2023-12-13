@@ -1,0 +1,29 @@
+class NativeSharedPreferencesKeys {
+  static const String loggedInApp = 'loggedInApp';
+  static const String isLoggedIn = 'isLoggedIn';
+  static const String yearlyTestimonialsToShow = 'YearlyTestimonialsToShow';
+  static const String testimonialsToShow = 'TestimonialsToShow';
+  static const String bearerToken = 'bearer';
+  static const String latestSelectedBeacon = 'latestSelectedBeacon';
+  static const String cachedGivts = 'cached_givts';
+  static const String userClaims = 'user_claims';
+  static const String beaconList = 'beacon_list';
+  static const String appupdate = 'appupdate';
+  static const String termsVersion = 'termsversion';
+  static const String appShowcasing = 'appShowcasing';
+  static const String comingFrom = 'comingFrom';
+  static const String prefsAmount = 'amount';
+  static const String prefsShowAnnualOverview = 'prefs_show_annual_overview';
+  static const String prefsShowBalloons = 'show_balloons';
+  static const String prefsShowHighlight = 'show_highlight';
+  static const String prefsBearer = 'bearer';
+  static const String prefsUser = 'user';
+  static const String prefsTempUser = 'temp_user';
+  static const String appPrefs = 'net.givtapp.droid2';
+  static const String showMultipleCollect = 'ShowMultipleCollect';
+  static const String multipleCollectsAccepted = 'multipleCollectsAccepted';
+  static const String pinset = 'Pinset';
+  static const String needsRegistration = 'NeedsRegistration';
+  static const String personalInfoRegistered = 'PersonalInfoRegistered';
+  static const String mandateSigned = 'MandateSigned';
+}

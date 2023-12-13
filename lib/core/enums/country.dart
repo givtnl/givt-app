@@ -1,4 +1,5 @@
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/country_emoji.dart';
 
 enum Country {
   be('+32', 'BE'),
@@ -20,11 +21,11 @@ enum Country {
   si('+386', 'SI'),
   sk('+421', 'SK'),
   ie('+353', 'IE'),
-  ad('+376', 'AD', isBACS: true),
-  gb('+44', 'GB', isBACS: true),
-  je('+44', 'JE', isBACS: true),
-  gg('+44', 'GG', isBACS: true),
-  us('+1', 'US', isCreditCard: true),
+  ad('+376', 'AD', isBACS: true, currency: 'GBP'),
+  gb('+44', 'GB', isBACS: true, currency: 'GBP'),
+  je('+44', 'JE', isBACS: true, currency: 'GBP'),
+  gg('+44', 'GG', isBACS: true, currency: 'GBP'),
+  us('+1', 'US', isCreditCard: true, currency: 'USD'),
   unknown('', '');
 
   const Country(
@@ -32,16 +33,20 @@ enum Country {
     this.countryCode, {
     this.isBACS = false,
     this.isCreditCard = false,
+    this.currency = 'EUR',
   });
+
   final String prefix;
+  final String currency;
   final String countryCode;
   final bool isBACS;
   final bool isCreditCard;
 
+  bool get isUS => countryCode == Country.us.countryCode;
+
   static List<Country> sortedCountries() {
     return Country.values.toList()
-      ..sort((a, b) => a.countryCode.compareTo(b.countryCode))
-      ..remove(Country.us);
+      ..sort((a, b) => a.countryCode.compareTo(b.countryCode));
   }
 
   static List<Country> sortedPrefixCountries() {
@@ -65,12 +70,14 @@ enum Country {
 
   static Country fromCode(String code) {
     return Country.values.firstWhere(
-      (country) => country.countryCode == code,
+      (country) => country.countryCode.toUpperCase() == code.toUpperCase(),
       orElse: () => Country.unknown,
     );
   }
 
-  ///TODO this should be done straight from the localizations. Delete all the countries and add only one unified string separated by commas and then split it
+  ///To-do this should be done straight from the localizations.
+  ///Delete all the countries and
+  ///add only one unified string separated by commas and then split it
   static String getCountry(String countryCode, AppLocalizations locals) {
     switch (countryCode) {
       case 'JE':
@@ -119,8 +126,15 @@ enum Country {
         return locals.countryStringCy;
       case 'MT':
         return locals.countryStringMt;
+      case 'US':
+        return locals.countryStringUs;
       default:
         return '';
     }
+  }
+
+  static String getCountryIncludingEmoji(
+      String countryCode, AppLocalizations locals) {
+    return '${CountryEmoji.getEmoji(countryCode)} ${getCountry(countryCode, locals)}';
   }
 }

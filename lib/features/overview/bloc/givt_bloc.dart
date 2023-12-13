@@ -17,6 +17,8 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     on<GivtInit>(_onGivtInit);
 
     on<GiveDelete>(_onGivtDelete);
+
+    on<GivtDownloadOverviewByYear>(_onGivtDownloadOverviewByYear);
   }
 
   final GivtRepository givtRepository;
@@ -73,6 +75,10 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     } on SocketException catch (e) {
       log(e.toString());
       emit(const GivtNoInternet());
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance
+          .error(e.toString(), methodName: stackTrace.toString());
+      emit(const GivtUnknown());
     }
   }
 
@@ -224,5 +230,32 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
       }
     }
     return giftAidGroups;
+  }
+
+  FutureOr<void> _onGivtDownloadOverviewByYear(
+    GivtDownloadOverviewByYear event,
+    Emitter<GivtState> emit,
+  ) async {
+    try {
+      final fromDate = '${event.year}-01-01';
+      final tillDate = '${event.year}-12-31';
+
+      await givtRepository.downloadYearlyOverview(
+        body: {'fromDate': fromDate, 'tillDate': tillDate},
+      );
+      emit(
+        GivtDownloadedSuccess(
+          givts: state.givts,
+          givtGroups: state.givtGroups,
+          givtAided: state.givtAided,
+        ),
+      );
+    } on GivtServerFailure catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.body.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(GivtError(e.body.toString()));
+    }
   }
 }

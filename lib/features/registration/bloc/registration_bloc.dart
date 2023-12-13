@@ -3,13 +3,14 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
+import 'package:givt_app/utils/utils.dart';
 
 part 'registration_event.dart';
 part 'registration_state.dart';
@@ -26,6 +27,10 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationInit>(_onInit);
 
     on<RegistrationGiftAidChanged>(_onGiftAidChanged);
+
+    on<RegistrationStripeSuccess>(_onStripeSuccess);
+
+    on<RegistrationStripeInit>(_onStripeInit);
   }
 
   final AuthRepositoy authRepositoy;
@@ -58,7 +63,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         email: state.email,
         country: event.country,
         appLanguage: event.appLanguage,
-        timeZoneId: await FlutterNativeTimezone.getLocalTimezone(),
+        timeZoneId: await FlutterTimezone.getLocalTimezone(),
         amountLimit:
             event.country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
         address: event.address,
@@ -79,7 +84,15 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
 
       await authCubit.refreshUser();
-      if (event.iban.isNotEmpty) {
+      if (event.country.toUpperCase() == Country.us.countryCode) {
+        emit(
+          state.copyWith(
+            status: RegistrationStatus.createStripeAccount,
+          ),
+        );
+        return;
+      }
+      if (event.iban.isNotEmpty && event.iban != Util.defaultIban) {
         emit(
           state.copyWith(
             status: RegistrationStatus.sepaMandateExplanation,
@@ -92,11 +105,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.bacsDirectDebitMandateExplanation,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: RegistrationStatus.failure),
@@ -132,13 +145,13 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.success,
         ),
       );
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());
       await LoggingInfo.instance.error(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       if (statusCode == 409) {
         emit(
@@ -188,6 +201,43 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     );
   }
 
+  void _onStripeInit(
+    RegistrationStripeInit event,
+    Emitter<RegistrationState> emit,
+  ) {
+    emit(state.copyWith(status: RegistrationStatus.createStripeAccount));
+  }
+
+  Future<void> _onStripeSuccess(
+    RegistrationStripeSuccess event,
+    Emitter<RegistrationState> emit,
+  ) async {
+    var user = authCubit.state.user;
+
+    var trials = 1;
+    var delayTime = 5;
+
+    while (user.tempUser && trials < 257) {
+      //get current state of user in givt system
+      ///and update it in the app
+      await authCubit.refreshUser();
+      user = authCubit.state.user;
+      log('trial number $trials, delay time is $delayTime,\n   user is temporary: ${user.tempUser}');
+
+      if (trials > 16) {
+        delayTime = 60;
+      }
+      trials++;
+      await Future<void>.delayed(Duration(seconds: delayTime));
+    }
+
+    if (user.tempUser == false) {
+      emit(state.copyWith(status: RegistrationStatus.success));
+    } else {
+      emit(state.copyWith(status: RegistrationStatus.failure));
+    }
+  }
+
   FutureOr<void> _onGiftAidChanged(
     RegistrationGiftAidChanged event,
     Emitter<RegistrationState> emit,
@@ -208,11 +258,11 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
           status: RegistrationStatus.giftAidChanged,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(status: RegistrationStatus.failure),

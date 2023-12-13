@@ -1,36 +1,77 @@
-enum CollecGroupType {
-  church(0),
-  campaign(1),
-  artists(2),
-  charities(3),
-  unknown(4),
-  demo(5),
-  debug(6),
-  none(-1);
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
-  const CollecGroupType(this.value);
-  final int value;  
+enum CollectGroupType {
+  church(
+    icon: 'assets/images/church.png',
+    activeIcon: 'assets/images/church_focus.png',
+    color: AppTheme.givtLightBlue,
+  ),
+  campaign(
+    icon: 'assets/images/campaign.png',
+    activeIcon: 'assets/images/campaign_focus.png',
+    color: AppTheme.givtOrange,
+  ),
+  artists(
+    icon: 'assets/images/artist.png',
+    activeIcon: 'assets/images/artist_focus.png',
+    color: AppTheme.givtDarkGreen,
+  ),
+  charities(
+    icon: 'assets/images/charity.png',
+    activeIcon: 'assets/images/charity_focus.png',
+    color: AppTheme.givtYellow,
+  ),
+  unknown(icon: '', activeIcon: '', color: Colors.grey),
+  demo(icon: '', activeIcon: '', color: Colors.grey),
+  debug(icon: '', activeIcon: '', color: Colors.grey),
+  none(icon: '', activeIcon: '', color: Colors.grey);
 
-  static CollecGroupType fromInt(int value) {
-    switch (value) {
-      case 0:
-        return CollecGroupType.church;
-      case 1:
-        return CollecGroupType.campaign;
-      case 2:
-        return CollecGroupType.artists;
-      case 3:
-        return CollecGroupType.charities;
-      case 4:
-        return CollecGroupType.unknown;
-      case 5:
-        return CollecGroupType.demo;
-      case 6:
-        return CollecGroupType.debug;
-      default:
-        return CollecGroupType.none;
+  const CollectGroupType({
+    required this.icon,
+    required this.activeIcon,
+    required this.color,
+  });
+  final String icon;
+  final String activeIcon;
+  final Color color;
+
+  static CollectGroupType fromInt(int value) {
+    if (value >= 0 && value < CollectGroupType.none.index) {
+      return CollectGroupType.values[value];
+    } else {
+      return CollectGroupType.none;
     }
   }
 
-  
+  static IconData getIconByType(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return FontAwesomeIcons.placeOfWorship;
+      case CollectGroupType.charities:
+        return FontAwesomeIcons.heart;
+      case CollectGroupType.campaign:
+        return FontAwesomeIcons.handHoldingHeart;
+      case CollectGroupType.artists:
+        return FontAwesomeIcons.guitar;
+      default:
+    }
+    return FontAwesomeIcons.church;
+  }
+
+  static Color getHighlightColor(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return AppTheme.givtLightBlue;
+      case CollectGroupType.charities:
+        return AppTheme.givtYellow;
+      case CollectGroupType.campaign:
+        return AppTheme.givtOrange;
+      case CollectGroupType.artists:
+        return AppTheme.givtDarkGreen;
+      default:
+    }
+    return AppTheme.givtLightBlue;
+  }
 }

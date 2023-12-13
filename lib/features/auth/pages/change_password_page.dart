@@ -39,7 +39,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           padding: const EdgeInsets.all(20),
           child: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
-              if (state is AuthChangePasswordWrongEmail) {
+              if (state.status == AuthStatus.changePasswordWrongEmail) {
                 showDialog<void>(
                   context: context,
                   builder: (_) => WarningDialog(
@@ -49,7 +49,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ),
                 );
               }
-              if (state is AuthChangePasswordSuccess) {
+              if (state.status == AuthStatus.changePasswordSuccess) {
                 showDialog<void>(
                   context: context,
                   builder: (_) => WarningDialog(
@@ -60,7 +60,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 ).whenComplete(() => Navigator.of(context).pop());
               }
 
-              if (state is AuthChangePasswordFailure) {
+              if (state.status == AuthStatus.changePasswordFailure) {
                 showDialog<void>(
                   context: context,
                   builder: (_) => WarningDialog(
@@ -115,7 +115,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     SizedBox(
                       height: size.height * 0.05,
                     ),
-                    if (state is AuthLoading)
+                    if (state.status == AuthStatus.loading)
                       const CircularProgressIndicator()
                     else
                       ElevatedButton(
@@ -135,7 +135,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         child: Text(
                           locals.send,
                         ),
-                      )
+                      ),
                   ],
                 ),
               );

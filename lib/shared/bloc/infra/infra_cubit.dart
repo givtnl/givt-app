@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/infra_repository.dart';
+import 'package:ios_utsname_ext/extension.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 part 'infra_state.dart';
@@ -41,9 +43,10 @@ class InfraCubit extends Cubit<InfraState> {
 
       if (Platform.isIOS) {
         final iosInfo = await DeviceInfoPlugin().iosInfo;
+        final machineId = iosInfo.utsname.machine;
+        final name = machineId.iOSProductName;
         final systemName = iosInfo.systemName;
         final version = iosInfo.systemVersion;
-        final name = iosInfo.name;
         final model = iosInfo.model;
         os = 'Operating system : $systemName $version';
         device = 'Device : $name $model';
@@ -58,10 +61,36 @@ class InfraCubit extends Cubit<InfraState> {
         message: '$message <br /><br />$footer',
       );
       emit(const InfraSuccess());
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(const InfraFailure());
+    }
+  }
+
+  Future<void> checkForUpdate() async {
+    emit(const InfraLoading());
+    try {
+      final info = await PackageInfo.fromPlatform();
+      final buildNumber = info.buildNumber;
+      final update = await infraRepository.checkAppUpdate(
+        buildNumber: buildNumber,
+      );
+      if (update == null) {
+        emit(const InfraSuccess());
+        return;
+      }
+      emit(
+        InfraUpdateAvailable(
+          update,
+        ),
+      );
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(const InfraFailure());
     }

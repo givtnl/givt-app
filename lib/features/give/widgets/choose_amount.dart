@@ -1,8 +1,15 @@
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/amount_presets/models/preset.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 typedef ChooseAmountNextCallback = void Function(
   double firstCollection,
@@ -16,12 +23,18 @@ class ChooseAmount extends StatefulWidget {
     required this.onAmountChanged,
     required this.country,
     required this.hasGiven,
+    required this.arePresetsEnabled,
+    required this.presets,
+    this.showAddCollectionButton = true,
     super.key,
   });
 
   final int amountLimit;
-  final String country;
+  final Country country;
   final bool hasGiven;
+  final bool arePresetsEnabled;
+  final bool showAddCollectionButton;
+  final List<Preset> presets;
   final ChooseAmountNextCallback onAmountChanged;
 
   @override
@@ -46,6 +59,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
   int selectedField = 0;
   bool reset = false;
 
+  String _comma = ',';
+  final String _zero = '0';
+
   @override
   void dispose() {
     super.dispose();
@@ -57,6 +73,12 @@ class _ChooseAmountState extends State<ChooseAmount> {
 
   @override
   Widget build(BuildContext context) {
+    // US & UK should have a . instead ,
+    if (widget.country.countryCode == Country.us.countryCode||
+        Country.unitedKingdomCodes().contains(widget.country.countryCode)) {
+      _comma = '.';
+    }
+
     final size = MediaQuery.of(context).size;
     final locals = AppLocalizations.of(context);
     if (widget.hasGiven && !reset) {
@@ -64,147 +86,156 @@ class _ChooseAmountState extends State<ChooseAmount> {
       _resetControllers();
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(8),
+    final currencySymbol = NumberFormat.simpleCurrency(
+      name: widget.country.currency,
+    ).currencySymbol;
+
+    return Form(
+      key: _formKey,
       child: Container(
-        height: size.height,
-        width: size.width,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade200,
+        margin: const EdgeInsets.only(top: 25),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: size.height,
           ),
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Form(
-          key: _formKey,
-          child: Container(
-            margin: const EdgeInsets.only(top: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _buildCollectionField(
-                  focusNode: focusNodes[0],
-                  collectionFieldName: locals.firstCollect,
-                  amountLimit: widget.amountLimit,
-                  lowerLimit: getLowerLimitByCountry(widget.country),
-                  prefixCurrencyIcon: _buildCurrencyIcon(),
-                  controller: controllers[0],
-                  isVisible: collectionFields[0],
-                  isRemoveIconVisible: collectionFields[1] == true ||
-                      collectionFields[2] == true,
-                  isSuffixTextVisible: collectionFields[1] == true ||
-                      collectionFields[2] == true,
-                  onRemoveIconPressed: () => setState(
-                    () {
-                      controllers[0].text = '0';
-                      collectionFields[0] = false;
-                      _changeFocus();
-                    },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      _buildCollectionField(
+                        focusNode: focusNodes[0],
+                        collectionFieldName: locals.firstCollect,
+                        amountLimit: widget.amountLimit,
+                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        controller: controllers[0],
+                        isVisible: collectionFields[0],
+                        isRemoveIconVisible: collectionFields[1] == true ||
+                            collectionFields[2] == true,
+                        isSuffixTextVisible: collectionFields[1] == true ||
+                            collectionFields[2] == true,
+                        onRemoveIconPressed: () => setState(
+                          () {
+                            controllers[0].text = '0';
+                            collectionFields[0] = false;
+                            _changeFocus();
+                          },
+                        ),
+                        onFocused: () {
+                          selectedField = 0;
+                          focusNodes[0].requestFocus();
+                        },
+                      ),
+                      _buildCollectionField(
+                        focusNode: focusNodes[1],
+                        collectionFieldName: locals.secondCollect,
+                        amountLimit: widget.amountLimit,
+                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        controller: controllers[1],
+                        isVisible: collectionFields[1],
+                        isRemoveIconVisible: collectionFields[0] == true ||
+                            collectionFields[2] == true,
+                        onRemoveIconPressed: () => setState(() {
+                          controllers[1].text = '0';
+                          collectionFields[1] = false;
+                          _changeFocus();
+                        }),
+                        onFocused: () {
+                          selectedField = 1;
+                          focusNodes[1].requestFocus();
+                        },
+                      ),
+                      _buildCollectionField(
+                        focusNode: focusNodes[2],
+                        collectionFieldName: locals.thirdCollect,
+                        amountLimit: widget.amountLimit,
+                        lowerLimit: Util.getLowerLimitByCountry(widget.country),
+                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        controller: controllers[2],
+                        isVisible: collectionFields[2],
+                        isRemoveIconVisible: collectionFields[0] == true ||
+                            collectionFields[1] == true,
+                        onRemoveIconPressed: () => setState(() {
+                          controllers[2].text = '0';
+                          collectionFields[2] = false;
+                          _changeFocus();
+                        }),
+                        onFocused: () {
+                          selectedField = 2;
+                          focusNodes[2].requestFocus();
+                        },
+                      ),
+                      Visibility(
+                        visible: !collectionFields.every(
+                              (element) => element == true,
+                            ) &&
+                            widget.showAddCollectionButton,
+                        child: _buildAddCollectionButton(
+                          size: size,
+                          label: locals.addCollect,
+                          onPressed: () {
+                            setState(() {
+                              collectionFields[
+                                  collectionFields.indexOf(false)] = true;
+                              _changeFocus();
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  onFocused: () {
-                    selectedField = 0;
-                    focusNodes[0].requestFocus();
-                  },
                 ),
-                _buildCollectionField(
-                  focusNode: focusNodes[1],
-                  collectionFieldName: locals.secondCollect,
-                  amountLimit: widget.amountLimit,
-                  lowerLimit: getLowerLimitByCountry(widget.country),
-                  prefixCurrencyIcon: _buildCurrencyIcon(),
-                  controller: controllers[1],
-                  isVisible: collectionFields[1],
-                  isRemoveIconVisible: collectionFields[0] == true ||
-                      collectionFields[2] == true,
-                  onRemoveIconPressed: () => setState(() {
-                    controllers[1].text = '0';
-                    collectionFields[1] = false;
-                    _changeFocus();
-                  }),
-                  onFocused: () {
-                    selectedField = 1;
-                    focusNodes[1].requestFocus();
-                  },
-                ),
-                _buildCollectionField(
-                  focusNode: focusNodes[2],
-                  collectionFieldName: locals.thirdCollect,
-                  amountLimit: widget.amountLimit,
-                  lowerLimit: getLowerLimitByCountry(widget.country),
-                  prefixCurrencyIcon: _buildCurrencyIcon(),
-                  controller: controllers[2],
-                  isVisible: collectionFields[2],
-                  isRemoveIconVisible: collectionFields[0] == true ||
-                      collectionFields[1] == true,
-                  onRemoveIconPressed: () => setState(() {
-                    controllers[2].text = '0';
-                    collectionFields[2] = false;
-                    _changeFocus();
-                  }),
-                  onFocused: () {
-                    selectedField = 2;
-                    focusNodes[2].requestFocus();
-                  },
-                ),
-                Visibility(
-                  visible: !collectionFields.every(
-                    (element) => element == true,
-                  ),
-                  child: _buildAddCollectionButton(
-                    size: size,
-                    label: locals.addCollect,
-                    onPressed: () {
-                      setState(() {
-                        collectionFields[collectionFields.indexOf(false)] =
-                            true;
-                        _changeFocus();
-                      });
-                    },
-                  ),
-                ),
-                Expanded(child: Container()),
-                _buildNextButton(
-                  label: locals.next,
-                  onPressed: isEnabled
-                      ? () {
-                          widget.onAmountChanged(
-                            double.parse(
-                              controllers[0].text.replaceAll(',', '.'),
-                            ),
-                            double.parse(
-                              controllers[1].text.replaceAll(',', '.'),
-                            ),
-                            double.parse(
-                              controllers[2].text.replaceAll(',', '.'),
-                            ),
-                          );
-                          setState(() {
-                            reset = false;
-                          });
+              ),
+              // Expanded(child: Container()),
+              _buildNextButton(
+                label: locals.next,
+                onPressed: isEnabled
+                    ? () async {
+                        final areAmountsValid = await _checkAmounts(
+                          context,
+                          upperLimit: widget.amountLimit,
+                          lowerLimit:
+                              Util.getLowerLimitByCountry(widget.country),
+                          currency: currencySymbol,
+                        );
+
+                        if (!areAmountsValid) {
+                          return;
                         }
-                      : null,
-                ),
-                NumericKeyboard(
-                  onKeyboardTap: onNumberTapped,
-                  leftButtonFn: onCommaTapped,
-                  rightButtonFn: onBackspaceTapped,
-                )
-              ],
-            ),
+                        widget.onAmountChanged(
+                          double.parse(
+                            controllers[0].text.replaceAll(',', '.'),
+                          ),
+                          double.parse(
+                            controllers[1].text.replaceAll(',', '.'),
+                          ),
+                          double.parse(
+                            controllers[2].text.replaceAll(',', '.'),
+                          ),
+                        );
+                        setState(() {
+                          reset = false;
+                        });
+                      }
+                    : null,
+              ),
+              NumericKeyboard(
+                currencySymbol: currencySymbol,
+                presets: widget.arePresetsEnabled ? widget.presets : [],
+                onPresetTap: onPresetTapped,
+                onKeyboardTap: onNumberTapped,
+                leftButtonFn: onCommaTapped,
+                rightButtonFn: onBackspaceTapped,
+              ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  double getLowerLimitByCountry(String country) {
-    if (country == Country.us.countryCode) {
-      return 2;
-    }
-    if (Country.unitedKingdomCodes().contains(country)) {
-      return 0.50;
-    }
-    return 0.25;
   }
 
   void _changeFocus() {
@@ -224,32 +255,85 @@ class _ChooseAmountState extends State<ChooseAmount> {
     });
   }
 
-  Icon _buildCurrencyIcon() {
-    final countryIso = widget.country;
-    var icon = Icons.euro;
-    if (countryIso == Country.us.countryCode) {
-      icon = Icons.attach_money;
-    }
-    if (Country.unitedKingdomCodes().contains(countryIso)) {
-      icon = Icons.currency_pound;
-    }
+  Icon _buildCurrencyIcon(Country country) => Icon(
+        Util.getCurrencyIconData(
+          country: country,
+        ),
+        color: Colors.grey,
+      );
 
-    return Icon(
-      icon,
-      color: Colors.grey,
-    );
+  Future<bool> _checkAmounts(
+    BuildContext context, {
+    required double lowerLimit,
+    required int upperLimit,
+    required String currency,
+  }) async {
+    for (final controller in controllers) {
+      final amount = double.parse(controller.text.replaceAll(',', '.'));
+      if (amount == 0) {
+        continue;
+      }
+      if (amount < lowerLimit) {
+        await showDialog<void>(
+          context: context,
+          builder: (_) => WarningDialog(
+            title: context.l10n.amountTooLow,
+            content: context.l10n.givtNotEnough('$currency $lowerLimit'),
+            onConfirm: () => context.pop(),
+          ),
+        );
+        return false;
+      }
+      if (amount > upperLimit) {
+        await showDialog<void>(
+          context: context,
+          builder: (_) => WarningDialog(
+            title: context.l10n.amountTooHigh,
+            content: context.l10n.amountLimitExceeded,
+            actions: [
+              CupertinoDialogAction(
+                child: Text(
+                  context.l10n.chooseLowerAmount,
+                ),
+                onPressed: () => context.pop(),
+              ),
+              CupertinoDialogAction(
+                child: Text(
+                  context.l10n.changeGivingLimit,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                onPressed: () => AuthUtils.checkToken(
+                  context,
+                  navigate: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => ChangeMaxAmountBottomSheet(
+                      maxAmount: widget.amountLimit,
+                      icon: Util.getCurrencyIconData(
+                        country: widget.country,
+                      ),
+                    ),
+                  ).whenComplete(() => context.pop()),
+                ),
+              ),
+            ],
+          ),
+        );
+        return false;
+      }
+    }
+    return true;
   }
 
   bool get isEnabled {
-    if (_formKey.currentState == null) return false;
-    if (_formKey.currentState!.validate() == false) return false;
-
     for (final controller in controllers) {
       if (double.parse(controller.text.replaceAll(',', '.')) != 0) {
         return true;
       }
     }
-
     return false;
   }
 
@@ -283,9 +367,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
       ),
     );
   }
-
-  final String _comma = ',';
-  final String _zero = '0';
 
   void onBackspaceTapped() {
     /// if text has 1 digit then it will be 0
@@ -348,12 +429,19 @@ class _ChooseAmountState extends State<ChooseAmount> {
     });
   }
 
+  void onPresetTapped(String amount) {
+    controllers[selectedField].text = amount;
+    setState(() {
+      _formKey.currentState!.validate();
+    });
+  }
+
   Padding _buildNextButton({
     required String label,
     VoidCallback? onPressed,
   }) {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: ElevatedButton.icon(
         onPressed: onPressed,
         label: const Icon(Icons.arrow_forward_ios_outlined),

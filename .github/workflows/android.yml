@@ -9,8 +9,14 @@ on:
       MATCH_PASSWORD:
         required: true
       LOGIT_API_KEY:
-          required: true
-
+        required: true
+      GOOGLE_SERVICES_JSON:
+        required: true
+    inputs:
+      flutter-version:
+        required: true
+        type: string
+ 
 jobs:
 
   build-droid: 
@@ -27,6 +33,8 @@ jobs:
             echo "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a" >> $GITHUB_ENV
             echo "API_URL_US=backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=backend.givtapp.net" >> $GITHUB_ENV
+            echo "API_URL_AWS_US=api.production.givt.app" >> $GITHUB_ENV
+            echo "API_URL_AWS_EU=api.production.givtapp.net" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
             echo "PACKAGE_NAME=net.givtapp.droid2.test" >> $GITHUB_ENV
@@ -35,29 +43,36 @@ jobs:
             echo "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e" >> $GITHUB_ENV
             echo "API_URL_US=dev-backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=dev-backend.givtapp.net" >> $GITHUB_ENV
+            echo "API_URL_AWS_US=api.development.givtapp.net" >> $GITHUB_ENV
+            echo "API_URL_AWS_EU=api.development.givtapp.net" >> $GITHUB_ENV
           fi
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.152.0
+        uses: ruby/setup-ruby@v1
         with: 
-          ruby-version: '3.0'
           bundler-cache: true
 
       - name: Auth codesigning
         uses: webfactory/ssh-agent@v0.8.0
         with:
           ssh-private-key: ${{ secrets.CODESIGNING_DEPLOY_KEY }}
+        
+      - name: Replace google-services.json
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > android/app/google-services.json
 
       - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          flutter-version: ${{ inputs.flutter-version }}
 
       - name: Run Fastlane
-        uses: maierj/fastlane-action@v3.0.0
+        uses: maierj/fastlane-action@v2.3.0
         with:
           lane: android build_and_deploy
           subdirectory: android
@@ -68,6 +83,8 @@ jobs:
           PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
           API_URL_US: ${{env.API_URL_US}}
           API_URL_EU: ${{env.API_URL_EU}}
+          API_URL_AWS_US: ${{env.API_URL_AWS_US}}
+          API_URL_AWS_EU: ${{env.API_URL_AWS_EU}}
           AMPLITUDE_KEY: ${{env.AMPLITUDE_KEY}}
           FLAVOR: ${{ env.FLAVOR }}
           TRACK: ${{ env.TRACK }}

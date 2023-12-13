@@ -17,7 +17,7 @@ class CollectGroup extends Equatable {
       : nameSpace = '',
         orgName = '',
         hasCelebration = false,
-        type = CollecGroupType.none,
+        type = CollectGroupType.none,
         locations = const [],
         multiUseAllocations = const [],
         qrCodes = const [];
@@ -27,35 +27,38 @@ class CollectGroup extends Equatable {
     final multiUseAllocations = <MultiUseAllocation>[];
     final qrCodes = <QrCode>[];
 
-    if (json['Locations'] != null) {
-      for (final location in json['Locations'] as List<dynamic>) {
-        locations.add(Location.fromJson(location as Map<String, dynamic>));
+    if (json['L'] != null) {
+      for (final location in json['L'] as List<dynamic>) {
+        var loc = Location.fromJson(location as Map<String, dynamic>);
+        if (!loc.beaconId.contains('.')) {
+          loc =
+              loc.copyWith(beaconId: '${json['NS'] as String}.${loc.beaconId}');
+        }
+        locations.add(loc);
       }
     }
 
-    if (json['MultiUseAllocations'] != null) {
-      for (final multiUseAllocation
-          in json['MultiUseAllocations'] as List<dynamic>) {
-        multiUseAllocations.add(
-          MultiUseAllocation.fromJson(
-            multiUseAllocation as Map<String, dynamic>,
-          ),
-        );
-      }
-    }
+    if (json['Q'] != null) {
+      for (final qrCode in json['Q'] as List<dynamic>) {
+        var code = QrCode.fromJson(qrCode as Map<String, dynamic>);
+        if (code.name.isEmpty) {
+          code = code.copyWith(name: json['N'] as String);
+        }
+        if (!code.instance.contains('.')) {
+          code = code.copyWith(
+              instance: '${json['NS'] as String}.${code.instance}');
+        }
 
-    if (json['qrCodes'] != null) {
-      for (final qrCode in json['qrCodes'] as List<dynamic>) {
-        qrCodes.add(QrCode.fromJson(qrCode as Map<String, dynamic>));
+        qrCodes.add(code);
       }
     }
 
     return CollectGroup(
-      nameSpace: json['EddyNameSpace'] as String,
-      orgName: json['OrgName'] as String,
-      hasCelebration: json['Celebrations'] as bool,
-      type: CollecGroupType.values.firstWhere(
-        (e) => e.value == json['CollectGroupType'],
+      nameSpace: json['NS'] as String,
+      orgName: json['N'] as String,
+      hasCelebration: json['C'] as bool,
+      type: CollectGroupType.values.firstWhere(
+        (e) => e.index == json['T'],
       ),
       locations: locations,
       multiUseAllocations: multiUseAllocations,
@@ -66,22 +69,22 @@ class CollectGroup extends Equatable {
   final String nameSpace;
   final String orgName;
   final bool hasCelebration;
-  final CollecGroupType type;
+  final CollectGroupType type;
   final List<Location> locations;
   final List<MultiUseAllocation> multiUseAllocations;
   final List<QrCode> qrCodes;
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['EddyNameSpace'] = nameSpace;
-    data['OrgName'] = orgName;
-    data['Celebrations'] = hasCelebration;
-    data['CollectGroupType'] = type.value;
-    data['type'] = type.value;
-    data['Locations'] = locations.map((e) => e.toJson()).toList();
+    data['NS'] = nameSpace;
+    data['N'] = orgName;
+    data['C'] = hasCelebration;
+    data['T'] = type.index;
+    data['type'] = type.index;
+    data['L'] = locations.map((e) => e.toJson()).toList();
     data['MultiUseAllocations'] =
         multiUseAllocations.map((e) => e.toJson()).toList();
-    data['qrCodes'] = qrCodes.map((e) => e.toJson()).toList();
+    data['Q'] = qrCodes.map((e) => e.toJson()).toList();
     return data;
   }
 

@@ -53,6 +53,9 @@ class _ChangePhoneNumberBottomSheetState
               children: [
                 MobileNumberFormField(
                   phone: phone,
+                  hintText: selectedCountry != Country.us
+                      ? locals.phoneNumber
+                      : locals.mobileNumberUsDigits,
                   selectedCountryPrefix: selectedCountry.prefix,
                   onPhoneChanged: (String value) => setState(() {}),
                   onPrefixChanged: (String selected) {
@@ -66,8 +69,8 @@ class _ChangePhoneNumberBottomSheetState
                     if (value == null || value.isEmpty) {
                       return '';
                     }
-
-                    if (!Util.phoneNumberRegEx.hasMatch(value)) {
+                    if (!Util.phoneNumberRegExWithPrefix()
+                        .hasMatch('${selectedCountry.prefix}$value')) {
                       return '';
                     }
 
@@ -121,7 +124,6 @@ class _ChangePhoneNumberBottomSheetState
 
   bool get isEnabled {
     if (formKey.currentState == null) return false;
-    if (formKey.currentState!.validate() == false) return false;
-    return phone.text.isNotEmpty;
+    return formKey.currentState!.validate();
   }
 }

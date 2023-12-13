@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -10,6 +10,8 @@ import 'package:intl/intl.dart';
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
+import 'package:ios_utsname_ext/extension.dart' as extensionIOS;
 
 mixin ILoggingInfo {
   Future<void> debug(String message);
@@ -31,7 +33,7 @@ class LoggingInfo implements ILoggingInfo {
   static LoggingInfo get instance => _singleton;
 
   Future<void> _log(String message, String methodName, Level level) async {
-    log(message);
+    dev.log(message);
     final info = await PackageInfo.fromPlatform();
     final isDebug = info.packageName.contains('test');
     final guid = await _getGuid();
@@ -56,11 +58,13 @@ class LoggingInfo implements ILoggingInfo {
       final os = 'Android $release (SDK $sdkInt)';
       final device = '$manufacturer $model';
       final tag = isDebug ? 'GivtApp.Droid.Debug' : 'GivtApp.Droid.Production';
+      final deviceId = await _getDeviceGuid();
       lm = lm.copyWith(
         platformID: '2',
         model: device,
         versionOS: os,
         tag: tag,
+        deviceId: deviceId,
       );
     }
 
@@ -68,16 +72,19 @@ class LoggingInfo implements ILoggingInfo {
       final iosInfo = await DeviceInfoPlugin().iosInfo;
       final systemName = iosInfo.systemName;
       final version = iosInfo.systemVersion;
-      final name = iosInfo.name;
+      final machineId = iosInfo.utsname.machine;
+      final name = machineId.iOSProductName;
       final model = iosInfo.model;
       final os = 'iOS $systemName $version';
       final device = '$name $model';
       final tag = isDebug ? 'GivtApp.iOS.Debug' : 'GivtApp.iOS.Production';
+      final deviceId = iosInfo.identifierForVendor;
       lm = lm.copyWith(
         platformID: '1',
         model: device,
         versionOS: os,
         tag: tag,
+        deviceId: deviceId,
       );
     }
     const key = String.fromEnvironment('LOGIT_API_KEY');
@@ -94,8 +101,10 @@ class LoggingInfo implements ILoggingInfo {
     )
         .then((value) {
       if (value.statusCode != 202) {
-        log('Error sending log message: ${value.statusCode}');
+        dev.log('Error sending log message: ${value.statusCode}');
       }
+    }).catchError((dynamic e) {
+      dev.log('Unknown error while sending log message: $e');
     });
   }
 
@@ -139,4 +148,23 @@ class LoggingInfo implements ILoggingInfo {
   }) async {
     await _log(message, methodName, Level.WARNING);
   }
+
+  /// Get the device guid from shared preferences.
+  /// If it doesn't exist, generate a new one and store it.
+  /// This guid is used to identify the device in the logs.
+  Future<String> _getDeviceGuid() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.containsKey(_androidDeviceUUIDKey)) {
+      return prefs.getString(_androidDeviceUUIDKey)!;
+    }
+
+    final uuid = const Uuid().v4();
+
+    await prefs.setString(_androidDeviceUUIDKey, uuid);
+
+    return uuid;
+  }
+
+  static const _androidDeviceUUIDKey = 'androidDeviceUUID';
 }

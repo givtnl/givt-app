@@ -1,16 +1,19 @@
 import 'dart:convert';
-
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepositoy {
-  Future<void> refreshToken();
-  Future<String> login(String email, String password);
+  Future<Session> refreshToken();
+  Future<Session> login(String email, String password);
   Future<UserExt> fetchUserExtension(String guid);
-  Future<UserExt?> isAuthenticated();
+  Future<(UserExt, Session, UserPresets)?> isAuthenticated();
   Future<bool> logout();
   Future<bool> checkTld(String email);
   Future<String> checkEmail(String email);
@@ -19,6 +22,7 @@ mixin AuthRepositoy {
     required String guid,
     required String appLanguage,
   });
+  Future<StripeResponse> registerStripeCustomer({required String email});
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
@@ -36,6 +40,19 @@ mixin AuthRepositoy {
   });
 
   Future<bool> updateUserExt(Map<String, dynamic> newUserExt);
+
+  Future<bool> updateLocalUserPresets({
+    required UserPresets newUserPresets,
+  });
+
+  Future<void> checkUserExt({
+    required String email,
+  });
+
+  Future<bool> updateNotificationId({
+    required String guid,
+    required String notificationId,
+  });
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -47,10 +64,10 @@ class AuthRepositoyImpl with AuthRepositoy {
   final APIService _apiService;
 
   @override
-  Future<void> refreshToken() async {
+  Future<Session> refreshToken() async {
     final currentSession = _prefs.getString(Session.tag);
     if (currentSession == null) {
-      return;
+      return const Session.empty();
     }
     final session = Session.fromJson(
       jsonDecode(currentSession) as Map<String, dynamic>,
@@ -61,15 +78,48 @@ class AuthRepositoyImpl with AuthRepositoy {
         'grant_type': 'refresh_token',
       },
     );
-    final newSession = Session.fromJson(response);
+    var newSession = Session.fromJson(response);
+    newSession = newSession.copyWith(
+      isLoggedIn: true,
+    );
     await _prefs.setString(
       Session.tag,
-      jsonEncode(newSession.toJson()),
+      jsonEncode(
+        newSession.toJson(),
+      ),
     );
+    await _fetchUserExtension();
+    return newSession;
+  }
+
+  Future<void> _fetchUserExtension() async {
+    try {
+      if (!_prefs.containsKey(UserExt.tag)) {
+        return;
+      }
+      final userExt = UserExt.fromJson(
+        jsonDecode(
+          _prefs.getString(UserExt.tag)!,
+        ) as Map<String, dynamic>,
+      );
+      final response = await _apiService.getUserExtension(userExt.guid);
+      final newUserExt = UserExt.fromJson(response);
+      await _prefs.setString(
+        UserExt.tag,
+        jsonEncode(newUserExt.toJson()),
+      );
+
+      await setUserProperties(newUserExt);
+    } catch (e, stacktrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stacktrace.toString(),
+      );
+    }
   }
 
   @override
-  Future<String> login(String email, String password) async {
+  Future<Session> login(String email, String password) async {
     final newSession = await _apiService.login(
       {
         'username': email,
@@ -78,14 +128,36 @@ class AuthRepositoyImpl with AuthRepositoy {
       },
     );
 
-    final session = Session.fromJson(newSession);
-
+    var session = Session.fromJson(newSession);
+    session = session.copyWith(
+      isLoggedIn: true,
+    );
     await _prefs.setString(
       Session.tag,
-      jsonEncode(session.toJson()),
+      jsonEncode(
+        session.toJson(),
+      ),
     );
 
-    return session.userGUID;
+    return session;
+  }
+
+  @override
+  Future<void> checkUserExt({
+    required String email,
+  }) async {
+    if (!_prefs.containsKey(UserExt.tag)) {
+      return;
+    }
+    final userExt = UserExt.fromJson(
+      jsonDecode(
+        _prefs.getString(UserExt.tag)!,
+      ) as Map<String, dynamic>,
+    );
+    if (userExt.email == email) {
+      return;
+    }
+    await _prefs.clear();
   }
 
   @override
@@ -96,11 +168,13 @@ class AuthRepositoyImpl with AuthRepositoy {
       UserExt.tag,
       jsonEncode(userExt.toJson()),
     );
+
+    await setUserProperties(userExt);
     return userExt;
   }
 
   @override
-  Future<UserExt?> isAuthenticated() async {
+  Future<(UserExt, Session, UserPresets)?> isAuthenticated() async {
     final sessionString = _prefs.getString(Session.tag);
     if (sessionString == null) {
       return null;
@@ -111,17 +185,101 @@ class AuthRepositoyImpl with AuthRepositoy {
     if (session.accessToken.isEmpty) {
       return null;
     }
+
+    final userExtString = _prefs.getString(UserExt.tag);
+    if (userExtString == null) {
+      return null;
+    }
+
+    if (userExtString.isEmpty) {
+      return null;
+    }
+
+    final decodedJson = jsonDecode(userExtString);
+    if (decodedJson is! Map<String, dynamic>) {
+      return null;
+    }
+
+    final userExt = UserExt.fromJson(decodedJson);
+
+    if (userExt.guid.isEmpty) {
+      return null;
+    }
+    if (userExt.email.isEmpty) {
+      return null;
+    }
+    if (userExt.country.isEmpty) {
+      return null;
+    }
+    if (userExt.needRegistration && !userExt.tempUser) {
+      return null;
+    }
+
+    if (!_prefs.containsKey(AmountPresets.tag)) {
+      return (userExt, session, const UserPresets.empty());
+    }
+
+    /// if the amount presets are not present in the cache set it to empty
+    if (!_prefs.containsKey(AmountPresets.tag)) {
+      await _prefs.setString(
+        AmountPresets.tag,
+        jsonEncode(
+          const AmountPresets.empty().toJson(),
+        ),
+      );
+    }
+
+    final amountPresetsString = _prefs.getString(AmountPresets.tag);
+
+    final amountPresets = AmountPresets.fromJson(
+      jsonDecode(
+        amountPresetsString!,
+      ) as Map<String, dynamic>,
+    );
+
+    if (amountPresets.presets.isEmpty) {
+      return (userExt, session, const UserPresets.empty());
+    }
+    final userPreset = amountPresets.presets.firstWhere(
+      (element) => element.guid == userExt.guid,
+      orElse: () => const UserPresets.empty(),
+    );
+
+    if (userPreset.guid.isEmpty) {
+      return (userExt, session, userPreset.copyWith(guid: userExt.guid));
+    }
+
     // if (DateTime.parse(session.expires).isBefore(DateTime.now())) {
     //   return false;
     // }
 
-    return UserExt.fromJson(
-      jsonDecode(_prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
-    );
+    return (userExt, session, userPreset);
   }
 
   @override
-  Future<bool> logout() async => _prefs.clear();
+  Future<bool> logout() async {
+    // _prefs.clear();
+    final sessionString = _prefs.getString(Session.tag);
+
+    // If the data is already gone, just continue :)
+    if (sessionString == null) {
+      return true;
+    }
+
+    final session = Session.fromJson(
+      jsonDecode(sessionString) as Map<String, dynamic>,
+    );
+    return _prefs.setString(
+      Session.tag,
+      jsonEncode(
+        session
+            .copyWith(
+              isLoggedIn: false,
+            )
+            .toJson(),
+      ),
+    );
+  }
 
   @override
   Future<bool> checkTld(String email) async => _apiService.checktld(email);
@@ -200,10 +358,15 @@ class AuthRepositoyImpl with AuthRepositoy {
   @override
   Future<bool> unregisterUser({
     required String email,
-  }) async =>
-      _apiService.unregisterUser({
-        'email': email,
-      });
+  }) async {
+    final isSuccess = await _apiService.unregisterUser({
+      'email': email,
+    });
+    if (isSuccess) {
+      await _prefs.clear();
+    }
+    return isSuccess;
+  }
 
   @override
   Future<bool> updateUser({
@@ -217,4 +380,73 @@ class AuthRepositoyImpl with AuthRepositoy {
     Map<String, dynamic> newUserExt,
   ) async =>
       _apiService.updateUserExt(newUserExt);
+
+  @override
+  Future<StripeResponse> registerStripeCustomer({required String email}) async {
+    final reponse = await _apiService.registerStripeCustomer(email);
+    final stripeResponse = StripeResponse.fromJson(reponse);
+    return stripeResponse;
+  }
+
+  @override
+  Future<bool> updateLocalUserPresets({
+    required UserPresets newUserPresets,
+  }) async {
+    if (!_prefs.containsKey(AmountPresets.tag)) {
+      await _prefs.setString(
+        AmountPresets.tag,
+        jsonEncode(
+          AmountPresets(
+            presets: [newUserPresets],
+          ).toJson(),
+        ),
+      );
+    }
+
+    final amountPresets = AmountPresets.fromJson(
+      jsonDecode(
+        _prefs.getString(AmountPresets.tag)!,
+      ) as Map<String, dynamic>,
+    );
+
+    for (final userPreset in amountPresets.presets) {
+      if (userPreset.guid == newUserPresets.guid) {
+        amountPresets.updateUserPresets(
+          userPreset.copyWith(
+            presets: newUserPresets.presets,
+          ),
+        );
+      }
+    }
+
+    final isSuccess = _prefs.setString(
+      AmountPresets.tag,
+      jsonEncode(amountPresets.toJson()),
+    );
+
+    return isSuccess;
+  }
+
+  @override
+  Future<bool> updateNotificationId({
+    required String guid,
+    required String notificationId,
+  }) =>
+      _apiService.updateNotificationId(
+        guid: guid,
+        body: {
+          'PushNotificationId': notificationId,
+          'OS': 1, // Always use firebase implementation from Android
+        },
+      );
+
+  Future<void> setUserProperties(UserExt newUserExt) {
+    return AnalyticsHelper.setUserProperties(
+      userId: newUserExt.guid,
+      userProperties: {
+        'email': newUserExt.email,
+        'country': newUserExt.country,
+      },
+    );
+  }
 }

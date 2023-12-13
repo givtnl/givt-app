@@ -21,9 +21,43 @@ class AppTheme {
   static const givtYellow = Color(0xFFEDA52E);
   static const givtDarkGreen = Color(0xFF1da96c);
   static const softenedGivtPurple = Color(0xFF585479);
+  static const presetsButtonColor = Color(0xFF918fa6);
+  static const givtLightYellow = Color(0xFFFFF9E3);
+  static const givtKidsYellow = Color(0xFFFFE075);
+
+  static const sliderIndicatorFilled = Color(0xFF184869);
+  static const sliderIndicatorNotFilled = Color(0xFFD9D9D9);
+  static const fontFamily = 'AvenirLTStd';
+
+  static const inputFieldBorderEnabled = Color(0xFFCCCCCC);
+  static const inputFieldBorderSelected = Color(0xFF355070);
+
+  static const childItemBackground = Color(0xFF54A1EE);
+  static const childItemBlueLight = Color(0xFFBFDBFC);
+  static const childItemPendingBackground = Color(0xFFE28D4D);
+
+  static const vpcSuccessBackground = Color(0xFF7DBDA1);
+
+  static const childMonsterPurple = Color(0xFFAD81E1);
+  static const childMonsterGreen = Color(0xFFA7CB42);
+  static const childMonsterOrange = Color(0xFFFEAD1D);
+  static const childMonsterBlue = Color(0xFF69A9D3);
+
+  static const childHistoryPending = Color(0xFFA77F2C);
+  static const childHistoryPendingLight = Color(0xFFF2DF7F);
+  static const childHistoryPendingDark = Color(0xFF654B14);
+  static const childHistoryApproved = Color(0xFF006C47);
+  static const childHistoryDeclined = Color(0xFF780F0F);
+  static const childHistoryAllowance = Color(0xFF06509B);
+
+  static const childGivingAllowanceCardBorder = Color(0xFFECF1F1);
+
+  static const childGivingAllowanceHint = Color(0xFF617793);
+
+  static const childParentalApprovalDecline = Color(0xFF9A3F3F);
 
   static final ThemeData lightTheme = ThemeData(
-    // useMaterial3: true,
+    useMaterial3: false,
     fontFamily: 'AvenirLTStd',
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,
@@ -124,8 +158,14 @@ class AppTheme {
       color: lightColorScheme.primary,
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(givtLightGreen),
-      checkColor: MaterialStateProperty.all(givtLightGreen),
+      fillColor: MaterialStateProperty.resolveWith(
+        (states) {
+          if (states.contains(MaterialState.selected)) {
+            return givtLightGreen;
+          }
+          return Colors.white;
+        },
+      ),
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>aps-environment</key>
+	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:www.givtapp.net</string>
@@ -13,6 +15,8 @@
 		<string>applinks:givtapp.de</string>
 		<string>applinks:backend.givtapp.net</string>
 		<string>applinks:dev-backend.givtapp.net</string>
+		<string>applinks:givtapp.net</string>
+		<string>applinks:api.givt.app</string>
 	</array>
 </dict>
 </plist>

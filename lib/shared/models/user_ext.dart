@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class UserExt extends Equatable {
   const UserExt({
@@ -31,6 +32,7 @@ class UserExt extends Equatable {
     this.appLanguage = '',
     this.sortCode = '',
     this.accountNumber = '',
+    this.notificationId = '',
   });
 
   const UserExt.empty()
@@ -61,44 +63,48 @@ class UserExt extends Equatable {
         accountType = AccountType.none,
         appLanguage = '',
         sortCode = '',
-        accountNumber = '';
+        accountNumber = '',
+        notificationId = '';
 
-  factory UserExt.fromJson(Map<String, dynamic> json) => UserExt(
-        email: json['Email'] as String,
-        guid: json['GUID'] as String,
-        amountLimit: json['AmountLimit'] as int,
-        tempUser: json['IsTempUser'] as bool,
-        iban: json['IBAN'] != null ? json['IBAN'] as String : '',
-        phoneNumber:
-            json['PhoneNumber'] != null ? json['PhoneNumber'] as String : '',
-        firstName: json['FirstName'] as String,
-        lastName: json['LastName'] as String,
-        address: json['Address'] != null ? json['Address'] as String : '',
-        postalCode:
-            json['PostalCode'] != null ? json['PostalCode'] as String : '',
-        city: json['City'] != null ? json['City'] as String : '',
-        country: json['Country'] as String,
-        countryCode: json['CountryCode'] as int,
-        isGiftAidEnabled: json['GiftAidEnabled'] as bool,
-        sortCode: json['SortCode'] != null ? json['SortCode'] as String : '',
-        accountNumber: json['AccountNumber'] != null
-            ? json['AccountNumber'] as String
-            : '',
-        appLanguage:
-            json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
-        accountType: AccountType.fromString(json['AccountType'] as String),
-        needRegistration: json['IsTempUser'] as bool,
-        personalInfoRegistered: json['FirstName'] != null,
-        payProvMandateStatus: json['PayProvMandateStatus'] != null
-            ? json['PayProvMandateStatus'] as String
-            : '',
-        payProvMandate: json['PayProvMandate'] != null
-            ? json['PayProvMandate'] as String
-            : '',
-        mandateSigned: json.containsKey('mandateSigned')
-            ? json['mandateSigned'] as bool
-            : json['PayProvMandate'] != null,
-      );
+  factory UserExt.fromJson(Map<String, dynamic> json) {
+    final personalInfoRegistered = json['FirstName'] != Util.defaultFirstName &&
+        json['LastName'] != Util.defaultLastName &&
+        json['PhoneNumber'] != Util.defaultPhoneNumber;
+
+    return UserExt(
+      email: json['Email'] as String,
+      guid: (json['GUID'] ?? json['Guid']) as String,
+      amountLimit: json['AmountLimit'] as int,
+      tempUser: (json['IsTempUser'] ?? json['TempUser']) as bool,
+      iban: json['IBAN'] != null ? json['IBAN'] as String : '',
+      phoneNumber: (json['PhoneNumber'] ?? '') as String,
+      firstName: (json['FirstName'] ?? '') as String,
+      lastName: (json['LastName'] ?? '') as String,
+      address: (json['Address'] ?? '') as String,
+      postalCode: (json['PostalCode'] ?? '') as String,
+      city: (json['City'] ?? '') as String,
+      country: (json['Country'] ?? '') as String,
+      countryCode: (json['CountryCode'] ?? -1) as int,
+      isGiftAidEnabled: (json['GiftAidEnabled'] ?? false) as bool,
+      sortCode: (json['SortCode'] ?? '') as String,
+      accountNumber: (json['AccountNumber'] ?? '') as String,
+      appLanguage: (json['AppLanguage'] ?? '') as String,
+      accountType:
+          AccountType.fromString((json['AccountType'] ?? '') as String),
+      needRegistration: (json['IsTempUser'] ?? json['TempUser']) as bool,
+      personalInfoRegistered: personalInfoRegistered,
+      payProvMandateStatus: (json['PayProvMandateStatus'] ?? '') as String,
+      payProvMandate: json['PayProvMandate'] != null
+          ? json['PayProvMandate'] as String
+          : '',
+      mandateSigned: json.containsKey('mandateSigned')
+          ? json['mandateSigned'] as bool
+          : json['PayProvMandateStatus'] == 'closed.completed',
+      notificationId: json['PushNotificationId'] != null
+          ? json['PushNotificationId'] as String
+          : '',
+    );
+  }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'Email': email,
@@ -120,6 +126,7 @@ class UserExt extends Equatable {
         'AppLanguage': appLanguage,
         'SortCode': sortCode,
         'AccountNumber': accountNumber,
+        'PushNotificationId': notificationId,
         'mandateSigned': mandateSigned,
         'maxAmountRegistered': maxAmountRegistered,
         'multipleCollectsFirstBallon': multipleCollectsFirstBallon,
@@ -166,6 +173,7 @@ class UserExt extends Equatable {
   final bool isGiftAidEnabled;
   final AccountType accountType;
   final String? appLanguage;
+  final String notificationId;
 
   final bool tempUser;
   final bool mandateSigned;
@@ -199,6 +207,7 @@ class UserExt extends Equatable {
     String? appLanguage,
     String? payProvMandateStatus,
     String? payProvMandate,
+    String? notificationId,
     int? amountLimit,
     bool? tempUser,
     bool? mandateSigned,
@@ -241,6 +250,7 @@ class UserExt extends Equatable {
       pinSet: pinSet ?? this.pinSet,
       multipleCollectsAccepted:
           multipleCollectsAccepted ?? this.multipleCollectsAccepted,
+      // notificationId: notificationId ?? this.notificationId,
     );
   }
 
@@ -272,7 +282,14 @@ class UserExt extends Equatable {
         personalInfoRegistered,
         pinSet,
         multipleCollectsAccepted,
+        // notificationId,
       ];
 
   static String tag = 'UserExt';
+
+  @override
+  String toString() {
+    // ignore: lines_longer_than_80_chars
+    return 'UserExt{tempUser: $tempUser, needRegistration: $needRegistration, mandateSigned: $mandateSigned}';
+  }
 }

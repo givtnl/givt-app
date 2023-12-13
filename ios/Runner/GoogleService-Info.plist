@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>847341799623-30a5r5la9da0uemecshl8r6r63looedh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.847341799623-30a5r5la9da0uemecshl8r6r63looedh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAZGVYKOk1Iy1OYWSZgT4yqCmLpvLH9f4I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>847341799623</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>net.givtapp.ios</string>
+	<key>PROJECT_ID</key>
+	<string>givt-dev-pre</string>
+	<key>STORAGE_BUCKET</key>
+	<string>givt-dev-pre.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:847341799623:ios:275f52a5a1f454ca5156e2</string>
+	<key>DATABASE_URL</key>
+	<string>https://givt-dev-pre.firebaseio.com</string>
+</dict>
+</plist>

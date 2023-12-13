@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +17,7 @@ class SelectGivingWayPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
-
+    final user = context.read<AuthCubit>().state.user;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -37,13 +38,40 @@ class SelectGivingWayPage extends StatelessWidget {
             child: BlocListener<GiveBloc, GiveState>(
               listener: (context, state) {
                 if (state.status == GiveStatus.noInternetConnection) {
-                  context.goNamed(Pages.giveOffline.name);
+                  context.goNamed(
+                    Pages.giveSucess.name,
+                    extra: {
+                      'isRecurringDonation': false,
+                      'orgName': state.organisation.organisationName,
+                    },
+                  );
+                }
+                if (state.status == GiveStatus.error) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.errorOccurred,
+                      content: locals.errorContactGivt,
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
+                }
+                if (state.status ==
+                    GiveStatus.donatedToSameOrganisationInLessThan30Seconds) {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.notSoFast,
+                      content: locals.giftBetween30Sec,
+                      onConfirm: () => context.pop(),
+                    ),
+                  );
                 }
                 if (state.status == GiveStatus.readyToConfirmGPS) {
                   _buildGivingDialog(
                     context,
                     text: context.l10n.givtEventText(
-                      state.nearestLocation.name,
+                      state.organisation.organisationName!,
                     ),
                     image: 'assets/images/select_location.png',
                     onTap: () => context.read<GiveBloc>().add(
@@ -55,10 +83,14 @@ class SelectGivingWayPage extends StatelessWidget {
                   return;
                 }
                 if (state.status == GiveStatus.readyToConfirm) {
+                  var orgName = state.organisation.organisationName!;
+                  if (state.instanceName.isNotEmpty) {
+                    orgName = '$orgName: ${state.instanceName}';
+                  }
                   _buildGivingDialog(
                     context,
                     text: context.l10n.qrScannedOutOfApp(
-                      state.organisation.organisationName!,
+                      orgName,
                     ),
                     image: 'assets/images/select_qr_phone_scan.png',
                     onTap: () => context.read<GiveBloc>().add(
@@ -71,6 +103,10 @@ class SelectGivingWayPage extends StatelessWidget {
                     Pages.give.name,
                     extra: context.read<GiveBloc>(),
                   );
+                }
+
+                if (state.status == GiveStatus.beaconNotActive) {
+                  _buildInvalidQRCodeDialog(context, state, user.guid);
                 }
               },
               child: Column(
@@ -128,6 +164,54 @@ class SelectGivingWayPage extends StatelessWidget {
     );
   }
 
+  Future<void> _buildInvalidQRCodeDialog(
+    BuildContext context,
+    GiveState state,
+    String guid,
+  ) {
+    return showDialog<bool>(
+      context: context,
+      builder: (_) => WarningDialog(
+        title: context.l10n.invalidQRcodeTitle,
+        content: context.l10n.invalidQRcodeMessage(
+          state.organisation.organisationName!,
+        ),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => context.pop(true),
+            child: Text(
+              context.l10n.cancel,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          CupertinoDialogAction(
+            onPressed: () => context.read<GiveBloc>().add(
+                  GiveOrganisationSelected(
+                    state.organisation.mediumId!,
+                    guid,
+                  ),
+                ),
+            child: Text(
+              context.l10n.yesPlease,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ).then((cancel) {
+      if (cancel == null) {
+        return;
+      }
+      if (cancel) {
+        context.pop();
+      }
+    });
+  }
+
   Widget _buildListTile({
     required VoidCallback onTap,
     required String title,
@@ -141,7 +225,7 @@ class SelectGivingWayPage extends StatelessWidget {
         ),
         trailing: const Icon(
           Icons.arrow_forward_ios,
-          size: 18,
+          size: 20,
         ),
         title: title,
         subtitle: subtitle,

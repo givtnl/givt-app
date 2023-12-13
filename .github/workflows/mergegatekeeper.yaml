@@ -10,7 +10,7 @@ on:
 jobs:
     merge_gatekeeper:
         runs-on: ubuntu-latest
-        if: ${{ github.event.pull_request.head.ref }} != 'develop' && contains(hotfix, ${{ github.event.pull_request.title }}) == false
+        if: ${{ github.event.pull_request.head.ref != 'develop' && !contains('hotfix', github.event.pull_request.title) }}
         steps:
         - uses: superbrothers/close-pull-request@v3
           with:

@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -37,6 +37,9 @@ jobs:
       GOOGLE_PLAY_JSON_KEY: ${{ secrets.GOOGLE_PLAY_JSON_KEY }}
       MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
+      GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+    with:
+      flutter-version: '3.16.x'
 
   ios:
     needs: linter
@@ -47,13 +50,17 @@ jobs:
       APPSTORECONNECT_PRIVATE_KEY: ${{ secrets.APPSTORECONNECT_PRIVATE_KEY }}
       GITHUB_API_TOKEN: ${{ secrets.PIPELINE_PAT }}
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
+      GOOGLE_SERVICES_PLIST: ${{ secrets.GOOGLE_SERVICES_PLIST }}
+    with:
+      flutter-version: '3.16.x'
+  
 
   semantic-pr:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
-  spellcheck:
-    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
-    with:
-      includes: |
-        **/*.md
-      modified_files_only: false
+  # spellcheck:
+  #   uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
+  #   with:
+  #     includes: |
+  #       **/*.md
+  #     modified_files_only: false

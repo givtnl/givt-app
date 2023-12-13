@@ -1,0 +1,31 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+categories:
+  - title: "🚀 Features"
+    label: "enhancement"
+  - title: "🐛 Bug Fixes"
+    label: "bug"
+  - title: "🧰 Maintenance"
+    label: "chore"
+template: |
+  ## Changes
+
+  $CHANGES
+autolabeler:
+  - label: "enhancement"
+    branch:
+      - '/feature\/.+/'
+      - '/feat\/.+/'
+  - label: "bug"
+    branch:
+      - '/bug\/.+/'
+      - '/bugfix\/.+/'
+      - '/fix\/.+/'
+  - label: "chore"
+    branch:
+      - '/chore\/.+/'
+      - '/dependabot\/.+/'
+include-labels:
+  - "enhancement"
+  - "bug"
+  - "chore"

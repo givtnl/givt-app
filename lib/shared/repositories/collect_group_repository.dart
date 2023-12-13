@@ -18,7 +18,7 @@ class CollectGroupRepositoryImpl with CollectGroupRepository {
   @override
   Future<List<CollectGroup>> fetchCollectGroupList() async {
     final response = await apiClient.getCollectGroupList();
-    final orgBeaconList = response['OrgBeacons'] as List<dynamic>;
+    final orgBeaconList = response['CGS'] as List<dynamic>;
     final collectGroups = orgBeaconList
         .map((e) => CollectGroup.fromJson(e as Map<String, dynamic>))
         .toList();

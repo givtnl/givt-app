@@ -14,11 +14,13 @@ class OrganisationState extends Equatable {
     this.selectedType = -1,
     this.selectedCollectGroup = const CollectGroup.empty(),
     this.status = OrganisationStatus.initial,
+    this.previousSearchQuery = '',
   });
 
   final List<CollectGroup> organisations;
   final List<CollectGroup> filteredOrganisations;
   final int selectedType;
+  final String previousSearchQuery;
   final CollectGroup selectedCollectGroup;
   final OrganisationStatus status;
 
@@ -28,6 +30,7 @@ class OrganisationState extends Equatable {
     int? selectedType,
     OrganisationStatus? status,
     CollectGroup? selectedCollectGroup,
+    String? previousSearchQuery,
   }) {
     return OrganisationState(
       organisations: organisations ?? this.organisations,
@@ -36,6 +39,7 @@ class OrganisationState extends Equatable {
       selectedType: selectedType ?? this.selectedType,
       status: status ?? this.status,
       selectedCollectGroup: selectedCollectGroup ?? this.selectedCollectGroup,
+      previousSearchQuery: previousSearchQuery ?? this.previousSearchQuery,
     );
   }
 
@@ -45,6 +49,7 @@ class OrganisationState extends Equatable {
         selectedType,
         filteredOrganisations,
         status,
-        selectedCollectGroup
+        selectedCollectGroup,
+        previousSearchQuery,
       ];
 }

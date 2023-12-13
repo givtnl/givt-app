@@ -1,13 +1,24 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:device_region/device_region.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart' as get_it;
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailSignupPage extends StatefulWidget {
   const EmailSignupPage({super.key});
@@ -26,6 +37,7 @@ class EmailSignupPage extends StatefulWidget {
 class _EmailSignupPageState extends State<EmailSignupPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  Country selectedCountry = Country.nl;
   bool _isLoading = false;
 
   void toggleLoading() {
@@ -35,8 +47,60 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    setEmail();
+    setDefaultCountry();
+  }
+
+  Future<void> setEmail() async {
+    var email = context.read<AuthCubit>().state.email;
+    final prefs = await SharedPreferences.getInstance();
+
+    if (email.isEmpty && prefs.containsKey(UserExt.tag)) {
+      final user = UserExt.fromJson(
+        jsonDecode(prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
+      );
+      email = user.email;
+    }
+
+    setState(() {
+      _emailController.text = email;
+    });
+  }
+
+  Future<void> setDefaultCountry() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(UserExt.tag)) {
+      final user = UserExt.fromJson(
+        jsonDecode(prefs.getString(UserExt.tag)!) as Map<String, dynamic>,
+      );
+      setState(() {
+        selectedCountry = Country.fromCode(user.country);
+      });
+      return;
+    }
+
+    final countryCode = await DeviceRegion.getSIMCountryCode();
+
+    if (countryCode == null) {
+      return;
+    }
+    if (countryCode.isEmpty) {
+      return;
+    }
+    if (Country.fromCode(countryCode) == Country.unknown) {
+      return;
+    }
+    setState(() {
+      selectedCountry = Country.fromCode(countryCode);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final locals = AppLocalizations.of(context);
+    final locals = context.l10n;
+
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -51,13 +115,24 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
         child: BlocListener<AuthCubit, AuthState>(
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
-            if (state is AuthLoginRedirect) {
+            if (state.status == AuthStatus.loginRedirect) {
               showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
                 useSafeArea: true,
                 builder: (BuildContext context) => LoginPage(
                   email: state.email.trim(),
+                ),
+              );
+            }
+
+            if (state.status == AuthStatus.noInternet) {
+              showDialog<void>(
+                context: context,
+                builder: (context) => WarningDialog(
+                  title: locals.noInternetConnectionTitle,
+                  content: locals.noInternet,
+                  onConfirm: () => context.pop(),
                 ),
               );
             }
@@ -92,17 +167,47 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
-                          value.contains(Util.emailRegEx) == false) {
-                        return AppLocalizations.of(context).invalidEmail;
+                          !Util.emailRegEx.hasMatch(value)) {
+                        return context.l10n.invalidEmail;
                       }
                       return null;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButtonFormField<Country>(
+                    value: selectedCountry,
+                    decoration: InputDecoration(
+                      labelText: locals.country,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 15,
+                      ),
+                    ),
+                    menuMaxHeight: MediaQuery.sizeOf(context).height * 0.3,
+                    items: Country.sortedCountries()
+                        .where((element) => element != Country.unknown)
+                        .map(
+                          (Country country) => DropdownMenuItem(
+                            value: country,
+                            child: Text(
+                              Country.getCountryIncludingEmoji(
+                                country.countryCode,
+                                locals,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (Country? newValue) {
+                      setState(() {
+                        selectedCountry = newValue!;
+                      });
                     },
                   ),
                   const Spacer(),
                   GestureDetector(
                     onTap: () => showModalBottomSheet<void>(
                       context: context,
-                      showDragHandle: true,
                       isScrollControlled: true,
                       useSafeArea: true,
                       backgroundColor: AppTheme.givtPurple,
@@ -135,7 +240,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           ? () async {
                               toggleLoading();
                               if (_formKey.currentState!.validate()) {
+                                // Update country
+                                _updateCountry();
+
                                 await context.read<AuthCubit>().register(
+                                      country: selectedCountry,
                                       email: _emailController.value.text.trim(),
                                       locale: Localizations.localeOf(context)
                                           .languageCode,
@@ -151,19 +260,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                         locals.continueKey,
                       ),
                     ),
-                  const SizedBox(height: 10),
-                  GestureDetector(
-                    onTap: () => showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      builder: (BuildContext context) => const LoginPage(),
-                    ),
-                    child: _buildAlreadyHaveAnAccount(locals, context),
-                  ),
                 ],
               ),
             ),
@@ -179,27 +275,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     return _emailController.text.isNotEmpty;
   }
 
-  Text _buildAlreadyHaveAnAccount(
-    AppLocalizations locals,
-    BuildContext context,
-  ) =>
-      Text.rich(
-        TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              text: locals.alreadyAnAccount,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(),
-            ),
-            const TextSpan(text: ' '),
-            TextSpan(
-              text: locals.login,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    decoration: TextDecoration.underline,
-                  ),
-            ),
-          ],
-        ),
-        textAlign: TextAlign.center,
-      );
+  void _updateCountry() {
+    var baseUrl = const String.fromEnvironment('API_URL_EU');
+    var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
+
+    if (selectedCountry == Country.us) {
+      baseUrl = const String.fromEnvironment('API_URL_US');
+      baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
+    }
+
+    log('Using API URL: $baseUrl');
+    get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+  }
 }

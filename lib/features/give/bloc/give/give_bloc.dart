@@ -15,7 +15,6 @@ import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:intl/intl.dart';
-import 'package:sprintf/sprintf.dart';
 
 part 'give_event.dart';
 part 'give_state.dart';
@@ -53,6 +52,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   final BeaconRepository _beaconRepository;
   final CollectGroupRepository _collectGroupRepository;
 
+  @override
+  void onTransition(Transition<GiveEvent, GiveState> transition) {
+    log(transition.toString());
+    super.onTransition(transition);
+  }
+
   FutureOr<void> _qrCodeScanned(
     GiveQRCodeScanned event,
     Emitter<GiveState> emit,
@@ -64,17 +69,30 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
       final uri = Uri.parse(event.rawValue);
-      final mediumId = utf8.decode(base64.decode(uri.queryParameters['code']!));
+      final encodedMediumId = uri.queryParameters['code'];
+      if (encodedMediumId == null) {
+        await LoggingInfo.instance
+            .info('code from QR-Code is empty rawValue: ${event.rawValue}');
+        return;
+      }
+
+      final mediumId = utf8.decode(base64.decode(encodedMediumId));
+
+      await _checkQRCode(mediumId: mediumId, emit: emit);
+
+      if (state.status == GiveStatus.beaconNotActive) {
+        return;
+      }
 
       await _processGivts(
         namespace: mediumId,
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -102,9 +120,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
   Future<Organisation> _getOrganisation(String mediumId) async {
     final organisation = await _campaignRepository.getOrganisation(mediumId);
-    organisation.copyWith(mediumId: mediumId);
-
-    return organisation;
+    return organisation.copyWith(mediumId: mediumId);
   }
 
   FutureOr<void> _amountChanged(
@@ -138,10 +154,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -178,10 +194,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -196,24 +212,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     emit(state.copyWith(status: GiveStatus.processingBeaconData));
     try {
-      final hex = StringBuffer();
-      for (final b in event.serviceData[event.serviceUUID]!) {
-        hex.write(sprintf('%02x', [b]));
-      }
-
-      final beaconData = hex.toString();
-      final contains = beaconData.contains('61f7ed01') ||
-          beaconData.contains('61f7ed02') ||
-          beaconData.contains('61f7ed03');
-
-      if (!contains) {
-        emit(state.copyWith(status: GiveStatus.success));
-        return;
-      }
-
-      final startIndex = beaconData.indexOf('61f7ed');
-      final namespace = beaconData.substring(startIndex, startIndex + 20);
-      final instance = beaconData.substring(startIndex + 20, startIndex + 32);
+      final startIndex = event.beaconData.indexOf('61f7ed');
+      final namespace = event.beaconData.substring(startIndex, startIndex + 20);
+      final instance =
+          event.beaconData.substring(startIndex + 20, startIndex + 32);
       final beaconId = '$namespace.$instance';
       final msg = 'Beacon detected $beaconId | RSSI: ${event.rssi}';
 
@@ -224,7 +226,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       await _checkBatteryVoltage(
         int.tryParse(
-          beaconData.substring(26, 30),
+          event.beaconData.substring(26, 30),
           radix: 16,
         ),
         msg,
@@ -255,10 +257,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           emit: emit,
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -276,9 +278,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     final transactionList = _createTransationList(namespace, userGUID);
 
     await _campaignRepository.saveLastDonation(
-      organisation.copyWith(
-        mediumId: namespace,
-      ),
+      organisation,
     );
     try {
       await LoggingInfo.instance.info('Submitting Givts');
@@ -295,14 +295,22 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
-    } on GivtServerFailure catch (e) {
+    } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
-      await LoggingInfo.instance.error(
+      await LoggingInfo.instance.warning(
         body.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
+      if (statusCode == 417) {
+        emit(
+          state.copyWith(
+            status: GiveStatus.donatedToSameOrganisationInLessThan30Seconds,
+          ),
+        );
+        return;
+      }
       emit(
         state.copyWith(status: GiveStatus.error),
       );
@@ -327,7 +335,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (batteryVoltage == null) {
       return;
     }
-    log(msg);
+    await LoggingInfo.instance.info(msg);
     // check for low battery voltage
     if (batteryVoltage > 2450) {
       return;
@@ -349,7 +357,15 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
+      await LoggingInfo.instance
+          .info('QR Code scanned out of app ${event.encodedMediumId}');
       final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
+
+      await _checkQRCode(mediumId: mediumId, emit: emit);
+
+      if (state.status == GiveStatus.beaconNotActive) {
+        return;
+      }
 
       final organisation = await _getOrganisation(mediumId);
       final transactionList = _createTransationList(
@@ -364,11 +380,10 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           givtTransactions: transactionList,
         ),
       );
-    } catch (e) {
-      log(e.toString());
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -390,11 +405,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         body: {'donations': GivtTransaction.toJsonList(state.givtTransactions)},
       );
       emit(state.copyWith(status: GiveStatus.readyToGive));
-    } on SocketException catch (e) {
+    } on SocketException catch (e, stackTrace) {
       log(e.toString());
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(
@@ -435,7 +450,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           event.longitude,
         );
         if (distance < location.radius) {
-          log('Location ${location.name} found in radius at $distance meters');
+          await LoggingInfo.instance.info(
+            'Location ${location.name} found in radius at $distance meters',
+          );
 
           /// if no nearest location set nearest location
           if (state.nearestLocation.beaconId.isEmpty) {
@@ -455,7 +472,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
           /// if closer update nearest location
           if (distanceBetweenPreviousLocation > distance) {
-            log('Location ${location.name} is closer at $distance meters');
+            await LoggingInfo.instance.info(
+              'Location ${location.name} is closer at $distance meters',
+            );
             emit(
               state.copyWith(
                 nearestLocation: location,
@@ -466,17 +485,20 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         }
       }
       if (state.nearestLocation.beaconId.isNotEmpty) {
+        final org = await _getOrganisation(state.nearestLocation.beaconId);
         log('Giving to ${state.nearestLocation.name}');
         emit(
           state.copyWith(
             status: GiveStatus.readyToConfirmGPS,
+            organisation: org,
+            instanceName: state.nearestLocation.name,
           ),
         );
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
@@ -493,12 +515,70 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         userGUID: event.userGUID,
         emit: emit,
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: StackTrace.current.toString(),
+        methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: GiveStatus.error));
     }
+  }
+
+  /// Search for the beacon that belongs to the given [mediumId]
+  /// and return the instanceName that belongs to the beacon
+  Future<QrCode> _getCollectGroupInstanceName(String mediumId) async {
+    final collectGroupList =
+        await _collectGroupRepository.getCollectGroupList();
+    if (!mediumId.contains('.')) {
+      return const QrCode.empty();
+    }
+    final namespace = mediumId.split('.').first;
+    final instance = mediumId.split('.').last;
+    final qrCode = collectGroupList
+        .where((org) => org.nameSpace.startsWith(namespace))
+        .expand((org) => org.qrCodes)
+        .firstWhere(
+          (element) => element.instance.endsWith(instance),
+          orElse: () => const QrCode.empty(),
+        );
+    return qrCode;
+  }
+
+  /// Search for the qrCode that belongs to the given [mediumId]
+  Future<void> _checkQRCode({
+    required String mediumId,
+    required Emitter<GiveState> emit,
+  }) async {
+    /// if the mediumId is accessed from the link the instanceName
+    /// is already known and can be returned and not check
+    if (mediumId.split('.').last.contains('b6')) {
+      return;
+    }
+    if (mediumId.split('.').last.startsWith('6')) {
+      return;
+    }
+
+    final qrCode = await _getCollectGroupInstanceName(mediumId);
+
+    if (qrCode.instance.isEmpty) {
+      emit(state.copyWith(status: GiveStatus.error));
+      return;
+    }
+
+    if (!qrCode.isActive) {
+      final org = await _getOrganisation(mediumId);
+      emit(
+        state.copyWith(
+          status: GiveStatus.beaconNotActive,
+          organisation: org,
+        ),
+      );
+      return;
+    }
+    emit(
+      state.copyWith(
+        instanceName: qrCode.name,
+      ),
+    );
   }
 }

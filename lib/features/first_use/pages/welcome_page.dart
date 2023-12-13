@@ -2,22 +2,32 @@ import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/auth/local_auth_info.dart';
+import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
-import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({super.key});
-
+  const WelcomePage({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
-    return const WelcomePageView();
+    return WelcomePageView(
+      prefs: prefs,
+    );
   }
 }
 
 class WelcomePageView extends StatefulWidget {
-  const WelcomePageView({super.key});
-
+  const WelcomePageView({required this.prefs, super.key});
+  final SharedPreferences prefs;
   @override
   State<WelcomePageView> createState() => _WelcomePageViewState();
 }
@@ -46,7 +56,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         ),
         title: Image.asset(
           'assets/images/logo.png',
-          height: size.height * 0.04,
+          height: 30,
         ),
       ),
       body: SafeArea(
@@ -54,57 +64,77 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              _buildCarouselSlider(size, imageNames, locals, locale),
-              Expanded(child: Container()),
-              _buildAnimatedBottomIndexes(imageNames, size, context),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  EmailSignupPage.route(),
-                ),
-                child: Text(
-                  locals.welcomeContinue,
+              Expanded(
+                child: _buildCarouselSlider(
+                  size,
+                  imageNames,
+                  locals,
+                  locale,
                 ),
               ),
-              const SizedBox(height: 10),
-              GestureDetector(
-                onTap: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  builder: (BuildContext context) => const LoginPage(),
+              _buildAnimatedBottomIndexes(imageNames, size, context),
+              Padding(
+                padding: const EdgeInsets.only(top: 15),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (!await getIt<NetworkInfo>()
+                        .isConnected) {
+                      if (!context.mounted) {
+                        return;
+                      }
+                      await showDialog<void>(
+                        context: context,
+                        builder: (_) => WarningDialog(
+                          title: locals.noInternetConnectionTitle,
+                          content: locals.noInternet,
+                        ),
+                      );
+                      return;
+                    }
+                    if (!context.mounted) {
+                      return;
+                    }
+                    // Without biometrics we use the regular route to login
+                    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+                      if (!mounted) {
+                        return;
+                      }
+                      await Navigator.of(context).push(EmailSignupPage.route());
+                      return;
+                    }
+
+                    final hasAuthenticated =
+                        await LocalAuthInfo.instance.authenticate();
+
+                    // When not authenticated we go to the regular route
+                    if (!hasAuthenticated) {
+                      if (!mounted) {
+                        return;
+                      }
+
+                      await Navigator.of(context).push(EmailSignupPage.route());
+                      return;
+                    }
+
+                    // When authenticated we go to the home route
+                    if (!mounted) {
+                      return;
+                    }
+                    await context.read<AuthCubit>().authenticate();
+                    if (!mounted) {
+                      return;
+                    }
+
+                    context.goNamed(Pages.home.name);
+                  },
+                  child: Text(
+                    locals.welcomeContinue,
+                  ),
                 ),
-                child: _buildAlreadyAnAccountLogin(context, locals),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  RichText _buildAlreadyAnAccountLogin(
-    BuildContext context,
-    AppLocalizations locals,
-  ) {
-    return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: Theme.of(context).textTheme.titleSmall,
-        children: [
-          TextSpan(
-            text: locals.alreadyAnAccount,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(),
-          ),
-          const TextSpan(text: ' '),
-          TextSpan(
-            text: locals.login,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  decoration: TextDecoration.underline,
-                ),
-          ),
-        ],
       ),
     );
   }
@@ -119,7 +149,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
         carouselController: _controller,
         options: CarouselOptions(
           enableInfiniteScroll: false,
-          height: size.height * 0.65,
+          height: size.height * 0.5,
           viewportFraction: 1,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
@@ -181,23 +211,23 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       }
 
       carouselItems.add(
-        Column(
+        Flex(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          direction: Axis.vertical,
           children: [
             SizedBox(
-              height: size.height * 0.04,
-            ),
-            _buildTitleAndSubtitle(
-              title: title,
-              subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
-            ),
-            SizedBox(
-              height: size.height * 0.04,
+              height: 75,
+              child: _buildTitleAndSubtitle(
+                title: title,
+                subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
+              ),
             ),
             Image.asset(
               'assets/images/${isFirst && locale.contains('nl') ? '${path}_${locale.split('_')[0]}' : path}.png',
               fit: BoxFit.cover,
-              height: size.height * 0.4,
+              height: size.height * 0.3,
             ),
+            Container(),
           ],
         ),
       );
@@ -224,7 +254,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 fontWeight: isFirst ? FontWeight.w300 : FontWeight.bold,
               ),
-        )
+        ),
       ],
     );
   }
