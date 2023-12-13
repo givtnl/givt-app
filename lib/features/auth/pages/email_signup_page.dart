@@ -164,6 +164,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                       hintText: locals.email,
                     ),
                     keyboardType: TextInputType.emailAddress,
+                    autofillHints: const [
+                      AutofillHints.username,
+                      AutofillHints.email
+                    ],
+                    autocorrect: false,
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
