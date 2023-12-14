@@ -132,9 +132,7 @@ class _SetupGivingGoalBottomSheetState
     return TextFormField(
       style: Theme.of(context).textTheme.bodyLarge,
       controller: amountController,
-      keyboardType: const TextInputType.numberWithOptions(
-        decimal: true,
-      ),
+      keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.allow(
           Util.numberInputFieldRegExp(),

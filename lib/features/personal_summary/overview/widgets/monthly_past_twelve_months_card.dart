@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
@@ -15,6 +16,8 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
     final user = context.read<AuthCubit>().state.user;
     final currency = Util.getCurrencySymbol(countryCode: user.country);
     final textTheme = Theme.of(context).textTheme.bodyMedium;
+    final country = Country.fromCode(user.country);
+
     return CardLayout(
       title: locals.budgetSummaryMonth,
       child: BlocBuilder<PersonalSummaryBloc, PersonalSummaryState>(
@@ -42,8 +45,12 @@ class MonthlyPastTwelveMonthsCard extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          '$currency ${state.givingGoal.amount}',
+                          '$currency ${Util.formatNumberComma(
+                            state.givingGoal.monthlyGivingGoal,
+                            country,
+                          )}',
                           style: textTheme!.copyWith(
+                            fontSize: 13,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),

@@ -46,7 +46,7 @@ class NarrowCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '$currency ${Util.formatNumberComma(state.totalSumPerMonth, Country.fromCode(userCountry))}',
+              '''$currency ${Util.formatNumberComma(state.totalSumPerMonth, Country.fromCode(userCountry))}''',
               style: const TextStyle(
                 fontSize: 24,
                 color: Colors.white,
