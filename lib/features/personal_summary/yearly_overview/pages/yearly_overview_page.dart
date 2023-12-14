@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
 import 'package:givt_app/features/personal_summary/yearly_detail/pages/yearly_detail_bottom_sheet.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/cubit/yearly_overview_cubit.dart';
+import 'package:givt_app/features/personal_summary/yearly_overview/dialogs/dialogs.dart';
 import 'package:givt_app/features/personal_summary/yearly_overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -28,11 +29,12 @@ class YearlyOverviewPage extends StatelessWidget {
           builder: (context, state) {
             if (state.status == YearlyOverviewStatus.loading) {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator.adaptive(),
               );
             }
 
-            final personalSummaryState = context.read<PersonalSummaryBloc>().state;
+            final personalSummaryState =
+                context.read<PersonalSummaryBloc>().state;
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.personalSummaryYearLoaded,
               eventProperties: {
@@ -59,24 +61,27 @@ class YearlyOverviewPage extends StatelessWidget {
                 ),
                 _buildDownloadAnnualOverviewButton(
                   context: context,
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => BlocProvider.value(
-                        value: context.read<YearlyOverviewCubit>(),
-                        child: const YearlyDetailBottomSheet(),
-                      ),
-                    );
-
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.downloadAnnualOverviewClicked,
-                      eventProperties: {
-                        'year': yearlyOverviewBlocState.year,
-                      },
-                    );
-                  },
+                  onTap: () => _showFirstUseDialog(
+                    context,
+                    onTap: () {
+                      showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        builder: (_) => BlocProvider.value(
+                          value: context.read<YearlyOverviewCubit>(),
+                          child: const YearlyDetailBottomSheet(),
+                        ),
+                      );
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.downloadAnnualOverviewClicked,
+                        eventProperties: {
+                          'year': yearlyOverviewBlocState.year,
+                        },
+                      );
+                    },
+                  ),
                 ),
                 SummaryCard(
                   totalWithinGivt: yearlyOverviewBlocState.totalWithinGivt,
@@ -116,6 +121,21 @@ class YearlyOverviewPage extends StatelessWidget {
         child: Text(
           context.l10n.budgetYearlyOverviewDownloadButton,
           style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  void _showFirstUseDialog(
+    BuildContext context, {
+    required VoidCallback onTap,
+  }) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => BlocProvider.value(
+        value: context.read<PersonalSummaryBloc>(),
+        child: FirstUseYearlyDialog(
+          onTap: onTap,
         ),
       ),
     );

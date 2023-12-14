@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
+import 'package:givt_app/features/personal_summary/overview/dialogs/dialogs.dart';
 import 'package:givt_app/features/personal_summary/overview/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalSummary extends StatelessWidget {
   const PersonalSummary({super.key});
@@ -15,6 +18,14 @@ class PersonalSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final isShown =
+          getIt<SharedPreferences>().getBool(Util.testimonialsSummaryKey) ??
+              false;
+      if (!isShown) {
+        _showFirstUseDialogs(context);
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.budgetMenuView),
@@ -49,7 +60,9 @@ class PersonalSummary extends StatelessWidget {
             builder: (context, state) {
               if (state.status == PersonalSummaryStatus.loading ||
                   state.status == PersonalSummaryStatus.initial) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
               }
               return Column(
                 children: [
@@ -119,4 +132,14 @@ class PersonalSummary extends StatelessWidget {
           ),
         ),
       );
+
+  void _showFirstUseDialogs(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => BlocProvider.value(
+        value: context.read<PersonalSummaryBloc>(),
+        child: const FirstUseSummaryDialog(),
+      ),
+    );
+  }
 }

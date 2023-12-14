@@ -300,7 +300,7 @@ class _OverviewPageState extends State<OverviewPage> {
 
   Widget _buildLoadingScaffold() => const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator.adaptive(),
         ),
       );
 
