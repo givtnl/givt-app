@@ -60,7 +60,9 @@ class _PresetFormFieldState extends State<PresetFormField> {
             decimal: true,
           ),
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d+([,.]\d{0,2})?')),
+            FilteringTextInputFormatter.allow(
+              Util.numberInputFieldRegExp(),
+            ),
           ],
           onChanged: (value) {
             widget.onChanged(value);
