@@ -37,7 +37,13 @@ class AuthUtils {
         return;
       }
       await context.read<AuthCubit>().refreshSession();
-      navigate();
+
+      /// Because the session is refreshed and the router needs to respond
+      /// we will delay the navigation by 100 milliseconds.
+      Future.delayed(
+        const Duration(milliseconds: 100),
+        navigate,
+      );
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
