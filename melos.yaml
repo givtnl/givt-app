@@ -1,0 +1,13 @@
+name: givt_app
+
+packages:
+  - packages/**
+
+command: 
+  bootstrap:
+    usePubspecOverrides: true
+
+scripts: 
+  install: 
+    run: melos exec -c 6 flutter pub get
+    description: Install dependencies
