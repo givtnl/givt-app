@@ -30,8 +30,8 @@ class GiveBTBeaconScanned extends GiveEvent {
 
   final String macAddress;
   final int rssi;
-  final String serviceUUID;
-  final Map<String, List<int>> serviceData;
+  final Guid serviceUUID;
+  final Map<Guid, List<int>> serviceData;
   final String userGUID;
   final bool threshold;
   final String beaconData;
