@@ -20,9 +20,7 @@ class QrCodeScanPage extends StatefulWidget {
 }
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
-  final _controller = MobileScannerController(
-    detectionSpeed: DetectionSpeed.noDuplicates,
-  );
+  final _controller = MobileScannerController();
 
   Future<void> isAllowed() async {
     final isAllowed = await Permission.camera.isGranted;
@@ -146,20 +144,8 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
 
     if (!mounted) return;
 
-    final rawValue = barcodeCapture.barcodes.first.rawValue;
+    final encodedMediumId = isGivtQRCode(barcodeCapture.barcodes);
 
-    if (rawValue == null) {
-      await LoggingInfo.instance.info('code from QR-Code is empty');
-      return;
-    }
-
-    final uri = Uri.tryParse(rawValue);
-    if (uri == null) {
-      await LoggingInfo.instance.info('QR-Code is not a valid URI');
-      await displayErrorDialog();
-      return;
-    }
-    final encodedMediumId = uri.queryParameters['code'];
     if (encodedMediumId == null) {
       await LoggingInfo.instance.info('QR-Code does not contain a medium id');
       await displayErrorDialog();
@@ -172,6 +158,34 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
             userGuid,
           ),
         );
+  }
+
+  /// Checks if the given barcodes contain a Givt QR code.
+  /// Returns the encoded medium id if it is a Givt QR code, 
+  /// otherwise null.
+  String? isGivtQRCode(List<Barcode> barcodes) {
+    for (final barcode in barcodes) {
+      final rawValue = barcode.rawValue;
+
+      if (rawValue == null) {
+        continue;
+      }
+      final uri = Uri.tryParse(rawValue);
+
+      if (uri == null) {
+        continue;
+      }
+
+      final encodedMediumId = uri.queryParameters['code'];
+
+      if (encodedMediumId == null) {
+        continue;
+      }
+
+      return encodedMediumId;
+
+    }
+    return null;
   }
 
   Future<void> displayErrorDialog() async {
