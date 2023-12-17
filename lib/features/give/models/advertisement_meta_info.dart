@@ -9,11 +9,31 @@ class AdvertisementMetaInfo extends Equatable {
     required this.country,
   });
 
+  factory AdvertisementMetaInfo.fromJson(Map<String, dynamic> json) {
+    return AdvertisementMetaInfo(
+      creationDate: DateTime.parse(json['creationDate'] as String),
+      changedDate: DateTime.parse(json['changedDate'] as String),
+      featured: json['featured'] as bool,
+      availableLanguages: json['availableLanguages'] as String,
+      country: json['country'] as String,
+    );
+  }
+
   final DateTime creationDate;
   final DateTime changedDate;
   final bool featured;
   final String availableLanguages;
   final String country;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'creationDate': creationDate.toIso8601String(),
+      'changedDate': changedDate.toIso8601String(),
+      'featured': featured,
+      'availableLanguages': availableLanguages,
+      'country': country,
+    };
+  }
 
   AdvertisementMetaInfo copyWith({
     DateTime? creationDate,

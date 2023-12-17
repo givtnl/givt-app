@@ -10,11 +10,33 @@ class Advertisement extends Equatable {
     required this.metaInfo,
   });
 
+  factory Advertisement.fromJson(Map<String, dynamic> json) {
+    return Advertisement(
+      id: json['id'] as String,
+      title: json['title'] as Map<String, String>,
+      text: json['text'] as Map<String, String>,
+      imageUrl: json['imageUrl'] as Map<String, String>,
+      metaInfo: AdvertisementMetaInfo.fromJson(
+        json['metaInfo'] as Map<String, dynamic>,
+      ),
+    );
+  }
+
   final String id;
   final Map<String, String> title;
   final Map<String, String> text;
   final Map<String, String> imageUrl;
   final AdvertisementMetaInfo metaInfo;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'text': text,
+      'imageUrl': imageUrl,
+      'metaInfo': metaInfo.toJson(),
+    };
+  }
 
   Advertisement copyWith({
     String? id,
