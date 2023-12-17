@@ -69,15 +69,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      final uri = Uri.parse(event.rawValue);
-      final encodedMediumId = uri.queryParameters['code'];
-      if (encodedMediumId == null) {
-        await LoggingInfo.instance
-            .info('code from QR-Code is empty rawValue: ${event.rawValue}');
-        return;
-      }
 
-      final mediumId = utf8.decode(base64.decode(encodedMediumId));
+      final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 
