@@ -655,6 +655,9 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.authenticated) {
+      if (routerState.name == Pages.home.name) {
+        return;
+      }
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.uri.queryParameters,
