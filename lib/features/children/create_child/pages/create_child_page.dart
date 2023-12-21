@@ -141,8 +141,11 @@ class _CreateChildPageState extends State<CreateChildPage> {
                       ),
                       Container(
                         padding: const EdgeInsets.all(20),
-                        // minus 30 for the top padding and 3.5% of the screen height for logo
-                        height: size.height - 30 - size.height * 0.035,
+                        height: View.of(context).viewInsets.bottom <= 0
+                            ? size.height -
+                                View.of(context).viewPadding.top +
+                                40
+                            : size.height * 0.62,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
