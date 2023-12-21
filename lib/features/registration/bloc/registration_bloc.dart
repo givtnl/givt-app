@@ -131,6 +131,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       log(response);
 
       await authCubit.refreshUser();
+      await authCubit.refreshSession();
       final user = authCubit.state.user;
       if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
         emit(
