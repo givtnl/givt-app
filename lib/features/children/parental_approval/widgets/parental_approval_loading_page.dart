@@ -6,9 +6,12 @@ class ParentalApprovalLoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: CircularProgressIndicator(
-        color: AppTheme.givtBlue,
+    return SizedBox(
+      height: MediaQuery.sizeOf(context).height * 0.35,
+      child: const Center(
+        child: CircularProgressIndicator(
+          color: AppTheme.givtBlue,
+        ),
       ),
     );
   }
