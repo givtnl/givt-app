@@ -6,4 +6,5 @@ export 'qr_code.dart';
 export 'stripe_response.dart';
 export 'summary_item.dart';
 export 'temp_user.dart';
+export 'testimonials.dart';
 export 'user_ext.dart';

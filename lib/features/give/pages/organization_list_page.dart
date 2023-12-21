@@ -80,6 +80,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: CupertinoSearchTextField(
+                  autocorrect: false,
                   focusNode: focusNode,
                   onChanged: (value) => context
                       .read<OrganisationBloc>()

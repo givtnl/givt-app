@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -68,15 +69,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      final uri = Uri.parse(event.rawValue);
-      final encodedMediumId = uri.queryParameters['code'];
-      if (encodedMediumId == null) {
-        await LoggingInfo.instance
-            .info('code from QR-Code is empty rawValue: ${event.rawValue}');
-        return;
-      }
 
-      final mediumId = utf8.decode(base64.decode(encodedMediumId));
+      final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
 

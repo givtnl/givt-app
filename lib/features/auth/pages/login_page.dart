@@ -164,8 +164,12 @@ class _LoginPageState extends State<LoginPage> {
               CustomTextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
                 readOnly: widget.popWhenSuccess,
-                autofillHints: const [AutofillHints.username],
+                autofillHints: const [
+                  AutofillHints.username,
+                  AutofillHints.email
+                ],
                 onChanged: (value) {
                   setState(() {
                     formKey.currentState!.validate();
@@ -184,6 +188,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 15),
               CustomTextFormField(
                 controller: passwordController,
+                autocorrect: false,
                 autofillHints: const [AutofillHints.password],
                 keyboardType: TextInputType.visiblePassword,
                 onChanged: (value) {

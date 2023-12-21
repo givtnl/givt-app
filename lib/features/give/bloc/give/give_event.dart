@@ -8,13 +8,13 @@ abstract class GiveEvent extends Equatable {
 }
 
 class GiveQRCodeScanned extends GiveEvent {
-  const GiveQRCodeScanned(this.rawValue, this.userGUID);
+  const GiveQRCodeScanned(this.encodedMediumId, this.userGUID);
 
-  final String rawValue;
+  final String encodedMediumId;
   final String userGUID;
 
   @override
-  List<Object> get props => [rawValue, userGUID];
+  List<Object> get props => [encodedMediumId, userGUID];
 }
 
 class GiveBTBeaconScanned extends GiveEvent {
@@ -30,8 +30,8 @@ class GiveBTBeaconScanned extends GiveEvent {
 
   final String macAddress;
   final int rssi;
-  final String serviceUUID;
-  final Map<String, List<int>> serviceData;
+  final Guid serviceUUID;
+  final Map<Guid, List<int>> serviceData;
   final String userGUID;
   final bool threshold;
   final String beaconData;

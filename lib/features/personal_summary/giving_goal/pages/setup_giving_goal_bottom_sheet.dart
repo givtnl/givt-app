@@ -132,6 +132,7 @@ class _SetupGivingGoalBottomSheetState
     return TextFormField(
       style: Theme.of(context).textTheme.bodyLarge,
       controller: amountController,
+      keyboardType: TextInputType.number,
       inputFormatters: [
         FilteringTextInputFormatter.allow(
           Util.numberInputFieldRegExp(),
@@ -206,7 +207,8 @@ class _SetupGivingGoalBottomSheetState
         );
 
     AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.givingGoalSaved, eventProperties: { 
+        eventName: AmplitudeEvents.givingGoalSaved,
+        eventProperties: {
           'amount': amountController.text,
           'periodicity': frequency,
         });

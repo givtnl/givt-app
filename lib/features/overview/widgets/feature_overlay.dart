@@ -55,20 +55,20 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
-                color: AppTheme.givtBlue.withOpacity(0.9),
+                color: AppTheme.givtShowcaseBlue.withOpacity(0.9),
               ),
             ),
             Positioned.fromRect(
-              rect: Rect.fromLTWH(
-                0,
-                size.height / 2,
-                size.width,
-                200,
+              rect: Rect.fromCenter(
+                center: Offset(size.width / 2, size.height + 100),
+                width: size.width,
+                height: size.height,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       locals.cancelFeatureTitle,

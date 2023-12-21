@@ -37,6 +37,7 @@ class AuthUtils {
         return;
       }
       await context.read<AuthCubit>().refreshSession();
+
       navigate();
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
