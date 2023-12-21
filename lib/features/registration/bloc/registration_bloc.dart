@@ -232,6 +232,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
 
     if (user.tempUser == false) {
+      await authCubit.refreshSession();
       emit(state.copyWith(status: RegistrationStatus.success));
     } else {
       emit(state.copyWith(status: RegistrationStatus.failure));
