@@ -8,9 +8,9 @@ class AppUpdate extends Equatable {
   });
 
   factory AppUpdate.fromJson(Map<String, dynamic> json) => AppUpdate(
-        buildNumber: json['buildNumber'] as int,
-        critical: json['critical'] as bool,
-        deviceOS: json['deviceOS'] as int,
+        buildNumber: json['BuildNumber'] as int,
+        critical: json['Critical'] as bool,
+        deviceOS: json['DeviceOS'] as int,
       );
 
   final int buildNumber;
