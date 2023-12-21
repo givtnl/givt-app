@@ -132,7 +132,7 @@ class _CreateChildPageState extends State<CreateChildPage> {
               return SingleChildScrollView(
                 child: Container(
                   padding: const EdgeInsets.all(20),
-                  height: size.height - View.of(context).viewPadding.top,
+                  height: size.height * 0.82,
                   width: double.infinity,
                   child: Column(
                     children: [
@@ -207,19 +207,19 @@ class _CreateChildPageState extends State<CreateChildPage> {
                       // Add a spacer if the keyboard is not visible
                       if (View.of(context).viewInsets.bottom <= 0)
                         const Spacer(),
-
-                      ElevatedButton(
-                        onPressed: _createChildProfile,
-                        child: Text(
-                          context.l10n.createChildProfileButton,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .copyWith(
-                                color: Colors.white,
-                              ),
+                      if (View.of(context).viewInsets.bottom > 0)
+                        ElevatedButton(
+                          onPressed: _createChildProfile,
+                          child: Text(
+                            context.l10n.createChildProfileButton,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -230,6 +230,21 @@ class _CreateChildPageState extends State<CreateChildPage> {
           },
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: (View.of(context).viewInsets.bottom <= 0)
+          ? Padding(
+              padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
+              child: ElevatedButton(
+                onPressed: _createChildProfile,
+                child: Text(
+                  context.l10n.createChildProfileButton,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            )
+          : SizedBox(),
     );
   }
 }
