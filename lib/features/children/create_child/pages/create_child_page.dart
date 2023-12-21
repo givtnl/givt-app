@@ -141,7 +141,8 @@ class _CreateChildPageState extends State<CreateChildPage> {
                       ),
                       Container(
                         padding: const EdgeInsets.all(20),
-                        height: size.height * 0.82,
+                        // minus 30 for the top padding and 3.5% of the screen height for logo
+                        height: size.height - 30 - size.height * 0.035,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -209,7 +210,22 @@ class _CreateChildPageState extends State<CreateChildPage> {
                               keyboardType: TextInputType.number,
                             ),
                             const GivingAllowanceInfoButton(),
-                            const SizedBox(height: 80),
+                            // Add a spacer if the keyboard is not visible
+                            if (View.of(context).viewInsets.bottom <= 0)
+                              const Spacer(),
+
+                            ElevatedButton(
+                              onPressed: _createChildProfile,
+                              child: Text(
+                                context.l10n.createChildProfileButton,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .copyWith(
+                                      color: Colors.white,
+                                    ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -221,19 +237,6 @@ class _CreateChildPageState extends State<CreateChildPage> {
               return Container();
             }
           },
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
-        child: ElevatedButton(
-          onPressed: _createChildProfile,
-          child: Text(
-            context.l10n.createChildProfileButton,
-            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                  color: Colors.white,
-                ),
-          ),
         ),
       ),
     );
