@@ -39,7 +39,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
               ),
         ),
         const SizedBox(
-          height: 25,
+          height: 15,
         ),
         RichText(
           text: TextSpan(
@@ -61,7 +61,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 10),
         Text(
           context.l10n.childParentalApprovalConfirmationSubTitle(
             donation.organizationName,
