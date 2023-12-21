@@ -9,6 +9,7 @@ mixin InfraRepository {
 
   Future<AppUpdate?> checkAppUpdate({
     required String buildNumber,
+    required String platform,
   });
 }
 
@@ -33,10 +34,12 @@ class InfraRepositoryImpl with InfraRepository {
   @override
   Future<AppUpdate?> checkAppUpdate({
     required String buildNumber,
+    required String platform,
   }) async {
     final response = await apiClient.checkAppUpdate(
       {
         'buildNumber': buildNumber,
+        'deviceOS': platform,
       },
     );
 
