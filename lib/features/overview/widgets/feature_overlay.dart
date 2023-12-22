@@ -59,10 +59,11 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
               ),
             ),
             Positioned.fromRect(
-              rect: Rect.fromCenter(
-                center: Offset(size.width / 2, size.height + 100),
-                width: size.width,
-                height: size.height,
+              rect: Rect.fromLTWH(
+                0,
+                size.height / 2,
+                size.width,
+                200,
               ),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
