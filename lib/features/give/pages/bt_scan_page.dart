@@ -76,6 +76,24 @@ class _BTScanPageState extends State<BTScanPage> {
           }
         case BluetoothAdapterState.unauthorized:
           await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
+          if (!context.mounted) {
+            return;
+          }
+          await showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: context.l10n.authoriseBluetooth,
+              content:
+                  '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
+              onConfirm: () async {
+                await startBluetoothScan();
+                if (!context.mounted) {
+                  return;
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          );
         case BluetoothAdapterState.off:
           await LoggingInfo.instance.info('Bluetooth adapter is off');
           if (Platform.isAndroid) {
@@ -160,7 +178,7 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      // When not searching for a beacon we wanna 
+      // When not searching for a beacon we wanna
       // ignore the rest of the scan results
       if (!isSearching) {
         return;
