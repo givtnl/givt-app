@@ -26,20 +26,18 @@ class ParentalApprovalDialog extends StatelessWidget {
         donation: donation,
         decisionRepository: getIt(),
       ),
-      child: Center(
-        child: SizedBox(
-          width: size.width * 0.75,
-          height: size.width * 0.75,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: size.width * 0.1,
+        ),
+        child: Center(
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
             elevation: 7,
             child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30,
-                vertical: 10,
-              ),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(25),

@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.0.21
+version: 4.0.22
 publish_to: none
 
 environment:
@@ -14,7 +14,7 @@ dependencies:
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.6
   currency_text_input_formatter: ^2.1.10
-  device_info_plus: ^9.0.2
+  device_info_plus: ^9.1.1
   device_region:
     path: ./packages/flutter_device_region
   diacritic: ^0.1.4
@@ -48,7 +48,7 @@ dependencies:
   jiffy: ^6.2.1
   local_auth: ^2.1.7
   logging: ^1.2.0
-  mobile_scanner: ^2.1.0
+  mobile_scanner: ^3.5.5
   package_info_plus: ^4.0.2
   permission_handler: ^10.4.3
   share_plus: ^7.0.2

@@ -44,7 +44,7 @@ class LoggingInfo implements ILoggingInfo {
       ),
       level: level.toString(),
       message: message,
-      lang: Intl.getCurrentLocale(),
+      lang: Platform.localeName,
       method: methodName,
       appVersion: '${info.version}.${info.buildNumber}',
     );
