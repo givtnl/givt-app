@@ -247,17 +247,20 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () async {
-              
-              final packageName =
-                  (await PackageInfo.fromPlatform()).packageName;
-              final url = Platform.isAndroid
-                  ? 'market://details?id=$packageName'
-                  : 'https://apps.apple.com/app/id$packageName';
+              try {
+                final packageName =
+                    (await PackageInfo.fromPlatform()).packageName;
+                final url = Platform.isAndroid
+                    ? 'market://details?id=$packageName'
+                    : 'https://apps.apple.com/app/id$packageName';
 
-              await launchUrlString(
-                url,
-                mode: LaunchMode.externalApplication,
-              );
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              } catch (e) {
+                await LoggingInfo.instance.error(e.toString());
+              }
             },
             child: Text(
               locals.continueKey,
