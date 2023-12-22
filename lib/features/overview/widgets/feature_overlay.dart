@@ -41,6 +41,7 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
     final textTheme = Theme.of(context).textTheme;
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () {
         getIt<SharedPreferences>().setBool(Util.cancelFeatureOverlayKey, true);
         widget.onDismiss();
@@ -54,7 +55,7 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
-                color: AppTheme.givtLightBlue.withOpacity(0.9),
+                color: AppTheme.givtShowcaseBlue.withOpacity(0.9),
               ),
             ),
             Positioned.fromRect(
@@ -65,24 +66,27 @@ class _FeatureOverlayState extends State<FeatureOverlay> {
                 200,
               ),
               child: Padding(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.fromLTRB(10, 30, 10, 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       locals.cancelFeatureTitle,
                       style: textTheme.bodyLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       ),
                       textAlign: TextAlign.start,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 4),
                     Text(
                       locals.cancelFeatureMessage,
                       style: textTheme.bodyLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
+                        fontSize: 16,
                       ),
                       textAlign: TextAlign.start,
                     ),

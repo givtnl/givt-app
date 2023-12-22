@@ -181,6 +181,15 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
+                visible: Country.us.countryCode == user.country,
+                icon: const Icon(
+                  FontAwesomeIcons.creditCard,
+                  color: AppTheme.givtOrange,
+                ),
+                value:
+                    '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
+              ),
+              _buildInfoRow(
                 visible: isUkUser,
                 icon: Image.asset(
                   'assets/images/gift_aid_yellow.png',

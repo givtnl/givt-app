@@ -31,7 +31,7 @@ class AppBlocObserver extends BlocObserver {
 }
 
 @pragma('vm:entry-point')
-Future<void> _processOfflineDonations(RemoteMessage message) async {
+Future<void> _processBackgroundNotification(RemoteMessage message) async {
   final (name, options) = await _firebaseOptions;
   await Firebase.initializeApp(
     name: name,
@@ -57,7 +57,8 @@ Future<void> bootstrap(
   await LoggingInfo.instance.info('App started');
   await get_it.init();
   await get_it.getIt.allReady();
-  FirebaseMessaging.onBackgroundMessage(_processOfflineDonations);
+  await FirebaseMessaging.instance.requestPermission();
+  FirebaseMessaging.onBackgroundMessage(_processBackgroundNotification);
   tz.initializeTimeZones();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);

@@ -131,6 +131,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       log(response);
 
       await authCubit.refreshUser();
+      await authCubit.refreshSession();
       final user = authCubit.state.user;
       if (user.sortCode.isNotEmpty && user.accountNumber.isNotEmpty) {
         emit(
@@ -232,6 +233,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
 
     if (user.tempUser == false) {
+      await authCubit.refreshSession();
       emit(state.copyWith(status: RegistrationStatus.success));
     } else {
       emit(state.copyWith(status: RegistrationStatus.failure));

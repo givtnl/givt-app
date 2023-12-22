@@ -35,5 +35,11 @@ class InfraFailure extends InfraState {
   List<Object> get props => [];
 }
 
+class InfraUpdateAvailable extends InfraState {
+  const InfraUpdateAvailable(this.appUpdate);
 
+  final AppUpdate appUpdate;
 
+  @override
+  List<Object> get props => [appUpdate];
+}

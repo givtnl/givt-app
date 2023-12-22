@@ -7,8 +7,8 @@ mixin NetworkInfo {
 class NetworkInfoImpl implements NetworkInfo {
   NetworkInfoImpl(this.connectionChecker);
 
-  final InternetConnectionCheckerPlus connectionChecker;
+  final InternetConnection connectionChecker;
 
   @override
-  Future<bool> get isConnected => connectionChecker.hasConnection;
+  Future<bool> get isConnected => connectionChecker.hasInternetAccess;
 }

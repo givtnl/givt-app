@@ -12,6 +12,7 @@ class AppTheme {
   static const givtGraycece = Color(0xFFcecece);
   static const givtGrayf7f6f8 = Color(0xFFf7f6f8);
   static const givtGrayf3f3f3 = Color(0xFFf3f3f3);
+  static const givtShowcaseBlue = Color(0x0f4e6787);
 
   static const givtPurple = Color(0xFF2e2957);
   static const givtLightPurple = Color(0xFF5a5387);
@@ -57,7 +58,7 @@ class AppTheme {
   static const childParentalApprovalDecline = Color(0xFF9A3F3F);
 
   static final ThemeData lightTheme = ThemeData(
-    // useMaterial3: true,
+    useMaterial3: false,
     fontFamily: 'AvenirLTStd',
     colorScheme: lightColorScheme,
     scaffoldBackgroundColor: Colors.white,

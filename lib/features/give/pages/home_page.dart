@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +13,18 @@ import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -41,6 +49,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<InfraCubit>().checkForUpdate();
+    });
   }
 
   @override
@@ -120,29 +131,43 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: const CustomNavigationDrawer(),
-      body: BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
-        listener: (context, state) {
-          if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
-            var syncString =
-                'Synced successfully Sim ${getIt<CountryIsoInfo>().countryIso}';
-            if (widget.code.isNotEmpty) {
-              syncString += ' with mediumId/code ${widget.code}';
-            }
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  syncString,
-                ),
-              ),
-            );
-          }
-          if (state is RemoteDataSourceSyncInProgress) {
-            if (!auth.user.needRegistration || auth.user.mandateSigned) {
-              return;
-            }
-            _buildNeedsRegistrationDialog(context);
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
+            listener: (context, state) {
+              if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
+                var syncString =
+                    'Synced successfully Sim //${getIt<CountryIsoInfo>().countryIso}';
+                if (widget.code.isNotEmpty) {
+                  syncString += ' with mediumId/code ${widget.code}';
+                }
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      syncString,
+                    ),
+                  ),
+                );
+              }
+              if (state is RemoteDataSourceSyncInProgress) {
+                if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                  return;
+                }
+                _buildNeedsRegistrationDialog(context);
+              }
+            },
+          ),
+          BlocListener<InfraCubit, InfraState>(
+            listener: (context, state) {
+              if (state is InfraUpdateAvailable) {
+                _displayUpdateDialog(
+                  context,
+                  state.appUpdate,
+                );
+              }
+            },
+          ),
+        ],
         child: SafeArea(
           child: _HomePageView(
             given: widget.given,
@@ -194,6 +219,51 @@ class _HomePageState extends State<HomePage> {
             },
             child: Text(
               context.l10n.finalizeRegistration,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _displayUpdateDialog(BuildContext context, AppUpdate appUpdate) {
+    final locals = context.l10n;
+    var title = locals.updateAlertTitle;
+    var content = locals.updateAlertMessage;
+    if (appUpdate.critical) {
+      title = locals.criticalUpdateTitle;
+      content = locals.criticalUpdateMessage;
+    }
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: !appUpdate.critical,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              try {
+                final packageName =
+                    (await PackageInfo.fromPlatform()).packageName;
+                final url = Platform.isAndroid
+                    ? 'market://details?id=$packageName'
+                    : 'https://apps.apple.com/app/id$packageName';
+
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              } catch (e) {
+                await LoggingInfo.instance.error(e.toString());
+              }
+            },
+            child: Text(
+              locals.continueKey,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
