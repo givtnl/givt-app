@@ -177,48 +177,50 @@ class _FeatureState extends State<Feature> {
       AppTheme.givtOrange,
     ];
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        CarouselSlider(
-          options: CarouselOptions(
-            height: size.height * 0.7,
-            viewportFraction: 1,
-            enableInfiniteScroll: false,
-            enlargeCenterPage: true,
-            onPageChanged: (index, _) {
-              setState(() {
-                current = index;
-              });
-            },
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CarouselSlider(
+            options: CarouselOptions(
+              height: size.height * 0.7,
+              viewportFraction: 1,
+              enableInfiniteScroll: false,
+              enlargeCenterPage: true,
+              onPageChanged: (index, _) {
+                setState(() {
+                  current = index;
+                });
+              },
+            ),
+            items: widget.imageName
+                .asMap()
+                .entries
+                .map(
+                  (entry) => FeatureCarouselItem(
+                    imagePath: entry.value,
+                    color: colors[entry.key],
+                    title: widget.titles[entry.key],
+                    subtitle: widget.messages[entry.key],
+                  ),
+                )
+                .toList(),
           ),
-          items: widget.imageName
-              .asMap()
-              .entries
-              .map(
-                (entry) => FeatureCarouselItem(
-                  imagePath: entry.value,
-                  color: colors[entry.key],
-                  title: widget.titles[entry.key],
-                  subtitle: widget.messages[entry.key],
-                ),
-              )
-              .toList(),
-        ),
-        _buildAnimatedBottomIndexes(
-          context,
-          imageNames: widget.imageName,
-          currentIndex: current,
-        ),
-        const SizedBox(height: 16),
-        Visibility(
-          visible: current == widget.imageName.length - 1,
-          child: ElevatedButton(
-            onPressed: widget.action,
-            child: Text(widget.actionText),
+          _buildAnimatedBottomIndexes(
+            context,
+            imageNames: widget.imageName,
+            currentIndex: current,
           ),
-        ),
-      ],
+          const SizedBox(height: 16),
+          Visibility(
+            visible: current == widget.imageName.length - 1,
+            child: ElevatedButton(
+              onPressed: widget.action,
+              child: Text(widget.actionText),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
