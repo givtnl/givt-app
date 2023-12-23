@@ -242,6 +242,7 @@ class FeatureCarouselItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       children: [
         Container(
@@ -264,8 +265,7 @@ class FeatureCarouselItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 24,
+                style: textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -274,10 +274,10 @@ class FeatureCarouselItem extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 subtitle,
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
+                style: textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
