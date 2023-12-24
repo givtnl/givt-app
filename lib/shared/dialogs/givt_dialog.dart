@@ -32,10 +32,10 @@ class GivtDialog extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       height: constraints.maxHeight * 0.4,
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16),
                         ],
                       ),
                     ),
