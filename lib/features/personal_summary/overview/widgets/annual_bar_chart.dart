@@ -48,7 +48,7 @@ class AnnualBarChart extends StatelessWidget {
               country,
             );
 
-            var yearGoalString = Util.formatNumberComma(
+            final yearGoalString = Util.formatNumberComma(
               yearGoal,
               country,
             );
