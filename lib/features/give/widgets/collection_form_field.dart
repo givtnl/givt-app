@@ -3,12 +3,13 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class CollectionFormField extends StatelessWidget {
   const CollectionFormField({
+    required this.isVisible,
     required this.controller,
     required this.amountLimit,
-    required this.lowerLimit,
     required this.onRemoveIconPressed,
     required this.onFocused,
     required this.focusNode,
+    this.lowerLimit = 0,
     this.isSuffixTextVisible = true,
     this.suffixText = '',
     this.prefixCurrencyIcon = const Icon(
@@ -31,99 +32,103 @@ class CollectionFormField extends StatelessWidget {
   final VoidCallback onRemoveIconPressed;
   final VoidCallback onFocused;
   final FocusNode focusNode;
+  final bool isVisible;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      child: Material(
-        elevation: 2,
-        borderRadius: BorderRadius.circular(5),
-        child: TextFormField(
-          focusNode: focusNode,
-          readOnly: true,
-          autofocus: true,
-          controller: controller,
-          onTap: onFocused,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return '';
-            }
-            final currentValue = double.parse(value.replaceAll(',', '.'));
-            if (currentValue == 0) {
-              return null;
-            }
+    return Visibility(
+      visible: isVisible,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        child: Material(
+          elevation: 2,
+          borderRadius: BorderRadius.circular(5),
+          child: TextFormField(
+            focusNode: focusNode,
+            readOnly: true,
+            autofocus: true,
+            controller: controller,
+            onTap: onFocused,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              final currentValue = double.parse(value.replaceAll(',', '.'));
+              if (currentValue == 0) {
+                return null;
+              }
 
-            /// Dart accepts only dot as decimal separator
-            if (currentValue > double.parse(amountLimit.toString())) {
-              return '';
-            }
-            if (currentValue < lowerLimit) {
-              return '';
-            }
-            return null;
-          },
-          textInputAction: TextInputAction.next,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.normal,
-                fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
-                color: AppTheme.givtDarkerGray,
-              ),
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 16),
-            suffixText: isSuffixTextVisible ? suffixText : null,
-            suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              /// Dart accepts only dot as decimal separator
+              if (currentValue > double.parse(amountLimit.toString())) {
+                return '';
+              }
+              if (currentValue < lowerLimit) {
+                return '';
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.next,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.normal,
+                  fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
                   color: AppTheme.givtDarkerGray,
                 ),
-            suffixIcon: IconButton(
-              onPressed: isRemoveIconVisible ? onRemoveIconPressed : null,
-              icon: Icon(
-                Icons.remove_circle,
-                color: isRemoveIconVisible ? Colors.grey : Colors.transparent,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              suffixText: isSuffixTextVisible ? suffixText : null,
+              suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.givtDarkerGray,
+                  ),
+              suffixIcon: IconButton(
+                onPressed: isRemoveIconVisible ? onRemoveIconPressed : null,
+                icon: Icon(
+                  Icons.remove_circle,
+                  color: isRemoveIconVisible ? Colors.grey : Colors.transparent,
+                ),
               ),
-            ),
-            prefixIcon: prefixCurrencyIcon,
-            errorStyle: const TextStyle(
-              height: 0,
-            ),
-            focusedErrorBorder: const UnderlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
+              prefixIcon: prefixCurrencyIcon,
+              errorStyle: const TextStyle(
+                height: 0,
               ),
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 8,
+              focusedErrorBorder: const UnderlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 8,
+                ),
               ),
-            ),
-            errorBorder: const UnderlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
+              errorBorder: const UnderlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 8,
+                ),
               ),
-              borderSide: BorderSide(
-                color: Colors.red,
-                width: 8,
+              focusedBorder: UnderlineInputBorder(
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
+                borderSide: BorderSide(
+                  color: bottomBorderColor,
+                  width: 8,
+                ),
               ),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: bottomBorderColor,
-                width: 8,
-              ),
-            ),
-            enabledBorder: const UnderlineInputBorder(
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(5),
-                bottomRight: Radius.circular(5),
-              ),
-              borderSide: BorderSide(
-                color: Colors.transparent,
-                width: 0,
+              enabledBorder: const UnderlineInputBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(5),
+                  bottomRight: Radius.circular(5),
+                ),
+                borderSide: BorderSide(
+                  color: Colors.transparent,
+                  width: 0,
+                ),
               ),
             ),
           ),
