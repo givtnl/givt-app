@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
@@ -31,7 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _acceptPolicy = false;
   bool isLoading = false;
   bool _obscureText = true;
-
+  Country _selectedCountry = Country.sortedCountries().first;
   @override
   void initState() {
     super.initState();
@@ -39,15 +40,27 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
+    final user = context.read<AuthCubit>().state.user;
+    _selectedCountry = Country.fromCode(user.country);
   }
 
   @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);
-
+    final isUs = _selectedCountry == Country.us;
     return Scaffold(
       appBar: RegistrationAppBar(
+        title: isUs
+            ? Text(
+                locals.signUpPageTitle,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                    ),
+              )
+            : null,
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
@@ -82,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 disabledBackgroundColor: Colors.grey,
               ),
               child: Text(
-                locals.next,
+                isUs ? locals.enterPaymentDetails : locals.next,
               ),
             ),
           ],
@@ -92,7 +105,8 @@ class _SignUpPageState extends State<SignUpPage> {
         padding: const EdgeInsets.all(16),
         child: BlocConsumer<RegistrationBloc, RegistrationState>(
           listener: (context, state) {
-            if (state.status == RegistrationStatus.personalInfo) {
+            if (!(_selectedCountry == Country.us) &&
+                state.status == RegistrationStatus.personalInfo) {
               context.goNamed(
                 Pages.personalInfo.name,
                 extra: context.read<RegistrationBloc>(),
@@ -121,7 +135,11 @@ class _SignUpPageState extends State<SignUpPage> {
             }
           },
           builder: (context, state) {
-            return _buildSignUpForm(locals, size);
+            return isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : _buildSignUpForm(locals, size, isUs);
           },
         ),
       ),
@@ -132,11 +150,11 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       isLoading = true;
     });
-    if (_formKey.currentState!.validate() == false) {
+    if (_formKey.currentState!.validate() == false &&
+        _selectedCountry != Country.us) {
       setState(() {
         isLoading = false;
       });
-      return;
     }
     context.read<RegistrationBloc>().add(
           RegistrationPasswordSubmitted(
@@ -146,18 +164,36 @@ class _SignUpPageState extends State<SignUpPage> {
             lastName: _lastNameController.text,
           ),
         );
+    if (_selectedCountry == Country.us) {
+      context.read<RegistrationBloc>().add(
+            RegistrationPersonalInfoSubmitted(
+              address: Util.defaultAdress,
+              city: Util.defaultCity,
+              postalCode: Util.defaultPostCode,
+              country: _selectedCountry.countryCode,
+              phoneNumber: Util.defaultUSPhoneNumber,
+              iban: Util.defaultIban,
+              sortCode: Util.empty,
+              accountNumber: Util.empty,
+              appLanguage: Localizations.localeOf(context).languageCode,
+              countryCode: _selectedCountry.countryCode,
+            ),
+          );
+      return;
+    }
     setState(() {
       isLoading = false;
     });
   }
 
   bool get _isEnabled {
+    if (isLoading) return false;
     if (_formKey.currentState == null) return false;
     if (_acceptPolicy == true && _formKey.currentState!.validate()) return true;
     return false;
   }
 
-  Widget _buildSignUpForm(AppLocalizations locals, Size size) {
+  Widget _buildSignUpForm(AppLocalizations locals, Size size, bool isUS) {
     return Form(
       key: _formKey,
       child: SingleChildScrollView(
@@ -213,34 +249,40 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              enabled: widget.email.isEmpty,
-              readOnly: widget.email.isNotEmpty,
-              controller: _emailController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.l10n.invalidEmail;
-                }
-                if (!Util.emailRegEx.hasMatch(value)) {
-                  return context.l10n.invalidEmail;
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontSize: 16,
-                    color: widget.email.isNotEmpty
-                        ? Colors.grey
-                        : lightColorScheme.primary,
+            Visibility(
+              visible: !isUS,
+              child: const SizedBox(height: 16),
+            ),
+            Visibility(
+              visible: !isUS,
+              child: TextFormField(
+                enabled: widget.email.isEmpty,
+                readOnly: widget.email.isNotEmpty,
+                controller: _emailController,
+                onChanged: (value) => setState(() {
+                  _formKey.currentState!.validate();
+                }),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return context.l10n.invalidEmail;
+                  }
+                  if (!Util.emailRegEx.hasMatch(value)) {
+                    return context.l10n.invalidEmail;
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.next,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      fontSize: 16,
+                      color: widget.email.isNotEmpty
+                          ? Colors.grey
+                          : lightColorScheme.primary,
+                    ),
+                decoration: InputDecoration(
+                  hintText: context.l10n.email,
+                  errorStyle: const TextStyle(
+                    height: 0,
                   ),
-              decoration: InputDecoration(
-                hintText: context.l10n.email,
-                errorStyle: const TextStyle(
-                  height: 0,
                 ),
               ),
             ),
@@ -290,7 +332,7 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(height: 16),
             Text(
               locals.passwordRule,
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
             ),
             SizedBox(
               height: size.height * 0.25,

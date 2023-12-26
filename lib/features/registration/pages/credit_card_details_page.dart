@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:go_router/go_router.dart';
 
 class CreditCardDetailsPage extends StatelessWidget {
@@ -54,18 +54,31 @@ class CreditCardDetailsPage extends StatelessWidget {
                     context
                         .read<RegistrationBloc>()
                         .add(const RegistrationStripeSuccess());
-
                     showDialog<void>(
                       context: context,
-                      builder: (_) => WarningDialog(
-                        title: 'Registration successful',
-                        content:
-                            'Your registration might take some time complete, but you can already donate!',
-                        onConfirm: () {
-                          context
-                            ..pop()
-                            ..goNamed(Pages.home.name);
-                        },
+                      builder: (_) => CupertinoAlertDialog(
+                        title: Text('You are registered!'),
+                        content: Text(
+                            'You can now donate. Set up your family for Givt4Kids?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => context
+                              ..pop()
+                              ..goNamed(Pages.home.name),
+                            child: Text('Not right now'),
+                          ),
+                          TextButton(
+                            onPressed: () => context
+                              ..pop()
+                              ..goNamed(Pages.childrenOverview.name),
+                            child: Text(
+                              "Set up family",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }
