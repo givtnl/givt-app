@@ -74,7 +74,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   @override
   Widget build(BuildContext context) {
     // US & UK should have a . instead ,
-    if (widget.country.countryCode == Country.us.countryCode||
+    if (widget.country.countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(widget.country.countryCode)) {
       _comma = '.';
     }
@@ -278,7 +278,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
           context: context,
           builder: (_) => WarningDialog(
             title: context.l10n.amountTooLow,
-            content: context.l10n.givtNotEnough('$currency $lowerLimit'),
+            content:
+                context.l10n.givtNotEnough('$currency ${Util.formatNumberComma(
+              lowerLimit,
+              widget.country,
+            )}'),
             onConfirm: () => context.pop(),
           ),
         );

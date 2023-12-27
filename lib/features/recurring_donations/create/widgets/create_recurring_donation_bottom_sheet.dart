@@ -189,13 +189,19 @@ class _CreateRecurringDonationBottomSheetViewState
             if (state.status == CreateRecurringDonationStatus.amountTooLow) {
               showDialog<void>(
                 context: context,
-                builder: (_) => WarningDialog(
-                  title: context.l10n.amountTooLow,
-                  content: context.l10n.givtNotEnough(
-                    '$currencySymbol ${Util.getLowerLimitByCountry(country)}',
-                  ),
-                  onConfirm: () => context.pop(),
-                ),
+                builder: (_) {
+                  final limitAmount = Util.formatNumberComma(
+                    Util.getLowerLimitByCountry(country),
+                    country,
+                  );
+                  return WarningDialog(
+                    title: context.l10n.amountTooLow,
+                    content: context.l10n.givtNotEnough(
+                      '$currencySymbol $limitAmount',
+                    ),
+                    onConfirm: () => context.pop(),
+                  );
+                },
               );
             }
 
@@ -250,9 +256,7 @@ class _CreateRecurringDonationBottomSheetViewState
                         controller: amountController,
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
-                            /// Allow only numbers and one comma or dot
-                            /// Like 123, 123.45, 12,05, 12,5
-                            RegExp(r'^\d+([,.]\d{0,2})?'),
+                            Util.numberInputFieldRegExp(),
                           ),
                         ],
                         onChanged: (value) {
