@@ -13,7 +13,7 @@ dependencies:
   bloc: ^8.1.1
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.6
-  currency_text_input_formatter: ^2.1.10
+  currency_text_input_formatter: ^2.1.11
   device_info_plus: ^9.1.1
   device_region:
     path: ./packages/flutter_device_region
