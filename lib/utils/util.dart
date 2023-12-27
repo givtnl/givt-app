@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'app_theme.dart';
 
 class Util {
-
   /// Features overlay keys
   static const String cancelFeatureOverlayKey = 'cancelFeatureOverlayKey';
   static const String testimonialsSummaryKey = 'testimonialsSummaryKey';
@@ -20,6 +19,8 @@ class Util {
   static const String defaulAppLanguage = 'en';
   static const String defaultTimeZoneId = 'Europe/Amsterdam';
   static const String nativeAppKeysMigration = 'nativeAppKeysMigration';
+  static const String defaultUSPhoneNumber = '1231231234';
+  static const String empty = '';
 
   /// Allowed SHA-256 fingerprints for Givt backend
   /// The list is used in APIService while building the http.client

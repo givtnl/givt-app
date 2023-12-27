@@ -190,12 +190,22 @@ class _HomePageState extends State<HomePage> {
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
-        title: Text(context.l10n.importantReminder),
-        content: Text(context.l10n.finalizeRegistrationPopupText),
+        title: Text(context.l10n.importantReminder,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                )),
+        content: Text(
+          context.l10n.finalizeRegistrationPopupText,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: Text(context.l10n.askMeLater),
+            child: Text(
+              context.l10n.askMeLater,
+              style:
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -219,9 +229,10 @@ class _HomePageState extends State<HomePage> {
             },
             child: Text(
               context.l10n.finalizeRegistration,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ),
         ],
