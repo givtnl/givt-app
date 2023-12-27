@@ -91,7 +91,7 @@ class DonationTypeExplanationSheet extends StatelessWidget {
               fontSize: 16,
               color: Colors.white,
             ),
-          )
+          ),
         ],
       );
 }
