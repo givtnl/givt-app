@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/children/vpc/pages/vpc_intro_page.dart';
+import 'package:givt_app/features/children/vpc/pages/vpc_single_page.dart';
 import 'package:givt_app/features/children/vpc/pages/vpc_success_page.dart';
 import 'package:givt_app/features/children/vpc/pages/vpc_web_view_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -30,12 +31,15 @@ class GiveVPCMainPage extends StatelessWidget {
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: Colors.transparent,
-            toolbarHeight: 0,
+            leading: BackButton(
+              onPressed: () {
+                context.pop();
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.backClicked,
+                );
+              },
+            ),
           ),
-          backgroundColor:
-              state is VPCSuccessState ? AppTheme.vpcSuccessBackground : null,
           body: SafeArea(
             child: _createVpcPage(state),
           ),
@@ -47,7 +51,7 @@ class GiveVPCMainPage extends StatelessWidget {
 
 Widget _createVpcPage(VPCState state) {
   if (state is VPCInfoState) {
-    return const VPCIntroPage();
+    return const VPCSinglePage();
   } else if (state is VPCFetchingURLState) {
     return const Center(child: CircularProgressIndicator());
   } else if (state is VPCSuccessState) {

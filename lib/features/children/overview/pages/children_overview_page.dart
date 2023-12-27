@@ -36,12 +36,15 @@ class ChildrenOverviewPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              context.l10n.childrenMyFamily,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
+            title:
+                state is ChildrenOverviewUpdatedState && state.profiles.isEmpty
+                    ? const SizedBox()
+                    : Text(
+                        context.l10n.childrenMyFamily,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
             leading: BackButton(
               onPressed: () {
                 context.pop();
@@ -79,17 +82,19 @@ class ChildrenOverviewPage extends StatelessWidget {
             ],
             automaticallyImplyLeading: false,
           ),
-          body: state is ChildrenOverviewLoadingState
-              ? const ChildrenLoadingPage()
-              : state is ChildrenOverviewUpdatedState
-                  ? state.profiles.isEmpty
-                      ? NoChildrenPage(
-                          onAddNewChildPressed: () => _addNewChild(context),
-                        )
-                      : ChildrenAvailablePage(
-                          profiles: state.profiles,
-                        )
-                  : Container(),
+          body: SafeArea(
+            child: state is ChildrenOverviewLoadingState
+                ? const ChildrenLoadingPage()
+                : state is ChildrenOverviewUpdatedState
+                    ? state.profiles.isEmpty
+                        ? NoChildrenPage(
+                            onAddNewChildPressed: () => _addNewChild(context),
+                          )
+                        : ChildrenAvailablePage(
+                            profiles: state.profiles,
+                          )
+                    : Container(),
+          ),
         );
       },
     );

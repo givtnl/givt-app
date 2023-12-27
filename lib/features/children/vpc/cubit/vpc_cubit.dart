@@ -16,6 +16,11 @@ class VPCCubit extends Cubit<VPCState> {
   var _vpcGained = false;
 
   bool get vpcGained => _vpcGained;
+  void temporarySuccess() {
+    emit(const VPCSuccessState(
+        response: VPCResponse(cancelUrl: '', successUrl: '', url: '')));
+    _vpcGained = true;
+  }
 
   Future<void> fetchURL(String guid) async {
     emit(VPCFetchingURLState());
