@@ -120,9 +120,9 @@
     "buttonChange": "Change",
     "welcomeContinue": "Let's go",
     "enterEmail": "Let's go",
-    "finalizeRegistrationPopupText": "Important: Donations can only be processed after you have finished your registration.",
-    "finalizeRegistration": "Finish registration",
-    "importantReminder": "Important reminder",
+    "finalizeRegistrationPopupText": "Donating and setting up your family for Givt4Kids only works when the registration is completed.",
+    "finalizeRegistration": "Continue",
+    "importantReminder": "Good to know",
     "multipleCollections": "Multiple collections",
     "questionAndroidLocation": "Why does Givt need access to my location?",
     "answerAndroidLocation": "When using an Android smartphone, the Givt-beacon can only be detected by the Givt app when the location is known. Therefore, Givt needs your location to make giving possible. Besides that, we do not use your location.",
@@ -913,7 +913,7 @@
         "description": "Question about passcode",
         "type": "text"
     },
-    "faqAnswer11": "Go to your settings by pressing menu in the top left of the screen. There you can protect your Givt app with a fingerprint/Touch ID or a FaceID (only available on certain iPhones). \n \n\n When one of these settings is activated, you can use it to access your settings instead of using your e-mail address and password.",
+    "faqAnswer11": "Go to your settings by pressing menu in the top left of the screen. There you can protect your Givt app with a passcode, fingerprint/Touch ID or a FaceID. \n \n\n When one of these settings is activated, you can use it to access your settings instead of using your e-mail address and password. However, when you've forgotten your passcode, you need your e-mail address and password to make a new one.",
     "@faqAnswer11": {
         "description": "Answer Passcode",
         "type": "text"
@@ -1450,5 +1450,6 @@
     "childParentalApprovalDeclinedTitle": "You have declined {value0}’s request",
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
-    "childParentalApprovalErrorSubTitle": "Please try again later"
+    "childParentalApprovalErrorSubTitle": "Please try again later",
+    "signUpPageTitle": "Enter your details"
 }
