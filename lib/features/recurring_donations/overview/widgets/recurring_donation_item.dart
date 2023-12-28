@@ -11,23 +11,21 @@ import 'package:intl/intl.dart';
 class RecurringDonationItem extends StatefulWidget {
   const RecurringDonationItem({
     required this.recurringDonation,
-    required this.isExtended,
-    required this.onTap,
     required this.onCancel,
     required this.onOverview,
     super.key,
   });
 
   final RecurringDonation recurringDonation;
-  final bool isExtended;
-  final void Function() onTap;
-  final void Function() onCancel;
-  final void Function() onOverview;
+  final VoidCallback onCancel;
+  final VoidCallback onOverview;
   @override
   State<RecurringDonationItem> createState() => _RecurringDonationItemState();
 }
 
 class _RecurringDonationItemState extends State<RecurringDonationItem> {
+  bool isExtended = false;
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -44,13 +42,15 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
           Country.fromCode(context.read<AuthCubit>().state.user.country);
 
       final currency = NumberFormat.simpleCurrency(
-        name: Util.getCurrencyName(country: countryCode),
+        name: countryCode.currency,
       );
       final amount = Util.formatNumberComma(
-          widget.recurringDonation.amountPerTurn.toDouble(), countryCode);
+        widget.recurringDonation.amountPerTurn.toDouble(),
+        countryCode,
+      );
 
-      final result = '''
-${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol} $amount''';
+      final result =
+          '''${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol}$amount''';
 
       return result;
     }
@@ -58,12 +58,15 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
     String endsOnText() {
       final dateFormat = DateFormat('dd-MM-yyyy');
       final endsOn = locals.recurringDonationStops(
-          dateFormat.format(widget.recurringDonation.endDate));
+        dateFormat.format(widget.recurringDonation.endDate),
+      );
       return endsOn;
     }
 
+    final size = MediaQuery.sizeOf(context);
+
     return InkWell(
-      onTap: widget.onTap,
+      onTap: () => setState(() => isExtended = !isExtended),
       borderRadius: BorderRadius.circular(15),
       child: Card(
         shape: RoundedRectangleBorder(
@@ -77,36 +80,33 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: widget.recurringDonation.collectGroup.type.color,
-              width: 1,
             ),
           ),
-          width: double.infinity,
-          height: widget.isExtended ? 120 : 88,
+          height: isExtended ? 120 : 91,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(7),
-                        margin: const EdgeInsets.only(top: 3),
-                        width: 45,
-                        height: 45,
-                        decoration: BoxDecoration(
-                          color:
-                              widget.recurringDonation.collectGroup.type.color,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Image.asset(
-                          widget.recurringDonation.collectGroup.type.icon,
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(7),
+                      width: 45,
+                      height: 45,
+                      decoration: BoxDecoration(
+                        color: widget.recurringDonation.collectGroup.type.color,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Image.asset(
+                        widget.recurringDonation.collectGroup.type.icon,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Column(
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: size.width * 0.55,
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -119,10 +119,7 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
                         const SizedBox(height: 2),
                         Text(
                           getFrequencyText(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall
-                              ?.copyWith(),
+                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                         const SizedBox(height: 4),
                         Text(
@@ -134,17 +131,17 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               AnimatedContainer(
-                height: widget.isExtended ? 25 : 0,
+                height: isExtended ? 50 : 0,
                 duration: animationDuration,
                 child: AnimatedScale(
                   duration: animationDuration,
-                  scale: widget.isExtended ? 1 : 0.1,
+                  scale: isExtended ? 1 : 0.1,
                   child: AnimatedOpacity(
-                    opacity: widget.isExtended ? 1 : 0,
+                    opacity: isExtended ? 1 : 0,
                     duration: animationDuration,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -180,9 +177,7 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
                                   color: Colors.transparent,
                                 ),
                               ),
-                              onPressed: () {
-                                widget.onOverview();
-                              },
+                              onPressed: widget.onOverview,
                               icon: const Icon(
                                 Icons.list_rounded,
                               ),
