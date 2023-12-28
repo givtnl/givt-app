@@ -137,7 +137,14 @@ class _SignUpPageState extends State<SignUpPage> {
           builder: (context, state) {
             return isLoading
                 ? const Center(
-                    child: CircularProgressIndicator(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Hold on, we are creating your account...'),
+                        SizedBox(height: 16),
+                        CircularProgressIndicator(),
+                      ],
+                    ),
                   )
                 : _buildSignUpForm(locals, size, isUs);
           },
