@@ -136,16 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           builder: (context, state) {
             return isLoading
-                ? const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Hold on, we are creating your account...'),
-                        SizedBox(height: 16),
-                        CircularProgressIndicator(),
-                      ],
-                    ),
-                  )
+                ? _buildLoadingState(isUs)
                 : _buildSignUpForm(locals, size, isUs);
           },
         ),
@@ -198,6 +189,19 @@ class _SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState == null) return false;
     if (_acceptPolicy == true && _formKey.currentState!.validate()) return true;
     return false;
+  }
+
+  Widget _buildLoadingState(bool isUS) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isUS) const Text('Hold on, we are creating your account...'),
+          if (isUS) const SizedBox(height: 16),
+          const CircularProgressIndicator(),
+        ],
+      ),
+    );
   }
 
   Widget _buildSignUpForm(AppLocalizations locals, Size size, bool isUS) {
