@@ -192,13 +192,14 @@ class _HomePageState extends State<HomePage> {
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
-        title: Text(isUS ? 'Good to know' : context.l10n.importantReminder,
+        title: Text(
+            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 )),
         content: Text(
           isUS
-              ? 'Donating and setting up your family for Givt4Kids only works when the registration is completed.'
+              ? context.l10n.registrationDialogG4K
               : context.l10n.finalizeRegistrationPopupText,
           style: Theme.of(context).textTheme.bodyMedium,
         ),

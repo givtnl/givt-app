@@ -243,7 +243,9 @@ class _SignUpPageState extends State<SignUpPage> {
               style:
                   Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).lastName,
+                hintText: isUS
+                    ? AppLocalizations.of(context).lastName
+                    : AppLocalizations.of(context).surname,
                 errorStyle: const TextStyle(
                   height: 0,
                 ),
