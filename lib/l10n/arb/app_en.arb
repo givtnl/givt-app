@@ -438,7 +438,7 @@
         "description": "\"Gegevens\" knop bij instellingen",
         "type": "text"
     },
-    "lastName": "Surname",
+    "lastName": "Last name",
     "@lastName": {
         "description": "Achternaam placeholder op de registratiepagina",
         "type": "text"
@@ -1451,5 +1451,7 @@
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
     "childParentalApprovalErrorSubTitle": "Please try again later",
-    "signUpPageTitle": ""
+    "signUpPageTitle": "",
+    "setupfamily": "",
+    "surname": "Surname"
 }
