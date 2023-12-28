@@ -1453,5 +1453,7 @@
     "childParentalApprovalErrorSubTitle": "Please try again later",
     "signUpPageTitle": "",
     "setupfamily": "",
-    "surname": "Nachname"
+    "surname": "Nachname",
+    "goodToKnow": "Good to know",
+    "registrationDialogG4K": "Donating and setting up your family for Givt4Kids only works when the registration is completed."
 }
