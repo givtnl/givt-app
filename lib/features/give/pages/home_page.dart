@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,17 @@ class _HomePageState extends State<HomePage> {
       key: _key,
       appBar: AppBar(
         title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
+        leading: badges.Badge(
+          showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
+          position: badges.BadgePosition.topStart(
+            top: 10,
+            start: 30,
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => _key.currentState?.openDrawer(),
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
