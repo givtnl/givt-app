@@ -122,7 +122,7 @@
     "enterEmail": "Let's go",
     "finalizeRegistrationPopupText": "Donating and setting up your family for Givt4Kids only works when the registration is completed.",
     "finalizeRegistration": "Continue",
-    "importantReminder": "Good to know",
+    "importantReminder": "Important reminder",
     "multipleCollections": "Multiple collections",
     "questionAndroidLocation": "Why does Givt need access to my location?",
     "answerAndroidLocation": "When using an Android smartphone, the Givt-beacon can only be detected by the Givt app when the location is known. Therefore, Givt needs your location to make giving possible. Besides that, we do not use your location.",
@@ -1453,5 +1453,7 @@
     "childParentalApprovalErrorSubTitle": "Please try again later",
     "signUpPageTitle": "Enter your details",
     "setupfamily": "Set up Family",
-    "surname": "Surname"
+    "surname": "Surname",
+    "goodToKnow": "Good to know",
+    "registrationDialogG4K": "Donating and setting up your family for Givt4Kids only works when the registration is completed."
 }
