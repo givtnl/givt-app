@@ -1451,5 +1451,9 @@
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
     "childParentalApprovalErrorSubTitle": "Please try again later",
-    "signUpPageTitle": ""
+    "signUpPageTitle": "",
+    "setupfamily": "",
+    "surname": "Achternaam",
+    "goodToKnow": "Good to know",
+    "registrationDialogG4K": "Donating and setting up your family for Givt4Kids only works when the registration is completed."
 }
