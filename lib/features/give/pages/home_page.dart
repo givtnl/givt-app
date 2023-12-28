@@ -153,7 +153,8 @@ class _HomePageState extends State<HomePage> {
                 if (!auth.user.needRegistration || auth.user.mandateSigned) {
                   return;
                 }
-                _buildNeedsRegistrationDialog(context);
+                final isUS = auth.user.country == Country.us.countryCode;
+                _buildNeedsRegistrationDialog(context, isUS);
               }
             },
           ),
@@ -185,17 +186,20 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _buildNeedsRegistrationDialog(
     BuildContext context,
+    bool isUS,
   ) {
     final user = context.read<AuthCubit>().state.user;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
-        title: Text(context.l10n.importantReminder,
+        title: Text(isUS ? 'Good to know' : context.l10n.importantReminder,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 )),
         content: Text(
-          context.l10n.finalizeRegistrationPopupText,
+          isUS
+              ? 'Donating and setting up your family for Givt4Kids only works when the registration is completed.'
+              : context.l10n.finalizeRegistrationPopupText,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         actions: [
