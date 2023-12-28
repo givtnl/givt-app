@@ -48,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);
-    final isUs = _selectedCountry == Country.us;
+    final isUs = Country.isUs(_selectedCountry.countryCode);
     return Scaffold(
       appBar: RegistrationAppBar(
         title: isUs

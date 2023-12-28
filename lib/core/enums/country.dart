@@ -75,6 +75,10 @@ enum Country {
     );
   }
 
+  static bool isUs(String code) {
+    return code == Country.us.countryCode;
+  }
+
   ///To-do this should be done straight from the localizations.
   ///Delete all the countries and
   ///add only one unified string separated by commas and then split it

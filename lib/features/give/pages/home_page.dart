@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
-    final isUS = user.country == Country.us.countryCode;
+    final isUS = Country.isUs(user.country);
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
