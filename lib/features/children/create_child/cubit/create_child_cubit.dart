@@ -18,51 +18,34 @@ class CreateChildCubit extends Cubit<CreateChildState>
 
   final CreateChildRepository _createChildRepository;
   final AppLocalizations _locals;
-
-  bool _validateInput(Child child) {
-    final nameErrorMessage =
-        validateName(locals: _locals, name: child.firstName);
-    final dateErrorMessage =
-        validateDateOfBirth(locals: _locals, dateOfBirth: child.dateOfBirth);
-    final allowanceErrorMessage =
-        validateGivingAllowance(locals: _locals, allowance: child.allowance);
-
-    if (nameErrorMessage != null ||
-        dateErrorMessage != null ||
-        allowanceErrorMessage != null) {
-      emit(
-        CreateChildInputErrorState(
-          child: child,
-          nameErrorMessage: nameErrorMessage,
-          dateErrorMessage: dateErrorMessage,
-          allowanceErrorMessage: allowanceErrorMessage,
-        ),
-      );
-      return false;
-    }
-    return true;
+  void rememberChild({required Child child}) {
+    emit(CreateChildInputState(child: child));
   }
 
-  Future<void> createChild({required Child child}) async {
-    if (!_validateInput(child)) {
-      return;
-    }
-    emit(CreateChildUploadingState());
-    try {
-      final isChildCreated = await _createChildRepository.createChild(child);
-      if (isChildCreated) {
-        emit(
-          CreateChildSuccessState(child: child),
-        );
-      } else {
-        throw Exception(_locals.createChildErrorText);
-      }
-    } catch (error) {
-      await LoggingInfo.instance.error(error.toString());
+  Future<void> createChild() async {
+    if (state is CreateChildInputState) {
+      Child child = state.child!;
 
-      emit(
-        CreateChildExternalErrorState(errorMessage: error.toString()),
-      );
+      emit(CreateChildUploadingState());
+      try {
+        final isChildCreated = await _createChildRepository.createChild(child);
+        if (isChildCreated) {
+          emit(
+            CreateChildSuccessState(child: child),
+          );
+        } else {
+          throw Exception(_locals.createChildErrorText);
+        }
+      } catch (error) {
+        await LoggingInfo.instance.error(error.toString());
+
+        emit(
+          CreateChildExternalErrorState(errorMessage: error.toString()),
+        );
+      }
+    } else {
+      emit(CreateChildExternalErrorState(
+          errorMessage: _locals.createChildErrorText));
     }
   }
 }

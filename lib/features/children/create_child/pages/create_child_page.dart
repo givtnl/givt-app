@@ -1,22 +1,14 @@
-import 'dart:developer';
-
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
-import 'package:givt_app/features/children/create_child/mixins/child_name_validator.dart';
 import 'package:givt_app/features/children/create_child/models/child.dart';
-import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
+import 'package:givt_app/features/children/create_child/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
-import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 
 class CreateChildPage extends StatefulWidget {
   const CreateChildPage({super.key});
@@ -26,87 +18,53 @@ class CreateChildPage extends StatefulWidget {
 }
 
 class _CreateChildPageState extends State<CreateChildPage> {
-  Future<void> _showDataPickerDialog() async {
-    final pickedDate = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: ChildDateUtils.minimumDate,
-      lastDate: ChildDateUtils.maximumDate,
-    );
-
-    if (pickedDate != null) {
-      log('picked date: ${pickedDate.toIso8601String()}');
-      _selectedDate = pickedDate;
-      _setDateOfBirthText(_selectedDate);
-    }
-  }
-
   final _nameController = TextEditingController();
-  final _dateOfBirthController = TextEditingController();
-  final _allowanceController = TextEditingController();
-  var _selectedDate = DateTime.now();
-
-  void _setDateOfBirthText(DateTime? date) {
-    _dateOfBirthController.text =
-        date != null ? ChildDateUtils.dateFormatter.format(date) : '';
-  }
+  final _ageController = TextEditingController();
+  //final _allowanceController = TextEditingController();
 
   void _createChildProfile() {
     final name = _nameController.text.trim();
-    final dateOfBirth =
-        _dateOfBirthController.text.isNotEmpty ? _selectedDate : null;
+    final age = int.parse(_ageController.text);
+    final birthYear = DateTime.now().year - age;
+    final dateOfBirth = DateTime(birthYear, 1, 1);
 
-    final allowance = _allowanceController.text.isNotEmpty
-        ? int.parse(
-            _allowanceController.text
-                .trim()
-                .substring(1), // removing currency sign
-          )
-        : null;
-
-    final user = context.read<AuthCubit>().state.user;
     final child = Child(
-      parentId: user.guid,
       firstName: name,
       dateOfBirth: dateOfBirth,
-      allowance: allowance,
+      allowance: 0,
     );
-    context.read<CreateChildCubit>().createChild(child: child);
+    context.read<CreateChildCubit>().rememberChild(child: child);
+    //todo improve amplitude event
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.createChildProfileClicked,
       eventProperties: {
         'name': name,
-        'dateOfBirth': dateOfBirth?.toIso8601String(),
-        'allowance': allowance,
+        'age': age,
+        //'allowance': 0,
       },
     );
-  }
-
-  void _updateInputFields(Child? child, String currencySymbol) {
-    _nameController.text = child?.firstName ?? '';
-    _setDateOfBirthText(child?.dateOfBirth);
-    var allowanceText = '';
-    if (child != null && child.allowance != null) {
-      allowanceText = '$currencySymbol${child.allowance}';
-    }
-    _allowanceController.text = allowanceText;
+    context.goNamed(Pages.giveVPC.name);
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final formKey = GlobalKey<FormState>();
 
-    final user = context.read<AuthCubit>().state.user;
-    final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
-    );
+    // final currency = NumberFormat.simpleCurrency(
+    //   name: Util.getCurrencyName(country: Country.fromCode(user.country)),
+    // );
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        toolbarHeight: 0,
+        leading: BackButton(
+          onPressed: () {
+            context.pop();
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.backClicked,
+            );
+          },
+        ),
       ),
       body: SafeArea(
         child: BlocConsumer<CreateChildCubit, CreateChildState>(
@@ -117,116 +75,102 @@ class _CreateChildPageState extends State<CreateChildPage> {
                 text: state.errorMessage,
                 isError: true,
               );
-            } else if (state is CreateChildInputState ||
-                state is CreateChildInputErrorState) {
-              _updateInputFields(state.child, currency.currencySymbol);
             } else if (state is CreateChildSuccessState) {
               context.goNamed(Pages.childrenOverview.name);
             }
           },
           builder: (context, state) {
-            if (state is CreateChildUploadingState) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is CreateChildInputState ||
-                state is CreateChildInputErrorState) {
-              return SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  height: size.height * 0.82,
-                  width: double.infinity,
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/logo.png',
-                        height: size.height * 0.035,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Text(
-                          context.l10n.createChildPageTitle,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(color: AppTheme.sliderIndicatorFilled),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      CreateChildTextField(
-                        maxLength: ChildNameValidator.nameMaxLength,
-                        errorText: state is CreateChildInputErrorState
-                            ? state.nameErrorMessage
-                            : null,
-                        controller: _nameController,
-                        labelText: context.l10n.firstName,
-                        textInputAction: TextInputAction.next,
-                        keyboardType: TextInputType.name,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      CreateChildTextField(
-                        controller: _dateOfBirthController,
-                        errorText: state is CreateChildInputErrorState
-                            ? state.dateErrorMessage
-                            : null,
-                        labelText: context.l10n.dateOfBirth,
-                        onTap: _showDataPickerDialog,
-                        showCursor: true,
-                        textInputAction: TextInputAction.next,
-                        readOnly: true,
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      CreateChildTextField(
-                        labelText: context.l10n.createChildGivingAllowanceHint,
-                        errorText: state is CreateChildInputErrorState
-                            ? state.allowanceErrorMessage
-                            : null,
-                        controller: _allowanceController,
-                        maxLength: 4,
-                        textInputAction: TextInputAction.done,
-                        inputFormatters: [
-                          CurrencyTextInputFormatter(
-                            locale: currency.locale,
-                            decimalDigits: 0,
-                            turnOffGrouping: true,
-                            enableNegative: false,
-                            symbol: currency.currencySymbol,
-                          )
-                        ],
-                        keyboardType: TextInputType.number,
-                      ),
-                      const GivingAllowanceInfoButton(),
-                      // Add a spacer if the keyboard is not visible
-                      if (View.of(context).viewInsets.bottom <= 0)
-                        const Spacer(),
-                      if (View.of(context).viewInsets.bottom > 0)
-                        ElevatedButton(
-                          onPressed: _createChildProfile,
-                          child: Text(
-                            context.l10n.createChildProfileButton,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall!
-                                .copyWith(
-                                  color: Colors.white,
-                                ),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'Set up Family\n',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
                           ),
+                      children: [
+                        TextSpan(
+                          text: 'Who will be joining you?',
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                  ),
                         ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return Container();
-            }
+                  SizedBox(height: 10),
+                  Form(
+                      key: formKey,
+                      child: SingleChildScrollView(
+                        child:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          FamilyTextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter the child's name";
+                              }
+                              if (value.length < 2) {
+                                return 'Please enter a valid name';
+                              }
+                              if (value.length > 20) {
+                                return 'Name is too long';
+                              }
+                              return null;
+                            },
+                            controller: _nameController,
+                            hintText: context.l10n.firstName,
+                            keyboardType: TextInputType.name,
+                          ),
+                          const SizedBox(
+                            height: 12,
+                          ),
+                          FamilyTextFormField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please enter the child's age";
+                              }
+                              if (int.tryParse(value) == null) {
+                                return 'Please enter a valid age';
+                              }
+                              if (int.parse(value) > 18) {
+                                return 'Please add an adult instead';
+                              }
+                              return null;
+                            },
+                            controller: _ageController,
+                            hintText: 'Age',
+                            keyboardType: TextInputType.number,
+                          ),
+                        ]),
+                      )),
+
+                  const GivingAllowanceInfoButton(),
+                  // Add a spacer if the keyboard is not visible
+                  if (View.of(context).viewInsets.bottom <= 0) const Spacer(),
+                  if (View.of(context).viewInsets.bottom > 0)
+                    ElevatedButton(
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          _createChildProfile();
+                        }
+                      },
+                      child: Text(
+                        "Continue",
+                        style:
+                            Theme.of(context).textTheme.headlineSmall!.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                    ),
+                ],
+              ),
+            );
           },
         ),
       ),
@@ -235,16 +179,21 @@ class _CreateChildPageState extends State<CreateChildPage> {
           ? Padding(
               padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
               child: ElevatedButton(
-                onPressed: _createChildProfile,
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    _createChildProfile();
+                  }
+                },
                 child: Text(
-                  context.l10n.createChildProfileButton,
+                  "Continue",
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                 ),
               ),
             )
-          : SizedBox(),
+          : const SizedBox(),
     );
   }
 }

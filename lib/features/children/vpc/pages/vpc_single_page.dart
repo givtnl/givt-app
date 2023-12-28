@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
+import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
 import 'package:givt_app/features/children/vpc/widgets/vpc_notice_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -93,14 +93,7 @@ class VPCSinglePage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: ElevatedButton(
                   onPressed: () {
-                    //TODO Implement new amplitute event
-
-                    // AnalyticsHelper.logEvent(
-                    //     eventName: AmplitudeEvents.enterCardDetailsClicked);
-
-                    // TODO: IMPLEMENT NEW LOGIC
-
-                    context.read<VPCCubit>().temporarySuccess();
+                    context.read<CreateChildCubit>().createChild();
                   },
                   child: Text(
                     'Done',

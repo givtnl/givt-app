@@ -17,23 +17,6 @@ class CreateChildInputState extends CreateChildState {
   });
 }
 
-class CreateChildInputErrorState extends CreateChildState {
-  const CreateChildInputErrorState({
-    super.child,
-    this.nameErrorMessage,
-    this.dateErrorMessage,
-    this.allowanceErrorMessage,
-  });
-
-  final String? nameErrorMessage;
-  final String? dateErrorMessage;
-  final String? allowanceErrorMessage;
-
-  @override
-  List<Object?> get props =>
-      [child, nameErrorMessage, dateErrorMessage, allowanceErrorMessage];
-}
-
 class CreateChildExternalErrorState extends CreateChildState {
   const CreateChildExternalErrorState({required this.errorMessage});
   final String errorMessage;
