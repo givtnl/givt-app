@@ -153,8 +153,7 @@ class _HomePageState extends State<HomePage> {
                 if (!auth.user.needRegistration || auth.user.mandateSigned) {
                   return;
                 }
-                final isUS = auth.user.country == Country.us.countryCode;
-                _buildNeedsRegistrationDialog(context, isUS);
+                _buildNeedsRegistrationDialog(context);
               }
             },
           ),
@@ -186,9 +185,9 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _buildNeedsRegistrationDialog(
     BuildContext context,
-    bool isUS,
   ) {
     final user = context.read<AuthCubit>().state.user;
+    final isUS = user.country == Country.us.countryCode;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
