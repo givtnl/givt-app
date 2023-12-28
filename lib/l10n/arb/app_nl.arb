@@ -1451,5 +1451,7 @@
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
     "childParentalApprovalErrorSubTitle": "Please try again later",
-    "signUpPageTitle": ""
+    "signUpPageTitle": "",
+    "setupfamily": "",
+    "surname": "Achternaam"
 }
