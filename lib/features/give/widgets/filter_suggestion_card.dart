@@ -63,19 +63,19 @@ class FilterSuggestionCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    margin: const EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       vertical: 5,
                       horizontal: 5,
                     ),
                     child: Image.asset(
                       isFocused ? activeIcon : icon,
-                      width: size.width * (isFocused ? 0.08 : 0.06),
+                      width: size.width * (isFocused ? 0.08 : 0.1),
                     ),
                   ),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontWeight: FontWeight.bold,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w500,
                           color: isFocused ? color : Colors.white,
                         ),
                   ),
