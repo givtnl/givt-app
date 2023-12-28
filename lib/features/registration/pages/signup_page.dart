@@ -198,7 +198,7 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           if (isUS) const Text('Hold on, we are creating your account...'),
           if (isUS) const SizedBox(height: 16),
-          const CircularProgressIndicator(),
+          const CircularProgressIndicator.adaptive(),
         ],
       ),
     );
