@@ -43,14 +43,7 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
-import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
-import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
-import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/personal_info_page.dart';
-import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
-import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
-import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -332,6 +325,11 @@ class AppRouter {
                 },
               ),
             ],
+          ),
+          GoRoute(
+            path: Pages.registrationSuccess.path,
+            name: Pages.registrationSuccess.name,
+            builder: (_, state) => const RegistrationCompletedPage(),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,
@@ -661,7 +659,7 @@ class AppRouter {
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.uri.queryParameters,
-      ); 
+      );
     }
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {
