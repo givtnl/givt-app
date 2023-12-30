@@ -84,6 +84,7 @@ class AppTheme {
     ),
     buttonTheme: const ButtonThemeData(
       textTheme: ButtonTextTheme.primary,
+      disabledColor: AppTheme.givtGraycece,
     ),
     bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: Colors.white,
@@ -171,20 +172,28 @@ class AppTheme {
         },
       ),
     ),
-    elevatedButtonTheme: const ElevatedButtonThemeData(
+    elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
-        elevation: MaterialStatePropertyAll(0),
-        textStyle: MaterialStatePropertyAll(
+        elevation: const MaterialStatePropertyAll(0),
+        textStyle: const MaterialStatePropertyAll(
           TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
         ),
-        backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
-        foregroundColor: MaterialStatePropertyAll(Colors.white),
-        minimumSize: MaterialStatePropertyAll(Size.fromHeight(45)),
-        shape: MaterialStatePropertyAll(
+        backgroundColor: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return givtLightGray;
+            }
+            return givtLightGreen;
+          },
+        ),
+        // backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
+        foregroundColor: const MaterialStatePropertyAll(Colors.white),
+        minimumSize: const MaterialStatePropertyAll(Size.fromHeight(45)),
+        shape: const MaterialStatePropertyAll(
           ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),

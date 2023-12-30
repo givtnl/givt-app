@@ -420,8 +420,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
           child: Text(label),
         ),
         style: ElevatedButton.styleFrom(
-          disabledForegroundColor: Colors.white,
-          disabledBackgroundColor: Colors.black12,
           minimumSize: const Size(50, 40),
         ),
       ),

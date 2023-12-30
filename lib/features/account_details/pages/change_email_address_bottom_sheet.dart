@@ -80,9 +80,6 @@ class _ChangeEmailAddressBottomSheetState
                                 );
                           }
                         : null,
-                    style: ElevatedButton.styleFrom(
-                      disabledBackgroundColor: Colors.grey,
-                    ),
                     child: Text(
                       locals.save,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(

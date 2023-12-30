@@ -229,9 +229,6 @@ class _EditChildPageState extends State<EditChildPage> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
               onPressed: state is! EditChildUploadingState ? _editChild : null,
               child: Text(
                 context.l10n.save,

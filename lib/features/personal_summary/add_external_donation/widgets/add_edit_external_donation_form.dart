@@ -286,7 +286,6 @@ class _AddEditExternalDonationFormState
             onPressed: onPressed,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.givtBlue,
-              disabledBackgroundColor: Colors.grey,
             ),
             child: child,
           ),

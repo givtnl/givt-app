@@ -147,9 +147,6 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                                       );
                                 }
                               : null,
-                          style: ElevatedButton.styleFrom(
-                            disabledBackgroundColor: Colors.grey,
-                          ),
                           child: Text(
                             locals.send,
                           ),

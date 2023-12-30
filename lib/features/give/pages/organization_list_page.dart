@@ -232,9 +232,6 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
           child: !isLoading
               ? ElevatedButton(
                   onPressed: onPressed,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
                   child: Text(title),
                 )
               : const Center(

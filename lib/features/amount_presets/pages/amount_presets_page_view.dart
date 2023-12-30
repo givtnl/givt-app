@@ -120,9 +120,6 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
                     double.parse(thirdPreset.text.replaceAll(',', '.')),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
-                ),
                 child: Text(locals.save),
               ),
           ],

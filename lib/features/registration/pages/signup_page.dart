@@ -91,9 +91,6 @@ class _SignUpPageState extends State<SignUpPage> {
             _buildAcceptPolicy(locals),
             ElevatedButton(
               onPressed: _isEnabled ? _register : null,
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
               child: Text(
                 isUs ? locals.enterPaymentDetails : locals.next,
               ),

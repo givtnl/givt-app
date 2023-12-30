@@ -88,9 +88,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
             else
               ElevatedButton(
                 onPressed: isEnabled ? _onNext : null,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
-                ),
                 child: Text(
                   _selectedCountry == Country.us
                       ? locals.enterPaymentDetails
