@@ -110,6 +110,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
                         prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        suffixText: locals.firstCollect,
                         controller: controllers[0],
                         isVisible: collectionFields[0],
                         isRemoveIconVisible: collectionFields[1] == true ||
@@ -136,6 +137,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                         controller: controllers[1],
                         isVisible: collectionFields[1],
+                        suffixText: locals.secondCollect,
                         isRemoveIconVisible: collectionFields[0] == true ||
                             collectionFields[2] == true,
                         onRemoveIconPressed: () => setState(() {
@@ -154,6 +156,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
                         prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        suffixText: locals.thirdCollect,
                         controller: controllers[2],
                         isVisible: collectionFields[2],
                         isRemoveIconVisible: collectionFields[0] == true ||
