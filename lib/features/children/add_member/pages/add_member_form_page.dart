@@ -45,6 +45,17 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     });
   }
 
+  @override
+  void initState() {
+    final memeberCubit = context.read<AddMemberCubit>();
+    if (memeberCubit.state.child != null) {
+      _allowanceController = memeberCubit.state.child!.allowance!;
+      _nameController.text = memeberCubit.state.child!.firstName!;
+      _ageController.text = memeberCubit.state.child!.age!.toString();
+    }
+    super.initState();
+  }
+
   void _createChildProfile() {
     final name = _nameController.text.trim();
     final age = int.parse(_ageController.text);
@@ -54,6 +65,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     final child = Child(
       firstName: name,
       dateOfBirth: dateOfBirth,
+      age: age,
       allowance: _allowanceController,
     );
     context.read<AddMemberCubit>().goToVPC(child: child);
@@ -105,7 +117,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                 ),
               ),
               if (View.of(context).viewInsets.bottom <= 0) const Spacer(),
-              continueButton(formKey),
+              continueButton(formKey: formKey, enabled: isChildSelected),
             ],
           ),
         );
@@ -310,13 +322,19 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           ],
         ),
       );
-  Widget continueButton(GlobalKey<FormState> formKey) {
+  Widget continueButton(
+      {required GlobalKey<FormState> formKey, bool enabled = true}) {
     return ElevatedButton(
-      onPressed: () {
-        if (formKey.currentState!.validate()) {
-          _createChildProfile();
-        }
-      },
+      onPressed: enabled
+          ? () {
+              if (formKey.currentState!.validate()) {
+                _createChildProfile();
+              }
+            }
+          : () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: enabled ? AppTheme.givtLightGreen : Colors.grey,
+      ),
       child: Text(
         "Continue",
         style: Theme.of(context).textTheme.headlineSmall!.copyWith(

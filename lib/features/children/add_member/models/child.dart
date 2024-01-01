@@ -4,12 +4,14 @@ class Child extends Equatable {
   const Child({
     this.firstName,
     this.lastName,
+    this.age,
     this.dateOfBirth,
     this.allowance,
   });
 
   final String? firstName;
   final String? lastName;
+  final int? age;
   final DateTime? dateOfBirth;
   final int? allowance;
 
@@ -17,6 +19,7 @@ class Child extends Equatable {
     return {
       'firstName': firstName,
       'lastName': lastName,
+      'age': age,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
       'givingAllowance': allowance,
       'Type': 'Child'

@@ -31,6 +31,10 @@ class AddMemeberMainScaffold extends StatelessWidget {
           appBar: AppBar(
             leading: BackButton(
               onPressed: () {
+                if (state is ConfirmVPCState && state.child != null) {
+                  context.read<AddMemberCubit>().goToInput(child: state.child!);
+                  return;
+                }
                 context.pop();
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.backClicked,

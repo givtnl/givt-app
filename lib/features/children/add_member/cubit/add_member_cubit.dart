@@ -19,6 +19,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     emit(ConfirmVPCState(child: child));
   }
 
+  void goToInput({required Child child}) {
+    emit(AddMemberInputState(child: child));
+  }
+
   Future<void> createChildWithVPC() async {
     if (state.child != null) {
       final child = state.child!;
