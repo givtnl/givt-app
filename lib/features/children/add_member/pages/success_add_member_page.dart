@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:store_redirect/store_redirect.dart';
 
 class AddMemeberSuccessPage extends StatelessWidget {
   const AddMemeberSuccessPage({super.key});
@@ -58,7 +59,10 @@ class AddMemeberSuccessPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: ElevatedButton(
                   onPressed: () {
-                    //TODO Redirect to playstore
+                    StoreRedirect.redirect(
+                      androidAppId: 'net.givtapp.kids',
+                      iOSAppId: '1658797002',
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
