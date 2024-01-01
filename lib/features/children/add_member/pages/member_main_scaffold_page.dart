@@ -22,7 +22,7 @@ class AddMemeberMainScaffold extends StatelessWidget {
             text: state.errorMessage,
             isError: true,
           );
-          context.pushReplacementNamed(Pages.childrenOverview.name);
+          context.goNamed(Pages.childrenOverview.name);
         }
       },
       builder: (context, state) {

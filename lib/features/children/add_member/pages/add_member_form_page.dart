@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -186,7 +188,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.normal,
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 16,
                           ),
                     ),
                   ],
@@ -196,7 +198,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.normal,
                         color: Theme.of(context).colorScheme.primary,
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                 ),
         ),
@@ -208,8 +210,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             onPressed: _decrementCounter,
             padding: EdgeInsets.zero,
             alignment: Alignment.centerRight,
-            icon: Icon(Icons.remove_circle,
-                size: 40,
+            icon: Icon(FontAwesomeIcons.circleMinus,
+                size: 32,
                 color: (_allowanceController < 2)
                     ? Colors.grey
                     : Theme.of(context).colorScheme.primary),
@@ -224,16 +226,18 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                     style: const TextStyle(
                       fontSize: 16,
                       fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   TextSpan(
                     text: '$_allowanceController',
                     style: const TextStyle(
-                      fontSize: 32,
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
-                    ),
+                        fontSize: 24,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w700,
+                        fontFeatures: <FontFeature>[
+                          FontFeature.liningFigures()
+                        ]),
                   ),
                 ],
               ),
@@ -244,8 +248,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             onPressed: _incrementCounter,
             padding: EdgeInsets.zero,
             alignment: Alignment.centerLeft,
-            icon: Icon(Icons.add_circle,
-                size: 40,
+            icon: Icon(FontAwesomeIcons.circlePlus,
+                size: 32,
                 color: (_allowanceController > 998)
                     ? Colors.grey
                     : Theme.of(context).colorScheme.primary),
@@ -304,13 +308,14 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           text: 'Set up Family\n',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
+                fontSize: 20,
               ),
           children: [
             TextSpan(
               text: 'Who will be joining you?',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.normal,
+                    fontSize: 16,
                   ),
             ),
           ],
