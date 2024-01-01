@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -21,6 +24,7 @@ class CreateMemberPage extends StatefulWidget {
 class _CreateMemberPageState extends State<CreateMemberPage> {
   final _nameController = TextEditingController();
   final _ageController = TextEditingController();
+  bool isChildSelected = true;
   int _allowanceController = 15;
 
   void _incrementCounter() {
@@ -79,10 +83,27 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           child: Column(
             children: [
               setUpFamilyHeader(),
+              const SizedBox(height: 32),
+              childOrParentSelector(),
               const SizedBox(height: 10),
-              createChildForm(formKey),
-              const GivingAllowanceInfoButton(),
-              allowanceCounter(currency),
+              animate(
+                child: createChildForm(formKey),
+                isVisible: isChildSelected,
+              ),
+              animate(
+                child: const GivingAllowanceInfoButton(),
+                isVisible: isChildSelected,
+              ),
+              animate(
+                child: allowanceCounter(currency),
+                isVisible: isChildSelected,
+              ),
+              animate(
+                isVisible: !isChildSelected,
+                child: Text(
+                  'Coming soon',
+                ),
+              ),
               if (View.of(context).viewInsets.bottom <= 0) const Spacer(),
               continueButton(formKey),
             ],
@@ -92,6 +113,90 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     );
   }
 
+  Widget animate({required Widget child, required bool isVisible}) =>
+      AnimatedOpacity(
+          opacity: isVisible ? 1.0 : 0.0,
+          duration: Duration(milliseconds: 200),
+          child: child);
+
+  Widget childOrParentSelector() => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          selectorSegment(
+            title: 'Child',
+            isSelected: isChildSelected,
+            isLeft: true,
+          ),
+          selectorSegment(
+            title: 'Parent',
+            isSelected: !isChildSelected,
+            isLeft: false,
+          ),
+        ],
+      );
+  Widget selectorSegment({
+    required String title,
+    required bool isSelected,
+    required bool isLeft,
+  }) =>
+      GestureDetector(
+        onTap: () {
+          setState(() {
+            isChildSelected = !isChildSelected;
+          });
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          decoration: BoxDecoration(
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Colors.white,
+            borderRadius: isLeft
+                ? BorderRadius.only(
+                    topLeft: Radius.circular(4),
+                    bottomLeft: Radius.circular(4),
+                  )
+                : BorderRadius.only(
+                    topRight: Radius.circular(4),
+                    bottomRight: Radius.circular(4),
+                  ),
+            border: isSelected
+                ? Border.all()
+                : Border.fromBorderSide(
+                    BorderSide(
+                      color: Colors.grey.shade300,
+                    ),
+                  ),
+          ),
+          child: isSelected
+              ? Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.check,
+                      color: Colors.white,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                    ),
+                  ],
+                )
+              : Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 18,
+                      ),
+                ),
+        ),
+      );
   Widget allowanceCounter(String currency) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
