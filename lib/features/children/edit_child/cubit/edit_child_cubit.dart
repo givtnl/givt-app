@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/children/create_child/mixins/mixins.dart';
-import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/add_member/mixins/mixins.dart';
+import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -28,7 +28,7 @@ class EditChildCubit extends Cubit<EditChildState>
     });
   }
 
-  final CreateChildRepository _createChildRepository;
+  final EditChildRepository _createChildRepository;
   final AppLocalizations _locals;
   final ProfileExt _profileDetails;
 

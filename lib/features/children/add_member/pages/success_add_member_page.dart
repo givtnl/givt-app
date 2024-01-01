@@ -3,8 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:go_router/go_router.dart';
 
-class VPCSuccessPage extends StatelessWidget {
-  const VPCSuccessPage({super.key});
+class AddMemeberSuccessPage extends StatelessWidget {
+  const AddMemeberSuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {

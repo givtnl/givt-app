@@ -19,6 +19,7 @@ class Child extends Equatable {
       'lastName': lastName,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
       'givingAllowance': allowance,
+      'Type': 'Child'
     };
   }
 

@@ -13,6 +13,8 @@ sealed class AddMemberState extends Equatable {
 
 final class AddMemberInitial extends AddMemberState {}
 
+final class AddMemberUploadingState extends AddMemberState {}
+
 class AddMemberInputState extends AddMemberState {
   const AddMemberInputState({
     super.child,

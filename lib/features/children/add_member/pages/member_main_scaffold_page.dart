@@ -3,15 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/children/vpc/pages/vpc_single_page.dart';
-import 'package:givt_app/features/children/vpc/pages/vpc_success_page.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/features/children/add_member/pages/add_member_form_page.dart';
+import 'package:givt_app/features/children/add_member/pages/success_add_member_page.dart';
+import 'package:givt_app/features/children/add_member/pages/vpc_page.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class GiveVPCMainPage extends StatelessWidget {
-  const GiveVPCMainPage({super.key});
+class AddMemeberMainScaffold extends StatelessWidget {
+  const AddMemeberMainScaffold({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +22,7 @@ class GiveVPCMainPage extends StatelessWidget {
             text: state.errorMessage,
             isError: true,
           );
+          context.pushReplacementNamed(Pages.childrenOverview.name);
         }
       },
       builder: (context, state) {
@@ -39,7 +39,7 @@ class GiveVPCMainPage extends StatelessWidget {
             ),
           ),
           body: SafeArea(
-            child: _createPage(state),
+            child: _createPage(state, context),
           ),
         );
       },
@@ -47,11 +47,13 @@ class GiveVPCMainPage extends StatelessWidget {
   }
 }
 
-Widget _createPage(AddMemberState state) {
-  if (state is VPCInfoState) {
-    return const VPCSinglePage();
-  } else if (state is VPCSuccessState) {
-    return const VPCSuccessPage();
+Widget _createPage(AddMemberState state, BuildContext context) {
+  if (state is ConfirmVPCState) {
+    return const VPCPage();
+  } else if (state is AddMemberInputState || state is AddMemberInitial) {
+    return const CreateChildPage();
+  } else if (state is AddMemberSuccessState) {
+    return const AddMemeberSuccessPage();
   } else {
     return Container();
   }
