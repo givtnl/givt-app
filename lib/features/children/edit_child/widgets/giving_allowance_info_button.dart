@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/children/create_child/widgets/giving_allowance_info_bottom_sheet.dart';
+import 'package:givt_app/features/children/add_member/widgets/giving_allowance_info_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -41,7 +41,7 @@ class GivingAllowanceInfoButton extends StatelessWidget {
           const SizedBox(width: 10),
           Icon(
             Icons.info_rounded,
-            size: 20,
+            size: 16,
             color: Theme.of(context).colorScheme.primary,
           ),
         ],

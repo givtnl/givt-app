@@ -103,6 +103,6 @@ class ChildrenOverviewPage extends StatelessWidget {
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.addChildProfile,
     );
-    context.goNamed(Pages.addMember.name);
+    context.pushNamed(Pages.addMember.name);
   }
 }

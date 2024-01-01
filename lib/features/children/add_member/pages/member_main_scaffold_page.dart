@@ -51,7 +51,7 @@ Widget _createPage(AddMemberState state, BuildContext context) {
   if (state is ConfirmVPCState) {
     return const VPCPage();
   } else if (state is AddMemberInputState || state is AddMemberInitial) {
-    return const CreateChildPage();
+    return const CreateMemberPage();
   } else if (state is AddMemberSuccessState) {
     return const AddMemeberSuccessPage();
   } else {

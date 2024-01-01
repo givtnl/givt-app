@@ -62,6 +62,7 @@ class FamilyTextFormField extends StatelessWidget {
           errorMaxLines: 2,
           labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
+                color: Colors.grey,
               ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
