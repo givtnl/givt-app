@@ -99,15 +99,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
               childOrParentSelector(),
               const SizedBox(height: 10),
               animate(
-                child: createChildForm(formKey),
-                isVisible: isChildSelected,
-              ),
-              animate(
-                child: const GivingAllowanceInfoButton(),
-                isVisible: isChildSelected,
-              ),
-              animate(
-                child: allowanceCounter(currency),
+                child: createChildForm(formKey, currency),
                 isVisible: isChildSelected,
               ),
               animate(
@@ -261,7 +253,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         ],
       );
 
-  Widget createChildForm(GlobalKey<FormState> formKey) => Form(
+  Widget createChildForm(GlobalKey<FormState> formKey, String currency) => Form(
         key: formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -300,6 +292,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
               hintText: 'Age',
               keyboardType: TextInputType.number,
             ),
+            const GivingAllowanceInfoButton(),
+            allowanceCounter(currency),
           ],
         ),
       );
