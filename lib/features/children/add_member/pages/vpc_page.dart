@@ -95,7 +95,7 @@ class VPCPage extends StatelessWidget {
                     context.read<AddMemberCubit>().createChildWithVPC();
                   },
                   child: Text(
-                    'Done',
+                    context.l10n.ready,
                     style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                           color: Colors.white,
                           fontSize: 18,

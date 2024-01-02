@@ -109,7 +109,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
               animate(
                 isVisible: !isChildSelected,
                 child: Text(
-                  'Coming soon',
+                  context.l10n.soonMessage,
                 ),
               ),
               if (View.of(context).viewInsets.bottom <= 0) const Spacer(),
@@ -337,7 +337,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         backgroundColor: enabled ? AppTheme.givtLightGreen : Colors.grey,
       ),
       child: Text(
-        "Continue",
+        context.l10n.continueKey,
         style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.bold,
