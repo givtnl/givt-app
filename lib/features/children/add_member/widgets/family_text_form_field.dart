@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
 
 class FamilyTextFormField extends StatelessWidget {
@@ -53,7 +54,8 @@ class FamilyTextFormField extends StatelessWidget {
         obscureText: obscureText,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontSize: 16,
-              color: readOnly ? Colors.grey : lightColorScheme.primary,
+              color:
+                  readOnly ? AppTheme.givtDarkerGray : lightColorScheme.primary,
             ),
         decoration: InputDecoration(
           hintText: hintText,
@@ -62,7 +64,7 @@ class FamilyTextFormField extends StatelessWidget {
           errorMaxLines: 2,
           labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
-                color: Colors.grey,
+                color: AppTheme.givtDarkerGray,
               ),
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

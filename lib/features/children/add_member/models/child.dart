@@ -1,6 +1,13 @@
 import 'package:equatable/equatable.dart';
 
 class Child extends Equatable {
+  const Child.empty()
+      : firstName = null,
+        lastName = null,
+        age = null,
+        dateOfBirth = null,
+        allowance = null;
+
   const Child({
     this.firstName,
     this.lastName,

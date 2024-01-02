@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:go_router/go_router.dart';
-import 'package:store_redirect/store_redirect.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AddMemeberSuccessPage extends StatelessWidget {
   const AddMemeberSuccessPage({super.key});
@@ -59,10 +61,20 @@ class AddMemeberSuccessPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: ElevatedButton(
                   onPressed: () {
-                    StoreRedirect.redirect(
-                      androidAppId: 'net.givtapp.kids',
-                      iOSAppId: '1658797002',
-                    );
+                    if (Platform.isAndroid || Platform.isIOS) {
+                      final appId = Platform.isAndroid
+                          ? 'net.givtapp.kids'
+                          : '1658797002';
+                      final url = Uri.parse(
+                        Platform.isAndroid
+                            ? 'market://details?id=$appId'
+                            : 'https://apps.apple.com/app/id$appId',
+                      );
+                      launchUrl(
+                        url,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,

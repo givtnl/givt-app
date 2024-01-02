@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -7,47 +9,62 @@ import 'package:givt_app/features/children/add_member/repository/add_member_repo
 part 'add_member_state.dart';
 
 class AddMemberCubit extends Cubit<AddMemberState> {
-  AddMemberCubit(this._addMemberRepository) : super(AddMemberInitial());
+  AddMemberCubit(this._addMemberRepository) : super(const AddMemberState());
   final AddMemberRepository _addMemberRepository;
 
 // to do add many children
   void rememberChild({required Child child}) {
-    emit(AddMemberInputState(child: child));
+    emit(
+      state.copyWith(
+        child: child,
+        status: AddMemberStateStatus.input,
+      ),
+    );
   }
 
-  void goToVPC({required Child child}) {
-    emit(ConfirmVPCState(child: child));
+  void goToVPC(Child? child) {
+    emit(state.copyWith(
+      status: AddMemberStateStatus.vpc,
+      child: child ?? state.child,
+    ));
   }
 
-  void goToInput({required Child child}) {
-    emit(AddMemberInputState(child: child));
+  void goToInput() {
+    emit(state.copyWith(
+      status: AddMemberStateStatus.input,
+    ));
   }
 
   Future<void> createChildWithVPC() async {
-    if (state.child != null) {
-      final child = state.child!;
-
-      emit(AddMemberUploadingState());
-      try {
-        final isChildCreated = await _addMemberRepository.createChild(child);
-        if (isChildCreated) {
-          emit(
-            const AddMemberSuccessState(),
-          );
-        } else {
-          emit(
-            const AddMemberExternalErrorState(errorMessage: 'error'),
-          );
-        }
-      } catch (error) {
-        await LoggingInfo.instance.error(error.toString());
+    final child = state.child;
+    emit(
+      state.copyWith(
+        status: AddMemberStateStatus.loading,
+      ),
+    );
+    try {
+      final isChildCreated = await _addMemberRepository.createChild(child);
+      if (isChildCreated) {
         emit(
-          AddMemberExternalErrorState(errorMessage: error.toString()),
+          state.copyWith(
+            status: AddMemberStateStatus.success,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: AddMemberStateStatus.error,
+            error: 'Something went wrong',
+          ),
         );
       }
-    } else {
+    } catch (error) {
+      await LoggingInfo.instance.error(error.toString());
       emit(
-        const AddMemberExternalErrorState(errorMessage: 'error'),
+        state.copyWith(
+          status: AddMemberStateStatus.error,
+          error: error.toString(),
+        ),
       );
     }
   }

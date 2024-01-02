@@ -16,10 +16,10 @@ class AddMemeberMainScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
-        if (state is AddMemberExternalErrorState) {
+        if (state.status == AddMemberStateStatus.error) {
           SnackBarHelper.showMessage(
             context,
-            text: state.errorMessage,
+            text: state.error,
             isError: true,
           );
           context.goNamed(Pages.childrenOverview.name);
@@ -31,8 +31,8 @@ class AddMemeberMainScaffold extends StatelessWidget {
           appBar: AppBar(
             leading: BackButton(
               onPressed: () {
-                if (state is ConfirmVPCState && state.child != null) {
-                  context.read<AddMemberCubit>().goToInput(child: state.child!);
+                if (state.status == AddMemberStateStatus.vpc) {
+                  context.read<AddMemberCubit>().goToInput();
                   return;
                 }
                 context.pop();
@@ -52,13 +52,15 @@ class AddMemeberMainScaffold extends StatelessWidget {
 }
 
 Widget _createPage(AddMemberState state, BuildContext context) {
-  if (state is ConfirmVPCState) {
-    return const VPCPage();
-  } else if (state is AddMemberInputState || state is AddMemberInitial) {
-    return const CreateMemberPage();
-  } else if (state is AddMemberSuccessState) {
-    return const AddMemeberSuccessPage();
-  } else {
-    return Container();
+  switch (state.status) {
+    case AddMemberStateStatus.vpc:
+      return const VPCPage();
+    case AddMemberStateStatus.input:
+    case AddMemberStateStatus.initial:
+    case AddMemberStateStatus.loading:
+    case AddMemberStateStatus.error:
+      return const CreateMemberPage();
+    case AddMemberStateStatus.success:
+      return const AddMemeberSuccessPage();
   }
 }

@@ -49,13 +49,14 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
 
   @override
   void initState() {
-    final memeberCubit = context.read<AddMemberCubit>();
-    if (memeberCubit.state.child != null) {
-      _allowanceController = memeberCubit.state.child!.allowance!;
-      _nameController.text = memeberCubit.state.child!.firstName!;
-      _ageController.text = memeberCubit.state.child!.age!.toString();
-    }
     super.initState();
+    final memberCubit = context.read<AddMemberCubit>();
+    if (memberCubit.state.child.firstName == null) {
+      return;
+    }
+    _allowanceController = memberCubit.state.child.allowance!;
+    _nameController.text = memberCubit.state.child.firstName!;
+    _ageController.text = memberCubit.state.child.age.toString();
   }
 
   void _createChildProfile() {
@@ -70,7 +71,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       age: age,
       allowance: _allowanceController,
     );
-    context.read<AddMemberCubit>().goToVPC(child: child);
+
+    context.read<AddMemberCubit>().goToVPC(child);
 
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.createChildProfileClicked,
@@ -87,8 +89,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     final formKey = GlobalKey<FormState>();
     final user = context.read<AuthCubit>().state.user;
     final currency = NumberFormat.simpleCurrency(
-      name: Util.getCurrencyName(country: Country.fromCode(user.country)),
-    ).currencySymbol;
+            name: Country.fromCode(user.country).currency)
+        .currencySymbol;
 
     return BlocBuilder<AddMemberCubit, AddMemberState>(
       builder: (context, state) {
@@ -170,7 +172,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                 ? Border.all()
                 : Border.fromBorderSide(
                     BorderSide(
-                      color: Colors.grey.shade300,
+                      color: AppTheme.givtGraycece,
                     ),
                   ),
           ),
