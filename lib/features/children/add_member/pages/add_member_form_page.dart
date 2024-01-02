@@ -91,7 +91,6 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     final currency = NumberFormat.simpleCurrency(
             name: Country.fromCode(user.country).currency)
         .currencySymbol;
-
     return BlocBuilder<AddMemberCubit, AddMemberState>(
       builder: (context, state) {
         return Padding(
@@ -131,12 +130,12 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           selectorSegment(
-            title: 'Child',
+            title: context.l10n.childKey,
             isSelected: isChildSelected,
             isLeft: true,
           ),
           selectorSegment(
-            title: 'Parent',
+            title: context.l10n.parentKey,
             isSelected: !isChildSelected,
             isLeft: false,
           ),
@@ -267,13 +266,13 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             FamilyTextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter the child's name";
+                  return context.l10n.pleaseEnterChildName;
                 }
                 if (value.length < 2) {
-                  return 'Please enter a valid name';
+                  return context.l10n.pleaseEnterValidName;
                 }
                 if (value.length > 20) {
-                  return 'Name is too long';
+                  return context.l10n.nameTooLong;
                 }
                 return null;
               },
@@ -284,18 +283,18 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             FamilyTextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return "Please enter the child's age";
+                  return context.l10n.pleaseEnterChildAge;
                 }
                 if (int.tryParse(value) == null) {
-                  return 'Please enter a valid age';
+                  return context.l10n.pleaseEnterValidAge;
                 }
                 if (int.parse(value) > 18) {
-                  return 'Please add an adult instead';
+                  return context.l10n.addAdultInstead;
                 }
                 return null;
               },
               controller: _ageController,
-              hintText: 'Age',
+              hintText: context.l10n.ageKey,
               keyboardType: TextInputType.number,
             ),
             const GivingAllowanceInfoButton(),
@@ -307,14 +306,14 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   Widget setUpFamilyHeader() => RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
-          text: 'Set up Family\n',
+          text: '${context.l10n.setUpFamily}\n',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
           children: [
             TextSpan(
-              text: 'Who will be joining you?',
+              text: context.l10n.whoWillBeJoiningYou,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.normal,
                     fontSize: 16,

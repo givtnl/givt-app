@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,28 +22,28 @@ class AddMemeberSuccessPage extends StatelessWidget {
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: 'Congratulations\n',
+              text: '${context.l10n.congratulationsKey}\n',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
               children: [
                 TextSpan(
-                  text: 'Download ',
+                  text: context.l10n.downloadKey,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
                 ),
                 TextSpan(
-                  text: 'Givt4Kids ',
+                  text: context.l10n.g4kKey,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                 ),
                 TextSpan(
-                  text: 'so your children can\nexperience the joy of giving!',
+                  text: context.l10n.childrenCanExperienceTheJoyOfGiving,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
@@ -91,7 +92,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
                         height: 32,
                       ),
                       Text(
-                        'Download Givt4Kids',
+                        context.l10n.downloadG4k,
                         style:
                             Theme.of(context).textTheme.headlineSmall!.copyWith(
                                   color: Colors.white,
@@ -109,7 +110,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
                 onPressed: () {
                   context.pushReplacementNamed(Pages.childrenOverview.name);
                 },
-                child: Text('I will do this later',
+                child: Text(context.l10n.iWillDoThisLater,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontSize: 16,
                           decoration: TextDecoration.underline,

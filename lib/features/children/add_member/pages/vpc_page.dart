@@ -22,29 +22,28 @@ class VPCPage extends StatelessWidget {
           RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: 'One last thing\n',
+              text: context.l10n.oneLastThing,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
               children: [
                 TextSpan(
-                  text: 'To ensure it\'s really you, we\'ll collect\n',
+                  text: context.l10n.vpcToEnsureItsYou,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
                 ),
                 TextSpan(
-                  text: '\$0.50',
+                  text: context.l10n.vpcCost,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                 ),
                 TextSpan(
-                  text:
-                      ' from your card.\n\nThis gives us the green light to securely\n collect your child\'s information.',
+                  text: context.l10n.vpcGreenLightChildInformation,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
