@@ -17,7 +17,6 @@ class AddMemeberSuccessPage extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           RichText(
             textAlign: TextAlign.center,
@@ -29,14 +28,14 @@ class AddMemeberSuccessPage extends StatelessWidget {
                   ),
               children: [
                 TextSpan(
-                  text: context.l10n.downloadKey,
+                  text: '${context.l10n.downloadKey} ',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.normal,
                         fontSize: 16,
                       ),
                 ),
                 TextSpan(
-                  text: context.l10n.g4kKey,
+                  text: '${context.l10n.g4kKey} ',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
