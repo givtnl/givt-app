@@ -136,9 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           builder: (context, state) {
             return isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? _buildLoadingState(isUs)
                 : _buildSignUpForm(locals, size, isUs);
           },
         ),
@@ -193,6 +191,19 @@ class _SignUpPageState extends State<SignUpPage> {
     return false;
   }
 
+  Widget _buildLoadingState(bool isUS) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isUS) const Text('Hold on, we are creating your account...'),
+          if (isUS) const SizedBox(height: 16),
+          const CircularProgressIndicator.adaptive(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSignUpForm(AppLocalizations locals, Size size, bool isUS) {
     return Form(
       key: _formKey,
@@ -243,7 +254,7 @@ class _SignUpPageState extends State<SignUpPage> {
               style:
                   Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
               decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).lastName,
+                hintText: AppLocalizations.of(context).surname,
                 errorStyle: const TextStyle(
                   height: 0,
                 ),

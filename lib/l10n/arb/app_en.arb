@@ -438,7 +438,7 @@
         "description": "\"Gegevens\" knop bij instellingen",
         "type": "text"
     },
-    "lastName": "Surname",
+    "lastName": "Last name",
     "@lastName": {
         "description": "Achternaam placeholder op de registratiepagina",
         "type": "text"
@@ -1451,5 +1451,9 @@
     "childParentalApprovalDeclinedSubTitle": "Maybe next time?",
     "childParentalApprovalErrorTitle": "Oops, something went wrong!",
     "childParentalApprovalErrorSubTitle": "Please try again later",
-    "signUpPageTitle": ""
+    "signUpPageTitle": "",
+    "setupfamily": "",
+    "surname": "Surname",
+    "goodToKnow": "Good to know",
+    "registrationDialogG4K": "Donating and setting up your family for Givt4Kids only works when the registration is completed."
 }
