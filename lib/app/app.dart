@@ -110,10 +110,11 @@ class _AppView extends StatelessWidget {
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaleFactor.clamp(1.0, 1.2);
+        final scale = mediaQueryData.textScaler
+            .clamp(minScaleFactor: 1, maxScaleFactor: 1.2);
 
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+          data: MediaQuery.of(context).copyWith(textScaler: scale),
           child: child!,
         );
       },

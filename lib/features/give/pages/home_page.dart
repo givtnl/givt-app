@@ -187,15 +187,19 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
+    final isUS = user.country == Country.us.countryCode;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
-        title: Text(context.l10n.importantReminder,
+        title: Text(
+            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 )),
         content: Text(
-          context.l10n.finalizeRegistrationPopupText,
+          isUS
+              ? context.l10n.registrationDialogG4K
+              : context.l10n.finalizeRegistrationPopupText,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         actions: [
