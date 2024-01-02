@@ -57,10 +57,11 @@ Widget _createPage(AddMemberState state, BuildContext context) {
       return const VPCPage();
     case AddMemberStateStatus.input:
     case AddMemberStateStatus.initial:
-    case AddMemberStateStatus.loading:
     case AddMemberStateStatus.error:
       return const CreateMemberPage();
     case AddMemberStateStatus.success:
       return const AddMemeberSuccessPage();
+    case AddMemberStateStatus.loading:
+      return const Center(child: CircularProgressIndicator.adaptive());
   }
 }
