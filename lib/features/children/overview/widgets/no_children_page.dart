@@ -20,7 +20,7 @@ class NoChildrenPage extends StatelessWidget {
             text: 'Set up Family\n',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
             children: [
               TextSpan(
@@ -28,6 +28,7 @@ class NoChildrenPage extends StatelessWidget {
                     'Create your first impact group and\nexperience generosity together.',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.normal,
+                      fontSize: 16,
                     ),
               ),
             ],
@@ -44,8 +45,10 @@ class NoChildrenPage extends StatelessWidget {
             child: Text(
               "+ Add members",
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Avenir',
+                    fontWeight: FontWeight.w900,
                     color: Colors.white,
+                    fontSize: 18,
                   ),
             ),
           ),
