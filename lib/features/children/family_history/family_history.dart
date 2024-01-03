@@ -7,13 +7,11 @@ import 'package:givt_app/features/children/family_history/models/child_donation_
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyHistory extends StatelessWidget {
-  const FamilyHistory({required this.children, super.key});
-  final List<Profile> children;
+  const FamilyHistory({super.key});
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
@@ -37,14 +35,13 @@ class FamilyHistory extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
           child: Text(
             locals.childHistoryAllGivts,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w800,
                 ),
           ),
         ),
-        SizedBox(
-          height: size.height * 0.60,
+        Expanded(
           child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
             builder: (context, state) {
               if (state.status == HistroryStatus.loading &&
@@ -57,37 +54,39 @@ class FamilyHistory extends StatelessWidget {
                 );
               }
               // Display List of donations and allowances in descending date order
-              return Stack(children: [
-                ListView.separated(
-                  padding: EdgeInsets.zero,
-                  controller: scrollController,
-                  itemCount: state.history.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (state.history[index].type == HistoryTypes.allowance) {
-                      return AllowanceItemWidget(
-                        allowance: state.history[index] as Allowance,
+              return Stack(
+                children: [
+                  ListView.separated(
+                    padding: EdgeInsets.zero,
+                    controller: scrollController,
+                    itemCount: state.history.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (state.history[index].type == HistoryTypes.allowance) {
+                        return AllowanceItemWidget(
+                          allowance: state.history[index] as Allowance,
+                        );
+                      }
+                      return Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                        child: DonationItemWidget(
+                          donation: state.history[index] as ChildDonation,
+                        ),
                       );
-                    }
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                      child: DonationItemWidget(
-                        donation: state.history[index] as ChildDonation,
-                      ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return getDivider(state, index);
-                  },
-                ),
-                if (state.status == HistroryStatus.loading &&
-                    historyCubit.state.pageNr > 1)
-                  Positioned(
-                    bottom: 20,
-                    left: size.width * 0.5 - 20,
-                    child: const CircularProgressIndicator(),
-                  )
-              ]);
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return getDivider(state, index);
+                    },
+                  ),
+                  if (state.status == HistroryStatus.loading &&
+                      historyCubit.state.pageNr > 1)
+                    Positioned(
+                      bottom: 20,
+                      left: size.width * 0.5 - 20,
+                      child: const CircularProgressIndicator(),
+                    )
+                ],
+              );
             },
           ),
         ),

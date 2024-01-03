@@ -16,9 +16,9 @@ import 'package:givt_app/features/children/details/pages/child_details_page.dart
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
-import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
+import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -180,7 +180,7 @@ class AppRouter {
             builder: (context, state) => MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (_) => ChildrenOverviewCubit(getIt())
+                  create: (_) => FamilyOverviewCubit(getIt())
                     ..fetchChildren(context.read<AuthCubit>().state.user.guid),
                 ),
                 BlocProvider(
@@ -188,7 +188,7 @@ class AppRouter {
                       FamilyHistoryCubit(getIt())..fetchHistory(),
                 ),
               ],
-              child: const ChildrenOverviewPage(),
+              child: const FamilyOverviewPage(),
             ),
           ),
           GoRoute(
@@ -196,7 +196,7 @@ class AppRouter {
             name: Pages.childDetails.name,
             builder: (context, state) {
               final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
               final childProfile = extras[1] as Profile;
               return MultiBlocProvider(
                 providers: [
@@ -219,7 +219,7 @@ class AppRouter {
             name: Pages.editChild.name,
             builder: (context, state) {
               final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
               final childDetailsCubit = extras[1] as ChildDetailsCubit;
               return MultiBlocProvider(
                 providers: [

@@ -13,6 +13,7 @@ class Profile extends Equatable {
     required this.comment,
     required this.wallet,
     required this.pictureURL,
+    required this.type,
   });
 
   const Profile.empty()
@@ -24,18 +25,20 @@ class Profile extends Equatable {
           comment: '',
           wallet: const Wallet.empty(),
           pictureURL: '',
+          type: '',
         );
 
   factory Profile.fromMap(Map<String, dynamic> map) {
-    final pictureMap = map['picture'] as Map<String, dynamic>;
     return Profile(
       id: map['id'] as String,
       firstName: (map['firstName'] ?? '') as String,
       lastName: (map['lastName'] ?? '') as String,
       nickname: (map['nickname'] ?? '') as String,
       comment: (map['comment'] ?? '') as String,
-      wallet: Wallet.fromMap(map['wallet'] as Map<String, dynamic>),
-      pictureURL: pictureMap['pictureURL'] as String,
+      wallet: const Wallet.empty(),
+      // wallet: Wallet.fromMap(map['wallet'] as Map<String, dynamic>),
+      pictureURL: (map['pictureUrl'] ?? '') as String,
+      type: (map['type'] ?? '') as String,
     );
   }
 
@@ -46,10 +49,11 @@ class Profile extends Equatable {
   final String comment;
   final Wallet wallet;
   final String pictureURL;
+  final String type;
 
   @override
   List<Object?> get props =>
-      [id, firstName, lastName, nickname, comment, wallet, pictureURL];
+      [id, firstName, lastName, nickname, comment, wallet, pictureURL, type];
 
   Map<String, dynamic> toJson() {
     return {
@@ -61,7 +65,8 @@ class Profile extends Equatable {
       'wallet': wallet.toJson(),
       'picture': {
         'pictureURL': pictureURL,
-      }
+      },
+      'type': type,
     };
   }
 
