@@ -8,12 +8,12 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/create_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
+import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/children_overview_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
-import 'package:givt_app/features/children/vpc/repositories/vpc_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
@@ -138,11 +138,6 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<VPCRepository>(
-      () => VPCRepositoryImpl(
-        getIt(),
-      ),
-    )
     ..registerLazySingleton<ChildrenOverviewRepository>(
       () => ChildrenOverviewRepositoryImpl(
         getIt(),
@@ -183,8 +178,13 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<CreateChildRepository>(
-      () => CreateChildRepositoryImpl(
+    ..registerLazySingleton<EditChildRepository>(
+      () => EditChildRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<AddMemberRepository>(
+      () => AddMemberRepositoryImpl(
         getIt(),
       ),
     );

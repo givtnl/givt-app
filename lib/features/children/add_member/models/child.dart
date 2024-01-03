@@ -1,17 +1,24 @@
 import 'package:equatable/equatable.dart';
 
 class Child extends Equatable {
+  const Child.empty()
+      : firstName = null,
+        lastName = null,
+        age = null,
+        dateOfBirth = null,
+        allowance = null;
+
   const Child({
-    required this.parentId,
     this.firstName,
     this.lastName,
+    this.age,
     this.dateOfBirth,
     this.allowance,
   });
 
-  final String parentId;
   final String? firstName;
   final String? lastName;
+  final int? age;
   final DateTime? dateOfBirth;
   final int? allowance;
 
@@ -19,15 +26,13 @@ class Child extends Equatable {
     return {
       'firstName': firstName,
       'lastName': lastName,
+      'age': age,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
       'givingAllowance': allowance,
-      'parent': {
-        'id': parentId,
-      }
+      'Type': 'Child'
     };
   }
 
   @override
-  List<Object?> get props =>
-      [firstName, lastName, dateOfBirth, allowance, parentId];
+  List<Object?> get props => [firstName, lastName, dateOfBirth, allowance];
 }
