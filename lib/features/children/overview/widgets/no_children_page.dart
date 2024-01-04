@@ -39,11 +39,16 @@ class NoChildrenPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 35, right: 35, bottom: 12),
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 35,
+            right: 35,
+            bottom: 12,
+          ),
           child: ElevatedButton(
             onPressed: onAddNewChildPressed,
             child: Text(
-              "+ Add members",
+              '+ Add members',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontFamily: 'Avenir',
                     fontWeight: FontWeight.w900,
