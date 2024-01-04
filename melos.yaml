@@ -1,6 +1,7 @@
 name: givt_app
 
 packages:
+  - .
   - packages/**
 
 command: 

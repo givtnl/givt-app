@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -20,15 +20,16 @@ class ChildOverviewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
     final currencySymbol = Util.getCurrencySymbol(countryCode: user.country);
-    final size = MediaQuery.sizeOf(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shadowColor: profile.monsterColorWithAlpha,
           elevation: 0,
-          padding: EdgeInsets.symmetric(
-              horizontal: 10, vertical: size.height * 0.025),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 16,
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
             side: BorderSide(
@@ -47,7 +48,7 @@ class ChildOverviewItem extends StatelessWidget {
           context.pushNamed(
             Pages.childDetails.name,
             extra: [
-              context.read<ChildrenOverviewCubit>(),
+              context.read<FamilyOverviewCubit>(),
               profile,
             ],
           );
@@ -61,11 +62,11 @@ class ChildOverviewItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: SvgPicture.network(
                   profile.pictureURL,
-                  width: size.height * 0.09,
-                  height: size.height * 0.09,
+                  width: 48,
+                  height: 48,
                 ),
               ),
-              SizedBox(height: size.height * 0.007),
+              const SizedBox(height: 8),
               Text(
                 profile.firstName,
                 maxLines: 1,

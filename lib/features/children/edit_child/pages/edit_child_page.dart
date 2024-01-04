@@ -11,7 +11,7 @@ import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -63,7 +63,7 @@ class _EditChildPageState extends State<EditChildPage> {
 
   void _refreshProfiles() {
     context.read<ChildDetailsCubit>().fetchChildDetails();
-    context.read<ChildrenOverviewCubit>().fetchChildren(
+    context.read<FamilyOverviewCubit>().fetchChildren(
           context.read<AuthCubit>().state.user.guid,
         );
   }

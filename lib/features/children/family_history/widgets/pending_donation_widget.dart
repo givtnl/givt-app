@@ -8,7 +8,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/parental_approval/dialogs/parental_approval_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
@@ -61,7 +61,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
             }
             unawaited(
               context
-                  .read<ChildrenOverviewCubit>()
+                  .read<FamilyOverviewCubit>()
                   .fetchChildren(context.read<AuthCubit>().state.user.guid),
             );
           }

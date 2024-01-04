@@ -4,30 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/widgets/children_available_page.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class ChildrenOverviewPage extends StatelessWidget {
-  const ChildrenOverviewPage({super.key});
+class FamilyOverviewPage extends StatelessWidget {
+  const FamilyOverviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ChildrenOverviewCubit, ChildrenOverviewState>(
+    return BlocConsumer<FamilyOverviewCubit, FamilyOverviewState>(
       listener: (context, state) {
         log('children overview state changed on $state');
-        if (state is ChildrenOverviewErrorState) {
+        if (state is FamilyOverviewErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
                 state.errorMessage,
                 textAlign: TextAlign.center,
               ),
-              backgroundColor: Theme.of(context).errorColor,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         }
@@ -36,7 +36,7 @@ class ChildrenOverviewPage extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title:
-                state is ChildrenOverviewUpdatedState && state.profiles.isEmpty
+                state is FamilyOverviewUpdatedState && state.profiles.isEmpty
                     ? const SizedBox()
                     : Text(
                         context.l10n.childrenMyFamily,
@@ -53,7 +53,7 @@ class ChildrenOverviewPage extends StatelessWidget {
               },
             ),
             actions: [
-              if (state is ChildrenOverviewUpdatedState &&
+              if (state is FamilyOverviewUpdatedState &&
                   state.profiles.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
@@ -82,14 +82,14 @@ class ChildrenOverviewPage extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           body: SafeArea(
-            child: state is ChildrenOverviewLoadingState
+            child: state is FamilyOverviewLoadingState
                 ? const ChildrenLoadingPage()
-                : state is ChildrenOverviewUpdatedState
+                : state is FamilyOverviewUpdatedState
                     ? state.profiles.isEmpty
                         ? NoChildrenPage(
                             onAddNewChildPressed: () => _addNewChild(context),
                           )
-                        : ChildrenAvailablePage(
+                        : FamilyAvailablePage(
                             profiles: state.profiles,
                           )
                     : Container(),

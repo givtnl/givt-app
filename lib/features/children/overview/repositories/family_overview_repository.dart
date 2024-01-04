@@ -1,17 +1,17 @@
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 
-mixin ChildrenOverviewRepository {
-  Future<List<Profile>> fetchChildren(String parentGuid);
+mixin FamilyOverviewRepository {
+  Future<List<Profile>> fetchFamily(String parentGuid);
 }
 
-class ChildrenOverviewRepositoryImpl with ChildrenOverviewRepository {
-  ChildrenOverviewRepositoryImpl(this.apiService);
+class FamilyOverviewRepositoryImpl with FamilyOverviewRepository {
+  FamilyOverviewRepositoryImpl(this.apiService);
   final APIService apiService;
 
   @override
-  Future<List<Profile>> fetchChildren(String parentGuid) async {
-    final response = await apiService.fetchChildren(parentGuid);
+  Future<List<Profile>> fetchFamily(String parentGuid) async {
+    final response = await apiService.fetchProfiles(parentGuid);
 
     final result = <Profile>[];
     for (final profileMap in response) {

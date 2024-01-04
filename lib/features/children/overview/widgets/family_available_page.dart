@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/family_history/family_history.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/widgets/children_overview_widget.dart';
+import 'package:givt_app/features/children/overview/widgets/parent_overview_widget.dart';
 
-class ChildrenAvailablePage extends StatelessWidget {
-  const ChildrenAvailablePage({
+class FamilyAvailablePage extends StatelessWidget {
+  const FamilyAvailablePage({
     required this.profiles,
     super.key,
   });
@@ -13,18 +14,20 @@ class ChildrenAvailablePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          height: size.height * 0.22,
-          child: ChildrenOverviewWidget(
-            profiles: profiles,
-          ),
+        ParentOverviewWidget(
+          profiles: profiles.where((p) => p.type == 'Parent').toList(),
         ),
-        Spacer(),
-        FamilyHistory(children: profiles)
+        const SizedBox(height: 20),
+        ChildrenOverviewWidget(
+          profiles: profiles.where((p) => p.type == 'Child').toList(),
+        ),
+        const SizedBox(height: 32),
+        const Expanded(
+          child: FamilyHistory(),
+        )
       ],
     );
   }
