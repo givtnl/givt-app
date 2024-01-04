@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/children/add_member/models/child.dart';
+import 'package:givt_app/features/children/add_member/models/profile.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 
 part 'add_member_state.dart';
@@ -12,19 +12,18 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   AddMemberCubit(this._addMemberRepository) : super(const AddMemberState());
   final AddMemberRepository _addMemberRepository;
 
-// to do add many children
-  void rememberChild({required Child child}) {
+  void rememberProfile({required Profile profile}) {
     final existingChildIndex =
-        state.children.indexWhere((c) => c.key == child.key);
+        state.profiles.indexWhere((p) => p.key == profile.key);
 
     if (existingChildIndex != -1) {
       // Child with the same key exists, replace it
-      final updatedChildren = state.children;
-      updatedChildren[existingChildIndex] = child;
+      final updatedChildren = state.profiles;
+      updatedChildren[existingChildIndex] = profile;
 
       emit(
         state.copyWith(
-          children: updatedChildren,
+          profiles: updatedChildren,
           status: AddMemberStateStatus.input,
         ),
       );
@@ -32,7 +31,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       // Child with the key doesn't exist, add it
       emit(
         state.copyWith(
-          children: state.children..add(child),
+          profiles: state.profiles..add(profile),
           status: AddMemberStateStatus.input,
         ),
       );
@@ -63,12 +62,12 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     emit(state.copyWith(
       status: AddMemberStateStatus.input,
       formStatus: AddMemberFormStatus.initial,
-      children: [],
+      profiles: [],
     ));
   }
 
   Future<void> createChildWithVPC() async {
-    final children = state.children;
+    final children = state.profiles;
     emit(
       state.copyWith(
         status: AddMemberStateStatus.loading,

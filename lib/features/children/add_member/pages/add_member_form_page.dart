@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
@@ -18,11 +14,11 @@ class CreateMemberPage extends StatefulWidget {
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
   int _nrOfMembers = 1;
-  List<Key> _memberKeys = [];
+  final List<Key> _memberKeys = [];
 
   @override
   void initState() {
-    for (int i = 0; i < _nrOfMembers; i++) {
+    for (var i = 0; i < _nrOfMembers; i++) {
       _memberKeys.add(GlobalKey());
     }
     super.initState();
@@ -32,38 +28,30 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<AddMemberCubit, AddMemberState>(
       builder: (context, state) {
-        return Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              height: MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).viewInsets.bottom,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    setUpFamilyHeader(),
-                    SizedBox(height: 20),
-                    for (int i = 0; i < _memberKeys.length; i++)
-                      Dismissible(
-                        key: _memberKeys[i],
-                        onDismissed: (direction) {
-                          setState(() {
-                            _nrOfMembers--;
-                            _memberKeys.removeAt(i);
-                          });
-                        },
-                        child: AddMemberForm(
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      setUpFamilyHeader(),
+                      const SizedBox(height: 20),
+                      for (int i = 0; i < _memberKeys.length; i++)
+                        AddMemberForm(
                           addDivider: i > 0,
                         ),
-                      ),
-                    SizedBox(height: 20),
-                    addButton(),
-                    continueButton()
-                  ],
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              addButton(),
+              continueButton(),
+            ],
+          ),
         );
       },
     );
@@ -100,7 +88,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        side: BorderSide(
+        side: const BorderSide(
           color: AppTheme.givtLightGreen,
           width: 2,
         ),
@@ -117,17 +105,21 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     );
   }
 
-  Widget continueButton({bool enabled = true}) {
+  Widget continueButton() {
+    // TODO: check if all forms are valid
+    const enabled = true;
+
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: ElevatedButton(
         onPressed: enabled
             ? () {
                 context.read<AddMemberCubit>().validateForms();
               }
-            : () {},
+            : null,
         style: ElevatedButton.styleFrom(
-          backgroundColor: enabled ? AppTheme.givtLightGreen : Colors.grey,
+          backgroundColor: AppTheme.givtLightGreen,
+          disabledBackgroundColor: Colors.grey,
         ),
         child: Text(
           context.l10n.continueKey,

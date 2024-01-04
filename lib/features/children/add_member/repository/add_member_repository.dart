@@ -1,8 +1,8 @@
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/children/add_member/models/child.dart';
+import 'package:givt_app/features/children/add_member/models/profile.dart';
 
 mixin AddMemberRepository {
-  Future<bool> addMembers(List<Child> children);
+  Future<bool> addMembers(List<Profile> children);
 }
 
 class AddMemberRepositoryImpl with AddMemberRepository {
@@ -10,9 +10,9 @@ class AddMemberRepositoryImpl with AddMemberRepository {
   final APIService apiService;
 
   @override
-  Future<bool> addMembers(List<Child> children) async {
+  Future<bool> addMembers(List<Profile> profiles) async {
     final List<Map<String, dynamic>> profilesJsonList =
-        children.map((child) => child.toJson()).toList();
+        profiles.map((profile) => profile.toJson()).toList();
     final body = {
       'profiles': profilesJsonList,
     };

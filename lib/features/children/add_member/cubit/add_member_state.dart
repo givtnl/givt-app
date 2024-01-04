@@ -20,28 +20,28 @@ class AddMemberState extends Equatable {
   const AddMemberState({
     this.status = AddMemberStateStatus.initial,
     this.formStatus = AddMemberFormStatus.initial,
-    this.children = const [],
+    this.profiles = const [],
     this.error = '',
   });
   final AddMemberStateStatus status;
   final AddMemberFormStatus formStatus;
-  final List<Child> children;
+  final List<Profile> profiles;
   final String error;
 
   AddMemberState copyWith({
     AddMemberStateStatus? status,
     AddMemberFormStatus? formStatus,
-    List<Child>? children,
+    List<Profile>? profiles,
     String? error,
   }) {
     return AddMemberState(
       status: status ?? this.status,
       formStatus: formStatus ?? this.formStatus,
-      children: children ?? this.children,
+      profiles: profiles ?? this.profiles,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [children, status, formStatus, error];
+  List<Object?> get props => [profiles, status, formStatus, error];
 }

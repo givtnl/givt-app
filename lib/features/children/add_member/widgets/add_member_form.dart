@@ -1,16 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/add_member/models/child.dart';
+import 'package:givt_app/features/children/add_member/models/profile.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddMemberForm extends StatefulWidget {
@@ -21,11 +23,13 @@ class AddMemberForm extends StatefulWidget {
 }
 
 class _AddMemberFormState extends State<AddMemberForm> {
-  final _nameController = TextEditingController();
+  final _nameChildController = TextEditingController();
+  final _nameParentController = TextEditingController();
   final _ageController = TextEditingController();
   bool isChildSelected = true;
   int _allowanceController = 15;
-  final formKey = GlobalKey<FormState>();
+  final formKeyChild = GlobalKey<FormState>();
+  final formKeyParent = GlobalKey<FormState>();
 
   void _incrementCounter() {
     if (_allowanceController > 998) {
@@ -66,243 +70,293 @@ class _AddMemberFormState extends State<AddMemberForm> {
         .currencySymbol;
 
     return BlocConsumer<AddMemberCubit, AddMemberState>(
-        listener: (context, state) {
-      if (state.formStatus == AddMemberFormStatus.validate) {
-        if (formKey.currentState!.validate()) {
-          final name = _nameController.text.trim();
-          final age = int.parse(_ageController.text);
-          final birthYear = DateTime.now().year - age;
-          final dateOfBirth = DateTime(birthYear, 1, 1);
+      listener: (context, state) {
+        if (state.formStatus == AddMemberFormStatus.validate) {
+          if (isChildSelected && formKeyChild.currentState!.validate()) {
+            final name = _nameChildController.text.trim();
+            final age = int.parse(_ageController.text);
+            final birthYear = DateTime.now().year - age;
+            final dateOfBirth = DateTime(birthYear);
 
-          final child = Child(
-            firstName: name,
-            dateOfBirth: dateOfBirth,
-            age: age,
-            allowance: _allowanceController,
-            key: formKey.toString(),
-          );
-          context.read<AddMemberCubit>().rememberChild(child: child);
-          context.read<AddMemberCubit>().resetFormStatus();
+            final profile = Profile(
+              firstName: name,
+              dateOfBirth: dateOfBirth,
+              age: age,
+              allowance: _allowanceController,
+              key: formKeyChild.toString(),
+              type: 'Child',
+            );
+
+            context.read<AddMemberCubit>().rememberProfile(profile: profile);
+          }
+
+          if (!isChildSelected && formKeyParent.currentState!.validate()) {
+            final name = _nameParentController.text.trim();
+
+            final profile = Profile(
+              firstName: name,
+              key: formKeyParent.toString(),
+              type: 'Parent',
+            );
+
+            context.read<AddMemberCubit>().rememberProfile(profile: profile);
+          }
         }
-      }
-    }, builder: (context, state) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Visibility(
-            visible: widget.addDivider,
-            child: const Divider(
-              color: AppTheme.givtGraycece,
-              thickness: 1,
+
+        context.read<AddMemberCubit>().resetFormStatus();
+      },
+      builder: (context, state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Visibility(
+              visible: widget.addDivider,
+              child: const Divider(
+                color: AppTheme.givtGraycece,
+                thickness: 1,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          childOrParentSelector(),
-          const SizedBox(height: 10),
-          Stack(
-            children: [
-              animate(
-                isVisible: !isChildSelected,
-                child: Center(
-                  child: Text(
-                    context.l10n.soonMessage,
-                  ),
-                ),
-              ),
-              animate(
-                child: createChildForm(formKey, currency),
-                isVisible: isChildSelected,
-              ),
-            ],
-          ),
-        ],
-      );
-    });
+            const SizedBox(height: 20),
+            childOrParentSelector(),
+            const SizedBox(height: 10),
+            Stack(
+              children: [
+                if (!isChildSelected) createParentForm(),
+                if (isChildSelected) createChildForm(currency),
+              ],
+            ),
+            const SizedBox(height: 20),
+          ],
+        );
+      },
+    );
   }
 
-  Widget childOrParentSelector() => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          selectorSegment(
-            title: context.l10n.childKey,
-            isSelected: isChildSelected,
-            isLeft: true,
-          ),
-          selectorSegment(
-            title: context.l10n.parentKey,
-            isSelected: !isChildSelected,
-            isLeft: false,
-          ),
-        ],
-      );
+  Widget childOrParentSelector() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        selectorSegment(
+          title: context.l10n.childKey,
+          isSelected: isChildSelected,
+          isLeft: true,
+        ),
+        selectorSegment(
+          title: context.l10n.parentKey,
+          isSelected: !isChildSelected,
+          isLeft: false,
+        ),
+      ],
+    );
+  }
+
   Widget selectorSegment({
     required String title,
     required bool isSelected,
     required bool isLeft,
-  }) =>
-      GestureDetector(
-        onTap: () {
-          setState(() {
-            isChildSelected = !isChildSelected;
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          width: 120,
-          decoration: BoxDecoration(
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.white,
-            borderRadius: isLeft
-                ? const BorderRadius.only(
-                    topLeft: const Radius.circular(4),
-                    bottomLeft: Radius.circular(4),
-                  )
-                : const BorderRadius.only(
-                    topRight: Radius.circular(4),
-                    bottomRight: Radius.circular(4),
-                  ),
-            border: isSelected
-                ? Border.all()
-                : const Border.fromBorderSide(
-                    BorderSide(
-                      color: AppTheme.givtGraycece,
-                    ),
-                  ),
-          ),
-          child: isSelected
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      FontAwesomeIcons.check,
-                      color: Colors.white,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.normal,
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                    ),
-                  ],
+  }) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isChildSelected = !isChildSelected;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        width: 120,
+        decoration: BoxDecoration(
+          color:
+              isSelected ? Theme.of(context).colorScheme.primary : Colors.white,
+          borderRadius: isLeft
+              ? const BorderRadius.only(
+                  topLeft: Radius.circular(4),
+                  bottomLeft: Radius.circular(4),
                 )
-              : Center(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.normal,
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 16,
-                        ),
+              : const BorderRadius.only(
+                  topRight: Radius.circular(4),
+                  bottomRight: Radius.circular(4),
+                ),
+          border: isSelected
+              ? Border.all()
+              : const Border.fromBorderSide(
+                  BorderSide(
+                    color: AppTheme.givtGraycece,
                   ),
                 ),
         ),
-      );
-  Widget animate({required Widget child, required bool isVisible}) =>
-      AnimatedOpacity(
-          opacity: isVisible ? 1.0 : 0.0,
-          duration: Duration(milliseconds: 200),
-          child: child);
-  Widget allowanceCounter(String currency) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          IconButton(
-            onPressed: _decrementCounter,
-            padding: EdgeInsets.zero,
-            alignment: Alignment.centerRight,
-            icon: Icon(FontAwesomeIcons.circleMinus,
-                size: 32,
-                color: (_allowanceController < 2)
-                    ? Colors.grey
-                    : Theme.of(context).colorScheme.primary),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Text.rich(
-              TextSpan(
+        child: isSelected
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextSpan(
-                    text: currency,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w700,
-                    ),
+                  const Icon(
+                    FontAwesomeIcons.check,
+                    color: Colors.white,
+                    size: 16,
                   ),
-                  TextSpan(
-                    text: '$_allowanceController',
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.w700,
-                        fontFeatures: <FontFeature>[
-                          FontFeature.liningFigures()
-                        ]),
+                  const SizedBox(width: 8),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
                   ),
                 ],
+              )
+            : Center(
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 16,
+                      ),
+                ),
               ),
-              textAlign: TextAlign.center,
-            ),
+      ),
+    );
+  }
+
+  Widget allowanceCounter(String currency) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        IconButton(
+          splashRadius: 24,
+          onPressed: _decrementCounter,
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            FontAwesomeIcons.circleMinus,
+            size: 32,
+            color: (_allowanceController < 2)
+                ? Colors.grey
+                : Theme.of(context).colorScheme.primary,
           ),
-          IconButton(
-            onPressed: _incrementCounter,
-            padding: EdgeInsets.zero,
-            alignment: Alignment.centerLeft,
-            icon: Icon(FontAwesomeIcons.circlePlus,
-                size: 32,
-                color: (_allowanceController > 998)
-                    ? Colors.grey
-                    : Theme.of(context).colorScheme.primary),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: currency,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Raleway',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                TextSpan(
+                  text: '$_allowanceController',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontFamily: 'Raleway',
+                    fontWeight: FontWeight.w700,
+                    fontFeatures: <FontFeature>[FontFeature.liningFigures()],
+                  ),
+                ),
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        IconButton(
+          splashRadius: 24,
+          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+          onPressed: _incrementCounter,
+          padding: EdgeInsets.zero,
+          icon: Icon(
+            FontAwesomeIcons.circlePlus,
+            size: 32,
+            color: (_allowanceController > 998)
+                ? Colors.grey
+                : Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget createChildForm(String currency) {
+    return Form(
+      key: formKeyChild,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FamilyTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.pleaseEnterChildName;
+              }
+              if (value.length < 2) {
+                return context.l10n.pleaseEnterValidName;
+              }
+              if (value.length > 20) {
+                return context.l10n.nameTooLong;
+              }
+              return null;
+            },
+            controller: _nameChildController,
+            hintText: context.l10n.firstName,
+            keyboardType: TextInputType.name,
+          ),
+          FamilyTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.pleaseEnterChildAge;
+              }
+              if (int.tryParse(value) == null) {
+                return context.l10n.pleaseEnterValidAge;
+              }
+              if (int.parse(value) > 18) {
+                return context.l10n.addAdultInstead;
+              }
+              return null;
+            },
+            controller: _ageController,
+            hintText: context.l10n.ageKey,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+            textInputAction: TextInputAction.done,
+          ),
+          const SizedBox(height: 10),
+          const GivingAllowanceInfoButton(),
+          allowanceCounter(currency),
+        ],
+      ),
+    );
+  }
+
+  Widget createParentForm() {
+    return Form(
+      key: formKeyParent,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FamilyTextFormField(
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.pleaseEnterChildName;
+              }
+              if (value.length < 2) {
+                return context.l10n.pleaseEnterValidName;
+              }
+              if (value.length > 20) {
+                return context.l10n.nameTooLong;
+              }
+              return null;
+            },
+            controller: _nameParentController,
+            hintText: context.l10n.firstName,
+            keyboardType: TextInputType.name,
           ),
         ],
-      );
-  Widget createChildForm(GlobalKey<FormState> formKey, String currency) => Form(
-        key: formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            FamilyTextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.l10n.pleaseEnterChildName;
-                }
-                if (value.length < 2) {
-                  return context.l10n.pleaseEnterValidName;
-                }
-                if (value.length > 20) {
-                  return context.l10n.nameTooLong;
-                }
-                return null;
-              },
-              controller: _nameController,
-              hintText: context.l10n.firstName,
-              keyboardType: TextInputType.name,
-            ),
-            FamilyTextFormField(
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.l10n.pleaseEnterChildAge;
-                }
-                if (int.tryParse(value) == null) {
-                  return context.l10n.pleaseEnterValidAge;
-                }
-                if (int.parse(value) > 18) {
-                  return context.l10n.addAdultInstead;
-                }
-                return null;
-              },
-              controller: _ageController,
-              hintText: context.l10n.ageKey,
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.done,
-            ),
-            const GivingAllowanceInfoButton(),
-            allowanceCounter(currency),
-          ],
-        ),
-      );
+      ),
+    );
+  }
 }
