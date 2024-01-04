@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
+import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -85,7 +85,7 @@ class FamilyOverviewPage extends StatelessWidget {
             child: state is FamilyOverviewLoadingState
                 ? const ChildrenLoadingPage()
                 : state is FamilyOverviewUpdatedState
-                    ? state.profiles.isEmpty
+                    ? state.profiles.where((p) => p.type == 'Child').isEmpty
                         ? NoChildrenPage(
                             onAddNewChildPressed: () => _addNewChild(context),
                           )
