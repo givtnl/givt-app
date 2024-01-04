@@ -103,9 +103,6 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
                           extra: context.read<RegistrationBloc>(),
                         )
                     : null,
-                style: ElevatedButton.styleFrom(
-                  disabledBackgroundColor: Colors.grey,
-                ),
                 child: Text(locals.continueKey),
               ),
             ),

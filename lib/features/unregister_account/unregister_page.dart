@@ -161,7 +161,6 @@ class _UnregisterPageState extends State<UnregisterPage> {
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.givtRed,
-                disabledBackgroundColor: Colors.grey,
               ),
               child: Text(locals.unregisterButton),
             ),

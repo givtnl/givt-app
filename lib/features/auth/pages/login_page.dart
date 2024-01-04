@@ -88,9 +88,6 @@ class _LoginPageState extends State<LoginPage> {
             : isEnabled
                 ? () => onLogin(context)
                 : null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: Colors.grey,
-        ),
         child: context.watch<AuthCubit>().state.status == AuthStatus.loading
             ? const CircularProgressIndicator.adaptive()
             : Text(

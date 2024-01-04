@@ -258,9 +258,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               toggleLoading();
                             }
                           : null,
-                      style: ElevatedButton.styleFrom(
-                        disabledBackgroundColor: Colors.grey,
-                      ),
                       child: Text(
                         locals.continueKey,
                       ),

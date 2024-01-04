@@ -129,9 +129,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                     );
                               }
                             : null,
-                        style: ElevatedButton.styleFrom(
-                          disabledBackgroundColor: Colors.grey,
-                        ),
                         child: Text(
                           locals.send,
                         ),

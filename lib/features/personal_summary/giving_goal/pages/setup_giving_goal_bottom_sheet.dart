@@ -80,9 +80,6 @@ class _SetupGivingGoalBottomSheetState
                 personalSummaryState.status != PersonalSummaryStatus.loading,
             child: ElevatedButton(
               onPressed: isEnabled ? () => onSave(context) : null,
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
               child: Text(
                 locals.save,
               ),

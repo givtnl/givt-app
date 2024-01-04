@@ -236,9 +236,6 @@ class _ChangeMaxAmountBottomSheetViewState
                               );
                         }
                       : null,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
                   child: Text(locals.save),
                 ),
             ],

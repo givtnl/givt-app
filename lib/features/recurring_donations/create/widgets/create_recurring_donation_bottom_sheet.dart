@@ -111,9 +111,6 @@ class _CreateRecurringDonationBottomSheetViewState
                       );
                     }
                   : null,
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
               child: Text(locals.give),
             ),
       child: SingleChildScrollView(
