@@ -9,28 +9,39 @@ enum AddMemberStateStatus {
   vpc,
 }
 
+enum AddMemberFormStatus {
+  initial,
+  validate,
+  success,
+  error,
+}
+
 class AddMemberState extends Equatable {
   const AddMemberState({
     this.status = AddMemberStateStatus.initial,
-    this.child = const Child.empty(),
+    this.formStatus = AddMemberFormStatus.initial,
+    this.children = const [],
     this.error = '',
   });
   final AddMemberStateStatus status;
-  final Child child;
+  final AddMemberFormStatus formStatus;
+  final List<Child> children;
   final String error;
 
   AddMemberState copyWith({
     AddMemberStateStatus? status,
-    Child? child,
+    AddMemberFormStatus? formStatus,
+    List<Child>? children,
     String? error,
   }) {
     return AddMemberState(
       status: status ?? this.status,
-      child: child ?? this.child,
+      formStatus: formStatus ?? this.formStatus,
+      children: children ?? this.children,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [child, status, error];
+  List<Object?> get props => [children, status, formStatus, error];
 }

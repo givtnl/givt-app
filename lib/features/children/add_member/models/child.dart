@@ -6,7 +6,8 @@ class Child extends Equatable {
         lastName = null,
         age = null,
         dateOfBirth = null,
-        allowance = null;
+        allowance = null,
+        key = null;
 
   const Child({
     this.firstName,
@@ -14,6 +15,7 @@ class Child extends Equatable {
     this.age,
     this.dateOfBirth,
     this.allowance,
+    this.key,
   });
 
   final String? firstName;
@@ -21,6 +23,7 @@ class Child extends Equatable {
   final int? age;
   final DateTime? dateOfBirth;
   final int? allowance;
+  final String? key;
 
   Map<String, dynamic> toJson() {
     return {
