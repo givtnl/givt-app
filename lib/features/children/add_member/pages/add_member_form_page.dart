@@ -40,7 +40,13 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                       const SizedBox(height: 20),
                       for (int i = 0; i < _memberKeys.length; i++)
                         AddMemberForm(
-                          addDivider: i > 0,
+                          firstMember: i == 0,
+                          onRemove: () {
+                            setState(() {
+                              _nrOfMembers--;
+                              _memberKeys.removeAt(i);
+                            });
+                          },
                         ),
                       const SizedBox(height: 20),
                     ],

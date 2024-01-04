@@ -12,12 +12,14 @@ import 'package:givt_app/features/children/add_member/widgets/family_text_form_f
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class AddMemberForm extends StatefulWidget {
-  const AddMemberForm({required this.addDivider, super.key});
-  final bool addDivider;
+  const AddMemberForm(
+      {required this.firstMember, required this.onRemove, super.key});
+  final bool firstMember;
+  final VoidCallback onRemove;
+
   @override
   State<AddMemberForm> createState() => _AddMemberFormState();
 }
@@ -110,14 +112,37 @@ class _AddMemberFormState extends State<AddMemberForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Visibility(
-              visible: widget.addDivider,
+              visible: !widget.firstMember,
               child: const Divider(
                 color: AppTheme.givtGraycece,
                 thickness: 1,
               ),
             ),
             const SizedBox(height: 20),
-            childOrParentSelector(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 40),
+                childOrParentSelector(),
+                if (widget.firstMember) const SizedBox(width: 40),
+                if (!widget.firstMember)
+                  SizedBox(
+                    child: IconButton(
+                      icon: const Icon(FontAwesomeIcons.trash),
+                      color: Theme.of(context).colorScheme.primary,
+                      constraints: const BoxConstraints(
+                        minHeight: 40,
+                        minWidth: 40,
+                      ),
+                      splashRadius: 24,
+                      iconSize: 20,
+                      onPressed: () {
+                        widget.onRemove();
+                      },
+                    ),
+                  ),
+              ],
+            ),
             const SizedBox(height: 10),
             Stack(
               children: [
