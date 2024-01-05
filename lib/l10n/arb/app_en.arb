@@ -1475,5 +1475,8 @@
     "oneLastThing": "One last thing\n",
     "vpcToEnsureItsYou": "To ensure it's really you, we'll collect\n",
     "vpcCost": "$0.50",
-    "vpcGreenLightChildInformation": " from your card.\n\nThis gives us the green light to securely\n collect your child's information."
+    "vpcGreenLightChildInformation": " from your card.\n\nThis gives us the green light to securely\n collect your child's information.",
+    "addMember": "Add member",
+    "plusAddMembers": "+ Add members",
+    "addAnotherMember": "+ Add another member"
 }
