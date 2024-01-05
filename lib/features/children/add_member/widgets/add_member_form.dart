@@ -313,7 +313,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               if (value == null || value.isEmpty) {
                 return context.l10n.pleaseEnterChildName;
               }
-              if (value.length < 2) {
+              if (value.length < 3) {
                 return context.l10n.pleaseEnterValidName;
               }
               if (value.length > 20) {
@@ -365,7 +365,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               if (value == null || value.isEmpty) {
                 return context.l10n.pleaseEnterChildName;
               }
-              if (value.length < 2) {
+              if (value.length < 3) {
                 return context.l10n.pleaseEnterValidName;
               }
               if (value.length > 20) {
