@@ -187,15 +187,29 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
+    final isUS = user.country == Country.us.countryCode;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
-        title: Text(context.l10n.importantReminder),
-        content: Text(context.l10n.finalizeRegistrationPopupText),
+        title: Text(
+            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                )),
+        content: Text(
+          isUS
+              ? context.l10n.registrationDialogG4K
+              : context.l10n.finalizeRegistrationPopupText,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: Text(context.l10n.askMeLater),
+            child: Text(
+              context.l10n.askMeLater,
+              style:
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -219,9 +233,10 @@ class _HomePageState extends State<HomePage> {
             },
             child: Text(
               context.l10n.finalizeRegistration,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ),
         ],
@@ -247,17 +262,20 @@ class _HomePageState extends State<HomePage> {
         actions: [
           TextButton(
             onPressed: () async {
-              
-              final packageName =
-                  (await PackageInfo.fromPlatform()).packageName;
-              final url = Platform.isAndroid
-                  ? 'market://details?id=$packageName'
-                  : 'https://apps.apple.com/app/id$packageName';
+              try {
+                final packageName =
+                    (await PackageInfo.fromPlatform()).packageName;
+                final url = Platform.isAndroid
+                    ? 'market://details?id=$packageName'
+                    : 'https://apps.apple.com/app/id$packageName';
 
-              await launchUrlString(
-                url,
-                mode: LaunchMode.externalApplication,
-              );
+                await launchUrlString(
+                  url,
+                  mode: LaunchMode.externalApplication,
+                );
+              } catch (e) {
+                await LoggingInfo.instance.error(e.toString());
+              }
             },
             child: Text(
               locals.continueKey,

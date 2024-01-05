@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
@@ -74,7 +73,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
   @override
   Widget build(BuildContext context) {
     // US & UK should have a . instead ,
-    if (widget.country.countryCode == Country.us.countryCode||
+    if (widget.country.countryCode == Country.us.countryCode ||
         Country.unitedKingdomCodes().contains(widget.country.countryCode)) {
       _comma = '.';
     }
@@ -105,12 +104,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      _buildCollectionField(
+                      CollectionFormField(
                         focusNode: focusNodes[0],
-                        collectionFieldName: locals.firstCollect,
+                        key: Key(locals.firstCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
                         prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        suffixText: locals.firstCollect,
                         controller: controllers[0],
                         isVisible: collectionFields[0],
                         isRemoveIconVisible: collectionFields[1] == true ||
@@ -129,14 +129,15 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           focusNodes[0].requestFocus();
                         },
                       ),
-                      _buildCollectionField(
+                      CollectionFormField(
                         focusNode: focusNodes[1],
-                        collectionFieldName: locals.secondCollect,
+                        key: Key(locals.secondCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
                         prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
                         controller: controllers[1],
                         isVisible: collectionFields[1],
+                        suffixText: locals.secondCollect,
                         isRemoveIconVisible: collectionFields[0] == true ||
                             collectionFields[2] == true,
                         onRemoveIconPressed: () => setState(() {
@@ -149,12 +150,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           focusNodes[1].requestFocus();
                         },
                       ),
-                      _buildCollectionField(
+                      CollectionFormField(
                         focusNode: focusNodes[2],
-                        collectionFieldName: locals.thirdCollect,
+                        key: Key(locals.thirdCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
                         prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        suffixText: locals.thirdCollect,
                         controller: controllers[2],
                         isVisible: collectionFields[2],
                         isRemoveIconVisible: collectionFields[0] == true ||
@@ -174,8 +176,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                               (element) => element == true,
                             ) &&
                             widget.showAddCollectionButton,
-                        child: _buildAddCollectionButton(
-                          size: size,
+                        child: AddCollectionButton(
                           label: locals.addCollect,
                           onPressed: () {
                             setState(() {
@@ -190,7 +191,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
                   ),
                 ),
               ),
-              // Expanded(child: Container()),
               _buildNextButton(
                 label: locals.next,
                 onPressed: isEnabled
@@ -278,7 +278,11 @@ class _ChooseAmountState extends State<ChooseAmount> {
           context: context,
           builder: (_) => WarningDialog(
             title: context.l10n.amountTooLow,
-            content: context.l10n.givtNotEnough('$currency $lowerLimit'),
+            content:
+                context.l10n.givtNotEnough('$currency ${Util.formatNumberComma(
+              lowerLimit,
+              widget.country,
+            )}'),
             onConfirm: () => context.pop(),
           ),
         );
@@ -335,37 +339,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
       }
     }
     return false;
-  }
-
-  Widget _buildCollectionField({
-    required FocusNode focusNode,
-    required String collectionFieldName,
-    required int amountLimit,
-    required TextEditingController controller,
-    required bool isVisible,
-    required bool isRemoveIconVisible,
-    required VoidCallback onRemoveIconPressed,
-    required VoidCallback onFocused,
-    required Icon prefixCurrencyIcon,
-    bool isSuffixTextVisible = true,
-    double lowerLimit = 0,
-  }) {
-    return Visibility(
-      visible: isVisible,
-      child: CollectionFormField(
-        focusNode: focusNode,
-        key: Key(collectionFieldName),
-        controller: controller,
-        amountLimit: amountLimit,
-        lowerLimit: lowerLimit,
-        suffixText: collectionFieldName,
-        prefixCurrencyIcon: prefixCurrencyIcon,
-        isRemoveIconVisible: isRemoveIconVisible,
-        isSuffixTextVisible: isSuffixTextVisible,
-        onRemoveIconPressed: onRemoveIconPressed,
-        onFocused: onFocused,
-      ),
-    );
   }
 
   void onBackspaceTapped() {
@@ -453,41 +426,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
           disabledForegroundColor: Colors.white,
           disabledBackgroundColor: Colors.black12,
           minimumSize: const Size(50, 40),
-        ),
-      ),
-    );
-  }
-
-  Container _buildAddCollectionButton({
-    required Size size,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(
-        top: 10,
-      ),
-      child: Center(
-        child: DottedBorder(
-          color: Colors.black54,
-          strokeCap: StrokeCap.round,
-          dashPattern: const [3, 6],
-          borderPadding: const EdgeInsets.symmetric(
-            vertical: 10,
-          ),
-          borderType: BorderType.RRect,
-          radius: const Radius.circular(6),
-          padding: const EdgeInsets.all(6),
-          child: ElevatedButton.icon(
-            onPressed: onPressed,
-            icon: const Icon(Icons.add_circle_outlined),
-            label: Text(label),
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.black54,
-              backgroundColor: Colors.transparent,
-              minimumSize: const Size(50, 40),
-            ),
-          ),
         ),
       ),
     );

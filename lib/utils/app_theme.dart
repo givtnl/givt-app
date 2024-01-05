@@ -94,19 +94,19 @@ class AppTheme {
       ),
       dragHandleColor: lightColorScheme.onBackground,
     ),
-    inputDecorationTheme: InputDecorationTheme(
-      hintStyle: const TextStyle(
+    inputDecorationTheme: const InputDecorationTheme(
+      hintStyle: TextStyle(
         color: Colors.grey,
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Colors.grey.shade300,
+          color: givtGraycece,
         ),
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),
-      focusedBorder: const OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: givtLightGreen,
         ),
@@ -114,7 +114,7 @@ class AppTheme {
           Radius.circular(8),
         ),
       ),
-      errorBorder: const OutlineInputBorder(
+      errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.red,
         ),
@@ -122,7 +122,7 @@ class AppTheme {
           Radius.circular(8),
         ),
       ),
-      focusedErrorBorder: const OutlineInputBorder(
+      focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.red,
         ),
@@ -132,9 +132,9 @@ class AppTheme {
       ),
       disabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Colors.grey.shade300,
+          color: givtGraycece,
         ),
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),

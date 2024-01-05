@@ -40,13 +40,20 @@ class LocalAuthInfo with ILocalAuthInfo {
       'Authenticating with biometrics',
       methodName: 'authenticate',
     );
-    return _localAuth.authenticate(
+    return _localAuth
+        .authenticate(
       localizedReason: 'Login',
       options: const AuthenticationOptions(
         biometricOnly: true,
         stickyAuth: true,
       ),
-    );
+    )
+        .onError((error, _) async {
+      await LoggingInfo.instance.error(
+        'Error authenticating with biometrics: $error',
+      );
+      return false;
+    });
   }
 
   @override

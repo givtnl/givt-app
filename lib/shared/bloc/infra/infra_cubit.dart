@@ -77,6 +77,7 @@ class InfraCubit extends Cubit<InfraState> {
       final buildNumber = info.buildNumber;
       final update = await infraRepository.checkAppUpdate(
         buildNumber: buildNumber,
+        platform: Platform.isIOS ? '1' : '2',
       );
       if (update == null) {
         emit(const InfraSuccess());

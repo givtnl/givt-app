@@ -6,10 +6,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/widgets.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/widgets/stripe_info_sheet.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/uppercase_text_formatter.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
@@ -57,7 +55,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
-    final isUs = _selectedCountry == Country.us;
     final isUk =
         Country.unitedKingdomCodes().contains(_selectedCountry.countryCode);
     return Scaffold(
@@ -88,27 +85,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isUs)
-              Directionality(
-                textDirection: TextDirection.rtl,
-                child: TextButton.icon(
-                  onPressed: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    showDragHandle: true,
-                    backgroundColor: AppTheme.givtBlue,
-                    builder: (_) => const StripeInfoSheet(),
-                  ),
-                  icon: const Icon(
-                    Icons.info_rounded,
-                    size: 20,
-                  ),
-                  label: Text(locals.moreInformationAboutStripe),
-                ),
-              )
-            else
-              const SizedBox(),
             if (isLoading)
               const Center(child: CircularProgressIndicator())
             else
@@ -148,7 +124,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 children: [
                   Text(locals.registerPersonalPage),
                   _buildTextFormField(
-                    isVisible: !isUs,
                     hintText: locals.streetAndHouseNumber,
                     controller: _address,
                     validator: (value) {
@@ -159,7 +134,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     },
                   ),
                   _buildTextFormField(
-                    isVisible: !isUs,
                     hintText: locals.postalCode,
                     controller: _postalCode,
                     validator: (value) {
@@ -177,7 +151,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     },
                   ),
                   _buildTextFormField(
-                    isVisible: !isUs,
                     hintText: locals.city,
                     controller: _city,
                     validator: (value) {
@@ -192,35 +165,17 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                     locals,
                     context,
                   ),
-                  Visibility(
-                    visible: !isUs,
-                    child: PaymentSystemTab(
-                      isUK: isUk,
-                      bankAccount: bankAccount,
-                      ibanNumber: ibanNumber,
-                      sortCode: sortCode,
-                      onFieldChanged: (value) => setState(() {}),
-                      onPaymentChanged: (value) {
-                        if (value == 0) {
-                          bankAccount.clear();
-                          sortCode.clear();
-                          if (isUk) {
-                            showDialog<void>(
-                              context: context,
-                              builder: (context) => _buildWarningDialog(
-                                message: locals.alertSepaMessage(
-                                  Country.getCountry(
-                                    _selectedCountry.countryCode,
-                                    locals,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                          setState(() {});
-                          return;
-                        }
-                        if (!isUk) {
+                  PaymentSystemTab(
+                    isUK: isUk,
+                    bankAccount: bankAccount,
+                    ibanNumber: ibanNumber,
+                    sortCode: sortCode,
+                    onFieldChanged: (value) => setState(() {}),
+                    onPaymentChanged: (value) {
+                      if (value == 0) {
+                        bankAccount.clear();
+                        sortCode.clear();
+                        if (isUk) {
                           showDialog<void>(
                             context: context,
                             builder: (context) => _buildWarningDialog(
@@ -233,9 +188,24 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                             ),
                           );
                         }
-                        setState(ibanNumber.clear);
-                      },
-                    ),
+                        setState(() {});
+                        return;
+                      }
+                      if (!isUk) {
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => _buildWarningDialog(
+                            message: locals.alertSepaMessage(
+                              Country.getCountry(
+                                _selectedCountry.countryCode,
+                                locals,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+                      setState(ibanNumber.clear);
+                    },
                   ),
                   SizedBox(
                     height: size.height * 0.2,
@@ -428,23 +398,6 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
     setState(() {
       isLoading = true;
     });
-    if (_selectedCountry == Country.us) {
-      context.read<RegistrationBloc>().add(
-            RegistrationPersonalInfoSubmitted(
-              address: Util.defaultAdress,
-              city: Util.defaultCity,
-              postalCode: Util.defaultPostCode,
-              country: _selectedCountry.countryCode,
-              phoneNumber: '${_selectedCountry.prefix}${_phone.text}',
-              iban: Util.defaultIban,
-              sortCode: sortCode.text,
-              accountNumber: bankAccount.text,
-              appLanguage: Localizations.localeOf(context).languageCode,
-              countryCode: _selectedCountry.countryCode,
-            ),
-          );
-      return;
-    }
     context.read<RegistrationBloc>().add(
           RegistrationPersonalInfoSubmitted(
             address: _address.text,

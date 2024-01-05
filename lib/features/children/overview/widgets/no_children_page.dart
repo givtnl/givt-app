@@ -13,20 +13,48 @@ class NoChildrenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+            text: '${context.l10n.setUpFamily}\n',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+            children: [
+              TextSpan(
+                text:
+                    'Create your first impact group and\nexperience generosity together.',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16,
+                    ),
+              ),
+            ],
+          ),
+        ),
         SvgPicture.asset(
           'assets/images/no_children.svg',
         ),
+        const SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 35, right: 35),
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 35,
+            right: 35,
+            bottom: 12,
+          ),
           child: ElevatedButton(
             onPressed: onAddNewChildPressed,
             child: Text(
-              context.l10n.childrenAddChildProfile,
+              context.l10n.plusAddMembers,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Avenir',
+                    fontWeight: FontWeight.w900,
                     color: Colors.white,
+                    fontSize: 18,
                   ),
             ),
           ),

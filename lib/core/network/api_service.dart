@@ -437,6 +437,26 @@ class APIService {
     }
   }
 
+  Future<bool> addMember(Map<String, dynamic> body) async {
+    final url = Uri.https(apiURL, '/givtservice/v1/profiles');
+
+    final response = await client.post(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
   Future<bool> createChild(Map<String, dynamic> body) async {
     final url =
         Uri.https(apiURL, 'givtservice/v1/childprofile/setup-child-profile');
@@ -478,16 +498,15 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<List<dynamic>> fetchChildren(String parentGuid) async {
+  Future<List<dynamic>> fetchProfiles(String parentGuid) async {
     final url = Uri.https(
       apiURL,
-      '/givt4kidsservice/v1/User/get-children',
+      '/givtservice/v1/profiles',
     );
 
-    final response = await client.post(
+    final response = await client.get(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(parentGuid),
     );
 
     if (response.statusCode >= 300) {
@@ -498,8 +517,8 @@ class APIService {
     }
 
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    final itemMap = decodedBody['items'] as List<dynamic>;
-    return itemMap;
+    final itemMap = decodedBody['item'] as Map<String, dynamic>;
+    return itemMap['profiles'] as List<dynamic>;
   }
 
   Future<Map<String, dynamic>> fetchChildDetails(String childGuid) async {

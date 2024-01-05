@@ -7,7 +7,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -68,11 +67,6 @@ class _AppState extends State<App> {
               getIt(),
             ),
           ),
-          BlocProvider(
-            create: (_) => VPCCubit(
-              getIt(),
-            ),
-          ),
         ],
         child: const _AppView(),
       );
@@ -116,10 +110,11 @@ class _AppView extends StatelessWidget {
       routerDelegate: AppRouter.router.routerDelegate,
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaleFactor.clamp(1.0, 1.2);
+        final scale = mediaQueryData.textScaler
+            .clamp(minScaleFactor: 1, maxScaleFactor: 1.2);
 
         return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+          data: MediaQuery.of(context).copyWith(textScaler: scale),
           child: child!,
         );
       },

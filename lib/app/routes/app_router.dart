@@ -9,18 +9,16 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
-import 'package:givt_app/features/children/create_child/pages/create_child_page.dart';
+import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
-import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
-import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/children/vpc/pages/give_vpc_main_page.dart';
+import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -182,7 +180,7 @@ class AppRouter {
             builder: (context, state) => MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (_) => ChildrenOverviewCubit(getIt())
+                  create: (_) => FamilyOverviewCubit(getIt())
                     ..fetchChildren(context.read<AuthCubit>().state.user.guid),
                 ),
                 BlocProvider(
@@ -190,7 +188,7 @@ class AppRouter {
                       FamilyHistoryCubit(getIt())..fetchHistory(),
                 ),
               ],
-              child: const ChildrenOverviewPage(),
+              child: const FamilyOverviewPage(),
             ),
           ),
           GoRoute(
@@ -198,7 +196,7 @@ class AppRouter {
             name: Pages.childDetails.name,
             builder: (context, state) {
               final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
               final childProfile = extras[1] as Profile;
               return MultiBlocProvider(
                 providers: [
@@ -221,7 +219,7 @@ class AppRouter {
             name: Pages.editChild.name,
             builder: (context, state) {
               final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
               final childDetailsCubit = extras[1] as ChildDetailsCubit;
               return MultiBlocProvider(
                 providers: [
@@ -245,20 +243,11 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: Pages.giveVPC.path,
-            name: Pages.giveVPC.name,
-            builder: (context, state) {
-              context.read<VPCCubit>().showVPCInfo();
-              return const GiveVPCMainPage();
-            },
-          ),
-          GoRoute(
-            path: Pages.createChild.path,
-            name: Pages.createChild.name,
+            path: Pages.addMember.path,
+            name: Pages.addMember.name,
             builder: (context, state) => BlocProvider(
-              create: (_) =>
-                  CreateChildCubit(getIt(), AppLocalizations.of(context)),
-              child: const CreateChildPage(),
+              create: (_) => AddMemberCubit(getIt()),
+              child: const AddMemeberMainScaffold(),
             ),
           ),
           GoRoute(
@@ -661,7 +650,7 @@ class AppRouter {
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.uri.queryParameters,
-      ); 
+      );
     }
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {
