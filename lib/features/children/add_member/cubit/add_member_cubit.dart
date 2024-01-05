@@ -12,6 +12,7 @@ part 'add_member_state.dart';
 class AddMemberCubit extends Cubit<AddMemberState> {
   AddMemberCubit(this._addMemberRepository) : super(const AddMemberState());
   final AddMemberRepository _addMemberRepository;
+
   void decreaseNrOfForms() {
     emit(state.copyWith(
       nrOfForms: max(1, state.nrOfForms - 1),
@@ -24,20 +25,43 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     ));
   }
 
-  void removeNotVisibleMember(String key) {
-    final existingMemberIndex = state.members.indexWhere((p) => p.key == key);
+  void validateForms() {
+    emit(
+      state.copyWith(
+        members: state.members,
+        status: AddMemberStateStatus.input,
+        formStatus: AddMemberFormStatus.validate,
+      ),
+    );
+  }
 
-    if (existingMemberIndex != -1) {
-      // Child with the same key exists, remove it
-      final updatedChildren = state.members..removeAt(existingMemberIndex);
+  void resetFormStatus() {
+    emit(
+      state.copyWith(
+        members: state.members,
+        status: AddMemberStateStatus.input,
+        formStatus: AddMemberFormStatus.initial,
+      ),
+    );
+  }
 
-      emit(
-        state.copyWith(
-            members: updatedChildren,
-            status: AddMemberStateStatus.input,
-            formStatus: AddMemberFormStatus.initial),
-      );
-    }
+  void allFormsFilled() {
+    emit(
+      state.copyWith(
+        members: state.members,
+        formStatus: AddMemberFormStatus.success,
+        status: AddMemberStateStatus.vpc,
+      ),
+    );
+  }
+
+  void dismissedVPC() {
+    emit(
+      state.copyWith(
+        members: state.members,
+        status: AddMemberStateStatus.input,
+      ),
+    );
   }
 
   void rememberProfile({
@@ -90,45 +114,6 @@ class AddMemberCubit extends Cubit<AddMemberState> {
         ),
       );
     }
-  }
-
-  void validateForms() {
-    emit(
-      state.copyWith(
-        members: state.members,
-        status: AddMemberStateStatus.input,
-        formStatus: AddMemberFormStatus.validate,
-      ),
-    );
-  }
-
-  void resetFormStatus() {
-    emit(
-      state.copyWith(
-        members: state.members,
-        status: AddMemberStateStatus.input,
-        formStatus: AddMemberFormStatus.initial,
-      ),
-    );
-  }
-
-  void allFormsFilled() {
-    emit(
-      state.copyWith(
-        members: state.members,
-        formStatus: AddMemberFormStatus.success,
-        status: AddMemberStateStatus.vpc,
-      ),
-    );
-  }
-
-  void dismissedVPC() {
-    emit(
-      state.copyWith(
-        members: state.members,
-        status: AddMemberStateStatus.input,
-      ),
-    );
   }
 
   Future<void> createMemberWithVPC() async {
