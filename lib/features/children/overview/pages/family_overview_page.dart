@@ -35,12 +35,15 @@ class FamilyOverviewPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: state is FamilyOverviewUpdatedState && state.profiles.isEmpty
+            centerTitle: false,
+            title: state is FamilyOverviewUpdatedState &&
+                    state.profiles.where((p) => p.type == 'Child').isEmpty
                 ? const SizedBox()
                 : Text(
                     context.l10n.childrenMyFamily,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Mulish',
+                          fontWeight: FontWeight.w900,
                         ),
                   ),
             leading: BackButton(
@@ -53,7 +56,7 @@ class FamilyOverviewPage extends StatelessWidget {
             ),
             actions: [
               if (state is FamilyOverviewUpdatedState &&
-                  state.profiles.isNotEmpty)
+                  state.profiles.where((p) => p.type == 'Child').isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
                   child: TextButton(
@@ -64,7 +67,7 @@ class FamilyOverviewPage extends StatelessWidget {
                           child: Icon(Icons.add, size: 20),
                         ),
                         Text(
-                          context.l10n.childrenAddChild,
+                          'Add Member',
                           textAlign: TextAlign.start,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
