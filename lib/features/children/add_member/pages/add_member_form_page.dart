@@ -126,7 +126,7 @@ class CreateMemberPage extends StatelessWidget {
         ),
       ),
       child: Text(
-        '+ Add another member',
+        context.l10n.addAnotherMember,
         style: Theme.of(context).textTheme.headlineSmall!.copyWith(
               color: AppTheme.givtLightGreen,
               fontWeight: FontWeight.w900,

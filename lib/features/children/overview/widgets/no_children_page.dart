@@ -49,7 +49,7 @@ class NoChildrenPage extends StatelessWidget {
           child: ElevatedButton(
             onPressed: onAddNewChildPressed,
             child: Text(
-              '+ Add members',
+              context.l10n.plusAddMembers,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontFamily: 'Avenir',
                     fontWeight: FontWeight.w900,

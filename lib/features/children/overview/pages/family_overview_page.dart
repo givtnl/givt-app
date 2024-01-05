@@ -67,7 +67,7 @@ class FamilyOverviewPage extends StatelessWidget {
                           child: Icon(Icons.add, size: 20),
                         ),
                         Text(
-                          'Add Member',
+                          context.l10n.addMember,
                           textAlign: TextAlign.start,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
