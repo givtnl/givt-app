@@ -18,6 +18,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   void decreaseNrOfForms() {
     emit(state.copyWith(
       nrOfForms: max(1, state.nrOfForms - 1),
+      members: [],
     ));
   }
 

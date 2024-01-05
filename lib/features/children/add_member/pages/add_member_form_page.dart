@@ -18,12 +18,21 @@ class CreateMemberPage extends StatefulWidget {
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
   int _nrOfMembers = 1;
-  final List<Key> _memberKeys = [];
-
+  final List<Widget> forms = [];
   @override
   void initState() {
-    for (var i = 0; i < _nrOfMembers; i++) {
-      _memberKeys.add(GlobalKey());
+    for (int i = 0; i < _nrOfMembers; i++) {
+      final key = GlobalKey();
+      forms.add(AddMemberForm(
+          firstMember: i == 0,
+          key: key,
+          onRemove: () {
+            setState(() {
+              _nrOfMembers--;
+              forms.removeWhere((element) => element.key == key);
+            });
+            context.read<AddMemberCubit>().decreaseNrOfForms();
+          }));
     }
     super.initState();
   }
@@ -82,24 +91,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                     children: [
                       setUpFamilyHeader(context),
                       const SizedBox(height: 20),
-                      for (int i = 0; i < _memberKeys.length; i++)
-                        AddMemberForm(
-                            firstMember: i == 0,
-                            onRemove: () {
-                              final List<Key> updatedKeys =
-                                  List.from(_memberKeys);
-                              updatedKeys.removeAt(i);
-
-                              setState(() {
-                                _nrOfMembers--;
-                                _memberKeys.clear();
-                                _memberKeys.addAll(updatedKeys);
-                              });
-
-                              context
-                                  .read<AddMemberCubit>()
-                                  .decreaseNrOfForms();
-                            }),
+                      ...forms,
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -141,8 +133,18 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     return ElevatedButton(
       onPressed: () {
         setState(() {
+          final key = GlobalKey();
           _nrOfMembers++;
-          _memberKeys.add(GlobalKey());
+          forms.add(AddMemberForm(
+              firstMember: false,
+              key: key,
+              onRemove: () {
+                setState(() {
+                  _nrOfMembers--;
+                  forms.removeWhere((element) => element.key == key);
+                });
+                context.read<AddMemberCubit>().decreaseNrOfForms();
+              }));
         });
         context.read<AddMemberCubit>().increaseNrOfForms();
       },
