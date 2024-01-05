@@ -74,7 +74,12 @@ class _AddMemberFormState extends State<AddMemberForm> {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
         if (state.formStatus == AddMemberFormStatus.validate) {
-          if (isChildSelected && formKeyChild.currentState!.validate()) {
+          if (isChildSelected) {
+            if (!formKeyChild.currentState!.validate()) {
+              context.read<AddMemberCubit>().resetFormStatus();
+              return;
+            }
+
             final name = _nameChildController.text.trim();
             final age = int.parse(_ageController.text);
             final birthYear = DateTime.now().year - age;
@@ -90,9 +95,12 @@ class _AddMemberFormState extends State<AddMemberForm> {
             );
 
             context.read<AddMemberCubit>().rememberProfile(member: profile);
-          }
+          } else {
+            if (!formKeyParent.currentState!.validate()) {
+              context.read<AddMemberCubit>().resetFormStatus();
+              return;
+            }
 
-          if (!isChildSelected && formKeyParent.currentState!.validate()) {
             final name = _nameParentController.text.trim();
 
             final profile = Member(

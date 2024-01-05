@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
@@ -16,11 +14,9 @@ class CreateMemberPage extends StatelessWidget {
       listener: (context, state) {
         if (state.nrOfForms == state.members.length &&
             state.formStatus == AddMemberFormStatus.initial) {
-          log('All forms filled');
           context.read<AddMemberCubit>().allFormsFilled();
           return;
         }
-        log('Not YET YET');
       },
       builder: (context, state) {
         List<Key> memberKeys = [];

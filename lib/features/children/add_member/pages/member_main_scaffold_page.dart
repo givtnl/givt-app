@@ -24,6 +24,20 @@ class AddMemeberMainScaffold extends StatelessWidget {
           );
           context.goNamed(Pages.childrenOverview.name);
         }
+        if (state.status == AddMemberStateStatus.vpc) {
+          showModalBottomSheet<void>(
+            context: context,
+            showDragHandle: true,
+            isScrollControlled: true,
+            useSafeArea: true,
+            builder: (_) => BlocProvider.value(
+              value: context.read<AddMemberCubit>(),
+              child: const VPCPage(),
+            ),
+          ).then((value) {
+            context.read<AddMemberCubit>().dismissedVPC();
+          });
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -31,10 +45,6 @@ class AddMemeberMainScaffold extends StatelessWidget {
           appBar: AppBar(
             leading: BackButton(
               onPressed: () {
-                if (state.status == AddMemberStateStatus.vpc) {
-                  context.read<AddMemberCubit>().goToInput();
-                  return;
-                }
                 context.pop();
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.backClicked,
@@ -53,12 +63,13 @@ class AddMemeberMainScaffold extends StatelessWidget {
 
 Widget _createPage(AddMemberState state, BuildContext context) {
   switch (state.status) {
+    // case AddMemberStateStatus.vpc:
+    //   return const VPCPage();
     case AddMemberStateStatus.vpc:
-      return const VPCPage();
     case AddMemberStateStatus.input:
     case AddMemberStateStatus.initial:
     case AddMemberStateStatus.error:
-      return CreateMemberPage();
+      return const CreateMemberPage();
     case AddMemberStateStatus.success:
       return const AddMemeberSuccessPage();
     case AddMemberStateStatus.loading:

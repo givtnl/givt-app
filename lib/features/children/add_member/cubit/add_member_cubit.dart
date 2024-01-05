@@ -59,6 +59,15 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     );
   }
 
+  void resetFormStatus() {
+    emit(
+      state.copyWith(
+        status: AddMemberStateStatus.input,
+        formStatus: AddMemberFormStatus.initial,
+      ),
+    );
+  }
+
   void allFormsFilled() {
     emit(
       state.copyWith(
@@ -68,14 +77,13 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     );
   }
 
-// TODO: display children in the forms when navigating back from VPC
-// or navigate all the way back to the family overview page
-  void goToInput() {
-    emit(state.copyWith(
-      status: AddMemberStateStatus.input,
-      formStatus: AddMemberFormStatus.initial,
-      members: [],
-    ));
+  void dismissedVPC() {
+    emit(
+      state.copyWith(
+        status: AddMemberStateStatus.input,
+        formStatus: AddMemberFormStatus.initial,
+      ),
+    );
   }
 
   Future<void> createChildWithVPC() async {
