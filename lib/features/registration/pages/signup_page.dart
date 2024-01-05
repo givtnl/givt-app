@@ -18,9 +18,11 @@ class SignUpPage extends StatefulWidget {
     super.key,
     this.email = '',
   });
+
   final String email;
+
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
@@ -48,99 +50,89 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);
-    final isUs = _selectedCountry == Country.us;
-    return Scaffold(
-      appBar: RegistrationAppBar(
-        title: isUs
-            ? Text(
-                locals.signUpPageTitle,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-              )
-            : null,
-        actions: [
-          IconButton(
-            onPressed: () => showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              useSafeArea: true,
-              backgroundColor: AppTheme.givtBlue,
-              builder: (_) => const FAQBottomSheet(),
-            ),
-            icon: const Icon(
-              Icons.question_mark_outlined,
-              size: 26,
-            ),
+    final isUS = _selectedCountry == Country.us;
+
+    return BlocConsumer<RegistrationBloc, RegistrationState>(
+      listener: (context, state) {
+        if (!(_selectedCountry == Country.us) &&
+            state.status == RegistrationStatus.personalInfo) {
+          context.goNamed(
+            Pages.personalInfo.name,
+            extra: context.read<RegistrationBloc>(),
+          );
+        }
+
+        if (state.status == RegistrationStatus.sepaMandateExplanation) {
+          context.goNamed(
+            Pages.sepaMandateExplanation.name,
+            extra: context.read<RegistrationBloc>(),
+          );
+        }
+
+        if (state.status ==
+            RegistrationStatus.bacsDirectDebitMandateExplanation) {
+          context.goNamed(
+            Pages.bacsMandateExplanation.name,
+            extra: context.read<RegistrationBloc>(),
+          );
+        }
+        if (state.status == RegistrationStatus.createStripeAccount) {
+          context.goNamed(
+            Pages.creditCardDetail.name,
+            extra: context.read<RegistrationBloc>(),
+          );
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: RegistrationAppBar(
+            title: isUS
+                ? Text(
+                    locals.signUpPageTitle,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  )
+                : null,
+            actions: [
+              IconButton(
+                onPressed: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  backgroundColor: AppTheme.givtBlue,
+                  builder: (_) => const FAQBottomSheet(),
+                ),
+                icon: const Icon(
+                  Icons.question_mark_outlined,
+                  size: 26,
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      resizeToAvoidBottomInset: false,
-      bottomSheet: Container(
-        margin: const EdgeInsets.only(
-          bottom: 30,
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildAcceptPolicy(locals),
-            ElevatedButton(
-              onPressed: _isEnabled ? _register : null,
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
-              child: Text(
-                isUs ? locals.enterPaymentDetails : locals.next,
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: BlocConsumer<RegistrationBloc, RegistrationState>(
-          listener: (context, state) {
-            if (!(_selectedCountry == Country.us) &&
-                state.status == RegistrationStatus.personalInfo) {
-              context.goNamed(
-                Pages.personalInfo.name,
-                extra: context.read<RegistrationBloc>(),
-              );
-            }
-
-            if (state.status == RegistrationStatus.sepaMandateExplanation) {
-              context.goNamed(
-                Pages.sepaMandateExplanation.name,
-                extra: context.read<RegistrationBloc>(),
-              );
-            }
-
-            if (state.status ==
-                RegistrationStatus.bacsDirectDebitMandateExplanation) {
-              context.goNamed(
-                Pages.bacsMandateExplanation.name,
-                extra: context.read<RegistrationBloc>(),
-              );
-            }
-            if (state.status == RegistrationStatus.createStripeAccount) {
-              context.goNamed(
-                Pages.creditCardDetail.name,
-                extra: context.read<RegistrationBloc>(),
-              );
-            }
-          },
-          builder: (context, state) {
-            return isLoading
-                ? _buildLoadingState(isUs)
-                : _buildSignUpForm(locals, size, isUs);
-          },
-        ),
-      ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: isLoading
+                ? _buildLoadingState(isUS)
+                : CustomScrollView(
+                    slivers: <Widget>[
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          children: [
+                            _buildSignUpForm(locals, size, isUS),
+                            const Spacer(),
+                            _buildBottomWidgetGroup(locals, size, isUS),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+          ),
+        );
+      },
     );
   }
 
@@ -204,152 +196,173 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  Widget _buildBottomWidgetGroup(
+    AppLocalizations locals,
+    Size size,
+    bool isUS,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 30),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildAcceptPolicy(locals),
+          ElevatedButton(
+            onPressed: _isEnabled ? _register : null,
+            style: ElevatedButton.styleFrom(
+              disabledBackgroundColor: Colors.grey,
+            ),
+            child: Text(
+              isUS ? locals.enterPaymentDetails : locals.next,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildSignUpForm(AppLocalizations locals, Size size, bool isUS) {
     return Form(
       key: _formKey,
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextFormField(
-              controller: _firstNameController,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            controller: _firstNameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (!Util.nameFieldsRegEx.hasMatch(value)) {
+                return '';
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.next,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            style:
+                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).firstName,
+              errorStyle: const TextStyle(
+                height: 0,
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            controller: _lastNameController,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (!Util.nameFieldsRegEx.hasMatch(value)) {
+                return '';
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.next,
+            style:
+                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).surname,
+              errorStyle: const TextStyle(
+                height: 0,
+              ),
+            ),
+          ),
+          Visibility(
+            visible: !isUS,
+            child: const SizedBox(height: 16),
+          ),
+          Visibility(
+            visible: !isUS,
+            child: TextFormField(
+              enabled: widget.email.isEmpty,
+              readOnly: widget.email.isNotEmpty,
+              controller: _emailController,
+              onChanged: (value) => setState(() {
+                _formKey.currentState!.validate();
+              }),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return '';
+                  return context.l10n.invalidEmail;
                 }
-                if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                  return '';
+                if (!Util.emailRegEx.hasMatch(value)) {
+                  return context.l10n.invalidEmail;
                 }
                 return null;
               },
               textInputAction: TextInputAction.next,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).firstName,
-                errorStyle: const TextStyle(
-                  height: 0,
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _lastNameController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (!Util.nameFieldsRegEx.hasMatch(value)) {
-                  return '';
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).surname,
-                errorStyle: const TextStyle(
-                  height: 0,
-                ),
-              ),
-            ),
-            Visibility(
-              visible: !isUS,
-              child: const SizedBox(height: 16),
-            ),
-            Visibility(
-              visible: !isUS,
-              child: TextFormField(
-                enabled: widget.email.isEmpty,
-                readOnly: widget.email.isNotEmpty,
-                controller: _emailController,
-                onChanged: (value) => setState(() {
-                  _formKey.currentState!.validate();
-                }),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return context.l10n.invalidEmail;
-                  }
-                  if (!Util.emailRegEx.hasMatch(value)) {
-                    return context.l10n.invalidEmail;
-                  }
-                  return null;
-                },
-                textInputAction: TextInputAction.next,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontSize: 16,
-                      color: widget.email.isNotEmpty
-                          ? Colors.grey
-                          : lightColorScheme.primary,
-                    ),
-                decoration: InputDecoration(
-                  hintText: context.l10n.email,
-                  errorStyle: const TextStyle(
-                    height: 0,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontSize: 16,
+                    color: widget.email.isNotEmpty
+                        ? Colors.grey
+                        : lightColorScheme.primary,
                   ),
+              decoration: InputDecoration(
+                hintText: context.l10n.email,
+                errorStyle: const TextStyle(
+                  height: 0,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _passwordController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-                if (value.length < 7) {
-                  return '';
-                }
-                if (value.contains(RegExp('[0-9]')) == false) {
-                  return '';
-                }
-                if (value.contains(RegExp('[A-Z]')) == false) {
-                  return '';
-                }
+          ),
+          const SizedBox(height: 16),
+          TextFormField(
+            controller: _passwordController,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              if (value.length < 7) {
+                return '';
+              }
+              if (value.contains(RegExp('[0-9]')) == false) {
+                return '';
+              }
+              if (value.contains(RegExp('[A-Z]')) == false) {
+                return '';
+              }
 
-                return null;
-              },
-              obscureText: _obscureText,
-              textInputAction: TextInputAction.next,
-              style:
-                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-              decoration: InputDecoration(
-                hintText: AppLocalizations.of(context).password,
-                errorStyle: const TextStyle(
-                  height: 0,
+              return null;
+            },
+            obscureText: _obscureText,
+            textInputAction: TextInputAction.next,
+            style:
+                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
+            decoration: InputDecoration(
+              hintText: AppLocalizations.of(context).password,
+              errorStyle: const TextStyle(
+                height: 0,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
                 ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
               ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              locals.passwordRule,
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: size.height * 0.25,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            locals.passwordRule,
+            textAlign: TextAlign.left,
+          ),
+          const SizedBox(height: 16),
+        ],
       ),
     );
   }
