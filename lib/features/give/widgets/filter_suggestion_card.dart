@@ -9,8 +9,6 @@ class FilterSuggestionCard extends StatelessWidget {
     required this.icon,
     required this.onTap,
     this.visible = true,
-    this.width = 85,
-    this.height = 80,
     super.key,
   });
 
@@ -20,8 +18,6 @@ class FilterSuggestionCard extends StatelessWidget {
   final String title;
   final String activeIcon;
   final String icon;
-  final double width;
-  final double height;
   final VoidCallback onTap;
 
   @override
@@ -30,9 +26,9 @@ class FilterSuggestionCard extends StatelessWidget {
     return Visibility(
       visible: visible,
       child: ConstrainedBox(
-        constraints: BoxConstraints.expand(
-          width: width,
-          height: height,
+        constraints: const BoxConstraints.expand(
+          width: 85,
+          height: 80,
         ),
         child: InkWell(
           onTap: onTap,

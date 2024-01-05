@@ -7,9 +7,9 @@ class DiscoverSuggestionCard extends StatelessWidget {
     required this.activeIcon,
     required this.icon,
     required this.onTap,
+    required this.width,
+    required this.height,
     this.visible = true,
-    this.width = 85,
-    this.height = 80,
     super.key,
   });
 
@@ -41,7 +41,7 @@ class DiscoverSuggestionCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(3.5),
-                border: Border(
+                border: const Border(
                   top: BorderSide(
                     color: Colors.transparent,
                   ),
