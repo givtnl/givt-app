@@ -35,15 +35,14 @@ class FamilyOverviewPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title:
-                state is FamilyOverviewUpdatedState && state.profiles.isEmpty
-                    ? const SizedBox()
-                    : Text(
-                        context.l10n.childrenMyFamily,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+            title: state is FamilyOverviewUpdatedState && state.profiles.isEmpty
+                ? const SizedBox()
+                : Text(
+                    context.l10n.childrenMyFamily,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
             leading: BackButton(
               onPressed: () {
                 context.pop();
@@ -103,6 +102,6 @@ class FamilyOverviewPage extends StatelessWidget {
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.addChildProfile,
     );
-    context.pushNamed(Pages.addMember.name);
+    context.pushReplacementNamed(Pages.addMember.name);
   }
 }
