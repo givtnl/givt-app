@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/models/profile.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 part 'add_member_state.dart';
 
@@ -118,6 +120,8 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
   Future<void> createMemberWithVPC() async {
     final members = state.members;
+    final memberNames = members.map((member) => member.firstName).toList();
+
     emit(
       state.copyWith(
         status: AddMemberStateStatus.loading,
@@ -131,6 +135,12 @@ class AddMemberCubit extends Cubit<AddMemberState> {
             status: AddMemberStateStatus.success,
           ),
         );
+        unawaited(AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.memberCreatedSuccesfully,
+            eventProperties: {
+              'nrOfMembers': members.length,
+              'memberNames': memberNames,
+            }));
       } else {
         emit(
           state.copyWith(
@@ -138,6 +148,9 @@ class AddMemberCubit extends Cubit<AddMemberState> {
             error: 'Something went wrong',
           ),
         );
+        unawaited(AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.failedtoCreateMemebr,
+        ));
       }
     } catch (error) {
       await LoggingInfo.instance.error(error.toString());
@@ -147,6 +160,9 @@ class AddMemberCubit extends Cubit<AddMemberState> {
           error: error.toString(),
         ),
       );
+      unawaited(AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.failedtoCreateMemebr,
+      ));
     }
   }
 }

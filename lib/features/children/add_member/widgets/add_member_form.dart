@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
@@ -11,6 +12,7 @@ import 'package:givt_app/features/children/add_member/models/profile.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
@@ -85,6 +87,14 @@ class _AddMemberFormState extends State<AddMemberForm> {
 
             cubit.rememberProfile(
                 member: profile, invisibleSecondKey: formKeyParent.toString());
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.addChildProfile,
+              eventProperties: {
+                'name': name,
+                'age': age,
+                'allowance': _allowanceController,
+              },
+            );
           } else {
             if (!formKeyParent.currentState!.validate()) {
               cubit.resetFormStatus();
@@ -101,6 +111,13 @@ class _AddMemberFormState extends State<AddMemberForm> {
 
             cubit.rememberProfile(
                 member: profile, invisibleSecondKey: formKeyChild.toString());
+
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.addParentProfile,
+              eventProperties: {
+                'name': name,
+              },
+            );
           }
         }
       },

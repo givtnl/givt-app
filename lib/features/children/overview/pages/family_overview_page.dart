@@ -103,7 +103,7 @@ class FamilyOverviewPage extends StatelessWidget {
 
   void _addNewChild(BuildContext context) {
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.addChildProfile,
+      eventName: AmplitudeEvents.addMemerClicked,
     );
     context.pushReplacementNamed(Pages.addMember.name);
   }
