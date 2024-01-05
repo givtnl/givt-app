@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
+import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -35,15 +35,17 @@ class FamilyOverviewPage extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title:
-                state is FamilyOverviewUpdatedState && state.profiles.isEmpty
-                    ? const SizedBox()
-                    : Text(
-                        context.l10n.childrenMyFamily,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
+            centerTitle: false,
+            title: state is FamilyOverviewUpdatedState &&
+                    state.profiles.where((p) => p.type == 'Child').isEmpty
+                ? const SizedBox()
+                : Text(
+                    context.l10n.childrenMyFamily,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontFamily: 'Mulish',
+                          fontWeight: FontWeight.w900,
+                        ),
+                  ),
             leading: BackButton(
               onPressed: () {
                 context.pop();
@@ -54,7 +56,7 @@ class FamilyOverviewPage extends StatelessWidget {
             ),
             actions: [
               if (state is FamilyOverviewUpdatedState &&
-                  state.profiles.isNotEmpty)
+                  state.profiles.where((p) => p.type == 'Child').isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
                   child: TextButton(
@@ -65,7 +67,7 @@ class FamilyOverviewPage extends StatelessWidget {
                           child: Icon(Icons.add, size: 20),
                         ),
                         Text(
-                          context.l10n.childrenAddChild,
+                          context.l10n.addMember,
                           textAlign: TextAlign.start,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -85,7 +87,7 @@ class FamilyOverviewPage extends StatelessWidget {
             child: state is FamilyOverviewLoadingState
                 ? const ChildrenLoadingPage()
                 : state is FamilyOverviewUpdatedState
-                    ? state.profiles.isEmpty
+                    ? state.profiles.where((p) => p.type == 'Child').isEmpty
                         ? NoChildrenPage(
                             onAddNewChildPressed: () => _addNewChild(context),
                           )
@@ -101,8 +103,8 @@ class FamilyOverviewPage extends StatelessWidget {
 
   void _addNewChild(BuildContext context) {
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.addChildProfile,
+      eventName: AmplitudeEvents.addMemerClicked,
     );
-    context.pushNamed(Pages.addMember.name);
+    context.pushReplacementNamed(Pages.addMember.name);
   }
 }

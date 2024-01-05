@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class NoChildrenPage extends StatelessWidget {
   const NoChildrenPage({
@@ -17,7 +18,7 @@ class NoChildrenPage extends StatelessWidget {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: 'Set up Family\n',
+            text: '${context.l10n.setUpFamily}\n',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -39,11 +40,16 @@ class NoChildrenPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 35, right: 35),
+          padding: const EdgeInsets.only(
+            top: 20,
+            left: 35,
+            right: 35,
+            bottom: 12,
+          ),
           child: ElevatedButton(
             onPressed: onAddNewChildPressed,
             child: Text(
-              "+ Add members",
+              context.l10n.plusAddMembers,
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     fontFamily: 'Avenir',
                     fontWeight: FontWeight.w900,

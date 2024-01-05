@@ -6,6 +6,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 class CreditCardDetailsPage extends StatefulWidget {
@@ -102,13 +103,14 @@ class _CreditCardDetailsPageState extends State<CreditCardDetailsPage> {
                                   ..pop()
                                   ..goNamed(Pages.childrenOverview.name),
                                 child: Text(
-                                  "Set up family",
+                                  context.l10n.setUpFamily,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyLarge
                                       ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17,
+                                      ),
                                 ),
                               ),
                             ],
