@@ -5,29 +5,20 @@ import 'package:givt_app/features/children/add_member/widgets/add_member_form.da
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class CreateMemberPage extends StatefulWidget {
+class CreateMemberPage extends StatelessWidget {
   const CreateMemberPage({super.key});
-
-  @override
-  State<CreateMemberPage> createState() => _CreateMemberPageState();
-}
-
-class _CreateMemberPageState extends State<CreateMemberPage> {
-  int _nrOfMembers = 1;
-  final List<Key> _memberKeys = [];
-
-  @override
-  void initState() {
-    for (var i = 0; i < _nrOfMembers; i++) {
-      _memberKeys.add(GlobalKey());
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddMemberCubit, AddMemberState>(
       builder: (context, state) {
+        final addMembersCubit = context.read<AddMemberCubit>();
+        final List<Key> memberKeys = [];
+        int nrOfMembers = context.read<AddMemberCubit>().state.nrOfForms;
+
+        for (var i = 0; i < nrOfMembers; i++) {
+          memberKeys.add(GlobalKey());
+        }
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -36,17 +27,12 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      setUpFamilyHeader(),
+                      setUpFamilyHeader(context),
                       const SizedBox(height: 20),
-                      for (int i = 0; i < _memberKeys.length; i++)
+                      for (int i = 0; i < memberKeys.length; i++)
                         AddMemberForm(
                           firstMember: i == 0,
-                          onRemove: () {
-                            setState(() {
-                              _nrOfMembers--;
-                              _memberKeys.removeAt(i);
-                            });
-                          },
+                          onRemove: addMembersCubit.decreaseNrOfForms,
                         ),
                       const SizedBox(height: 20),
                     ],
@@ -54,8 +40,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              addButton(),
-              continueButton(),
+              addButton(context),
+              continueButton(context),
             ],
           ),
         );
@@ -63,7 +49,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     );
   }
 
-  Widget setUpFamilyHeader() => Center(
+  Widget setUpFamilyHeader(BuildContext context) => Center(
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
@@ -84,13 +70,11 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           ),
         ),
       );
-  Widget addButton() {
+
+  Widget addButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        setState(() {
-          _nrOfMembers++;
-          _memberKeys.add(GlobalKey());
-        });
+        context.read<AddMemberCubit>().increaseNrOfForms();
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
@@ -111,7 +95,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     );
   }
 
-  Widget continueButton() {
+  Widget continueButton(BuildContext context) {
     // TODO: check if all forms are valid
     const enabled = true;
 

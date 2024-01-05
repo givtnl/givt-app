@@ -58,7 +58,7 @@ Widget _createPage(AddMemberState state, BuildContext context) {
     case AddMemberStateStatus.input:
     case AddMemberStateStatus.initial:
     case AddMemberStateStatus.error:
-      return const CreateMemberPage();
+      return CreateMemberPage();
     case AddMemberStateStatus.success:
       return const AddMemeberSuccessPage();
     case AddMemberStateStatus.loading:

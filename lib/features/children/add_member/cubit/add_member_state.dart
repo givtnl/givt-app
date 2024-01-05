@@ -13,35 +13,38 @@ enum AddMemberFormStatus {
   initial,
   validate,
   success,
-  error,
 }
 
 class AddMemberState extends Equatable {
   const AddMemberState({
     this.status = AddMemberStateStatus.initial,
     this.formStatus = AddMemberFormStatus.initial,
-    this.profiles = const [],
+    this.members = const [],
+    this.nrOfForms = 1,
     this.error = '',
   });
   final AddMemberStateStatus status;
   final AddMemberFormStatus formStatus;
-  final List<Profile> profiles;
+  final List<Member> members;
+  final int nrOfForms;
   final String error;
 
   AddMemberState copyWith({
     AddMemberStateStatus? status,
     AddMemberFormStatus? formStatus,
-    List<Profile>? profiles,
+    List<Member>? members,
+    int? nrOfForms,
     String? error,
   }) {
     return AddMemberState(
       status: status ?? this.status,
       formStatus: formStatus ?? this.formStatus,
-      profiles: profiles ?? this.profiles,
+      members: members ?? this.members,
+      nrOfForms: nrOfForms ?? this.nrOfForms,
       error: error ?? this.error,
     );
   }
 
   @override
-  List<Object?> get props => [profiles, status, formStatus, error];
+  List<Object?> get props => [members, status, formStatus, nrOfForms, error];
 }

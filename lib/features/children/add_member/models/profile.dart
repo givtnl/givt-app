@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class Profile extends Equatable {
-  const Profile.empty()
+class Member extends Equatable {
+  const Member.empty()
       : firstName = null,
         lastName = null,
         age = null,
@@ -10,7 +10,7 @@ class Profile extends Equatable {
         key = null,
         type = null;
 
-  const Profile({
+  const Member({
     this.firstName,
     this.lastName,
     this.age,

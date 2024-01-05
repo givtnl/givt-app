@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -11,19 +12,30 @@ part 'add_member_state.dart';
 class AddMemberCubit extends Cubit<AddMemberState> {
   AddMemberCubit(this._addMemberRepository) : super(const AddMemberState());
   final AddMemberRepository _addMemberRepository;
+  void decreaseNrOfForms() {
+    emit(state.copyWith(
+      nrOfForms: max(1, state.nrOfForms - 1),
+    ));
+  }
 
-  void rememberProfile({required Profile profile}) {
+  void increaseNrOfForms() {
+    emit(state.copyWith(
+      nrOfForms: state.nrOfForms + 1,
+    ));
+  }
+
+  void rememberProfile({required Member member}) {
     final existingChildIndex =
-        state.profiles.indexWhere((p) => p.key == profile.key);
+        state.members.indexWhere((p) => p.key == member.key);
 
     if (existingChildIndex != -1) {
       // Child with the same key exists, replace it
-      final updatedChildren = state.profiles;
-      updatedChildren[existingChildIndex] = profile;
+      final updatedChildren = state.members;
+      updatedChildren[existingChildIndex] = member;
 
       emit(
         state.copyWith(
-          profiles: updatedChildren,
+          members: updatedChildren,
           status: AddMemberStateStatus.input,
         ),
       );
@@ -31,7 +43,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       // Child with the key doesn't exist, add it
       emit(
         state.copyWith(
-          profiles: state.profiles..add(profile),
+          members: state.members..add(member),
           status: AddMemberStateStatus.input,
         ),
       );
@@ -62,12 +74,12 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     emit(state.copyWith(
       status: AddMemberStateStatus.input,
       formStatus: AddMemberFormStatus.initial,
-      profiles: [],
+      members: [],
     ));
   }
 
   Future<void> createChildWithVPC() async {
-    final children = state.profiles;
+    final children = state.members;
     emit(
       state.copyWith(
         status: AddMemberStateStatus.loading,

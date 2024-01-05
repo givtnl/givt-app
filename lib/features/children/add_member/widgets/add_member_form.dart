@@ -80,7 +80,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             final birthYear = DateTime.now().year - age;
             final dateOfBirth = DateTime(birthYear);
 
-            final profile = Profile(
+            final profile = Member(
               firstName: name,
               dateOfBirth: dateOfBirth,
               age: age,
@@ -89,19 +89,19 @@ class _AddMemberFormState extends State<AddMemberForm> {
               type: 'Child',
             );
 
-            context.read<AddMemberCubit>().rememberProfile(profile: profile);
+            context.read<AddMemberCubit>().rememberProfile(member: profile);
           }
 
           if (!isChildSelected && formKeyParent.currentState!.validate()) {
             final name = _nameParentController.text.trim();
 
-            final profile = Profile(
+            final profile = Member(
               firstName: name,
               key: formKeyParent.toString(),
               type: 'Parent',
             );
 
-            context.read<AddMemberCubit>().rememberProfile(profile: profile);
+            context.read<AddMemberCubit>().rememberProfile(member: profile);
           }
         }
 
