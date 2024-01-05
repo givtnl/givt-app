@@ -51,18 +51,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final memberCubit = context.read<AddMemberCubit>();
-  //   if (memberCubit.state.child.firstName == null) {
-  //     return;
-  //   }
-  //   _allowanceController = memberCubit.state.child.allowance!;
-  //   _nameController.text = memberCubit.state.child.firstName!;
-  //   _ageController.text = memberCubit.state.child.age.toString();
-  // }
-
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
@@ -74,9 +62,10 @@ class _AddMemberFormState extends State<AddMemberForm> {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
         if (state.formStatus == AddMemberFormStatus.validate) {
+          final cubit = context.read<AddMemberCubit>();
           if (isChildSelected) {
             if (!formKeyChild.currentState!.validate()) {
-              context.read<AddMemberCubit>().resetFormStatus();
+              cubit.resetFormStatus();
               return;
             }
 
@@ -94,10 +83,11 @@ class _AddMemberFormState extends State<AddMemberForm> {
               type: 'Child',
             );
 
-            context.read<AddMemberCubit>().rememberProfile(member: profile);
+            cubit.rememberProfile(
+                member: profile, invisibleSecondKey: formKeyParent.toString());
           } else {
             if (!formKeyParent.currentState!.validate()) {
-              context.read<AddMemberCubit>().resetFormStatus();
+              cubit.resetFormStatus();
               return;
             }
 
@@ -109,7 +99,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
               type: 'Parent',
             );
 
-            context.read<AddMemberCubit>().rememberProfile(member: profile);
+            cubit.rememberProfile(
+                member: profile, invisibleSecondKey: formKeyChild.toString());
           }
         }
       },

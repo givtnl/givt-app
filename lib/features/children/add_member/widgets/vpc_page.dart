@@ -99,8 +99,8 @@ class VPCPage extends StatelessWidget {
                         const EdgeInsets.only(left: 15, right: 15, bottom: 12),
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<AddMemberCubit>().createChildWithVPC();
                         context.pop();
+                        context.read<AddMemberCubit>().createMemberWithVPC();
                       },
                       child: Text(
                         context.l10n.ready,

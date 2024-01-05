@@ -107,7 +107,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  context.pushReplacementNamed(Pages.childrenOverview.name);
+                  context.goNamed(Pages.childrenOverview.name);
                 },
                 child: Text(context.l10n.iWillDoThisLater,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
+import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateMemberPage extends StatelessWidget {
   const CreateMemberPage({super.key});
@@ -12,6 +16,32 @@ class CreateMemberPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
+        if (state.status == AddMemberStateStatus.error) {
+          SnackBarHelper.showMessage(
+            context,
+            text: state.error,
+            isError: true,
+          );
+          context.goNamed(Pages.childrenOverview.name);
+        }
+        if (state.status == AddMemberStateStatus.vpc) {
+          showModalBottomSheet<void>(
+            context: context,
+            showDragHandle: true,
+            isScrollControlled: true,
+            useSafeArea: true,
+            builder: (_) => BlocProvider.value(
+              value: context.read<AddMemberCubit>(),
+              child: const VPCPage(),
+            ),
+          ).then((value) {
+            if (context.read<AddMemberCubit>().state.status ==
+                AddMemberStateStatus.loading) {
+              return;
+            }
+            context.read<AddMemberCubit>().dismissedVPC();
+          });
+        }
         if (state.nrOfForms == state.members.length &&
             state.formStatus == AddMemberFormStatus.initial) {
           context.read<AddMemberCubit>().allFormsFilled();
@@ -25,6 +55,13 @@ class CreateMemberPage extends StatelessWidget {
         for (var i = 0; i < nrOfMembers; i++) {
           memberKeys.add(GlobalKey());
         }
+        if (state.status == AddMemberStateStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state.status == AddMemberStateStatus.success) {
+          return const AddMemeberSuccessPage();
+        }
+
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
