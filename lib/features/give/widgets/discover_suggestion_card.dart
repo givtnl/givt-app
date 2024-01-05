@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FilterSuggestionCard extends StatelessWidget {
-  const FilterSuggestionCard({
-    required this.isFocused,
+class DiscoverSuggestionCard extends StatelessWidget {
+  const DiscoverSuggestionCard({
     required this.color,
     required this.title,
     required this.activeIcon,
@@ -15,7 +14,6 @@ class FilterSuggestionCard extends StatelessWidget {
   });
 
   final bool visible;
-  final bool isFocused;
   final Color color;
   final String title;
   final String activeIcon;
@@ -41,43 +39,44 @@ class FilterSuggestionCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(left: 5, right: 5),
               decoration: BoxDecoration(
-                color: isFocused ? Colors.white : color,
+                color: color,
                 borderRadius: BorderRadius.circular(3.5),
                 border: Border(
                   top: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                   ),
                   bottom: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                     width: 5,
                   ),
                   left: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                   ),
                   right: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                   ),
                 ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(),
                   Container(
+                    height: 50,
                     padding: const EdgeInsets.symmetric(
                       vertical: 5,
                       horizontal: 5,
                     ),
                     child: Image.asset(
-                      isFocused ? activeIcon : icon,
-                      width: size.width * (isFocused ? 0.08 : 0.1),
+                      icon,
+                      width: size.width * (0.1),
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 8),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: isFocused ? color : Colors.white,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
                         ),
                   ),
                 ],

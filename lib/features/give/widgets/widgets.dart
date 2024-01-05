@@ -4,6 +4,7 @@ export 'choose_amount.dart';
 export 'choose_category.dart';
 export 'collection_form_field.dart';
 export 'context_list_tile.dart';
+export 'discover_suggestion_card.dart';
 export 'enter_amount_bottom_sheet.dart';
 export 'filter_suggestion_card.dart';
 export 'home_page_view_layout.dart';
