@@ -88,7 +88,7 @@ class VPCPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 12),
                 child: ElevatedButton(
                   onPressed: () {
                     context.read<AddMemberCubit>().createChildWithVPC();

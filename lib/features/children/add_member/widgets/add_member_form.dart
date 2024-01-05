@@ -104,8 +104,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
             context.read<AddMemberCubit>().rememberProfile(member: profile);
           }
         }
-
-        context.read<AddMemberCubit>().resetFormStatus();
       },
       builder: (context, state) {
         return Column(

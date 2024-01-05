@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
@@ -10,10 +12,18 @@ class CreateMemberPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddMemberCubit, AddMemberState>(
+    return BlocConsumer<AddMemberCubit, AddMemberState>(
+      listener: (context, state) {
+        if (state.nrOfForms == state.members.length &&
+            state.formStatus == AddMemberFormStatus.initial) {
+          log('All forms filled');
+          context.read<AddMemberCubit>().allFormsFilled();
+          return;
+        }
+        log('Not YET YET');
+      },
       builder: (context, state) {
-        final addMembersCubit = context.read<AddMemberCubit>();
-        final List<Key> memberKeys = [];
+        List<Key> memberKeys = [];
         int nrOfMembers = context.read<AddMemberCubit>().state.nrOfForms;
 
         for (var i = 0; i < nrOfMembers; i++) {
@@ -32,7 +42,8 @@ class CreateMemberPage extends StatelessWidget {
                       for (int i = 0; i < memberKeys.length; i++)
                         AddMemberForm(
                           firstMember: i == 0,
-                          onRemove: addMembersCubit.decreaseNrOfForms,
+                          onRemove:
+                              context.read<AddMemberCubit>().decreaseNrOfForms,
                         ),
                       const SizedBox(height: 20),
                     ],
@@ -73,9 +84,7 @@ class CreateMemberPage extends StatelessWidget {
 
   Widget addButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        context.read<AddMemberCubit>().increaseNrOfForms();
-      },
+      onPressed: context.read<AddMemberCubit>().increaseNrOfForms,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         side: const BorderSide(
@@ -96,17 +105,10 @@ class CreateMemberPage extends StatelessWidget {
   }
 
   Widget continueButton(BuildContext context) {
-    // TODO: check if all forms are valid
-    const enabled = true;
-
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: ElevatedButton(
-        onPressed: enabled
-            ? () {
-                context.read<AddMemberCubit>().validateForms();
-              }
-            : null,
+        onPressed: context.read<AddMemberCubit>().validateForms,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppTheme.givtLightGreen,
           disabledBackgroundColor: Colors.grey,

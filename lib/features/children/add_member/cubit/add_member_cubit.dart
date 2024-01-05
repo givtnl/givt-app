@@ -35,17 +35,17 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
       emit(
         state.copyWith(
-          members: updatedChildren,
-          status: AddMemberStateStatus.input,
-        ),
+            members: updatedChildren,
+            status: AddMemberStateStatus.input,
+            formStatus: AddMemberFormStatus.initial),
       );
     } else {
       // Child with the key doesn't exist, add it
       emit(
         state.copyWith(
-          members: state.members..add(member),
-          status: AddMemberStateStatus.input,
-        ),
+            members: List.from(state.members)..add(member),
+            status: AddMemberStateStatus.input,
+            formStatus: AddMemberFormStatus.initial),
       );
     }
   }
@@ -59,11 +59,11 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     );
   }
 
-  void resetFormStatus() {
+  void allFormsFilled() {
     emit(
       state.copyWith(
-        status: AddMemberStateStatus.input,
-        formStatus: AddMemberFormStatus.initial,
+        formStatus: AddMemberFormStatus.success,
+        status: AddMemberStateStatus.vpc,
       ),
     );
   }
