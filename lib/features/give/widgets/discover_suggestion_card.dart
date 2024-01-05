@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
-class FilterSuggestionCard extends StatelessWidget {
-  const FilterSuggestionCard({
-    required this.isFocused,
+class DiscoverSuggestionCard extends StatelessWidget {
+  const DiscoverSuggestionCard({
     required this.color,
     required this.title,
     required this.activeIcon,
     required this.icon,
     required this.onTap,
+    required this.width,
+    required this.height,
     this.visible = true,
     super.key,
   });
 
   final bool visible;
-  final bool isFocused;
   final Color color;
   final String title;
   final String activeIcon;
   final String icon;
+  final double width;
+  final double height;
   final VoidCallback onTap;
 
   @override
@@ -26,9 +28,9 @@ class FilterSuggestionCard extends StatelessWidget {
     return Visibility(
       visible: visible,
       child: ConstrainedBox(
-        constraints: const BoxConstraints.expand(
-          width: 85,
-          height: 80,
+        constraints: BoxConstraints.expand(
+          width: width,
+          height: height,
         ),
         child: InkWell(
           onTap: onTap,
@@ -37,43 +39,44 @@ class FilterSuggestionCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.only(left: 5, right: 5),
               decoration: BoxDecoration(
-                color: isFocused ? Colors.white : color,
+                color: color,
                 borderRadius: BorderRadius.circular(3.5),
-                border: Border(
+                border: const Border(
                   top: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                   ),
                   bottom: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                     width: 5,
                   ),
                   left: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                   ),
                   right: BorderSide(
-                    color: isFocused ? color : Colors.transparent,
+                    color: Colors.transparent,
                   ),
                 ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Spacer(),
                   Container(
+                    height: 50,
                     padding: const EdgeInsets.symmetric(
                       vertical: 5,
                       horizontal: 5,
                     ),
                     child: Image.asset(
-                      isFocused ? activeIcon : icon,
-                      width: size.width * (isFocused ? 0.08 : 0.1),
+                      icon,
+                      width: size.width * (0.1),
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 8),
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: isFocused ? color : Colors.white,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
                         ),
                   ),
                 ],
