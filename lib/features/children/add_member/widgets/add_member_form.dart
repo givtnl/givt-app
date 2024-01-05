@@ -350,6 +350,9 @@ class _AddMemberFormState extends State<AddMemberForm> {
               if (int.tryParse(value) == null) {
                 return context.l10n.pleaseEnterValidAge;
               }
+              if (int.parse(value) < 1) {
+                return context.l10n.pleaseEnterValidAge;
+              }
               if (int.parse(value) > 18) {
                 return context.l10n.addAdultInstead;
               }
