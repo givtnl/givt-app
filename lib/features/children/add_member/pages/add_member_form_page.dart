@@ -9,8 +9,24 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class CreateMemberPage extends StatelessWidget {
+class CreateMemberPage extends StatefulWidget {
   const CreateMemberPage({super.key});
+
+  @override
+  State<CreateMemberPage> createState() => _CreateMemberPageState();
+}
+
+class _CreateMemberPageState extends State<CreateMemberPage> {
+  int _nrOfMembers = 1;
+  final List<Key> _memberKeys = [];
+
+  @override
+  void initState() {
+    for (var i = 0; i < _nrOfMembers; i++) {
+      _memberKeys.add(GlobalKey());
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +65,6 @@ class CreateMemberPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        List<Key> memberKeys = [];
-        int nrOfMembers = context.read<AddMemberCubit>().state.nrOfForms;
-
-        for (var i = 0; i < nrOfMembers; i++) {
-          memberKeys.add(GlobalKey());
-        }
         if (state.status == AddMemberStateStatus.loading) {
           return const Center(child: CircularProgressIndicator());
         }
@@ -72,12 +82,24 @@ class CreateMemberPage extends StatelessWidget {
                     children: [
                       setUpFamilyHeader(context),
                       const SizedBox(height: 20),
-                      for (int i = 0; i < memberKeys.length; i++)
+                      for (int i = 0; i < _memberKeys.length; i++)
                         AddMemberForm(
-                          firstMember: i == 0,
-                          onRemove:
-                              context.read<AddMemberCubit>().decreaseNrOfForms,
-                        ),
+                            firstMember: i == 0,
+                            onRemove: () {
+                              final List<Key> updatedKeys =
+                                  List.from(_memberKeys);
+                              updatedKeys.removeAt(i);
+
+                              setState(() {
+                                _nrOfMembers--;
+                                _memberKeys.clear();
+                                _memberKeys.addAll(updatedKeys);
+                              });
+
+                              context
+                                  .read<AddMemberCubit>()
+                                  .decreaseNrOfForms();
+                            }),
                       const SizedBox(height: 20),
                     ],
                   ),
@@ -117,7 +139,13 @@ class CreateMemberPage extends StatelessWidget {
 
   Widget addButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: context.read<AddMemberCubit>().increaseNrOfForms,
+      onPressed: () {
+        setState(() {
+          _nrOfMembers++;
+          _memberKeys.add(GlobalKey());
+        });
+        context.read<AddMemberCubit>().increaseNrOfForms();
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
         side: const BorderSide(
