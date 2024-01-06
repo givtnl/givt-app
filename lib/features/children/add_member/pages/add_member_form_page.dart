@@ -86,20 +86,40 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           child: Column(
             children: [
               Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      setUpFamilyHeader(context),
-                      const SizedBox(height: 20),
-                      ...forms,
-                      const SizedBox(height: 20),
-                    ],
-                  ),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          setUpFamilyHeader(context),
+                          const SizedBox(height: 20),
+                          ...forms,
+                        ],
+                      ),
+                    ),
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        children: [
+                          const Spacer(),
+                          addButton(context),
+                          continueButton(context),
+                        ],
+                      ),
+                    ),
+                  ],
+                  // Column(
+                  //   children: [
+                  //     setUpFamilyHeader(context),
+                  //     const SizedBox(height: 20),
+                  //     ...forms,
+                  //     const SizedBox(height: 20),
+                  //     addButton(context),
+                  //     continueButton(context),
+                  //   ],
+                  // ),
                 ),
               ),
-              const SizedBox(height: 20),
-              addButton(context),
-              continueButton(context),
             ],
           ),
         );
