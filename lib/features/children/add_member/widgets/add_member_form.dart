@@ -35,19 +35,20 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
 
-  // late final FocusNode _nameFocusNode;
+  late final FocusNode _nameFocusNode;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _nameFocusNode = FocusNode();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _nameFocusNode = FocusNode();
+    _nameFocusNode.requestFocus();
+  }
 
-  // @override
-  // void dispose() {
-  //   _nameFocusNode.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _nameFocusNode.dispose();
+    super.dispose();
+  }
 
   void _incrementCounter() {
     if (_allowanceController > 998) {
@@ -355,6 +356,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             controller: _nameChildController,
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
+            focusNode: _nameFocusNode,
           ),
           FamilyTextFormField(
             validator: (value) {

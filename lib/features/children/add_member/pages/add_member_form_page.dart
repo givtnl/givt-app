@@ -18,7 +18,10 @@ class CreateMemberPage extends StatefulWidget {
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
   final List<Widget> _forms = [];
-  // final List<FocusNode> _formFocusNodes = [];
+
+  late final ScrollController _scrollController;
+
+  final _scrollAnimationDuration = const Duration(milliseconds: 300);
 
   void _addMemberForm({
     bool isFirst = false,
@@ -40,8 +43,15 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
 
   @override
   void initState() {
+    _scrollController = ScrollController();
     _addMemberForm(isFirst: true);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -94,6 +104,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             children: [
               Expanded(
                 child: CustomScrollView(
+                  controller: _scrollController,
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
@@ -146,10 +157,31 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         ),
       );
 
+  void _scrollDown() {
+    final Duration scrollDelay;
+    if (MediaQuery.of(context).viewInsets.bottom == 0) {
+      //need to wait a bit longer until keyboard will appear
+      scrollDelay = const Duration(milliseconds: 700);
+    } else {
+      scrollDelay = const Duration(milliseconds: 400);
+    }
+
+    Future.delayed(scrollDelay, () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: _scrollAnimationDuration,
+        curve: Curves.linearToEaseOut,
+      );
+    });
+  }
+
   Widget addButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        setState(_addMemberForm);
+        setState(() {
+          _addMemberForm();
+          _scrollDown();
+        });
         context.read<AddMemberCubit>().increaseNrOfForms();
       },
       style: ElevatedButton.styleFrom(
