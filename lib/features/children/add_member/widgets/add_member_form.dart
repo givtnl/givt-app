@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,33 @@ class _AddMemberFormState extends State<AddMemberForm> {
   int _allowanceController = 15;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
+  Timer? _timer;
+  Duration _heldDuration = Duration.zero;
+  int tapTime = 240;
+  int holdDownDuration = 1000;
+  int holdDownDuration2 = 2000;
+  int maxAllowance = 999;
+  int minAllowance = 1;
+  int allowanceIncrement = 5;
+  int allowanceIncrement2 = 10;
+
+  void _startTimer(void Function() callback) {
+    _timer = Timer.periodic(Duration(milliseconds: tapTime), (_) {
+      _heldDuration += Duration(milliseconds: tapTime);
+      callback();
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _heldDuration = Duration.zero;
+  }
+
+  @override
+  void dispose() {
+    _stopTimer();
+    super.dispose();
+  }
 
   late final FocusNode _nameFocusNode;
 
@@ -51,20 +79,51 @@ class _AddMemberFormState extends State<AddMemberForm> {
   }
 
   void _incrementCounter() {
-    if (_allowanceController > 998) {
+    final isHeldDurationShortEnoughForIncrement1 =
+        (_heldDuration.inMilliseconds > holdDownDuration) &&
+            _allowanceController >= maxAllowance - allowanceIncrement;
+    final isHeldDurationShortEnoughForIncrement2 =
+        (_heldDuration.inMilliseconds > holdDownDuration2) &&
+            _allowanceController >= maxAllowance - allowanceIncrement2;
+
+    if (_allowanceController >= maxAllowance ||
+        isHeldDurationShortEnoughForIncrement1 ||
+        isHeldDurationShortEnoughForIncrement2) {
       return;
     }
     setState(() {
-      _allowanceController++;
+      HapticFeedback.lightImpact();
+      SystemSound.play(SystemSoundType.click);
+      _allowanceController += (_heldDuration.inMilliseconds < holdDownDuration)
+          ? 1
+          : (_heldDuration.inMilliseconds < holdDownDuration2)
+              ? allowanceIncrement
+              : allowanceIncrement2;
+      ;
     });
   }
 
   void _decrementCounter() {
-    if (_allowanceController < 2) {
+    final isHeldDurationLongEnoughForNegative1 =
+        (_heldDuration.inMilliseconds > holdDownDuration) &&
+            _allowanceController <= minAllowance + allowanceIncrement;
+    final isHeldDurationLongEnoughForNegative2 =
+        (_heldDuration.inMilliseconds > holdDownDuration2) &&
+            _allowanceController <= minAllowance + allowanceIncrement2;
+
+    if (_allowanceController <= minAllowance ||
+        isHeldDurationLongEnoughForNegative1 ||
+        isHeldDurationLongEnoughForNegative2) {
       return;
     }
     setState(() {
-      _allowanceController--;
+      HapticFeedback.lightImpact();
+      SystemSound.play(SystemSoundType.click);
+      _allowanceController -= (_heldDuration.inMilliseconds < holdDownDuration)
+          ? 1
+          : (_heldDuration.inMilliseconds < holdDownDuration2)
+              ? allowanceIncrement
+              : allowanceIncrement2;
     });
   }
 
@@ -277,21 +336,30 @@ class _AddMemberFormState extends State<AddMemberForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IconButton(
-          splashRadius: 24,
-          onPressed: _decrementCounter,
-          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-          padding: EdgeInsets.zero,
-          icon: Icon(
-            FontAwesomeIcons.circleMinus,
-            size: 32,
-            color: (_allowanceController < 2)
-                ? Colors.grey
-                : Theme.of(context).colorScheme.primary,
+        GestureDetector(
+          onTapDown: (_) {
+            _startTimer(_decrementCounter);
+          },
+          onTapUp: (_) {
+            _stopTimer();
+          },
+          onTapCancel: _stopTimer,
+          onTap: (_allowanceController < 2) ? null : _decrementCounter,
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Icon(
+              FontAwesomeIcons.circleMinus,
+              size: 32,
+              color: (_allowanceController < 2)
+                  ? Colors.grey
+                  : Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
-        Padding(
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
+          width: _allowanceController < 100 ? 75 : 95,
           child: Text.rich(
             TextSpan(
               children: [
@@ -317,17 +385,25 @@ class _AddMemberFormState extends State<AddMemberForm> {
             textAlign: TextAlign.center,
           ),
         ),
-        IconButton(
-          splashRadius: 24,
-          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-          onPressed: _incrementCounter,
-          padding: EdgeInsets.zero,
-          icon: Icon(
-            FontAwesomeIcons.circlePlus,
-            size: 32,
-            color: (_allowanceController > 998)
-                ? Colors.grey
-                : Theme.of(context).colorScheme.primary,
+        GestureDetector(
+          onTapDown: (_) {
+            _startTimer(_incrementCounter);
+          },
+          onTapUp: (_) {
+            _stopTimer();
+          },
+          onTapCancel: _stopTimer,
+          onTap: (_allowanceController > 998) ? null : _incrementCounter,
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Icon(
+              FontAwesomeIcons.circlePlus,
+              size: 32,
+              color: (_allowanceController > 998)
+                  ? Colors.grey
+                  : Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
       ],
