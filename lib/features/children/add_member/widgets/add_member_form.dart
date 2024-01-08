@@ -68,6 +68,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
       return;
     }
     setState(() {
+      HapticFeedback.lightImpact();
+      SystemSound.play(SystemSoundType.click);
       _allowanceController += (_heldDuration.inMilliseconds < 1000)
           ? 1
           : (_heldDuration.inMilliseconds < 2000)
@@ -89,6 +91,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
       return;
     }
     setState(() {
+      HapticFeedback.lightImpact();
+      SystemSound.play(SystemSoundType.click);
       _allowanceController -= (_heldDuration.inMilliseconds < 1000)
           ? 1
           : (_heldDuration.inMilliseconds < 2000)
