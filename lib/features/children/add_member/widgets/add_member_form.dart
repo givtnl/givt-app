@@ -36,15 +36,18 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
   Timer? _timer;
+  Duration _heldDuration = Duration.zero;
 
   void _startTimer(void Function() callback) {
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
+    _timer = Timer.periodic(Duration(milliseconds: 240), (_) {
+      _heldDuration += Duration(milliseconds: 240);
       callback();
     });
   }
 
   void _stopTimer() {
     _timer?.cancel();
+    _heldDuration = Duration.zero;
   }
 
   @override
@@ -54,20 +57,43 @@ class _AddMemberFormState extends State<AddMemberForm> {
   }
 
   void _incrementCounter() {
-    if (_allowanceController > 998) {
+    final isHeldDurationShortEnoughForIncrement1 =
+        (_heldDuration.inMilliseconds > 1000) && _allowanceController > 994;
+    final isHeldDurationShortEnoughForIncrement2 =
+        (_heldDuration.inMilliseconds > 2000) && _allowanceController > 984;
+
+    if (_allowanceController > 998 ||
+        isHeldDurationShortEnoughForIncrement1 ||
+        isHeldDurationShortEnoughForIncrement2) {
       return;
     }
     setState(() {
-      _allowanceController++;
+      _allowanceController += (_heldDuration.inMilliseconds < 1000)
+          ? 1
+          : (_heldDuration.inMilliseconds < 2000)
+              ? 5
+              : 10;
+      ;
     });
   }
 
   void _decrementCounter() {
-    if (_allowanceController < 2) {
+    final isHeldDurationLongEnoughForNegative1 =
+        (_heldDuration.inMilliseconds > 1000) && _allowanceController < 6;
+    final isHeldDurationLongEnoughForNegative2 =
+        (_heldDuration.inMilliseconds > 2000) && _allowanceController < 16;
+
+    if (_allowanceController < 2 ||
+        isHeldDurationLongEnoughForNegative1 ||
+        isHeldDurationLongEnoughForNegative2) {
       return;
     }
     setState(() {
-      _allowanceController--;
+      _allowanceController -= (_heldDuration.inMilliseconds < 1000)
+          ? 1
+          : (_heldDuration.inMilliseconds < 2000)
+              ? 5
+              : 10;
     });
   }
 
@@ -301,8 +327,9 @@ class _AddMemberFormState extends State<AddMemberForm> {
             ),
           ),
         ),
-        Padding(
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
+          width: _allowanceController < 100 ? 75 : 95,
           child: Text.rich(
             TextSpan(
               children: [
