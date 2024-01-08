@@ -35,6 +35,20 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
 
+  // late final FocusNode _nameFocusNode;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _nameFocusNode = FocusNode();
+  // }
+
+  // @override
+  // void dispose() {
+  //   _nameFocusNode.dispose();
+  //   super.dispose();
+  // }
+
   void _incrementCounter() {
     if (_allowanceController > 998) {
       return;

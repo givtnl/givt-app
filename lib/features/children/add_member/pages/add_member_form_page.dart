@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
-import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -17,23 +17,30 @@ class CreateMemberPage extends StatefulWidget {
 }
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
-  int _nrOfMembers = 1;
-  final List<Widget> forms = [];
+  final List<Widget> _forms = [];
+  // final List<FocusNode> _formFocusNodes = [];
+
+  void _addMemberForm({
+    bool isFirst = false,
+  }) {
+    final key = GlobalKey();
+    _forms.add(
+      AddMemberForm(
+        firstMember: isFirst,
+        key: key,
+        onRemove: () {
+          setState(() {
+            _forms.removeWhere((element) => element.key == key);
+          });
+          context.read<AddMemberCubit>().decreaseNrOfForms();
+        },
+      ),
+    );
+  }
+
   @override
   void initState() {
-    for (int i = 0; i < _nrOfMembers; i++) {
-      final key = GlobalKey();
-      forms.add(AddMemberForm(
-          firstMember: i == 0,
-          key: key,
-          onRemove: () {
-            setState(() {
-              _nrOfMembers--;
-              forms.removeWhere((element) => element.key == key);
-            });
-            context.read<AddMemberCubit>().decreaseNrOfForms();
-          }));
-    }
+    _addMemberForm(isFirst: true);
     super.initState();
   }
 
@@ -93,7 +100,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                         children: [
                           setUpFamilyHeader(context),
                           const SizedBox(height: 20),
-                          ...forms,
+                          ..._forms,
                         ],
                       ),
                     ),
@@ -108,16 +115,6 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                       ),
                     ),
                   ],
-                  // Column(
-                  //   children: [
-                  //     setUpFamilyHeader(context),
-                  //     const SizedBox(height: 20),
-                  //     ...forms,
-                  //     const SizedBox(height: 20),
-                  //     addButton(context),
-                  //     continueButton(context),
-                  //   ],
-                  // ),
                 ),
               ),
             ],
@@ -152,20 +149,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   Widget addButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        setState(() {
-          final key = GlobalKey();
-          _nrOfMembers++;
-          forms.add(AddMemberForm(
-              firstMember: false,
-              key: key,
-              onRemove: () {
-                setState(() {
-                  _nrOfMembers--;
-                  forms.removeWhere((element) => element.key == key);
-                });
-                context.read<AddMemberCubit>().decreaseNrOfForms();
-              }));
-        });
+        setState(_addMemberForm);
         context.read<AddMemberCubit>().increaseNrOfForms();
       },
       style: ElevatedButton.styleFrom(
