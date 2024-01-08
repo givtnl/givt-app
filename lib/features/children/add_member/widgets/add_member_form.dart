@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -34,6 +35,23 @@ class _AddMemberFormState extends State<AddMemberForm> {
   int _allowanceController = 15;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
+  Timer? _timer;
+
+  void _startTimer(void Function() callback) {
+    _timer = Timer.periodic(const Duration(milliseconds: 100), (_) {
+      callback();
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+  }
+
+  @override
+  void dispose() {
+    _stopTimer();
+    super.dispose();
+  }
 
   void _incrementCounter() {
     if (_allowanceController > 998) {
@@ -262,17 +280,25 @@ class _AddMemberFormState extends State<AddMemberForm> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        IconButton(
-          splashRadius: 24,
-          onPressed: _decrementCounter,
-          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-          padding: EdgeInsets.zero,
-          icon: Icon(
-            FontAwesomeIcons.circleMinus,
-            size: 32,
-            color: (_allowanceController < 2)
-                ? Colors.grey
-                : Theme.of(context).colorScheme.primary,
+        GestureDetector(
+          onTapDown: (_) {
+            _startTimer(_decrementCounter);
+          },
+          onTapUp: (_) {
+            _stopTimer();
+          },
+          onTapCancel: _stopTimer,
+          onTap: (_allowanceController < 2) ? null : _decrementCounter,
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Icon(
+              FontAwesomeIcons.circleMinus,
+              size: 32,
+              color: (_allowanceController < 2)
+                  ? Colors.grey
+                  : Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
         Padding(
@@ -302,17 +328,25 @@ class _AddMemberFormState extends State<AddMemberForm> {
             textAlign: TextAlign.center,
           ),
         ),
-        IconButton(
-          splashRadius: 24,
-          constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-          onPressed: _incrementCounter,
-          padding: EdgeInsets.zero,
-          icon: Icon(
-            FontAwesomeIcons.circlePlus,
-            size: 32,
-            color: (_allowanceController > 998)
-                ? Colors.grey
-                : Theme.of(context).colorScheme.primary,
+        GestureDetector(
+          onTapDown: (_) {
+            _startTimer(_incrementCounter);
+          },
+          onTapUp: (_) {
+            _stopTimer();
+          },
+          onTapCancel: _stopTimer,
+          onTap: (_allowanceController > 998) ? null : _incrementCounter,
+          child: Container(
+            width: 32,
+            height: 32,
+            child: Icon(
+              FontAwesomeIcons.circlePlus,
+              size: 32,
+              color: (_allowanceController > 998)
+                  ? Colors.grey
+                  : Theme.of(context).colorScheme.primary,
+            ),
           ),
         ),
       ],
