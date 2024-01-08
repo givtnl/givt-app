@@ -139,6 +139,9 @@ class AppTheme {
         ),
       ),
     ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: givtLightGreen,
+    ),
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(
         color: lightColorScheme.primary,

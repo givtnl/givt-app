@@ -67,9 +67,7 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
               useSafeArea: true,
               showDragHandle: true,
               backgroundColor: AppTheme.givtBlue,
-              builder: (_) {
-                return _buildPersonalInfoBottomSheet(context);
-              },
+              builder: (_) => _buildPersonalInfoBottomSheet(context),
             ),
             icon: const Icon(Icons.info_rounded),
           ),
