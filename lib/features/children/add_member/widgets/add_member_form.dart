@@ -37,10 +37,17 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final formKeyParent = GlobalKey<FormState>();
   Timer? _timer;
   Duration _heldDuration = Duration.zero;
+  int tapTime = 240;
+  int holdDownDuration = 1000;
+  int holdDownDuration2 = 2000;
+  int maxAllowance = 999;
+  int minAllowance = 1;
+  int allowanceIncrement = 5;
+  int allowanceIncrement2 = 10;
 
   void _startTimer(void Function() callback) {
-    _timer = Timer.periodic(Duration(milliseconds: 240), (_) {
-      _heldDuration += Duration(milliseconds: 240);
+    _timer = Timer.periodic(Duration(milliseconds: tapTime), (_) {
+      _heldDuration += Duration(milliseconds: tapTime);
       callback();
     });
   }
@@ -58,11 +65,13 @@ class _AddMemberFormState extends State<AddMemberForm> {
 
   void _incrementCounter() {
     final isHeldDurationShortEnoughForIncrement1 =
-        (_heldDuration.inMilliseconds > 1000) && _allowanceController > 994;
+        (_heldDuration.inMilliseconds > holdDownDuration) &&
+            _allowanceController >= maxAllowance - allowanceIncrement;
     final isHeldDurationShortEnoughForIncrement2 =
-        (_heldDuration.inMilliseconds > 2000) && _allowanceController > 984;
+        (_heldDuration.inMilliseconds > holdDownDuration2) &&
+            _allowanceController >= maxAllowance - allowanceIncrement2;
 
-    if (_allowanceController > 998 ||
+    if (_allowanceController >= maxAllowance ||
         isHeldDurationShortEnoughForIncrement1 ||
         isHeldDurationShortEnoughForIncrement2) {
       return;
@@ -70,22 +79,24 @@ class _AddMemberFormState extends State<AddMemberForm> {
     setState(() {
       HapticFeedback.lightImpact();
       SystemSound.play(SystemSoundType.click);
-      _allowanceController += (_heldDuration.inMilliseconds < 1000)
+      _allowanceController += (_heldDuration.inMilliseconds < holdDownDuration)
           ? 1
-          : (_heldDuration.inMilliseconds < 2000)
-              ? 5
-              : 10;
+          : (_heldDuration.inMilliseconds < holdDownDuration2)
+              ? allowanceIncrement
+              : allowanceIncrement2;
       ;
     });
   }
 
   void _decrementCounter() {
     final isHeldDurationLongEnoughForNegative1 =
-        (_heldDuration.inMilliseconds > 1000) && _allowanceController < 6;
+        (_heldDuration.inMilliseconds > holdDownDuration) &&
+            _allowanceController <= minAllowance + allowanceIncrement;
     final isHeldDurationLongEnoughForNegative2 =
-        (_heldDuration.inMilliseconds > 2000) && _allowanceController < 16;
+        (_heldDuration.inMilliseconds > holdDownDuration2) &&
+            _allowanceController <= minAllowance + allowanceIncrement2;
 
-    if (_allowanceController < 2 ||
+    if (_allowanceController <= minAllowance ||
         isHeldDurationLongEnoughForNegative1 ||
         isHeldDurationLongEnoughForNegative2) {
       return;
@@ -93,11 +104,11 @@ class _AddMemberFormState extends State<AddMemberForm> {
     setState(() {
       HapticFeedback.lightImpact();
       SystemSound.play(SystemSoundType.click);
-      _allowanceController -= (_heldDuration.inMilliseconds < 1000)
+      _allowanceController -= (_heldDuration.inMilliseconds < holdDownDuration)
           ? 1
-          : (_heldDuration.inMilliseconds < 2000)
-              ? 5
-              : 10;
+          : (_heldDuration.inMilliseconds < holdDownDuration2)
+              ? allowanceIncrement
+              : allowanceIncrement2;
     });
   }
 
