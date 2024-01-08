@@ -22,6 +22,7 @@ class FirstUseSummaryDialog extends StatefulWidget {
 
 class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
   int currentIndex = 0;
+  final CarouselController _controller = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -135,46 +136,80 @@ class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
           rect: Rect.fromCenter(
             center: Offset(size.width / 2, size.height / 2 + offsetDy),
             width: size.width * 0.6,
-            height: 50,
+            height: 70,
           ),
-          child: SizedBox(
-            width: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                getIt<SharedPreferences>().setBool(
-                  Util.testimonialsSummaryKey,
-                  true,
-                );
-                Navigator.of(context).pop();
-                switch (currentIndex) {
-                  case 1:
-                    context.goNamed(
-                      Pages.addExternalDonation.name,
-                      extra: context.read<PersonalSummaryBloc>(),
+          child: Column(
+            children: [
+              _buildAnimatedBottomIndexes(names, size, context),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: 200,
+                child: ElevatedButton(
+                  onPressed: () {
+                    getIt<SharedPreferences>().setBool(
+                      Util.testimonialsSummaryKey,
+                      true,
                     );
-                  case 2:
-                    showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => BlocProvider.value(
-                        value: context.read<PersonalSummaryBloc>(),
-                        child: const SetupGivingGoalBottomSheet(),
-                      ),
-                    );
-                  default:
                     Navigator.of(context).pop();
-                    break;
-                }
-              },
-              child: Text(
-                actionButtonStrings[currentIndex],
-                textAlign: TextAlign.center,
+                    switch (currentIndex) {
+                      case 1:
+                        context.goNamed(
+                          Pages.addExternalDonation.name,
+                          extra: context.read<PersonalSummaryBloc>(),
+                        );
+                      case 2:
+                        showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          useSafeArea: true,
+                          builder: (_) => BlocProvider.value(
+                            value: context.read<PersonalSummaryBloc>(),
+                            child: const SetupGivingGoalBottomSheet(),
+                          ),
+                        );
+                      default:
+                        Navigator.of(context).pop();
+                        break;
+                    }
+                  },
+                  child: Text(
+                    actionButtonStrings[currentIndex],
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
     );
   }
+
+  Row _buildAnimatedBottomIndexes(
+    List<String> list,
+    Size size,
+    BuildContext context,
+  ) =>
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: list.asMap().entries.map((entry) {
+          return GestureDetector(
+            onTap: () => _controller.animateToPage(entry.key),
+            child: Container(
+              width: size.width * 0.05,
+              height: size.height * 0.01,
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: (Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black)
+                    .withOpacity(
+                  currentIndex == entry.key ? 0.9 : 0.4,
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      );
 }
