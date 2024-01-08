@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
-import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -17,24 +17,41 @@ class CreateMemberPage extends StatefulWidget {
 }
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
-  int _nrOfMembers = 1;
-  final List<Widget> forms = [];
+  final List<Widget> _forms = [];
+
+  late final ScrollController _scrollController;
+
+  final _scrollAnimationDuration = const Duration(milliseconds: 300);
+
+  void _addMemberForm({
+    bool isFirst = false,
+  }) {
+    final key = GlobalKey();
+    _forms.add(
+      AddMemberForm(
+        firstMember: isFirst,
+        key: key,
+        onRemove: () {
+          setState(() {
+            _forms.removeWhere((element) => element.key == key);
+          });
+          context.read<AddMemberCubit>().decreaseNrOfForms();
+        },
+      ),
+    );
+  }
+
   @override
   void initState() {
-    for (int i = 0; i < _nrOfMembers; i++) {
-      final key = GlobalKey();
-      forms.add(AddMemberForm(
-          firstMember: i == 0,
-          key: key,
-          onRemove: () {
-            setState(() {
-              _nrOfMembers--;
-              forms.removeWhere((element) => element.key == key);
-            });
-            context.read<AddMemberCubit>().decreaseNrOfForms();
-          }));
-    }
+    _scrollController = ScrollController();
+    _addMemberForm(isFirst: true);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -87,13 +104,14 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             children: [
               Expanded(
                 child: CustomScrollView(
+                  controller: _scrollController,
                   slivers: [
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
                           setUpFamilyHeader(context),
                           const SizedBox(height: 20),
-                          ...forms,
+                          ..._forms,
                         ],
                       ),
                     ),
@@ -108,16 +126,6 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                       ),
                     ),
                   ],
-                  // Column(
-                  //   children: [
-                  //     setUpFamilyHeader(context),
-                  //     const SizedBox(height: 20),
-                  //     ...forms,
-                  //     const SizedBox(height: 20),
-                  //     addButton(context),
-                  //     continueButton(context),
-                  //   ],
-                  // ),
                 ),
               ),
             ],
@@ -149,22 +157,30 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         ),
       );
 
+  void _scrollDown() {
+    final Duration scrollDelay;
+    if (MediaQuery.of(context).viewInsets.bottom == 0) {
+      //need to wait a bit longer until keyboard will appear
+      scrollDelay = const Duration(milliseconds: 700);
+    } else {
+      scrollDelay = const Duration(milliseconds: 400);
+    }
+
+    Future.delayed(scrollDelay, () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: _scrollAnimationDuration,
+        curve: Curves.linearToEaseOut,
+      );
+    });
+  }
+
   Widget addButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          final key = GlobalKey();
-          _nrOfMembers++;
-          forms.add(AddMemberForm(
-              firstMember: false,
-              key: key,
-              onRemove: () {
-                setState(() {
-                  _nrOfMembers--;
-                  forms.removeWhere((element) => element.key == key);
-                });
-                context.read<AddMemberCubit>().decreaseNrOfForms();
-              }));
+          _addMemberForm();
+          _scrollDown();
         });
         context.read<AddMemberCubit>().increaseNrOfForms();
       },
