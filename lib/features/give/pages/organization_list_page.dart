@@ -9,11 +9,13 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -97,8 +99,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                     shrinkWrap: true,
                     itemCount: state.filteredOrganisations.length + 1,
                     itemBuilder: (context, index) {
-                      final itemIndex = index - 1;
-                      if (itemIndex < 0){
+                      if (index == state.filteredOrganisations.length) {
                         return ListTile(
                           key: UniqueKey(),
                           onTap: () => showModalBottomSheet<void>(
@@ -130,21 +131,22 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                         );
                       }
                       return _buildListTile(
-                        type: state.filteredOrganisations[itemIndex].type,
-                        title: state.filteredOrganisations[itemIndex].orgName,
+                        type: state.filteredOrganisations[index].type,
+                        title: state.filteredOrganisations[index].orgName,
                         isSelected: state.selectedCollectGroup.nameSpace ==
-                            state.filteredOrganisations[itemIndex].nameSpace,
+                            state.filteredOrganisations[index].nameSpace,
                         onTap: () {
                           if (widget.isChooseCategory) {
                             _buildActionSheet(
                               context,
-                              state.filteredOrganisations[itemIndex],
+                              state.filteredOrganisations[index],
                             );
                             return;
                           }
                           context.read<OrganisationBloc>().add(
                                 OrganisationSelectionChanged(
-                                  state.filteredOrganisations[itemIndex].nameSpace,
+                                  state.filteredOrganisations[index]
+                                      .nameSpace,
                                 ),
                               );
                         },
