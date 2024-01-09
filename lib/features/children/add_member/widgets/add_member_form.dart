@@ -18,33 +18,43 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class AddMemberForm extends StatefulWidget {
-  const AddMemberForm(
+  AddMemberForm(
       {required this.firstMember, required this.onRemove, super.key});
+
   final bool firstMember;
   final VoidCallback onRemove;
+  final FocusNode ageFocusNode = FocusNode();
 
   @override
   State<AddMemberForm> createState() => _AddMemberFormState();
 }
 
 class _AddMemberFormState extends State<AddMemberForm> {
+  // Controllers
   final _nameChildController = TextEditingController();
   final _nameParentController = TextEditingController();
   final _ageController = TextEditingController();
-  bool isChildSelected = true;
-  int _allowanceController = 15;
+
+  // Form keys
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
-  late final FocusNode _nameFocusNode;
+
+  late final FocusNode nameFocusNode;
+
+  // State
+  bool isChildSelected = true;
+  int _allowanceController = 15;
   Timer? _timer;
-  Duration _heldDuration = Duration.zero;
-  int tapTime = 240;
-  int holdDownDuration = 1000;
-  int holdDownDuration2 = 2000;
-  int maxAllowance = 999;
-  int minAllowance = 1;
-  int allowanceIncrement = 5;
-  int allowanceIncrement2 = 10;
+
+  // allowance counter automation
+  var _heldDuration = Duration.zero;
+  final tapTime = 240;
+  final holdDownDuration = 1000;
+  final holdDownDuration2 = 2000;
+  final maxAllowance = 999;
+  final minAllowance = 1;
+  final allowanceIncrement = 5;
+  final allowanceIncrement2 = 10;
 
   void _startTimer(void Function() callback) {
     _timer = Timer.periodic(Duration(milliseconds: tapTime), (_) {
@@ -61,15 +71,15 @@ class _AddMemberFormState extends State<AddMemberForm> {
   @override
   void dispose() {
     _stopTimer();
-    _nameFocusNode.dispose();
+    nameFocusNode.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _nameFocusNode = FocusNode();
-    _nameFocusNode.requestFocus();
+    nameFocusNode = FocusNode();
+    nameFocusNode.requestFocus();
   }
 
   void _incrementCounter() {
@@ -427,7 +437,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.words,
-            focusNode: _nameFocusNode,
+            focusNode: nameFocusNode,
           ),
           FamilyTextFormField(
             validator: (value) {
@@ -452,6 +462,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               FilteringTextInputFormatter.digitsOnly,
             ],
             textInputAction: TextInputAction.done,
+            focusNode: widget.ageFocusNode,
           ),
           const SizedBox(height: 10),
           const GivingAllowanceInfoButton(),

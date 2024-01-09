@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
   const CreateMemberPage({super.key});
@@ -17,7 +18,7 @@ class CreateMemberPage extends StatefulWidget {
 }
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
-  final List<Widget> _forms = [];
+  final List<AddMemberForm> _forms = [];
 
   late final ScrollController _scrollController;
 
@@ -52,6 +53,31 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardActionsPlatform: KeyboardActionsPlatform.ALL,
+      keyboardBarColor: Colors.grey[200],
+      nextFocus: true,
+      actions: [
+        for (var i = 0; i < _forms.length; i++)
+          KeyboardActionsItem(
+            focusNode: _forms[i].ageFocusNode,
+            toolbarButtons: [
+              (node) {
+                return GestureDetector(
+                  onTap: () => node.unfocus(),
+                  child: const Padding(
+                    padding: EdgeInsets.only(right: 16.0),
+                    child: Text('DONE'),
+                  ),
+                );
+              },
+            ],
+          ),
+      ],
+    );
   }
 
   @override
@@ -103,29 +129,32 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           child: Column(
             children: [
               Expanded(
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          setUpFamilyHeader(context),
-                          const SizedBox(height: 20),
-                          ..._forms,
-                        ],
+                child: KeyboardActions(
+                  config: _buildConfig(context),
+                  child: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            setUpFamilyHeader(context),
+                            const SizedBox(height: 20),
+                            ..._forms,
+                          ],
+                        ),
                       ),
-                    ),
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          addButton(context),
-                          continueButton(context),
-                        ],
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            addButton(context),
+                            continueButton(context),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
