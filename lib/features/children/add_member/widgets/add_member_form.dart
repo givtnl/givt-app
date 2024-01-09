@@ -417,6 +417,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             controller: _nameChildController,
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
+            textCapitalization: TextCapitalization.words,
           ),
           FamilyTextFormField(
             validator: (value) {
@@ -472,6 +473,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             controller: _nameParentController,
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
+            textCapitalization: TextCapitalization.words,
           ),
         ],
       ),
