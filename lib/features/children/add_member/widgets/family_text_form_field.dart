@@ -17,8 +17,9 @@ class FamilyTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.inputFormatters = const [],
-    this.autofillHints = null,
+    this.autofillHints,
     this.autocorrect = true,
+    this.focusNode,
   });
 
   final TextEditingController controller;
@@ -34,6 +35,7 @@ class FamilyTextFormField extends StatelessWidget {
   final List<TextInputFormatter> inputFormatters;
   final Iterable<String>? autofillHints;
   final bool autocorrect;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class FamilyTextFormField extends StatelessWidget {
         textCapitalization: textCapitalization,
         inputFormatters: inputFormatters,
         obscureText: obscureText,
+        focusNode: focusNode,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontSize: 16,
               color:

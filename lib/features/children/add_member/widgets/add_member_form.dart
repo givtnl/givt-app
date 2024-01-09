@@ -35,6 +35,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
   int _allowanceController = 15;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
+  late final FocusNode _nameFocusNode;
   Timer? _timer;
   Duration _heldDuration = Duration.zero;
   int tapTime = 240;
@@ -60,7 +61,15 @@ class _AddMemberFormState extends State<AddMemberForm> {
   @override
   void dispose() {
     _stopTimer();
+    _nameFocusNode.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _nameFocusNode = FocusNode();
+    _nameFocusNode.requestFocus();
   }
 
   void _incrementCounter() {
@@ -418,6 +427,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.words,
+            focusNode: _nameFocusNode,
           ),
           FamilyTextFormField(
             validator: (value) {
