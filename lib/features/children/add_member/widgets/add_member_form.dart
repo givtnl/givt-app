@@ -360,7 +360,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             },
             controller: _ageController,
             hintText: context.l10n.ageKey,
-            keyboardType: const TextInputType.numberWithOptions(signed: true),
+            keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
             ],
