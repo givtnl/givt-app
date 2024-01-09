@@ -87,11 +87,11 @@ class FamilyHistory extends StatelessWidget {
                       ),
                     ),
                   if (state.history.isEmpty)
-                    const Center(
+                    Center(
                       child: Text(
-                        'Your children\'s donations\nwill appear here',
+                        context.l10n.emptyChildrenDonations,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Color(0xFF617793),
                           fontSize: 14,
                           fontFamily: 'Raleway',
