@@ -18,10 +18,15 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class AddMemberForm extends StatefulWidget {
-  const AddMemberForm(
-      {required this.firstMember, required this.onRemove, super.key});
+  const AddMemberForm({
+    required this.firstMember,
+    required this.onRemove,
+    required this.ageFocusNode,
+    super.key,
+  });
   final bool firstMember;
   final VoidCallback onRemove;
+  final FocusNode ageFocusNode;
 
   @override
   State<AddMemberForm> createState() => _AddMemberFormState();
@@ -457,6 +462,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               FilteringTextInputFormatter.digitsOnly,
             ],
             textInputAction: TextInputAction.done,
+            focusNode: widget.ageFocusNode,
           ),
           const SizedBox(height: 10),
           const GivingAllowanceInfoButton(),

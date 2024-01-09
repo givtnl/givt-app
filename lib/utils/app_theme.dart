@@ -57,6 +57,8 @@ class AppTheme {
 
   static const childParentalApprovalDecline = Color(0xFF9A3F3F);
 
+  static const keyboardBackgroundColor = Color(0xFFD2D4D9);
+
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
     fontFamily: 'AvenirLTStd',
