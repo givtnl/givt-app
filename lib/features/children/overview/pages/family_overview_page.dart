@@ -37,7 +37,8 @@ class FamilyOverviewPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: false,
             title: state is FamilyOverviewUpdatedState &&
-                    state.profiles.where((p) => p.type == 'Child').isEmpty
+                    state.profiles.where((p) => p.type == 'Child').isEmpty &&
+                    state.profiles.where((p) => p.type == 'Parent').length < 2
                 ? const SizedBox()
                 : state is FamilyOverviewLoadingState
                     ? const SizedBox()
@@ -58,7 +59,9 @@ class FamilyOverviewPage extends StatelessWidget {
             ),
             actions: [
               if (state is FamilyOverviewUpdatedState &&
-                  state.profiles.where((p) => p.type == 'Child').isNotEmpty)
+                  (state.profiles.where((p) => p.type == 'Child').isNotEmpty ||
+                      state.profiles.where((p) => p.type == 'Parent').length >
+                          1))
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
                   child: TextButton(
