@@ -86,21 +86,37 @@ class FamilyOverviewPage extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           body: SafeArea(
-            child: state is FamilyOverviewLoadingState
-                ? const ChildrenLoadingPage()
-                : state is FamilyOverviewUpdatedState
-                    ? state.profiles.where((p) => p.type == 'Child').isEmpty
-                        ? NoChildrenPage(
-                            onAddNewChildPressed: () => _addNewChild(context),
-                          )
-                        : FamilyAvailablePage(
-                            profiles: state.profiles,
-                          )
-                    : Container(),
+            child: buildFamilyOverviewBody(state, context),
           ),
         );
       },
     );
+  }
+
+  Widget buildFamilyOverviewBody(
+      FamilyOverviewState state, BuildContext context) {
+    if (state is FamilyOverviewLoadingState) {
+      return const ChildrenLoadingPage();
+    }
+
+    if (state is FamilyOverviewUpdatedState) {
+      final hasNoChildren =
+          state.profiles.where((p) => p.type == 'Child').isEmpty;
+      final hasMultipleParents =
+          state.profiles.where((p) => p.type == 'Parent').length > 1;
+
+      if (hasNoChildren && !hasMultipleParents) {
+        return NoChildrenPage(
+          onAddNewChildPressed: () => _addNewChild(context),
+        );
+      }
+
+      return FamilyAvailablePage(
+        profiles: state.profiles,
+      );
+    }
+
+    return const SizedBox();
   }
 
   void _addNewChild(BuildContext context) {
