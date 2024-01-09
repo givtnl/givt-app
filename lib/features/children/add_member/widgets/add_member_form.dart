@@ -211,7 +211,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
                   SizedBox(
                     child: IconButton(
                       icon: const Icon(FontAwesomeIcons.trash),
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.error,
                       constraints: const BoxConstraints(
                         minHeight: 40,
                         minWidth: 40,

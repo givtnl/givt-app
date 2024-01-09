@@ -60,7 +60,9 @@ class FamilyTextFormField extends StatelessWidget {
               color:
                   readOnly ? AppTheme.givtDarkerGray : lightColorScheme.primary,
             ),
+        textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
+          isCollapsed: true,
           hintText: hintText,
           labelText: hintText,
           suffixIcon: suffixIcon,
@@ -69,8 +71,7 @@ class FamilyTextFormField extends StatelessWidget {
                 fontSize: 16,
                 color: AppTheme.givtDarkerGray,
               ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          contentPadding: const EdgeInsets.only(left: 10, bottom: 15, top: 15),
           errorStyle: const TextStyle(
             height: 0,
           ),
