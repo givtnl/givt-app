@@ -18,10 +18,15 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
 
 class AddMemberForm extends StatefulWidget {
-  const AddMemberForm(
-      {required this.firstMember, required this.onRemove, super.key});
+  const AddMemberForm({
+    required this.firstMember,
+    required this.onRemove,
+    required this.ageFocusNode,
+    super.key,
+  });
   final bool firstMember;
   final VoidCallback onRemove;
+  final FocusNode ageFocusNode;
 
   @override
   State<AddMemberForm> createState() => _AddMemberFormState();
@@ -35,7 +40,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
   int _allowanceController = 15;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
-  late final FocusNode _nameFocusNode;
+  late final FocusNode _childNameFocusNode;
+  late final FocusNode _parentNameFocusNode;
   Timer? _timer;
   Duration _heldDuration = Duration.zero;
   int tapTime = 240;
@@ -61,15 +67,16 @@ class _AddMemberFormState extends State<AddMemberForm> {
   @override
   void dispose() {
     _stopTimer();
-    _nameFocusNode.dispose();
+    _childNameFocusNode.dispose();
+    _parentNameFocusNode.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    _nameFocusNode = FocusNode();
-    _nameFocusNode.requestFocus();
+    _childNameFocusNode = FocusNode()..requestFocus();
+    _parentNameFocusNode = FocusNode()..requestFocus();
   }
 
   void _incrementCounter() {
@@ -266,6 +273,9 @@ class _AddMemberFormState extends State<AddMemberForm> {
       onTap: () {
         setState(() {
           isChildSelected = !isChildSelected;
+          isChildSelected
+              ? _childNameFocusNode.requestFocus()
+              : _parentNameFocusNode.requestFocus();
         });
       },
       child: Container(
@@ -427,7 +437,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.words,
-            focusNode: _nameFocusNode,
+            focusNode: _childNameFocusNode,
           ),
           FamilyTextFormField(
             validator: (value) {
@@ -452,6 +462,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               FilteringTextInputFormatter.digitsOnly,
             ],
             textInputAction: TextInputAction.done,
+            focusNode: widget.ageFocusNode,
           ),
           const SizedBox(height: 10),
           const GivingAllowanceInfoButton(),
@@ -484,6 +495,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             hintText: context.l10n.firstName,
             keyboardType: TextInputType.name,
             textCapitalization: TextCapitalization.words,
+            focusNode: _parentNameFocusNode,
           ),
         ],
       ),
