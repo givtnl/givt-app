@@ -132,16 +132,16 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       builder: (context, state) {
         if (state.status == AddMemberStateStatus.loading) {
           //here
-          return const Center(
+          return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Please hang tight while we set up your\nfamily space...',
+                  context.l10n.holdOnSetUpFamily,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16),
-                CircularProgressIndicator.adaptive(),
+                const SizedBox(height: 16),
+                const CircularProgressIndicator.adaptive(),
               ],
             ),
           );
