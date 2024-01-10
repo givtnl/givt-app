@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
   const CreateMemberPage({super.key});
@@ -18,6 +19,7 @@ class CreateMemberPage extends StatefulWidget {
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
   final List<Widget> _forms = [];
+  final Map<GlobalKey, FocusNode> _ageFocusNodes = {};
 
   late final ScrollController _scrollController;
 
@@ -27,17 +29,51 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     bool isFirst = false,
   }) {
     final key = GlobalKey();
+    final ageFocusNode = FocusNode();
+    _ageFocusNodes[key] = ageFocusNode;
     _forms.add(
       AddMemberForm(
         firstMember: isFirst,
         key: key,
+        ageFocusNode: ageFocusNode,
         onRemove: () {
           setState(() {
             _forms.removeWhere((element) => element.key == key);
+            _ageFocusNodes[key]?.dispose();
+            _ageFocusNodes.remove(key);
           });
           context.read<AddMemberCubit>().decreaseNrOfForms();
         },
       ),
+    );
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardBarColor: AppTheme.keyboardBackgroundColor,
+      nextFocus: false,
+      actions: [
+        for (final node in _ageFocusNodes.values)
+          KeyboardActionsItem(
+            focusNode: node,
+            toolbarButtons: [
+              (node) {
+                return GestureDetector(
+                  onTap: () => node.unfocus(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Text(
+                      'DONE',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                );
+              },
+            ],
+          ),
+      ],
     );
   }
 
@@ -51,6 +87,9 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _ageFocusNodes.forEach((key, value) {
+      value.dispose();
+    });
     super.dispose();
   }
 
@@ -103,29 +142,32 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           child: Column(
             children: [
               Expanded(
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          setUpFamilyHeader(context),
-                          const SizedBox(height: 20),
-                          ..._forms,
-                        ],
+                child: KeyboardActions(
+                  config: _buildConfig(context),
+                  child: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            setUpFamilyHeader(context),
+                            const SizedBox(height: 20),
+                            ..._forms,
+                          ],
+                        ),
                       ),
-                    ),
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          addButton(context),
-                          continueButton(context),
-                        ],
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            addButton(context),
+                            continueButton(context),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
