@@ -131,7 +131,20 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       },
       builder: (context, state) {
         if (state.status == AddMemberStateStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          //here
+          return const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Please hang tight while we set up your\nfamily space...',
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 16),
+                CircularProgressIndicator.adaptive(),
+              ],
+            ),
+          );
         }
         if (state.status == AddMemberStateStatus.success) {
           return const AddMemeberSuccessPage();
