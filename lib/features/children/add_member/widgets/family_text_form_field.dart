@@ -55,13 +55,15 @@ class FamilyTextFormField extends StatelessWidget {
         inputFormatters: inputFormatters,
         obscureText: obscureText,
         focusNode: focusNode,
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontSize: 16,
               color:
                   readOnly ? AppTheme.givtDarkerGray : lightColorScheme.primary,
             ),
-        textAlignVertical: TextAlignVertical.center,
+        textAlignVertical: TextAlignVertical.bottom,
         decoration: InputDecoration(
+          alignLabelWithHint: true,
           isCollapsed: true,
           hintText: hintText,
           labelText: hintText,
@@ -70,8 +72,10 @@ class FamilyTextFormField extends StatelessWidget {
           labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
                 color: AppTheme.givtDarkerGray,
+                textBaseline: TextBaseline.ideographic,
+                leadingDistribution: TextLeadingDistribution.even,
               ),
-          contentPadding: const EdgeInsets.only(left: 10, bottom: 15, top: 15),
+          contentPadding: const EdgeInsets.only(left: 10, bottom: 14, top: 15),
           errorStyle: const TextStyle(
             height: 0,
           ),
