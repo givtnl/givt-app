@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
-import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
   const CreateMemberPage({super.key});
@@ -17,24 +18,79 @@ class CreateMemberPage extends StatefulWidget {
 }
 
 class _CreateMemberPageState extends State<CreateMemberPage> {
-  int _nrOfMembers = 1;
-  final List<Widget> forms = [];
+  final List<Widget> _forms = [];
+  final Map<GlobalKey, FocusNode> _ageFocusNodes = {};
+
+  late final ScrollController _scrollController;
+
+  final _scrollAnimationDuration = const Duration(milliseconds: 300);
+
+  void _addMemberForm({
+    bool isFirst = false,
+  }) {
+    final key = GlobalKey();
+    final ageFocusNode = FocusNode();
+    _ageFocusNodes[key] = ageFocusNode;
+    _forms.add(
+      AddMemberForm(
+        firstMember: isFirst,
+        key: key,
+        ageFocusNode: ageFocusNode,
+        onRemove: () {
+          setState(() {
+            _forms.removeWhere((element) => element.key == key);
+            _ageFocusNodes[key]?.dispose();
+            _ageFocusNodes.remove(key);
+          });
+          context.read<AddMemberCubit>().decreaseNrOfForms();
+        },
+      ),
+    );
+  }
+
+  KeyboardActionsConfig _buildConfig(BuildContext context) {
+    return KeyboardActionsConfig(
+      keyboardBarColor: AppTheme.keyboardBackgroundColor,
+      nextFocus: false,
+      actions: [
+        for (final node in _ageFocusNodes.values)
+          KeyboardActionsItem(
+            focusNode: node,
+            toolbarButtons: [
+              (node) {
+                return GestureDetector(
+                  onTap: () => node.unfocus(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 16),
+                    child: Text(
+                      'DONE',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                );
+              },
+            ],
+          ),
+      ],
+    );
+  }
+
   @override
   void initState() {
-    for (int i = 0; i < _nrOfMembers; i++) {
-      final key = GlobalKey();
-      forms.add(AddMemberForm(
-          firstMember: i == 0,
-          key: key,
-          onRemove: () {
-            setState(() {
-              _nrOfMembers--;
-              forms.removeWhere((element) => element.key == key);
-            });
-            context.read<AddMemberCubit>().decreaseNrOfForms();
-          }));
-    }
+    _scrollController = ScrollController();
+    _addMemberForm(isFirst: true);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _ageFocusNodes.forEach((key, value) {
+      value.dispose();
+    });
+    super.dispose();
   }
 
   @override
@@ -86,38 +142,32 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           child: Column(
             children: [
               Expanded(
-                child: CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: Column(
-                        children: [
-                          setUpFamilyHeader(context),
-                          const SizedBox(height: 20),
-                          ...forms,
-                        ],
+                child: KeyboardActions(
+                  config: _buildConfig(context),
+                  child: CustomScrollView(
+                    controller: _scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Column(
+                          children: [
+                            setUpFamilyHeader(context),
+                            const SizedBox(height: 20),
+                            ..._forms,
+                          ],
+                        ),
                       ),
-                    ),
-                    SliverFillRemaining(
-                      hasScrollBody: false,
-                      child: Column(
-                        children: [
-                          const Spacer(),
-                          addButton(context),
-                          continueButton(context),
-                        ],
+                      SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Column(
+                          children: [
+                            const Spacer(),
+                            addButton(context),
+                            continueButton(context),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                  // Column(
-                  //   children: [
-                  //     setUpFamilyHeader(context),
-                  //     const SizedBox(height: 20),
-                  //     ...forms,
-                  //     const SizedBox(height: 20),
-                  //     addButton(context),
-                  //     continueButton(context),
-                  //   ],
-                  // ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -149,22 +199,30 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         ),
       );
 
+  void _scrollDown() {
+    final Duration scrollDelay;
+    if (MediaQuery.of(context).viewInsets.bottom == 0) {
+      //need to wait a bit longer until keyboard will appear
+      scrollDelay = const Duration(milliseconds: 700);
+    } else {
+      scrollDelay = const Duration(milliseconds: 400);
+    }
+
+    Future.delayed(scrollDelay, () {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: _scrollAnimationDuration,
+        curve: Curves.linearToEaseOut,
+      );
+    });
+  }
+
   Widget addButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         setState(() {
-          final key = GlobalKey();
-          _nrOfMembers++;
-          forms.add(AddMemberForm(
-              firstMember: false,
-              key: key,
-              onRemove: () {
-                setState(() {
-                  _nrOfMembers--;
-                  forms.removeWhere((element) => element.key == key);
-                });
-                context.read<AddMemberCubit>().decreaseNrOfForms();
-              }));
+          _addMemberForm();
+          _scrollDown();
         });
         context.read<AddMemberCubit>().increaseNrOfForms();
       },

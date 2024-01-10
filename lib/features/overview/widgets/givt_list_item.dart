@@ -22,15 +22,14 @@ class GivtListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final country = context.read<AuthCubit>().state.user.country;
+    final size = MediaQuery.sizeOf(context);
+    final textTheme = Theme.of(context).textTheme;
+    final userCountry = context.read<AuthCubit>().state.user.country;
+    final country = Country.fromCode(userCountry);
     final currency = NumberFormat.simpleCurrency(
-      name: country == Country.us.countryCode
-          ? 'USD'
-          : Country.unitedKingdomCodes().contains(country)
-              ? 'GBP'
-              : 'EUR',
+      name: country.currency,
     );
+
     return Dismissible(
       key: Key(givtGroup.timeStamp.toString()),
       direction: DismissDirection.endToStart,
@@ -52,7 +51,7 @@ class GivtListItem extends StatelessWidget {
       onDismissed: onDismiss,
       child: Container(
         height: givtGroup.givts.length == 3
-            ? size.height * 0.15
+            ? size.height * 0.16
             : size.height * 0.11,
         width: size.width,
         decoration: BoxDecoration(
@@ -72,7 +71,6 @@ class GivtListItem extends StatelessWidget {
                 Container(
                   width: size.width * 0.1,
                   height: size.width * 0.1,
-                  margin: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
                   decoration: const BoxDecoration(
                     color: AppTheme.givtLightGray,
                   ),
@@ -88,9 +86,8 @@ class GivtListItem extends StatelessWidget {
                     child: Center(
                       child: Text(
                         DateFormat('dd').format(givtGroup.timeStamp!.toLocal()),
-                        style: const TextStyle(
+                        style: textTheme.titleLarge!.copyWith(
                           color: AppTheme.givtBlue,
-                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -99,59 +96,61 @@ class GivtListItem extends StatelessWidget {
                 ),
                 Text(
                   DateFormat('HH:mm').format(givtGroup.timeStamp!.toLocal()),
-                  style: const TextStyle(
+                  style: textTheme.bodySmall!.copyWith(
                     color: AppTheme.givtBlue,
-                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  children: [
-                    Visibility(
-                      visible: givtGroup.isGiftAidEnabled,
-                      child: Image.asset(
-                        'assets/images/gift_aid_yellow.png',
-                        height: 20,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Visibility(
+                        visible: givtGroup.isGiftAidEnabled,
+                        child: Image.asset(
+                          'assets/images/gift_aid_yellow.png',
+                          height: 20,
+                        ),
+                      ),
+                      Text(
+                        givtGroup.organisationName,
+                        style: textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  ...givtGroup.givts.map(
+                    (collection) => ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: size.width * 0.74,
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            '${context.l10n.collect} ${collection.collectId}',
+                            textAlign: TextAlign.start,
+                          ),
+                          Expanded(child: Container()),
+                          Text(
+                            '${currency.currencySymbol} ${Util.formatNumberComma(
+                              collection.amount,
+                              country,
+                            )}',
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      givtGroup.organisationName,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ],
-                ),
-                ...givtGroup.givts.map(
-                  (collection) => ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: size.width * 0.75,
-                    ),
-                    child: Row(
-                      children: [
-                        Text(
-                          '${context.l10n.collect} ${collection.collectId}',
-                          textAlign: TextAlign.start,
-                        ),
-                        Expanded(child: Container()),
-                        Text(
-                          '${currency.currencySymbol} ${Util.formatNumberComma(
-                            collection.amount,
-                            Country.fromCode(country),
-                          )}',
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
-                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

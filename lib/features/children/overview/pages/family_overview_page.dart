@@ -39,13 +39,15 @@ class FamilyOverviewPage extends StatelessWidget {
             title: state is FamilyOverviewUpdatedState &&
                     state.profiles.where((p) => p.type == 'Child').isEmpty
                 ? const SizedBox()
-                : Text(
-                    context.l10n.childrenMyFamily,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontFamily: 'Mulish',
-                          fontWeight: FontWeight.w900,
-                        ),
-                  ),
+                : state is FamilyOverviewLoadingState
+                    ? const SizedBox()
+                    : Text(
+                        context.l10n.childrenMyFamily,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontFamily: 'Mulish',
+                              fontWeight: FontWeight.w900,
+                            ),
+                      ),
             leading: BackButton(
               onPressed: () {
                 context.pop();

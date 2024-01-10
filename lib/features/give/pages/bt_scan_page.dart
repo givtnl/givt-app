@@ -170,11 +170,17 @@ class _BTScanPageState extends State<BTScanPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final size = MediaQuery.sizeOf(context);
+    /// Because the GIF has this color we need to set 
+    /// the background color to the same color
+    /// otherwise we will see a white background
+    const backgroundColor = Color(0xFFFBFBFB);
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
         title: Text(locals.giveWithYourPhone),
+        backgroundColor: backgroundColor,
       ),
+      backgroundColor: backgroundColor,
       body: Center(
         child: BlocConsumer<GiveBloc, GiveState>(
           listener: (context, state) async {

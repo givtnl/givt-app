@@ -31,6 +31,10 @@ enum Pages {
     name: 'BACS-MANDATE-EXPLANATION',
   ),
   registration(path: 'registration', name: 'REGISTRATION'),
+  registrationSuccess(
+    path: 'registration-success',
+    name: 'REGISTRATION-SUCCESS',
+  ),
   overview(path: 'overview', name: 'OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
   giveVPC(path: 'give-vpc', name: 'GIVE-VPC'),

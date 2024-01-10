@@ -6,20 +6,18 @@ import 'package:givt_app/utils/util.dart';
 import 'package:intl/intl.dart';
 
 class DetailInstanceItem extends StatelessWidget {
-  const DetailInstanceItem(
-      {required this.size,
-      required this.context,
-      required this.userCountry,
-      required this.detail,
-      super.key});
+  const DetailInstanceItem({
+    required this.userCountry,
+    required this.detail,
+    super.key,
+  });
 
-  final Size size;
-  final BuildContext context;
   final Country userCountry;
   final RecurringDonationDetail detail;
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Container(
       constraints: BoxConstraints(
         maxHeight: size.height * 0.1,
@@ -74,17 +72,18 @@ class DetailInstanceItem extends StatelessWidget {
             ],
           ),
           Visibility(
-            visible: false,
-            // givtGroup.isGiftAidEnabled,
+            visible: detail.isGiftAidEnabled,
             child: Image.asset(
               'assets/images/gift_aid_yellow.png',
               height: 20,
             ),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 15),
           Text(
-            Util.getMonthName(detail.timestamp.toIso8601String(),
-                Util.getLanguageTageFromLocale(context)),
+            Util.getMonthName(
+              detail.timestamp.toIso8601String(),
+              Util.getLanguageTageFromLocale(context),
+            ),
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

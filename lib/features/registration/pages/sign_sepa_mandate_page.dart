@@ -31,7 +31,7 @@ class SignSepaMandatePage extends StatelessWidget {
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == RegistrationStatus.success) {
-              context.goNamed(Pages.home.name);
+              context.goNamed(Pages.registrationSuccess.name);
             }
             if (state.status == RegistrationStatus.conflict) {
               showDialog<void>(
@@ -68,18 +68,20 @@ class SignSepaMandatePage extends StatelessWidget {
           },
           child: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              if (size.height > 600)
+                const SizedBox(
+                  height: 20,
+                ),
               Text(
                 locals.bacsVerifyTitle,
                 style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              if (size.height > 600)
+                const SizedBox(
+                  height: 20,
+                ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -139,7 +141,7 @@ class SignSepaMandatePage extends StatelessWidget {
                         ),
                       ),
                   child: Text(locals.signMandate),
-                )
+                ),
             ],
           ),
         ),
@@ -173,7 +175,7 @@ class SignSepaMandatePage extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 16,
                 ),
-              )
+              ),
             ],
           ),
         ),

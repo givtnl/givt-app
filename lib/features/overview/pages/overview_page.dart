@@ -153,6 +153,7 @@ class _OverviewPageState extends State<OverviewPage> {
         state.givtGroups.where((element) => element.givts.isEmpty).toList();
     return Scaffold(
       appBar: AppBar(
+        title: Text(locals.historyTitle),
         leading: const BackButton(),
         actions: [
           _buildAppBarItem(

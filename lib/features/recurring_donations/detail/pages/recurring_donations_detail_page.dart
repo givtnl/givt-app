@@ -79,8 +79,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
                         children: [
                           UpcomingRecurringDonation(
                             upcoming: DetailInstanceItem(
-                              size: size,
-                              context: context,
                               userCountry: userCountry,
                               detail: _getUpcomingDonation(
                                 lastInstance: recurringDonationsDetails.first,
@@ -107,8 +105,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
                         children: [
                           UpcomingRecurringDonation(
                             upcoming: DetailInstanceItem(
-                              size: size,
-                              context: context,
                               userCountry: userCountry,
                               detail: _getUpcomingDonation(
                                 recurringDonation: recurringDonation,
@@ -144,7 +140,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
       donationId: '1111',
       amount: int.parse(recurringDonation.amountPerTurn.toString()),
       status: 1,
-      isGiftAidEnabled: isGiftAidEnabled,
     );
   }
 
@@ -166,8 +161,6 @@ class RecurringDonationsDetailPage extends StatelessWidget {
       // Add the date widget to the final list
       finalList.add(
         DetailInstanceItem(
-          size: size,
-          context: context,
           userCountry: userCountry,
           detail: obj,
         ),

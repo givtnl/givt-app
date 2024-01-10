@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.1.1
+version: 4.1.2
 publish_to: none
 
 environment:
@@ -46,6 +46,7 @@ dependencies:
   intl: ^0.18.0
   ios_utsname_ext: ^2.2.0
   jiffy: ^6.2.1
+  keyboard_actions: ^4.2.0
   local_auth: ^2.1.7
   logging: ^1.2.0
   mobile_scanner: ^3.5.5

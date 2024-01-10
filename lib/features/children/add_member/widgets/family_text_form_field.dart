@@ -17,8 +17,9 @@ class FamilyTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.inputFormatters = const [],
-    this.autofillHints = null,
+    this.autofillHints,
     this.autocorrect = true,
+    this.focusNode,
   });
 
   final TextEditingController controller;
@@ -34,6 +35,7 @@ class FamilyTextFormField extends StatelessWidget {
   final List<TextInputFormatter> inputFormatters;
   final Iterable<String>? autofillHints;
   final bool autocorrect;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -52,12 +54,17 @@ class FamilyTextFormField extends StatelessWidget {
         textCapitalization: textCapitalization,
         inputFormatters: inputFormatters,
         obscureText: obscureText,
+        focusNode: focusNode,
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               fontSize: 16,
               color:
                   readOnly ? AppTheme.givtDarkerGray : lightColorScheme.primary,
             ),
+        textAlignVertical: TextAlignVertical.bottom,
         decoration: InputDecoration(
+          alignLabelWithHint: true,
+          isCollapsed: true,
           hintText: hintText,
           labelText: hintText,
           suffixIcon: suffixIcon,
@@ -65,9 +72,10 @@ class FamilyTextFormField extends StatelessWidget {
           labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
                 color: AppTheme.givtDarkerGray,
+                textBaseline: TextBaseline.ideographic,
+                leadingDistribution: TextLeadingDistribution.even,
               ),
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          contentPadding: const EdgeInsets.only(left: 10, bottom: 14, top: 15),
           errorStyle: const TextStyle(
             height: 0,
           ),
