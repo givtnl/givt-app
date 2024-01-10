@@ -7,6 +7,7 @@ enum AddMemberStateStatus {
   success,
   error,
   vpc,
+  continueWithoutVPC
 }
 
 enum AddMemberFormStatus {

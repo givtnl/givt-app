@@ -49,6 +49,16 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   void allFormsFilled() {
+    if (state.members.where((element) => element.type == 'Child').isEmpty) {
+      emit(
+        state.copyWith(
+          members: state.members,
+          formStatus: AddMemberFormStatus.success,
+          status: AddMemberStateStatus.continueWithoutVPC,
+        ),
+      );
+      return;
+    }
     emit(
       state.copyWith(
         members: state.members,
@@ -119,7 +129,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     }
   }
 
-  Future<void> createMemberWithVPC() async {
+  Future<void> createMember() async {
     final members = state.members;
     final memberNames = members.map((member) => member.firstName).toList();
 
