@@ -1480,6 +1480,6 @@
     "plusAddMembers": "+ Add members",
     "addAnotherMember": "+ Add another member",
     "emptyChildrenDonations": "Your children's donations\nwill appear here",
-    "holdOnRegistration": "",
-    "holdOnSetUpFamily": ""
+    "holdOnRegistration": "Hold on, we are creating your account...",
+    "holdOnSetUpFamily": "Please hang tight while we set up your\nfamily space..."
 }
