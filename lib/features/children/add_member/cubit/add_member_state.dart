@@ -28,6 +28,21 @@ class AddMemberState extends Equatable {
   final List<Member> members;
   final int nrOfForms;
   final String error;
+  List<Member> get children {
+    return members.where((p) => p.type == 'Child').toList();
+  }
+
+  List<Member> get adults {
+    return members.where((p) => p.type == 'Parent').toList();
+  }
+
+  bool get hasChildren {
+    return children.isNotEmpty;
+  }
+
+  bool get isAdultSingle {
+    return adults.length == 1;
+  }
 
   AddMemberState copyWith({
     AddMemberStateStatus? status,

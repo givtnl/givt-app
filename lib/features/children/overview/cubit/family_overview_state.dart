@@ -33,7 +33,7 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   }
 
   bool get hasChildren {
-    return children.isEmpty;
+    return children.isNotEmpty;
   }
 
   bool get isAdultSingle {
