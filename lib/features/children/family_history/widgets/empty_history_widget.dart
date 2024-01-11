@@ -22,7 +22,6 @@ class EmptyHistoryWidget extends StatelessWidget {
             context.l10n.emptyChildrenDonations,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontSize: 14,
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w400,
                 ),

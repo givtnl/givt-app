@@ -38,7 +38,7 @@ class FamilyOverviewPage extends StatelessWidget {
             centerTitle: false,
             title: state is FamilyOverviewUpdatedState &&
                     !state.hasChildren &&
-                    !state.isAdultSingle
+                    state.isAdultSingle
                 ? const SizedBox()
                 : state is FamilyOverviewLoadingState
                     ? const SizedBox()
