@@ -10,7 +10,7 @@ class CustomSecondaryBorderButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const borderWidth = 2;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: borderWidth / 2),
+      padding: const EdgeInsets.symmetric(horizontal: borderWidth / 2),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
