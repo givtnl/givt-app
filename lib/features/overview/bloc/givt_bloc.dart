@@ -237,8 +237,9 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     Emitter<GivtState> emit,
   ) async {
     try {
-      final fromDate = '${event.year}-01-01';
-      final tillDate = '${event.year}-12-31';
+      final fromDate = DateTime.parse('${event.year}-01-01').toIso8601String();
+      final tillDate = DateTime.parse('${int.parse(event.year) + 1}-01-01')
+          .toIso8601String();
 
       await givtRepository.downloadYearlyOverview(
         body: {'fromDate': fromDate, 'tillDate': tillDate},

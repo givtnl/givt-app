@@ -1,5 +1,5 @@
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/children/add_member/models/profile.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
 
 mixin AddMemberRepository {
   Future<bool> addMembers(List<Member> children);

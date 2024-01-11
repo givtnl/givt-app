@@ -123,6 +123,9 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             context.read<AddMemberCubit>().dismissedVPC();
           });
         }
+        if (state.status == AddMemberStateStatus.continueWithoutVPC) {
+          context.read<AddMemberCubit>().createMember();
+        }
         if (state.nrOfForms == state.members.length &&
             state.formStatus == AddMemberFormStatus.initial) {
           context.read<AddMemberCubit>().allFormsFilled();
@@ -131,7 +134,19 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       },
       builder: (context, state) {
         if (state.status == AddMemberStateStatus.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  context.l10n.holdOnSetUpFamily,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                const CircularProgressIndicator.adaptive(),
+              ],
+            ),
+          );
         }
         if (state.status == AddMemberStateStatus.success) {
           return const AddMemeberSuccessPage();

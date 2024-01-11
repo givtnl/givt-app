@@ -1479,5 +1479,7 @@
     "addMember": "Add member",
     "plusAddMembers": "+ Add members",
     "addAnotherMember": "+ Add another member",
-    "emptyChildrenDonations": "Your children's donations\nwill appear here"
+    "emptyChildrenDonations": "Your children's donations\nwill appear here",
+    "holdOnRegistration": "",
+    "holdOnSetUpFamily": ""
 }
