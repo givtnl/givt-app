@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (isUS) const Text('Hold on, we are creating your account...'),
+          if (isUS) Text(context.l10n.holdOnRegistration),
           if (isUS) const SizedBox(height: 16),
           const CircularProgressIndicator.adaptive(),
         ],
@@ -250,8 +250,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 0,
               ),
             ),
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.sentences,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -277,8 +277,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: 0,
               ),
             ),
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
+            keyboardType: TextInputType.text,
+            textCapitalization: TextCapitalization.sentences,
           ),
           Visibility(
             visible: !isUS,

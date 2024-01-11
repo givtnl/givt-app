@@ -24,6 +24,22 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   final List<Profile> profiles;
   final bool displayAllowanceInfo;
 
+  List<Profile> get children {
+    return profiles.where((p) => p.type == 'Child').toList();
+  }
+
+  List<Profile> get adults {
+    return profiles.where((p) => p.type == 'Parent').toList();
+  }
+
+  bool get hasChildren {
+    return children.isNotEmpty;
+  }
+
+  bool get isAdultSingle {
+    return adults.length == 1;
+  }
+
   @override
   List<Object> get props => [profiles, displayAllowanceInfo];
 }

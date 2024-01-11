@@ -9,7 +9,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/add_member/models/profile.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -435,8 +435,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             },
             controller: _nameChildController,
             hintText: context.l10n.firstName,
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
+            textCapitalization: TextCapitalization.sentences,
             focusNode: _childNameFocusNode,
           ),
           FamilyTextFormField(
@@ -493,8 +492,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             },
             controller: _nameParentController,
             hintText: context.l10n.firstName,
-            keyboardType: TextInputType.name,
-            textCapitalization: TextCapitalization.words,
+            textCapitalization: TextCapitalization.sentences,
             focusNode: _parentNameFocusNode,
           ),
         ],

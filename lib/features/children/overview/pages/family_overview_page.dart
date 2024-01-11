@@ -37,7 +37,8 @@ class FamilyOverviewPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: false,
             title: state is FamilyOverviewUpdatedState &&
-                    state.profiles.where((p) => p.type == 'Child').isEmpty
+                    !state.hasChildren &&
+                    state.isAdultSingle
                 ? const SizedBox()
                 : state is FamilyOverviewLoadingState
                     ? const SizedBox()
@@ -58,7 +59,7 @@ class FamilyOverviewPage extends StatelessWidget {
             ),
             actions: [
               if (state is FamilyOverviewUpdatedState &&
-                  state.profiles.where((p) => p.type == 'Child').isNotEmpty)
+                  (state.hasChildren || !state.isAdultSingle))
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
                   child: TextButton(
@@ -86,21 +87,32 @@ class FamilyOverviewPage extends StatelessWidget {
             automaticallyImplyLeading: false,
           ),
           body: SafeArea(
-            child: state is FamilyOverviewLoadingState
-                ? const ChildrenLoadingPage()
-                : state is FamilyOverviewUpdatedState
-                    ? state.profiles.where((p) => p.type == 'Child').isEmpty
-                        ? NoChildrenPage(
-                            onAddNewChildPressed: () => _addNewChild(context),
-                          )
-                        : FamilyAvailablePage(
-                            profiles: state.profiles,
-                          )
-                    : Container(),
+            child: buildFamilyOverviewBody(state, context),
           ),
         );
       },
     );
+  }
+
+  Widget buildFamilyOverviewBody(
+      FamilyOverviewState state, BuildContext context) {
+    if (state is FamilyOverviewLoadingState) {
+      return const ChildrenLoadingPage();
+    }
+
+    if (state is FamilyOverviewUpdatedState) {
+      if (!state.hasChildren && state.isAdultSingle) {
+        return NoChildrenPage(
+          onAddNewChildPressed: () => _addNewChild(context),
+        );
+      }
+
+      return FamilyAvailablePage(
+        profiles: state.profiles,
+      );
+    }
+
+    return const SizedBox();
   }
 
   void _addNewChild(BuildContext context) {
