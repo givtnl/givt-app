@@ -21,21 +21,21 @@ class RegistrationSuccess extends StatelessWidget {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  text: 'You are registered!\n',
+                  text: '${context.l10n.youAreRegistered}\n',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
                   children: [
                     TextSpan(
-                      text: 'You can now donate.\n\n',
+                      text: '${context.l10n.youCanNowDonate}\n\n',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.normal,
                             fontSize: 16,
                           ),
                     ),
                     TextSpan(
-                      text: 'Set up your family with Givt4Kids?',
+                      text: context.l10n.setUpG4kQ,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.normal,
                             fontSize: 16,
@@ -48,7 +48,7 @@ class RegistrationSuccess extends StatelessWidget {
               RegisteredCheckAnimation(),
               const Spacer(),
               CustomSecondaryBorderButton(
-                title: 'Not right now',
+                title: context.l10n.notRightNow,
                 onPressed: () => context.goNamed(Pages.home.name),
               ),
               CustomGreenElevatedButton(
