@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/allowance.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
@@ -8,6 +7,7 @@ import 'package:givt_app/features/children/family_history/models/child_donation_
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
+import 'package:givt_app/features/children/family_history/widgets/empty_history_stack.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -79,26 +79,7 @@ class FamilyHistory extends StatelessWidget {
                       return getDivider(state, index);
                     },
                   ),
-                  if (state.history.isEmpty)
-                    Center(
-                      child: SvgPicture.asset(
-                        'assets/images/empty_lines.svg',
-                        width: size.width * 0.95,
-                      ),
-                    ),
-                  if (state.history.isEmpty)
-                    Center(
-                      child: Text(
-                        context.l10n.emptyChildrenDonations,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Color(0xFF617793),
-                          fontSize: 14,
-                          fontFamily: 'Raleway',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ),
+                  if (state.history.isEmpty) const EmptyHistoryWidget(),
                   if (state.status == HistroryStatus.loading &&
                       historyCubit.state.pageNr > 1)
                     Positioned(

@@ -37,8 +37,8 @@ class FamilyOverviewPage extends StatelessWidget {
           appBar: AppBar(
             centerTitle: false,
             title: state is FamilyOverviewUpdatedState &&
-                    state.profiles.where((p) => p.type == 'Child').isEmpty &&
-                    state.profiles.where((p) => p.type == 'Parent').length < 2
+                    !state.hasChildren &&
+                    !state.isAdultSingle
                 ? const SizedBox()
                 : state is FamilyOverviewLoadingState
                     ? const SizedBox()
@@ -59,9 +59,7 @@ class FamilyOverviewPage extends StatelessWidget {
             ),
             actions: [
               if (state is FamilyOverviewUpdatedState &&
-                  (state.profiles.where((p) => p.type == 'Child').isNotEmpty ||
-                      state.profiles.where((p) => p.type == 'Parent').length >
-                          1))
+                  (state.hasChildren || !state.isAdultSingle))
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
                   child: TextButton(
@@ -103,12 +101,7 @@ class FamilyOverviewPage extends StatelessWidget {
     }
 
     if (state is FamilyOverviewUpdatedState) {
-      final hasNoChildren =
-          state.profiles.where((p) => p.type == 'Child').isEmpty;
-      final hasMultipleParents =
-          state.profiles.where((p) => p.type == 'Parent').length > 1;
-
-      if (hasNoChildren && !hasMultipleParents) {
+      if (!state.hasChildren && state.isAdultSingle) {
         return NoChildrenPage(
           onAddNewChildPressed: () => _addNewChild(context),
         );

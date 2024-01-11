@@ -19,8 +19,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
     final initialNumber = prefs.getInt(Profile.number) ?? 0;
     var displayAllowanceInfo = false;
     try {
-      final response =
-          await _familyOverviewRepository.fetchFamily(parentGuid);
+      final response = await _familyOverviewRepository.fetchFamily(parentGuid);
       if (response.length > initialNumber) {
         displayAllowanceInfo = true;
       }
