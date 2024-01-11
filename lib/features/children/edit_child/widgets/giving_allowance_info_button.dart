@@ -41,7 +41,7 @@ class GivingAllowanceInfoButton extends StatelessWidget {
           const SizedBox(width: 10),
           Icon(
             Icons.info_rounded,
-            size: 16,
+            size: 18,
             color: Theme.of(context).colorScheme.primary,
           ),
         ],
