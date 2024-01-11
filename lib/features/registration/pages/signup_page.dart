@@ -188,7 +188,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (isUS) const Text('Hold on, we are creating your account...'),
+          if (isUS) Text(context.l10n.holdOnRegistration),
           if (isUS) const SizedBox(height: 16),
           const CircularProgressIndicator.adaptive(),
         ],

@@ -1478,5 +1478,8 @@
     "vpcGreenLightChildInformation": " from your card.\n\nThis gives us the green light to securely\n collect your child's information.",
     "addMember": "Add member",
     "plusAddMembers": "+ Add members",
-    "addAnotherMember": "+ Add another member"
+    "addAnotherMember": "+ Add another member",
+    "emptyChildrenDonations": "Your children's donations\nwill appear here",
+    "holdOnRegistration": "",
+    "holdOnSetUpFamily": ""
 }
