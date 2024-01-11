@@ -131,7 +131,6 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       },
       builder: (context, state) {
         if (state.status == AddMemberStateStatus.loading) {
-          //here
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
