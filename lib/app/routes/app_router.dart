@@ -236,13 +236,17 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: Pages.addMember.path,
-            name: Pages.addMember.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => AddMemberCubit(getIt()),
-              child: const AddMemeberMainScaffold(),
-            ),
-          ),
+              path: Pages.addMember.path,
+              name: Pages.addMember.name,
+              builder: (context, state) {
+                final familyAlreadyExists = state.extra! as bool;
+                return BlocProvider(
+                  create: (_) => AddMemberCubit(getIt()),
+                  child: AddMemeberMainScaffold(
+                    familyAlreadyExists: familyAlreadyExists,
+                  ),
+                );
+              }),
           GoRoute(
             path: Pages.recurringDonations.path,
             name: Pages.recurringDonations.name,

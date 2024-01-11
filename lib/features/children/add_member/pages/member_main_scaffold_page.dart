@@ -6,7 +6,8 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AddMemeberMainScaffold extends StatelessWidget {
-  const AddMemeberMainScaffold({super.key});
+  const AddMemeberMainScaffold({required this.familyAlreadyExists, super.key});
+  final bool familyAlreadyExists;
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +23,10 @@ class AddMemeberMainScaffold extends StatelessWidget {
           },
         ),
       ),
-      body: const SafeArea(
-        child: CreateMemberPage(),
+      body: SafeArea(
+        child: CreateMemberPage(
+          familyAlreadyExists: familyAlreadyExists,
+        ),
       ),
     );
   }
