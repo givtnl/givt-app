@@ -7,7 +7,7 @@ import 'package:givt_app/features/children/family_history/models/child_donation_
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
-import 'package:givt_app/features/children/family_history/widgets/empty_history_stack.dart';
+import 'package:givt_app/features/children/family_history/widgets/empty_history_widget.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
