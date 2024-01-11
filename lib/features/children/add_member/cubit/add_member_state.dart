@@ -38,7 +38,7 @@ class AddMemberState extends Equatable {
   }
 
   bool get hasChildren {
-    return children.isEmpty;
+    return children.isNotEmpty;
   }
 
   bool get isAdultSingle {
