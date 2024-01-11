@@ -100,7 +100,7 @@ class VPCPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {
                         context.pop();
-                        context.read<AddMemberCubit>().createMemberWithVPC();
+                        context.read<AddMemberCubit>().createMember();
                         AnalyticsHelper.logEvent(
                           eventName: AmplitudeEvents.vpcAccepted,
                         );

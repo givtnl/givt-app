@@ -5,7 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/children/add_member/models/profile.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -49,11 +49,21 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   void allFormsFilled() {
+    if (state.hasChildren) {
+      emit(
+        state.copyWith(
+          members: state.members,
+          formStatus: AddMemberFormStatus.success,
+          status: AddMemberStateStatus.vpc,
+        ),
+      );
+      return;
+    }
     emit(
       state.copyWith(
         members: state.members,
         formStatus: AddMemberFormStatus.success,
-        status: AddMemberStateStatus.vpc,
+        status: AddMemberStateStatus.continueWithoutVPC,
       ),
     );
   }
@@ -119,7 +129,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     }
   }
 
-  Future<void> createMemberWithVPC() async {
+  Future<void> createMember() async {
     final members = state.members;
     final memberNames = members.map((member) => member.firstName).toList();
 
