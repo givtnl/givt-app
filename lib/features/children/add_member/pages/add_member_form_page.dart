@@ -6,6 +6,8 @@ import 'package:givt_app/features/children/add_member/widgets/add_member_form.da
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -176,8 +178,23 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                         child: Column(
                           children: [
                             const Spacer(),
-                            addButton(context),
-                            continueButton(context),
+                            CustomSecondaryBorderButton(
+                              title: context.l10n.addAnotherMember,
+                              onPressed: () {
+                                setState(() {
+                                  _addMemberForm();
+                                  _scrollDown();
+                                });
+                                context
+                                    .read<AddMemberCubit>()
+                                    .increaseNrOfForms();
+                              },
+                            ),
+                            CustomGreenElevatedButton(
+                              title: context.l10n.continueKey,
+                              onPressed:
+                                  context.read<AddMemberCubit>().validateForms,
+                            )
                           ],
                         ),
                       ),

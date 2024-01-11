@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 
 class NoChildrenPage extends StatelessWidget {
   const NoChildrenPage({
@@ -46,17 +47,9 @@ class NoChildrenPage extends StatelessWidget {
             right: 35,
             bottom: 12,
           ),
-          child: ElevatedButton(
+          child: CustomGreenElevatedButton(
             onPressed: onAddNewChildPressed,
-            child: Text(
-              context.l10n.plusAddMembers,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                    fontFamily: 'Avenir',
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-            ),
+            title: context.l10n.plusAddMembers,
           ),
         ),
       ],

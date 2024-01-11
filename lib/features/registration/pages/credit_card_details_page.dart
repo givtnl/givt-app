@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/features/registration/widgets/registration_success_us.dart';
 import 'package:go_router/go_router.dart';
 
 class CreditCardDetailsPage extends StatefulWidget {
@@ -33,11 +32,7 @@ class _CreditCardDetailsPageState extends State<CreditCardDetailsPage> {
           }
 
           return browserIsClosed
-              ? SafeArea(
-                  child: NoChildrenPage(
-                    onAddNewChildPressed: () {},
-                  ),
-                )
+              ? const RegistrationSuccess()
               : Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: InAppWebView(
@@ -71,51 +66,6 @@ class _CreditCardDetailsPageState extends State<CreditCardDetailsPage> {
                         setState(() {
                           browserIsClosed = true;
                         });
-                        showDialog<void>(
-                          context: context,
-                          builder: (_) => CupertinoAlertDialog(
-                            title: Text('You are registered!',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                            content: Text(
-                              'You can now donate. Set up your family for Givt4Kids?',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => context
-                                  ..pop()
-                                  ..goNamed(Pages.home.name),
-                                child: Text(
-                                  'Not right now',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(fontSize: 17),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () => context
-                                  ..pop()
-                                  ..goNamed(Pages.childrenOverview.name),
-                                child: Text(
-                                  context.l10n.setUpFamily,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17,
-                                      ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
                       }
                     },
                   ),
