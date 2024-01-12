@@ -80,7 +80,7 @@ class FamilyOverviewPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    onPressed: () => _addNewChild(context),
+                    onPressed: () => _addNewChild(context, state),
                   ),
                 ),
             ],
@@ -103,7 +103,7 @@ class FamilyOverviewPage extends StatelessWidget {
     if (state is FamilyOverviewUpdatedState) {
       if (!state.hasChildren && state.isAdultSingle) {
         return NoChildrenPage(
-          onAddNewChildPressed: () => _addNewChild(context),
+          onAddNewChildPressed: () => _addNewChild(context, state),
         );
       }
 
@@ -115,10 +115,11 @@ class FamilyOverviewPage extends StatelessWidget {
     return const SizedBox();
   }
 
-  void _addNewChild(BuildContext context) {
+  void _addNewChild(BuildContext context, FamilyOverviewUpdatedState state) {
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.addMemerClicked,
     );
-    context.pushReplacementNamed(Pages.addMember.name);
+    final familyExists = state.hasChildren || !state.isAdultSingle;
+    context.pushReplacementNamed(Pages.addMember.name, extra: familyExists);
   }
 }

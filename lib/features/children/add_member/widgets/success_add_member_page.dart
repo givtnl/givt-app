@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddMemeberSuccessPage extends StatelessWidget {
-  const AddMemeberSuccessPage({super.key});
-
+  const AddMemeberSuccessPage({required this.familyAlreadyExists, super.key});
+  final bool familyAlreadyExists;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -58,7 +59,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: ElevatedButton(
                   onPressed: () {
                     if (Platform.isAndroid || Platform.isIOS) {
@@ -105,16 +106,24 @@ class AddMemeberSuccessPage extends StatelessWidget {
                   ),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  context.pushReplacementNamed(Pages.childrenOverview.name);
-                },
-                child: Text(context.l10n.iWillDoThisLater,
-                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontSize: 16,
-                          decoration: TextDecoration.underline,
-                        )),
-              ),
+              if (familyAlreadyExists)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: CustomGreenElevatedButton(
+                      title: "See my family",
+                      onPressed: () => context
+                          .pushReplacementNamed(Pages.childrenOverview.name)),
+                )
+              else
+                TextButton(
+                  onPressed: () =>
+                      context.pushReplacementNamed(Pages.childrenOverview.name),
+                  child: Text(context.l10n.iWillDoThisLater,
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            fontSize: 16,
+                            decoration: TextDecoration.underline,
+                          )),
+                ),
             ],
           )
         ],

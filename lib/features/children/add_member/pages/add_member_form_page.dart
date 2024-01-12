@@ -13,8 +13,8 @@ import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
-  const CreateMemberPage({super.key});
-
+  const CreateMemberPage({required this.familyAlreadyExists, super.key});
+  final bool familyAlreadyExists;
   @override
   State<CreateMemberPage> createState() => _CreateMemberPageState();
 }
@@ -151,7 +151,9 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           );
         }
         if (state.status == AddMemberStateStatus.success) {
-          return const AddMemeberSuccessPage();
+          return AddMemeberSuccessPage(
+            familyAlreadyExists: widget.familyAlreadyExists,
+          );
         }
 
         return Container(
@@ -213,7 +215,9 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '${context.l10n.setUpFamily}\n',
+            text: widget.familyAlreadyExists
+                ? '${context.l10n.addMember}\n'
+                : '${context.l10n.setUpFamily}\n',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
