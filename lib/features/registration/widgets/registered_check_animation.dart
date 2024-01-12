@@ -15,32 +15,38 @@ class _RegisteredCheckAnimationState extends State<RegisteredCheckAnimation> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    return TweenAnimationBuilder(
-      duration: const Duration(milliseconds: 1200),
-      curve: Curves.elasticOut,
-      tween: Tween<double>(begin: 0, end: 1),
-      builder: (context, value, child) {
-        leftPosition = size.width * (0.33 - 0.11 * value);
-        topPosition = size.width * (0.32 - 0.22 * value);
-        imageSize = size.width * (0.15 + 0.4 * value);
+    return FutureBuilder(
+        // ignore: inference_failure_on_instance_creation
+        future: Future.delayed(const Duration(seconds: 1)),
+        builder: (context, snapshot) {
+          return TweenAnimationBuilder(
+            duration: const Duration(milliseconds: 1200),
+            curve: Curves.elasticOut,
+            tween: Tween<double>(begin: 0, end: 1),
+            builder: (context, value, child) {
+              leftPosition = size.width * (0.3 - 0.15 * value);
+              topPosition = size.width * (0.31 - 0.25 * value);
+              imageSize = size.width * (0.42 * value);
 
-        return Stack(
-          children: [
-            SvgPicture.asset(
-              'assets/images/registered_check_background.svg',
-              height: MediaQuery.of(context).size.height * 0.4,
-            ),
-            Positioned(
-              left: leftPosition,
-              top: topPosition,
-              child: SvgPicture.asset(
-                'assets/images/registered_check.svg',
-                width: imageSize,
-              ),
-            ),
-          ],
-        );
-      },
-    );
+              return Stack(
+                children: [
+                  SvgPicture.asset(
+                    'assets/images/registered_check_background.svg',
+                    height: size.height * 0.3,
+                  ),
+                  Positioned(
+                    left: leftPosition,
+                    top: topPosition,
+                    child: SvgPicture.asset(
+                      'assets/images/registered_check.svg',
+                      width: imageSize,
+                      clipBehavior: Clip.none,
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        });
   }
 }
