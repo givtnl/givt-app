@@ -22,11 +22,9 @@ class CustomSecondaryBorderButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: AppTheme.givtLightGreen,
                 fontWeight: FontWeight.w900,
-                fontFamily: 'Avenir',
-                fontSize: 18,
               ),
         ),
       ),

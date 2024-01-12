@@ -24,21 +24,18 @@ class RegistrationSuccess extends StatelessWidget {
                   text: '${context.l10n.youAreRegistered}\n',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
                       ),
                   children: [
                     TextSpan(
                       text: '${context.l10n.youCanNowDonate}\n\n',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.normal,
-                            fontSize: 16,
                           ),
                     ),
                     TextSpan(
                       text: context.l10n.setUpG4kQ,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.normal,
-                            fontSize: 16,
                           ),
                     )
                   ],
