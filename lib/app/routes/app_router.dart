@@ -242,7 +242,7 @@ class AppRouter {
                 final familyAlreadyExists = state.extra! as bool;
                 return BlocProvider(
                   create: (_) => AddMemberCubit(getIt()),
-                  child: AddMemeberMainScaffold(
+                  child: AddMemberMainScaffold(
                     familyAlreadyExists: familyAlreadyExists,
                   ),
                 );

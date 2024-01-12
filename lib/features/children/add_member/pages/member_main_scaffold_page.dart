@@ -5,8 +5,8 @@ import 'package:givt_app/features/children/add_member/pages/add_member_form_page
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class AddMemeberMainScaffold extends StatelessWidget {
-  const AddMemeberMainScaffold({required this.familyAlreadyExists, super.key});
+class AddMemberMainScaffold extends StatelessWidget {
+  const AddMemberMainScaffold({required this.familyAlreadyExists, super.key});
   final bool familyAlreadyExists;
 
   @override
