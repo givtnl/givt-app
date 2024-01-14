@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -48,7 +49,7 @@ class DownloadGivtForKidsAppWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Download Givt4Kids',
+                    context.l10n.downloadG4KBannerTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -56,7 +57,7 @@ class DownloadGivtForKidsAppWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'With this app your kids can start making a difference!',
+                    context.l10n.downloadG4KBannerText,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: Colors.white70,
                           fontWeight: FontWeight.bold,
