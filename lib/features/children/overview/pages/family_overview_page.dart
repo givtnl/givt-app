@@ -6,6 +6,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
+import 'package:givt_app/features/children/overview/widgets/download_givt_for_kids_app_widget.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -89,6 +90,12 @@ class FamilyOverviewPage extends StatelessWidget {
           body: SafeArea(
             child: buildFamilyOverviewBody(state, context),
           ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: (state is FamilyOverviewUpdatedState &&
+                  (state.hasChildren || !state.isAdultSingle))
+              ? const DownloadGivtForKidsAppWidget()
+              : null,
         );
       },
     );
