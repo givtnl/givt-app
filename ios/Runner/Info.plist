@@ -92,5 +92,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+    	<string>appscheme</string>
+	</array>	
 </dict>
 </plist>
