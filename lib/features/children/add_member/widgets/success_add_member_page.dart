@@ -23,7 +23,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
             textAlign: TextAlign.center,
             text: TextSpan(
               text: familyAlreadyExists
-                  ? "Members are added!"
+                  ? context.l10n.membersAreAdded
                   : '${context.l10n.congratulationsKey}\n',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -112,7 +112,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomGreenElevatedButton(
-                      title: "See My Family",
+                      title: context.l10n.seeMyFamily,
                       onPressed: () => context
                           .pushReplacementNamed(Pages.childrenOverview.name)),
                 )
