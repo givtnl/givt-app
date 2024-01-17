@@ -6,13 +6,15 @@ import 'package:givt_app/features/children/add_member/widgets/add_member_form.da
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
-  const CreateMemberPage({super.key});
-
+  const CreateMemberPage({required this.familyAlreadyExists, super.key});
+  final bool familyAlreadyExists;
   @override
   State<CreateMemberPage> createState() => _CreateMemberPageState();
 }
@@ -149,7 +151,9 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           );
         }
         if (state.status == AddMemberStateStatus.success) {
-          return const AddMemeberSuccessPage();
+          return AddMemeberSuccessPage(
+            familyAlreadyExists: widget.familyAlreadyExists,
+          );
         }
 
         return Container(
@@ -176,8 +180,23 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                         child: Column(
                           children: [
                             const Spacer(),
-                            addButton(context),
-                            continueButton(context),
+                            CustomSecondaryBorderButton(
+                              title: context.l10n.addAnotherMember,
+                              onPressed: () {
+                                setState(() {
+                                  _addMemberForm();
+                                  _scrollDown();
+                                });
+                                context
+                                    .read<AddMemberCubit>()
+                                    .increaseNrOfForms();
+                              },
+                            ),
+                            CustomGreenElevatedButton(
+                              title: context.l10n.continueKey,
+                              onPressed:
+                                  context.read<AddMemberCubit>().validateForms,
+                            )
                           ],
                         ),
                       ),
@@ -196,7 +215,9 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         child: RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: '${context.l10n.setUpFamily}\n',
+            text: widget.familyAlreadyExists
+                ? '${context.l10n.addMember}\n'
+                : '${context.l10n.setUpFamily}\n',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -230,59 +251,5 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         curve: Curves.linearToEaseOut,
       );
     });
-  }
-
-  Widget addButton(BuildContext context) {
-    const borderWidth = 2;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: borderWidth / 2),
-      child: ElevatedButton(
-        onPressed: () {
-          setState(() {
-            _addMemberForm();
-            _scrollDown();
-          });
-          context.read<AddMemberCubit>().increaseNrOfForms();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          side: BorderSide(
-            color: AppTheme.givtLightGreen,
-            width: borderWidth.toDouble(),
-          ),
-        ),
-        child: Text(
-          context.l10n.addAnotherMember,
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: AppTheme.givtLightGreen,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Avenir',
-                fontSize: 18,
-              ),
-        ),
-      ),
-    );
-  }
-
-  Widget continueButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: ElevatedButton(
-        onPressed: context.read<AddMemberCubit>().validateForms,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.givtLightGreen,
-          disabledBackgroundColor: Colors.grey,
-        ),
-        child: Text(
-          context.l10n.continueKey,
-          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                fontFamily: 'Avenir',
-                fontSize: 18,
-              ),
-        ),
-      ),
-    );
   }
 }
