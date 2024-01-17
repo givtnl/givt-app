@@ -80,8 +80,8 @@ class ParentalApprovalDialog extends StatelessWidget {
                   ),
                   if (state.status == DecisionStatus.confirmation)
                     Positioned(
-                      top: 15,
-                      right: 15,
+                      top: 20,
+                      right: 20,
                       child: GestureDetector(
                         onTap: () => context.pop(false),
                         child: SvgPicture.asset(
