@@ -45,6 +45,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
         );
         if (mounted) {
           final decisionMade = await showDialog<bool>(
+            barrierDismissible: false,
             context: context,
             builder: (context) => ParentalApprovalDialog(
               donation: widget.donation,

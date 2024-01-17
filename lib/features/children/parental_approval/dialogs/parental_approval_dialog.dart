@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/parental_approval/cubit/parental_approval_cubit.dart';
@@ -18,6 +19,29 @@ class ParentalApprovalDialog extends StatelessWidget {
 
   final ChildDonation donation;
 
+  Widget _createPage(DecisionStatus status) {
+    switch (status) {
+      case DecisionStatus.confirmation:
+        return ParentalApprovalConfirmationPage(
+          donation: donation,
+        );
+      case DecisionStatus.loading:
+        return const ParentalApprovalLoadingPage();
+      case DecisionStatus.approved:
+        return ParentalApprovalApprovedPage(
+          donation: donation,
+        );
+      case DecisionStatus.declined:
+        return ParentalApprovalDeclinedPage(
+          donation: donation,
+        );
+      case DecisionStatus.error:
+        return const ParentalApprovalErrorPage();
+      case DecisionStatus.pop:
+        return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -31,47 +55,47 @@ class ParentalApprovalDialog extends StatelessWidget {
           horizontal: size.width * 0.1,
         ),
         child: Center(
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25),
-            ),
-            elevation: 7,
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: BlocConsumer<ParentalApprovalCubit, ParentalApprovalState>(
-                listener: (context, state) {
-                  if (state.status == DecisionStatus.pop) {
-                    context.pop(state.decisionMade);
-                  }
-                },
-                builder: (context, state) {
-                  switch (state.status) {
-                    case DecisionStatus.confirmation:
-                      return ParentalApprovalConfirmationPage(
-                        donation: donation,
-                      );
-                    case DecisionStatus.loading:
-                      return const ParentalApprovalLoadingPage();
-                    case DecisionStatus.approved:
-                      return ParentalApprovalApprovedPage(
-                        donation: donation,
-                      );
-                    case DecisionStatus.declined:
-                      return ParentalApprovalDeclinedPage(
-                        donation: donation,
-                      );
-                    case DecisionStatus.error:
-                      return const ParentalApprovalErrorPage();
-                    case DecisionStatus.pop:
-                      return Container();
-                  }
-                },
-              ),
-            ),
+          child: BlocConsumer<ParentalApprovalCubit, ParentalApprovalState>(
+            listener: (context, state) {
+              if (state.status == DecisionStatus.pop) {
+                context.pop(state.decisionMade);
+              }
+            },
+            builder: (context, state) {
+              return Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      elevation: 7,
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: _createPage(state.status),
+                      ),
+                    ),
+                  ),
+                  if (state.status == DecisionStatus.confirmation)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () => context.pop(false),
+                        child: SvgPicture.asset(
+                          'assets/images/close_icon.svg',
+                          alignment: Alignment.centerRight,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ),
       ),
