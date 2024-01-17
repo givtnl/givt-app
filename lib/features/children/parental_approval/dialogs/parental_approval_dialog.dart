@@ -64,27 +64,24 @@ class ParentalApprovalDialog extends StatelessWidget {
             builder: (context, state) {
               return Stack(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
+                    ),
+                    elevation: 7,
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(25),
                       ),
-                      elevation: 7,
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: _createPage(state.status),
-                      ),
+                      child: _createPage(state.status),
                     ),
                   ),
                   if (state.status == DecisionStatus.confirmation)
                     Positioned(
-                      top: 0,
-                      right: 0,
+                      top: 15,
+                      right: 15,
                       child: GestureDetector(
                         onTap: () => context.pop(false),
                         child: SvgPicture.asset(
