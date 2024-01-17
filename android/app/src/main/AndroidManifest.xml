@@ -21,6 +21,9 @@
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="*/*" />
         </intent>
+
+        <package android:name="net.givtapp.kids"/>
+        <package android:name="net.givtapp.kids.test"/>
     </queries>
     <!-- Include only if your app benefits from precise location access. -->
     <!-- Allow Bluetooth -->
