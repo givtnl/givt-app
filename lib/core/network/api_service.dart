@@ -890,4 +890,29 @@ class APIService {
     final itemMap = decodedBody['items'];
     return itemMap as List<dynamic>;
   }
+
+  Future<List<dynamic>> fetchAvatars() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/avatars');
+
+    final response = await client.get(
+      url,
+      //not sure do we need headers here?
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['items'];
+    return itemMap as List<dynamic>;
+  }
 }

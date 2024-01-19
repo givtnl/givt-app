@@ -9,6 +9,7 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
+import 'package:givt_app/features/children/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
@@ -185,6 +186,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<AddMemberRepository>(
       () => AddMemberRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<AvatarsRepository>(
+      () => AvatarsRepositoryImpl(
         getIt(),
       ),
     );
