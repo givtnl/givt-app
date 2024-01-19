@@ -171,6 +171,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       // When this is a temp user, we skip the login page
       if (result.contains('temp')) {
+        if (country.isUS) {
+          emit(state.copyWith(status: AuthStatus.loginRedirect, email: email));
+          return;
+        }
         await login(email: email, password: TempUser.defaultPassword);
         return;
       }
