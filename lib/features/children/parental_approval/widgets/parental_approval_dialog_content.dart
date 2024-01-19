@@ -51,13 +51,18 @@ class ParentalApprovalDialogContent extends StatelessWidget {
             if (state.status != DecisionStatus.loading &&
                 state.status != DecisionStatus.pop)
               Positioned(
-                top: 10,
-                right: 15,
+                top: 7,
+                right: 7,
                 child: GestureDetector(
                   onTap: () => context.pop(),
-                  child: SvgPicture.asset(
-                    'assets/images/close_icon.svg',
-                    alignment: Alignment.centerRight,
+                  child: Container(
+                    color: Colors.transparent,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    child: SvgPicture.asset(
+                      'assets/images/close_icon.svg',
+                      alignment: Alignment.centerRight,
+                    ),
                   ),
                 ),
               ),
