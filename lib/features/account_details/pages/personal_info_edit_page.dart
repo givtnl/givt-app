@@ -12,6 +12,7 @@ import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
+import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -87,21 +88,18 @@ class PersonalInfoEditPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                locals.personalPageHeader,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                locals.personalPageSubHeader,
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              //TODO: add check if user has a family
+              if (Country.us.countryCode == user.country)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: ParentAvatar(
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    //TODO: replace with real user's picture URL
+                    pictureURL:
+                        'https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero3.svg',
+                  ),
+                ),
               _buildInfoRow(
                 icon: const Icon(
                   Icons.person,
@@ -223,7 +221,18 @@ class PersonalInfoEditPage extends StatelessWidget {
               ),
               const Divider(
                 height: 0,
-              )
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 70),
+                child: Text(
+                  locals.personalPageSubHeader,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         ),

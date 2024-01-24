@@ -14,13 +14,12 @@ class AvatarsRepositoryImpl with AvatarsRepository {
 
   @override
   Future<List<Avatar>> fetchAvatars() async {
-    final response =
-        await _apiService.fetchAvatars() as List<Map<String, dynamic>>;
+    final response = await _apiService.fetchAvatars();
 
     final result = <Avatar>[];
 
     for (final avatarMap in response) {
-      result.add(Avatar.fromMap(avatarMap));
+      result.add(Avatar.fromMap(avatarMap as Map<String, dynamic>));
     }
     return result;
   }
