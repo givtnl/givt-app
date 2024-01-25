@@ -35,7 +35,7 @@ class AvatarItem extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     width: 6,
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
                 ),
               ),
