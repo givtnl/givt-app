@@ -10,8 +10,9 @@ import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/avatars/repositories/avatars_repository.dart';
-import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
+import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
@@ -24,7 +25,6 @@ import 'package:givt_app/features/recurring_donations/overview/repositories/recu
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -191,6 +191,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<AvatarsRepository>(
       () => AvatarsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<EditProfileRepository>(
+      () => EditProfileRepositoryImpl(
         getIt(),
       ),
     );
