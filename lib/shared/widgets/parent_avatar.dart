@@ -33,17 +33,17 @@ class ParentAvatar extends StatelessWidget {
                 splashColor: Theme.of(context).primaryColor,
                 child: SvgPicture.network(
                   pictureURL,
-                  width: 150,
+                  width: 100,
                 ),
               ),
             ),
             Positioned(
-              top: -5,
-              right: -5,
+              top: -15,
+              right: -15,
               child: IconButton(
                 icon: const FaIcon(
                   FontAwesomeIcons.pen,
-                  size: 25,
+                  size: 20,
                 ),
                 onPressed: () {
                   context.pushNamed(Pages.avatarSelection.name);
@@ -55,7 +55,7 @@ class ParentAvatar extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           '$firstName $lastName',
-          style: Theme.of(context).textTheme.headlineSmall,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
       ],
     );

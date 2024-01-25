@@ -25,6 +25,8 @@ class PersonalInfoEditPage extends StatelessWidget {
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
     final isUkUser = Country.unitedKingdomCodes().contains(user.country);
+    final isUSUser = Country.us.countryCode == user.country;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.personalInfo),
@@ -88,8 +90,27 @@ class PersonalInfoEditPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              //TODO: add check if user has a family
-              if (Country.us.countryCode == user.country)
+              if (!isUSUser)
+                Column(
+                  children: [
+                    Text(
+                      locals.personalPageHeader,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      locals.personalPageSubHeader,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              if (isUSUser)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: ParentAvatar(
@@ -104,6 +125,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 icon: const Icon(
                   Icons.person,
                 ),
+                visible: !isUSUser,
                 value: '${user.firstName} ${user.lastName}',
               ),
               _buildInfoRow(
@@ -123,7 +145,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: Country.us.countryCode != user.country,
+                visible: !isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.house,
                   color: AppTheme.givtLightGreen,
@@ -158,7 +180,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: Country.us.countryCode != user.country,
+                visible: !isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.creditCard,
                   color: AppTheme.givtOrange,
@@ -179,7 +201,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: Country.us.countryCode == user.country,
+                visible: isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.creditCard,
                   color: AppTheme.givtOrange,
@@ -222,17 +244,15 @@ class PersonalInfoEditPage extends StatelessWidget {
               const Divider(
                 height: 0,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 70),
-                child: Text(
-                  locals.personalPageSubHeader,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
+              if (isUSUser)
+                Padding(
+                  padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
+                  child: Text(
+                    locals.personalPageSubHeader,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
