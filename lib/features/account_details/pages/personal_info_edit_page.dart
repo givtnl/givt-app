@@ -116,9 +116,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                   child: ParentAvatar(
                     firstName: user.firstName,
                     lastName: user.lastName,
-                    //TODO: replace with real user's picture URL
-                    pictureURL:
-                        'https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero3.svg',
+                    pictureURL: user.profilePicture,
                   ),
                 ),
               _buildInfoRow(

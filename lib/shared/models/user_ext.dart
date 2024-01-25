@@ -34,6 +34,7 @@ class UserExt extends Equatable {
     this.accountNumber = '',
     this.accountBrand = '',
     this.notificationId = '',
+    this.profilePicture = '',
   });
 
   const UserExt.empty()
@@ -66,7 +67,8 @@ class UserExt extends Equatable {
         sortCode = '',
         accountNumber = '',
         accountBrand = '',
-        notificationId = '';
+        notificationId = '',
+        profilePicture = '';
 
   factory UserExt.fromJson(Map<String, dynamic> json) {
     final personalInfoRegistered = json['FirstName'] != Util.defaultFirstName &&
@@ -106,6 +108,7 @@ class UserExt extends Equatable {
       notificationId: json['PushNotificationId'] != null
           ? json['PushNotificationId'] as String
           : '',
+      profilePicture: (json['ProfilePicture'] ?? '').toString(),
     );
   }
 
@@ -139,6 +142,7 @@ class UserExt extends Equatable {
         'personalInfoRegistered': personalInfoRegistered,
         'pinSet': pinSet,
         'multipleCollectsAccepted': multipleCollectsAccepted,
+        'ProfilePicture': profilePicture,
       };
 
   Map<String, dynamic> toUpdateJson() {
@@ -193,6 +197,8 @@ class UserExt extends Equatable {
 
   final bool multipleCollectsAccepted;
 
+  final String profilePicture;
+
   UserExt copyWith({
     String? email,
     String? guid,
@@ -224,6 +230,7 @@ class UserExt extends Equatable {
     bool? personalInfoRegistered,
     bool? pinSet,
     bool? multipleCollectsAccepted,
+    String? profilePicture,
   }) {
     return UserExt(
       email: email ?? this.email,
@@ -258,6 +265,7 @@ class UserExt extends Equatable {
       multipleCollectsAccepted:
           multipleCollectsAccepted ?? this.multipleCollectsAccepted,
       // notificationId: notificationId ?? this.notificationId,
+      profilePicture: profilePicture ?? this.profilePicture,
     );
   }
 
@@ -291,6 +299,7 @@ class UserExt extends Equatable {
         pinSet,
         multipleCollectsAccepted,
         // notificationId,
+        profilePicture,
       ];
 
   static String tag = 'UserExt';

@@ -255,6 +255,7 @@ class AppRouter {
             path: Pages.avatarSelection.path,
             name: Pages.avatarSelection.name,
             builder: (context, state) {
+              final user = context.read<AuthCubit>().state.user;
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
@@ -265,8 +266,7 @@ class AppRouter {
                   BlocProvider(
                     create: (context) => EditProfileCubit(
                       editProfileRepository: getIt(),
-                      //TODO: replace with real user url
-                      currentProfilePicture: 'Hero3.svg',
+                      currentProfilePicture: user.profilePicture,
                     ),
                   ),
                 ],
