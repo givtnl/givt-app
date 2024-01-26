@@ -5,7 +5,7 @@ class CustomGreenElevatedButton extends StatelessWidget {
   const CustomGreenElevatedButton(
       {required this.title, required this.onPressed, super.key});
   final String title;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(

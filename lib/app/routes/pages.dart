@@ -52,6 +52,7 @@ enum Pages {
   editChild(path: 'edit-child', name: 'EDIT-CHILD'),
   creditCardDetail(path: 'credit-card-detail', name: 'CREDIT-CARD-DETAIL'),
   addMember(path: 'add-member', name: 'ADD-MEMBER'),
+  avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
   ;
 
   const Pages({

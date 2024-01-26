@@ -12,6 +12,7 @@ import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
+import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,6 +25,8 @@ class PersonalInfoEditPage extends StatelessWidget {
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
     final isUkUser = Country.unitedKingdomCodes().contains(user.country);
+    final isUSUser = Country.us.countryCode == user.country;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(locals.personalInfo),
@@ -87,25 +90,40 @@ class PersonalInfoEditPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                locals.personalPageHeader,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                locals.personalPageSubHeader,
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
+              if (!isUSUser)
+                Column(
+                  children: [
+                    Text(
+                      locals.personalPageHeader,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      locals.personalPageSubHeader,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              if (isUSUser)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: ParentAvatar(
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    pictureURL: user.profilePicture,
+                  ),
+                ),
               _buildInfoRow(
                 icon: const Icon(
                   Icons.person,
                 ),
+                visible: !isUSUser,
                 value: '${user.firstName} ${user.lastName}',
               ),
               _buildInfoRow(
@@ -125,7 +143,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: Country.us.countryCode != user.country,
+                visible: !isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.house,
                   color: AppTheme.givtLightGreen,
@@ -160,7 +178,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: Country.us.countryCode != user.country,
+                visible: !isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.creditCard,
                   color: AppTheme.givtOrange,
@@ -181,7 +199,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: Country.us.countryCode == user.country,
+                visible: isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.creditCard,
                   color: AppTheme.givtOrange,
@@ -223,7 +241,16 @@ class PersonalInfoEditPage extends StatelessWidget {
               ),
               const Divider(
                 height: 0,
-              )
+              ),
+              if (isUSUser)
+                Padding(
+                  padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
+                  child: Text(
+                    locals.personalPageSubHeader,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
             ],
           ),
         ),

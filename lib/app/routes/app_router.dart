@@ -11,10 +11,13 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
+import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/children/avatars/screens/avatar_selection_screen.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
+import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
@@ -236,17 +239,41 @@ class AppRouter {
             },
           ),
           GoRoute(
-              path: Pages.addMember.path,
-              name: Pages.addMember.name,
-              builder: (context, state) {
-                final familyAlreadyExists = state.extra! as bool;
-                return BlocProvider(
-                  create: (_) => AddMemberCubit(getIt()),
-                  child: AddMemberMainScaffold(
-                    familyAlreadyExists: familyAlreadyExists,
+            path: Pages.addMember.path,
+            name: Pages.addMember.name,
+            builder: (context, state) {
+              final familyAlreadyExists = state.extra! as bool;
+              return BlocProvider(
+                create: (_) => AddMemberCubit(getIt()),
+                child: AddMemberMainScaffold(
+                  familyAlreadyExists: familyAlreadyExists,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.avatarSelection.path,
+            name: Pages.avatarSelection.name,
+            builder: (context, state) {
+              final user = context.read<AuthCubit>().state.user;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AvatarsCubit(
+                      getIt(),
+                    )..fetchAvatars(),
                   ),
-                );
-              }),
+                  BlocProvider(
+                    create: (context) => EditProfileCubit(
+                      editProfileRepository: getIt(),
+                      currentProfilePicture: user.profilePicture,
+                    ),
+                  ),
+                ],
+                child: const AvatarSelectionScreen(),
+              );
+            },
+          ),
           GoRoute(
             path: Pages.recurringDonations.path,
             name: Pages.recurringDonations.name,
