@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
@@ -11,6 +12,7 @@ import 'package:givt_app/features/children/parental_approval/widgets/parental_ap
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_declined_page.dart';
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_error_page.dart';
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_loading_page.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ParentalApprovalDialogContent extends StatelessWidget {
@@ -54,7 +56,12 @@ class ParentalApprovalDialogContent extends StatelessWidget {
                 top: 7,
                 right: 7,
                 child: GestureDetector(
-                  onTap: () => context.pop(),
+                  onTap: () {
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.pendingDonationCloseClicked,
+                    );
+                    context.pop();
+                  },
                   child: Container(
                     color: Colors.transparent,
                     padding:

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class AvatarItem extends StatelessWidget {
   const AvatarItem({
@@ -22,6 +24,13 @@ class AvatarItem extends StatelessWidget {
       shape: const CircleBorder(),
       child: InkWell(
         onTap: () {
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.avatarSelected,
+            eventProperties: {
+              'filename': filename,
+            },
+          );
+
           context.read<EditProfileCubit>().selectProfilePicture(filename);
         },
         customBorder: const CircleBorder(),

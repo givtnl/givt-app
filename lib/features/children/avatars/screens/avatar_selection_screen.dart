@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/children/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
-import 'package:givt_app/utils/snack_bar_helper.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AvatarSelectionScreen extends StatelessWidget {
@@ -107,7 +108,16 @@ Widget _getContent({
                   title: context.l10n.save,
                   onPressed: editProfileState.isSameProfilePicture
                       ? null
-                      : () => context.read<EditProfileCubit>().editProfile(),
+                      : () {
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.avatarSaved,
+                            eventProperties: {
+                              'filename':
+                                  editProfileState.selectedProfilePicture,
+                            },
+                          );
+                          context.read<EditProfileCubit>().editProfile();
+                        },
                 ),
               ),
             ],
