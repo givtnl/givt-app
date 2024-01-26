@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ParentAvatar extends StatelessWidget {
@@ -27,6 +29,10 @@ class ParentAvatar extends StatelessWidget {
               shape: const CircleBorder(),
               child: InkWell(
                 onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.editAvatarPictureClicked,
+                  );
+
                   context.pushNamed(Pages.avatarSelection.name);
                 },
                 customBorder: const CircleBorder(),
@@ -46,6 +52,10 @@ class ParentAvatar extends StatelessWidget {
                   size: 20,
                 ),
                 onPressed: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.editAvatarIconClicked,
+                  );
+
                   context.pushNamed(Pages.avatarSelection.name);
                 },
               ),
