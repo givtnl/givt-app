@@ -27,6 +27,7 @@ enum AmplitudeEvents {
   pendingDonationClicked('pending_donation_clicked'),
   pendingDonationApproved('pending_donation_approved'),
   pendingDonationDeclined('pending_donation_declined'),
+  pendingDonationCloseClicked('pending_donation_close_clicked'),
 
   personalSummaryClicked('personal_summary_clicked'),
   personalSummaryYearClicked('personal_summary_year_clicked'),
@@ -40,6 +41,11 @@ enum AmplitudeEvents {
   removeGivingGoalClicked('remove_giving_goal_clicked'),
 
   recurringDonationsClicked('recurring_donations_clicked'),
+
+  editAvatarPictureClicked('edit_avatar_picture_clicked'),
+  editAvatarIconClicked('edit_avatar_icon_clicked'),
+  avatarSelected('avatar_selected'),
+  avatarSaved('avatar_saved'),
   ;
 
   const AmplitudeEvents(this.value);
