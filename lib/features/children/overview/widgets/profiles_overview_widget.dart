@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
-import 'package:givt_app/features/children/overview/widgets/child_overview_item.dart';
+import 'package:givt_app/features/children/overview/widgets/profile_overview_tile.dart';
 
-class ChildrenOverviewWidget extends StatelessWidget {
-  const ChildrenOverviewWidget({
+class ProfilesOverviewWidget extends StatelessWidget {
+  const ProfilesOverviewWidget({
     required this.profiles,
     super.key,
   });
@@ -15,21 +15,21 @@ class ChildrenOverviewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (profiles.length == 1) {
-      return _createLayoutForSingleChild(context);
+      return _createLayoutForSingleProfile(context);
     } else if (profiles.length > 1 && profiles.length < 4) {
-      return _createLayoutForTwoThreeChildren(context);
+      return _createLayoutForTwoThreeProfiles(context);
     } else {
-      return _createLayoutManyChildren(context);
+      return _createLayoutManyProfiles(context);
     }
   }
 
-  Widget _createLayoutForSingleChild(BuildContext context) {
+  Widget _createLayoutForSingleProfile(BuildContext context) {
     return Padding(
       padding: _padding,
       child: Row(
         children: [
           Expanded(
-            child: ChildOverviewItem(profile: profiles.first),
+            child: ProfileOverviewTile(profile: profiles.first),
           ),
           const Spacer(),
         ],
@@ -37,14 +37,14 @@ class ChildrenOverviewWidget extends StatelessWidget {
     );
   }
 
-  Widget _createLayoutForTwoThreeChildren(BuildContext context) {
+  Widget _createLayoutForTwoThreeProfiles(BuildContext context) {
     return Padding(
       padding: _padding,
       child: Row(
         children: profiles
             .map(
               (profile) => Expanded(
-                child: ChildOverviewItem(profile: profile),
+                child: ProfileOverviewTile(profile: profile),
               ),
             )
             .toList(),
@@ -52,7 +52,7 @@ class ChildrenOverviewWidget extends StatelessWidget {
     );
   }
 
-  Widget _createLayoutManyChildren(BuildContext context) {
+  Widget _createLayoutManyProfiles(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -63,7 +63,7 @@ class ChildrenOverviewWidget extends StatelessWidget {
               .map(
                 (profile) => SizedBox(
                   width: size.width * 0.29,
-                  child: ChildOverviewItem(profile: profile),
+                  child: ProfileOverviewTile(profile: profile),
                 ),
               )
               .toList(),

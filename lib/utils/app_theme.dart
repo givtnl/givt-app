@@ -4,6 +4,10 @@ import 'package:givt_app/utils/color_schemes.g.dart';
 class AppTheme {
   /// Colors from android AppCompatTheme
   static const givtLightGreen = Color(0xFF41c98e);
+  static const givtLightBackgroundGreen = Color(0xFFF5FFF5);
+  static const givtBorderBlue = Color(0xFFA4CBF3);
+  static const givtDisabledBorderBlue = Color(0xFFDEECFA);
+  static const givtLightBackgroundBlue = Color(0xFFF3F8FD);
   static const givtBlue = Color(0xFF2e2957);
   static const givtLightGray = Color(0xFFe3e2e7);
   static const givtDarkerGray = Color(0xFF898989);
