@@ -107,7 +107,7 @@ class ProfileOverviewTile extends StatelessWidget {
 
   Color _getBackgroundColor(BuildContext context) {
     if (profile.isAdult) {
-      return Color(0xFFF3F8FD);
+      return AppTheme.givtLightBackgroundBlue;
     }
     if (profile.isChild) {
       return AppTheme.givtLightBackgroundGreen;
@@ -117,10 +117,10 @@ class ProfileOverviewTile extends StatelessWidget {
 
   Color _getBorderColor(BuildContext context, bool isGivtAccount) {
     if (isGivtAccount) {
-      return Color(0xFFA4CBF3);
+      return AppTheme.givtBorderBlue;
     }
     if (profile.isAdult) {
-      return Color(0xFFDEECFA);
+      return AppTheme.givtDisabledBorderBlue;
     }
     if (profile.isChild) {
       return AppTheme.givtLightGreen;
