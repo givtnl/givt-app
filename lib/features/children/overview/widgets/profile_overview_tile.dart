@@ -18,8 +18,9 @@ class ProfileOverviewTile extends StatelessWidget {
   final Profile profile;
   @override
   Widget build(BuildContext context) {
-    final isGivtAccount =
-        profile.firstName == context.read<AuthCubit>().state.user.firstName;
+    final user = context.read<AuthCubit>().state.user;
+    final currencySymbol = Util.getCurrencySymbol(countryCode: user.country);
+    final isGivtAccount = profile.firstName == user.firstName;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 5),
       child: OutlinedButton(
@@ -67,6 +68,17 @@ class ProfileOverviewTile extends StatelessWidget {
                       color: AppTheme.givtBlue,
                     ),
               ),
+              if (profile.isChild)
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: Text(
+                    '$currencySymbol${profile.wallet.balance.toStringAsFixed(0)}',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: AppTheme.givtBlue,
+                        ),
+                  ),
+                ),
             ],
           ),
         ),
