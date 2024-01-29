@@ -43,44 +43,42 @@ class ProfileOverviewTile extends StatelessWidget {
           backgroundColor: _getBackgroundColor(context),
         ),
         onPressed: () => _onTap(context, isGivtAccount),
-        child: SizedBox(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: SvgPicture.network(
-                  profile.pictureURL,
-                  width: 64,
-                  height: 64,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SvgPicture.network(
+                profile.pictureURL,
+                width: 64,
+                height: 64,
               ),
-              const SizedBox(height: 8),
-              Text(
-                profile.firstName,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w700,
-                      color: AppTheme.givtBlue,
-                    ),
-              ),
-              if (profile.isChild)
-                Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: Text(
-                    '$currencySymbol${profile.wallet.balance.toStringAsFixed(0)}',
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: AppTheme.givtBlue,
-                        ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              profile.firstName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontFamily: 'Raleway',
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.givtBlue,
                   ),
+            ),
+            if (profile.isChild)
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: Text(
+                  '$currencySymbol${profile.wallet.balance.toStringAsFixed(0)}',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppTheme.givtBlue,
+                      ),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

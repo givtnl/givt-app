@@ -114,9 +114,7 @@ class FamilyOverviewPage extends StatelessWidget {
         );
       }
 
-      return FamilyAvailablePage(
-        profiles: state.profiles,
-      );
+      return const FamilyAvailablePage();
     }
 
     return const SizedBox();
