@@ -15,15 +15,15 @@ class ProfilesOverviewWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (profiles.length == 1) {
-      return _createLayoutForSingleChild(context);
+      return _createLayoutForSingleProfile(context);
     } else if (profiles.length > 1 && profiles.length < 4) {
-      return _createLayoutForTwoThreeChildren(context);
+      return _createLayoutForTwoThreeProfiles(context);
     } else {
-      return _createLayoutManyChildren(context);
+      return _createLayoutManyProfiles(context);
     }
   }
 
-  Widget _createLayoutForSingleChild(BuildContext context) {
+  Widget _createLayoutForSingleProfile(BuildContext context) {
     return Padding(
       padding: _padding,
       child: Row(
@@ -37,7 +37,7 @@ class ProfilesOverviewWidget extends StatelessWidget {
     );
   }
 
-  Widget _createLayoutForTwoThreeChildren(BuildContext context) {
+  Widget _createLayoutForTwoThreeProfiles(BuildContext context) {
     return Padding(
       padding: _padding,
       child: Row(
@@ -52,7 +52,7 @@ class ProfilesOverviewWidget extends StatelessWidget {
     );
   }
 
-  Widget _createLayoutManyChildren(BuildContext context) {
+  Widget _createLayoutManyProfiles(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
