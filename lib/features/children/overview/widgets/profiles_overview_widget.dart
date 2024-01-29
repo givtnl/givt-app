@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
-import 'package:givt_app/features/children/overview/widgets/child_overview_item.dart';
+import 'package:givt_app/features/children/overview/widgets/profile_overview_tile.dart';
 
-class ChildrenOverviewWidget extends StatelessWidget {
-  const ChildrenOverviewWidget({
+class ProfilesOverviewWidget extends StatelessWidget {
+  const ProfilesOverviewWidget({
     required this.profiles,
     super.key,
   });
@@ -29,7 +29,7 @@ class ChildrenOverviewWidget extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: ChildOverviewItem(profile: profiles.first),
+            child: ProfileOverviewTile(profile: profiles.first),
           ),
           const Spacer(),
         ],
@@ -44,7 +44,7 @@ class ChildrenOverviewWidget extends StatelessWidget {
         children: profiles
             .map(
               (profile) => Expanded(
-                child: ChildOverviewItem(profile: profile),
+                child: ProfileOverviewTile(profile: profile),
               ),
             )
             .toList(),
@@ -63,7 +63,7 @@ class ChildrenOverviewWidget extends StatelessWidget {
               .map(
                 (profile) => SizedBox(
                   width: size.width * 0.29,
-                  child: ChildOverviewItem(profile: profile),
+                  child: ProfileOverviewTile(profile: profile),
                 ),
               )
               .toList(),

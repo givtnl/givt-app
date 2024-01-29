@@ -1,8 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/overview/models/wallet.dart';
-
-import 'package:givt_app/utils/utils.dart';
 
 class Profile extends Equatable {
   const Profile({
@@ -71,26 +68,8 @@ class Profile extends Equatable {
     };
   }
 
+  bool get isAdult => type == 'Parent';
+  bool get isChild => type == 'Child';
+
   static String number = 'kid_profiles_nr';
-
-  //temporary workaround solution
-  Color get monsterColor {
-    final Color monsterColor;
-    if (pictureURL.contains('monster1')) {
-      monsterColor = AppTheme.childMonsterGreen;
-    } else if (pictureURL.contains('monster2')) {
-      monsterColor = AppTheme.childMonsterPurple;
-    } else if (pictureURL.contains('monster3')) {
-      monsterColor = AppTheme.childMonsterBlue;
-    } else if (pictureURL.contains('monster4')) {
-      monsterColor = AppTheme.childMonsterOrange;
-    } else {
-      monsterColor = Colors.transparent;
-    }
-    return monsterColor;
-  }
-
-  Color get monsterColorWithAlpha {
-    return monsterColor.withAlpha((255 * 0.1).toInt());
-  }
 }

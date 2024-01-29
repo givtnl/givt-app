@@ -24,6 +24,7 @@ enum AmplitudeEvents {
   childEditSaveClicked('child_edit_save_clicked'),
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
+  adultProfileTileClicked('adult_profile_tile_clicked'),
   pendingDonationClicked('pending_donation_clicked'),
   pendingDonationApproved('pending_donation_approved'),
   pendingDonationDeclined('pending_donation_declined'),
