@@ -127,10 +127,10 @@ class ProfileOverviewTile extends StatelessWidget {
   }
 
   Color _getBorderColor(BuildContext context, bool isGivtAccount) {
-    if (isGivtAccount) {
-      return AppTheme.givtBorderBlue;
-    }
     if (profile.isAdult) {
+      if (isGivtAccount) {
+        return AppTheme.givtBorderBlue;
+      }
       return AppTheme.givtDisabledBorderBlue;
     }
     if (profile.isChild) {
