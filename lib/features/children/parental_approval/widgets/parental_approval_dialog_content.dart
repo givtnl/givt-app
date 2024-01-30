@@ -27,7 +27,7 @@ class ParentalApprovalDialogContent extends StatelessWidget {
     context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true);
     context
         .read<FamilyOverviewCubit>()
-        .fetchChildren(context.read<AuthCubit>().state.user.guid);
+        .fetchFamilyProfiles(context.read<AuthCubit>().state.user.guid);
   }
 
   @override

@@ -13,7 +13,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
 
   final FamilyOverviewRepository _familyOverviewRepository;
 
-  Future<void> fetchChildren(String parentGuid) async {
+  Future<void> fetchFamilyProfiles(String parentGuid) async {
     final prefs = await SharedPreferences.getInstance();
     emit(const FamilyOverviewLoadingState());
     final initialNumber = prefs.getInt(Profile.number) ?? 0;
