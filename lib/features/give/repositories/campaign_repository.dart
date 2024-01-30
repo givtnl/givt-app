@@ -59,13 +59,23 @@ class CampaignRepositoryImpl with CampaignRepository {
       Organisation.lastOrganisationDonatedKey,
     );
     if (lastDonation == null) {
-      return Organisation.empty();
+      return const Organisation.empty();
     }
     final organisation = Organisation.fromJson(
       jsonDecode(
         lastDonation,
       ) as Map<String, dynamic>,
     );
+    final cachedCollectGroup = (await _getCollectGroupList()).firstWhere(
+      (collectGroup) => organisation.mediumId!.contains(collectGroup.nameSpace),
+      orElse: CollectGroup.empty,
+    );
+
+    if (cachedCollectGroup.orgName != organisation.organisationName) {
+      return organisation.copyWith(
+        organisationName: cachedCollectGroup.orgName,
+      );
+    }
     return organisation;
   }
 
