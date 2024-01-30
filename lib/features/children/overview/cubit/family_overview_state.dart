@@ -40,6 +40,19 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
     return adults.length == 1;
   }
 
+  // The Givt user profile is first in the list
+  List<Profile> sortedAdults(String givtACcountName) {
+    return adults
+      ..sort((a, b) {
+        final compareNames = a.firstName.compareTo(b.firstName);
+        return a.firstName == givtACcountName
+            ? -1
+            : b.firstName == givtACcountName
+                ? 1
+                : compareNames;
+      });
+  }
+
   @override
   List<Object> get props => [profiles, displayAllowanceInfo];
 }

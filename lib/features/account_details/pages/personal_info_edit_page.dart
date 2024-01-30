@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
@@ -17,8 +18,8 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalInfoEditPage extends StatelessWidget {
-  const PersonalInfoEditPage({super.key});
-
+  const PersonalInfoEditPage({this.navigatingFromFamily = false, super.key});
+  final bool navigatingFromFamily;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -29,6 +30,15 @@ class PersonalInfoEditPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {
+            if (navigatingFromFamily) {
+              context.goNamed(Pages.childrenOverview.name);
+              return;
+            }
+            context.pop();
+          },
+        ),
         title: Text(locals.personalInfo),
       ),
       body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(

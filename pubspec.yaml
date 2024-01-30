@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.1.6
+version: 4.1.7
 publish_to: none
 
 environment:
@@ -50,7 +50,7 @@ dependencies:
   keyboard_actions: ^4.2.0
   local_auth: ^2.1.7
   logging: ^1.2.0
-  mobile_scanner: ^3.5.5
+  mobile_scanner: ^3.5.7
   package_info_plus: ^4.0.2
   permission_handler: ^10.4.3
   share_plus: ^7.0.2

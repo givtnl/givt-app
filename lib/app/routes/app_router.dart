@@ -160,16 +160,19 @@ class AppRouter {
             ],
           ),
           GoRoute(
-            path: Pages.personalInfoEdit.path,
-            name: Pages.personalInfoEdit.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
-                authRepositoy: getIt(),
-              ),
-              child: const PersonalInfoEditPage(),
-            ),
-          ),
+              path: Pages.personalInfoEdit.path,
+              name: Pages.personalInfoEdit.name,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) => PersonalInfoEditBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    authRepositoy: getIt(),
+                  ),
+                  child: PersonalInfoEditPage(
+                    navigatingFromFamily: state.extra != null,
+                  ),
+                );
+              }),
           GoRoute(
             path: Pages.childrenOverview.path,
             name: Pages.childrenOverview.name,
@@ -177,7 +180,9 @@ class AppRouter {
               providers: [
                 BlocProvider(
                   create: (_) => FamilyOverviewCubit(getIt())
-                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
+                    ..fetchFamilyProfiles(
+                      context.read<AuthCubit>().state.user.guid,
+                    ),
                 ),
                 BlocProvider(
                   create: (context) =>
@@ -292,7 +297,8 @@ class AppRouter {
               final email = state.uri.queryParameters['email'] ?? '';
 
               final createStripe = bool.parse(
-                  state.uri.queryParameters['createStripe'] ?? 'false');
+                state.uri.queryParameters['createStripe'] ?? 'false',
+              );
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
