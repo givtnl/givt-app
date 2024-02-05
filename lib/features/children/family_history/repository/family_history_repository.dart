@@ -5,8 +5,9 @@ import 'package:givt_app/features/children/family_history/models/child_donation_
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
 mixin FamilyDonationHistoryRepository {
-  Future<List<HistoryItem>> fetchHistory(
-      {required int pageNumber, required HistoryTypes type});
+  Future<List<HistoryItem>> fetchHistory({
+    required int pageNumber,
+  });
 }
 
 class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
@@ -19,23 +20,27 @@ class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
   @override
   Future<List<HistoryItem>> fetchHistory({
     required int pageNumber,
-    required HistoryTypes type,
   }) async {
     final body = <String, dynamic>{
       'pageNumber': pageNumber,
       'pageSize': DonationState.pageSize,
-      'type': [type.value]
+      'type': [
+        HistoryTypes.donation.value,
+        HistoryTypes.allowance.value,
+      ]
     };
     final response = await _apiService.fetchHistory(body);
 
-    List<HistoryItem> result = [];
+    final result = <HistoryItem>[];
+    for (final historyItemMap in response) {
+      // ignore: avoid_dynamic_calls
+      final type = historyItemMap['donationType'];
 
-    for (final donationMap in response) {
-      if (type == HistoryTypes.donation) {
-        result.add(ChildDonation.fromMap(donationMap as Map<String, dynamic>));
-      }
-      if (type == HistoryTypes.allowance) {
-        result.add(Allowance.fromMap(donationMap as Map<String, dynamic>));
+      if (type == HistoryTypes.donation.value) {
+        result
+            .add(ChildDonation.fromMap(historyItemMap as Map<String, dynamic>));
+      } else if (type == HistoryTypes.allowance.value) {
+        result.add(Allowance.fromMap(historyItemMap as Map<String, dynamic>));
       }
     }
     return result;
