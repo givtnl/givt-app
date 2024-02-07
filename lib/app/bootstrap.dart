@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
@@ -40,7 +41,8 @@ Future<void> _processBackgroundNotification(RemoteMessage message) async {
   await get_it.init();
   await get_it.getIt.allReady();
   await NotificationService.instance.init();
-  await LoggingInfo.instance.info('On background push notification $message');
+  await LoggingInfo.instance
+      .info('On background push notification ${jsonEncode(message)}');
 
   await NotificationService.instance.silentNotification(message.data);
 }

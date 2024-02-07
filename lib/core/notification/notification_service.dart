@@ -217,7 +217,7 @@ class NotificationService implements INotificationService {
           payload: {'Type': 'ShowYearlySummary'},
         );
       case 'DonationApproval':
-        await LoggingInfo.instance.info('ShowYearlySummary received');
+        await LoggingInfo.instance.info('DonationApproval received');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
