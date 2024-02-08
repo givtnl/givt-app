@@ -19,6 +19,7 @@ import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CustomNavigationDrawer extends StatelessWidget {
   const CustomNavigationDrawer({
@@ -305,6 +306,17 @@ class CustomNavigationDrawer extends StatelessWidget {
                 _buildEmptySpace(),
                 DrawerMenuItem(
                   isVisible: true,
+                  title: locals.featureMenuText,
+                  icon: Icons.menu_book,
+                  onTap: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    builder: (_) => const FeaturesBottomSheet(),
+                  ),
+                ),
+                _buildMenuItem(
+                  isVisible: true,
                   title: locals.titleAboutGivt,
                   icon: Icons.info,
                   onTap: () => showModalBottomSheet<void>(
@@ -312,6 +324,14 @@ class CustomNavigationDrawer extends StatelessWidget {
                     isScrollControlled: true,
                     useSafeArea: true,
                     builder: (_) => const AboutGivtBottomSheet(),
+                  ),
+                ),
+                _buildMenuItem(
+                  isVisible: true,
+                  title: locals.shareGivtText,
+                  icon: Icons.share,
+                  onTap: () => Share.share(
+                    locals.shareGivtTextLong,
                   ),
                 ),
               ],
