@@ -150,7 +150,8 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             ),
           );
         }
-        if (state.status == AddMemberStateStatus.success) {
+        if (state.status == AddMemberStateStatus.success ||
+            state.status == AddMemberStateStatus.successCached) {
           return AddMemeberSuccessPage(
             familyAlreadyExists: widget.familyAlreadyExists,
           );

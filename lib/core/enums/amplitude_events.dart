@@ -6,7 +6,7 @@ enum AmplitudeEvents {
   addParentProfile('add_parent_profile'),
   addMemerClicked('add_member_clicked'),
   memberCreatedSuccesfully('member_created_succesfully'),
-  failedtoCreateMemebr('failed_to_create_member'),
+  failedToCreateMember('failed_to_create_member'),
   backClicked('back_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),
   directNoticeClicked('direct_notice_clicked'),
@@ -47,6 +47,9 @@ enum AmplitudeEvents {
   editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarSelected('avatar_selected'),
   avatarSaved('avatar_saved'),
+
+  cacheMembersDueToNoFunds('cache_members_due_to_no_funds'),
+  failedToCreateMembersFromCache('failed_to_create_members_from_cache'),
   ;
 
   const AmplitudeEvents(this.value);

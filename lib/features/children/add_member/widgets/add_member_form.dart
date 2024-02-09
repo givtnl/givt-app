@@ -12,6 +12,7 @@ import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dar
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -157,7 +158,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               age: age,
               allowance: _allowanceController,
               key: formKeyChild.toString(),
-              type: 'Child',
+              type: ProfileType.Child,
             );
 
             cubit.rememberProfile(
@@ -181,7 +182,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             final profile = Member(
               firstName: name,
               key: formKeyParent.toString(),
-              type: 'Parent',
+              type: ProfileType.Parent,
             );
 
             cubit.rememberProfile(

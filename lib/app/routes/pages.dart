@@ -53,6 +53,10 @@ enum Pages {
   creditCardDetail(path: 'credit-card-detail', name: 'CREDIT-CARD-DETAIL'),
   addMember(path: 'add-member', name: 'ADD-MEMBER'),
   avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
+  cachedChildrenOverview(
+    path: 'cached-children-overview',
+    name: 'CACHED-CHILDREN-OVERVIEW',
+  ),
   ;
 
   const Pages({
