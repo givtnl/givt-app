@@ -36,7 +36,7 @@ class AddMemberState extends Equatable {
   }
 
   List<Member> get adults {
-    return members.where((p) => p.type == ProfileType.Child).toList();
+    return members.where((p) => p.type == ProfileType.Parent).toList();
   }
 
   bool get hasChildren {
