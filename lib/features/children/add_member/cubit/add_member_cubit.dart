@@ -149,6 +149,12 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
       unawaited(
         AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.vpcAccepted,
+        ),
+      );
+
+      unawaited(
+        AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.memberCreatedSuccesfully,
           eventProperties: {
             'nrOfMembers': members.length,

@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/widgets/notice_dialog.dart';
-import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -102,11 +101,6 @@ class VPCPage extends StatelessWidget {
                       onPressed: () {
                         context.pop();
                         context.read<AddMemberCubit>().createMember();
-                        if (!CachedFamilyUtils.isFamilyCacheExist()) {
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.vpcAccepted,
-                          );
-                        }
                       },
                       child: Text(
                         context.l10n.ready,
