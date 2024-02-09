@@ -101,9 +101,6 @@ class VPCPage extends StatelessWidget {
                       onPressed: () {
                         context.pop();
                         context.read<AddMemberCubit>().createMember();
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.vpcAccepted,
-                        );
                       },
                       child: Text(
                         context.l10n.ready,

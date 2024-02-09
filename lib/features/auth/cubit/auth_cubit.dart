@@ -381,6 +381,11 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       await LoggingInfo.instance.info('Update Notification Id');
 
+      if (Platform.isIOS) {
+        // On iOS be sure that APNS token is available before asking for a firebase token
+        final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      }
+
       final notificationId = await FirebaseMessaging.instance.getToken();
 
       await LoggingInfo.instance.info('New FCM token: $notificationId');

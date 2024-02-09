@@ -7,6 +7,7 @@ class AppTheme {
   static const givtLightBackgroundGreen = Color(0xFFF5FFF5);
   static const givtBorderBlue = Color(0xFFA4CBF3);
   static const givtDisabledBorderBlue = Color(0xFFDEECFA);
+  static const givtDisabledBorderGreen = Color(0x3360DD9B);
   static const givtLightBackgroundBlue = Color(0xFFF3F8FD);
   static const givtBlue = Color(0xFF2e2957);
   static const givtLightGray = Color(0xFFe3e2e7);

@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'family_overview_state.dart';
@@ -31,8 +32,9 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
       );
 
       await prefs.setInt(Profile.number, response.length);
-    } catch (error) {
-      await LoggingInfo.instance.error(error.toString());
+    } catch (error, stackTrace) {
+      await LoggingInfo.instance
+          .error(error.toString(), methodName: stackTrace.toString());
 
       emit(FamilyOverviewErrorState(errorMessage: error.toString()));
     }
