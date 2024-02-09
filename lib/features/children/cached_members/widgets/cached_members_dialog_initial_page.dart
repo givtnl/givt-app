@@ -23,8 +23,7 @@ class CachedMembersDialogInitialPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          //TODO: POEditor
-          'Almost done...',
+          context.l10n.vpcNoFundsAlmostDone,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,
@@ -33,8 +32,7 @@ class CachedMembersDialogInitialPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          //TODO: POEditor
-          "We couldn't take the funds from your bank account. Please check your balance and try again.",
+          context.l10n.vpcNoFundsInitial,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,

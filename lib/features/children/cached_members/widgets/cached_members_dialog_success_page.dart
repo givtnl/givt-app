@@ -22,8 +22,7 @@ class CachedMembersDialogSuccessPage extends StatelessWidget {
         ),
         const SizedBox(height: 30),
         Text(
-          //TODO: POEditor
-          'Woohoo!',
+          context.l10n.vpcNoFundsWoohoo,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,
@@ -32,8 +31,7 @@ class CachedMembersDialogSuccessPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          //TODO: POEditor
-          r"Nice job! We can now collect the $0.50 for verification and add the funds to your child's giving allowance.",
+          context.l10n.vpcNoFundsSuccess,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,

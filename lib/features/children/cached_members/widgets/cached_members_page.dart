@@ -52,31 +52,19 @@ class CachedMembersPage extends StatelessWidget {
                               ),
                     ),
                     children: [
-                      const TextSpan(
-                        //TODO: POEditor
-                        text: "We couldn't take the ",
+                      TextSpan(text: context.l10n.vpcNoFundsInfo1),
+                      TextSpan(
+                        text: context.l10n.vpcNoFundsInfo2,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
-                      const TextSpan(
-                        text: r'$0.50',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const TextSpan(
-                        //TODO: POEditor
-                        text: ' for verification and the ',
-                      ),
+                      TextSpan(text: context.l10n.vpcNoFundsInfo3),
                       TextSpan(
                         text: '\$$totalAllowance',
                         style: const TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      const TextSpan(
-                        //TODO: POEditor
-                        text:
-                            " for your child's giving allowance from your bank account. Please check your balance and try again.",
-                      ),
+                      TextSpan(text: context.l10n.vpcNoFundsInfo4),
                     ],
                   ),
                 ),

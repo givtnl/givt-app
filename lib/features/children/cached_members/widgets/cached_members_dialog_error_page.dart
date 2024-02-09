@@ -23,8 +23,7 @@ class CachedMembersDialogErrorPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          //TODO: POEditor
-          'Sorry',
+          context.l10n.vpcNoFundsSorry,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,
@@ -33,8 +32,7 @@ class CachedMembersDialogErrorPage extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          //TODO: POEditor
-          "We still couldn't take the funds from your bank account. Please check your balance and try again.",
+          context.l10n.vpcNoFundsError,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppTheme.givtBlue,

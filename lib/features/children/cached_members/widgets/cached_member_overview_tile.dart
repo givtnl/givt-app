@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class CachedMemberOverviewTile extends StatelessWidget {
@@ -58,8 +59,7 @@ class CachedMemberOverviewTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 2),
                 child: Text(
-                  //TODO: POEditor
-                  'Waiting...',
+                  context.l10n.vpcNoFundsWaiting,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppTheme.givtBlue,
