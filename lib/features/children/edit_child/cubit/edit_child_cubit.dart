@@ -82,8 +82,9 @@ class EditChildCubit extends Cubit<EditChildState>
           ),
         );
       }
-    } catch (error) {
-      await LoggingInfo.instance.error(error.toString());
+    } catch (error, stackTrace) {
+      await LoggingInfo.instance
+          .error(error.toString(), methodName: stackTrace.toString());
 
       emit(
         EditChildExternalErrorState(errorMessage: error.toString()),

@@ -64,8 +64,9 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
           },
         ),
       );
-    } catch (error) {
-      await LoggingInfo.instance.error(error.toString());
+    } catch (error, stackTrace) {
+      await LoggingInfo.instance
+          .error(error.toString(), methodName: stackTrace.toString());
       unawaited(
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.failedToCreateMembersFromCache,
