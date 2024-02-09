@@ -5,6 +5,7 @@ enum AddMemberStateStatus {
   input,
   loading,
   success,
+  successCached,
   error,
   vpc,
   continueWithoutVPC
@@ -29,12 +30,13 @@ class AddMemberState extends Equatable {
   final List<Member> members;
   final int nrOfForms;
   final String error;
+
   List<Member> get children {
-    return members.where((p) => p.type == 'Child').toList();
+    return members.where((p) => p.type == ProfileType.Child).toList();
   }
 
   List<Member> get adults {
-    return members.where((p) => p.type == 'Parent').toList();
+    return members.where((p) => p.type == ProfileType.Child).toList();
   }
 
   bool get hasChildren {

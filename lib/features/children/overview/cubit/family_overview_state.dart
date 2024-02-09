@@ -25,11 +25,11 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   final bool displayAllowanceInfo;
 
   List<Profile> get children {
-    return profiles.where((p) => p.type == 'Child').toList();
+    return profiles.where((p) => p.type == ProfileType.Child).toList();
   }
 
   List<Profile> get adults {
-    return profiles.where((p) => p.type == 'Parent').toList();
+    return profiles.where((p) => p.type == ProfileType.Parent).toList();
   }
 
   bool get hasChildren {

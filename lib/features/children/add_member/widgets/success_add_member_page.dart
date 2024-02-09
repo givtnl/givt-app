@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:go_router/go_router.dart';
@@ -112,22 +113,32 @@ class AddMemeberSuccessPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomGreenElevatedButton(
-                      title: context.l10n.seeMyFamily,
-                      onPressed: () => context
-                          .pushReplacementNamed(Pages.childrenOverview.name)),
+                    title: context.l10n.seeMyFamily,
+                    onPressed: () => context
+                        .pushReplacementNamed(Pages.childrenOverview.name),
+                  ),
                 )
               else
                 TextButton(
-                  onPressed: () =>
-                      context.pushReplacementNamed(Pages.childrenOverview.name),
-                  child: Text(context.l10n.iWillDoThisLater,
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontSize: 16,
-                            decoration: TextDecoration.underline,
-                          )),
+                  onPressed: () {
+                    if (CachedFamilyUtils.isFamilyCacheExist()) {
+                      context.pushReplacementNamed(
+                        Pages.cachedChildrenOverview.name,
+                      );
+                    } else {
+                      context.pushReplacementNamed(Pages.childrenOverview.name);
+                    }
+                  },
+                  child: Text(
+                    context.l10n.iWillDoThisLater,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                        ),
+                  ),
                 ),
             ],
-          )
+          ),
         ],
       ),
     );

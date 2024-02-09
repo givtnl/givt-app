@@ -13,6 +13,8 @@ import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dar
 import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
 import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/children/avatars/screens/avatar_selection_screen.dart';
+import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
+import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
@@ -193,6 +195,19 @@ class AppRouter {
             ),
           ),
           GoRoute(
+            path: Pages.cachedChildrenOverview.path,
+            name: Pages.cachedChildrenOverview.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => CachedMembersCubit(
+                getIt(),
+                getIt(),
+                familyLeaderName:
+                    context.read<AuthCubit>().state.user.firstName,
+              )..loadFromCache(),
+              child: const CachedFamilyOverviewPage(),
+            ),
+          ),
+          GoRoute(
             path: Pages.childDetails.path,
             name: Pages.childDetails.name,
             builder: (context, state) {
@@ -249,7 +264,7 @@ class AppRouter {
             builder: (context, state) {
               final familyAlreadyExists = state.extra! as bool;
               return BlocProvider(
-                create: (_) => AddMemberCubit(getIt()),
+                create: (_) => AddMemberCubit(getIt(), getIt()),
                 child: AddMemberMainScaffold(
                   familyAlreadyExists: familyAlreadyExists,
                 ),
