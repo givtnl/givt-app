@@ -12,12 +12,17 @@ class AllowanceItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
+    final isNotSuccessful = allowance.status != AllowanceStatus.proccessed &&
+        allowance.attemptNr > 0;
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-      color: Colors.white,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      color: isNotSuccessful ? Colors.white : AppTheme.givtLightBackgroundBlue,
       child: Row(
         children: [
-          SvgPicture.asset('assets/images/donation_states_added.svg'),
+          if (isNotSuccessful)
+            SvgPicture.asset('assets/images/donation_states_pending.svg')
+          else
+            SvgPicture.asset('assets/images/donation_states_added.svg'),
           const SizedBox(width: 15),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,15 +30,19 @@ class AllowanceItemWidget extends StatelessWidget {
               Text(
                 '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppTheme.childHistoryAllowance,
+                      color: isNotSuccessful
+                          ? AppTheme.childHistoryPendingDark
+                          : AppTheme.childHistoryAllowance,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w600,
                     ),
               ),
               SizedBox(
-                width: size.width * 0.70,
+                width: size.width * 0.7,
                 child: Text(
-                  '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
+                  isNotSuccessful
+                      ? "Oops! We couldn't get the allowance amount from your account."
+                      : '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
@@ -45,7 +54,11 @@ class AllowanceItemWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                allowance.date.formatDate(locals),
+                isNotSuccessful
+                    ? allowance.status == AllowanceStatus.rejected
+                        ? 'We will try again next month'
+                        : 'We will try again tomorrow'
+                    : allowance.date.formatDate(locals),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontFamily: 'Raleway',
                       fontWeight: FontWeight.w600,
