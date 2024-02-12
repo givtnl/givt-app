@@ -1489,5 +1489,20 @@
     "downloadG4KBannerTitle": "Download Givt4Kids",
     "downloadG4KBannerText": "With this app your kids can start making a difference!",
     "seeMyFamily": "See My Family",
-    "membersAreAdded": "Members are added!"
+    "membersAreAdded": "Members are added!",
+    "vpcNoFundsWaiting": "Waiting...",
+    "vpcNoFundsSorry": "Sorry",
+    "vpcNoFundsError": "We still couldn't take the funds from your bank account. Please check your balance and try again.",
+    "vpcNoFundsAlmostDone": "Almost done...",
+    "vpcNoFundsInitial": "Your payment method has been declined. Check with your bank and try again.",
+    "vpcNoFundsTrying": "Trying to collect funds...",
+    "vpcNoFundsWoohoo": "Woohoo!",
+    "vpcNoFundsSuccess": "Nice job! We can now collect the $0.50 for verification and add the funds to your child's giving allowance.",
+    "vpcNoFundsInfo1": "We couldn't take the ",
+    "vpcNoFundsInfo2": "$0.50",
+    "vpcNoFundsInfo3": " for verification and the ",
+    "vpcNoFundsInfo4": " for your child's giving allowance from your bank account. Please check your balance and try again.",
+    "almostDone": "Almost done...",
+    "weHadTroubleGettingAllowance": "We had trouble getting money from your account for the giving allowance(s).",
+    "noWorriesWeWillTryAgain": "No worries, we will try again tomorrow!"
 }
