@@ -41,7 +41,7 @@ class AllowanceItemWidget extends StatelessWidget {
                 width: size.width * 0.7,
                 child: Text(
                   isNotSuccessful
-                      ? "Oops! We couldn't get the allowance amount from your account."
+                      ? locals.allowanceOopsCouldntGetAllowances
                       : '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
                   maxLines: 3,
                   softWrap: true,
@@ -56,8 +56,8 @@ class AllowanceItemWidget extends StatelessWidget {
               Text(
                 isNotSuccessful
                     ? allowance.status == AllowanceStatus.rejected
-                        ? 'We will try again next month'
-                        : 'We will try again tomorrow'
+                        ? locals.weWillTryAgainNxtMonth
+                        : locals.weWillTryAgainTmr
                     : allowance.date.formatDate(locals),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontFamily: 'Raleway',
