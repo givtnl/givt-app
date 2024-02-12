@@ -176,24 +176,28 @@ class AppRouter {
                 );
               }),
           GoRoute(
-            path: Pages.childrenOverview.path,
-            name: Pages.childrenOverview.name,
-            builder: (context, state) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => FamilyOverviewCubit(getIt())
-                    ..fetchFamilyProfiles(
-                      context.read<AuthCubit>().state.user.guid,
+              path: Pages.childrenOverview.path,
+              name: Pages.childrenOverview.name,
+              builder: (context, state) {
+                bool showAllowanceWarning = false;
+                if (state.extra != null) {
+                  showAllowanceWarning = state.extra! as bool;
+                }
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) => FamilyOverviewCubit(getIt())
+                        ..fetchFamilyProfiles(
+                            showAllowanceWarning: showAllowanceWarning),
                     ),
-                ),
-                BlocProvider(
-                  create: (context) =>
-                      FamilyHistoryCubit(getIt())..fetchHistory(),
-                ),
-              ],
-              child: const FamilyOverviewPage(),
-            ),
-          ),
+                    BlocProvider(
+                      create: (context) =>
+                          FamilyHistoryCubit(getIt())..fetchHistory(),
+                    ),
+                  ],
+                  child: const FamilyOverviewPage(),
+                );
+              }),
           GoRoute(
             path: Pages.cachedChildrenOverview.path,
             name: Pages.cachedChildrenOverview.name,

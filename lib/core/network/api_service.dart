@@ -454,7 +454,16 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-    return response.statusCode == 200;
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
+
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return response.statusCode == 200 && !isError;
   }
 
   Future<bool> createChild(Map<String, dynamic> body) async {
@@ -498,7 +507,7 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<List<dynamic>> fetchProfiles(String parentGuid) async {
+  Future<List<dynamic>> fetchProfiles() async {
     final url = Uri.https(
       apiURL,
       '/givtservice/v1/profiles',

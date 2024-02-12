@@ -151,9 +151,12 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           );
         }
         if (state.status == AddMemberStateStatus.success ||
-            state.status == AddMemberStateStatus.successCached) {
+            state.status == AddMemberStateStatus.successCached ||
+            state.status == AddMemberStateStatus.successNoAllowances) {
           return AddMemeberSuccessPage(
             familyAlreadyExists: widget.familyAlreadyExists,
+            showAllowanceWarning:
+                state.status == AddMemberStateStatus.successNoAllowances,
           );
         }
 

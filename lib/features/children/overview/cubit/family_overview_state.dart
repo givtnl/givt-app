@@ -15,6 +15,10 @@ class FamilyOverviewLoadingState extends FamilyOverviewState {
   const FamilyOverviewLoadingState();
 }
 
+class FamilyOverviewAllowanceWarningState extends FamilyOverviewState {
+  const FamilyOverviewAllowanceWarningState();
+}
+
 class FamilyOverviewUpdatedState extends FamilyOverviewState {
   const FamilyOverviewUpdatedState({
     required this.profiles,
