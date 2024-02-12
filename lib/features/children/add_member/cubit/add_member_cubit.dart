@@ -148,6 +148,11 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
       if (membersAddedSuccessfully) {
         emit(state.copyWith(status: AddMemberStateStatus.success));
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.vpcAccepted,
+          ),
+        );
 
         unawaited(
           AnalyticsHelper.logEvent(

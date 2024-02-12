@@ -103,7 +103,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> checkAuth() async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      final (userExt, session, amountPresets) =
+      var (userExt, session, amountPresets) =
           await _authRepositoy.isAuthenticated() ?? (null, null, null);
 
       if (userExt == null || session == null) {
@@ -116,6 +116,16 @@ class AuthCubit extends Cubit<AuthState> {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
         return;
       }
+
+      // Update notification id if needed
+      final newNotificationId = await _updateNotificationId(
+        guid: userExt.guid,
+        currentNotificationId: userExt.notificationId,
+      );
+
+      userExt = userExt.copyWith(
+        notificationId: newNotificationId,
+      );
 
       emit(
         state.copyWith(
@@ -195,14 +205,14 @@ class AuthCubit extends Cubit<AuthState> {
         isTempUser: true,
       );
 
-      // final newNotificationId = await _updateNotificationId(
-      //   guid: unRegisteredUserExt.guid,
-      //   currentNotificationId: unRegisteredUserExt.notificationId,
-      // );
+      final newNotificationId = await _updateNotificationId(
+        guid: unRegisteredUserExt.guid,
+        currentNotificationId: unRegisteredUserExt.notificationId,
+      );
 
-      // unRegisteredUserExt = unRegisteredUserExt.copyWith(
-      //   notificationId: newNotificationId,
-      // );
+      unRegisteredUserExt = unRegisteredUserExt.copyWith(
+        notificationId: newNotificationId,
+      );
 
       emit(
         state.copyWith(
@@ -383,7 +393,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (Platform.isIOS) {
         // On iOS be sure that APNS token is available before asking for a firebase token
-        final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+        await FirebaseMessaging.instance.getAPNSToken();
       }
 
       final notificationId = await FirebaseMessaging.instance.getToken();
