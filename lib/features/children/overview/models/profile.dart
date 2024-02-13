@@ -9,6 +9,7 @@ class Profile extends Equatable {
     required this.lastName,
     required this.nickname,
     required this.comment,
+    required this.pendingAllowance,
     required this.wallet,
     required this.pictureURL,
     this.type = ProfileType.Child,
@@ -21,6 +22,7 @@ class Profile extends Equatable {
           lastName: '',
           nickname: '',
           comment: '',
+          pendingAllowance: false,
           wallet: const Wallet.empty(),
           pictureURL: '',
         );
@@ -34,6 +36,7 @@ class Profile extends Equatable {
       lastName: (map['lastName'] ?? '') as String,
       nickname: (map['nickname'] ?? '') as String,
       comment: (map['comment'] ?? '') as String,
+      pendingAllowance: (map['pendingAllowance'] ?? false) as bool,
       wallet: Wallet.fromMap(map['wallet'] as Map<String, dynamic>),
       pictureURL: (picture['pictureURL'] ?? '') as String,
       type: ProfileType.getByTypeName((map['type'] ?? '') as String),
@@ -45,6 +48,7 @@ class Profile extends Equatable {
   final String lastName;
   final String nickname;
   final String comment;
+  final bool pendingAllowance;
   final Wallet wallet;
   final String pictureURL;
   final ProfileType type;
