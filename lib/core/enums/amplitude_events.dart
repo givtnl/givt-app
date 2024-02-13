@@ -7,6 +7,7 @@ enum AmplitudeEvents {
   addMemerClicked('add_member_clicked'),
   memberCreatedSuccesfully('member_created_succesfully'),
   failedToCreateMember('failed_to_create_member'),
+  failedToGetVpc('failed_to_get_vpc'),
   allowanceNotSuccessful('allowance_not_successful'),
   backClicked('back_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),

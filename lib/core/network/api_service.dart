@@ -463,7 +463,7 @@ class APIService {
         body: decodedBody,
       );
     }
-    return response.statusCode == 200 && !isError;
+    return response.statusCode == 200;
   }
 
   Future<bool> createChild(Map<String, dynamic> body) async {

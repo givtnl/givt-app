@@ -143,27 +143,24 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
     emit(state.copyWith(status: AddMemberStateStatus.loading));
     try {
-      final membersAddedSuccessfully =
-          await _addMemberRepository.addMembers(members);
+      await _addMemberRepository.addMembers(members);
 
-      if (membersAddedSuccessfully) {
-        emit(state.copyWith(status: AddMemberStateStatus.success));
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.vpcAccepted,
-          ),
-        );
+      emit(state.copyWith(status: AddMemberStateStatus.success));
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.vpcAccepted,
+        ),
+      );
 
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.memberCreatedSuccesfully,
-            eventProperties: {
-              'nrOfMembers': members.length,
-              'memberNames': memberNames,
-            },
-          ),
-        );
-      }
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.memberCreatedSuccesfully,
+          eventProperties: {
+            'nrOfMembers': members.length,
+            'memberNames': memberNames,
+          },
+        ),
+      );
     } catch (error) {
       await LoggingInfo.instance.error(error.toString());
 
@@ -173,11 +170,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.failedToCreateMember,
+            eventName: AmplitudeEvents.failedToGetVpc,
           ),
         );
-      }
-      if (error is GivtServerFailure &&
+      } else if (error is GivtServerFailure &&
           error.type == FailureType.ALLOWANCE_NOT_SUCCESSFUL) {
         emit(state.copyWith(status: AddMemberStateStatus.successNoAllowances));
 
@@ -187,6 +183,11 @@ class AddMemberCubit extends Cubit<AddMemberState> {
           ),
         );
       } else {
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.failedToCreateMember,
+          ),
+        );
         emit(
           state.copyWith(
             status: AddMemberStateStatus.error,

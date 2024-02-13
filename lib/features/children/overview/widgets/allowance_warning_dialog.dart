@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class AllowancesWarningDialog extends StatelessWidget {
@@ -44,9 +45,10 @@ class AllowancesWarningDialog extends StatelessWidget {
             context.l10n.noWorriesWeWillTryAgain,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontFamily: 'Raleway',
-                fontWeight: FontWeight.w600,
-                color: Color(0xFF617793)),
+                  fontFamily: 'Raleway',
+                  fontWeight: FontWeight.w600,
+                  color: AppTheme.childGivingAllowanceHint,
+                ),
           ),
         ],
       ),
@@ -57,7 +59,7 @@ class AllowancesWarningDialog extends StatelessWidget {
           width: MediaQuery.sizeOf(context).width * 0.4,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF60DD9B),
+              backgroundColor: AppTheme.givtGreen60,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(100),
               ),
@@ -65,7 +67,7 @@ class AllowancesWarningDialog extends StatelessWidget {
             child: Text(
               'Continue',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Color(0xFF005231),
+                    color: AppTheme.givtGreen40,
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w700,
                   ),

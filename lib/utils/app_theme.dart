@@ -26,6 +26,8 @@ class AppTheme {
   static const givtAmount = Color(0xFFD2D1D9);
   static const givtYellow = Color(0xFFEDA52E);
   static const givtDarkGreen = Color(0xFF1da96c);
+  static const givtGreen60 = Color(0xFF60DD9B);
+  static const givtGreen40 = Color(0xFF005231);
   static const softenedGivtPurple = Color(0xFF585479);
   static const presetsButtonColor = Color(0xFF918fa6);
   static const givtLightYellow = Color(0xFFFFF9E3);
