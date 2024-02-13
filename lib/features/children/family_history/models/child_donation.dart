@@ -36,13 +36,11 @@ class ChildDonation extends HistoryItem {
       state: DonationState.getState(map['status'].toString()),
       userId: map['userId'].toString(),
       id: map['id'] as int,
-      medium: DonationMediumType.values.firstWhere(
-        (element) => element.type == map['mediumType'],
-        orElse: () => DonationMediumType.unknown,
+      medium: DonationMediumType.fromString(
+        map['donationMedium'] == null ? '' : map['donationMedium'] as String,
       ),
-      type: HistoryTypes.values.firstWhere(
-        (element) => element.value == map['donationType'],
-        orElse: () => HistoryTypes.donation,
+      type: HistoryTypes.fromString(
+        map['donationType'] == null ? '' : map['donationType'] as String,
       ),
     );
   }
