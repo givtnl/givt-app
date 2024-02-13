@@ -12,7 +12,8 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyHistory extends StatelessWidget {
-  const FamilyHistory({super.key});
+  const FamilyHistory({Key? key});
+
   @override
   Widget build(BuildContext context) {
     final scrollController = ScrollController();
@@ -29,68 +30,67 @@ class FamilyHistory extends StatelessWidget {
     });
     final locals = context.l10n;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
           child: Text(
             locals.childHistoryAllGivts,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            style: Theme.of(context).textTheme.headline6?.copyWith(
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w800,
                 ),
           ),
         ),
-        Expanded(
-          child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
-            builder: (context, state) {
-              if (state.status == HistroryStatus.loading &&
-                  historyCubit.state.pageNr < 2) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state.status == HistroryStatus.error) {
-                return Center(
-                  child: Text(state.error),
-                );
-              }
-              // Display List of donations and allowances in descending date order
-              return Stack(
-                children: [
-                  ListView.separated(
-                    padding: EdgeInsets.zero,
-                    controller: scrollController,
-                    itemCount: state.history.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (state.history[index].type == HistoryTypes.allowance) {
-                        return AllowanceItemWidget(
-                          allowance: state.history[index] as Allowance,
-                        );
-                      }
-                      return Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                        child: DonationItemWidget(
-                          donation: state.history[index] as ChildDonation,
-                        ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      return getDivider(state, index);
-                    },
-                  ),
-                  if (state.history.isEmpty) const EmptyHistoryWidget(),
-                  if (state.status == HistroryStatus.loading &&
-                      historyCubit.state.pageNr > 1)
-                    Positioned(
-                      bottom: 20,
-                      left: size.width * 0.5 - 20,
-                      child: const CircularProgressIndicator(),
-                    )
-                ],
+        BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
+          builder: (context, state) {
+            if (state.status == HistroryStatus.loading &&
+                historyCubit.state.pageNr < 2) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.status == HistroryStatus.error) {
+              return Center(
+                child: Text(state.error),
               );
-            },
-          ),
+            }
+            // Display List of donations and allowances in descending date order
+            return Stack(
+              children: [
+                ListView.separated(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.history.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (state.history[index].type == HistoryTypes.allowance) {
+                      return AllowanceItemWidget(
+                        allowance: state.history[index] as Allowance,
+                      );
+                    }
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: size.width * 0.05),
+                      child: DonationItemWidget(
+                        donation: state.history[index] as ChildDonation,
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return getDivider(state, index);
+                  },
+                ),
+                if (state.history.isEmpty) const EmptyHistoryWidget(),
+                if (state.status == HistroryStatus.loading &&
+                    historyCubit.state.pageNr > 1)
+                  Positioned(
+                    bottom: 20,
+                    left: size.width * 0.5 - 20,
+                    child: const CircularProgressIndicator(),
+                  )
+              ],
+            );
+          },
         ),
       ],
     );
