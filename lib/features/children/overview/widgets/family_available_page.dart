@@ -16,21 +16,23 @@ class FamilyAvailablePage extends StatelessWidget {
         as FamilyOverviewUpdatedState;
     final currentUserFirstName = context.read<AuthCubit>().state.user.firstName;
     final sortedAdultProfiles = state.sortedAdults(currentUserFirstName);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ProfilesOverviewWidget(
-          profiles: sortedAdultProfiles,
-        ),
-        const SizedBox(height: 20),
-        ProfilesOverviewWidget(
-          profiles: state.children,
-        ),
-        const SizedBox(height: 32),
-        const Expanded(
-          child: FamilyHistory(),
-        )
-      ],
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ProfilesOverviewWidget(
+            profiles: sortedAdultProfiles,
+          ),
+          const SizedBox(height: 20),
+          ProfilesOverviewWidget(
+            profiles: state.children,
+          ),
+          const SizedBox(height: 28),
+          const FamilyHistory(),
+        ],
+      ),
     );
   }
 }

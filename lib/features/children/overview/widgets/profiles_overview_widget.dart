@@ -56,6 +56,7 @@ class ProfilesOverviewWidget extends StatelessWidget {
     final size = MediaQuery.sizeOf(context);
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
       child: Padding(
         padding: _padding,
         child: Row(
