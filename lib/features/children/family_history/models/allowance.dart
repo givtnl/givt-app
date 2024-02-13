@@ -26,10 +26,10 @@ class Allowance extends HistoryItem {
       amount: double.tryParse(map['amount'].toString()) ?? 0,
       date: map['donationDate'].toString(),
       type: HistoryTypes.fromString(
-        map['donationType'] == null ? '' : map['donationType'] as String,
+        map['donationType'].toString(),
       ),
       status: AllowanceStatus.fromString(
-        map['status'] == null ? '' : map['status'] as String,
+        map['status'].toString(),
       ),
       attemptNr: int.tryParse(map['attempts'].toString()) ?? 0,
     );

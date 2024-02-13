@@ -37,10 +37,10 @@ class ChildDonation extends HistoryItem {
       userId: map['userId'].toString(),
       id: map['id'] as int,
       medium: DonationMediumType.fromString(
-        map['donationMedium'] == null ? '' : map['donationMedium'] as String,
+        map['donationMedium'].toString(),
       ),
       type: HistoryTypes.fromString(
-        map['donationType'] == null ? '' : map['donationType'] as String,
+        map['donationType'].toString(),
       ),
     );
   }
