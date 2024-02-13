@@ -67,6 +67,14 @@ enum DonationMediumType {
   nfc(type: 'NFC'),
   unknown(type: '');
 
-  final String type;
   const DonationMediumType({required this.type});
+
+  final String type;
+
+  static DonationMediumType fromString(String type) {
+    return DonationMediumType.values.firstWhere(
+      (element) => element.type == type,
+      orElse: () => DonationMediumType.unknown,
+    );
+  }
 }

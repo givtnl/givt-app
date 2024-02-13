@@ -1504,5 +1504,8 @@
     "vpcNoFundsInfo4": " for your child's giving allowance from your bank account. Please check your balance and try again.",
     "almostDone": "Almost done...",
     "weHadTroubleGettingAllowance": "We had trouble getting money from your account for the giving allowance(s).",
-    "noWorriesWeWillTryAgain": "No worries, we will try again tomorrow!"
+    "noWorriesWeWillTryAgain": "No worries, we will try again tomorrow!",
+    "allowanceOopsCouldntGetAllowances": "Oops! We couldn't get the allowance amount from your account.",
+    "weWillTryAgainTmr": "We will try again tomorrow",
+    "weWillTryAgainNxtMonth": "We will try again next month"
 }

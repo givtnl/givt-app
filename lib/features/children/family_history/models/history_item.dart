@@ -24,4 +24,11 @@ enum HistoryTypes {
   const HistoryTypes(this.value);
 
   final String value;
+
+  static HistoryTypes fromString(String value) {
+    return HistoryTypes.values.firstWhere(
+      (element) => element.value == value,
+      orElse: () => HistoryTypes.donation,
+    );
+  }
 }
