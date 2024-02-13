@@ -10,8 +10,12 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddMemeberSuccessPage extends StatelessWidget {
-  const AddMemeberSuccessPage({required this.familyAlreadyExists, super.key});
+  const AddMemeberSuccessPage(
+      {required this.familyAlreadyExists,
+      this.showAllowanceWarning = false,
+      super.key});
   final bool familyAlreadyExists;
+  final bool showAllowanceWarning;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -114,8 +118,10 @@ class AddMemeberSuccessPage extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomGreenElevatedButton(
                     title: context.l10n.seeMyFamily,
-                    onPressed: () => context
-                        .pushReplacementNamed(Pages.childrenOverview.name),
+                    onPressed: () => context.pushReplacementNamed(
+                      Pages.childrenOverview.name,
+                      extra: showAllowanceWarning,
+                    ),
                   ),
                 )
               else
@@ -126,7 +132,10 @@ class AddMemeberSuccessPage extends StatelessWidget {
                         Pages.cachedChildrenOverview.name,
                       );
                     } else {
-                      context.pushReplacementNamed(Pages.childrenOverview.name);
+                      context.pushReplacementNamed(
+                        Pages.childrenOverview.name,
+                        extra: showAllowanceWarning,
+                      );
                     }
                   },
                   child: Text(

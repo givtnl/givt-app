@@ -63,9 +63,7 @@ class _EditChildPageState extends State<EditChildPage> {
 
   void _refreshProfiles() {
     context.read<ChildDetailsCubit>().fetchChildDetails();
-    context.read<FamilyOverviewCubit>().fetchFamilyProfiles(
-          context.read<AuthCubit>().state.user.guid,
-        );
+    context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
   }
 
   @override
