@@ -12,14 +12,14 @@ class AllowanceItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
-    final isNotSuccessful = allowance.status != AllowanceStatus.proccessed &&
-        allowance.attemptNr > 0;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      color: isNotSuccessful ? Colors.white : AppTheme.givtLightBackgroundBlue,
+      color: allowance.isNotSuccessful
+          ? Colors.white
+          : AppTheme.givtLightBackgroundBlue,
       child: Row(
         children: [
-          if (isNotSuccessful)
+          if (allowance.isNotSuccessful)
             SvgPicture.asset('assets/images/donation_states_pending.svg')
           else
             SvgPicture.asset('assets/images/donation_states_added.svg'),
@@ -30,7 +30,7 @@ class AllowanceItemWidget extends StatelessWidget {
               Text(
                 '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: isNotSuccessful
+                      color: allowance.isNotSuccessful
                           ? AppTheme.childHistoryPendingDark
                           : AppTheme.childHistoryAllowance,
                       fontFamily: 'Roboto',
@@ -40,7 +40,7 @@ class AllowanceItemWidget extends StatelessWidget {
               SizedBox(
                 width: size.width * 0.7,
                 child: Text(
-                  isNotSuccessful
+                  allowance.isNotSuccessful
                       ? locals.allowanceOopsCouldntGetAllowances
                       : '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
                   maxLines: 3,
@@ -54,7 +54,7 @@ class AllowanceItemWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                isNotSuccessful
+                allowance.isNotSuccessful
                     ? allowance.status == AllowanceStatus.rejected
                         ? locals.weWillTryAgainNxtMonth
                         : locals.weWillTryAgainTmr
