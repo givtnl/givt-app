@@ -38,27 +38,52 @@ Future<void> _processBackgroundNotification(RemoteMessage message) async {
     name: name,
     options: options,
   );
+
+  // Initialize the dependency injection
   await get_it.init();
   await get_it.getIt.allReady();
-  await NotificationService.instance.init();
 
+  // Initialize the notification service
+  await NotificationService.instance.init();
   await NotificationService.instance.silentNotification(message.data);
 }
 
 Future<void> bootstrap(
   FutureOr<Widget> Function() builder,
 ) async {
+  // Make sure WidgetsFlutterBinding is initialized before Firebase
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
   final (name, options) = await _firebaseOptions;
   await Firebase.initializeApp(
     name: name,
     options: options,
   );
+
   await LoggingInfo.instance.info('App started');
+
+  // Initialize the dependency injection
   await get_it.init();
   await get_it.getIt.allReady();
+
   await FirebaseMessaging.instance.requestPermission();
+
+  // Process the notification when the app is in the background
+  // Only works on Android, iOS is buggy
   FirebaseMessaging.onBackgroundMessage(_processBackgroundNotification);
+
+  // Process of notifications
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+    await NotificationService.instance.navigateFirebaseNotification(message);
+  });
+
+  await FirebaseMessaging.instance.getInitialMessage().then((message) {
+    if (message != null) {
+      NotificationService.instance.navigateFirebaseNotification(message);
+    }
+  });
+
   tz.initializeTimeZones();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
