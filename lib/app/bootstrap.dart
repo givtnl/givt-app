@@ -78,12 +78,6 @@ Future<void> bootstrap(
     await NotificationService.instance.navigateFirebaseNotification(message);
   });
 
-  await FirebaseMessaging.instance.getInitialMessage().then((message) {
-    if (message != null) {
-      NotificationService.instance.navigateFirebaseNotification(message);
-    }
-  });
-
   tz.initializeTimeZones();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +82,12 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null && auth.status == AuthStatus.authenticated) {
+        NotificationService.instance.navigateFirebaseNotification(message);
+      }
+    });
+
     return Scaffold(
       key: _key,
       appBar: AppBar(
@@ -147,6 +154,7 @@ class _HomePageState extends State<HomePage> {
         listeners: [
           BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
             listener: (context, state) {
+              // Debug information
               if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
                 var syncString =
                     'Synced successfully Sim //${getIt<CountryIsoInfo>().countryIso}';
@@ -161,7 +169,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              if (state is RemoteDataSourceSyncInProgress) {
+
+              // Needs registration dialog
+              if (state is RemoteDataSourceSyncSuccess) {
                 if (!auth.user.needRegistration || auth.user.mandateSigned) {
                   return;
                 }
