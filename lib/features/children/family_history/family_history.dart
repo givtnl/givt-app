@@ -16,18 +16,8 @@ class FamilyHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController();
     final historyCubit = context.read<FamilyHistoryCubit>();
     final size = MediaQuery.sizeOf(context);
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        if (historyCubit.state.status != HistroryStatus.loading) {
-          // Scrolled to end of list try to fetch more data
-          historyCubit.fetchHistory();
-        }
-      }
-    });
     final locals = context.l10n;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
