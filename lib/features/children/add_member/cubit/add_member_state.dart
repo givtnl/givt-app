@@ -5,6 +5,7 @@ enum AddMemberStateStatus {
   input,
   loading,
   success,
+  successNoAllowances,
   successCached,
   error,
   vpc,

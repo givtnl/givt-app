@@ -2,7 +2,7 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 
 mixin FamilyOverviewRepository {
-  Future<List<Profile>> fetchFamily(String parentGuid);
+  Future<List<Profile>> fetchFamily();
 }
 
 class FamilyOverviewRepositoryImpl with FamilyOverviewRepository {
@@ -10,8 +10,8 @@ class FamilyOverviewRepositoryImpl with FamilyOverviewRepository {
   final APIService apiService;
 
   @override
-  Future<List<Profile>> fetchFamily(String parentGuid) async {
-    final response = await apiService.fetchProfiles(parentGuid);
+  Future<List<Profile>> fetchFamily() async {
+    final response = await apiService.fetchProfiles();
 
     final result = <Profile>[];
     for (final profileMap in response) {

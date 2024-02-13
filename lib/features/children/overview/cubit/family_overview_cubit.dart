@@ -14,13 +14,18 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
 
   final FamilyOverviewRepository _familyOverviewRepository;
 
-  Future<void> fetchFamilyProfiles(String parentGuid) async {
-    final prefs = await SharedPreferences.getInstance();
+  Future<void> fetchFamilyProfiles({bool showAllowanceWarning = false}) async {
     emit(const FamilyOverviewLoadingState());
+
+    final prefs = await SharedPreferences.getInstance();
     final initialNumber = prefs.getInt(Profile.number) ?? 0;
     var displayAllowanceInfo = false;
+
+    if (showAllowanceWarning) {
+      emit(const FamilyOverviewAllowanceWarningState());
+    }
     try {
-      final response = await _familyOverviewRepository.fetchFamily(parentGuid);
+      final response = await _familyOverviewRepository.fetchFamily();
       if (response.length > initialNumber) {
         displayAllowanceInfo = true;
       }
