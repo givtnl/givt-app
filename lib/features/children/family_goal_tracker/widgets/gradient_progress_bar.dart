@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class GradientProgressBar extends StatefulWidget {
@@ -87,9 +85,7 @@ class _GradientProgressBarInternal extends StatelessWidget {
       return Container();
     }
     if (colorsToApply.length < 2) colorsToApply.add(colors[0]);
-    for (var i = 0; i < colorsToApply.length; i++) {
-      log('colorsToApply[$i]: ${colorsToApply[i]}');
-    }
+
     return Container(
       constraints: const BoxConstraints.tightFor(
         width: double.infinity,
