@@ -38,7 +38,7 @@ class FamilyHistory extends StatelessWidget {
           child: Text(
             locals.childHistoryAllGivts,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontFamily: 'Raleway',
+                  fontFamily: 'Mulish',
                   fontWeight: FontWeight.w800,
                 ),
           ),

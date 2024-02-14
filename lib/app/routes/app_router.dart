@@ -22,6 +22,7 @@ import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
@@ -193,6 +194,9 @@ class AppRouter {
                     BlocProvider(
                       create: (context) =>
                           FamilyHistoryCubit(getIt())..fetchHistory(),
+                    ),
+                    BlocProvider(
+                      create: (context) => GoalTrackerCubit()..setGoal(),
                     ),
                   ],
                   child: const FamilyOverviewPage(),
