@@ -517,7 +517,6 @@ class APIService {
       url,
       headers: {'Content-Type': 'application/json'},
     );
-
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
