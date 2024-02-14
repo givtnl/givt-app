@@ -25,6 +25,16 @@ class _GradientProgressBarState extends State<GradientProgressBar> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      setState(() {
+        _progress = widget.progress;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -71,7 +81,7 @@ class _GradientProgressBarInternal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorsCount = (colors.length * value).toInt();
+    final colorsCount = (colors.length * value).round();
     final colorsToApply = colors.sublist(0, colorsCount);
     if (colorsToApply.isEmpty) {
       return Container();

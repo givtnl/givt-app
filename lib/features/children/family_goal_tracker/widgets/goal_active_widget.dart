@@ -31,7 +31,7 @@ class GoalActiveWidget extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.only(top: 16, bottom: 8),
           child: GradientProgressBar(
-            progress: 0.5,
+            progress: 0.35688,
             colors: [
               AppTheme.highlight90,
               AppTheme.progressGradient1,
