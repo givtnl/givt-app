@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/family_goal_tracker/pages/family_goal_tracker.dart';
 import 'package:givt_app/features/children/family_history/family_history.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/family_goal_tracker/pages/family_goal_tracker.dart';
 import 'package:givt_app/features/children/overview/widgets/profiles_overview_widget.dart';
 
 class FamilyAvailablePage extends StatelessWidget {

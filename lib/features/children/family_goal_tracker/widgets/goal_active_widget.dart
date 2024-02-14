@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/overview/family_goal_tracker/widgets/gradient_progress_bar.dart';
+import 'package:givt_app/features/children/family_goal_tracker/widgets/gradient_progress_bar.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class GoalActiveWidget extends StatelessWidget {

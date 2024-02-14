@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/children/overview/family_goal_tracker/cubit/goal_tracker_cubit.dart';
-import 'package:givt_app/features/children/overview/family_goal_tracker/widgets/goal_active_widget.dart';
-import 'package:givt_app/features/children/overview/family_goal_tracker/widgets/goal_completed_widget.dart';
-import 'package:givt_app/features/children/overview/family_goal_tracker/widgets/no_goal_set_widget.dart';
+import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_active_widget.dart';
+import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_completed_widget.dart';
+import 'package:givt_app/features/children/family_goal_tracker/widgets/no_goal_set_widget.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyGoalTracker extends StatelessWidget {
