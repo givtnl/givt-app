@@ -36,7 +36,7 @@ class CachedFamilyOverviewPage extends StatelessWidget {
               context.l10n.childrenMyFamily,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontFamily: 'Mulish',
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.w800,
                   ),
             ),
             leading: BackButton(
