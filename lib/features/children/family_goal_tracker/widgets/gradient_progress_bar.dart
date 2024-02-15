@@ -14,13 +14,7 @@ class GradientProgressBar extends StatefulWidget {
 }
 
 class _GradientProgressBarState extends State<GradientProgressBar> {
-  double _progress = 0.0;
-
-  @override
-  void didUpdateWidget(GradientProgressBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _progress = widget.progress;
-  }
+  double _progress = 0;
 
   @override
   void initState() {
@@ -38,9 +32,9 @@ class _GradientProgressBarState extends State<GradientProgressBar> {
       builder: (context, constraints) {
         final availableWidth = constraints.maxWidth;
         final widtthToApply = availableWidth * _progress;
-
+        const barHeight = 12.0;
         return Container(
-          height: 12,
+          height: barHeight,
           width: availableWidth,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
@@ -54,12 +48,18 @@ class _GradientProgressBarState extends State<GradientProgressBar> {
                 curve: Curves.easeInOut,
                 duration: const Duration(seconds: 1),
                 width: widtthToApply,
-                height: 12,
+                height: barHeight,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  child: _GradientProgressBarInternal(
-                    widget.colors,
-                    _progress,
+                  child: Container(
+                    constraints: const BoxConstraints.tightFor(
+                      width: double.infinity,
+                      height: 12,
+                    ),
+                    decoration: _gradientProgressBarDecoration(
+                      widget.colors,
+                      _progress,
+                    ),
                   ),
                 ),
               ),
@@ -69,63 +69,21 @@ class _GradientProgressBarState extends State<GradientProgressBar> {
       },
     );
   }
-}
 
-class _GradientProgressBarInternal extends StatelessWidget {
-  const _GradientProgressBarInternal(this.colors, this.value);
-  static const double _kLinearProgressIndicatorHeight = 12;
-  final List<Color> colors;
-  final double value;
-
-  @override
-  Widget build(BuildContext context) {
-    final colorsCount = (colors.length * value).round();
+  BoxDecoration _gradientProgressBarDecoration(
+    List<Color> colors,
+    double progress,
+  ) {
+    final colorsCount = (colors.length * progress).round();
     final colorsToApply = colors.sublist(0, colorsCount);
     if (colorsToApply.isEmpty) {
-      return Container();
+      return BoxDecoration(color: colors[0]);
     }
     if (colorsToApply.length < 2) colorsToApply.add(colors[0]);
-
-    return Container(
-      constraints: const BoxConstraints.tightFor(
-        width: double.infinity,
-        height: _kLinearProgressIndicatorHeight,
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: colorsToApply,
       ),
-      decoration:
-          BoxDecoration(gradient: LinearGradient(colors: colorsToApply)),
     );
   }
 }
-
-
-
-// SKETCH
-
-//  return Stack(
-//           children: <Widget>[
-//             Container(
-//               width: constraints.maxWidth,
-//               height: 10,
-//               decoration: BoxDecoration(
-//                 gradient: LinearGradient(
-//                   colors: widget.colors.map((e) => e.withOpacity(0.3)).toList(),
-//                 ),
-//                 borderRadius: BorderRadius.circular(5),
-//               ),
-//             ),
-//             FractionallySizedBox(
-//               alignment: Alignment.centerLeft,
-//               widthFactor: _progress,
-//               child: Container(
-//                 height: 10,
-//                 decoration: BoxDecoration(
-//                   gradient: LinearGradient(
-//                     colors: widget.colors,
-//                   ),
-//                   borderRadius: BorderRadius.circular(5),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         );
-

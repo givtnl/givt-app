@@ -5,6 +5,7 @@ import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_acti
 import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_completed_widget.dart';
 import 'package:givt_app/features/children/family_goal_tracker/widgets/no_goal_set_widget.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class FamilyGoalTracker extends StatelessWidget {
   const FamilyGoalTracker({super.key});
@@ -14,17 +15,28 @@ class FamilyGoalTracker extends StatelessWidget {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
       decoration: ShapeDecoration(
         color: AppTheme.primary98,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      child: BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
+      child: BlocConsumer<GoalTrackerCubit, GoalTrackerState>(
+        listener: (context, state) {
+          if (state.status == GoalTrackerStatus.error) {
+            SnackBarHelper.showMessage(
+              context,
+              text: state.error,
+              isError: true,
+            );
+          }
+        },
         builder: (context, state) {
           if (state.status == GoalTrackerStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 32),
+              child: Center(child: CircularProgressIndicator()),
+            );
           }
           if (state.status == GoalTrackerStatus.noGoalSet) {
             return const NoGoalSetWidget();
