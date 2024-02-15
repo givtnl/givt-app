@@ -1507,5 +1507,7 @@
     "noWorriesWeWillTryAgain": "No worries, we will try again tomorrow!",
     "allowanceOopsCouldntGetAllowances": "Oops! We couldn't get the allowance amount from your account.",
     "weWillTryAgainTmr": "We will try again tomorrow",
-    "weWillTryAgainNxtMonth": "We will try again next month"
+    "weWillTryAgainNxtMonth": "We will try again next month",
+    "editChildWeWIllTryAgain": "We will try again on: ",
+    "editChildAllowancePendingInfo": "You will be able to edit the allowance once the pending issue is resolved."
 }
