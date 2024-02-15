@@ -8,6 +8,7 @@ class ProfileExt extends Equatable {
     required this.givingAllowance,
     required this.dateOfBirth,
     required this.firstName,
+    required this.pendingAllowance,
   });
 
   const ProfileExt.empty()
@@ -16,6 +17,7 @@ class ProfileExt extends Equatable {
           givingAllowance: const GivingAllowance.empty(),
           dateOfBirth: '',
           firstName: '',
+          pendingAllowance: false,
         );
 
   factory ProfileExt.fromMap(Profile profile, Map<String, dynamic> map) {
@@ -23,11 +25,13 @@ class ProfileExt extends Equatable {
     final givingAllowanceMap =
         walletMap['givingAllowance'] as Map<String, dynamic>;
     final givingAllowance = GivingAllowance.fromMap(givingAllowanceMap);
+    final pendingAllowance = walletMap['pendingAllowance'] ?? false;
     return ProfileExt(
       profile: profile,
       givingAllowance: givingAllowance,
       dateOfBirth: map['dateOfBirth'] as String,
       firstName: map['firstName'] as String,
+      pendingAllowance: pendingAllowance as bool,
     );
   }
 
@@ -35,6 +39,7 @@ class ProfileExt extends Equatable {
   final GivingAllowance givingAllowance;
   final String dateOfBirth;
   final String firstName;
+  final bool pendingAllowance;
 
   @override
   List<Object?> get props => [profile, givingAllowance, dateOfBirth, firstName];

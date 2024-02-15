@@ -42,9 +42,6 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
     case 'ShowYearlySummary':
       await LoggingInfo.instance.info('Navigating to yearly summary screen');
       AppRouter.router.goNamed(Pages.personalSummary.name);
-    case 'DonationApproval':
-      await LoggingInfo.instance.info('Navigating to family overview screen');
-      AppRouter.router.goNamed(Pages.childrenOverview.name);
   }
 }
 
@@ -107,6 +104,17 @@ class NotificationService implements INotificationService {
       await _navigateToScreen(
         notificationAppLaunchDetails.notificationResponse!,
       );
+    }
+  }
+
+  Future<void> navigateFirebaseNotification(RemoteMessage message) async {
+    await LoggingInfo.instance.info('Firebase notification received');
+    print("Firebase notification received");
+
+    switch (message.data['Type']) {
+      case 'DonationApproval':
+        await LoggingInfo.instance.info('Navigating to family overview screen');
+        AppRouter.router.goNamed(Pages.childrenOverview.name);
     }
   }
 
@@ -216,20 +224,20 @@ class NotificationService implements INotificationService {
           title: customData['title'] as String,
           payload: {'Type': 'ShowYearlySummary'},
         );
-      case 'DonationApproval':
-        await LoggingInfo.instance.info('DonationApproval received');
-        await _showNotification(
-          message: customData['body'] as String,
-          title: customData['title'] as String,
-          payload: {'Type': 'DonationApproval'},
-        );
+      // case 'DonationApproval':
+      //   await LoggingInfo.instance.info('DonationApproval received');
+      //   await _showNotification(
+      //     message: customData['body'] as String,
+      //     title: customData['title'] as String,
+      //     payload: {'Type': 'DonationApproval'},
+      //   );
 
-      default:
-        if (customData['body'] != null) {
-          await _showNotification(
-            message: customData['body'] as String,
-          );
-        }
+      // default:
+      //   if (customData['body'] != null) {
+      //     await _showNotification(
+      //       message: customData['body'] as String,
+      //     );
+      //   }
     }
   }
 

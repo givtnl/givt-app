@@ -63,9 +63,7 @@ class _EditChildPageState extends State<EditChildPage> {
 
   void _refreshProfiles() {
     context.read<ChildDetailsCubit>().fetchChildDetails();
-    context.read<FamilyOverviewCubit>().fetchFamilyProfiles(
-          context.read<AuthCubit>().state.user.guid,
-        );
+    context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
   }
 
   @override
@@ -178,6 +176,8 @@ class _EditChildPageState extends State<EditChildPage> {
                                   ),
                                   const SizedBox(height: 40),
                                   CreateChildTextField(
+                                    enabled:
+                                        !state.profileDetails.pendingAllowance,
                                     labelText: context
                                         .l10n.createChildGivingAllowanceTitle,
                                     errorText: state is EditChildInputErrorState
@@ -200,8 +200,10 @@ class _EditChildPageState extends State<EditChildPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      context.l10n
-                                          .childMonthlyGivingAllowanceRange,
+                                      state.profileDetails.pendingAllowance
+                                          ? "You will be able to edit the allowance once the pending issue is resolved."
+                                          : context.l10n
+                                              .childMonthlyGivingAllowanceRange,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium!

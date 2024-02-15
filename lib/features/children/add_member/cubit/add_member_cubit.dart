@@ -146,7 +146,6 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       await _addMemberRepository.addMembers(members);
 
       emit(state.copyWith(status: AddMemberStateStatus.success));
-
       unawaited(
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.vpcAccepted,
@@ -164,16 +163,31 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       );
     } catch (error) {
       await LoggingInfo.instance.error(error.toString());
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.failedToCreateMember,
-        ),
-      );
 
       if (error is GivtServerFailure &&
           error.type == FailureType.VPC_NOT_SUCCESSFUL) {
         await _saveMembersToCache();
+
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.failedToGetVpc,
+          ),
+        );
+      } else if (error is GivtServerFailure &&
+          error.type == FailureType.ALLOWANCE_NOT_SUCCESSFUL) {
+        emit(state.copyWith(status: AddMemberStateStatus.successNoAllowances));
+
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.allowanceNotSuccessful,
+          ),
+        );
       } else {
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.failedToCreateMember,
+          ),
+        );
         emit(
           state.copyWith(
             status: AddMemberStateStatus.error,
