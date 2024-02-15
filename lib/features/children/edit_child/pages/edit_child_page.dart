@@ -201,7 +201,8 @@ class _EditChildPageState extends State<EditChildPage> {
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
                                       state.profileDetails.pendingAllowance
-                                          ? "You will be able to edit the allowance once the pending issue is resolved."
+                                          ? context.l10n
+                                              .editChildAllowancePendingInfo
                                           : context.l10n
                                               .childMonthlyGivingAllowanceRange,
                                       style: Theme.of(context)

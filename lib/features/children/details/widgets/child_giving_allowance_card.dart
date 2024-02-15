@@ -85,7 +85,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
               ),
               Text(
                 (profileDetails.pendingAllowance)
-                    ? 'We will try again on: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
+                    ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
                     : '${context.l10n.childNextTopUpPrefix}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: AppTheme.inputFieldBorderSelected,
