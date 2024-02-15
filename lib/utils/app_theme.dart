@@ -4,6 +4,11 @@ import 'package:givt_app/utils/color_schemes.g.dart';
 class AppTheme {
   /// Colors from android AppCompatTheme
   static const givtLightGreen = Color(0xFF41c98e);
+  static const givtLightBackgroundGreen = Color(0xFFF5FFF5);
+  static const givtBorderBlue = Color(0xFFA4CBF3);
+  static const givtDisabledBorderBlue = Color(0xFFDEECFA);
+  static const givtDisabledBorderGreen = Color(0x3360DD9B);
+  static const givtLightBackgroundBlue = Color(0xFFF3F8FD);
   static const givtBlue = Color(0xFF2e2957);
   static const givtLightGray = Color(0xFFe3e2e7);
   static const givtDarkerGray = Color(0xFF898989);
@@ -21,6 +26,8 @@ class AppTheme {
   static const givtAmount = Color(0xFFD2D1D9);
   static const givtYellow = Color(0xFFEDA52E);
   static const givtDarkGreen = Color(0xFF1da96c);
+  static const givtGreen60 = Color(0xFF60DD9B);
+  static const givtGreen40 = Color(0xFF005231);
   static const softenedGivtPurple = Color(0xFF585479);
   static const presetsButtonColor = Color(0xFF918fa6);
   static const givtLightYellow = Color(0xFFFFF9E3);
@@ -56,6 +63,8 @@ class AppTheme {
   static const childGivingAllowanceHint = Color(0xFF617793);
 
   static const childParentalApprovalDecline = Color(0xFF9A3F3F);
+
+  static const keyboardBackgroundColor = Color(0xFFD2D4D9);
 
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
@@ -94,19 +103,19 @@ class AppTheme {
       ),
       dragHandleColor: lightColorScheme.onBackground,
     ),
-    inputDecorationTheme: InputDecorationTheme(
-      hintStyle: const TextStyle(
+    inputDecorationTheme: const InputDecorationTheme(
+      hintStyle: TextStyle(
         color: Colors.grey,
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Colors.grey.shade300,
+          color: givtGraycece,
         ),
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),
-      focusedBorder: const OutlineInputBorder(
+      focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: givtLightGreen,
         ),
@@ -114,7 +123,7 @@ class AppTheme {
           Radius.circular(8),
         ),
       ),
-      errorBorder: const OutlineInputBorder(
+      errorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.red,
         ),
@@ -122,7 +131,7 @@ class AppTheme {
           Radius.circular(8),
         ),
       ),
-      focusedErrorBorder: const OutlineInputBorder(
+      focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.red,
         ),
@@ -132,12 +141,15 @@ class AppTheme {
       ),
       disabledBorder: OutlineInputBorder(
         borderSide: BorderSide(
-          color: Colors.grey.shade300,
+          color: givtGraycece,
         ),
-        borderRadius: const BorderRadius.all(
+        borderRadius: BorderRadius.all(
           Radius.circular(8),
         ),
       ),
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: givtLightGreen,
     ),
     appBarTheme: AppBarTheme(
       actionsIconTheme: IconThemeData(

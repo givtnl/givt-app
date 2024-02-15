@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,11 +12,12 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/pages.dart';
-import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,11 +43,10 @@ class CustomNavigationDrawer extends StatelessWidget {
           : ListView(
               children: [
                 _buildGivtLogo(size),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible:
                       auth.user.needRegistration || !auth.user.mandateSigned,
                   showBadge: true,
-                  showUnderline: false,
                   title: locals.finalizeRegistration,
                   icon: Icons.edit,
                   onTap: () {
@@ -73,11 +72,11 @@ class CustomNavigationDrawer extends StatelessWidget {
                 // Divider(
                 //   thickness: size.height * 0.03,
                 // ),
-                _buildSummaryTile(size, locals, context),
+                const SummaryMenuItem(),
                 Divider(
                   thickness: size.height * 0.02,
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   isAccent: true,
                   icon: Icons.wallet,
@@ -96,7 +95,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     },
                   ),
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: showFamilyItem,
                   title: locals.childrenMyFamily,
                   isAccent: true,
@@ -111,7 +110,13 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () => AuthUtils.checkToken(
                     context,
                     navigate: () {
-                      context.goNamed(Pages.childrenOverview.name);
+                      if (CachedFamilyUtils.isFamilyCacheExist()) {
+                        context.goNamed(
+                          Pages.cachedChildrenOverview.name,
+                        );
+                      } else {
+                        context.goNamed(Pages.childrenOverview.name);
+                      }
                       AnalyticsHelper.logEvent(
                         eventName: AmplitudeEvents.familyClicked,
                       );
@@ -119,7 +124,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   ),
                 ),
                 if (showFamilyItem) _buildEmptySpace(),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.historyTitle,
                   icon: FontAwesomeIcons.listUl,
@@ -135,7 +140,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     );
                   },
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.menuItemRecurringDonation,
                   icon: Icons.autorenew,
@@ -149,7 +154,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     },
                   ),
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.giveLimit,
                   icon: Util.getCurrencyIconData(
@@ -174,7 +179,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
@@ -185,7 +190,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: !auth.user.needRegistration,
                   title: locals.amountPresetsTitle,
                   icon: Icons.tune,
@@ -203,7 +208,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     builder: (_) => const ChangeAmountPresetsBottomSheet(),
                   ),
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   title: locals.pincode,
                   icon: Icons.lock_outline_sharp,
                   onTap: () {},
@@ -229,7 +234,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     final isFingerprintAvailable = data[0];
                     final isFaceIdAvailable = data[1];
 
-                    return _buildMenuItem(
+                    return DrawerMenuItem(
                       isVisible:
                           (isFingerprintAvailable || isFaceIdAvailable) &&
                               !auth.user.tempUser,
@@ -261,7 +266,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   },
                 ),
                 _buildEmptySpace(),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: true,
                   title: locals.logOut,
                   icon: Icons.logout_sharp,
@@ -285,9 +290,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                     return context.read<AuthCubit>().logout();
                   },
                 ),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: true,
-                  showUnderline: false,
                   title: locals.unregister,
                   icon: FontAwesomeIcons.userXmark,
                   onTap: () {
@@ -306,7 +310,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   },
                 ),
                 _buildEmptySpace(),
-                _buildMenuItem(
+                DrawerMenuItem(
                   isVisible: true,
                   title: locals.titleAboutGivt,
                   icon: Icons.info,
@@ -338,137 +342,6 @@ class CustomNavigationDrawer extends StatelessWidget {
           ),
         ),
       );
-
-  Widget _buildMenuItem({
-    required String title,
-    required IconData icon,
-    required VoidCallback onTap,
-    Widget? imageIcon,
-    bool isVisible = false,
-    bool showBadge = false,
-    bool showUnderline = true,
-    bool isAccent = false,
-  }) =>
-      Visibility(
-        visible: isVisible,
-        child: Column(
-          children: [
-            Container(
-              height: isAccent ? 90 : 60,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: AppTheme.givtLightGray,
-                    width: showUnderline ? 1 : 0,
-                  ),
-                ),
-              ),
-              child: isAccent
-                  ? ListTile(
-                      minVerticalPadding: 0,
-                      contentPadding: const EdgeInsets.fromLTRB(0, 0, 16, 0),
-                      title: Row(
-                        children: [
-                          imageIcon ??
-                              Icon(
-                                icon,
-                                color: AppTheme.givtBlue,
-                              ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Text(
-                                title,
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        ],
-                      ),
-                      onTap: onTap,
-                    )
-                  : ListTile(
-                      leading: imageIcon ??
-                          Icon(
-                            icon,
-                            color: AppTheme.givtBlue,
-                          ),
-                      trailing: badges.Badge(
-                        showBadge: showBadge,
-                        position:
-                            badges.BadgePosition.topStart(top: 6, start: -20),
-                        child: const Icon(
-                          Icons.arrow_forward_ios,
-                        ),
-                      ),
-                      title: Text(
-                        title,
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight:
-                              isAccent ? FontWeight.w900 : FontWeight.normal,
-                        ),
-                      ),
-                      onTap: onTap,
-                    ),
-            ),
-          ],
-        ),
-      );
-
-  Widget _buildSummaryTile(
-    Size size,
-    AppLocalizations locals,
-    BuildContext context, {
-    bool isVisible = false,
-  }) {
-    return Visibility(
-      visible: isVisible,
-      child: SizedBox(
-        height: size.height * 0.10,
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Image.asset(
-                  'assets/images/givy_budget_menu.png',
-                  height: size.height * 0.1,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: locals.budgetMenuView,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      WidgetSpan(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: size.width * 0.02,
-                          ),
-                          child: const Icon(
-                            Icons.arrow_forward_ios,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  softWrap: true,
-                  textAlign: TextAlign.start,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildGivtLogo(Size size) => Container(
         margin: EdgeInsets.only(

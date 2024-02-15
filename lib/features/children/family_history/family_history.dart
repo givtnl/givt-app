@@ -7,60 +7,50 @@ import 'package:givt_app/features/children/family_history/models/child_donation_
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/family_history/widgets/empty_history_widget.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyHistory extends StatelessWidget {
-  const FamilyHistory({required this.children, super.key});
-  final List<Profile> children;
+  const FamilyHistory({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController();
     final historyCubit = context.read<FamilyHistoryCubit>();
     final size = MediaQuery.sizeOf(context);
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        if (historyCubit.state.status != HistroryStatus.loading) {
-          // Scrolled to end of list try to fetch more data
-          historyCubit.fetchHistory();
-        }
-      }
-    });
     final locals = context.l10n;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
           child: Text(
             locals.childHistoryAllGivts,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w800,
                 ),
           ),
         ),
-        SizedBox(
-          height: size.height * 0.60,
-          child: BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
-            builder: (context, state) {
-              if (state.status == HistroryStatus.loading &&
-                  historyCubit.state.pageNr < 2) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state.status == HistroryStatus.error) {
-                return Center(
-                  child: Text(state.error),
-                );
-              }
-              // Display List of donations and allowances in descending date order
-              return Stack(children: [
+        BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
+          builder: (context, state) {
+            if (state.status == HistroryStatus.loading &&
+                historyCubit.state.pageNr < 2) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (state.status == HistroryStatus.error) {
+              return Center(
+                child: Text(state.error),
+              );
+            }
+            // Display List of donations and allowances in descending date order
+            return Stack(
+              children: [
                 ListView.separated(
                   padding: EdgeInsets.zero,
-                  controller: scrollController,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: state.history.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (state.history[index].type == HistoryTypes.allowance) {
@@ -80,6 +70,7 @@ class FamilyHistory extends StatelessWidget {
                     return getDivider(state, index);
                   },
                 ),
+                if (state.history.isEmpty) const EmptyHistoryWidget(),
                 if (state.status == HistroryStatus.loading &&
                     historyCubit.state.pageNr > 1)
                   Positioned(
@@ -87,9 +78,9 @@ class FamilyHistory extends StatelessWidget {
                     left: size.width * 0.5 - 20,
                     child: const CircularProgressIndicator(),
                   )
-              ]);
-            },
-          ),
+              ],
+            );
+          },
         ),
       ],
     );

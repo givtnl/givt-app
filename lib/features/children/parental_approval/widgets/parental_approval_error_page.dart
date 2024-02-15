@@ -26,7 +26,7 @@ class ParentalApprovalErrorPage extends StatelessWidget {
           height: 25,
         ),
         SvgPicture.asset(
-          'assets/images/donation_states_declined.svg',
+          'assets/images/donation_states_error.svg',
           width: 90,
           height: 90,
         ),

@@ -131,7 +131,23 @@ class _GivingPageState extends State<GivingPage> {
             ),
           );
 
-          return const SizedBox.shrink();
+          /// In case the user ends up on the giving screen
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: ElevatedButton(
+                child: const Text('Go Back Home'),
+                onPressed: () {
+                  context.goNamed(
+                    Pages.home.name,
+                    queryParameters: {
+                      'given': 'true',
+                    },
+                  );
+                },
+              ),
+            ),
+          );
         },
       ),
     );

@@ -31,6 +31,10 @@ enum Pages {
     name: 'BACS-MANDATE-EXPLANATION',
   ),
   registration(path: 'registration', name: 'REGISTRATION'),
+  registrationSuccess(
+    path: 'registration-success',
+    name: 'REGISTRATION-SUCCESS',
+  ),
   overview(path: 'overview', name: 'OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
   giveVPC(path: 'give-vpc', name: 'GIVE-VPC'),
@@ -47,6 +51,12 @@ enum Pages {
   childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
   editChild(path: 'edit-child', name: 'EDIT-CHILD'),
   creditCardDetail(path: 'credit-card-detail', name: 'CREDIT-CARD-DETAIL'),
+  addMember(path: 'add-member', name: 'ADD-MEMBER'),
+  avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
+  cachedChildrenOverview(
+    path: 'cached-children-overview',
+    name: 'CACHED-CHILDREN-OVERVIEW',
+  ),
   ;
 
   const Pages({

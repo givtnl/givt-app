@@ -56,8 +56,7 @@ class ChooseCategory extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: FilterSuggestionCard(
-                  isFocused: false,
+                child: DiscoverSuggestionCard(
                   color: CollectGroupType.charities.color,
                   title: _getCategoryName(
                     type: CollectGroupType.charities,
@@ -74,8 +73,7 @@ class ChooseCategory extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: FilterSuggestionCard(
-                  isFocused: false,
+                child: DiscoverSuggestionCard(
                   color: CollectGroupType.church.color,
                   title: _getCategoryName(
                     type: CollectGroupType.church,
@@ -97,8 +95,7 @@ class ChooseCategory extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: FilterSuggestionCard(
-                  isFocused: false,
+                child: DiscoverSuggestionCard(
                   color: CollectGroupType.campaign.color,
                   title: _getCategoryName(
                     type: CollectGroupType.campaign,
@@ -115,9 +112,8 @@ class ChooseCategory extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: FilterSuggestionCard(
+                child: DiscoverSuggestionCard(
                   visible: Platform.isIOS,
-                  isFocused: false,
                   color: CollectGroupType.artists.color,
                   title: _getCategoryName(
                     type: CollectGroupType.artists,

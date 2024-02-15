@@ -9,18 +9,21 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/create_child/cubit/create_child_cubit.dart';
-import 'package:givt_app/features/children/create_child/pages/create_child_page.dart';
+import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
+import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/children/avatars/screens/avatar_selection_screen.dart';
+import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
+import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
+import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
-import 'package:givt_app/features/children/overview/pages/children_overview_page.dart';
-import 'package:givt_app/features/children/vpc/cubit/vpc_cubit.dart';
-import 'package:givt_app/features/children/vpc/pages/give_vpc_main_page.dart';
+import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -43,14 +46,7 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
-import 'package:givt_app/features/registration/pages/bacs_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
-import 'package:givt_app/features/registration/pages/gift_aid_request_page.dart';
-import 'package:givt_app/features/registration/pages/mandate_explanation_page.dart';
-import 'package:givt_app/features/registration/pages/personal_info_page.dart';
-import 'package:givt_app/features/registration/pages/sign_bacs_mandate_page.dart';
-import 'package:givt_app/features/registration/pages/sign_sepa_mandate_page.dart';
-import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -166,31 +162,53 @@ class AppRouter {
             ],
           ),
           GoRoute(
-            path: Pages.personalInfoEdit.path,
-            name: Pages.personalInfoEdit.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
-                authRepositoy: getIt(),
-              ),
-              child: const PersonalInfoEditPage(),
-            ),
-          ),
+              path: Pages.personalInfoEdit.path,
+              name: Pages.personalInfoEdit.name,
+              builder: (context, state) {
+                return BlocProvider(
+                  create: (_) => PersonalInfoEditBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    authRepositoy: getIt(),
+                  ),
+                  child: PersonalInfoEditPage(
+                    navigatingFromFamily: state.extra != null,
+                  ),
+                );
+              }),
           GoRoute(
-            path: Pages.childrenOverview.path,
-            name: Pages.childrenOverview.name,
-            builder: (context, state) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => ChildrenOverviewCubit(getIt())
-                    ..fetchChildren(context.read<AuthCubit>().state.user.guid),
-                ),
-                BlocProvider(
-                  create: (context) =>
-                      FamilyHistoryCubit(getIt())..fetchHistory(),
-                ),
-              ],
-              child: const ChildrenOverviewPage(),
+              path: Pages.childrenOverview.path,
+              name: Pages.childrenOverview.name,
+              builder: (context, state) {
+                bool showAllowanceWarning = false;
+                if (state.extra != null) {
+                  showAllowanceWarning = state.extra! as bool;
+                }
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (_) => FamilyOverviewCubit(getIt())
+                        ..fetchFamilyProfiles(
+                            showAllowanceWarning: showAllowanceWarning),
+                    ),
+                    BlocProvider(
+                      create: (context) =>
+                          FamilyHistoryCubit(getIt())..fetchHistory(),
+                    ),
+                  ],
+                  child: const FamilyOverviewPage(),
+                );
+              }),
+          GoRoute(
+            path: Pages.cachedChildrenOverview.path,
+            name: Pages.cachedChildrenOverview.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => CachedMembersCubit(
+                getIt(),
+                getIt(),
+                familyLeaderName:
+                    context.read<AuthCubit>().state.user.firstName,
+              )..loadFromCache(),
+              child: const CachedFamilyOverviewPage(),
             ),
           ),
           GoRoute(
@@ -198,7 +216,7 @@ class AppRouter {
             name: Pages.childDetails.name,
             builder: (context, state) {
               final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
               final childProfile = extras[1] as Profile;
               return MultiBlocProvider(
                 providers: [
@@ -221,7 +239,7 @@ class AppRouter {
             name: Pages.editChild.name,
             builder: (context, state) {
               final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as ChildrenOverviewCubit;
+              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
               final childDetailsCubit = extras[1] as ChildDetailsCubit;
               return MultiBlocProvider(
                 providers: [
@@ -245,21 +263,40 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: Pages.giveVPC.path,
-            name: Pages.giveVPC.name,
+            path: Pages.addMember.path,
+            name: Pages.addMember.name,
             builder: (context, state) {
-              context.read<VPCCubit>().showVPCInfo();
-              return const GiveVPCMainPage();
+              final familyAlreadyExists = state.extra! as bool;
+              return BlocProvider(
+                create: (_) => AddMemberCubit(getIt(), getIt()),
+                child: AddMemberMainScaffold(
+                  familyAlreadyExists: familyAlreadyExists,
+                ),
+              );
             },
           ),
           GoRoute(
-            path: Pages.createChild.path,
-            name: Pages.createChild.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) =>
-                  CreateChildCubit(getIt(), AppLocalizations.of(context)),
-              child: const CreateChildPage(),
-            ),
+            path: Pages.avatarSelection.path,
+            name: Pages.avatarSelection.name,
+            builder: (context, state) {
+              final user = context.read<AuthCubit>().state.user;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => AvatarsCubit(
+                      getIt(),
+                    )..fetchAvatars(),
+                  ),
+                  BlocProvider(
+                    create: (context) => EditProfileCubit(
+                      editProfileRepository: getIt(),
+                      currentProfilePicture: user.profilePicture,
+                    ),
+                  ),
+                ],
+                child: const AvatarSelectionScreen(),
+              );
+            },
           ),
           GoRoute(
             path: Pages.recurringDonations.path,
@@ -279,7 +316,8 @@ class AppRouter {
               final email = state.uri.queryParameters['email'] ?? '';
 
               final createStripe = bool.parse(
-                  state.uri.queryParameters['createStripe'] ?? 'false');
+                state.uri.queryParameters['createStripe'] ?? 'false',
+              );
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
@@ -332,6 +370,11 @@ class AppRouter {
                 },
               ),
             ],
+          ),
+          GoRoute(
+            path: Pages.registrationSuccess.path,
+            name: Pages.registrationSuccess.name,
+            builder: (_, state) => const RegistrationCompletedPage(),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,
@@ -661,7 +704,7 @@ class AppRouter {
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.uri.queryParameters,
-      ); 
+      );
     }
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {

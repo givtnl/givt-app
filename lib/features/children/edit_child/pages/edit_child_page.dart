@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/create_child/widgets/create_child_text_field.dart';
+import 'package:givt_app/features/children/edit_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
-import 'package:givt_app/features/children/overview/cubit/children_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -63,9 +63,7 @@ class _EditChildPageState extends State<EditChildPage> {
 
   void _refreshProfiles() {
     context.read<ChildDetailsCubit>().fetchChildDetails();
-    context.read<ChildrenOverviewCubit>().fetchChildren(
-          context.read<AuthCubit>().state.user.guid,
-        );
+    context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
   }
 
   @override
@@ -178,6 +176,8 @@ class _EditChildPageState extends State<EditChildPage> {
                                   ),
                                   const SizedBox(height: 40),
                                   CreateChildTextField(
+                                    enabled:
+                                        !state.profileDetails.pendingAllowance,
                                     labelText: context
                                         .l10n.createChildGivingAllowanceTitle,
                                     errorText: state is EditChildInputErrorState
@@ -200,8 +200,10 @@ class _EditChildPageState extends State<EditChildPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      context.l10n
-                                          .childMonthlyGivingAllowanceRange,
+                                      state.profileDetails.pendingAllowance
+                                          ? "You will be able to edit the allowance once the pending issue is resolved."
+                                          : context.l10n
+                                              .childMonthlyGivingAllowanceRange,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium!

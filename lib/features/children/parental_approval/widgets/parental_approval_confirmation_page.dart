@@ -30,6 +30,7 @@ class ParentalApprovalConfirmationPage extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        const SizedBox(height: 15),
         Text(
           context.l10n.childParentalApprovalConfirmationTitle(donation.name),
           textAlign: TextAlign.center,

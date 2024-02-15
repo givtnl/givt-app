@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:badges/badges.dart' as badges;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -80,10 +82,31 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      // @TODO - This is a workaround to navigate to the correct page when
+      // the app is opened from a notification and the user is authenticated,
+      // but it should be refactored to use the GoRouter (or another solution)
+      
+      if (message != null && auth.status == AuthStatus.authenticated) {
+        NotificationService.instance.navigateFirebaseNotification(message);
+      }
+    });
+
     return Scaffold(
       key: _key,
       appBar: AppBar(
         title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
+        leading: badges.Badge(
+          showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
+          position: badges.BadgePosition.topStart(
+            top: 10,
+            start: 30,
+          ),
+          child: IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => _key.currentState?.openDrawer(),
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () => showModalBottomSheet<void>(
@@ -135,6 +158,7 @@ class _HomePageState extends State<HomePage> {
         listeners: [
           BlocListener<RemoteDataSourceSyncBloc, RemoteDataSourceSyncState>(
             listener: (context, state) {
+              // Debug information
               if (state is RemoteDataSourceSyncSuccess && kDebugMode) {
                 var syncString =
                     'Synced successfully Sim //${getIt<CountryIsoInfo>().countryIso}';
@@ -149,7 +173,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               }
-              if (state is RemoteDataSourceSyncInProgress) {
+
+              // Needs registration dialog
+              if (state is RemoteDataSourceSyncSuccess) {
                 if (!auth.user.needRegistration || auth.user.mandateSigned) {
                   return;
                 }
@@ -187,15 +213,29 @@ class _HomePageState extends State<HomePage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
+    final isUS = user.country == Country.us.countryCode;
     return showDialog<void>(
       context: context,
       builder: (_) => CupertinoAlertDialog(
-        title: Text(context.l10n.importantReminder),
-        content: Text(context.l10n.finalizeRegistrationPopupText),
+        title: Text(
+            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                )),
+        content: Text(
+          isUS
+              ? context.l10n.registrationDialogG4K
+              : context.l10n.finalizeRegistrationPopupText,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         actions: [
           TextButton(
             onPressed: () => context.pop(),
-            child: Text(context.l10n.askMeLater),
+            child: Text(
+              context.l10n.askMeLater,
+              style:
+                  Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 17),
+            ),
           ),
           TextButton(
             onPressed: () {
@@ -219,9 +259,10 @@ class _HomePageState extends State<HomePage> {
             },
             child: Text(
               context.l10n.finalizeRegistration,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 17),
             ),
           ),
         ],

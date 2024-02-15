@@ -21,6 +21,9 @@
             <action android:name="android.intent.action.SEND" />
             <data android:mimeType="*/*" />
         </intent>
+
+        <package android:name="net.givtapp.kids" />
+        <package android:name="net.givtapp.kids.test" />
     </queries>
     <!-- Include only if your app benefits from precise location access. -->
     <!-- Allow Bluetooth -->
@@ -163,6 +166,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/icon" />
 
         <receiver android:exported="false"
             android:name="com.dexterous.flutterlocalnotifications.ActionBroadcastReceiver" />

@@ -14,6 +14,7 @@ template: |
 autolabeler:
   - label: "enhancement"
     branch:
+      - '/improvement\/.+/'
       - '/feature\/.+/'
       - '/feat\/.+/'
   - label: "bug"
