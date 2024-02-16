@@ -13,6 +13,7 @@ import 'package:givt_app/features/children/overview/widgets/no_children_page.dar
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
   const FamilyOverviewPage({super.key});
@@ -54,10 +55,14 @@ class FamilyOverviewPage extends StatelessWidget {
                     ? const SizedBox()
                     : Text(
                         context.l10n.childrenMyFamily,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w900,
-                            ),
+                        style: GoogleFonts.mulish(
+                          textStyle: Theme.of(context)
+                              .appBarTheme
+                              .titleTextStyle
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
+                        ),
                       ),
             leading: BackButton(
               onPressed: () {

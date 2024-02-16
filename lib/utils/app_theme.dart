@@ -72,6 +72,7 @@ class AppTheme {
   static const progressGradient3 = Color(0xFF74CA79);
   static const primary70 = Color(0xFF40C181);
   static const primary98 = Color(0xFFE9FFED);
+  static const familyGoalStepperGray = Color(0xFF9694AB);
 
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
