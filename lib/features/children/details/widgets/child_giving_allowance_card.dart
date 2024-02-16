@@ -45,7 +45,8 @@ class ChildGivingAllowanceCard extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Raleway',
+                        fontWeight: FontWeight.w800,
                         color: AppTheme.inputFieldBorderSelected,
                       ),
                   children: [
@@ -76,13 +77,16 @@ class ChildGivingAllowanceCard extends StatelessWidget {
                     context.l10n.createChildGivingAllowanceTitle,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: AppTheme.inputFieldBorderSelected,
-                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Raleway',
+                          fontWeight: FontWeight.w800,
                         ),
                   ),
                 ],
               ),
               Text(
-                '${context.l10n.childNextTopUpPrefix}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
+                (profileDetails.pendingAllowance)
+                    ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
+                    : '${context.l10n.childNextTopUpPrefix}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: AppTheme.inputFieldBorderSelected,
                     ),
