@@ -82,7 +82,7 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
     } catch (e) {
       emit(
         state.copyWith(
-          error: e.toString(),
+          error: "We couldn't fetch your goal\n$e",
           status: GoalTrackerStatus.error,
         ),
       );
