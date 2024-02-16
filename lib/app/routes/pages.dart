@@ -57,6 +57,7 @@ enum Pages {
     path: 'cached-children-overview',
     name: 'CACHED-CHILDREN-OVERVIEW',
   ),
+  createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
   ;
 
   const Pages({
