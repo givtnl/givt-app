@@ -66,6 +66,8 @@ class AppTheme {
 
   static const keyboardBackgroundColor = Color(0xFFD2D4D9);
 
+  static const familyGoalStepperGray = Color(0xFF9694AB);
+
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
     fontFamily: 'AvenirLTStd',
