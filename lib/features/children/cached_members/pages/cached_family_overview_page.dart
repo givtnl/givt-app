@@ -7,6 +7,7 @@ import 'package:givt_app/features/children/cached_members/widgets/cached_members
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CachedFamilyOverviewPage extends StatelessWidget {
   const CachedFamilyOverviewPage({super.key});
@@ -34,10 +35,12 @@ class CachedFamilyOverviewPage extends StatelessWidget {
             centerTitle: false,
             title: Text(
               context.l10n.childrenMyFamily,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontFamily: 'Mulish',
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: GoogleFonts.mulish(
+                textStyle:
+                    Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+              ),
             ),
             leading: BackButton(
               onPressed: () {

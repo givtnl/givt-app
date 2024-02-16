@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FamilyGoalCreationStepper extends StatelessWidget {
   const FamilyGoalCreationStepper({
@@ -9,8 +10,6 @@ class FamilyGoalCreationStepper extends StatelessWidget {
   });
 
   final FamilyGoalCreationSteps currentStep;
-
-  // static const String flagSwallowtail = '\uf74c';
 
   @override
   Widget build(BuildContext context) {
@@ -72,17 +71,6 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                           ? AppTheme.givtLightGreen
                           : AppTheme.familyGoalStepperGray,
                     ),
-                    // Text(
-                    //   flagSwallowtail,
-                    //   style: TextStyle(
-                    //     fontFamily: 'FontAwesome',
-                    //     color: currentStep.index >=
-                    //             FamilyGoalCreationSteps.confirmation.index
-                    //         ? AppTheme.givtLightGreen
-                    //         : AppTheme.familyGoalStepperGray,
-                    //     fontSize: 20,
-                    //   ),
-                    // ),
                   ],
                 ),
               ],
@@ -95,35 +83,41 @@ class FamilyGoalCreationStepper extends StatelessWidget {
               Text(
                 //TODO: POEditor
                 '1. Cause',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: currentStep.index >
-                              FamilyGoalCreationSteps.overview.index
-                          ? FontWeight.w800
-                          : FontWeight.normal,
-                      fontFamily: 'Mulish',
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: currentStep.index >
+                                FamilyGoalCreationSteps.overview.index
+                            ? FontWeight.w800
+                            : FontWeight.normal,
+                        color: AppTheme.givtBlue,
+                      ),
+                ),
               ),
               Text(
                 //TODO: POEditor
                 '2. Amount',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: currentStep.index >
-                              FamilyGoalCreationSteps.cause.index
-                          ? FontWeight.w800
-                          : FontWeight.normal,
-                      fontFamily: 'Mulish',
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: currentStep.index >
+                                FamilyGoalCreationSteps.cause.index
+                            ? FontWeight.w800
+                            : FontWeight.normal,
+                        color: AppTheme.givtBlue,
+                      ),
+                ),
               ),
               Text(
                 //TODO: POEditor
                 '3. Confirm',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: currentStep.index >=
-                              FamilyGoalCreationSteps.confirmation.index
-                          ? FontWeight.w800
-                          : FontWeight.normal,
-                      fontFamily: 'Mulish',
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: currentStep.index >=
+                                FamilyGoalCreationSteps.confirmation.index
+                            ? FontWeight.w800
+                            : FontWeight.normal,
+                        color: AppTheme.givtBlue,
+                      ),
+                ),
               ),
             ],
           ),

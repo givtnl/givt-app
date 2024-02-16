@@ -5,6 +5,7 @@ import 'package:givt_app/features/children/family_goal/widgets/family_goal_creat
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CreateFamilyGoal extends StatelessWidget {
   const CreateFamilyGoal({super.key});
@@ -17,10 +18,11 @@ class CreateFamilyGoal extends StatelessWidget {
         title: Text(
           //TODO: POEditor
           'Create a Family Goal',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontFamily: 'Mulish',
-                fontWeight: FontWeight.w800,
-              ),
+          style: GoogleFonts.mulish(
+            textStyle: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
+          ),
         ),
         leading: BackButton(
           onPressed: () {
@@ -37,7 +39,7 @@ class CreateFamilyGoal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const FamilyGoalCreationStepper(
-              currentStep: FamilyGoalCreationSteps.overview,
+              currentStep: FamilyGoalCreationSteps.cause,
             ),
             const SizedBox(height: 20),
             Padding(
@@ -45,10 +47,13 @@ class CreateFamilyGoal extends StatelessWidget {
               child: Text(
                 //TODO: POEditor
                 'Start making giving a habit in your family',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontFamily: 'Mulish',
-                      fontWeight: FontWeight.w700,
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle:
+                      Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.givtBlue,
+                          ),
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
