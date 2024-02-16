@@ -1,8 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:go_router/go_router.dart';
 
 class NoGoalSetWidget extends StatelessWidget {
   const NoGoalSetWidget({super.key});
@@ -10,7 +12,10 @@ class NoGoalSetWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => log('Create a Family Goal'),
+      onTap: () => context.pushNamed(
+        Pages.createFamilyGoal.name,
+        extra: context.read<FamilyOverviewCubit>(),
+      ),
       child: Stack(
         children: [
           const Positioned(
