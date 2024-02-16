@@ -517,7 +517,6 @@ class APIService {
       url,
       headers: {'Content-Type': 'application/json'},
     );
-
     if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
@@ -938,5 +937,19 @@ class APIService {
             : null,
       );
     }
+  }
+
+  Future<List<dynamic>> fetchFamilyGoal() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family');
+    final response = await client.get(url);
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    final decodedBody = jsonDecode(response.body);
+    final itemMap = decodedBody['items']! as List<dynamic>;
+    return itemMap;
   }
 }

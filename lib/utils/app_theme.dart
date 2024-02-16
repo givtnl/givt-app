@@ -66,6 +66,12 @@ class AppTheme {
 
   static const keyboardBackgroundColor = Color(0xFFD2D4D9);
 
+  static const highlight90 = Color(0xFFFAE366);
+  static const progressGradient1 = Color(0xFFC6D96D);
+  static const progressGradient2 = Color(0xFF9DD273);
+  static const progressGradient3 = Color(0xFF74CA79);
+  static const primary70 = Color(0xFF40C181);
+  static const primary98 = Color(0xFFE9FFED);
   static const familyGoalStepperGray = Color(0xFF9694AB);
 
   static final ThemeData lightTheme = ThemeData(
