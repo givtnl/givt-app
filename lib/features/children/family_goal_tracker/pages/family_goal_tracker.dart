@@ -32,22 +32,22 @@ class FamilyGoalTracker extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          if (state.status == GoalTrackerStatus.loading) {
-            return const Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 32),
-              child: Center(child: CircularProgressIndicator()),
-            );
+          switch (state.status) {
+            case GoalTrackerStatus.loading:
+              return const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 32),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            case GoalTrackerStatus.noGoalSet:
+              return const NoGoalSetWidget();
+            case GoalTrackerStatus.activeGoal:
+              return const GoalActiveWidget();
+            case GoalTrackerStatus.completedGoal:
+              return const GoalCompletedWidget();
+            // ignore: no_default_cases
+            default:
+              return const NoGoalSetWidget();
           }
-          if (state.status == GoalTrackerStatus.noGoalSet) {
-            return const NoGoalSetWidget();
-          }
-          if (state.status == GoalTrackerStatus.activeGoal) {
-            return const GoalActiveWidget();
-          }
-          if (state.status == GoalTrackerStatus.completedGoal) {
-            return const GoalCompletedWidget();
-          }
-          return const NoGoalSetWidget();
         },
       ),
     );
