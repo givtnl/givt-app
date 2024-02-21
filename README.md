@@ -69,7 +69,7 @@ make run_dev
 make run_staging
 
 # Run Production Flavor
-make make run_prod
+make run_prod
 
 # Run Linter
 make lint
