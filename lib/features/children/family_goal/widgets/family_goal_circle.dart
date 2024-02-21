@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -377,8 +378,7 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
                 radius: _avatarSize / 2,
                 backgroundColor: AppTheme.sliderIndicatorNotFilled,
                 child: Text(
-                  //TODO: POEditor
-                  '+$moreProfilesNumber more',
+                  context.l10n.familyGoalCircleMore(moreProfilesNumber),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppTheme.givtBlue,
                       ),

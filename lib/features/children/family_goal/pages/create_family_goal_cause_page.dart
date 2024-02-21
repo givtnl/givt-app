@@ -41,8 +41,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              //TODO: POEditor
-              'Find a cause',
+              context.l10n.familyGoalCauseTitle,
               style: GoogleFonts.mulish(
                 textStyle:
                     Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
@@ -125,8 +124,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
             child: CustomGreenElevatedButton(
-              //TODO: POEditor
-              title: 'Continue',
+              title: context.l10n.continueKey,
               onPressed: state.selectedCollectGroup.type ==
                       CollectGroupType.none
                   ? null

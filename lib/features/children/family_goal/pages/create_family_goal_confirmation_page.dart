@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_circle.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_blue_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,8 +23,7 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          //TODO: POEditor
-          'Launch the Family Goal',
+          context.l10n.familyGoalConfirmationTitle,
           style: GoogleFonts.mulish(
             textStyle: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -51,8 +51,7 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
               child: Text(
-                //TODO: POEditor
-                'Share this with your family and make a difference together',
+                context.l10n.familyGoalShareWithFamily,
                 style: GoogleFonts.mulish(
                   textStyle:
                       Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -70,8 +69,7 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    //TODO: POEditor
-                    'to support',
+                    context.l10n.familyGoalToSupport,
                     style: GoogleFonts.mulish(
                       textStyle:
                           Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -102,8 +100,7 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24),
         child: CustomBlueElevatedButton(
-          //TODO: POEditor
-          title: 'Launch',
+          title: context.l10n.familyGoalLaunch,
           onPressed: () {
             context.read<CreateFamilyGoalCubit>().createFamilyGoal();
             AnalyticsHelper.logEvent(

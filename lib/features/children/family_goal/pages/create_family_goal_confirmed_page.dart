@@ -3,6 +3,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_circle.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,8 +51,7 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                       vertical: 30,
                     ),
                     child: Text(
-                      //TODO: POEditor
-                      'Family Goal launched!',
+                      context.l10n.familyGoalConfirmedTitle,
                       style: GoogleFonts.mulish(
                         textStyle:
                             Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -70,8 +70,7 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          //TODO: POEditor
-                          'to support',
+                          context.l10n.familyGoalToSupport,
                           style: GoogleFonts.mulish(
                             textStyle: Theme.of(context)
                                 .textTheme

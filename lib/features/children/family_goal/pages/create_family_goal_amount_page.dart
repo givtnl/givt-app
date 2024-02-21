@@ -7,6 +7,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -55,8 +56,7 @@ class _CreateFamilyGoalAmountPageState
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              //TODO: POEditor
-              'Set your giving goal',
+              context.l10n.familyGoalAmountTitle,
               style: GoogleFonts.mulish(
                 textStyle:
                     Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
@@ -101,8 +101,7 @@ class _CreateFamilyGoalAmountPageState
                       children: [
                         const SizedBox(height: 10),
                         Text(
-                          //TODO: POEditor
-                          'How much do you want to raise?',
+                          context.l10n.familyGoalHowMuch,
                           style: GoogleFonts.mulish(
                             textStyle: Theme.of(context)
                                 .textTheme
@@ -162,8 +161,7 @@ class _CreateFamilyGoalAmountPageState
                           ),
                         ),
                         Text(
-                          //TODO: POEditor
-                          r'Most families start out with an amount of $100',
+                          context.l10n.familyGoalAmountHint,
                           style: GoogleFonts.mulish(
                             textStyle: Theme.of(context)
                                 .textTheme
@@ -192,8 +190,7 @@ class _CreateFamilyGoalAmountPageState
                           bottom: 16,
                         ),
                         child: CustomGreenElevatedButton(
-                          //TODO: POEditor
-                          title: 'Continue',
+                          title: context.l10n.continueKey,
                           onPressed: parsedAmount > 0
                               ? () {
                                   context

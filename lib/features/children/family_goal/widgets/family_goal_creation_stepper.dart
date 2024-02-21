@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -82,8 +83,7 @@ class FamilyGoalCreationStepper extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                //TODO: POEditor
-                '1. Cause',
+                context.l10n.familyGoalStepperCause,
                 style: GoogleFonts.mulish(
                   textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight:
@@ -97,8 +97,7 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                 ),
               ),
               Text(
-                //TODO: POEditor
-                '2. Amount',
+                context.l10n.familyGoalStepperAmount,
                 style: GoogleFonts.mulish(
                   textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight:
@@ -112,8 +111,7 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                 ),
               ),
               Text(
-                //TODO: POEditor
-                '3. Confirm',
+                context.l10n.familyGoalStepperConfirm,
                 style: GoogleFonts.mulish(
                   textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: currentStep.index >=
