@@ -13,6 +13,7 @@ class GoalActiveWidget extends StatelessWidget {
     final currentGoal = state.currentGoal;
     final org = state.organisation;
     final progress = currentGoal.amount / currentGoal.goalAmount.toDouble();
+    final totalProgress = currentGoal.totalAmount / currentGoal.goalAmount.toDouble();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
       child: Column(
@@ -40,6 +41,7 @@ class GoalActiveWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16, bottom: 8),
             child: GradientProgressBar(
               progress: progress > 1 ? 1 : progress,
+              totalProgress: totalProgress > 1 ? 1 : totalProgress,
               colors: const [
                 AppTheme.highlight90,
                 AppTheme.progressGradient1,
