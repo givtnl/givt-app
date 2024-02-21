@@ -5,5 +5,5 @@ class ChildDateUtils {
   static final maximumDate = today;
   static final minimumDate = DateTime(today.year - 18);
 
-  static final dateFormatter = DateFormat('MM-dd-yyyy');
+  static final dateFormatter = DateFormat('MM/dd/yyyy');
 }

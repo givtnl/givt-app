@@ -184,6 +184,8 @@ class _EditChildPageState extends State<EditChildPage> {
                                   ),
                                   const SizedBox(height: 40),
                                   CreateChildTextField(
+                                    enabled:
+                                        !state.profileDetails.pendingAllowance,
                                     labelText: context
                                         .l10n.createChildGivingAllowanceTitle,
                                     errorText: state is EditChildInputErrorState
@@ -206,8 +208,11 @@ class _EditChildPageState extends State<EditChildPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 5),
                                     child: Text(
-                                      context.l10n
-                                          .childMonthlyGivingAllowanceRange,
+                                      state.profileDetails.pendingAllowance
+                                          ? context.l10n
+                                              .editChildAllowancePendingInfo
+                                          : context.l10n
+                                              .childMonthlyGivingAllowanceRange,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium!
