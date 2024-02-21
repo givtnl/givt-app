@@ -1509,5 +1509,21 @@
     "weWillTryAgainTmr": "We will try again tomorrow",
     "weWillTryAgainNxtMonth": "We will try again next month",
     "editChildWeWIllTryAgain": "We will try again on: ",
-    "editChildAllowancePendingInfo": "You will be able to edit the allowance once the pending issue is resolved."
+    "editChildAllowancePendingInfo": "You will be able to edit the allowance once the pending issue is resolved.",
+    "familyGoalStepperCause": "1. Cause",
+    "familyGoalStepperAmount": "2. Amount",
+    "familyGoalStepperConfirm": "3. Confirm",
+    "familyGoalCircleMore": "+{value0} more",
+    "familyGoalOverviewTitle": "Create a Family Goal",
+    "familyGoalConfirmationTitle": "Launch the Family Goal",
+    "familyGoalCauseTitle": "Find a cause",
+    "familyGoalAmountTitle": "Set your giving goal",
+    "familyGoalStartMakingHabit": "Start making giving a habit in your family",
+    "familyGoalCreate": "Create",
+    "familyGoalConfirmedTitle": "Family Goal launched!",
+    "familyGoalToSupport": "to support",
+    "familyGoalShareWithFamily": "Share this with your family and make a difference together",
+    "familyGoalLaunch": "Launch",
+    "familyGoalHowMuch": "How much do you want to raise?",
+    "familyGoalAmountHint": "Most families start out with an amount of $100"
 }
