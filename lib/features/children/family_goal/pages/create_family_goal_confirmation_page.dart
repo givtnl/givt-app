@@ -36,7 +36,7 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.backClicked,
             );
-            context.read<CreateFamilyGoalCubit>().moveToAmount();
+            context.read<CreateFamilyGoalCubit>().showAmount();
           },
         ),
         automaticallyImplyLeading: false,

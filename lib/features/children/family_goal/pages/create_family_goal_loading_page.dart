@@ -6,11 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 
 class CreateFamilyGoalLoadingPage extends StatelessWidget {
   const CreateFamilyGoalLoadingPage({
-    required this.state,
+    required this.stepperStatus,
     super.key,
   });
 
-  final CreateFamilyGoalState state;
+  final FamilyGoalCreationStatus stepperStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,9 @@ class CreateFamilyGoalLoadingPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          context.l10n.familyGoalConfirmationTitle,
+          stepperStatus == FamilyGoalCreationStatus.overview
+              ? context.l10n.familyGoalOverviewTitle
+              : context.l10n.familyGoalConfirmationTitle,
           style: GoogleFonts.mulish(
             textStyle: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -31,7 +33,7 @@ class CreateFamilyGoalLoadingPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FamilyGoalCreationStepper(currentStep: state.status),
+            FamilyGoalCreationStepper(currentStep: stepperStatus),
             const Expanded(
               child: Center(child: CircularProgressIndicator.adaptive()),
             ),

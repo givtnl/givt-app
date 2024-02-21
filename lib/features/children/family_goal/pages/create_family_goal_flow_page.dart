@@ -7,6 +7,7 @@ import 'package:givt_app/features/children/family_goal/pages/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_confirmed_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_loading_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_overview_page.dart';
+import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class CreateFamilyGoalFlowPage extends StatelessWidget {
@@ -14,28 +15,44 @@ class CreateFamilyGoalFlowPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CreateFamilyGoalCubit, CreateFamilyGoalState>(
-      listener: (context, state) {
-        if (state.status == FamilyGoalCreationStatus.confirmation &&
-            state.error.isNotEmpty) {
-          SnackBarHelper.showMessage(context, text: state.error, isError: true);
-        }
-      },
-      builder: (context, state) {
-        switch (state.status) {
-          case FamilyGoalCreationStatus.overview:
-            return const CreateFamilyGoalOverviewPage();
-          case FamilyGoalCreationStatus.cause:
-            return const CreateFamilyGoalCausePage();
-          case FamilyGoalCreationStatus.amount:
-            return const CreateFamilyGoalAmountPage();
-          case FamilyGoalCreationStatus.confirmation:
-            return CreateFamilyGoalConfirmationPage(state: state);
-          case FamilyGoalCreationStatus.loading:
-            return CreateFamilyGoalLoadingPage(state: state);
-          case FamilyGoalCreationStatus.confirmed:
-            return CreateFamilyGoalConfirmedPage(state: state);
-        }
+    return BlocBuilder<OrganisationBloc, OrganisationState>(
+      builder: (BuildContext context, OrganisationState orgState) {
+        return BlocConsumer<CreateFamilyGoalCubit, CreateFamilyGoalState>(
+          listener: (context, state) {
+            if (state.error.isNotEmpty) {
+              SnackBarHelper.showMessage(
+                context,
+                text: state.error,
+                isError: true,
+              );
+            }
+          },
+          builder: (context, createGoalState) {
+            if (orgState.status == OrganisationStatus.loading) {
+              return const CreateFamilyGoalLoadingPage(
+                stepperStatus: FamilyGoalCreationStatus.overview,
+              );
+            }
+            switch (createGoalState.status) {
+              case FamilyGoalCreationStatus.overview:
+                return const CreateFamilyGoalOverviewPage();
+              case FamilyGoalCreationStatus.cause:
+                return const CreateFamilyGoalCausePage();
+              case FamilyGoalCreationStatus.amount:
+                return CreateFamilyGoalAmountPage(
+                  amount: createGoalState.amount,
+                );
+              case FamilyGoalCreationStatus.confirmation:
+                return CreateFamilyGoalConfirmationPage(state: createGoalState);
+              case FamilyGoalCreationStatus.loading:
+                return const CreateFamilyGoalLoadingPage(
+                  stepperStatus: FamilyGoalCreationStatus.confirmation,
+                );
+              case FamilyGoalCreationStatus.confirmed:
+                return CreateFamilyGoalConfirmedPage(state: createGoalState);
+            }
+          },
+        );
       },
     );
   }

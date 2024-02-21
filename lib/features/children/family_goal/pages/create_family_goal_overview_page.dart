@@ -69,7 +69,7 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
         child: CustomGreenElevatedButton(
           title: context.l10n.familyGoalCreate,
           onPressed: () {
-            context.read<CreateFamilyGoalCubit>().moveToCause();
+            context.read<CreateFamilyGoalCubit>().showCause();
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.familyGoalCreateClicked,
             );

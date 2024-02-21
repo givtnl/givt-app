@@ -7,7 +7,6 @@ import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,14 +54,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.backClicked,
                 );
-                if (state.selectedCollectGroup != const CollectGroup.empty()) {
-                  context.read<OrganisationBloc>().add(
-                        OrganisationSelectionChanged(
-                          state.selectedCollectGroup.nameSpace,
-                        ),
-                      );
-                }
-                context.read<CreateFamilyGoalCubit>().moveToOverview();
+                context.read<CreateFamilyGoalCubit>().showOverview();
               },
             ),
             automaticallyImplyLeading: false,
@@ -129,11 +121,12 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                       CollectGroupType.none
                   ? null
                   : () {
-                      context.read<CreateFamilyGoalCubit>().moveToAmount(
-                            meduimId: state.selectedCollectGroup.nameSpace,
-                            organisationName:
-                                state.selectedCollectGroup.orgName,
-                          );
+                      context.read<CreateFamilyGoalCubit>()
+                        ..selectCause(
+                          meduimId: state.selectedCollectGroup.nameSpace,
+                          organisationName: state.selectedCollectGroup.orgName,
+                        )
+                        ..showAmount();
 
                       AnalyticsHelper.logEvent(
                         eventName: AmplitudeEvents.familyGoalCauseSet,
