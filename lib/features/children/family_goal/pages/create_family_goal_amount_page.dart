@@ -199,6 +199,13 @@ class _CreateFamilyGoalAmountPageState
                                   context
                                       .read<CreateFamilyGoalCubit>()
                                       .moveToConfirmation(amount: parsedAmount);
+                                  AnalyticsHelper.logEvent(
+                                    eventName:
+                                        AmplitudeEvents.familyGoalAmountSet,
+                                    eventProperties: {
+                                      'amount': parsedAmount,
+                                    },
+                                  );
                                 }
                               : null,
                         ),

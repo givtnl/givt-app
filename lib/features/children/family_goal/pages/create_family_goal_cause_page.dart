@@ -130,10 +130,20 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
               onPressed: state.selectedCollectGroup.type ==
                       CollectGroupType.none
                   ? null
-                  : () => context.read<CreateFamilyGoalCubit>().moveToAmount(
-                        meduimId: state.selectedCollectGroup.nameSpace,
-                        organisationName: state.selectedCollectGroup.orgName,
-                      ),
+                  : () {
+                      context.read<CreateFamilyGoalCubit>().moveToAmount(
+                            meduimId: state.selectedCollectGroup.nameSpace,
+                            organisationName:
+                                state.selectedCollectGroup.orgName,
+                          );
+
+                      AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.familyGoalCauseSet,
+                        eventProperties: {
+                          'charity_name': state.selectedCollectGroup.orgName,
+                        },
+                      );
+                    },
             ),
           ),
         );

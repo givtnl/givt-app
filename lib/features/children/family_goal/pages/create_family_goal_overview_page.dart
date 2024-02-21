@@ -72,6 +72,9 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
           title: 'Create',
           onPressed: () {
             context.read<CreateFamilyGoalCubit>().moveToCause();
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.familyGoalCreateClicked,
+            );
           },
         ),
       ),

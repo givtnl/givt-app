@@ -106,6 +106,13 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
           title: 'Launch',
           onPressed: () {
             context.read<CreateFamilyGoalCubit>().createFamilyGoal();
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.familyGoalLaunchClicked,
+              eventProperties: {
+                'charity_name': state.organisationName,
+                'amount': state.amount,
+              },
+            );
           },
         ),
       ),
