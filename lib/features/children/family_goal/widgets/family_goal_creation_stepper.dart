@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FamilyGoalCreationStepper extends StatelessWidget {
   const FamilyGoalCreationStepper({
@@ -8,9 +10,7 @@ class FamilyGoalCreationStepper extends StatelessWidget {
     super.key,
   });
 
-  final FamilyGoalCreationSteps currentStep;
-
-  // static const String flagSwallowtail = '\uf74c';
+  final FamilyGoalCreationStatus currentStep;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                           width: double.maxFinite,
                           height: 4,
                           color: currentStep.index >
-                                  FamilyGoalCreationSteps.cause.index
+                                  FamilyGoalCreationStatus.cause.index
                               ? AppTheme.givtLightGreen
                               : AppTheme.givtLightGray,
                         ),
@@ -40,7 +40,7 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                           width: double.maxFinite,
                           height: 4,
                           color: currentStep.index >=
-                                  FamilyGoalCreationSteps.confirmation.index
+                                  FamilyGoalCreationStatus.confirmation.index
                               ? AppTheme.givtLightGreen
                               : AppTheme.givtLightGray,
                         ),
@@ -54,35 +54,24 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                     CircleAvatar(
                       radius: 6.5,
                       backgroundColor: currentStep.index >
-                              FamilyGoalCreationSteps.overview.index
+                              FamilyGoalCreationStatus.overview.index
                           ? AppTheme.givtLightGreen
                           : AppTheme.familyGoalStepperGray,
                     ),
                     CircleAvatar(
                       radius: 6.5,
                       backgroundColor: currentStep.index >
-                              FamilyGoalCreationSteps.cause.index
+                              FamilyGoalCreationStatus.cause.index
                           ? AppTheme.givtLightGreen
                           : AppTheme.familyGoalStepperGray,
                     ),
                     Icon(
                       FontAwesomeIcons.flagCheckered,
                       color: currentStep.index >=
-                              FamilyGoalCreationSteps.confirmation.index
+                              FamilyGoalCreationStatus.confirmation.index
                           ? AppTheme.givtLightGreen
                           : AppTheme.familyGoalStepperGray,
                     ),
-                    // Text(
-                    //   flagSwallowtail,
-                    //   style: TextStyle(
-                    //     fontFamily: 'FontAwesome',
-                    //     color: currentStep.index >=
-                    //             FamilyGoalCreationSteps.confirmation.index
-                    //         ? AppTheme.givtLightGreen
-                    //         : AppTheme.familyGoalStepperGray,
-                    //     fontSize: 20,
-                    //   ),
-                    // ),
                   ],
                 ),
               ],
@@ -95,35 +84,48 @@ class FamilyGoalCreationStepper extends StatelessWidget {
               Text(
                 //TODO: POEditor
                 '1. Cause',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: currentStep.index >
-                              FamilyGoalCreationSteps.overview.index
-                          ? FontWeight.w800
-                          : FontWeight.normal,
-                      fontFamily: 'Mulish',
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight:
+                            currentStep == FamilyGoalCreationStatus.cause
+                                ? FontWeight.w800
+                                : FontWeight.w400,
+                        color: currentStep == FamilyGoalCreationStatus.cause
+                            ? AppTheme.givtBlue
+                            : AppTheme.familyGoalStepperGray,
+                      ),
+                ),
               ),
               Text(
                 //TODO: POEditor
                 '2. Amount',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: currentStep.index >
-                              FamilyGoalCreationSteps.cause.index
-                          ? FontWeight.w800
-                          : FontWeight.normal,
-                      fontFamily: 'Mulish',
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight:
+                            currentStep == FamilyGoalCreationStatus.amount
+                                ? FontWeight.w800
+                                : FontWeight.w400,
+                        color: currentStep == FamilyGoalCreationStatus.amount
+                            ? AppTheme.givtBlue
+                            : AppTheme.familyGoalStepperGray,
+                      ),
+                ),
               ),
               Text(
                 //TODO: POEditor
                 '3. Confirm',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: currentStep.index >=
-                              FamilyGoalCreationSteps.confirmation.index
-                          ? FontWeight.w800
-                          : FontWeight.normal,
-                      fontFamily: 'Mulish',
-                    ),
+                style: GoogleFonts.mulish(
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: currentStep.index >=
+                                FamilyGoalCreationStatus.confirmation.index
+                            ? FontWeight.w800
+                            : FontWeight.w400,
+                        color: currentStep.index >=
+                                FamilyGoalCreationStatus.confirmation.index
+                            ? AppTheme.givtBlue
+                            : AppTheme.familyGoalStepperGray,
+                      ),
+                ),
               ),
             ],
           ),
@@ -131,11 +133,4 @@ class FamilyGoalCreationStepper extends StatelessWidget {
       ),
     );
   }
-}
-
-enum FamilyGoalCreationSteps {
-  overview,
-  cause,
-  amount,
-  confirmation,
 }

@@ -9,13 +9,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -145,8 +143,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                           }
                           context.read<OrganisationBloc>().add(
                                 OrganisationSelectionChanged(
-                                  state.filteredOrganisations[index]
-                                      .nameSpace,
+                                  state.filteredOrganisations[index].nameSpace,
                                 ),
                               );
                         },
@@ -428,7 +425,9 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
   }
 
   Future<void> _showEnterAmountBottomSheet(
-      BuildContext context, String nameSpace) {
+    BuildContext context,
+    String nameSpace,
+  ) {
     return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,

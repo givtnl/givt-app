@@ -5,10 +5,11 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FamilyGoalCircle extends StatefulWidget {
   const FamilyGoalCircle({
-    this.amount = -1,
+    this.amount = 0,
     super.key,
   });
 
@@ -60,10 +61,33 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
             ),
             Positioned.fill(
               child: Center(
-                child: SvgPicture.asset(
-                  'assets/images/family_goal_circle_flag.svg',
-                  width: 64,
-                  height: 64,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.amount > 0) const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: SvgPicture.asset(
+                        'assets/images/family_goal_circle_flag.svg',
+                        width: 64,
+                        height: 64,
+                      ),
+                    ),
+                    if (widget.amount > 0)
+                      Text(
+                        '\$ ${widget.amount}',
+                        style: GoogleFonts.mulish(
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppTheme.givtGreen40,
+                              ),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                  ],
                 ),
               ),
             ),

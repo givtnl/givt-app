@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/edit_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
+import 'package:givt_app/features/children/edit_child/widgets/create_child_text_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
@@ -45,6 +45,14 @@ class _EditChildPageState extends State<EditChildPage> {
       allowance: allowance,
     );
     context.read<EditChildCubit>().editChild(child: child);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _dateOfBirthController.dispose();
+    _allowanceController.dispose();
+    super.dispose();
   }
 
   void _updateInputFields(
