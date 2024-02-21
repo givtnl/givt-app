@@ -170,9 +170,14 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     ],
                     autocorrect: false,
                     validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          !Util.emailRegEx.hasMatch(value)) {
+                      final isUnknownStatus =
+                          context.read<AuthCubit>().state.status ==
+                              AuthStatus.unknown;
+
+                      if (!isUnknownStatus &&
+                          (value == null ||
+                              value.isEmpty ||
+                              !Util.emailRegEx.hasMatch(value))) {
                         return context.l10n.invalidEmail;
                       }
                       return null;
