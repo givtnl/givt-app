@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
@@ -153,9 +153,11 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
         onTap: onTap,
         selected: isSelected,
         selectedTileColor: AppTheme.givtLightGreen.withOpacity(0.25),
-        leading: const Icon(
-          FontAwesomeIcons.houseChimneyWindow,
-          color: AppTheme.givtBlue,
+        //temporary solution with svgs
+        //let's replace with fontawesomeicons (pro) when possible
+        leading: SvgPicture.asset(
+          'assets/images/home_with_heart.svg',
+          height: 22,
         ),
         title: Text(
           title,
