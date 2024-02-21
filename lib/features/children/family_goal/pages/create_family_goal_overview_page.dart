@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_circle.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CreateFamilyGoal extends StatelessWidget {
-  const CreateFamilyGoal({super.key});
+class CreateFamilyGoalOverviewPage extends StatelessWidget {
+  const CreateFamilyGoalOverviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +19,7 @@ class CreateFamilyGoal extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          //TODO: POEditor
-          'Create a Family Goal',
+          context.l10n.familyGoalOverviewTitle,
           style: GoogleFonts.mulish(
             textStyle: Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
                   fontWeight: FontWeight.w800,
@@ -25,11 +27,13 @@ class CreateFamilyGoal extends StatelessWidget {
           ),
         ),
         leading: BackButton(
+          color: AppTheme.givtBlue,
           onPressed: () {
-            context.pop();
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.backClicked,
             );
+
+            context.pop();
           },
         ),
         automaticallyImplyLeading: false,
@@ -39,14 +43,12 @@ class CreateFamilyGoal extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const FamilyGoalCreationStepper(
-              currentStep: FamilyGoalCreationSteps.cause,
+              currentStep: FamilyGoalCreationStatus.overview,
             ),
-            const SizedBox(height: 20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
               child: Text(
-                //TODO: POEditor
-                'Start making giving a habit in your family',
+                context.l10n.familyGoalStartMakingHabit,
                 style: GoogleFonts.mulish(
                   textStyle:
                       Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -65,9 +67,13 @@ class CreateFamilyGoal extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24),
         child: CustomGreenElevatedButton(
-          //TODO: POEditor
-          title: 'Create',
-          onPressed: () {},
+          title: context.l10n.familyGoalCreate,
+          onPressed: () {
+            context.read<CreateFamilyGoalCubit>().moveToCause();
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.familyGoalCreateClicked,
+            );
+          },
         ),
       ),
     );

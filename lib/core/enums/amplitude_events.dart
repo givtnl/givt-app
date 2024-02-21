@@ -52,6 +52,12 @@ enum AmplitudeEvents {
 
   cacheMembersDueToNoFunds('cache_members_due_to_no_funds'),
   failedToCreateMembersFromCache('failed_to_create_members_from_cache'),
+
+  familyGoalCreateClicked('family_goal_create_clicked'),
+  familyGoalCauseSet('family_goal_cause_set'),
+  familyGoalAmountSet('family_goal_amount_set'),
+  familyGoalLaunchClicked('family_goal_launch_clicked'),
+  familyGoalLaunchedCloseClicked('family_goal_launched_close_clicked'),
   ;
 
   const AmplitudeEvents(this.value);
