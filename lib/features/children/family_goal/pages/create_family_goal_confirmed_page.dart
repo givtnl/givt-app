@@ -7,7 +7,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
 
 class CreateFamilyGoalConfirmedPage extends StatelessWidget {
   const CreateFamilyGoalConfirmedPage({
@@ -38,9 +37,9 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -48,13 +47,13 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
-                      vertical: 30,
+                      vertical: 20,
                     ),
                     child: Text(
                       context.l10n.familyGoalConfirmedTitle,
                       style: GoogleFonts.mulish(
                         textStyle:
-                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            Theme.of(context).textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.w800,
                                   color: AppTheme.givtBlue,
                                 ),
@@ -62,7 +61,10 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  FamilyGoalCircle(amount: state.amount.toInt()),
+                  FamilyGoalCircle(
+                    amount: state.amount.toInt(),
+                    showConfetti: true,
+                  ),
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 24, right: 24, top: 10),
@@ -87,7 +89,7 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                           style: GoogleFonts.mulish(
                             textStyle: Theme.of(context)
                                 .textTheme
-                                .headlineSmall
+                                .titleLarge
                                 ?.copyWith(
                                   fontWeight: FontWeight.w800,
                                   color: AppTheme.givtBlue,
@@ -95,18 +97,11 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
                 ],
-              ),
-            ),
-            Positioned.fill(
-              child: Lottie.asset(
-                'assets/lotties/confetti.json',
-                fit: BoxFit.fitWidth,
-                // repeat: false,
-                width: double.infinity,
               ),
             ),
           ],
