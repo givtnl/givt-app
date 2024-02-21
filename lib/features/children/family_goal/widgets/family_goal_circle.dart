@@ -32,18 +32,17 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         .profiles;
   }
 
-  String get _familyLeaderName {
-    return context.read<AuthCubit>().state.user.firstName;
+  String get _familyLeaderId {
+    return context.read<AuthCubit>().state.user.guid;
   }
 
   Profile get _familyLeader {
-    return _profiles
-        .firstWhere((prifile) => prifile.firstName == _familyLeaderName);
+    return _profiles.firstWhere((prifile) => prifile.id == _familyLeaderId);
   }
 
   List<Profile> get _otherMembers {
     return [..._profiles]
-      ..removeWhere((profile) => profile.firstName == _familyLeaderName);
+      ..removeWhere((profile) => profile.id == _familyLeaderId);
   }
 
   @override
