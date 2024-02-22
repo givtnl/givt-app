@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
@@ -40,27 +41,33 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
             'amount': widget.donation.amount,
           },
         );
-        if (mounted) {
-          final familyHystoryCubit = context.read<FamilyHistoryCubit>();
-          final familyOverviewCubit = context.read<FamilyOverviewCubit>();
-          await showDialog<void>(
-            barrierDismissible: false,
-            context: context,
-            builder: (context) => MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: familyHystoryCubit,
-                ),
-                BlocProvider.value(
-                  value: familyOverviewCubit,
-                ),
-              ],
-              child: ParentalApprovalDialog(
-                donation: widget.donation,
+
+        if (!context.mounted) return;
+
+        final familyHystoryCubit = context.read<FamilyHistoryCubit>();
+        final familyOverviewCubit = context.read<FamilyOverviewCubit>();
+        final goalTrackercubit = context.read<GoalTrackerCubit>();
+
+        await showDialog<void>(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(
+                value: familyHystoryCubit,
               ),
+              BlocProvider.value(
+                value: familyOverviewCubit,
+              ),
+              BlocProvider.value(
+                value: goalTrackercubit,
+              ),
+            ],
+            child: ParentalApprovalDialog(
+              donation: widget.donation,
             ),
-          );
-        }
+          ),
+        );
       },
       borderRadius: const BorderRadius.all(Radius.circular(20)),
       splashColor: AppTheme.childHistoryPendingLight,
