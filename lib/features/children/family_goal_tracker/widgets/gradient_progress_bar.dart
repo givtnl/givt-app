@@ -64,8 +64,8 @@ class _GradientProgressBarState extends State<GradientProgressBar> {
                       height: 12,
                     ),
                     decoration: _gradientProgressBarDecoration(
-                      [AppTheme.highlight80],
-                      _progress,
+                      widget.colors.map((e) => e.withOpacity(0.5)).toList(),
+                      _totalProgress,
                     ),
                   ),
                 ),
