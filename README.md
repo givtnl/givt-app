@@ -57,6 +57,33 @@ $ open coverage/index.html
 
 ---
 
+### Makefile support
+
+Alternatively, we have a `Makefile` to help with these commands, as well as other frequent commands:
+
+```sh
+# Run Development Flavor
+make run_dev
+
+# Run Staging Flavor
+make run_staging
+
+# Run Production Flavor
+make run_prod
+
+# Run Linter
+make lint
+
+# Gets Packages
+make get
+
+# Installs Custom Packages
+make melos
+
+# Runs All Tests
+make test
+```
+
 ## Working with Translations 🌐
 
 This project relies on [flutter_localizations][flutter_localizations_link] and follows the [official internationalization guide for Flutter][internationalization_link].
