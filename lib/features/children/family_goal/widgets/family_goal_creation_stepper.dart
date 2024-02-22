@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -24,6 +24,8 @@ class FamilyGoalCreationStepper extends StatelessWidget {
             child: Stack(
               children: [
                 Positioned.fill(
+                  left: 3,
+                  right: 3,
                   child: Row(
                     children: [
                       Expanded(
@@ -66,8 +68,11 @@ class FamilyGoalCreationStepper extends StatelessWidget {
                           ? AppTheme.givtLightGreen
                           : AppTheme.familyGoalStepperGray,
                     ),
-                    Icon(
-                      FontAwesomeIcons.flagCheckered,
+                    //temporary solution with svgs
+                    //let's replace with fontawesomeicons (pro) when possible
+                    SvgPicture.asset(
+                      'assets/images/stepper_flag.svg',
+                      height: 22,
                       color: currentStep.index >=
                               FamilyGoalCreationStatus.confirmation.index
                           ? AppTheme.givtLightGreen

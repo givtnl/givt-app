@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,14 +54,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.backClicked,
                 );
-                if (state.selectedCollectGroup != const CollectGroup.empty()) {
-                  context.read<OrganisationBloc>().add(
-                        OrganisationSelectionChanged(
-                          state.selectedCollectGroup.nameSpace,
-                        ),
-                      );
-                }
-                context.read<CreateFamilyGoalCubit>().moveToOverview();
+                context.read<CreateFamilyGoalCubit>().showOverview();
               },
             ),
             automaticallyImplyLeading: false,
@@ -129,11 +121,12 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                       CollectGroupType.none
                   ? null
                   : () {
-                      context.read<CreateFamilyGoalCubit>().moveToAmount(
-                            meduimId: state.selectedCollectGroup.nameSpace,
-                            organisationName:
-                                state.selectedCollectGroup.orgName,
-                          );
+                      context.read<CreateFamilyGoalCubit>()
+                        ..selectCause(
+                          meduimId: state.selectedCollectGroup.nameSpace,
+                          organisationName: state.selectedCollectGroup.orgName,
+                        )
+                        ..showAmount();
 
                       AnalyticsHelper.logEvent(
                         eventName: AmplitudeEvents.familyGoalCauseSet,
@@ -160,9 +153,11 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
         onTap: onTap,
         selected: isSelected,
         selectedTileColor: AppTheme.givtLightGreen.withOpacity(0.25),
-        leading: const Icon(
-          FontAwesomeIcons.houseChimneyWindow,
-          color: AppTheme.givtBlue,
+        //temporary solution with svgs
+        //let's replace with fontawesomeicons (pro) when possible
+        leading: SvgPicture.asset(
+          'assets/images/home_with_heart.svg',
+          height: 22,
         ),
         title: Text(
           title,

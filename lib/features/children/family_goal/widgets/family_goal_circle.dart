@@ -7,14 +7,17 @@ import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class FamilyGoalCircle extends StatefulWidget {
   const FamilyGoalCircle({
     this.amount = 0,
+    this.showConfetti = false,
     super.key,
   });
 
   final int amount;
+  final bool showConfetti;
 
   @override
   State<FamilyGoalCircle> createState() => _FamilyGoalCircleState();
@@ -29,18 +32,17 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         .profiles;
   }
 
-  String get _familyLeaderName {
-    return context.read<AuthCubit>().state.user.firstName;
+  String get _familyLeaderId {
+    return context.read<AuthCubit>().state.user.guid;
   }
 
   Profile get _familyLeader {
-    return _profiles
-        .firstWhere((prifile) => prifile.firstName == _familyLeaderName);
+    return _profiles.firstWhere((prifile) => prifile.id == _familyLeaderId);
   }
 
   List<Profile> get _otherMembers {
     return [..._profiles]
-      ..removeWhere((profile) => profile.firstName == _familyLeaderName);
+      ..removeWhere((profile) => profile.id == _familyLeaderId);
   }
 
   @override
@@ -93,6 +95,15 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
               ),
             ),
             ..._fillFamilyCircleWithMembers(),
+            if (widget.showConfetti)
+              Positioned.fill(
+                child: Lottie.asset(
+                  'assets/lotties/confetti.json',
+                  fit: BoxFit.fitWidth,
+                  // repeat: false,
+                  width: double.infinity,
+                ),
+              ),
           ],
         ),
       ),

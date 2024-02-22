@@ -39,41 +39,65 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const FamilyGoalCreationStepper(
-              currentStep: FamilyGoalCreationStatus.overview,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-              child: Text(
-                context.l10n.familyGoalStartMakingHabit,
-                style: GoogleFonts.mulish(
-                  textStyle:
-                      Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.givtBlue,
-                          ),
-                ),
-                textAlign: TextAlign.center,
+        child: CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(
+              child: FamilyGoalCreationStepper(
+                currentStep: FamilyGoalCreationStatus.overview,
               ),
             ),
-            const FamilyGoalCircle(),
+            SliverToBoxAdapter(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 20,
+                    ),
+                    child: Text(
+                      context.l10n.familyGoalStartMakingHabit,
+                      style: GoogleFonts.mulish(
+                        textStyle:
+                            Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppTheme.givtBlue,
+                                ),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const FamilyGoalCircle(),
+                ],
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 24,
+                      right: 24,
+                      bottom: 16,
+                    ),
+                    child: CustomGreenElevatedButton(
+                      title: context.l10n.familyGoalCreate,
+                      onPressed: () {
+                        context.read<CreateFamilyGoalCubit>().showCause();
+                        AnalyticsHelper.logEvent(
+                          eventName: AmplitudeEvents.familyGoalCreateClicked,
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24),
-        child: CustomGreenElevatedButton(
-          title: context.l10n.familyGoalCreate,
-          onPressed: () {
-            context.read<CreateFamilyGoalCubit>().moveToCause();
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.familyGoalCreateClicked,
-            );
-          },
         ),
       ),
     );

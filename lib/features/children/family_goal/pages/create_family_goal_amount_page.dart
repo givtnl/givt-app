@@ -1,6 +1,5 @@
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -8,13 +7,17 @@ import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateFamilyGoalAmountPage extends StatefulWidget {
-  const CreateFamilyGoalAmountPage({super.key});
+  const CreateFamilyGoalAmountPage({
+    required this.amount,
+    super.key,
+  });
+
+  final num amount;
 
   @override
   State<CreateFamilyGoalAmountPage> createState() =>
@@ -36,6 +39,9 @@ class _CreateFamilyGoalAmountPageState
   @override
   void initState() {
     focusNode.requestFocus();
+    if (widget.amount > 0) {
+      _goalTargetController.text = _amountText = widget.amount.toString();
+    }
     super.initState();
   }
 
@@ -70,14 +76,7 @@ class _CreateFamilyGoalAmountPageState
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.backClicked,
                 );
-                if (state.selectedCollectGroup != const CollectGroup.empty()) {
-                  context.read<OrganisationBloc>().add(
-                        OrganisationSelectionChanged(
-                          state.selectedCollectGroup.nameSpace,
-                        ),
-                      );
-                }
-                context.read<CreateFamilyGoalCubit>().moveToCause();
+                context.read<CreateFamilyGoalCubit>().showCause();
               },
             ),
             automaticallyImplyLeading: false,
@@ -193,9 +192,9 @@ class _CreateFamilyGoalAmountPageState
                           title: context.l10n.continueKey,
                           onPressed: parsedAmount > 0
                               ? () {
-                                  context
-                                      .read<CreateFamilyGoalCubit>()
-                                      .moveToConfirmation(amount: parsedAmount);
+                                  context.read<CreateFamilyGoalCubit>()
+                                    ..selectAmount(amount: parsedAmount)
+                                    ..showConfirmation();
                                   AnalyticsHelper.logEvent(
                                     eventName:
                                         AmplitudeEvents.familyGoalAmountSet,

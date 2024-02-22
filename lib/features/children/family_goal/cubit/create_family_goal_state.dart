@@ -8,12 +8,6 @@ enum FamilyGoalCreationStatus {
   loading,
   confirmed,
   ;
-
-  FamilyGoalCreationStatus get previous {
-    return index > overview.index && index <= confirmation.index
-        ? FamilyGoalCreationStatus.values[index - 1]
-        : overview;
-  }
 }
 
 class CreateFamilyGoalState extends Equatable {
@@ -23,7 +17,6 @@ class CreateFamilyGoalState extends Equatable {
     this.mediumId = '',
     this.amount = 0,
     this.organisationName = '',
-    this.collectGroupList = const [],
   });
 
   final FamilyGoalCreationStatus status;
@@ -31,11 +24,9 @@ class CreateFamilyGoalState extends Equatable {
   final String mediumId;
   final num amount;
   final String organisationName;
-  final List<CollectGroup> collectGroupList;
 
   @override
-  List<Object> get props =>
-      [status, error, mediumId, amount, organisationName, collectGroupList];
+  List<Object> get props => [status, error, mediumId, amount, organisationName];
 
   CreateFamilyGoalState copyWith({
     FamilyGoalCreationStatus? status,
@@ -43,15 +34,13 @@ class CreateFamilyGoalState extends Equatable {
     String? mediumId,
     num? amount,
     String? organisationName,
-    List<CollectGroup>? collectGroupList,
   }) {
     return CreateFamilyGoalState(
       status: status ?? this.status,
-      error: error ?? this.error,
+      error: error ?? '', //clear existing error for the new state
       mediumId: mediumId ?? this.mediumId,
       amount: amount ?? this.amount,
       organisationName: organisationName ?? this.organisationName,
-      collectGroupList: collectGroupList ?? this.collectGroupList,
     );
   }
 }

@@ -36,81 +36,111 @@ class CreateFamilyGoalConfirmationPage extends StatelessWidget {
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.backClicked,
             );
-            context.read<CreateFamilyGoalCubit>().moveToAmount();
+            context.read<CreateFamilyGoalCubit>().showAmount();
           },
         ),
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const FamilyGoalCreationStepper(
-              currentStep: FamilyGoalCreationStatus.confirmation,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-              child: Text(
-                context.l10n.familyGoalShareWithFamily,
-                style: GoogleFonts.mulish(
-                  textStyle:
-                      Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.givtBlue,
-                          ),
-                ),
-                textAlign: TextAlign.center,
+        child: CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(
+              child: FamilyGoalCreationStepper(
+                currentStep: FamilyGoalCreationStatus.confirmation,
               ),
             ),
-            FamilyGoalCircle(amount: state.amount.toInt()),
-            Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
+            SliverToBoxAdapter(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    context.l10n.familyGoalToSupport,
-                    style: GoogleFonts.mulish(
-                      textStyle:
-                          Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: AppTheme.givtBlue,
-                              ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 20,
+                    ),
+                    child: Text(
+                      context.l10n.familyGoalShareWithFamily,
+                      style: GoogleFonts.mulish(
+                        textStyle:
+                            Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppTheme.givtBlue,
+                                ),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    state.organisationName,
-                    style: GoogleFonts.mulish(
-                      textStyle:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                color: AppTheme.givtBlue,
-                              ),
+                  FamilyGoalCircle(amount: state.amount.toInt()),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24, top: 5),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          context.l10n.familyGoalToSupport,
+                          style: GoogleFonts.mulish(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppTheme.givtBlue,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          state.organisationName,
+                          style: GoogleFonts.mulish(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: AppTheme.givtBlue,
+                                ),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
-                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 24,
+                      right: 24,
+                      bottom: 16,
+                    ),
+                    child: CustomBlueElevatedButton(
+                      title: context.l10n.familyGoalLaunch,
+                      onPressed: () {
+                        context
+                            .read<CreateFamilyGoalCubit>()
+                            .createFamilyGoal();
+                        AnalyticsHelper.logEvent(
+                          eventName: AmplitudeEvents.familyGoalLaunchClicked,
+                          eventProperties: {
+                            'charity_name': state.organisationName,
+                            'amount': state.amount,
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
           ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24),
-        child: CustomBlueElevatedButton(
-          title: context.l10n.familyGoalLaunch,
-          onPressed: () {
-            context.read<CreateFamilyGoalCubit>().createFamilyGoal();
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.familyGoalLaunchClicked,
-              eventProperties: {
-                'charity_name': state.organisationName,
-                'amount': state.amount,
-              },
-            );
-          },
         ),
       ),
     );
