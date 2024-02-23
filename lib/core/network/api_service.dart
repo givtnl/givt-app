@@ -952,4 +952,26 @@ class APIService {
     final itemMap = decodedBody['items']! as List<dynamic>;
     return itemMap;
   }
+
+  Future<void> createFamilyGoal(Map<String, dynamic> body) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family');
+
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode != 200) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+  }
 }

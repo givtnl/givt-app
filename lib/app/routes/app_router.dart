@@ -20,8 +20,9 @@ import 'package:givt_app/features/children/details/pages/child_details_page.dart
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
+import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
+import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
-import 'package:givt_app/features/children/family_goal/pages/create_family_goal_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
@@ -308,9 +309,28 @@ class AppRouter {
             path: Pages.createFamilyGoal.path,
             name: Pages.createFamilyGoal.name,
             builder: (context, state) {
-              return BlocProvider.value(
-                value: state.extra! as FamilyOverviewCubit,
-                child: const CreateFamilyGoal(),
+              final user = context.read<AuthCubit>().state.user;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: state.extra! as FamilyOverviewCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => OrganisationBloc(
+                      getIt(),
+                      getIt(),
+                    )..add(
+                        OrganisationFetch(
+                          Country.fromCode(user.country),
+                          type: CollectGroupType.none.index,
+                        ),
+                      ),
+                  ),
+                  BlocProvider(
+                    create: (_) => CreateFamilyGoalCubit(getIt()),
+                  ),
+                ],
+                child: const CreateFamilyGoalFlowPage(),
               );
             },
           ),

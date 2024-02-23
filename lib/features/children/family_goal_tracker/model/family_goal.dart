@@ -4,6 +4,7 @@ class FamilyGoal extends Equatable {
   const FamilyGoal({
     required this.goalAmount,
     required this.amount,
+    required this.totalAmount,
     required this.mediumId,
     required this.status,
     required this.dateCreated,
@@ -13,6 +14,7 @@ class FamilyGoal extends Equatable {
       : this(
           goalAmount: 0,
           amount: 0,
+          totalAmount: 0,
           mediumId: '',
           status: FamilyGoalStatus.inProgress,
           dateCreated: '2024-01-01T10:00:00Z',
@@ -20,23 +22,25 @@ class FamilyGoal extends Equatable {
 
   factory FamilyGoal.fromMap(Map<String, dynamic> map) {
     return FamilyGoal(
-      goalAmount: map['goal'] as int,
-      amount: (map['amount'] as int).toDouble(),
+      goalAmount: (map['goal'] as num).toInt(),
+      amount: (map['amount'] as num).toDouble(),
+      totalAmount: (map['totalAmount'] as num).toDouble(),
       mediumId: map['mediumId'] as String,
       status: FamilyGoalStatus.fromString(map['status'] as String),
-      dateCreated: map['dtCreated'] as String,
+      dateCreated: map['creationDate'] as String,
     );
   }
 
   final int goalAmount;
   final double amount;
+  final double totalAmount;
   final String mediumId;
   final FamilyGoalStatus status;
   final String dateCreated;
 
   @override
   List<Object?> get props =>
-      [goalAmount, amount, mediumId, status, dateCreated];
+      [goalAmount, amount, totalAmount, mediumId, status, dateCreated];
 }
 
 enum FamilyGoalStatus {

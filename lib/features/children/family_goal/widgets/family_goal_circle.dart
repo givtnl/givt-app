@@ -4,15 +4,20 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class FamilyGoalCircle extends StatefulWidget {
   const FamilyGoalCircle({
-    this.amount = -1,
+    this.amount = 0,
+    this.showConfetti = false,
     super.key,
   });
 
   final int amount;
+  final bool showConfetti;
 
   @override
   State<FamilyGoalCircle> createState() => _FamilyGoalCircleState();
@@ -27,18 +32,17 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
         .profiles;
   }
 
-  String get _familyLeaderName {
-    return context.read<AuthCubit>().state.user.firstName;
+  String get _familyLeaderId {
+    return context.read<AuthCubit>().state.user.guid;
   }
 
   Profile get _familyLeader {
-    return _profiles
-        .firstWhere((prifile) => prifile.firstName == _familyLeaderName);
+    return _profiles.firstWhere((prifile) => prifile.id == _familyLeaderId);
   }
 
   List<Profile> get _otherMembers {
     return [..._profiles]
-      ..removeWhere((profile) => profile.firstName == _familyLeaderName);
+      ..removeWhere((profile) => profile.id == _familyLeaderId);
   }
 
   @override
@@ -60,14 +64,46 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
             ),
             Positioned.fill(
               child: Center(
-                child: SvgPicture.asset(
-                  'assets/images/family_goal_circle_flag.svg',
-                  width: 64,
-                  height: 64,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.amount > 0) const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: SvgPicture.asset(
+                        'assets/images/family_goal_circle_flag.svg',
+                        width: 64,
+                        height: 64,
+                      ),
+                    ),
+                    if (widget.amount > 0)
+                      Text(
+                        '\$ ${widget.amount}',
+                        style: GoogleFonts.mulish(
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .headlineSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w800,
+                                color: AppTheme.givtGreen40,
+                              ),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                  ],
                 ),
               ),
             ),
             ..._fillFamilyCircleWithMembers(),
+            if (widget.showConfetti)
+              Positioned.fill(
+                child: Lottie.asset(
+                  'assets/lotties/confetti.json',
+                  fit: BoxFit.fitWidth,
+                  // repeat: false,
+                  width: double.infinity,
+                ),
+              ),
           ],
         ),
       ),
@@ -353,8 +389,7 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
                 radius: _avatarSize / 2,
                 backgroundColor: AppTheme.sliderIndicatorNotFilled,
                 child: Text(
-                  //TODO: POEditor
-                  '+$moreProfilesNumber more',
+                  context.l10n.familyGoalCircleMore(moreProfilesNumber),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppTheme.givtBlue,
                       ),

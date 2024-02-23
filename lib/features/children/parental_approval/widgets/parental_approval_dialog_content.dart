@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
@@ -22,18 +23,24 @@ class ParentalApprovalDialogContent extends StatelessWidget {
 
   final ChildDonation donation;
 
-  void _refreshHistory(BuildContext context) {
-    context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true);
-    context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
+  Future<void> _refreshHistory(BuildContext context) async {
+    await context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
+    if (!context.mounted) return;
+
+    // Exectue the following cubits in parallel
+    await Future.wait([
+      context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true),
+      context.read<GoalTrackerCubit>().getGoal(),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ParentalApprovalCubit, ParentalApprovalState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state.status == DecisionStatus.approved ||
             state.status == DecisionStatus.declined) {
-          _refreshHistory(context);
+          await _refreshHistory(context);
         } else if (state.status == DecisionStatus.pop) {
           context.pop();
         }
