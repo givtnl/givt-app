@@ -24,6 +24,7 @@ class GoalActiveWidget extends StatelessWidget {
             children: [
               Text(
                 org.organisationName ?? 'Name Placeholder',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 17,
                       fontFamily: 'Mulish',

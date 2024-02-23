@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.2.0
+version: 4.2.1
 publish_to: none
 
 environment:
