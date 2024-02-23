@@ -11,7 +11,7 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   FamilyHistoryCubit(this.historyRepo) : super(const FamilyHistoryState());
   final FamilyDonationHistoryRepository historyRepo;
 
-  FutureOr<void> fetchHistory({bool fromScratch = false}) async {
+  Future<void> fetchHistory({bool fromScratch = false}) async {
     emit(
       state.copyWith(
         status: HistroryStatus.loading,
