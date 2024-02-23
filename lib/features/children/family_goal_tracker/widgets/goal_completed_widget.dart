@@ -39,6 +39,7 @@ class GoalCompletedWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 org.organisationName ?? 'Name Placeholder',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontSize: 17,
                       fontFamily: 'Mulish',
@@ -48,6 +49,7 @@ class GoalCompletedWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 'Family Goal completed. Great job!',
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontFamily: 'Mulish',
                       fontWeight: FontWeight.w400,
