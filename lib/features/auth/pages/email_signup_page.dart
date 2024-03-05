@@ -136,6 +136,17 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 ),
               );
             }
+            if (state.status == AuthStatus.certificateException) {
+              showDialog<void>(
+                context: context,
+                builder: (context) => WarningDialog(
+                  title: 'Connection not secure',
+                  content:
+                      "Sorry we couldn't successfully renew the security certificates. Please try again later. ",
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
           },
           child: Padding(
             padding: const EdgeInsets.all(16),

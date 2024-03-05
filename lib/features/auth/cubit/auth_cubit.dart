@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/models.dart';
@@ -117,6 +118,9 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
+      // fetch certificate fingerprints
+      await _authRepositoy.updateFingerprintCertificate();
+
       // Update notification id if needed
       final newNotificationId = await _updateNotificationId(
         guid: userExt.guid,
@@ -167,6 +171,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
+      // fetch certificate fingerprints
+      await _authRepositoy.updateFingerprintCertificate();
+
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
@@ -225,6 +232,14 @@ class AuthCubit extends Cubit<AuthState> {
         emit(
           state.copyWith(
             status: AuthStatus.noInternet,
+          ),
+        );
+        return;
+      }
+      if (e is CertificatesException) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.certificateException,
           ),
         );
         return;
