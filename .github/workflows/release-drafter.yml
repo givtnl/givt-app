@@ -33,7 +33,8 @@ jobs:
           cmd: yq -r '.version' 'pubspec.yaml'
   
       # Drafts next Release notes as Pull Requests are merged into "main"
-      - uses: release-drafter/release-drafter@v6
+      - name: Write Release Notes
+        uses: release-drafter/release-drafter@v6
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           version: ${{ steps.yq.outputs.result }}
@@ -41,3 +42,67 @@ jobs:
           publish: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Set current date as env variable"
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          echo "builddate=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        id: version  # this is used on variable path
+  
+      # Post slack message for new release
+      - name: Slack Notification
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: slackapi/slack-github-action@v1.25.0
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "New release of the Givt app :sparkles::tada:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Version:*\n${{ steps.yq.outputs.result }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Release Date:*\n${{ steps.version.outputs.builddate }}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Made by:*\n${{ github.actor }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View changelog :memo:",
+                        "emoji": true
+                      },
+                      "style": "primary",
+                      "url": "https://github.com/givtnl/givt-app/releases/tag/v${{ steps.yq.outputs.result }}"
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_RELEASENOTES_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+      

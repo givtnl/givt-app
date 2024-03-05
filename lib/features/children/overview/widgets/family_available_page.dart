@@ -47,7 +47,6 @@ class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
         context.read<FamilyHistoryCubit>().fetchHistory();
       }
     });
-    final isDebug = info?.packageName.contains('test') ?? false;
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       controller: scrollController,
@@ -55,7 +54,7 @@ class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isDebug) const FamilyGoalTracker(),
+          const FamilyGoalTracker(),
           ProfilesOverviewWidget(
             profiles: sortedAdultProfiles,
           ),
