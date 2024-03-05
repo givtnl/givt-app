@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/network_info.dart';
 import 'package:http_certificate_pinning/http_certificate_pinning.dart';
@@ -20,9 +21,14 @@ class CertificateCheckInterceptor extends InterceptorContract {
     if (await getIt<NetworkInfo>().isConnected == false) {
       return request;
     }
+    final apiURL = request.url.host;
+    // do not check certificate for the certs endpoint
+    if (apiURL.contains('certs')) {
+      return request;
+    }
 
     final storedSHAFigerprint =
-        getIt<SharedPreferences>().getString(request.url.toString()) ?? '';
+        getIt<SharedPreferences>().getString(apiURL) ?? '';
 
     final secure = await HttpCertificatePinning.check(
       serverURL: request.url.toString(),
@@ -36,7 +42,7 @@ class CertificateCheckInterceptor extends InterceptorContract {
         request.url.toString(),
         methodName: StackTrace.current.toString(),
       );
-      throw CertificateException('CONNECTION_NOT_SECURE');
+      throw CertificatesException(message: 'CONNECTION_NOT_SECURE');
     }
     return request;
   }

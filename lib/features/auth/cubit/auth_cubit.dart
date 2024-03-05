@@ -236,7 +236,8 @@ class AuthCubit extends Cubit<AuthState> {
         );
         return;
       }
-      if (e is CertificatesException) {
+      if (e is CertificatesException ||
+          e.toString().contains('CONNECTION_NOT_SECURE')) {
         emit(
           state.copyWith(
             status: AuthStatus.certificateException,

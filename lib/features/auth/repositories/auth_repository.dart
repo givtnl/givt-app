@@ -456,26 +456,17 @@ class AuthRepositoyImpl with AuthRepositoy {
   @override
   Future<void> updateFingerprintCertificate() async {
     final response = await _apiService.updateFingerprintCertificate();
-
     try {
-      final jwt = JWT(
-        // Payload
-        {
-          "dev-backend.givt.app": "WTF",
-          "api.development.givtapp.net": "EDA82792F22B396A88383D4WTFTFT0628"
-        },
-      );
-
       final jwtVerified =
           JWT.verify(response.token, Util.certificatesPublicKey);
 
       await _prefs.setString(
         response.apiURL,
-        jwt.payload[response.apiURL].toString(),
+        jwtVerified.payload[response.apiURL].toString(),
       );
       await _prefs.setString(
         response.apiURLAWS,
-        jwt.payload[response.apiURLAWS].toString(),
+        jwtVerified.payload[response.apiURLAWS].toString(),
       );
     } on Exception catch (e) {
       throw CertificatesException(message: e.toString());
