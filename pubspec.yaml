@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   amplitude_flutter: ^3.16.0
-  animated_toggle_switch: ^0.7.0
+  animated_toggle_switch: ^0.8.2
   appcheck: ^1.0.6
   badges: ^3.1.1
   bloc: ^8.1.1
