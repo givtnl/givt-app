@@ -140,9 +140,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               showDialog<void>(
                 context: context,
                 builder: (context) => WarningDialog(
-                  title: 'A little hiccup',
-                  content:
-                      "We couldn't connect securely to the server. But no worries, try again later and we'll get things sorted out!",
+                  title: locals.certExceptionTitle,
+                  content: locals.certExceptionBody,
                   onConfirm: () => context.pop(),
                 ),
               );
