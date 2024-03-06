@@ -1,3 +1,4 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:intl/intl.dart';
@@ -61,7 +62,17 @@ class Util {
 
   static RegExp phoneNumberRegExWithPrefix() => RegExp(
       r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}');
-
+  static final certificatesPublicKey = RSAPublicKey('''
+-----BEGIN PUBLIC KEY-----
+MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBZ7fQsGvR+889VBFQZvb+L
+0sFM0kzRPD9djOpUzzPLZy1RfUKhA9e6hmnbGToWIZ4l4f4Hf3weuO9umnd1+SYS
+SpknfbzZHEm4Bw5XQuWg6co4TfhzF+q9PP6fghyxRvP6Ep1qfxGTKzE7BXiwrrRA
+bMGXpq8/IlmArMCahl/rkg3h+JUoS5GLtSp24vV6l0XkUQcy/nIPdInjaJwYfXCM
+i2qkpEAvzAVUnUibRblnjr3U/2aWSCNisb8CY5noWSI6PFOm9hEJo6MpFRqUX6WJ
+DKMjI861g8uLPf2mXBrkUOsvnSlUOD/CKYH10yvghfP+6T2KnA21dfVTX7HhGPcV
+AgMBAAE=
+-----END PUBLIC KEY-----
+''');
   static IconData getCurrencyIconData({required Country country}) {
     var icon = Icons.euro;
     if (country == Country.us) {

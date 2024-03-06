@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:flutter/services.dart';
+import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
@@ -53,6 +56,7 @@ mixin AuthRepositoy {
     required String guid,
     required String notificationId,
   });
+  Future<void> updateFingerprintCertificate();
 }
 
 class AuthRepositoyImpl with AuthRepositoy {
@@ -448,5 +452,27 @@ class AuthRepositoyImpl with AuthRepositoy {
         'country': newUserExt.country,
       },
     );
+  }
+
+  @override
+  Future<void> updateFingerprintCertificate() async {
+    try {
+      final response = await _apiService.updateFingerprintCertificate();
+
+      final publicKey =
+          await rootBundle.loadString('assets/ca/certificatekey.txt');
+      final jwtVerified = JWT.verify(response.token, RSAPublicKey(publicKey));
+
+      await _prefs.setString(
+        response.apiURL,
+        jwtVerified.payload[response.apiURL].toString(),
+      );
+      await _prefs.setString(
+        response.apiURLAWS,
+        jwtVerified.payload[response.apiURLAWS].toString(),
+      );
+    } on Exception catch (e) {
+      throw CertificatesException(message: e.toString());
+    }
   }
 }
