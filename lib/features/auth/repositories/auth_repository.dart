@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
@@ -455,10 +456,12 @@ class AuthRepositoyImpl with AuthRepositoy {
 
   @override
   Future<void> updateFingerprintCertificate() async {
-    final response = await _apiService.updateFingerprintCertificate();
     try {
-      final jwtVerified =
-          JWT.verify(response.token, Util.certificatesPublicKey);
+      final response = await _apiService.updateFingerprintCertificate();
+
+      final publicKey =
+          await rootBundle.loadString('assets/ca/certificatekey.txt');
+      final jwtVerified = JWT.verify(response.token, RSAPublicKey(publicKey));
 
       await _prefs.setString(
         response.apiURL,

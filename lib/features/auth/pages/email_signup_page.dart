@@ -140,9 +140,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               showDialog<void>(
                 context: context,
                 builder: (context) => WarningDialog(
-                  title: 'Connection not secure',
+                  title: 'A little hiccup',
                   content:
-                      "Sorry we couldn't successfully renew the security certificates. Please try again later. ",
+                      "We couldn't connect securely to the server. But no worries, try again later and we'll get things sorted out!",
                   onConfirm: () => context.pop(),
                 ),
               );

@@ -243,6 +243,10 @@ class AuthCubit extends Cubit<AuthState> {
             status: AuthStatus.certificateException,
           ),
         );
+        await LoggingInfo.instance.error(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
         return;
       }
       await LoggingInfo.instance.error(
