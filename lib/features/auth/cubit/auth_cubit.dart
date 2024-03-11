@@ -171,12 +171,13 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
-      // fetch certificate fingerprints
-      await _authRepositoy.updateFingerprintCertificate();
-
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
+      
+      // fetch certificate fingerprints
+      await _authRepositoy.updateFingerprintCertificate();
+
 
       if (!await _authRepositoy.checkTld(email)) {
         emit(state.copyWith(status: AuthStatus.failure));
