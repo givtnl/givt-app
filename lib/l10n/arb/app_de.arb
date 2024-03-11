@@ -1525,5 +1525,7 @@
     "familyGoalShareWithFamily": "Share this with your family and make a difference together",
     "familyGoalLaunch": "Launch",
     "familyGoalHowMuch": "How much do you want to raise?",
-    "familyGoalAmountHint": "Most families start out with an amount of $100"
+    "familyGoalAmountHint": "Most families start out with an amount of $100",
+    "certExceptionTitle": "A little hiccup",
+    "certExceptionBody": "We couldn't connect securely to the server. But no worries, try again later and we'll get things sorted out!"
 }

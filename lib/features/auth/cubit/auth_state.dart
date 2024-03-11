@@ -6,6 +6,7 @@ enum AuthStatus {
   authenticated,
   unauthenticated,
   noInternet,
+  certificateException,
   tempAccountWarning,
   loginRedirect,
   failure,

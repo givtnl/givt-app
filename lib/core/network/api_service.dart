@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/shared/models/certificate_response.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {
@@ -973,5 +974,39 @@ class APIService {
             : null,
       );
     }
+  }
+
+  Future<CertificateResponse> updateFingerprintCertificate() async {
+    final url = getCertsUrl(apiURL);
+    final response = await client.get(url);
+
+    if (response.statusCode != 200) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    return CertificateResponse(
+      token: response.body.trim().replaceAll('"', ''),
+      apiURL: apiURL,
+      apiURLAWS: apiURLAWS,
+    );
+  }
+
+  Uri getCertsUrl(String apiUrl) {
+    final isEu = apiUrl.contains('givtapp.net');
+    final isDev = apiUrl.contains('dev');
+
+    if (isDev) {
+      if (isEu) {
+        return Uri.https('dev-certs.givtapp.net', '/v1');
+      }
+      return Uri.https('dev-certs.givt.app', '/v1');
+    } else if (isEu) {
+      return Uri.https('certs.givtapp.net', '/v1');
+    }
+    return Uri.https('certs.givt.app', '/v1');
   }
 }

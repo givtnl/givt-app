@@ -37,7 +37,7 @@ class NoChildrenPage extends StatelessWidget {
           ),
         ),
         SvgPicture.asset(
-          'assets/images/no_children.svg',
+          'assets/images/family_superheroes.svg',
         ),
         const SizedBox(height: 8),
         Padding(

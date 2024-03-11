@@ -136,6 +136,16 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                 ),
               );
             }
+            if (state.status == AuthStatus.certificateException) {
+              showDialog<void>(
+                context: context,
+                builder: (context) => WarningDialog(
+                  title: locals.certExceptionTitle,
+                  content: locals.certExceptionBody,
+                  onConfirm: () => context.pop(),
+                ),
+              );
+            }
           },
           child: Padding(
             padding: const EdgeInsets.all(16),

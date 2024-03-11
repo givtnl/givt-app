@@ -55,6 +55,11 @@ jobs:
         with: 
           bundler-cache: true
 
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Auth codesigning
         uses: webfactory/ssh-agent@v0.9.0
         with:
