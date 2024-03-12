@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -13,10 +11,6 @@ class CertificateCheckInterceptor extends InterceptorContract {
 
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
-    if (Platform.isIOS) {
-      return request;
-    }
-
     /// Don't check for certificate if there is no internet connection
     if (await getIt<NetworkInfo>().isConnected == false) {
       return request;
@@ -42,7 +36,8 @@ class CertificateCheckInterceptor extends InterceptorContract {
         request.url.toString(),
         methodName: StackTrace.current.toString(),
       );
-      throw CertificatesException(message: 'CONNECTION_NOT_SECURE');
+
+      throw const CertificatesException(message: 'CONNECTION_NOT_SECURE');
     }
     return request;
   }
