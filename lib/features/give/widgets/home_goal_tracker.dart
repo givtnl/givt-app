@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -70,7 +71,7 @@ class HomeGoalTracker extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Your Family Goal',
+                                context.l10n.yourFamilyGoalKey,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium

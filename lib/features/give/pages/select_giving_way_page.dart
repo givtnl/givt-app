@@ -126,13 +126,16 @@ class SelectGivingWayPage extends StatelessWidget {
                     ),
                     BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
                       builder: (context, state) {
-                        return _buildListTile(
-                          onTap: () => log('Give to family goal'),
-                          title: 'Your Family Goal',
-                          subtitle:
-                              'Give to ${state.organisation.organisationName}',
-                          image: 'assets/images/select_goal_list_tile.png',
-                        );
+                        if (state.status == GoalTrackerStatus.activeGoal) {
+                          return _buildListTile(
+                            onTap: () => log('Give to family goal'),
+                            title: locals.yourFamilyGoalKey,
+                            subtitle:
+                                'Give to ${state.organisation.organisationName}',
+                            image: 'assets/images/select_goal_list_tile.png',
+                          );
+                        }
+                        return const SizedBox();
                       },
                     ),
                     _buildListTile(
