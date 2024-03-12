@@ -184,7 +184,8 @@ class AppRouter {
               builder: (context, state) {
                 bool showAllowanceWarning = false;
                 if (state.extra != null) {
-                  showAllowanceWarning = state.extra! as bool;
+                  showAllowanceWarning =
+                      state.extra!.toString().contains('true');
                 }
                 return MultiBlocProvider(
                   providers: [
@@ -197,9 +198,8 @@ class AppRouter {
                       create: (context) =>
                           FamilyHistoryCubit(getIt())..fetchHistory(),
                     ),
-                    BlocProvider(
-                      create: (context) =>
-                          GoalTrackerCubit(getIt(), getIt())..getGoal(),
+                    BlocProvider.value(
+                      value: GoalTrackerCubit(getIt(), getIt())..getGoal(),
                     ),
                   ],
                   child: const FamilyOverviewPage(),
