@@ -184,7 +184,8 @@ class AppRouter {
               builder: (context, state) {
                 bool showAllowanceWarning = false;
                 if (state.extra != null) {
-                  showAllowanceWarning = state.extra! as bool;
+                  showAllowanceWarning =
+                      state.extra!.toString().contains('true');
                 }
                 return MultiBlocProvider(
                   providers: [
@@ -197,9 +198,8 @@ class AppRouter {
                       create: (context) =>
                           FamilyHistoryCubit(getIt())..fetchHistory(),
                     ),
-                    BlocProvider(
-                      create: (context) =>
-                          GoalTrackerCubit(getIt(), getIt())..getGoal(),
+                    BlocProvider.value(
+                      value: GoalTrackerCubit(getIt(), getIt())..getGoal(),
                     ),
                   ],
                   child: const FamilyOverviewPage(),
@@ -468,42 +468,33 @@ class AppRouter {
           GoRoute(
             path: Pages.selectGivingWay.path,
             name: Pages.selectGivingWay.name,
-            builder: (context, state) => MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) {
-                    final extra = state.extra! as Map<String, dynamic>;
-                    final auth = context.read<AuthCubit>().state;
-                    final bloc = GiveBloc(
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                      getIt(),
-                    )..add(
-                        GiveAmountChanged(
-                          firstCollectionAmount:
-                              extra['firstCollection'] as double,
-                          secondCollectionAmount:
-                              extra['secondCollection'] as double,
-                          thirdCollectionAmount:
-                              extra['thirdCollection'] as double,
-                        ),
-                      );
-                    if ((extra['code'] as String).isNotEmpty) {
-                      bloc.add(
-                        GiveQRCodeScannedOutOfApp(
-                          extra['code'] as String,
-                          auth.user.guid,
-                        ),
-                      );
-                    }
-                    return bloc;
-                  },
-                ),
-                BlocProvider(
-                  create: (_) => GoalTrackerCubit(getIt(), getIt())..getGoal(),
-                ),
-              ],
+            builder: (context, state) => BlocProvider(
+              create: (_) {
+                final extra = state.extra! as Map<String, dynamic>;
+                final auth = context.read<AuthCubit>().state;
+                final bloc = GiveBloc(
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                  getIt(),
+                )..add(
+                    GiveAmountChanged(
+                      firstCollectionAmount: extra['firstCollection'] as double,
+                      secondCollectionAmount:
+                          extra['secondCollection'] as double,
+                      thirdCollectionAmount: extra['thirdCollection'] as double,
+                    ),
+                  );
+                if ((extra['code'] as String).isNotEmpty) {
+                  bloc.add(
+                    GiveQRCodeScannedOutOfApp(
+                      extra['code'] as String,
+                      auth.user.guid,
+                    ),
+                  );
+                }
+                return bloc;
+              },
               child: const SelectGivingWayPage(),
             ),
             routes: [
@@ -654,19 +645,11 @@ class AppRouter {
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
               _checkAndRedirectAuth(state, context, routerState),
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) => RemoteDataSourceSyncBloc(
-                  getIt(),
-                  getIt(),
-                )..add(const RemoteDataSourceSyncRequested()),
-              ),
-              BlocProvider(
-                create: (context) =>
-                    GoalTrackerCubit(getIt(), getIt())..getGoal(),
-              )
-            ],
+          child: BlocProvider(
+            create: (_) => RemoteDataSourceSyncBloc(
+              getIt(),
+              getIt(),
+            )..add(const RemoteDataSourceSyncRequested()),
             child: HomePage(
               code: routerState.uri.queryParameters['code'] ?? '',
               given: routerState.uri.queryParameters.containsKey('given'),
