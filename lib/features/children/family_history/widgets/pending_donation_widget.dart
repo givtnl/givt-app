@@ -105,7 +105,9 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                           ? size.width * 0.55
                           : size.width * 0.75,
                       child: Text(
-                        widget.donation.organizationName,
+                        //TODO: POEditor
+                        '${widget.donation.isToGoal ? 'Family Goal: ' : ''}'
+                        '${widget.donation.organizationName}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
@@ -124,7 +126,8 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                             color:
                                 widget.donation.state == DonationState.pending
                                     ? DonationState.getAmountColor(
-                                        widget.donation.state)
+                                        widget.donation.state,
+                                      )
                                     : AppTheme.givtPurple,
                             fontFamily: 'Raleway',
                           ),
@@ -139,7 +142,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                     size: 15,
                     color: DonationState.getAmountColor(widget.donation.state),
                   ),
-                )
+                ),
               ],
             ),
           ),
