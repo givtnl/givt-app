@@ -39,8 +39,7 @@ class ActionedDonationWidget extends StatelessWidget {
                     ? size.width * 0.55
                     : size.width * 0.75,
                 child: Text(
-                  //TODO: POEditor
-                  '${donation.isToGoal ? 'Family Goal: ' : ''}'
+                  '${donation.isToGoal ? context.l10n.familyGoalPrefix : ''}'
                   '${donation.organizationName}',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,

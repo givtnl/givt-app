@@ -105,8 +105,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                           ? size.width * 0.55
                           : size.width * 0.75,
                       child: Text(
-                        //TODO: POEditor
-                        '${widget.donation.isToGoal ? 'Family Goal: ' : ''}'
+                        '${widget.donation.isToGoal ? context.l10n.familyGoalPrefix : ''}'
                         '${widget.donation.organizationName}',
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
