@@ -58,6 +58,14 @@ enum AmplitudeEvents {
   familyGoalAmountSet('family_goal_amount_set'),
   familyGoalLaunchClicked('family_goal_launch_clicked'),
   familyGoalLaunchedCloseClicked('family_goal_launched_close_clicked'),
+
+  editPaymentDetailsClicked('edit_payment_details_clicked'),
+  editPaymentDetailsCanceled('edit_payment_details_canceled'),
+  editPaymentDetailsSuccess('edit_payment_details_success'),
+  editPaymentDetailsFailure('edit_payment_details_failure'),
+  editPaymentDetailsConfirmationDialogClosed(
+    'edit_payment_details_confirmation_dialog_closed',
+  ),
   ;
 
   const AmplitudeEvents(this.value);

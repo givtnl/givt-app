@@ -14,7 +14,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalInfoEditPage extends StatelessWidget {
@@ -216,6 +216,12 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
                 value:
                     '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
+                onTap: () {
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.editPaymentDetailsClicked,
+                  );
+                  context.pushNamed(Pages.editCreditCardDetails.name);
+                },
               ),
               _buildInfoRow(
                 visible: isUkUser,
