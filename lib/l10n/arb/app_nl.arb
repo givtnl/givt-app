@@ -1528,5 +1528,9 @@
     "familyGoalAmountHint": "Most families start out with an amount of $100",
     "certExceptionTitle": "A little hiccup",
     "certExceptionBody": "We couldn't connect to the server. But no worries, try again later and we'll get things sorted out!",
-    "yourFamilyGoalKey": "Your Family Goal"
+    "yourFamilyGoalKey": "Your Family Goal",
+    "familyGoalPrefix": "Family Goal: ",
+    "editPaymentDetailsSuccess": "Successfully updated!",
+    "editPaymentDetailsFailure": "Ooops...\\nSomething went wrong!",
+    "editPaymentDetailsCanceled": "Payment details update was cancelled."
 }
