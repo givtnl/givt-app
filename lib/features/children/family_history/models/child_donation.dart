@@ -12,6 +12,7 @@ class ChildDonation extends HistoryItem {
     required super.name,
     required this.userId,
     required this.id,
+    required this.goalId,
   });
 
   const ChildDonation.empty()
@@ -25,6 +26,7 @@ class ChildDonation extends HistoryItem {
           name: '',
           userId: '',
           id: -1,
+          goalId: '',
         );
 
   factory ChildDonation.fromMap(Map<String, dynamic> map) {
@@ -42,6 +44,7 @@ class ChildDonation extends HistoryItem {
       type: HistoryTypes.fromString(
         map['donationType'].toString(),
       ),
+      goalId: (map['goalId'] ?? '').toString(),
     );
   }
 
@@ -50,6 +53,11 @@ class ChildDonation extends HistoryItem {
   final DonationMediumType medium;
   final String userId;
   final int id;
+  final String goalId;
+
+  bool get isToGoal {
+    return goalId.isNotEmpty;
+  }
 
   @override
   List<Object?> get props => [
@@ -62,5 +70,6 @@ class ChildDonation extends HistoryItem {
         type,
         userId,
         id,
+        goalId,
       ];
 }
