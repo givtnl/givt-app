@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/edit_payment_details/cubit/edit_stripe_cubit.dart';
 import 'package:givt_app/features/edit_payment_details/dialogs/edit_payment_details_confirmation_dialog.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -53,8 +54,7 @@ class EditCreditCardDetailsPage extends StatelessWidget {
             SnackBarHelper.showMessage(
               // ignore: use_build_context_synchronously
               context,
-              //TODO: Ask Andy re wording & POEditor
-              text: 'Payment details update was cancelled.',
+              text: context.l10n.editPaymentDetailsCanceled,
             );
           }
         },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditCardDetailsSuccess extends StatelessWidget {
@@ -12,8 +13,7 @@ class EditCardDetailsSuccess extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          //TODO: POEditor
-          'Successfully updated!',
+          context.l10n.editPaymentDetailsSuccess,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,

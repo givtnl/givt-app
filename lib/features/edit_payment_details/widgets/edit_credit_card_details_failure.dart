@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditCardDetailsFailure extends StatelessWidget {
@@ -12,8 +13,7 @@ class EditCardDetailsFailure extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          //TODO: POEditor
-          'Ooops...\nSomething went wrong!',
+          context.l10n.editPaymentDetailsFailure,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: AppTheme.givtBlue,
