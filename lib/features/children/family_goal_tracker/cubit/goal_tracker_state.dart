@@ -13,32 +13,28 @@ class GoalTrackerState extends Equatable {
   const GoalTrackerState({
     this.error = '',
     this.status = GoalTrackerStatus.initial,
-    this.currentGoal = const FamilyGoal.empty(),
-    this.goals = const [],
+    this.activeGoal = const FamilyGoal.empty(),
     this.organisation = const Organisation.empty(),
   });
 
   final GoalTrackerStatus status;
   final String error;
-  final List<FamilyGoal> goals;
-  final FamilyGoal currentGoal;
+  final FamilyGoal activeGoal;
   final Organisation organisation;
 
   @override
-  List<Object> get props => [status, error, goals, currentGoal, organisation];
+  List<Object> get props => [status, error, activeGoal, organisation];
 
   GoalTrackerState copyWith({
     GoalTrackerStatus? status,
     String? error,
-    List<FamilyGoal>? goals,
-    FamilyGoal? currentGoal,
+    FamilyGoal? activeGoal,
     Organisation? organisation,
   }) {
     return GoalTrackerState(
       status: status ?? this.status,
       error: error ?? this.error,
-      goals: goals ?? this.goals,
-      currentGoal: currentGoal ?? this.currentGoal,
+      activeGoal: activeGoal ?? this.activeGoal,
       organisation: organisation ?? this.organisation,
     );
   }

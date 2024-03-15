@@ -4,7 +4,7 @@ abstract class GiveEvent extends Equatable {
   const GiveEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class GiveQRCodeScanned extends GiveEvent {
@@ -44,18 +44,23 @@ class GiveBTBeaconScanned extends GiveEvent {
         userGUID,
         serviceUUID,
         serviceData,
-        beaconData
+        beaconData,
       ];
 }
 
 class GiveOrganisationSelected extends GiveEvent {
-  const GiveOrganisationSelected(this.nameSpace, this.userGUID);
+  const GiveOrganisationSelected({
+    required this.nameSpace,
+    required this.userGUID,
+    this.goalId,
+  });
 
   final String nameSpace;
   final String userGUID;
+  final String? goalId;
 
   @override
-  List<Object> get props => [nameSpace, userGUID];
+  List<Object?> get props => [nameSpace, userGUID, goalId];
 }
 
 class GiveCheckLastDonation extends GiveEvent {

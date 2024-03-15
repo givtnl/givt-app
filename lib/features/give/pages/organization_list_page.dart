@@ -161,29 +161,29 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
                     : locals.give,
                 isLoading: context.watch<GiveBloc>().state.status ==
                     GiveStatus.loading,
-                onPressed:
-                    state.selectedCollectGroup.type == CollectGroupType.none
-                        ? null
-                        : () {
-                            final userGUID =
-                                context.read<AuthCubit>().state.user.guid;
-                            if (widget.isSelection) {
-                              context.pop(
-                                state.filteredOrganisations.firstWhere(
-                                  (element) =>
-                                      element.nameSpace ==
-                                      state.selectedCollectGroup.nameSpace,
-                                ),
-                              );
-                              return;
-                            }
-                            context.read<GiveBloc>().add(
-                                  GiveOrganisationSelected(
-                                    state.selectedCollectGroup.nameSpace,
-                                    userGUID,
-                                  ),
-                                );
-                          },
+                onPressed: state.selectedCollectGroup.type ==
+                        CollectGroupType.none
+                    ? null
+                    : () {
+                        final userGUID =
+                            context.read<AuthCubit>().state.user.guid;
+                        if (widget.isSelection) {
+                          context.pop(
+                            state.filteredOrganisations.firstWhere(
+                              (element) =>
+                                  element.nameSpace ==
+                                  state.selectedCollectGroup.nameSpace,
+                            ),
+                          );
+                          return;
+                        }
+                        context.read<GiveBloc>().add(
+                              GiveOrganisationSelected(
+                                nameSpace: state.selectedCollectGroup.nameSpace,
+                                userGUID: userGUID,
+                              ),
+                            );
+                      },
               ),
             ],
           );

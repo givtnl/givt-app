@@ -26,6 +26,7 @@ class ChooseAmount extends StatefulWidget {
     required this.arePresetsEnabled,
     required this.presets,
     this.showAddCollectionButton = true,
+    this.showFamilyGoal = false,
     super.key,
   });
 
@@ -36,6 +37,7 @@ class ChooseAmount extends StatefulWidget {
   final bool showAddCollectionButton;
   final List<Preset> presets;
   final ChooseAmountNextCallback onAmountChanged;
+  final bool showFamilyGoal;
 
   @override
   State<ChooseAmount> createState() => _ChooseAmountState();
@@ -188,7 +190,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           },
                         ),
                       ),
-                      const HomeGoalTracker(),
+                      if (widget.showFamilyGoal) const HomeGoalTracker(),
                     ],
                   ),
                 ),

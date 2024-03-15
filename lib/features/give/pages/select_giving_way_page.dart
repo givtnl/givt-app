@@ -1,12 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -125,7 +121,7 @@ class SelectGivingWayPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    _buildFamilyGoalTile(context),
+                    // _buildFamilyGoalTile(context),
                     _buildListTile(
                       onTap: () => context.goNamed(
                         Pages.giveByBeacon.name,
@@ -197,8 +193,8 @@ class SelectGivingWayPage extends StatelessWidget {
           CupertinoDialogAction(
             onPressed: () => context.read<GiveBloc>().add(
                   GiveOrganisationSelected(
-                    state.organisation.mediumId!,
-                    guid,
+                    nameSpace: state.organisation.mediumId!,
+                    userGUID: guid,
                   ),
                 ),
             child: Text(
@@ -220,32 +216,32 @@ class SelectGivingWayPage extends StatelessWidget {
     });
   }
 
-  Widget _buildFamilyGoalTile(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GoalTrackerCubit(getIt(), getIt())..getGoal(),
-      child: BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
-        builder: (context, state) {
-          if (state.status == GoalTrackerStatus.activeGoal) {
-            return _buildListTile(
-              onTap: () => log('Give to family goal'),
-              title: context.l10n.yourFamilyGoalKey,
-              subtitle: 'Give to ${state.organisation.organisationName}',
-              image: 'assets/images/select_goal_list_tile.png',
-            );
-          }
-          if (state.status == GoalTrackerStatus.loading) {
-            return _buildListTile(
-              onTap: () => log('Give to family goal'),
-              title: context.l10n.yourFamilyGoalKey,
-              subtitle: 'Checking for family goal...',
-              image: 'assets/images/select_goal_list_tile.png',
-            );
-          }
-          return const SizedBox();
-        },
-      ),
-    );
-  }
+  // Widget _buildFamilyGoalTile(BuildContext context) {
+  //   return BlocProvider(
+  //     create: (context) => GoalTrackerCubit(getIt(), getIt())..getGoal(),
+  //     child: BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
+  //       builder: (context, state) {
+  //         if (state.status == GoalTrackerStatus.activeGoal) {
+  //           return _buildListTile(
+  //             onTap: () => log('Give to family goal'),
+  //             title: context.l10n.yourFamilyGoalKey,
+  //             subtitle: 'Give to ${state.organisation.organisationName}',
+  //             image: 'assets/images/select_goal_list_tile.png',
+  //           );
+  //         }
+  //         if (state.status == GoalTrackerStatus.loading) {
+  //           return _buildListTile(
+  //             onTap: () => log('Give to family goal'),
+  //             title: context.l10n.yourFamilyGoalKey,
+  //             subtitle: 'Checking for family goal...',
+  //             image: 'assets/images/select_goal_list_tile.png',
+  //           );
+  //         }
+  //         return const SizedBox();
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget _buildListTile({
     required VoidCallback onTap,
