@@ -236,6 +236,25 @@ class APIService {
     }
   }
 
+  Future<Map<String, dynamic>> updateStripeCustomer() async {
+    final url = Uri.https(
+      apiURL,
+      '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate',
+    );
+
+    final response = await client.put(url);
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return responseBody['item'] as Map<String, dynamic>;
+    } else {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
+
   Future<bool> unregisterUser(
     Map<String, dynamic> params,
   ) async {

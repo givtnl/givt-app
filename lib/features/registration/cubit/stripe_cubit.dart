@@ -8,8 +8,10 @@ import 'package:givt_app/shared/models/stripe_response.dart';
 part 'stripe_state.dart';
 
 class StripeCubit extends Cubit<StripeState> {
-  StripeCubit({required this.authRepositoy, required this.authCubit})
-      : super(StripeInitial());
+  StripeCubit({
+    required this.authRepositoy,
+    required this.authCubit,
+  }) : super(const StripeState());
 
   final AuthRepositoy authRepositoy;
   final AuthCubit authCubit;
@@ -28,9 +30,7 @@ class StripeCubit extends Cubit<StripeState> {
         ),
       );
     } catch (e, stackTrace) {
-      emit(
-        state.copyWith(stripeStatus: StripeObjectStatus.failure),
-      );
+      emit(state.copyWith(stripeStatus: StripeObjectStatus.failure));
       await LoggingInfo.instance.error(
         '$e, ALSO user email: $email \nuser country: ${authCubit.state.user.country}',
         methodName: stackTrace.toString(),
@@ -38,7 +38,6 @@ class StripeCubit extends Cubit<StripeState> {
     }
   }
 
-  Future<void> stripeRegistrationComplete() async {
-    emit(state.copyWith(stripeStatus: StripeObjectStatus.success));
-  }
+  void stripeRegistrationComplete() =>
+      emit(state.copyWith(stripeStatus: StripeObjectStatus.success));
 }

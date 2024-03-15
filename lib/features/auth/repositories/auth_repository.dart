@@ -26,6 +26,7 @@ mixin AuthRepositoy {
     required String appLanguage,
   });
   Future<StripeResponse> registerStripeCustomer({required String email});
+  Future<StripeResponse> updateStripeCustomer();
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
@@ -388,6 +389,13 @@ class AuthRepositoyImpl with AuthRepositoy {
   @override
   Future<StripeResponse> registerStripeCustomer({required String email}) async {
     final reponse = await _apiService.registerStripeCustomer(email);
+    final stripeResponse = StripeResponse.fromJson(reponse);
+    return stripeResponse;
+  }
+
+  @override
+  Future<StripeResponse> updateStripeCustomer() async {
+    final reponse = await _apiService.updateStripeCustomer();
     final stripeResponse = StripeResponse.fromJson(reponse);
     return stripeResponse;
   }

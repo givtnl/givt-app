@@ -1,16 +1,7 @@
-part of 'stripe_cubit.dart';
+part of 'edit_stripe_cubit.dart';
 
-enum StripeObjectStatus {
-  initial,
-  loading,
-  display,
-  success,
-  failure,
-  canceled,
-}
-
-class StripeState extends Equatable {
-  const StripeState({
+class EditStripeState extends Equatable {
+  const EditStripeState({
     this.stripeStatus = StripeObjectStatus.initial,
     this.stripeObject = const StripeResponse.empty(),
   });
@@ -19,11 +10,12 @@ class StripeState extends Equatable {
 
   @override
   List<Object> get props => [stripeStatus, stripeObject];
-  StripeState copyWith({
+
+  EditStripeState copyWith({
     StripeObjectStatus? stripeStatus,
     StripeResponse? stripeObject,
   }) {
-    return StripeState(
+    return EditStripeState(
       stripeStatus: stripeStatus ?? this.stripeStatus,
       stripeObject: stripeObject ?? this.stripeObject,
     );
