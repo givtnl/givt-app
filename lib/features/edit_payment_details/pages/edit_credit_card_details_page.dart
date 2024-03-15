@@ -52,7 +52,6 @@ class EditCreditCardDetailsPage extends StatelessWidget {
             );
 
             SnackBarHelper.showMessage(
-              // ignore: use_build_context_synchronously
               context,
               text: context.l10n.editPaymentDetailsCanceled,
             );
