@@ -18,65 +18,20 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
     emit(state.copyWith(status: GoalTrackerStatus.loading));
 
     try {
-      final goals = await _goalTrackerRepository.fetchFamilyGoal();
+      final goal = await _goalTrackerRepository.fetchFamilyGoal();
 
-      // No goals ever set
-      if (goals.isEmpty) {
-        emit(
-          state.copyWith(status: GoalTrackerStatus.noGoalSet),
-        );
+      if (goal == const FamilyGoal.empty()) {
+        emit(state.copyWith(status: GoalTrackerStatus.noGoalSet));
         return;
       }
 
-      // Sort goals by date created, latest first
-      goals.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
-
-      // Find the first goal that is not completed
-      final current = goals.firstWhere(
-        (element) => element.status == FamilyGoalStatus.inProgress,
-        orElse: FamilyGoal.empty,
-      );
-
-      // There is an active goal
-      if (current != const FamilyGoal.empty()) {
-        final org = await _campaignRepository.getOrganisation(current.mediumId);
-        emit(
-          state.copyWith(
-            currentGoal: current,
-            organisation: org,
-            goals: goals,
-            status: GoalTrackerStatus.activeGoal,
-          ),
-        );
-        return;
-      }
-
-      // No active goals, find the latest completed goal
-      final latestCompleted = goals.firstWhere(
-        (element) => element.status == FamilyGoalStatus.completed,
-        orElse: FamilyGoal.empty,
-      );
-      // There is a completed goal
-      if (latestCompleted != const FamilyGoal.empty()) {
-        final org =
-            await _campaignRepository.getOrganisation(latestCompleted.mediumId);
-        emit(
-          state.copyWith(
-            currentGoal: latestCompleted,
-            organisation: org,
-            goals: goals,
-            status: GoalTrackerStatus.completedGoal,
-          ),
-        );
-        return;
-      }
-
-      // There are no active or completed goals, but goals list is not empty
-      // In this case we still show no goal set in UI
+      final organisation =
+          await _campaignRepository.getOrganisation(goal.mediumId);
       emit(
         state.copyWith(
-          error: 'Something went wrong, we cannot find your goal',
-          status: GoalTrackerStatus.error,
+          activeGoal: goal,
+          organisation: organisation,
+          status: GoalTrackerStatus.activeGoal,
         ),
       );
     } catch (e) {
@@ -93,7 +48,7 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
     emit(
       state.copyWith(
         status: GoalTrackerStatus.noGoalSet,
-        currentGoal: const FamilyGoal.empty(),
+        activeGoal: const FamilyGoal.empty(),
       ),
     );
   }

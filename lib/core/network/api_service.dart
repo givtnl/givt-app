@@ -424,7 +424,7 @@ class APIService {
       body: jsonEncode(body),
       headers: {
         'Content-Type': 'application/json',
-        'x-json-casing': 'PascalKeeze'
+        'x-json-casing': 'PascalKeeze',
       },
     );
     if (response.statusCode >= 300) {
@@ -644,7 +644,7 @@ class APIService {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'x-json-casing': 'PascalKeeze'
+        'x-json-casing': 'PascalKeeze',
       },
     );
     if (response.statusCode >= 400) {
@@ -959,8 +959,8 @@ class APIService {
     }
   }
 
-  Future<List<dynamic>> fetchFamilyGoal() async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family');
+  Future<Map<String, dynamic>> fetchFamilyGoal() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family/latest');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -969,7 +969,7 @@ class APIService {
       );
     }
     final decodedBody = jsonDecode(response.body);
-    final itemMap = decodedBody['items']! as List<dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
     return itemMap;
   }
 

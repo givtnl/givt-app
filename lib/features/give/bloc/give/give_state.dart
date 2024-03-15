@@ -11,6 +11,7 @@ enum GiveStatus {
   donatedToSameOrganisationInLessThan30Seconds,
   beaconNotActive,
   success,
+  processed,
   error,
 }
 

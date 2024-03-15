@@ -12,10 +12,12 @@ import 'package:go_router/go_router.dart';
 class EnterAmountBottomSheet extends StatefulWidget {
   const EnterAmountBottomSheet({
     required this.collectGroupNameSpace,
+    this.goalId,
     super.key,
   });
 
   final String collectGroupNameSpace;
+  final String? goalId;
 
   @override
   State<EnterAmountBottomSheet> createState() => _EnterAmountBottomSheetState();
@@ -33,14 +35,17 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
             Pages.give.name,
             extra: context.read<GiveBloc>(),
           );
-        }
-        if (state.status == GiveStatus.success) {
+        } else if (state.status == GiveStatus.success) {
           context.read<GiveBloc>().add(
                 GiveOrganisationSelected(
-                  widget.collectGroupNameSpace,
-                  auth.user.guid,
+                  nameSpace: widget.collectGroupNameSpace,
+                  userGUID: auth.user.guid,
+                  goalId: widget.goalId,
                 ),
               );
+        } else if (state.status == GiveStatus.processed &&
+            widget.goalId != null) {
+          context.pop();
         }
       },
       child: BottomSheetLayout(
