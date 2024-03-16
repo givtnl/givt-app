@@ -200,9 +200,6 @@ class AppRouter {
                       create: (context) =>
                           FamilyHistoryCubit(getIt())..fetchHistory(),
                     ),
-                    BlocProvider.value(
-                      value: GoalTrackerCubit(getIt(), getIt())..getGoal(),
-                    ),
                   ],
                   child: const FamilyOverviewPage(),
                 );

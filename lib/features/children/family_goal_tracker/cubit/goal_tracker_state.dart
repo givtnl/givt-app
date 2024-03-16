@@ -2,7 +2,6 @@ part of 'goal_tracker_cubit.dart';
 
 enum GoalTrackerStatus {
   initial,
-  loading,
   noGoalSet,
   activeGoal,
   completedGoal,

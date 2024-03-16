@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
 import 'package:givt_app/features/children/family_goal_tracker/repository/goal_tracker_repository.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -14,9 +15,8 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   ) : super(const GoalTrackerState());
   final GoalTrackerRepository _goalTrackerRepository;
   final CampaignRepository _campaignRepository;
-  Future<void> getGoal() async {
-    emit(state.copyWith(status: GoalTrackerStatus.loading));
 
+  Future<void> getGoal() async {
     try {
       final goal = await _goalTrackerRepository.fetchFamilyGoal();
 
@@ -34,11 +34,15 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
           status: GoalTrackerStatus.activeGoal,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
-          error: "We couldn't fetch your goal\n$e",
           status: GoalTrackerStatus.error,
+          error: e.toString(),
         ),
       );
     }

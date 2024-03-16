@@ -229,14 +229,6 @@ class SelectGivingWayPage extends StatelessWidget {
   //             image: 'assets/images/select_goal_list_tile.png',
   //           );
   //         }
-  //         if (state.status == GoalTrackerStatus.loading) {
-  //           return _buildListTile(
-  //             onTap: () => log('Give to family goal'),
-  //             title: context.l10n.yourFamilyGoalKey,
-  //             subtitle: 'Checking for family goal...',
-  //             image: 'assets/images/select_goal_list_tile.png',
-  //           );
-  //         }
   //         return const SizedBox();
   //       },
   //     ),

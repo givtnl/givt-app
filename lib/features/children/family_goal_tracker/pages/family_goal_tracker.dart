@@ -7,7 +7,6 @@ import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_comp
 import 'package:givt_app/features/children/family_goal_tracker/widgets/no_goal_set_widget.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class FamilyGoalTracker extends StatelessWidget {
@@ -34,19 +33,10 @@ class FamilyGoalTracker extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        child: BlocConsumer<GoalTrackerCubit, GoalTrackerState>(
-          listener: (context, state) {
-            if (state.status == GoalTrackerStatus.error) {
-              SnackBarHelper.showMessage(
-                context,
-                text: state.error,
-                isError: true,
-              );
-            }
-          },
+        child: BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
           builder: (context, state) {
             switch (state.status) {
-              case GoalTrackerStatus.loading:
+              case GoalTrackerStatus.initial:
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 32),
                   child: Center(child: CircularProgressIndicator()),

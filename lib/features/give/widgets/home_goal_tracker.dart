@@ -17,12 +17,6 @@ class HomeGoalTracker extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => GoalTrackerCubit(
-            getIt(),
-            getIt(),
-          )..getGoal(),
-        ),
-        BlocProvider(
           create: (context) => GiveBloc(
             getIt(),
             getIt(),
@@ -31,16 +25,7 @@ class HomeGoalTracker extends StatelessWidget {
           ),
         ),
       ],
-      child: BlocConsumer<GoalTrackerCubit, GoalTrackerState>(
-        listener: (context, state) {
-          if (state.status == GoalTrackerStatus.error) {
-            SnackBarHelper.showMessage(
-              context,
-              text: state.error,
-              isError: true,
-            );
-          }
-        },
+      child: BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
         builder: (context, state) {
           return GestureDetector(
             onTap: () {
@@ -59,8 +44,7 @@ class HomeGoalTracker extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: state.status == GoalTrackerStatus.activeGoal ||
-                      state.status == GoalTrackerStatus.loading
+              child: state.status == GoalTrackerStatus.activeGoal
                   ? _buildGoalCard()
                   : const SizedBox(),
             ),
