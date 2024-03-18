@@ -14,9 +14,10 @@ class CollectionFormField extends StatelessWidget {
     this.suffixText = '',
     this.prefixCurrencyIcon = const Icon(
       Icons.euro,
-      color: Colors.black26,
+      color: AppTheme.givtLightPurple,
     ),
     this.bottomBorderColor = AppTheme.givtLightGreen,
+    this.textColor = AppTheme.givtDarkerGray,
     this.isRemoveIconVisible = false,
     super.key,
   });
@@ -33,6 +34,7 @@ class CollectionFormField extends StatelessWidget {
   final VoidCallback onFocused;
   final FocusNode focusNode;
   final bool isVisible;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -71,13 +73,13 @@ class CollectionFormField extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.normal,
                   fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
-                  color: AppTheme.givtDarkerGray,
+                  color: textColor,
                 ),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 16),
+              contentPadding: const EdgeInsets.symmetric(vertical: 12),
               suffixText: isSuffixTextVisible ? suffixText : null,
               suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.givtDarkerGray,
+                    color: textColor,
                   ),
               suffixIcon: IconButton(
                 onPressed: isRemoveIconVisible ? onRemoveIconPressed : null,
