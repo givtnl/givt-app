@@ -71,12 +71,13 @@ class _AppState extends State<App> {
             lazy: false,
           ),
           BlocProvider(
-            create: (_) => GoalTrackerCubit(
+            create: (context) => GoalTrackerCubit(
               getIt(),
               getIt(),
-            )..getGoal(),
+              context.read<AuthCubit>(),
+            ),
             lazy: false,
-          )
+          ),
         ],
         child: const _AppView(),
       );

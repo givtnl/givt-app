@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
 import 'package:givt_app/features/children/family_goal_tracker/repository/goal_tracker_repository.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -12,9 +15,18 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   GoalTrackerCubit(
     this._goalTrackerRepository,
     this._campaignRepository,
-  ) : super(const GoalTrackerState());
+    this._authCubit,
+  ) : super(const GoalTrackerState()) {
+    _authCubit.stream.listen((event) {
+      if (event.status == AuthStatus.authenticated) {
+        getGoal();
+      }
+    });
+  }
   final GoalTrackerRepository _goalTrackerRepository;
   final CampaignRepository _campaignRepository;
+
+  final AuthCubit _authCubit;
 
   Future<void> getGoal() async {
     try {
