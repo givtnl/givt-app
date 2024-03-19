@@ -1531,6 +1531,6 @@
     "yourFamilyGoalKey": "Your Family Goal",
     "familyGoalPrefix": "Family Goal: ",
     "editPaymentDetailsSuccess": "Successfully updated!",
-    "editPaymentDetailsFailure": "Ooops...\\nSomething went wrong!",
+    "editPaymentDetailsFailure": "Ooops...\nSomething went wrong!",
     "editPaymentDetailsCanceled": "Payment details update was cancelled."
 }
