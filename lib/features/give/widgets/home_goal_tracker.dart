@@ -99,18 +99,11 @@ class HomeGoalTracker extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (state.status == GoalTrackerStatus.activeGoal)
-                      SvgPicture.asset(
-                        'assets/images/goal_flag_small.svg',
-                        width: 24,
-                        height: 24,
-                      )
-                    else
-                      const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator.adaptive(),
-                      ),
+                    SvgPicture.asset(
+                      'assets/images/goal_flag_small.svg',
+                      width: 24,
+                      height: 24,
+                    ),
                     const SizedBox(height: 4),
                     Text(
                       context.l10n.yourFamilyGoalKey,
@@ -122,10 +115,8 @@ class HomeGoalTracker extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      state.status == GoalTrackerStatus.activeGoal
-                          ? state.organisation.organisationName ??
-                              'Oops, did not get a name for the goal.'
-                          : 'Checking for a goal...',
+                      state.organisation.organisationName ??
+                          'Oops, did not get a name for the goal.',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             fontFamily: 'Mulish',
                             fontWeight: FontWeight.w400,

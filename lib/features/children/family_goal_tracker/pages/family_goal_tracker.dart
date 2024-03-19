@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
 import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_active_widget.dart';
 import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_completed_widget.dart';
 import 'package:givt_app/features/children/family_goal_tracker/widgets/no_goal_set_widget.dart';
@@ -16,8 +17,8 @@ class FamilyGoalTracker extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (context.read<GoalTrackerCubit>().state.status ==
-            GoalTrackerStatus.noGoalSet) {
+        if (context.read<GoalTrackerCubit>().state.activeGoal ==
+            const FamilyGoal.empty()) {
           context.pushNamed(
             Pages.createFamilyGoal.name,
             extra: context.read<FamilyOverviewCubit>(),

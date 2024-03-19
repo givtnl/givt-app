@@ -33,7 +33,12 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
       final goal = await _goalTrackerRepository.fetchFamilyGoal();
 
       if (goal == const FamilyGoal.empty()) {
-        emit(state.copyWith(status: GoalTrackerStatus.noGoalSet));
+        emit(
+          state.copyWith(
+            activeGoal: const FamilyGoal.empty(),
+            status: GoalTrackerStatus.noGoalSet,
+          ),
+        );
         return;
       }
 
@@ -43,7 +48,9 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
         state.copyWith(
           activeGoal: goal,
           organisation: organisation,
-          status: GoalTrackerStatus.activeGoal,
+          status: goal.status == FamilyGoalStatus.completed
+              ? GoalTrackerStatus.completedGoal
+              : GoalTrackerStatus.activeGoal,
         ),
       );
     } catch (e, stackTrace) {
@@ -53,8 +60,8 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
       );
       emit(
         state.copyWith(
-          status: GoalTrackerStatus.error,
           error: e.toString(),
+          status: GoalTrackerStatus.error,
         ),
       );
     }
@@ -63,8 +70,8 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   void clearGoal() {
     emit(
       state.copyWith(
-        status: GoalTrackerStatus.noGoalSet,
         activeGoal: const FamilyGoal.empty(),
+        status: GoalTrackerStatus.noGoalSet,
       ),
     );
   }
