@@ -26,6 +26,9 @@ class ParentalApprovalDialogContent extends StatelessWidget {
   Future<void> _refreshHistory(BuildContext context) async {
     await context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
     if (!context.mounted) return;
+    
+    await context.read<GoalTrackerCubit>().getGoal();
+    if (!context.mounted) return;
 
     // Exectue the following cubits in parallel
     await Future.wait([
