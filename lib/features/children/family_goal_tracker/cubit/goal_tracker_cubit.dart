@@ -71,7 +71,7 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
     emit(
       state.copyWith(
         activeGoal: const FamilyGoal.empty(),
-        status: GoalTrackerStatus.initial,
+        status: GoalTrackerStatus.noGoalSet,
       ),
     );
   }
