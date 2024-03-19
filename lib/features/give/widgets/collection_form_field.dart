@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class CollectionFormField extends StatelessWidget {
+class CollectionFormField extends StatefulWidget {
   const CollectionFormField({
     required this.isVisible,
     required this.controller,
@@ -37,20 +37,39 @@ class CollectionFormField extends StatelessWidget {
   final Color textColor;
 
   @override
+  State<CollectionFormField> createState() => _CollectionFormFieldState();
+}
+
+class _CollectionFormFieldState extends State<CollectionFormField> {
+  bool _isTapped = false;
+  @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: isVisible,
+      visible: widget.isVisible,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Material(
           elevation: 2,
           borderRadius: BorderRadius.circular(5),
           child: TextFormField(
-            focusNode: focusNode,
+            focusNode: widget.focusNode,
             readOnly: true,
             autofocus: true,
-            controller: controller,
-            onTap: onFocused,
+            controller: widget.controller,
+            onTap: () {
+              setState(() {
+                _isTapped = true;
+              });
+
+              Future.delayed(const Duration(milliseconds: 220), () {
+                if (mounted) {
+                  setState(() {
+                    _isTapped = false;
+                  });
+                }
+              });
+              widget.onFocused(); // Call the onTap callback
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return '';
@@ -61,10 +80,10 @@ class CollectionFormField extends StatelessWidget {
               }
 
               /// Dart accepts only dot as decimal separator
-              if (currentValue > double.parse(amountLimit.toString())) {
+              if (currentValue > double.parse(widget.amountLimit.toString())) {
                 return '';
               }
-              if (currentValue < lowerLimit) {
+              if (currentValue < widget.lowerLimit) {
                 return '';
               }
               return null;
@@ -73,22 +92,28 @@ class CollectionFormField extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.normal,
                   fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
-                  color: textColor,
+                  color: _isTapped
+                      ? widget.textColor.withOpacity(0.1)
+                      : widget.textColor,
                 ),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(vertical: 12),
-              suffixText: isSuffixTextVisible ? suffixText : null,
+              suffixText: widget.isSuffixTextVisible ? widget.suffixText : null,
               suffixStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: textColor,
+                    color: widget.textColor,
                   ),
               suffixIcon: IconButton(
-                onPressed: isRemoveIconVisible ? onRemoveIconPressed : null,
+                onPressed: widget.isRemoveIconVisible
+                    ? widget.onRemoveIconPressed
+                    : null,
                 icon: Icon(
                   Icons.remove_circle,
-                  color: isRemoveIconVisible ? Colors.grey : Colors.transparent,
+                  color: widget.isRemoveIconVisible
+                      ? Colors.grey
+                      : Colors.transparent,
                 ),
               ),
-              prefixIcon: prefixCurrencyIcon,
+              prefixIcon: widget.prefixCurrencyIcon,
               errorStyle: const TextStyle(
                 height: 0,
               ),
@@ -118,7 +143,7 @@ class CollectionFormField extends StatelessWidget {
                   bottomRight: Radius.circular(5),
                 ),
                 borderSide: BorderSide(
-                  color: bottomBorderColor,
+                  color: widget.bottomBorderColor,
                   width: 8,
                 ),
               ),
