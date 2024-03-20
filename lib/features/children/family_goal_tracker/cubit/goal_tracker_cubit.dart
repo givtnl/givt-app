@@ -31,7 +31,10 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   Future<void> getGoal() async {
     try {
       emit(
-        state.copyWith(status: GoalTrackerStatus.initial),
+        state.copyWith(
+          status: GoalTrackerStatus.initial,
+          activeGoal: const FamilyGoal.empty(),
+        ),
       );
       final goal = await _goalTrackerRepository.fetchFamilyGoal();
 
