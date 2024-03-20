@@ -50,7 +50,11 @@ enum Pages {
   childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
   childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
   editChild(path: 'edit-child', name: 'EDIT-CHILD'),
-  creditCardDetail(path: 'credit-card-detail', name: 'CREDIT-CARD-DETAIL'),
+  creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
+  editCreditCardDetails(
+    path: 'edit-credit-card-details',
+    name: 'EDIT-CREDIT-CARD-DETAILS',
+  ),
   addMember(path: 'add-member', name: 'ADD-MEMBER'),
   avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
   cachedChildrenOverview(

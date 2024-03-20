@@ -71,6 +71,7 @@ class AppTheme {
   static const progressGradient2 = Color(0xFF9DD273);
   static const progressGradient3 = Color(0xFF74CA79);
   static const highlight80 = Color(0xFFDCC74D);
+  static const primary40 = Color(0xFF006D42);
   static const primary70 = Color(0xFF40C181);
   static const primary98 = Color(0xFFE9FFED);
   static const familyGoalStepperGray = Color(0xFF9694AB);

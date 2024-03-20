@@ -236,6 +236,25 @@ class APIService {
     }
   }
 
+  Future<Map<String, dynamic>> updateStripeCustomer() async {
+    final url = Uri.https(
+      apiURL,
+      '/givtservice/v1/PaymentProvider/CheckoutSession/Mandate',
+    );
+
+    final response = await client.put(url);
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return responseBody['item'] as Map<String, dynamic>;
+    } else {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+  }
+
   Future<bool> unregisterUser(
     Map<String, dynamic> params,
   ) async {
@@ -405,7 +424,7 @@ class APIService {
       body: jsonEncode(body),
       headers: {
         'Content-Type': 'application/json',
-        'x-json-casing': 'PascalKeeze'
+        'x-json-casing': 'PascalKeeze',
       },
     );
     if (response.statusCode >= 300) {
@@ -625,7 +644,7 @@ class APIService {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'x-json-casing': 'PascalKeeze'
+        'x-json-casing': 'PascalKeeze',
       },
     );
     if (response.statusCode >= 400) {
@@ -940,17 +959,23 @@ class APIService {
     }
   }
 
-  Future<List<dynamic>> fetchFamilyGoal() async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family');
+  Future<Map<String, dynamic>> fetchFamilyGoal() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family/latest');
     final response = await client.get(url);
-    if (response.statusCode >= 400) {
+
+    if (response.statusCode >= 400 && response.statusCode < 500) {
+      return {};
+    }
+
+    if (response.statusCode >= 500) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-    final decodedBody = jsonDecode(response.body);
-    final itemMap = decodedBody['items']! as List<dynamic>;
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['item']! as Map<String, dynamic>;
     return itemMap;
   }
 

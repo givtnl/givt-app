@@ -69,7 +69,6 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-
       final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
       await _checkQRCode(mediumId: mediumId, emit: emit);
@@ -92,7 +91,11 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     }
   }
 
-  List<GivtTransaction> _createTransationList(String mediumId, String guid) {
+  List<GivtTransaction> _createTransationList({
+    required String mediumId,
+    required String guid,
+    String? goalId,
+  }) {
     final transactionList = <GivtTransaction>[];
     final formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(
       DateTime.now().toUtc(),
@@ -106,6 +109,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           beaconId: mediumId,
           timestamp: formattedDate,
           collectId: '${index + 1}',
+          goalId: goalId,
         ),
       );
     }
@@ -147,7 +151,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         namespace: event.nameSpace,
         userGUID: event.userGUID,
         emit: emit,
+        goalId: event.goalId,
       );
+      emit(state.copyWith(status: GiveStatus.processed));
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
@@ -264,12 +270,17 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     required String namespace,
     required String userGUID,
     required Emitter<GiveState> emit,
+    String? goalId,
   }) async {
     if (state.status == GiveStatus.readyToGive) {
       return;
     }
     final organisation = await _getOrganisation(namespace);
-    final transactionList = _createTransationList(namespace, userGUID);
+    final transactionList = _createTransationList(
+      mediumId: namespace,
+      guid: userGUID,
+      goalId: goalId,
+    );
 
     await _campaignRepository.saveLastDonation(
       organisation,
@@ -363,8 +374,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
       final organisation = await _getOrganisation(mediumId);
       final transactionList = _createTransationList(
-        mediumId,
-        event.userGUID,
+        mediumId: mediumId,
+        guid: event.userGUID,
       );
 
       emit(

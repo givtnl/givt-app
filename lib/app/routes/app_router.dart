@@ -27,6 +27,8 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
+import 'package:givt_app/features/edit_payment_details/cubit/edit_stripe_cubit.dart';
+import 'package:givt_app/features/edit_payment_details/pages/edit_credit_card_details_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -184,8 +186,10 @@ class AppRouter {
               builder: (context, state) {
                 bool showAllowanceWarning = false;
                 if (state.extra != null) {
-                  showAllowanceWarning = state.extra! as bool;
+                  showAllowanceWarning =
+                      state.extra!.toString().contains('true');
                 }
+                context.read<GoalTrackerCubit>().getGoal();
                 return MultiBlocProvider(
                   providers: [
                     BlocProvider(
@@ -196,10 +200,6 @@ class AppRouter {
                     BlocProvider(
                       create: (context) =>
                           FamilyHistoryCubit(getIt())..fetchHistory(),
-                    ),
-                    BlocProvider(
-                      create: (context) =>
-                          GoalTrackerCubit(getIt(), getIt())..getGoal(),
                     ),
                   ],
                   child: const FamilyOverviewPage(),
@@ -386,8 +386,8 @@ class AppRouter {
                 ),
               ),
               GoRoute(
-                path: Pages.creditCardDetail.path,
-                name: Pages.creditCardDetail.name,
+                path: Pages.creditCardDetails.path,
+                name: Pages.creditCardDetails.name,
                 builder: (context, state) {
                   return MultiBlocProvider(
                     providers: [
@@ -402,6 +402,18 @@ class AppRouter {
                       ),
                     ],
                     child: const CreditCardDetailsPage(),
+                  );
+                },
+              ),
+              GoRoute(
+                path: Pages.editCreditCardDetails.path,
+                name: Pages.editCreditCardDetails.name,
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (_) => EditStripeCubit(
+                      authRepositoy: getIt(),
+                    )..fetchStripeCustomerUpdateURLs(),
+                    child: const EditCreditCardDetailsPage(),
                   );
                 },
               ),

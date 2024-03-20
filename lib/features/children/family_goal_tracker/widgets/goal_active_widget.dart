@@ -11,7 +11,7 @@ class GoalActiveWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
       builder: (context, state) {
-        final currentGoal = state.currentGoal;
+        final currentGoal = state.activeGoal;
         final org = state.organisation;
         final progress = currentGoal.amount / currentGoal.goalAmount.toDouble();
         final totalProgress =

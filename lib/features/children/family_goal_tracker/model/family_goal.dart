@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class FamilyGoal extends Equatable {
   const FamilyGoal({
+    required this.id,
     required this.goalAmount,
     required this.amount,
     required this.totalAmount,
@@ -12,6 +13,7 @@ class FamilyGoal extends Equatable {
 
   const FamilyGoal.empty()
       : this(
+          id: '',
           goalAmount: 0,
           amount: 0,
           totalAmount: 0,
@@ -22,6 +24,7 @@ class FamilyGoal extends Equatable {
 
   factory FamilyGoal.fromMap(Map<String, dynamic> map) {
     return FamilyGoal(
+      id: (map['id'] ?? '').toString(),
       goalAmount: (map['goal'] as num).toInt(),
       amount: (map['amount'] as num).toDouble(),
       totalAmount: (map['totalAmount'] as num).toDouble(),
@@ -31,6 +34,7 @@ class FamilyGoal extends Equatable {
     );
   }
 
+  final String id;
   final int goalAmount;
   final double amount;
   final double totalAmount;
@@ -40,7 +44,7 @@ class FamilyGoal extends Equatable {
 
   @override
   List<Object?> get props =>
-      [goalAmount, amount, totalAmount, mediumId, status, dateCreated];
+      [id, goalAmount, amount, totalAmount, mediumId, status, dateCreated];
 }
 
 enum FamilyGoalStatus {

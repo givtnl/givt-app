@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
 import 'package:givt_app/features/children/family_goal_tracker/repository/goal_tracker_repository.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -11,78 +15,58 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   GoalTrackerCubit(
     this._goalTrackerRepository,
     this._campaignRepository,
-  ) : super(const GoalTrackerState());
+    this._authCubit,
+  ) : super(const GoalTrackerState()) {
+    _authCubit.stream.listen((event) {
+      if (event.status == AuthStatus.authenticated) {
+        getGoal();
+      }
+    });
+  }
   final GoalTrackerRepository _goalTrackerRepository;
   final CampaignRepository _campaignRepository;
+
+  final AuthCubit _authCubit;
+
   Future<void> getGoal() async {
-    emit(state.copyWith(status: GoalTrackerStatus.loading));
-
+    emit(
+      state.copyWith(
+        status: GoalTrackerStatus.initial,
+        activeGoal: const FamilyGoal.empty(),
+      ),
+    );
     try {
-      final goals = await _goalTrackerRepository.fetchFamilyGoal();
+      final goal = await _goalTrackerRepository.fetchFamilyGoal();
 
-      // No goals ever set
-      if (goals.isEmpty) {
-        emit(
-          state.copyWith(status: GoalTrackerStatus.noGoalSet),
-        );
-        return;
-      }
-
-      // Sort goals by date created, latest first
-      goals.sort((a, b) => b.dateCreated.compareTo(a.dateCreated));
-
-      // Find the first goal that is not completed
-      final current = goals.firstWhere(
-        (element) => element.status == FamilyGoalStatus.inProgress,
-        orElse: FamilyGoal.empty,
-      );
-
-      // There is an active goal
-      if (current != const FamilyGoal.empty()) {
-        final org = await _campaignRepository.getOrganisation(current.mediumId);
+      if (goal == const FamilyGoal.empty()) {
         emit(
           state.copyWith(
-            currentGoal: current,
-            organisation: org,
-            goals: goals,
-            status: GoalTrackerStatus.activeGoal,
+            activeGoal: const FamilyGoal.empty(),
+            status: GoalTrackerStatus.noGoalSet,
           ),
         );
         return;
       }
 
-      // No active goals, find the latest completed goal
-      final latestCompleted = goals.firstWhere(
-        (element) => element.status == FamilyGoalStatus.completed,
-        orElse: FamilyGoal.empty,
-      );
-      // There is a completed goal
-      if (latestCompleted != const FamilyGoal.empty()) {
-        final org =
-            await _campaignRepository.getOrganisation(latestCompleted.mediumId);
-        emit(
-          state.copyWith(
-            currentGoal: latestCompleted,
-            organisation: org,
-            goals: goals,
-            status: GoalTrackerStatus.completedGoal,
-          ),
-        );
-        return;
-      }
-
-      // There are no active or completed goals, but goals list is not empty
-      // In this case we still show no goal set in UI
+      final organisation =
+          await _campaignRepository.getOrganisation(goal.mediumId);
       emit(
         state.copyWith(
-          error: 'Something went wrong, we cannot find your goal',
-          status: GoalTrackerStatus.error,
+          activeGoal: goal,
+          organisation: organisation,
+          status: goal.status == FamilyGoalStatus.completed
+              ? GoalTrackerStatus.completedGoal
+              : GoalTrackerStatus.activeGoal,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
       emit(
         state.copyWith(
-          error: "We couldn't fetch your goal\n$e",
+          error: e.toString(),
           status: GoalTrackerStatus.error,
         ),
       );
@@ -92,8 +76,8 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   void clearGoal() {
     emit(
       state.copyWith(
+        activeGoal: const FamilyGoal.empty(),
         status: GoalTrackerStatus.noGoalSet,
-        currentGoal: const FamilyGoal.empty(),
       ),
     );
   }

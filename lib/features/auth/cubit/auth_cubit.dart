@@ -119,7 +119,14 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       // fetch certificate fingerprints
-      await _authRepositoy.updateFingerprintCertificate();
+      try {
+        await _authRepositoy.updateFingerprintCertificate();
+      } catch (e, stackTrace) {
+        await LoggingInfo.instance.error(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        );
+      }
 
       // Update notification id if needed
       final newNotificationId = await _updateNotificationId(
@@ -174,10 +181,9 @@ class AuthCubit extends Cubit<AuthState> {
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
-      
+
       // fetch certificate fingerprints
       await _authRepositoy.updateFingerprintCertificate();
-
 
       if (!await _authRepositoy.checkTld(email)) {
         emit(state.copyWith(status: AuthStatus.failure));

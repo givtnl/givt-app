@@ -7,6 +7,11 @@ class StripeResponse extends Equatable {
     required this.cancelUrl,
   });
 
+  const StripeResponse.empty()
+      : url = '',
+        successUrl = '',
+        cancelUrl = '';
+
   factory StripeResponse.fromJson(Map<String, dynamic> json) => StripeResponse(
         url: json['url'] as String,
         successUrl: json['successUrl'] as String,

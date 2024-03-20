@@ -78,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
         }
         if (state.status == RegistrationStatus.createStripeAccount) {
           context.goNamed(
-            Pages.creditCardDetail.name,
+            Pages.creditCardDetails.name,
             extra: context.read<RegistrationBloc>(),
           );
         }

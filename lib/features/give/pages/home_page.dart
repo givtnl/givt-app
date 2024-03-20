@@ -23,7 +23,6 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -86,7 +85,7 @@ class _HomePageState extends State<HomePage> {
       // @TODO - This is a workaround to navigate to the correct page when
       // the app is opened from a notification and the user is authenticated,
       // but it should be refactored to use the GoRouter (or another solution)
-      
+
       if (message != null && auth.status == AuthStatus.authenticated) {
         NotificationService.instance.navigateFirebaseNotification(message);
       }
@@ -369,6 +368,7 @@ class _HomePageViewState extends State<_HomePageView> {
                     'code': widget.code,
                   },
                 ),
+                showFamilyGoal: true,
               ),
               const ChooseCategory(),
             ],

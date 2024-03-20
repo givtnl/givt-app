@@ -109,53 +109,57 @@ class SelectGivingWayPage extends StatelessWidget {
                   _buildInvalidQRCodeDialog(context, state, user.guid);
                 }
               },
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      locals.giveSubtitle,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
+              child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Text(
+                        locals.giveSubtitle,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  _buildListTile(
-                    onTap: () => context.goNamed(
-                      Pages.giveByBeacon.name,
-                      extra: context.read<GiveBloc>(),
+                    // _buildFamilyGoalTile(context),
+                    _buildListTile(
+                      onTap: () => context.goNamed(
+                        Pages.giveByBeacon.name,
+                        extra: context.read<GiveBloc>(),
+                      ),
+                      title: locals.givingContextCollectionBag,
+                      subtitle: locals.selectContextCollect,
+                      image: 'assets/images/select_givtbox.png',
                     ),
-                    title: locals.givingContextCollectionBag,
-                    subtitle: locals.selectContextCollect,
-                    image: 'assets/images/select_givtbox.png',
-                  ),
-                  _buildListTile(
-                    onTap: () => context.goNamed(
-                      Pages.giveByQrCode.name,
-                      extra: context.read<GiveBloc>(),
+                    _buildListTile(
+                      onTap: () => context.goNamed(
+                        Pages.giveByQrCode.name,
+                        extra: context.read<GiveBloc>(),
+                      ),
+                      title: locals.givingContextQrCode,
+                      subtitle: locals.giveContextQr,
+                      image: 'assets/images/select_qr_phone_scan.png',
                     ),
-                    title: locals.givingContextQrCode,
-                    subtitle: locals.giveContextQr,
-                    image: 'assets/images/select_qr_phone_scan.png',
-                  ),
-                  _buildListTile(
-                    onTap: () => context.goNamed(
-                      Pages.giveByList.name,
-                      extra: context.read<GiveBloc>(),
+                    _buildListTile(
+                      onTap: () => context.goNamed(
+                        Pages.giveByList.name,
+                        extra: context.read<GiveBloc>(),
+                      ),
+                      title: locals.givingContextCollectionBagList,
+                      subtitle: locals.selectContextList,
+                      image: 'assets/images/select_list.png',
                     ),
-                    title: locals.givingContextCollectionBagList,
-                    subtitle: locals.selectContextList,
-                    image: 'assets/images/select_list.png',
-                  ),
-                  _buildListTile(
-                    onTap: () => context.goNamed(
-                      Pages.giveByLocation.name,
-                      extra: context.read<GiveBloc>(),
+                    _buildListTile(
+                      onTap: () => context.goNamed(
+                        Pages.giveByLocation.name,
+                        extra: context.read<GiveBloc>(),
+                      ),
+                      title: locals.givingContextLocation,
+                      subtitle: locals.selectLocationContextLong,
+                      image: 'assets/images/select_location.png',
                     ),
-                    title: locals.givingContextLocation,
-                    subtitle: locals.selectLocationContextLong,
-                    image: 'assets/images/select_location.png',
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -189,8 +193,8 @@ class SelectGivingWayPage extends StatelessWidget {
           CupertinoDialogAction(
             onPressed: () => context.read<GiveBloc>().add(
                   GiveOrganisationSelected(
-                    state.organisation.mediumId!,
-                    guid,
+                    nameSpace: state.organisation.mediumId!,
+                    userGUID: guid,
                   ),
                 ),
             child: Text(
@@ -211,6 +215,25 @@ class SelectGivingWayPage extends StatelessWidget {
       }
     });
   }
+
+  // Widget _buildFamilyGoalTile(BuildContext context) {
+  //   return BlocProvider(
+  //     create: (context) => GoalTrackerCubit(getIt(), getIt())..getGoal(),
+  //     child: BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
+  //       builder: (context, state) {
+  //         if (state.status == GoalTrackerStatus.activeGoal) {
+  //           return _buildListTile(
+  //             onTap: () => log('Give to family goal'),
+  //             title: context.l10n.yourFamilyGoalKey,
+  //             subtitle: 'Give to ${state.organisation.organisationName}',
+  //             image: 'assets/images/select_goal_list_tile.png',
+  //           );
+  //         }
+  //         return const SizedBox();
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget _buildListTile({
     required VoidCallback onTap,
