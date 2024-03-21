@@ -7,3 +7,4 @@ export 'ns_user_defaults_keys.dart';
 export 'shared_preferences_keys.dart';
 export 'snack_bar_helper.dart';
 export 'util.dart';
+export 'utm_helper.dart';

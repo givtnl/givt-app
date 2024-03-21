@@ -66,6 +66,8 @@ enum AmplitudeEvents {
   editPaymentDetailsConfirmationDialogClosed(
     'edit_payment_details_confirmation_dialog_closed',
   ),
+
+  utm('utm'),
   ;
 
   const AmplitudeEvents(this.value);
