@@ -57,6 +57,7 @@ import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -693,6 +694,8 @@ class AppRouter {
     final auth = context.read<AuthCubit>().state;
     var code = '';
     var navigatingPage = '';
+
+    UTMHelper.trackToAnalytics(uri: state.uri);
 
     if (state.uri.queryParameters.containsKey('code')) {
       code = state.uri.queryParameters['code']!;
