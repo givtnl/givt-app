@@ -23,29 +23,6 @@ class Util {
   static const String defaultUSPhoneNumber = '1231231234';
   static const String empty = '';
 
-  /// Allowed SHA-256 fingerprints for Givt backend
-  /// The list is used in APIService while building the http.client
-  /// using the http_certificate_pinning package
-  /// https://github.com/diefferson/http_certificate_pinning/tree/master
-  static final List<String> allowedSHAFingerprints = [
-    /// backend.givtapp.net
-    /// dev-backend.givtapp.net
-    /// backend.givt.app
-    /// dev-backend.givt.app
-    '6D99FB265EB1C5B3744765FCBC648F3CD8E1BFFAFDC4C2F99B9D47CF7FF1C24F',
-
-    /// api.production.givt.app
-    /// api.development.givtapp.net
-    /// api.production.givtapp.net
-    '87DCD4DC74640A322CD205552506D1BE64F12596258096544986B4850BC72706',
-
-    /// aws dev
-    'B6BC0A83BABC3AB4A0DACF492F88A5BB878EE2FD0291A65117B8E305B71604CF',
-
-    /// aws prod
-    'D8A8F6D46EAC49E08F1DD9E99379EFCCE1A34F7D27811744122D024BF423B9F3',
-  ];
-
   static final ukPostCodeRegEx = RegExp(
       r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$');
   static final ukPhoneNumberRegEx = RegExp(
