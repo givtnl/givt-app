@@ -61,12 +61,10 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                 _isTapped = true;
               });
 
-              Future.delayed(const Duration(milliseconds: 220), () {
-                if (mounted) {
-                  setState(() {
-                    _isTapped = false;
-                  });
-                }
+              Future.delayed(const Duration(milliseconds: 150), () {
+                setState(() {
+                  _isTapped = false;
+                });
               });
               widget.onFocused(); // Call the onTap callback
             },
@@ -93,7 +91,7 @@ class _CollectionFormFieldState extends State<CollectionFormField> {
                   fontWeight: FontWeight.normal,
                   fontSize: MediaQuery.sizeOf(context).height < 600 ? null : 28,
                   color: _isTapped
-                      ? widget.textColor.withOpacity(0.1)
+                      ? widget.textColor.withOpacity(0.40)
                       : widget.textColor,
                 ),
             decoration: InputDecoration(
