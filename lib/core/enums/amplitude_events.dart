@@ -68,6 +68,9 @@ enum AmplitudeEvents {
   ),
 
   utm('utm'),
+
+  giveToFamilyGoalDirectly('give_to_family_goal_directly'),
+  giveToFamilyGoalViaOptions('give_to_family_goal_via_options'),
   ;
 
   const AmplitudeEvents(this.value);

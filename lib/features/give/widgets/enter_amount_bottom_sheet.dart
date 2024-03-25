@@ -7,6 +7,7 @@ import 'package:givt_app/features/give/bloc/give/give.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class EnterAmountBottomSheet extends StatefulWidget {
@@ -43,6 +44,14 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
                   goalId: widget.goalId,
                 ),
               );
+
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.giveToFamilyGoalDirectly,
+            eventProperties: {
+              'charity_name': state.organisation.organisationName,
+              'amount': context.read<GiveBloc>().state.collections.first,
+            },
+          );
         } else if (state.status == GiveStatus.processed &&
             widget.goalId != null) {
           context.pop();
