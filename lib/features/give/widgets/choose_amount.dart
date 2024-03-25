@@ -112,7 +112,7 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.firstCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country, 0),
                         suffixText: locals.firstCollect,
                         controller: controllers[0],
                         isVisible: collectionFields[0],
@@ -130,14 +130,20 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         onFocused: () {
                           selectedField = 0;
                           focusNodes[0].requestFocus();
+                          setState(() {
+                            reset = false;
+                          });
                         },
+                        textColor: selectedField == 0
+                            ? AppTheme.givtLightPurple
+                            : AppTheme.givtDarkerGray,
                       ),
                       CollectionFormField(
                         focusNode: focusNodes[1],
                         key: Key(locals.secondCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country, 1),
                         controller: controllers[1],
                         isVisible: collectionFields[1],
                         suffixText: locals.secondCollect,
@@ -151,14 +157,20 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         onFocused: () {
                           selectedField = 1;
                           focusNodes[1].requestFocus();
+                          setState(() {
+                            reset = false;
+                          });
                         },
+                        textColor: selectedField == 1
+                            ? AppTheme.givtLightPurple
+                            : AppTheme.givtDarkerGray,
                       ),
                       CollectionFormField(
                         focusNode: focusNodes[2],
                         key: Key(locals.thirdCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country),
+                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country, 2),
                         suffixText: locals.thirdCollect,
                         controller: controllers[2],
                         isVisible: collectionFields[2],
@@ -172,7 +184,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         onFocused: () {
                           selectedField = 2;
                           focusNodes[2].requestFocus();
+                          setState(() {
+                            reset = false;
+                          });
                         },
+                        textColor: selectedField == 2
+                            ? AppTheme.givtLightPurple
+                            : AppTheme.givtDarkerGray,
                       ),
                       Visibility(
                         visible: !collectionFields.every(
@@ -245,6 +263,9 @@ class _ChooseAmountState extends State<ChooseAmount> {
   void _changeFocus() {
     selectedField = collectionFields.lastIndexOf(true);
     focusNodes[collectionFields.lastIndexOf(true)].requestFocus();
+    setState(() {
+      reset = true;
+    });
   }
 
   void _resetControllers() {
@@ -259,11 +280,13 @@ class _ChooseAmountState extends State<ChooseAmount> {
     });
   }
 
-  Icon _buildCurrencyIcon(Country country) => Icon(
+  Icon _buildCurrencyIcon(Country country, int fieldIndex) => Icon(
         Util.getCurrencyIconData(
           country: country,
         ),
-        color: Colors.grey,
+        color: selectedField == fieldIndex
+            ? AppTheme.givtLightPurple
+            : AppTheme.givtDarkerGray,
       );
 
   Future<bool> _checkAmounts(
