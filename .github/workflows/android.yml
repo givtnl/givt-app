@@ -23,7 +23,7 @@ jobs:
     name: Build Flutter Android
     runs-on: ubuntu-20.04
     environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'test' }}
+      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Test' }}
     steps:
       - name: Set environment variables
         run: |
