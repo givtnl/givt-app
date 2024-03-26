@@ -98,7 +98,7 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
             recurringDonations.addAll(state.activeRecurringDonations);
           }
           return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 CreateRecurringDonationButton(
@@ -116,70 +116,73 @@ class RecurringDonationsOverviewPage extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 5),
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  elevation: 3,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 10,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.givtLightGray.withAlpha(100),
+                Expanded(
+                  child: Card(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    width: double.infinity,
-                    height: size.height * 0.76,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          locals.menuItemRecurringDonation,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 2,
-                          color: AppTheme.givtBlue,
-                        ),
-                        const SizedBox(height: 10),
-                        if (recurringDonations.isEmpty)
-                          Column(
-                            children: [
-                              Text(
-                                locals.emptyRecurringDonationList,
-                              ),
-                              SizedBox(
-                                height: size.height * 0.5,
-                                child: Center(
-                                  child: Image.asset(
-                                    'assets/images/givy_money.png',
-                                    width: size.width * 0.5,
+                    elevation: 3,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppTheme.givtLightGray.withAlpha(100),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            locals.menuItemRecurringDonation,
+                            style: Theme.of(context).textTheme.titleLarge,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 2,
+                            color: AppTheme.givtBlue,
+                          ),
+                          const SizedBox(height: 10),
+                          if (recurringDonations.isEmpty)
+                            Column(
+                              children: [
+                                Text(
+                                  locals.emptyRecurringDonationList,
+                                ),
+                                SizedBox(
+                                  height: size.height * 0.5,
+                                  child: Center(
+                                    child: Image.asset(
+                                      'assets/images/givy_money.png',
+                                      width: size.width * 0.5,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          )
-                        else
-                          RecurringDonationsList(
-                            height: size.height * 0.68,
-                            recurringDonations: recurringDonations,
-                            onOverview: (RecurringDonation recurringDonation) {
-                              _onViewDetailInstances(
-                                context,
-                                recurringDonation,
-                              );
-                            },
-                            onCancel: (RecurringDonation recurringDonation) {
-                              _onCancelRecurringDonationPressed(
-                                context,
-                                recurringDonation,
-                              );
-                            },
-                          ),
-                      ],
+                              ],
+                            )
+                          else
+                            RecurringDonationsList(
+                              height: size.height < 600
+                                  ? size.height * 0.59
+                                  : size.height * 0.74,
+                              recurringDonations: recurringDonations,
+                              onOverview:
+                                  (RecurringDonation recurringDonation) {
+                                _onViewDetailInstances(
+                                  context,
+                                  recurringDonation,
+                                );
+                              },
+                              onCancel: (RecurringDonation recurringDonation) {
+                                _onCancelRecurringDonationPressed(
+                                  context,
+                                  recurringDonation,
+                                );
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
