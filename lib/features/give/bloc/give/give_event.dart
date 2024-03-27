@@ -99,13 +99,18 @@ class GiveAmountChanged extends GiveEvent {
 }
 
 class GiveQRCodeScannedOutOfApp extends GiveEvent {
-  const GiveQRCodeScannedOutOfApp(this.encodedMediumId, this.userGUID);
+  const GiveQRCodeScannedOutOfApp(
+    this.encodedMediumId,
+    this.afterGivingRedirection,
+    this.userGUID,
+  );
 
   final String encodedMediumId;
+  final String afterGivingRedirection;
   final String userGUID;
 
   @override
-  List<Object> get props => [encodedMediumId, userGUID];
+  List<Object> get props => [encodedMediumId, afterGivingRedirection, userGUID];
 }
 
 class GiveConfirmQRCodeScannedOutOfApp extends GiveEvent {

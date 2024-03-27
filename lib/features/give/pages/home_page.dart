@@ -30,6 +30,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 class HomePage extends StatefulWidget {
   const HomePage({
     required this.code,
+    required this.afterGivingRedirection,
     required this.navigateTo,
     required this.given,
     super.key,
@@ -37,6 +38,7 @@ class HomePage extends StatefulWidget {
 
   final String code;
   final String navigateTo;
+  final String afterGivingRedirection;
   final bool given;
 
   @override
@@ -197,6 +199,7 @@ class _HomePageState extends State<HomePage> {
           child: _HomePageView(
             given: widget.given,
             code: widget.code,
+            afterGivingRedirection: widget.afterGivingRedirection,
             onPageChanged: () => setState(
               () {
                 isGive = !isGive;
@@ -319,11 +322,13 @@ class _HomePageView extends StatefulWidget {
   const _HomePageView({
     required this.onPageChanged,
     required this.given,
+    required this.afterGivingRedirection,
     required this.code,
   });
 
   final bool given;
   final String code;
+  final String afterGivingRedirection;
   final VoidCallback onPageChanged;
 
   @override
@@ -366,6 +371,7 @@ class _HomePageViewState extends State<_HomePageView> {
                     'secondCollection': secondCollection,
                     'thirdCollection': thirdCollection,
                     'code': widget.code,
+                    'afterGivingRedirection': widget.afterGivingRedirection,
                   },
                 ),
                 showFamilyGoal: true,
