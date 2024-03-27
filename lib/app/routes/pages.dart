@@ -35,6 +35,10 @@ enum Pages {
     path: 'registration-success',
     name: 'REGISTRATION-SUCCESS',
   ),
+  registrationSuccessUs(
+    path: 'registration-success-us',
+    name: 'REGISTRATION-SUCCESS-US',
+  ),
   overview(path: 'overview', name: 'OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
   giveVPC(path: 'give-vpc', name: 'GIVE-VPC'),
@@ -62,6 +66,8 @@ enum Pages {
     name: 'CACHED-CHILDREN-OVERVIEW',
   ),
   createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
+
+  permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
   ;
 
   const Pages({

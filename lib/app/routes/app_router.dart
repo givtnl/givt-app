@@ -41,6 +41,9 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
+import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
+import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/cubit/add_external_donation_cubit.dart';
 import 'package:givt_app/features/personal_summary/add_external_donation/pages/add_external_donation_page.dart';
 import 'package:givt_app/features/personal_summary/overview/bloc/personal_summary_bloc.dart';
@@ -52,6 +55,7 @@ import 'package:givt_app/features/recurring_donations/overview/pages/recurring_d
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
+import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -421,9 +425,28 @@ class AppRouter {
             ],
           ),
           GoRoute(
+            path: Pages.permitBiometric.path,
+            name: Pages.permitBiometric.name,
+            builder: (context, state) {
+              final permitBiometricRequest =
+                  state.extra! as PermitBiometricRequest;
+              return BlocProvider(
+                create: (_) => PermitBiometricCubit(
+                  permitBiometricRequest: permitBiometricRequest,
+                )..checkBiometric(),
+                child: const PermitBiometricPage(),
+              );
+            },
+          ),
+          GoRoute(
             path: Pages.registrationSuccess.path,
             name: Pages.registrationSuccess.name,
             builder: (_, state) => const RegistrationCompletedPage(),
+          ),
+          GoRoute(
+            path: Pages.registrationSuccessUs.path,
+            name: Pages.registrationSuccessUs.name,
+            builder: (_, state) => const RegistrationSuccessUs(),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,
