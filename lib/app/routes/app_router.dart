@@ -499,6 +499,7 @@ class AppRouter {
                   bloc.add(
                     GiveQRCodeScannedOutOfApp(
                       extra['code'] as String,
+                      extra['afterGivingRedirection'] as String,
                       auth.user.guid,
                     ),
                   );
@@ -662,6 +663,9 @@ class AppRouter {
             )..add(const RemoteDataSourceSyncRequested()),
             child: HomePage(
               code: routerState.uri.queryParameters['code'] ?? '',
+              afterGivingRedirection:
+                  routerState.uri.queryParameters['afterGivingRedirection'] ??
+                      '',
               given: routerState.uri.queryParameters.containsKey('given'),
               navigateTo: routerState.uri.queryParameters['page'] ?? '',
             ),
@@ -691,6 +695,7 @@ class AppRouter {
     final auth = context.read<AuthCubit>().state;
     var code = '';
     var navigatingPage = '';
+    var afterGivingRedirection = '';
 
     if (state.uri.queryParameters.containsKey('code')) {
       code = state.uri.queryParameters['code']!;
@@ -698,6 +703,10 @@ class AppRouter {
 
     if (state.uri.queryParameters.containsKey('page')) {
       navigatingPage = state.uri.queryParameters['page']!;
+    }
+
+    if (state.uri.queryParameters.containsKey('from')) {
+      afterGivingRedirection = state.uri.queryParameters['from']!;
     }
 
     /// If user comes from a custome url_scheme
@@ -720,6 +729,8 @@ class AppRouter {
     if (navigatingPage.isNotEmpty) {
       params['page'] = navigatingPage;
     }
+
+    params['afterGivingRedirection'] = afterGivingRedirection;
 
     final query = Uri(
       queryParameters: params,

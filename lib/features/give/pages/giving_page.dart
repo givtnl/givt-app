@@ -13,6 +13,7 @@ import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatefulWidget {
@@ -55,12 +56,22 @@ class _GivingPageState extends State<GivingPage> {
     if (!mounted) {
       return;
     }
+    final afterGivingRedirection =
+        context.read<GiveBloc>().state.afterGivingRedirection;
+
     context.goNamed(
       Pages.home.name,
       queryParameters: {
         'given': 'true',
       },
     );
+
+    if (afterGivingRedirection.isNotEmpty) {
+      final url = Uri.parse(afterGivingRedirection);
+      if (!await launchUrl(url)) {
+        throw Exception('Could not launch $url');
+      }
+    }
   }
 
   Map<String, dynamic> _buildGivt(

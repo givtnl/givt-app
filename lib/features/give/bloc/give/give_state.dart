@@ -24,6 +24,7 @@ class GiveState extends Equatable {
     this.collections = const [0.0, 0.0, 0.0],
     this.givtTransactions = const [],
     this.instanceName = '',
+    this.afterGivingRedirection = '',
   });
 
   final GiveStatus status;
@@ -33,6 +34,7 @@ class GiveState extends Equatable {
   final List<double> collections;
   final List<GivtTransaction> givtTransactions;
   final String instanceName;
+  final String afterGivingRedirection;
 
   GiveState copyWith({
     GiveStatus? status,
@@ -44,6 +46,7 @@ class GiveState extends Equatable {
     double? secondCollection,
     double? thirdCollection,
     String? instanceName,
+    String? afterGivingRedirection,
     List<GivtTransaction>? givtTransactions,
   }) {
     return GiveState(
@@ -52,6 +55,8 @@ class GiveState extends Equatable {
       nearestBeacon: nearestBeacon ?? this.nearestBeacon,
       nearestLocation: nearestLocation ?? this.nearestLocation,
       instanceName: instanceName ?? this.instanceName,
+      afterGivingRedirection:
+          afterGivingRedirection ?? this.afterGivingRedirection,
       collections: [
         firstCollection ?? collections[0],
         secondCollection ?? collections[1],
@@ -70,5 +75,6 @@ class GiveState extends Equatable {
         collections,
         givtTransactions,
         instanceName,
+        afterGivingRedirection,
       ];
 }
