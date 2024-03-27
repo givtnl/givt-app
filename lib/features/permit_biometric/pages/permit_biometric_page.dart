@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class PermitBiometricPage extends StatelessWidget {
   const PermitBiometricPage({super.key});
@@ -76,6 +78,13 @@ class PermitBiometricPage extends StatelessWidget {
                       //TODO: POEditor
                       title: 'Skip for now',
                       onPressed: () {
+                        AnalyticsHelper.logEvent(
+                          eventName:
+                              AmplitudeEvents.skipBiometricWhenRegistered,
+                          eventProperties: {
+                            'biometric_type': state.biometricType.name,
+                          },
+                        );
                         context.read<PermitBiometricCubit>().denyBiometric();
                       },
                     ),
@@ -83,6 +92,14 @@ class PermitBiometricPage extends StatelessWidget {
                       //TODO: POEditor
                       title: 'Activate ${state.biometricType.name}',
                       onPressed: () {
+                        AnalyticsHelper.logEvent(
+                          eventName:
+                              AmplitudeEvents.activateBiometricWhenRegistered,
+                          eventProperties: {
+                            'biometric_type': state.biometricType.name,
+                          },
+                        );
+
                         context.read<PermitBiometricCubit>().enableBiometric();
                       },
                     ),
