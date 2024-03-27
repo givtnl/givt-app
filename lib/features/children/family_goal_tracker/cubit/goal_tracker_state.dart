@@ -1,12 +1,6 @@
 part of 'goal_tracker_cubit.dart';
 
-enum GoalTrackerStatus {
-  initial,
-  noGoalSet,
-  activeGoal,
-  completedGoal,
-  error
-}
+enum GoalTrackerStatus { initial, noGoalSet, activeGoal, completedGoal, error }
 
 class GoalTrackerState extends Equatable {
   const GoalTrackerState({

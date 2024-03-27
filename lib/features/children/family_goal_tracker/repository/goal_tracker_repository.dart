@@ -15,12 +15,11 @@ class GoalTrackerRepositoryImpl with GoalTrackerRepository {
   @override
   Future<FamilyGoal> fetchFamilyGoal() async {
     final response = await _apiService.fetchFamilyGoal();
-    FamilyGoal goal;
+
     if (response.isEmpty) {
-      goal = const FamilyGoal.empty();
-    } else {
-      goal = FamilyGoal.fromMap(response);
+      return const FamilyGoal.empty();
     }
-    return goal;
+
+    return FamilyGoal.fromMap(response);
   }
 }

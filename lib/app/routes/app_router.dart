@@ -22,6 +22,7 @@ import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
+import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
@@ -56,6 +57,7 @@ import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
@@ -188,6 +190,7 @@ class AppRouter {
                   showAllowanceWarning =
                       state.extra!.toString().contains('true');
                 }
+                context.read<GoalTrackerCubit>().getGoal();
                 return MultiBlocProvider(
                   providers: [
                     BlocProvider(
@@ -696,6 +699,8 @@ class AppRouter {
     var code = '';
     var navigatingPage = '';
     var afterGivingRedirection = '';
+
+    UTMHelper.trackToAnalytics(uri: state.uri);
 
     if (state.uri.queryParameters.containsKey('code')) {
       code = state.uri.queryParameters['code']!;

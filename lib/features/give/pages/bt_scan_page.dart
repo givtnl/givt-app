@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sprintf/sprintf.dart';
@@ -74,11 +76,49 @@ class _BTScanPageState extends State<BTScanPage> {
           }
         case BluetoothAdapterState.unauthorized:
           await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
+          if (!context.mounted) {
+            return;
+          }
+          await showDialog<void>(
+            context: context,
+            builder: (_) => WarningDialog(
+              title: context.l10n.authoriseBluetooth,
+              content:
+                  '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
+              onConfirm: () async {
+                await startBluetoothScan();
+                if (!context.mounted) {
+                  return;
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+          );
         case BluetoothAdapterState.off:
           await LoggingInfo.instance.info('Bluetooth adapter is off');
           if (Platform.isAndroid) {
             await LoggingInfo.instance.info('Trying to turn it on...');
             await FlutterBluePlus.turnOn();
+          }
+          if (Platform.isIOS) {
+            await LoggingInfo.instance.info('iOS User has Bluetooth off...');
+            if (!context.mounted) {
+              return;
+            }
+            await showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: context.l10n.turnOnBluetooth,
+                content: context.l10n.bluetoothErrorMessage,
+                onConfirm: () async {
+                  await startBluetoothScan();
+                  if (!context.mounted) {
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
           }
         // We don't want to handle other cases at the moment, so:
         // ignore: no_default_cases
@@ -99,7 +139,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
   void _onPeripheralsDetectedData(List<ScanResult> results) {
     for (final scanResult in results) {
-      if (scanResult.advertisementData.localName.isEmpty) {
+      if (scanResult.advertisementData.advName.isEmpty) {
         continue;
       }
 
@@ -138,7 +178,8 @@ class _BTScanPageState extends State<BTScanPage> {
         continue;
       }
 
-      // When not searching for a beacon we wanna ignore the rest of the scan results
+      // When not searching for a beacon we wanna
+      // ignore the rest of the scan results
       if (!isSearching) {
         return;
       }
