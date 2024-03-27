@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -45,17 +46,16 @@ class PermitBiometricPage extends StatelessWidget {
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        //TODO: POEditor
-                        text:
-                            'Do you want to use ${state.biometricType.name}?\n',
+                        text: context.l10n.permitBiometricQuestionWithType(
+                          state.biometricType.name,
+                        ),
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                         children: [
+                          const TextSpan(text: '\n'),
                           TextSpan(
-                            //TODO: POEditor
-                            text:
-                                'Speed up the login process and keep you account secure',
+                            text: context.l10n.permitBiometricExplanation,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -75,8 +75,7 @@ class PermitBiometricPage extends StatelessWidget {
                     ),
                     const Spacer(),
                     CustomSecondaryBorderButton(
-                      //TODO: POEditor
-                      title: 'Skip for now',
+                      title: context.l10n.permitBiometricSkip,
                       onPressed: () {
                         AnalyticsHelper.logEvent(
                           eventName:
@@ -89,8 +88,9 @@ class PermitBiometricPage extends StatelessWidget {
                       },
                     ),
                     CustomGreenElevatedButton(
-                      //TODO: POEditor
-                      title: 'Activate ${state.biometricType.name}',
+                      title: context.l10n.permitBiometricActivateWithType(
+                        state.biometricType.name,
+                      ),
                       onPressed: () {
                         AnalyticsHelper.logEvent(
                           eventName:
