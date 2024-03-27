@@ -1532,5 +1532,9 @@
     "familyGoalPrefix": "Family Goal: ",
     "editPaymentDetailsSuccess": "Successfully updated!",
     "editPaymentDetailsFailure": "Ooops...\nSomething went wrong!",
-    "editPaymentDetailsCanceled": "Payment details update was cancelled."
+    "editPaymentDetailsCanceled": "Payment details update was cancelled.",
+    "permitBiometricQuestionWithType": "Do you want to use  {value0}!",
+    "permitBiometricExplanation": "Speed up the login process and keep you account secure",
+    "permitBiometricSkip": "Skip for now",
+    "permitBiometricActivateWithType": "Activate {value0}!"
 }
