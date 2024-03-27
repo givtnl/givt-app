@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/registration_app_bar.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -31,7 +32,13 @@ class SignSepaMandatePage extends StatelessWidget {
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == RegistrationStatus.success) {
-              context.goNamed(Pages.registrationSuccess.name);
+              context.goNamed(
+                Pages.permitBiometric.name,
+                extra: PermitBiometricRequest(
+                  redirect: (context) =>
+                      context.goNamed(Pages.registrationSuccess.name),
+                ),
+              );
             }
             if (state.status == RegistrationStatus.conflict) {
               showDialog<void>(
