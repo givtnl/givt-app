@@ -28,7 +28,7 @@ class PermitBiometricCubit extends Cubit<PermitBiometricState> {
     final isFingerprintAvailable =
         await LocalAuthInfo.instance.checkFingerprint();
     final isFaceIdAvailable = await LocalAuthInfo.instance.checkFaceId();
-    if (isFaceIdAvailable) {
+    if (isFaceIdAvailable && Platform.isIOS) {
       return BiometricType.faceId;
     } else if (isFingerprintAvailable) {
       return Platform.isAndroid
