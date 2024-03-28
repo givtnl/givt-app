@@ -23,6 +23,8 @@ jobs:
   build-ios: 
     name: Build Flutter iOS
     runs-on: macos-14
+    environment:
+      name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Test' }}
     steps:
       - name: Set environment variables
         run: |

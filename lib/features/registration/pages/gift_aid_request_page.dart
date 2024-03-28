@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 
@@ -15,7 +16,13 @@ class GiftAidRequestPage extends StatelessWidget {
       listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         if (state.status == RegistrationStatus.giftAidChanged) {
-          context.goNamed(Pages.registrationSuccess.name);
+          context.goNamed(
+            Pages.permitBiometric.name,
+            extra: PermitBiometricRequest(
+              redirect: (context) =>
+                  context.goNamed(Pages.registrationSuccess.name),
+            ),
+          );
         }
       },
       child: Scaffold(
