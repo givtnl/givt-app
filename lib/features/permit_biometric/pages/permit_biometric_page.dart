@@ -32,17 +32,18 @@ class PermitBiometricPage extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
+    final size = MediaQuery.sizeOf(context);
+
     return state.status != PermitBiometricStatus.propose
         ? const SizedBox()
         : SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Center(
+              child: Container(
+                padding: EdgeInsets.only(top: size.height * 0.05, bottom: 10),
+                alignment: Alignment.center,
                 child: Column(
                   children: [
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                    ),
                     RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
@@ -103,7 +104,6 @@ class PermitBiometricPage extends StatelessWidget {
                         context.read<PermitBiometricCubit>().enableBiometric();
                       },
                     ),
-                    const SizedBox(height: 10),
                   ],
                 ),
               ),
