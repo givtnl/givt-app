@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -68,7 +69,13 @@ class _GivingPageState extends State<GivingPage> {
 
     if (afterGivingRedirection.isNotEmpty) {
       final url = Uri.parse(afterGivingRedirection);
+      unawaited(
+        LoggingInfo.instance.info(
+          'Redirecting after external link donation. Attempting to launch $url',
+        ),
+      );
       if (!await launchUrl(url)) {
+        await LoggingInfo.instance.error('Could not launch $url');
         throw Exception('Could not launch $url');
       }
     }
