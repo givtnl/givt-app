@@ -383,6 +383,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           status: GiveStatus.readyToConfirm,
           organisation: organisation,
           givtTransactions: transactionList,
+          afterGivingRedirection: event.afterGivingRedirection,
         ),
       );
     } catch (e, stackTrace) {
