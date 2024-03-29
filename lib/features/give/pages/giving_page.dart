@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatefulWidget {
@@ -55,12 +57,28 @@ class _GivingPageState extends State<GivingPage> {
     if (!mounted) {
       return;
     }
+    final afterGivingRedirection =
+        context.read<GiveBloc>().state.afterGivingRedirection;
+
     context.goNamed(
       Pages.home.name,
       queryParameters: {
         'given': 'true',
       },
     );
+
+    if (afterGivingRedirection.isNotEmpty) {
+      final url = Uri.parse(afterGivingRedirection);
+      unawaited(
+        LoggingInfo.instance.info(
+          'Redirecting after external link donation. Attempting to launch $url',
+        ),
+      );
+      if (!await launchUrl(url)) {
+        await LoggingInfo.instance.error('Could not launch $url');
+        throw Exception('Could not launch $url');
+      }
+    }
   }
 
   Map<String, dynamic> _buildGivt(
