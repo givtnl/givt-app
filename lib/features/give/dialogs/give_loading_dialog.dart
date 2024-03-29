@@ -4,10 +4,21 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
-class GiveToFamilyGoalLoadingDialog extends StatelessWidget {
-  const GiveToFamilyGoalLoadingDialog({
+class GiveLoadingDialog extends StatelessWidget {
+  const GiveLoadingDialog({
     super.key,
   });
+
+  static Future<void> showGiveLoadingDialog(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => BlocProvider.value(
+        value: context.read<GiveBloc>(),
+        child: const GiveLoadingDialog(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -8,6 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -211,7 +211,8 @@ class _BTScanPageState extends State<BTScanPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     final size = MediaQuery.sizeOf(context);
-    /// Because the GIF has this color we need to set 
+
+    /// Because the GIF has this color we need to set
     /// the background color to the same color
     /// otherwise we will see a white background
     const backgroundColor = Color(0xFFFBFBFB);
@@ -256,6 +257,7 @@ class _BTScanPageState extends State<BTScanPage> {
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
                       onPressed: () {
+                        GiveLoadingDialog.showGiveLoadingDialog(context);
                         if (orgName!.isNotEmpty) {
                           isSearching = false;
                           FlutterBluePlus.stopScan();
