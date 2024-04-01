@@ -10,19 +10,15 @@ part 'stripe_state.dart';
 class StripeCubit extends Cubit<StripeState> {
   StripeCubit({
     required this.authRepositoy,
-    required this.authCubit,
   }) : super(const StripeState());
 
-  final AuthRepositoy authRepositoy;
-  final AuthCubit authCubit;
+  final AuthRepository authRepositoy;
 
-  Future<void> fetchStripeCustomerCreationURLs() async {
-    final email = authCubit.state.user.email;
-    emit(state.copyWith(stripeStatus: StripeObjectStatus.loading));
+  Future<void> fetchSetupIntent() async {
+    emit(state.copyWith(stripeStatus: StripeObjectStatus.initial));
     try {
-      final response = await authRepositoy.registerStripeCustomer(
-        email: email,
-      );
+      final response = await authRepositoy.fetchStripeSetupIntent();
+
       emit(
         state.copyWith(
           stripeStatus: StripeObjectStatus.display,
@@ -32,7 +28,7 @@ class StripeCubit extends Cubit<StripeState> {
     } catch (e, stackTrace) {
       emit(state.copyWith(stripeStatus: StripeObjectStatus.failure));
       await LoggingInfo.instance.error(
-        '$e, ALSO user email: $email \nuser country: ${authCubit.state.user.country}',
+        '$e',
         methodName: stackTrace.toString(),
       );
     }

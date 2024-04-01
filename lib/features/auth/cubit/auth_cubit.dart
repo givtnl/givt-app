@@ -18,7 +18,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepositoy) : super(const AuthState());
 
-  final AuthRepositoy _authRepositoy;
+  final AuthRepository _authRepositoy;
 
   Future<void> login({required String email, required String password}) async {
     emit(state.copyWith(status: AuthStatus.loading));

@@ -7,6 +7,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/cubit/edit_stripe_cubit.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
@@ -27,8 +28,6 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
-import 'package:givt_app/features/edit_payment_details/cubit/edit_stripe_cubit.dart';
-import 'package:givt_app/features/edit_payment_details/pages/edit_credit_card_details_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
@@ -54,6 +53,7 @@ import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_d
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
@@ -172,19 +172,29 @@ class AppRouter {
             ],
           ),
           GoRoute(
-              path: Pages.personalInfoEdit.path,
-              name: Pages.personalInfoEdit.name,
-              builder: (context, state) {
-                return BlocProvider(
-                  create: (_) => PersonalInfoEditBloc(
-                    loggedInUserExt: context.read<AuthCubit>().state.user,
-                    authRepositoy: getIt(),
+            path: Pages.personalInfoEdit.path,
+            name: Pages.personalInfoEdit.name,
+            builder: (context, state) {
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => PersonalInfoEditBloc(
+                      loggedInUserExt: context.read<AuthCubit>().state.user,
+                      authRepositoy: getIt(),
+                    ),
                   ),
-                  child: PersonalInfoEditPage(
-                    navigatingFromFamily: state.extra != null,
+                  BlocProvider(
+                    create: (context) => StripeCubit(
+                      authRepositoy: getIt(),
+                    ),
                   ),
-                );
-              }),
+                ],
+                child: PersonalInfoEditPage(
+                  navigatingFromFamily: state.extra != null,
+                ),
+              );
+            },
+          ),
           GoRoute(
               path: Pages.childrenOverview.path,
               name: Pages.childrenOverview.name,
@@ -375,6 +385,11 @@ class AppRouter {
                       return registrationBloc;
                     },
                   ),
+                  BlocProvider(
+                    create: (_) => StripeCubit(
+                      authRepositoy: getIt(),
+                    ),
+                  ),
                 ],
                 child: SignUpPage(
                   email: email,
@@ -402,23 +417,10 @@ class AppRouter {
                       BlocProvider(
                         create: (_) => StripeCubit(
                           authRepositoy: getIt(),
-                          authCubit: context.read<AuthCubit>(),
-                        )..fetchStripeCustomerCreationURLs(),
+                        ),
                       ),
                     ],
                     child: const CreditCardDetailsPage(),
-                  );
-                },
-              ),
-              GoRoute(
-                path: Pages.editCreditCardDetails.path,
-                name: Pages.editCreditCardDetails.name,
-                builder: (context, state) {
-                  return BlocProvider(
-                    create: (_) => EditStripeCubit(
-                      authRepositoy: getIt(),
-                    )..fetchStripeCustomerUpdateURLs(),
-                    child: const EditCreditCardDetailsPage(),
                   );
                 },
               ),

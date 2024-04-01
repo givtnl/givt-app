@@ -77,7 +77,7 @@ class ExpiredTokenRetryPolicy extends RetryPolicy {
   /// Handle the [SocketException] when there is no internet connection
   Future<void> _refreshToken() async {
     try {
-      await getIt<AuthRepositoy>().refreshToken();
+      await getIt<AuthRepository>().refreshToken();
     } catch (e) {
       log('No internet connection');
     }

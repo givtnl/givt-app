@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -10,6 +11,7 @@ import 'package:givt_app/features/account_details/pages/change_email_address_bot
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
@@ -216,11 +218,41 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
                 value:
                     '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
-                onTap: () {
-                  AnalyticsHelper.logEvent(
+                onTap: () async {
+                  await AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.editPaymentDetailsClicked,
                   );
-                  context.pushNamed(Pages.editCreditCardDetails.name);
+
+                  if (!context.mounted) return;
+                  await context.read<StripeCubit>().fetchSetupIntent();
+
+                  if (!context.mounted) return;
+                  final stripe = context.read<StripeCubit>().state.stripeObject;
+
+                  await Stripe.instance.initPaymentSheet(
+                    paymentSheetParameters: SetupPaymentSheetParameters(
+                      merchantDisplayName: 'Givt',
+                      customerEphemeralKeySecret:
+                          stripe.customerEphemeralKeySecret,
+                      customerId: stripe.customerId,
+                      setupIntentClientSecret: stripe.setupIntentClientSecret,
+                      applePay: const PaymentSheetApplePay(
+                        merchantCountryCode: 'US',
+                      ),
+                      googlePay: const PaymentSheetGooglePay(
+                        merchantCountryCode: 'US',
+                      ),
+                    ),
+                  );
+
+                  try {
+                    await Stripe.instance.presentPaymentSheet();
+
+                    if (!context.mounted) return;
+                    await context.read<AuthCubit>().refreshUser();
+                  } on StripeException {
+                    // Change payment details is cancelled
+                  }
                 },
               ),
               _buildInfoRow(
