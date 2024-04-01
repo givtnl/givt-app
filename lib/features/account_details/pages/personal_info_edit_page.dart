@@ -232,6 +232,12 @@ class PersonalInfoEditPage extends StatelessWidget {
                   await Stripe.instance.initPaymentSheet(
                     paymentSheetParameters: SetupPaymentSheetParameters(
                       merchantDisplayName: 'Givt',
+                      style: ThemeMode.light,
+                      billingDetailsCollectionConfiguration:
+                          const BillingDetailsCollectionConfiguration(
+                        address: AddressCollectionMode.never,
+                        name: CollectionMode.always,
+                      ),
                       customerEphemeralKeySecret:
                           stripe.customerEphemeralKeySecret,
                       customerId: stripe.customerId,
@@ -241,6 +247,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                       ),
                       googlePay: const PaymentSheetGooglePay(
                         merchantCountryCode: 'US',
+                        currencyCode: 'USD',
                       ),
                     ),
                   );

@@ -7,7 +7,6 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/account_details/cubit/edit_stripe_cubit.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
@@ -196,30 +195,31 @@ class AppRouter {
             },
           ),
           GoRoute(
-              path: Pages.childrenOverview.path,
-              name: Pages.childrenOverview.name,
-              builder: (context, state) {
-                bool showAllowanceWarning = false;
-                if (state.extra != null) {
-                  showAllowanceWarning =
-                      state.extra!.toString().contains('true');
-                }
-                context.read<GoalTrackerCubit>().getGoal();
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (_) => FamilyOverviewCubit(getIt())
-                        ..fetchFamilyProfiles(
-                            showAllowanceWarning: showAllowanceWarning),
-                    ),
-                    BlocProvider(
-                      create: (context) =>
-                          FamilyHistoryCubit(getIt())..fetchHistory(),
-                    ),
-                  ],
-                  child: const FamilyOverviewPage(),
-                );
-              }),
+            path: Pages.childrenOverview.path,
+            name: Pages.childrenOverview.name,
+            builder: (context, state) {
+              bool showAllowanceWarning = false;
+              if (state.extra != null) {
+                showAllowanceWarning = state.extra!.toString().contains('true');
+              }
+              context.read<GoalTrackerCubit>().getGoal();
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => FamilyOverviewCubit(getIt())
+                      ..fetchFamilyProfiles(
+                        showAllowanceWarning: showAllowanceWarning,
+                      ),
+                  ),
+                  BlocProvider(
+                    create: (context) =>
+                        FamilyHistoryCubit(getIt())..fetchHistory(),
+                  ),
+                ],
+                child: const FamilyOverviewPage(),
+              );
+            },
+          ),
           GoRoute(
             path: Pages.cachedChildrenOverview.path,
             name: Pages.cachedChildrenOverview.name,

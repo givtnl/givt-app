@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -36,19 +35,22 @@ class CreditCardDetailsPage extends StatelessWidget {
           Stripe.instance
               .initPaymentSheet(
             paymentSheetParameters: SetupPaymentSheetParameters(
+              merchantDisplayName: 'Givt',
+              style: ThemeMode.light,
               billingDetailsCollectionConfiguration:
                   const BillingDetailsCollectionConfiguration(
                 address: AddressCollectionMode.never,
+                name: CollectionMode.always,
               ),
               customerEphemeralKeySecret: stripe.customerEphemeralKeySecret,
               customerId: stripe.customerId,
               setupIntentClientSecret: stripe.setupIntentClientSecret,
               applePay: const PaymentSheetApplePay(
                 merchantCountryCode: 'US',
-                buttonType: PlatformButtonType.plain,
               ),
               googlePay: const PaymentSheetGooglePay(
                 merchantCountryCode: 'US',
+                currencyCode: 'USD',
               ),
             ),
           )
