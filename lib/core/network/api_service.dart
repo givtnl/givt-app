@@ -14,7 +14,7 @@ class APIService {
         _apiURLAWS = apiURLAWS;
 
   Client client = InterceptedClient.build(
-    requestTimeout: const Duration(seconds: 10),
+    requestTimeout: const Duration(seconds: 30),
     interceptors: [
       CertificateCheckInterceptor(),
       TokenInterceptor(),

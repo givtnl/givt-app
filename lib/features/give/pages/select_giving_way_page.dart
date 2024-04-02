@@ -6,7 +6,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/dialogs/give_to_family_goal_loading_dialog.dart';
+import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -240,15 +240,7 @@ class SelectGivingWayPage extends StatelessWidget {
                   'amount': context.read<GiveBloc>().state.collections.first,
                 },
               );
-
-              showDialog<void>(
-                context: context,
-                barrierDismissible: false,
-                builder: (_) => BlocProvider.value(
-                  value: context.read<GiveBloc>(),
-                  child: const GiveToFamilyGoalLoadingDialog(),
-                ),
-              );
+              GiveLoadingDialog.showGiveLoadingDialog(context);
             },
             title: context.l10n.yourFamilyGoalKey,
             subtitle: 'Give to ${state.organisation.organisationName}',

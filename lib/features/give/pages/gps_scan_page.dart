@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -142,6 +143,7 @@ class _GPSScanPageState extends State<GPSScanPage> {
                     padding: const EdgeInsets.all(20),
                     child: ElevatedButton(
                       onPressed: () {
+                        GiveLoadingDialog.showGiveLoadingDialog(context);
                         if (orgName!.isNotEmpty) {
                           context.read<GiveBloc>().add(
                                 GiveToLastOrganisation(

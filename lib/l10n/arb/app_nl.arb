@@ -1533,8 +1533,8 @@
     "editPaymentDetailsSuccess": "Successfully updated!",
     "editPaymentDetailsFailure": "Ooops...\nSomething went wrong!",
     "editPaymentDetailsCanceled": "Payment details update was cancelled.",
-    "permitBiometricQuestionWithType": "Do you want to use {value0}?",
-    "permitBiometricExplanation": "Speed up the login process and keep you account secure",
-    "permitBiometricSkip": "Skip for now",
-    "permitBiometricActivateWithType": "Activate {value0}"
+    "permitBiometricQuestionWithType": "Wil je gebruik maken van {value0}?",
+    "permitBiometricExplanation": "Versnel het inlogproces en houd je account veilig",
+    "permitBiometricSkip": "Overslaan",
+    "permitBiometricActivateWithType": "Activeer {value0}"
 }
