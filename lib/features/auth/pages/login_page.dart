@@ -10,13 +10,13 @@ import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
+    required this.email,
+    required this.isEmailEditable,
     super.key,
-    this.email = '',
-    this.popWhenSuccess = false,
   });
 
   final String email;
-  final bool popWhenSuccess;
+  final bool isEmailEditable;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -45,10 +45,9 @@ class _LoginPageState extends State<LoginPage> {
               password: passwordController.text,
             )
             .whenComplete(() {
-          if (widget.popWhenSuccess &&
-              context.read<AuthCubit>().state.status ==
-                  AuthStatus.authenticated) {
-            context.pop();
+          if (context.read<AuthCubit>().state.status ==
+              AuthStatus.authenticated) {
+            context.pop(true);
           }
         });
       } catch (e) {
@@ -165,10 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
-                readOnly: widget.popWhenSuccess,
+                readOnly: !widget.isEmailEditable,
                 autofillHints: const [
                   AutofillHints.username,
-                  AutofillHints.email
+                  AutofillHints.email,
                 ],
                 onChanged: (value) {
                   setState(() {

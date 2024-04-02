@@ -112,7 +112,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.firstCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country, 0),
+                        prefixCurrencyIcon:
+                            _buildCurrencyIcon(widget.country, 0),
                         suffixText: locals.firstCollect,
                         controller: controllers[0],
                         isVisible: collectionFields[0],
@@ -143,7 +144,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.secondCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country, 1),
+                        prefixCurrencyIcon:
+                            _buildCurrencyIcon(widget.country, 1),
                         controller: controllers[1],
                         isVisible: collectionFields[1],
                         suffixText: locals.secondCollect,
@@ -170,7 +172,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                         key: Key(locals.thirdCollect),
                         amountLimit: widget.amountLimit,
                         lowerLimit: Util.getLowerLimitByCountry(widget.country),
-                        prefixCurrencyIcon: _buildCurrencyIcon(widget.country, 2),
+                        prefixCurrencyIcon:
+                            _buildCurrencyIcon(widget.country, 2),
                         suffixText: locals.thirdCollect,
                         controller: controllers[2],
                         isVisible: collectionFields[2],
@@ -335,19 +338,21 @@ class _ChooseAmountState extends State<ChooseAmount> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                onPressed: () => AuthUtils.checkToken(
+                onPressed: () async => AuthUtils.checkToken(
                   context,
-                  navigate: () => showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    useSafeArea: true,
-                    builder: (_) => ChangeMaxAmountBottomSheet(
-                      maxAmount: widget.amountLimit,
-                      icon: Util.getCurrencyIconData(
-                        country: widget.country,
+                  checkAuthRequest: CheckAuthRequest(
+                    navigate: (context) => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => ChangeMaxAmountBottomSheet(
+                        maxAmount: widget.amountLimit,
+                        icon: Util.getCurrencyIconData(
+                          country: widget.country,
+                        ),
                       ),
-                    ),
-                  ).whenComplete(() => context.pop()),
+                    ).whenComplete(() => context.pop()),
+                  ),
                 ),
               ),
             ],

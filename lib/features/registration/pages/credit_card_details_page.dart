@@ -54,7 +54,7 @@ class CreditCardDetailsPage extends StatelessWidget {
 
                   context.goNamed(
                     Pages.permitBiometric.name,
-                    extra: PermitBiometricRequest(
+                    extra: PermitBiometricRequest.registration(
                       redirect: (context) =>
                           context.goNamed(Pages.registrationSuccessUs.name),
                     ),

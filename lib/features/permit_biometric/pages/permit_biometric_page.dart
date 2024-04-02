@@ -7,6 +7,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class PermitBiometricPage extends StatelessWidget {
   const PermitBiometricPage({super.key});
@@ -14,9 +15,13 @@ class PermitBiometricPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PermitBiometricCubit, PermitBiometricState>(
-      listener: (context, state) {
-        if (state.isAutoRedirectNeeded) {
-          state.permitBiometricRequest.redirect(context);
+      listener: (context, state) async {
+        if (state.isCheckCompleted) {
+          if (state.permitBiometricRequest.isRedirect) {
+            state.permitBiometricRequest.redirect(context);
+          } else {
+            context.pop();
+          }
         }
       },
       builder: (BuildContext context, PermitBiometricState state) {
@@ -78,8 +83,9 @@ class PermitBiometricPage extends StatelessWidget {
                       title: context.l10n.permitBiometricSkip,
                       onPressed: () {
                         AnalyticsHelper.logEvent(
-                          eventName:
-                              AmplitudeEvents.skipBiometricWhenRegistered,
+                          eventName: state.permitBiometricRequest.isRegistration
+                              ? AmplitudeEvents.skipBiometricWhenRegistered
+                              : AmplitudeEvents.skipBiometricWhenLoggedIn,
                           eventProperties: {
                             'biometric_type': state.biometricType.name,
                           },
@@ -93,8 +99,9 @@ class PermitBiometricPage extends StatelessWidget {
                       ),
                       onPressed: () {
                         AnalyticsHelper.logEvent(
-                          eventName:
-                              AmplitudeEvents.activateBiometricWhenRegistered,
+                          eventName: state.permitBiometricRequest.isRegistration
+                              ? AmplitudeEvents.activateBiometricWhenRegistered
+                              : AmplitudeEvents.activateBiometricWhenLoggedIn,
                           eventProperties: {
                             'biometric_type': state.biometricType.name,
                           },
