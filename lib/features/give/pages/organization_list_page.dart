@@ -339,11 +339,14 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               child: Text(locals.discoverOrAmountActionSheetOnce),
             ),
             CupertinoActionSheetAction(
-              onPressed: () => AuthUtils.checkToken(
+              onPressed: () async => AuthUtils.checkToken(
                 context,
-                navigate: () => _showCreateRecurringDonationBottomSheet(
-                  context,
-                  recipient: recipient,
+                checkAuthRequest: CheckAuthRequest(
+                  navigate: (context) =>
+                      _showCreateRecurringDonationBottomSheet(
+                    context,
+                    recipient: recipient,
+                  ),
                 ),
               ),
               child: Text(locals.discoverOrAmountActionSheetRecurring),
@@ -384,11 +387,13 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               color: AppTheme.givtBlue,
             ),
             title: Text(locals.discoverOrAmountActionSheetRecurring),
-            onTap: () => AuthUtils.checkToken(
+            onTap: () async => AuthUtils.checkToken(
               context,
-              navigate: () => _showCreateRecurringDonationBottomSheet(
-                context,
-                recipient: recipient,
+              checkAuthRequest: CheckAuthRequest(
+                navigate: (context) => _showCreateRecurringDonationBottomSheet(
+                  context,
+                  recipient: recipient,
+                ),
               ),
             ),
           ),

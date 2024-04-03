@@ -1,6 +1,7 @@
 export 'analytics_helper.dart';
 export 'app_theme.dart';
 export 'auth_utils.dart';
+export 'biometrics_helper.dart';
 export 'country_emoji.dart';
 export 'json.dart';
 export 'ns_user_defaults_keys.dart';

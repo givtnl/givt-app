@@ -74,6 +74,8 @@ enum AmplitudeEvents {
 
   skipBiometricWhenRegistered('skip_biometric_when_registered'),
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
+  skipBiometricWhenLoggedIn('skip_biometric_when_logged_in'),
+  activateBiometricWhenLoggedIn('activate_biometric_when_logged_in'),
   ;
 
   const AmplitudeEvents(this.value);
