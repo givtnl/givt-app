@@ -6,17 +6,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/util.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +30,7 @@ class EmailSignupPage extends StatefulWidget {
   }
 
   @override
-  _EmailSignupPageState createState() => _EmailSignupPageState();
+  State<EmailSignupPage> createState() => _EmailSignupPageState();
 }
 
 class _EmailSignupPageState extends State<EmailSignupPage> {
@@ -116,12 +115,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) {
             if (state.status == AuthStatus.loginRedirect) {
-              showModalBottomSheet<void>(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                builder: (BuildContext context) => LoginPage(
+              AuthUtils.checkToken(
+                context,
+                checkAuthRequest: CheckAuthRequest(
+                  navigate: (context) async => context.goNamed(Pages.home.name),
                   email: state.email.trim(),
+                  forceLogin: true,
                 ),
               );
             }
@@ -176,7 +175,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     keyboardType: TextInputType.emailAddress,
                     autofillHints: const [
                       AutofillHints.username,
-                      AutofillHints.email
+                      AutofillHints.email,
                     ],
                     autocorrect: false,
                     validator: (value) {

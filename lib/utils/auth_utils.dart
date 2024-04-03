@@ -1,10 +1,28 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
+import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
+
+class CheckAuthRequest {
+  CheckAuthRequest({
+    required this.navigate,
+    this.email = '',
+    this.forceLogin = false,
+  });
+
+  final Future<void> Function(BuildContext context) navigate;
+  final String email;
+  final bool forceLogin;
+}
 
 class AuthUtils {
   /// Checks if the user is authenticated.
@@ -13,19 +31,30 @@ class AuthUtils {
   /// or the biometrics are checked.
   static Future<void> checkToken(
     BuildContext context, {
-    required VoidCallback navigate,
+    required CheckAuthRequest checkAuthRequest,
   }) async {
+    if (checkAuthRequest.forceLogin) {
+      await _displayLoginBottomSheet(
+        context,
+        checkAuthRequest: checkAuthRequest,
+      );
+      return;
+    }
+
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      navigate();
+      await checkAuthRequest.navigate(context);
       return;
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
         return;
       }
-      _displayLoginBottomSheet(context, navigate: navigate);
+      await _displayLoginBottomSheet(
+        context,
+        checkAuthRequest: checkAuthRequest,
+      );
       return;
     }
     try {
@@ -37,8 +66,10 @@ class AuthUtils {
         return;
       }
       await context.read<AuthCubit>().refreshSession();
-
-      navigate();
+      if (!context.mounted) {
+        return;
+      }
+      await checkAuthRequest.navigate(context);
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
@@ -46,7 +77,10 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      _displayLoginBottomSheet(context, navigate: navigate);
+      await _displayLoginBottomSheet(
+        context,
+        checkAuthRequest: checkAuthRequest,
+      );
     } catch (e) {
       await LoggingInfo.instance.error(
         'Error while authenticating with biometrics: $e',
@@ -54,30 +88,55 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      _displayLoginBottomSheet(context, navigate: navigate);
+      await _displayLoginBottomSheet(
+        context,
+        checkAuthRequest: checkAuthRequest,
+      );
     }
   }
 
   /// Displays the login bottom sheet.
   /// If the user successfully logs in, the [navigate] callback is called.
   /// If the user cancels the login, nothing happens.
-  static void _displayLoginBottomSheet(
+  static Future<void> _displayLoginBottomSheet(
     BuildContext context, {
-    required VoidCallback navigate,
-  }) {
-    showModalBottomSheet<void>(
+    required CheckAuthRequest checkAuthRequest,
+  }) async {
+    final result = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => LoginPage(
-        email: context.read<AuthCubit>().state.user.email,
-        popWhenSuccess: true,
+        email: checkAuthRequest.email.isNotEmpty
+            ? checkAuthRequest.email
+            : context.read<AuthCubit>().state.user.email,
+        isEmailEditable: checkAuthRequest.email.isNotEmpty,
       ),
-    ).whenComplete(() {
-      if (context.read<AuthCubit>().state.session.isExpired) {
+    );
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (true == result) {
+      final biometricSetting = await BiometricsHelper.getBiometricSetting();
+
+      if (!context.mounted) {
         return;
       }
-      navigate();
-    });
+
+      if (biometricSetting == BiometricSetting.unknown) {
+        await context.pushNamed(
+          Pages.permitBiometric.name,
+          extra: PermitBiometricRequest.login(),
+        );
+      }
+
+      if (!context.mounted) {
+        return;
+      }
+
+      await checkAuthRequest.navigate(context);
+    }
   }
 }

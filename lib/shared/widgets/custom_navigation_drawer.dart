@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -85,14 +86,18 @@ class CustomNavigationDrawer extends StatelessWidget {
                     'assets/images/givy_budget_menu.png',
                     fit: BoxFit.contain,
                   ),
-                  onTap: () => AuthUtils.checkToken(
+                  onTap: () async => AuthUtils.checkToken(
                     context,
-                    navigate: () {
-                      context.goNamed(Pages.personalSummary.name);
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.personalSummaryClicked,
-                      );
-                    },
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        context.goNamed(Pages.personalSummary.name);
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.personalSummaryClicked,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 DrawerMenuItem(
@@ -107,20 +112,24 @@ class CustomNavigationDrawer extends StatelessWidget {
                     ),
                   ),
                   icon: Icons.family_restroom_rounded,
-                  onTap: () => AuthUtils.checkToken(
+                  onTap: () async => AuthUtils.checkToken(
                     context,
-                    navigate: () {
-                      if (CachedFamilyUtils.isFamilyCacheExist()) {
-                        context.goNamed(
-                          Pages.cachedChildrenOverview.name,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        if (CachedFamilyUtils.isFamilyCacheExist()) {
+                          context.goNamed(
+                            Pages.cachedChildrenOverview.name,
+                          );
+                        } else {
+                          context.goNamed(Pages.childrenOverview.name);
+                        }
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.familyClicked,
+                          ),
                         );
-                      } else {
-                        context.goNamed(Pages.childrenOverview.name);
-                      }
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.familyClicked,
-                      );
-                    },
+                      },
+                    ),
                   ),
                 ),
                 if (showFamilyItem) _buildEmptySpace(),
@@ -128,14 +137,16 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.historyTitle,
                   icon: FontAwesomeIcons.listUl,
-                  onTap: () {
+                  onTap: () async {
                     context.read<RemoteDataSourceSyncBloc>().add(
                           const RemoteDataSourceSyncRequested(),
                         );
-                    AuthUtils.checkToken(
+                    await AuthUtils.checkToken(
                       context,
-                      navigate: () => context.goNamed(
-                        Pages.overview.name,
+                      checkAuthRequest: CheckAuthRequest(
+                        navigate: (context) async => context.goNamed(
+                          Pages.overview.name,
+                        ),
                       ),
                     );
                   },
@@ -144,14 +155,19 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.menuItemRecurringDonation,
                   icon: Icons.autorenew,
-                  onTap: () => AuthUtils.checkToken(
+                  onTap: () async => AuthUtils.checkToken(
                     context,
-                    navigate: () {
-                      context.goNamed(Pages.recurringDonations.name);
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.recurringDonationsClicked,
-                      );
-                    },
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        context.goNamed(Pages.recurringDonations.name);
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName:
+                                AmplitudeEvents.recurringDonationsClicked,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
                 DrawerMenuItem(
@@ -162,17 +178,19 @@ class CustomNavigationDrawer extends StatelessWidget {
                       auth.user.country,
                     ),
                   ),
-                  onTap: () => AuthUtils.checkToken(
+                  onTap: () async => AuthUtils.checkToken(
                     context,
-                    navigate: () => showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => ChangeMaxAmountBottomSheet(
-                        maxAmount: auth.user.amountLimit,
-                        icon: Util.getCurrencyIconData(
-                          country: Country.fromCode(
-                            auth.user.country,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) => showModalBottomSheet<void>(
+                        context: context,
+                        isScrollControlled: true,
+                        useSafeArea: true,
+                        builder: (_) => ChangeMaxAmountBottomSheet(
+                          maxAmount: auth.user.amountLimit,
+                          icon: Util.getCurrencyIconData(
+                            country: Country.fromCode(
+                              auth.user.country,
+                            ),
                           ),
                         ),
                       ),
@@ -183,10 +201,12 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: !auth.user.needRegistration,
                   title: locals.personalInfo,
                   icon: Icons.mode_edit_outline,
-                  onTap: () => AuthUtils.checkToken(
+                  onTap: () async => AuthUtils.checkToken(
                     context,
-                    navigate: () => context.goNamed(
-                      Pages.personalInfoEdit.name,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async => context.goNamed(
+                        Pages.personalInfoEdit.name,
+                      ),
                     ),
                   ),
                 ),
@@ -251,14 +271,16 @@ class CustomNavigationDrawer extends StatelessWidget {
                               color: AppTheme.givtBlue,
                             )
                           : null,
-                      onTap: () => AuthUtils.checkToken(
+                      onTap: () async => AuthUtils.checkToken(
                         context,
-                        navigate: () => showModalBottomSheet<void>(
-                          context: context,
-                          isScrollControlled: true,
-                          useSafeArea: true,
-                          builder: (_) => FingerprintBottomSheet(
-                            isFingerprint: isFingerprintAvailable,
+                        checkAuthRequest: CheckAuthRequest(
+                          navigate: (context) => showModalBottomSheet<void>(
+                            context: context,
+                            isScrollControlled: true,
+                            useSafeArea: true,
+                            builder: (_) => FingerprintBottomSheet(
+                              isFingerprint: isFingerprintAvailable,
+                            ),
                           ),
                         ),
                       ),
@@ -294,17 +316,19 @@ class CustomNavigationDrawer extends StatelessWidget {
                   isVisible: true,
                   title: locals.unregister,
                   icon: FontAwesomeIcons.userXmark,
-                  onTap: () {
+                  onTap: () async {
                     if (auth.user.tempUser) {
                       context.goNamed(
                         Pages.unregister.name,
                       );
                       return;
                     }
-                    AuthUtils.checkToken(
+                    await AuthUtils.checkToken(
                       context,
-                      navigate: () => context.goNamed(
-                        Pages.unregister.name,
+                      checkAuthRequest: CheckAuthRequest(
+                        navigate: (context) async => context.goNamed(
+                          Pages.unregister.name,
+                        ),
                       ),
                     );
                   },

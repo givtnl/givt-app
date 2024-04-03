@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -39,10 +38,9 @@ class CreditCardDetailsPage extends StatelessWidget {
 
             context.goNamed(
               Pages.permitBiometric.name,
-              extra: PermitBiometricRequest(
-                redirect: (context) => context.goNamed(
-                  Pages.registrationSuccessUs.name,
-                ),
+              extra: PermitBiometricRequest.registration(
+                redirect: (context) =>
+                    context.goNamed(Pages.registrationSuccessUs.name),
               ),
             );
           }).onError((e, stackTrace) {
