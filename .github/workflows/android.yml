@@ -38,7 +38,6 @@ jobs:
             echo "API_URL_AWS_US=api.production.givt.app" >> $GITHUB_ENV
             echo "API_URL_AWS_EU=api.production.givtapp.net" >> $GITHUB_ENV
             echo "STRIPE_PK=pk_live_51NGl2uLM5mQffuXIGIt8OSH7HWeo2lqPLyvMJSi3ypUDH7ITn84S4A8sGoFvXpP4DCtoUQFlNdWm5jraqR8Ce0sE00Nb4wDuBW" >> $GITHUB_ENV
-            echo "STRIPE_MERCHANT_ID=merchant.net.givtapp.droid2" >> $GITHUB_ENV
           else
             echo "Running on a different branch, deploying to test."
             echo "PACKAGE_NAME=net.givtapp.droid2.test" >> $GITHUB_ENV
@@ -50,7 +49,6 @@ jobs:
             echo "API_URL_AWS_US=api.development.givtapp.net" >> $GITHUB_ENV
             echo "API_URL_AWS_EU=api.development.givtapp.net" >> $GITHUB_ENV
             echo "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1" >> $GITHUB_ENV
-            echo "STRIPE_MERCHANT_ID=merchant.net.givtapp.droid2.test" >> $GITHUB_ENV
           fi
 
       - name: Checkout
