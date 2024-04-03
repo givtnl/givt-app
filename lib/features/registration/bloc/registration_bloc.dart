@@ -33,7 +33,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationStripeInit>(_onStripeInit);
   }
 
-  final AuthRepositoy authRepositoy;
+  final AuthRepository authRepositoy;
   final AuthCubit authCubit;
 
   FutureOr<void> _onRegistrationPasswordSubmitted(

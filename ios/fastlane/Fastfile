@@ -16,11 +16,13 @@ platform :ios do
     flavor = ENV['FLAVOR']
     app_identifier = ENV['APP_IDENTIFIER']
     logit_api_key = ENV['LOGIT_API_KEY']
-    api_url_us= ENV['API_URL_US']
-    api_url_eu= ENV['API_URL_EU']
-    api_url_aws_eu= ENV['API_URL_AWS_EU']
-    api_url_aws_us= ENV['API_URL_AWS_US']
-    amplitude_key= ENV['AMPLITUDE_KEY']
+    api_url_us = ENV['API_URL_US']
+    api_url_eu = ENV['API_URL_EU']
+    api_url_aws_eu = ENV['API_URL_AWS_EU']
+    api_url_aws_us = ENV['API_URL_AWS_US']
+    amplitude_key = ENV['AMPLITUDE_KEY']
+    stripe_pk = ENV['STRIPE_PK']
+    stripe_merchant_id = ENV['STRIPE_MERCHANT_ID']
     setup_ci
     sync_code_signing(type: "appstore", readonly: true, app_identifier: app_identifier, git_url: git_url)
     api_key = app_store_connect_api_key(
@@ -41,6 +43,8 @@ platform :ios do
           "--dart-define=API_URL_AWS_EU=#{api_url_aws_eu}",
           "--dart-define=API_URL_AWS_US=#{api_url_aws_us}",
           "--dart-define=AMPLITUDE_KEY=#{amplitude_key}",
+          "--dart-define=STRIPE_PK=#{stripe_pk}",
+          "--dart-define=STRIPE_MERCHANT_ID=#{stripe_merchant_id}"
         )
     end
     build_app(

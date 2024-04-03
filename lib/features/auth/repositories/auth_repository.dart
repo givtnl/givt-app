@@ -12,7 +12,7 @@ import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-mixin AuthRepositoy {
+mixin AuthRepository {
   Future<Session> refreshToken();
   Future<Session> login(String email, String password);
   Future<UserExt> fetchUserExtension(String guid);
@@ -25,8 +25,7 @@ mixin AuthRepositoy {
     required String guid,
     required String appLanguage,
   });
-  Future<StripeResponse> registerStripeCustomer({required String email});
-  Future<StripeResponse> updateStripeCustomer();
+  Future<StripeResponse> fetchStripeSetupIntent();
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
@@ -60,7 +59,7 @@ mixin AuthRepositoy {
   Future<void> updateFingerprintCertificate();
 }
 
-class AuthRepositoyImpl with AuthRepositoy {
+class AuthRepositoyImpl with AuthRepository {
   AuthRepositoyImpl(
     this._prefs,
     this._apiService,
@@ -387,15 +386,8 @@ class AuthRepositoyImpl with AuthRepositoy {
       _apiService.updateUserExt(newUserExt);
 
   @override
-  Future<StripeResponse> registerStripeCustomer({required String email}) async {
-    final reponse = await _apiService.registerStripeCustomer(email);
-    final stripeResponse = StripeResponse.fromJson(reponse);
-    return stripeResponse;
-  }
-
-  @override
-  Future<StripeResponse> updateStripeCustomer() async {
-    final reponse = await _apiService.updateStripeCustomer();
+  Future<StripeResponse> fetchStripeSetupIntent() async {
+    final reponse = await _apiService.fetchStripeSetupIntent();
     final stripeResponse = StripeResponse.fromJson(reponse);
     return stripeResponse;
   }
