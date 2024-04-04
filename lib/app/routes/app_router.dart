@@ -785,13 +785,7 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.authenticated) {
-      //Let's ask for biometric permission first
-      if (await BiometricsHelper.getBiometricSetting() ==
-          BiometricSetting.unknown) {
-        return;
-      }
-
-      if (routerState.name == Pages.home.name || !context.mounted) {
+      if (routerState.name == Pages.home.name) {
         return;
       }
       context.goNamed(
