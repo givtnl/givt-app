@@ -190,7 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           if (isUS) Text(context.l10n.holdOnRegistration),
           if (isUS) const SizedBox(height: 16),
-          const CircularProgressIndicator.adaptive(),
+          const CircularProgressIndicator(),
         ],
       ),
     );

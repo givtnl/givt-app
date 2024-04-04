@@ -34,7 +34,7 @@ class PersonalInfoEditBloc
     on<PersonalInfoEditChangeMaxAmount>(_onMaxAmountChanged);
   }
 
-  final AuthRepositoy authRepositoy;
+  final AuthRepository authRepositoy;
 
   FutureOr<void> _onEmailChanged(
     PersonalInfoEditEmail event,

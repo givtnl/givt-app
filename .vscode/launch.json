@@ -25,6 +25,10 @@
         "API_URL_AWS_EU=api.development.givtapp.net",
         "--dart-define",
         "API_URL_AWS_US=api.development.givtapp.net",
+        "--dart-define",
+        "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
+        "--dart-define",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test",
       ]
     },
     {
@@ -34,9 +38,9 @@
       "program": "lib/main_staging.dart",
       "flutterMode": "debug",
       "args": [
-        "--flavor", 
-        "staging", 
-        "--target", 
+        "--flavor",
+        "staging",
+        "--target",
         "lib/main_staging.dart",
         "--dart-define",
         "AMPLITUDE_KEY=ceb9aaa139ac6028aa34166d6f57923e",
@@ -48,6 +52,10 @@
         "API_URL_AWS_EU=api.development.givtapp.net",
         "--dart-define",
         "API_URL_AWS_US=api.development.givtapp.net",
+        "--dart-define",
+        "STRIPE_PK=pk_test_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1",
+        "--dart-define",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios.test",
       ]
     },
     {
@@ -57,10 +65,10 @@
       "program": "lib/main_production.dart",
       "flutterMode": "debug",
       "args": [
-        "--flavor", 
+        "--flavor",
         "production",
-        "--target", 
-        "lib/main_production.dart", 
+        "--target",
+        "lib/main_production.dart",
         "--dart-define",
         "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a",
         "--dart-define",
@@ -71,6 +79,10 @@
         "API_URL_AWS_EU=api.production.givtapp.net",
         "--dart-define",
         "API_URL_AWS_US=api.production.givt.app",
+        "--dart-define",
+        "STRIPE_PK=pk_live_51NGl2uLM5mQffuXIGIt8OSH7HWeo2lqPLyvMJSi3ypUDH7ITn84S4A8sGoFvXpP4DCtoUQFlNdWm5jraqR8Ce0sE00Nb4wDuBW",
+        "--dart-define",
+        "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios",
       ]
     }
   ]

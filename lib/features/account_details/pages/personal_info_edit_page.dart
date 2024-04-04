@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
@@ -10,10 +12,12 @@ import 'package:givt_app/features/account_details/pages/change_email_address_bot
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/gift_aid_page.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
+import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -216,11 +220,35 @@ class PersonalInfoEditPage extends StatelessWidget {
                 ),
                 value:
                     '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
-                onTap: () {
-                  AnalyticsHelper.logEvent(
+                onTap: () async {
+                  await AnalyticsHelper.logEvent(
                     eventName: AmplitudeEvents.editPaymentDetailsClicked,
                   );
-                  context.pushNamed(Pages.editCreditCardDetails.name);
+
+                  if (!context.mounted) return;
+                  await context.read<StripeCubit>().fetchSetupIntent();
+
+                  if (!context.mounted) return;
+
+                  try {
+                    await StripeHelper(context).showPaymentSheet();
+
+                    if (!context.mounted) return;
+                    await context.read<AuthCubit>().refreshUser();
+                  } on StripeException catch (e, stackTrace) {
+                    await AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.editPaymentDetailsCanceled,
+                    );
+
+                    /* Logged as info as stripe is giving exception
+                       when for example people close the bottomsheet. 
+                       So it's not a real error :)
+                    */
+                    await LoggingInfo.instance.info(
+                      e.toString(),
+                      methodName: stackTrace.toString(),
+                    );
+                  }
                 },
               ),
               _buildInfoRow(

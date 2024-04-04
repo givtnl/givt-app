@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.2.7
+version: 4.2.8
 publish_to: none
 
 environment:
@@ -33,6 +33,7 @@ dependencies:
   flutter_local_notifications: ^16.3.2
   flutter_localizations:
     sdk: flutter
+  flutter_stripe: ^10.1.1
   flutter_svg: ^2.0.9
   flutter_timezone: ^1.0.8
   font_awesome_flutter: ^10.6.0

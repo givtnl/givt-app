@@ -18,7 +18,7 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepositoy) : super(const AuthState());
 
-  final AuthRepositoy _authRepositoy;
+  final AuthRepository _authRepositoy;
 
   Future<void> login({required String email, required String password}) async {
     emit(state.copyWith(status: AuthStatus.loading));
@@ -120,6 +120,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       // fetch certificate fingerprints
       try {
+        await LoggingInfo.instance.info('Update fingerprint certificate');
         await _authRepositoy.updateFingerprintCertificate();
       } catch (e, stackTrace) {
         await LoggingInfo.instance.error(
@@ -183,6 +184,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepositoy.checkUserExt(email: email);
 
       // fetch certificate fingerprints
+      await LoggingInfo.instance.info('Update fingerprint certificate');
       await _authRepositoy.updateFingerprintCertificate();
 
       if (!await _authRepositoy.checkTld(email)) {
@@ -286,7 +288,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<bool> authenticate() async {
     emit(state.copyWith(status: AuthStatus.loading));
+    
     try {
+      await LoggingInfo.instance.info('Update fingerprint certificate');
+      await _authRepositoy.updateFingerprintCertificate();
+
       final session = await _authRepositoy.refreshToken();
 
       final (userExt, _, amountPresets) =

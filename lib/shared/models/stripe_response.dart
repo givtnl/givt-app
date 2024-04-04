@@ -2,30 +2,30 @@ import 'package:equatable/equatable.dart';
 
 class StripeResponse extends Equatable {
   const StripeResponse({
-    required this.url,
-    required this.successUrl,
-    required this.cancelUrl,
+    required this.customerId,
+    required this.customerEphemeralKeySecret,
+    required this.setupIntentClientSecret,
   });
 
   const StripeResponse.empty()
-      : url = '',
-        successUrl = '',
-        cancelUrl = '';
+      : customerId = '',
+        customerEphemeralKeySecret = '',
+        setupIntentClientSecret = '';
 
   factory StripeResponse.fromJson(Map<String, dynamic> json) => StripeResponse(
-        url: json['url'] as String,
-        successUrl: json['successUrl'] as String,
-        cancelUrl: json['cancelUrl'] as String,
+        customerId: json['customerId'] as String,
+        customerEphemeralKeySecret: json['customerEphemeralKeySecret'] as String,
+        setupIntentClientSecret: json['setupIntentClientSecret'] as String,
       );
 
-  final String url;
-  final String successUrl;
-  final String cancelUrl;
+  final String customerId;
+  final String customerEphemeralKeySecret;
+  final String setupIntentClientSecret;
 
   @override
   List<Object?> get props => [
-        url,
-        successUrl,
-        cancelUrl,
+        customerId,
+        customerEphemeralKeySecret,
+        setupIntentClientSecret,
       ];
 }

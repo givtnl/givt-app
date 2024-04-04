@@ -11,7 +11,7 @@ part 'unregister_state.dart';
 class UnregisterCubit extends Cubit<UnregisterState> {
   UnregisterCubit(this.authRepositoy) : super(const UnregisterInitial());
 
-  final AuthRepositoy authRepositoy;
+  final AuthRepository authRepositoy;
 
   Future<void> unregister({
     required String email,

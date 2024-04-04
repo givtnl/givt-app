@@ -9,20 +9,6 @@ enum PermitBiometricStatus {
   propose,
 }
 
-enum BiometricType {
-  faceId(name: 'FaceID'),
-  fingerprint(name: 'Fingerprint'),
-  touchId(name: 'TouchID'),
-  none(name: ''),
-  ;
-
-  const BiometricType({
-    required this.name,
-  });
-
-  final String name;
-}
-
 class PermitBiometricState extends Equatable {
   const PermitBiometricState._({
     required this.status,
@@ -39,7 +25,7 @@ class PermitBiometricState extends Equatable {
   final BiometricType biometricType;
   final PermitBiometricRequest permitBiometricRequest;
 
-  bool get isAutoRedirectNeeded {
+  bool get isCheckCompleted {
     return status == PermitBiometricStatus.denied ||
         status == PermitBiometricStatus.enabled ||
         status == PermitBiometricStatus.unavailable;

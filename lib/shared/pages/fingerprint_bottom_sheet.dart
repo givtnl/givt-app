@@ -6,7 +6,7 @@ import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class FingerprintBottomSheet extends StatefulWidget {
@@ -87,6 +87,11 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
                     await LocalAuthInfo.instance.setCanCheckBiometrics(
                       value: value,
                     );
+
+                    if (value == false) {
+                      await BiometricsHelper.deny();
+                    }
+
                     setState(() {
                       useFingerprint = value;
                     });

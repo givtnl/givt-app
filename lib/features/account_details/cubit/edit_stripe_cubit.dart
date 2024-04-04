@@ -12,12 +12,12 @@ class EditStripeCubit extends Cubit<EditStripeState> {
     required this.authRepositoy,
   }) : super(const EditStripeState());
 
-  final AuthRepositoy authRepositoy;
+  final AuthRepository authRepositoy;
 
   Future<void> fetchStripeCustomerUpdateURLs() async {
-    emit(state.copyWith(stripeStatus: StripeObjectStatus.loading));
+    emit(state.copyWith(stripeStatus: StripeObjectStatus.initial));
     try {
-      final response = await authRepositoy.updateStripeCustomer();
+      final response = await authRepositoy.fetchStripeSetupIntent();
 
       emit(
         state.copyWith(

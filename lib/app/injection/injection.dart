@@ -102,7 +102,7 @@ void initRepositories() {
   getIt.allowReassignment = true;
 
   getIt
-    ..registerLazySingleton<AuthRepositoy>(
+    ..registerLazySingleton<AuthRepository>(
       () => AuthRepositoyImpl(
         getIt(),
         getIt(),

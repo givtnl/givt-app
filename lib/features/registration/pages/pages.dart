@@ -1,5 +1,4 @@
 export 'bacs_explanation_page.dart';
-export 'credit_card_details_page.dart';
 export 'gift_aid_request_page.dart';
 export 'mandate_explanation_page.dart';
 export 'personal_info_page.dart';
