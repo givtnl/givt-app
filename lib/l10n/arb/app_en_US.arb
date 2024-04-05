@@ -1536,5 +1536,9 @@
     "permitBiometricQuestionWithType": "Do you want to use {value0}?",
     "permitBiometricExplanation": "Speed up the login process and keep you account secure",
     "permitBiometricSkip": "Skip for now",
-    "permitBiometricActivateWithType": "Activate {value0}"
+    "permitBiometricActivateWithType": "Activate {value0}",
+    "addAdultMemberDescriptionTitle": "The parent wil be invited to join the Family. They will be able to:",
+    "addAdultMemberDescriptionItem1": "Login to Givt and Givt4Kids",
+    "addAdultMemberDescriptionItem2": "Approve donations of the children",
+    "addAdultMemberDescriptionItem3": "Make an impact together"
 }
