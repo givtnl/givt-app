@@ -10,6 +10,7 @@ class Member extends Equatable {
     this.allowance,
     this.key,
     this.type,
+    this.email,
   });
 
   const Member.empty()
@@ -19,7 +20,8 @@ class Member extends Equatable {
         dateOfBirth = null,
         allowance = null,
         key = null,
-        type = null;
+        type = null,
+        email = null;
 
   factory Member.fromJson(Map<String, dynamic> json) => Member(
         firstName: (json['firstName'] ?? '').toString(),
@@ -28,6 +30,7 @@ class Member extends Equatable {
         dateOfBirth: DateTime.tryParse((json['dateOfBirth'] ?? '') as String),
         allowance: (json['givingAllowance'] ?? 0) as int,
         type: ProfileType.getByTypeName((json['type'] ?? '') as String),
+        email: (json['email'] ?? '').toString(),
       );
 
   final String? firstName;
@@ -37,6 +40,7 @@ class Member extends Equatable {
   final int? allowance;
   final String? key;
   final ProfileType? type;
+  final String? email;
 
   Map<String, dynamic> toJson() {
     return {
@@ -46,6 +50,7 @@ class Member extends Equatable {
       'dateOfBirth': dateOfBirth?.toIso8601String(),
       'givingAllowance': allowance,
       'type': type?.name,
+      'email': email,
     };
   }
 
@@ -54,5 +59,5 @@ class Member extends Equatable {
 
   @override
   List<Object?> get props =>
-      [firstName, lastName, age, dateOfBirth, allowance, type];
+      [firstName, lastName, age, dateOfBirth, allowance, type, email];
 }
