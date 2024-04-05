@@ -1536,5 +1536,9 @@
     "permitBiometricQuestionWithType": "Mit {value0} entsperren?",
     "permitBiometricExplanation": "Beschleunigen Sie den Anmeldevorgang und halten Sie Ihr Konto sicher",
     "permitBiometricSkip": "Für jetzt überspringen",
-    "permitBiometricActivateWithType": "{value0} aktivieren"
+    "permitBiometricActivateWithType": "{value0} aktivieren",
+    "addAdultMemberDescriptionTitle": "The parent wil be invited to join the Family. They will be able to:",
+    "addAdultMemberDescriptionItem1": "Login to Givt and Givt4Kids",
+    "addAdultMemberDescriptionItem2": "Approve donations of the children",
+    "addAdultMemberDescriptionItem3": "Make an impact together"
 }
