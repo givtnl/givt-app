@@ -526,7 +526,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
             child: Column(
               children: [
                 Text(
-                  'The parent wil be invited to join the Family. They will be able to:',
+                  context.l10n.addAdultMemberDescriptionTitle,
                   style: GoogleFonts.mulish(
                     textStyle:
                         Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -536,9 +536,15 @@ class _AddMemberFormState extends State<AddMemberForm> {
                   ),
                 ),
                 const SizedBox(height: 7),
-                _createDescriptionItem('Login to Givt and Givt4Kids'),
-                _createDescriptionItem('Approve donations of the children'),
-                _createDescriptionItem('Make an impact together'),
+                _createDescriptionItem(
+                  context.l10n.addAdultMemberDescriptionItem1,
+                ),
+                _createDescriptionItem(
+                  context.l10n.addAdultMemberDescriptionItem2,
+                ),
+                _createDescriptionItem(
+                  context.l10n.addAdultMemberDescriptionItem3,
+                ),
               ],
             ),
           ),
