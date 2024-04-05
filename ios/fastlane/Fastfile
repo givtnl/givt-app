@@ -54,6 +54,7 @@ platform :ios do
       archive_path: "../build/ios/archive/Runner.xcarchive"
     )
     dsym_zip
+    upload_symbols_to_crashlytics(gsp_path: './Runner/GoogleService-Info.plist')
     upload_to_testflight(
       app_identifier: app_identifier,
       api_key: api_key,

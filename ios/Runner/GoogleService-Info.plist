@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>847341799623-30a5r5la9da0uemecshl8r6r63looedh.apps.googleusercontent.com</string>
+	<string>847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.847341799623-30a5r5la9da0uemecshl8r6r63looedh</string>
+	<string>com.googleusercontent.apps.847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAZGVYKOk1Iy1OYWSZgT4yqCmLpvLH9f4I</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>net.givtapp.ios</string>
+	<string>net.givtapp.ios.test</string>
 	<key>PROJECT_ID</key>
 	<string>givt-dev-pre</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:847341799623:ios:275f52a5a1f454ca5156e2</string>
+	<string>1:847341799623:ios:dbf419704881d64d5156e2</string>
 	<key>DATABASE_URL</key>
 	<string>https://givt-dev-pre.firebaseio.com</string>
 </dict>
