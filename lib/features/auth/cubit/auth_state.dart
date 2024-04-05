@@ -16,6 +16,7 @@ enum AuthStatus {
   lockedOut,
   twoAttemptsLeft,
   oneAttemptLeft,
+  biometricCheck,
 }
 
 class AuthState extends Equatable {
@@ -26,6 +27,7 @@ class AuthState extends Equatable {
     this.presets = const UserPresets.empty(),
     this.email = '',
     this.message = '',
+    this.navigate = _emptyNavigate,
   });
   final UserExt user;
   final Session session;
@@ -33,6 +35,13 @@ class AuthState extends Equatable {
   final String email;
   final String message;
   final AuthStatus status;
+  final Future<void> Function(BuildContext context) navigate;
+
+  static Future<void> _emptyNavigate(BuildContext context) async {}
+
+  bool get hasNavigation {
+    return navigate != _emptyNavigate;
+  }
 
   AuthState copyWith({
     required AuthStatus status,
@@ -41,6 +50,7 @@ class AuthState extends Equatable {
     UserPresets? presets,
     String? email,
     String? message,
+    Future<void> Function(BuildContext context)? navigate,
   }) {
     if (status == AuthStatus.authenticated) {
       email = '';
@@ -53,6 +63,7 @@ class AuthState extends Equatable {
       message: message ?? this.message,
       status: status,
       presets: presets ?? this.presets,
+      navigate: navigate ?? this.navigate,
     );
   }
 
@@ -64,6 +75,7 @@ class AuthState extends Equatable {
         message,
         status,
         presets,
+        navigate,
       ];
 
   @override
