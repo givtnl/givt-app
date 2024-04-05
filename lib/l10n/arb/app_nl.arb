@@ -1536,5 +1536,9 @@
     "permitBiometricQuestionWithType": "Wil je gebruik maken van {value0}?",
     "permitBiometricExplanation": "Versnel het inlogproces en houd je account veilig",
     "permitBiometricSkip": "Overslaan",
-    "permitBiometricActivateWithType": "Activeer {value0}"
+    "permitBiometricActivateWithType": "Activeer {value0}",
+    "addAdultMemberDescriptionTitle": "The parent wil be invited to join the Family. They will be able to:",
+    "addAdultMemberDescriptionItem1": "Login to Givt and Givt4Kids",
+    "addAdultMemberDescriptionItem2": "Approve donations of the children",
+    "addAdultMemberDescriptionItem3": "Make an impact together"
 }
