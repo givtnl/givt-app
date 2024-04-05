@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/failures/failures.dart';
@@ -12,6 +13,7 @@ import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/models.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/shared/models/models.dart';
+import 'package:givt_app/utils/utils.dart';
 
 part 'auth_state.dart';
 
@@ -20,7 +22,11 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepository _authRepositoy;
 
-  Future<void> login({required String email, required String password}) async {
+  Future<void> login({
+    required String email,
+    required String password,
+    Future<void> Function(BuildContext context)? navigate,
+  }) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       await LoggingInfo.instance.info('User is trying to login with $email');
@@ -47,11 +53,16 @@ class AuthCubit extends Cubit<AuthState> {
         notificationId: newNotificationId,
       );
 
+      final biometricSetting = await BiometricsHelper.getBiometricSetting();
+
       emit(
         state.copyWith(
-          status: AuthStatus.authenticated,
+          status: biometricSetting == BiometricSetting.unknown
+              ? AuthStatus.biometricCheck
+              : AuthStatus.authenticated,
           user: userExt,
           session: session,
+          navigate: navigate,
         ),
       );
     } catch (e, stackTrace) {
@@ -100,6 +111,16 @@ class AuthCubit extends Cubit<AuthState> {
       );
     }
   }
+
+  void completeBiometricsCheck() =>
+      emit(state.copyWith(status: AuthStatus.authenticated));
+
+  void clearNavigation() => emit(
+        state.copyWith(
+          status: state.status,
+          navigate: AuthState._emptyNavigate,
+        ),
+      );
 
   Future<void> checkAuth() async {
     emit(state.copyWith(status: AuthStatus.loading));
@@ -288,7 +309,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<bool> authenticate() async {
     emit(state.copyWith(status: AuthStatus.loading));
-    
+
     try {
       await LoggingInfo.instance.info('Update fingerprint certificate');
       await _authRepositoy.updateFingerprintCertificate();

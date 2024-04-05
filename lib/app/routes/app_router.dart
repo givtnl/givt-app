@@ -784,7 +784,21 @@ class AppRouter {
     BuildContext context,
     GoRouterState routerState,
   ) async {
+    if (state.status == AuthStatus.biometricCheck) {
+      context.goNamed(
+        Pages.permitBiometric.name,
+        extra: PermitBiometricRequest.login(),
+      );
+    }
+
     if (state.status == AuthStatus.authenticated) {
+      if (state.hasNavigation) {
+        final navigate = state.navigate;
+        context.read<AuthCubit>().clearNavigation();
+        await navigate(context);
+        return;
+      }
+
       if (routerState.name == Pages.home.name) {
         return;
       }

@@ -12,11 +12,13 @@ class LoginPage extends StatefulWidget {
   const LoginPage({
     required this.email,
     required this.isEmailEditable,
+    this.navigate,
     super.key,
   });
 
   final String email;
   final bool isEmailEditable;
+  final Future<void> Function(BuildContext context)? navigate;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -43,10 +45,13 @@ class _LoginPageState extends State<LoginPage> {
             .login(
               email: emailController.text,
               password: passwordController.text,
+              navigate: widget.navigate,
             )
             .whenComplete(() {
-          if (context.read<AuthCubit>().state.status ==
-              AuthStatus.authenticated) {
+          final authState = context.read<AuthCubit>().state;
+
+          if (authState.status == AuthStatus.authenticated ||
+              authState.status == AuthStatus.biometricCheck) {
             context.pop(true);
           }
         });

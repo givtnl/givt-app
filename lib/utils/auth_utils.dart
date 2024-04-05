@@ -3,14 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
-import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
-import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class CheckAuthRequest {
   CheckAuthRequest({
@@ -102,7 +98,7 @@ class AuthUtils {
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
   }) async {
-    final result = await showModalBottomSheet<bool>(
+    await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
@@ -111,32 +107,8 @@ class AuthUtils {
             ? checkAuthRequest.email
             : context.read<AuthCubit>().state.user.email,
         isEmailEditable: checkAuthRequest.email.isNotEmpty,
+        navigate: checkAuthRequest.navigate,
       ),
     );
-
-    if (!context.mounted) {
-      return;
-    }
-
-    if (true == result) {
-      final biometricSetting = await BiometricsHelper.getBiometricSetting();
-
-      if (!context.mounted) {
-        return;
-      }
-
-      if (biometricSetting == BiometricSetting.unknown) {
-        await context.pushNamed(
-          Pages.permitBiometric.name,
-          extra: PermitBiometricRequest.login(),
-        );
-      }
-
-      if (!context.mounted) {
-        return;
-      }
-
-      await checkAuthRequest.navigate(context);
-    }
   }
 }
