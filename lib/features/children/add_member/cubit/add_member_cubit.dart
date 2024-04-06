@@ -23,18 +23,11 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   final AddMemberRepository _addMemberRepository;
   final CachedMembersRepository _cachedMembersRepository;
 
-  void decreaseNrOfForms() {
-    emit(state.copyWith(
-      nrOfForms: max(1, state.nrOfForms - 1),
-      members: [],
-    ));
-  }
+  void decreaseNrOfForms() =>
+      emit(state.copyWith(nrOfForms: max(1, state.nrOfForms - 1), members: []));
 
-  void increaseNrOfForms() {
-    emit(state.copyWith(
-      nrOfForms: state.nrOfForms + 1,
-    ));
-  }
+  void increaseNrOfForms() =>
+      emit(state.copyWith(nrOfForms: state.nrOfForms + 1));
 
   void validateForms() {
     emit(
@@ -96,7 +89,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
     if (existingChildIndex != -1) {
       // Child with the same key exists, replace it
-      final List<Member> updatedChildren = List.from(state.members);
+      final updatedChildren = List<Member>.from(state.members);
       updatedChildren[existingChildIndex] = member;
 
       if (invisibleSecondMemberIndex != -1) {
@@ -114,8 +107,8 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     } else {
       if (invisibleSecondMemberIndex != -1) {
         // Invisible second member exists, remove it
-        final List<Member> updatedChildren = List.from(state.members);
-        updatedChildren.removeAt(invisibleSecondMemberIndex);
+        final updatedChildren = List<Member>.from(state.members)
+          ..removeAt(invisibleSecondMemberIndex);
 
         emit(
           state.copyWith(

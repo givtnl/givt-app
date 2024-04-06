@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,8 +13,8 @@ import 'package:givt_app/features/children/add_member/widgets/family_text_form_f
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class AddMemberForm extends StatefulWidget {
@@ -36,6 +35,7 @@ class AddMemberForm extends StatefulWidget {
 class _AddMemberFormState extends State<AddMemberForm> {
   final _nameChildController = TextEditingController();
   final _nameParentController = TextEditingController();
+  final _emailParentController = TextEditingController();
   final _ageController = TextEditingController();
   bool isChildSelected = true;
   int _allowanceController = 15;
@@ -101,7 +101,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
           : (_heldDuration.inMilliseconds < holdDownDuration2)
               ? allowanceIncrement
               : allowanceIncrement2;
-      ;
     });
   }
 
@@ -162,7 +161,9 @@ class _AddMemberFormState extends State<AddMemberForm> {
             );
 
             cubit.rememberProfile(
-                member: profile, invisibleSecondKey: formKeyParent.toString());
+              member: profile,
+              invisibleSecondKey: formKeyParent.toString(),
+            );
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.addChildProfile,
               eventProperties: {
@@ -178,20 +179,25 @@ class _AddMemberFormState extends State<AddMemberForm> {
             }
 
             final name = _nameParentController.text.trim();
+            final email = _emailParentController.text.trim();
 
             final profile = Member(
               firstName: name,
               key: formKeyParent.toString(),
               type: ProfileType.Parent,
+              email: email,
             );
 
             cubit.rememberProfile(
-                member: profile, invisibleSecondKey: formKeyChild.toString());
+              member: profile,
+              invisibleSecondKey: formKeyChild.toString(),
+            );
 
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.addParentProfile,
               eventProperties: {
                 'name': name,
+                'email': email,
               },
             );
           }
@@ -495,6 +501,79 @@ class _AddMemberFormState extends State<AddMemberForm> {
             hintText: context.l10n.firstName,
             textCapitalization: TextCapitalization.sentences,
             focusNode: _parentNameFocusNode,
+          ),
+          FamilyTextFormField(
+            validator: (value) {
+              if (value == null ||
+                  value.isEmpty ||
+                  !Util.emailRegEx.hasMatch(value)) {
+                return context.l10n.invalidEmail;
+              }
+              return null;
+            },
+            keyboardType: TextInputType.emailAddress,
+            autofillHints: const [
+              AutofillHints.username,
+              AutofillHints.email,
+            ],
+            autocorrect: false,
+            controller: _emailParentController,
+            hintText: context.l10n.email,
+            textInputAction: TextInputAction.done,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 5, top: 10),
+            child: Column(
+              children: [
+                Text(
+                  context.l10n.addAdultMemberDescriptionTitle,
+                  style: GoogleFonts.mulish(
+                    textStyle:
+                        Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                            ),
+                  ),
+                ),
+                const SizedBox(height: 7),
+                _createDescriptionItem(
+                  context.l10n.addAdultMemberDescriptionItem1,
+                ),
+                _createDescriptionItem(
+                  context.l10n.addAdultMemberDescriptionItem2,
+                ),
+                _createDescriptionItem(
+                  context.l10n.addAdultMemberDescriptionItem3,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createDescriptionItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 1),
+      child: Row(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 4, right: 8),
+            child: Icon(
+              FontAwesomeIcons.check,
+              color: AppTheme.primary70,
+              size: 12,
+            ),
+          ),
+          Text(
+            text,
+            style: GoogleFonts.mulish(
+              textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 15,
+                  ),
+            ),
           ),
         ],
       ),
