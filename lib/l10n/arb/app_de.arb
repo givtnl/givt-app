@@ -1540,5 +1540,8 @@
     "addAdultMemberDescriptionTitle": "The parent wil be invited to join the Family. They will be able to:",
     "addAdultMemberDescriptionItem1": "Login to Givt and Givt4Kids",
     "addAdultMemberDescriptionItem2": "Approve donations of the children",
-    "addAdultMemberDescriptionItem3": "Make an impact together"
+    "addAdultMemberDescriptionItem3": "Make an impact together",
+    "joinImpactGroupCongrats": "Congrats, you’re in!\n",
+    "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
+    "acceptInviteKey": "Accept the invite"
 }
