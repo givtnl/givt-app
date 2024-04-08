@@ -1,13 +1,9 @@
-import 'dart:developer';
 import 'dart:io';
 
-import 'package:appcheck/appcheck.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DownloadGivtForKidsAppWidget extends StatefulWidget {
@@ -29,39 +25,11 @@ class _DownloadGivtForKidsAppWidgetState
   }
 
   Future<void> _initialise() async {
-    final isAppInstalled = await _checkIfGivt4KidsAppInstalled();
+    final isAppInstalled = await Util.checkIfGivt4KidsAppInstalled();
 
     setState(() {
       _isGivt4KidsAppInstalled = isAppInstalled;
     });
-  }
-
-  Future<bool> _checkIfGivt4KidsAppInstalled() async {
-    try {
-      final String appUrl;
-      if (Platform.isIOS) {
-        appUrl = 'appscheme://net.givtapp.kids';
-      } else if (Platform.isAndroid) {
-        final currentAppInfo = await PackageInfo.fromPlatform();
-        if (currentAppInfo.packageName.contains('.test')) {
-          appUrl = 'net.givtapp.kids.test';
-        } else {
-          appUrl = 'net.givtapp.kids';
-        }
-      } else {
-        return false;
-      }
-
-      final kidsApp = await AppCheck.checkAvailability(appUrl);
-      if (kidsApp != null) {
-        log('${kidsApp.packageName} is installed on the device.');
-        return true;
-      }
-    } on PlatformException {
-      log('Givt4Kids app is not installed on the device.');
-      return false;
-    }
-    return false;
   }
 
   @override

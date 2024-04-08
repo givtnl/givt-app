@@ -64,7 +64,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
       await _impactGroupInviteRepository.acceptGroupInvite(
         groupId: groupId,
       );
-      emit(state.copyWith(status: ImpactGroupsStatus.inviteAccepted));
+      await fetchImpactGroups();
     } catch (e) {
       emit(
         state.copyWith(

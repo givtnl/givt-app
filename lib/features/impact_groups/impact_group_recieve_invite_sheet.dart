@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +15,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
   final ImpactGroup invitdImpactGroup;
   @override
   Widget build(BuildContext context) {
+    final user = context.read<AuthCubit>().state.user;
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
       child: Column(
@@ -39,8 +43,23 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       .read<ImpactGroupsCubit>()
                       .acceptGroupInvite(groupId: groupId);
 
-                  // TODO: Navigate according to user status (existing, temp, new)
-                  context.pop();
+                  if (user.needRegistration) {
+                    final createStripe = user.personalInfoRegistered &&
+                        (user.country == Country.us.countryCode);
+                    context
+                      ..goNamed(
+                        Pages.registration.name,
+                        queryParameters: {
+                          'email': user.email,
+                          'createStripe': createStripe.toString(),
+                        },
+                      )
+                      ..pop();
+                  } else {
+                    context
+                      ..goNamed(Pages.joinImpactGroupSuccess.name)
+                      ..pop();
+                  }
                 },
                 child: const Text('Accept the invite'),
               );
