@@ -1,23 +1,16 @@
 part of 'impact_groups_cubit.dart';
 
-enum ImpactGroupsStatus {
-  initial,
-  loading,
-  fetched,
-  invited,
-  inviteAccepted,
-  error
-}
+enum ImpactGroupCubitStatus { initial, loading, fetched, invited, error }
 
 class ImpactGroupsState extends Equatable {
   const ImpactGroupsState({
-    this.status = ImpactGroupsStatus.initial,
+    this.status = ImpactGroupCubitStatus.initial,
     this.impactGroups = const [],
     this.invitedGroup = const ImpactGroup.empty(),
     this.error = '',
   });
 
-  final ImpactGroupsStatus status;
+  final ImpactGroupCubitStatus status;
   final List<ImpactGroup> impactGroups;
   final ImpactGroup invitedGroup;
   final String error;
@@ -31,7 +24,7 @@ class ImpactGroupsState extends Equatable {
       ];
 
   ImpactGroupsState copyWith({
-    ImpactGroupsStatus? status,
+    ImpactGroupCubitStatus? status,
     List<ImpactGroup>? impactGroups,
     ImpactGroup? invitedGroup,
     String? error,

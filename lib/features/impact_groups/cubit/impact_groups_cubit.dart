@@ -20,7 +20,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
   final ImpactGroupsRepository _impactGroupInviteRepository;
   final AuthCubit _authCubit;
   Future<void> fetchImpactGroups() async {
-    emit(state.copyWith(status: ImpactGroupsStatus.loading));
+    emit(state.copyWith(status: ImpactGroupCubitStatus.loading));
 
     try {
       final impactGroups =
@@ -28,14 +28,14 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
 
       emit(
         state.copyWith(
-          status: ImpactGroupsStatus.fetched,
+          status: ImpactGroupCubitStatus.fetched,
           impactGroups: impactGroups,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          status: ImpactGroupsStatus.error,
+          status: ImpactGroupCubitStatus.error,
           error: e.toString(),
         ),
       );
@@ -47,7 +47,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
       if (state.impactGroups[i].status == ImpactGroupStatus.invited) {
         emit(
           state.copyWith(
-            status: ImpactGroupsStatus.invited,
+            status: ImpactGroupCubitStatus.invited,
             invitedGroup: state.impactGroups[i],
           ),
         );
@@ -59,7 +59,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
   Future<void> acceptGroupInvite({
     required String groupId,
   }) async {
-    emit(state.copyWith(status: ImpactGroupsStatus.loading));
+    emit(state.copyWith(status: ImpactGroupCubitStatus.loading));
     try {
       await _impactGroupInviteRepository.acceptGroupInvite(
         groupId: groupId,
@@ -68,7 +68,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
     } catch (e) {
       emit(
         state.copyWith(
-          status: ImpactGroupsStatus.error,
+          status: ImpactGroupCubitStatus.error,
           error: e.toString(),
         ),
       );

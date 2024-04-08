@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage> {
       );
 
     final auth = context.watch<AuthCubit>().state;
+    final impactGroupsState = context.watch<ImpactGroupsCubit>().state;
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
@@ -180,7 +181,10 @@ class _HomePageState extends State<HomePage> {
 
               // Needs registration dialog
               if (state is RemoteDataSourceSyncSuccess) {
-                if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                if (!auth.user.needRegistration ||
+                    auth.user.mandateSigned ||
+                    impactGroupsState.status ==
+                        ImpactGroupCubitStatus.invited) {
                   return;
                 }
                 _buildNeedsRegistrationDialog(context);
@@ -199,7 +203,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BlocListener<ImpactGroupsCubit, ImpactGroupsState>(
             listener: (context, state) {
-              if (state.status == ImpactGroupsStatus.invited) {
+              if (state.status == ImpactGroupCubitStatus.invited) {
                 final impactGroup = state.invitedGroup;
                 showModalBottomSheet<void>(
                   isScrollControlled: true,
