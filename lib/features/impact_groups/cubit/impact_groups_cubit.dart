@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -12,7 +13,8 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
     this._authCubit,
   ) : super(const ImpactGroupsState()) {
     _authCubit.stream.listen((event) async {
-      if (event.status == AuthStatus.authenticated) {
+      if (event.status == AuthStatus.authenticated &&
+          event.user.country == Country.us.countryCode) {
         await fetchImpactGroups();
       }
     });
