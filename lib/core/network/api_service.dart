@@ -937,6 +937,65 @@ class APIService {
     }
   }
 
+  Future<bool> acceptGroupInvite(
+    String groupId,
+  ) async {
+    // final url = Uri.https(_apiURL, '/givtservice/v1/$groupId/join');
+
+    // final response = await client.post(
+    //   url,
+    //   body: jsonEncode(body),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // );
+
+    // if (response.statusCode >= 400) {
+    //   throw GivtServerFailure(
+    //     statusCode: response.statusCode,
+    //     body: response.body.isNotEmpty
+    //         ? jsonDecode(response.body) as Map<String, dynamic>
+    //         : null,
+    //   );
+    // }
+
+    // return response.statusCode == 200;
+    return true;
+  }
+
+  Future<List<dynamic>> fetchImpactGroups() async {
+    // final url = Uri.https(_apiURL, '/givtservice/v1/groups');
+    // final response = await client.get(url);
+
+    // if (response.statusCode >= 400 && response.statusCode < 500) {
+    //   return [];
+    // }
+
+    // if (response.statusCode >= 500) {
+    //   throw GivtServerFailure(
+    //     statusCode: response.statusCode,
+    //     body: jsonDecode(response.body) as Map<String, dynamic>,
+    //   );
+    // }
+
+    // final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    // final itemMap = decodedBody['items']! as List<dynamic>;
+    // return itemMap;
+    final mockData = jsonEncode({
+      "items": [
+        {
+          'id': "GUIDGUIDGUID",
+          "status": "Invited",
+          "name": "Luza Family",
+          "type": "Family",
+        }
+      ]
+    });
+    final decodedBody = jsonDecode(mockData) as Map<String, dynamic>;
+    final itemMap = decodedBody['items']! as List<dynamic>;
+    return itemMap;
+  }
+
   Future<Map<String, dynamic>> fetchFamilyGoal() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/goal/family/latest');
     final response = await client.get(url);

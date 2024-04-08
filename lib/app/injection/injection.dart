@@ -21,6 +21,7 @@ import 'package:givt_app/features/children/overview/repositories/family_overview
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
@@ -215,6 +216,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<CreateFamilyGoalRepository>(
       () => CreateFamilyGoalRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<ImpactGroupsRepository>(
+      () => ImpactGroupsRepositoryImpl(
         getIt(),
       ),
     );

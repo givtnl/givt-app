@@ -14,6 +14,8 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -54,6 +56,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
+      context.read<ImpactGroupsCubit>().checkForInvites();
     });
   }
 
@@ -190,6 +193,25 @@ class _HomePageState extends State<HomePage> {
                 _displayUpdateDialog(
                   context,
                   state.appUpdate,
+                );
+              }
+            },
+          ),
+          BlocListener<ImpactGroupsCubit, ImpactGroupsState>(
+            listener: (context, state) {
+              if (state.status == ImpactGroupsStatus.invited) {
+                final impactGroup = state.invitedGroup;
+                showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  useSafeArea: true,
+                  isDismissible: false,
+                  enableDrag: false,
+                  builder: (_) {
+                    return ImpactGroupRecieveInviteSheet(
+                      invitdImpactGroup: impactGroup,
+                    );
+                  },
                 );
               }
             },
