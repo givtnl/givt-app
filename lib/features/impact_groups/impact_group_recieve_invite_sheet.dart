@@ -1,11 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -22,7 +28,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'You have been invited\nto the ${invitdImpactGroup.name}',
+            '${context.l10n.youHaveBeenInvitedToImpactGroup} ${invitdImpactGroup.name}',
             textAlign: TextAlign.center,
             style: GoogleFonts.mulish(
               textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -37,8 +43,17 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                   .firstWhere(
                       (element) => element.status == ImpactGroupStatus.invited)
                   .id;
-              return ElevatedButton(
+              return CustomGreenElevatedButton(
+                title: context.l10n.acceptInviteKey,
                 onPressed: () {
+                  unawaited(
+                    AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.inviteToImpactGroupAccepted,
+                        eventProperties: {
+                          'group_name': state.invitedGroup.name
+                        }),
+                  );
+
                   context
                       .read<ImpactGroupsCubit>()
                       .acceptGroupInvite(groupId: groupId);
@@ -61,7 +76,6 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       ..pop();
                   }
                 },
-                child: const Text('Accept the invite'),
               );
             },
           ),

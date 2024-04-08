@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
@@ -23,6 +24,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -204,6 +206,13 @@ class _HomePageState extends State<HomePage> {
           BlocListener<ImpactGroupsCubit, ImpactGroupsState>(
             listener: (context, state) {
               if (state.status == ImpactGroupCubitStatus.invited) {
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName:
+                        AmplitudeEvents.invitedToImpactGroupBottomSheetShown,
+                  ),
+                );
+
                 final impactGroup = state.invitedGroup;
                 showModalBottomSheet<void>(
                   isScrollControlled: true,

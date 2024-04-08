@@ -2,6 +2,7 @@ enum AmplitudeEvents {
   letsGo('lets_go'),
   login('login'),
   familyClicked('family_clicked'),
+  clickedSeeMyFamily('clicked_see_my_family'),
   addChildProfile('add_child_profile'),
   addParentProfile('add_parent_profile'),
   addMemerClicked('add_member_clicked'),
@@ -76,6 +77,10 @@ enum AmplitudeEvents {
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
   skipBiometricWhenLoggedIn('skip_biometric_when_logged_in'),
   activateBiometricWhenLoggedIn('activate_biometric_when_logged_in'),
+
+  invitedToImpactGroupBottomSheetShown(
+      'invited_to_impact_group_bottom_sheet_shown'),
+  inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
   ;
 
   const AmplitudeEvents(this.value);

@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/widgets/download_g4k_button.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,7 +53,7 @@ class _ImpactGroupJoinSuccessPageState
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  text: 'Congrats, you’re in!\n',
+                  text: context.l10n.joinImpactGroupCongrats,
                   style: GoogleFonts.mulish(
                     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -98,11 +102,17 @@ class _ImpactGroupJoinSuccessPageState
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomGreenElevatedButton(
-                    title: context.l10n.seeMyFamily,
-                    onPressed: () => context.pushReplacementNamed(
-                      Pages.childrenOverview.name,
-                    ),
-                  ),
+                      title: context.l10n.seeMyFamily,
+                      onPressed: () {
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.clickedSeeMyFamily,
+                          ),
+                        );
+                        context.pushReplacementNamed(
+                          Pages.childrenOverview.name,
+                        );
+                      }),
                 )
               else
                 Column(
