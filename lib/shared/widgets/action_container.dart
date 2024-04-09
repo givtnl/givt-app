@@ -113,7 +113,7 @@ class _ActionContainerState extends State<ActionContainer> {
       child: Container(
         margin: _getOpositeMarginByBase(widget.base),
         decoration: BoxDecoration(
-          color: borderColor!,
+          color: borderColor,
           border: _getBorderByBase(widget.base),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),
