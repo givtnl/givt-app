@@ -3,6 +3,10 @@ enum Pages {
   home(path: '/home', name: 'HOME'),
   loading(path: '/loading', name: 'LOADING'),
   welcome(path: '/welcome', name: 'WELCOME'),
+  generosityChallenge(
+    path: '/generosity-challenge',
+    name: 'GENEROSITY-CHALLENGE',
+  ),
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
   giveSucess(path: 'give-offline', name: 'GIVE-OFFLINE'),

@@ -17,6 +17,7 @@ import 'package:givt_app/features/children/edit_profile/repositories/edit_profil
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/family_goal_tracker/repository/goal_tracker_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
@@ -215,6 +216,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<CreateFamilyGoalRepository>(
       () => CreateFamilyGoalRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<GenerosityChallengeRepository>(
+      () => GenerosityChallengeRepositoryImpl(
         getIt(),
       ),
     );
