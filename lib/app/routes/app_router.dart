@@ -40,6 +40,7 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
+import 'package:givt_app/features/impact_groups/impact_group_join_success_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
@@ -464,6 +465,11 @@ class AppRouter {
             path: Pages.registrationSuccessUs.path,
             name: Pages.registrationSuccessUs.name,
             builder: (_, state) => const RegistrationSuccessUs(),
+          ),
+          GoRoute(
+            path: Pages.joinImpactGroupSuccess.path,
+            name: Pages.joinImpactGroupSuccess.name,
+            builder: (context, state) => const ImpactGroupJoinSuccessPage(),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,

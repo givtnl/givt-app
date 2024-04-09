@@ -70,7 +70,10 @@ enum Pages {
     name: 'CACHED-CHILDREN-OVERVIEW',
   ),
   createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
-
+  joinImpactGroupSuccess(
+    path: 'join-impact-group-success',
+    name: 'JOIN-IMPACT-GROUP-SUCCESS',
+  ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
   ;
 
