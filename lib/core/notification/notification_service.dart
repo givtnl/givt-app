@@ -8,6 +8,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -169,6 +170,11 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> _handleNotification(Map<String, dynamic> customData) async {
+    //do not handle notification while generosity challenge is active
+    if (GenerosityChallengeHelper.isActivated) {
+      return;
+    }
+
     await LoggingInfo.instance.info('Handling push notification');
     if (customData['Type'] == null && customData['body'] != null) {
       await _showNotification(
@@ -249,6 +255,11 @@ class NotificationService implements INotificationService {
     Map<String, dynamic> payload = const {},
     String? title,
   }) async {
+    //do not show notification while generosity challenge is active
+    if (GenerosityChallengeHelper.isActivated) {
+      return;
+    }
+
     /// Notification id
     final id = Random().nextInt(9999 - 1000) + 1000;
     await flutterLocalNotificationsPlugin.show(
@@ -267,6 +278,11 @@ class NotificationService implements INotificationService {
     required tz.TZDateTime scheduledDate,
     int? id,
   }) async {
+    //do not schedule notification while generosity challenge is active
+    if (GenerosityChallengeHelper.isActivated) {
+      return;
+    }
+
     id ??= Random().nextInt(9999 - 1000) + 1000;
 
     await setupFlutterNotifications();
