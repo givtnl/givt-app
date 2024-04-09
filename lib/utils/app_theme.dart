@@ -71,9 +71,34 @@ class AppTheme {
   static const progressGradient2 = Color(0xFF9DD273);
   static const progressGradient3 = Color(0xFF74CA79);
   static const highlight80 = Color(0xFFDCC74D);
+  static const primary20 = Color(0xFF003920);
+
   static const primary40 = Color(0xFF006D42);
   static const primary70 = Color(0xFF40C181);
+  static const primary80 = Color(0xFF60DD9B);
   static const primary98 = Color(0xFFE9FFED);
+  static const primary95 = Color(0xFFC0FFD6);
+
+  static const secondary30 = Color(0xFF004F50);
+  static const secondary40 = Color(0xFF00696A);
+  static const secondary80 = Color(0xFF4CDADB);
+  static const secondary95 = Color(0xFFAEFFFF);
+  static const secondary98 = Color(0xFFE2FFFE);
+
+  static const tertiary40 = Color(0xFF744AA5);
+  static const tertiary80 = Color(0xFFDAB9FF);
+  static const tertiary95 = Color(0xFFEEDBFF);
+  static const tertiary98 = Color(0xFFFFF7FF);
+
+  static const highlight30 = Color(0xFF514700);
+  static const highlight40 = Color(0xFF6C5E00);
+  static const highlight95 = Color(0xFFFFF1B2);
+  static const highlight98 = Color(0xFFFFF9EB);
+
+  static const neutralVariant50 = Color(0xFF74796D);
+  static const neutralVariant80 = Color(0xFFC8C7BF);
+  static const neutralVariant90 = Color(0xFFE4E3DB);
+
   static const familyGoalStepperGray = Color(0xFF9694AB);
 
   static const generosityChallangeCardBackground = Color(0xFFFFFDF7);
