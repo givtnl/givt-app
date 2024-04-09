@@ -4,16 +4,16 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class ActionContainer extends StatefulWidget {
   const ActionContainer({
-    super.key,
-    this.isDisabled = false,
-    this.isSelected = false,
     required this.borderColor,
     required this.onTap,
     required this.child,
+    this.isDisabled = false,
+    this.isSelected = false,
     this.base = ActionContainerBase.bottom,
     this.margin,
     this.borderSize = 2,
     this.baseBorderSize = 6,
+    super.key,
   });
   final VoidCallback onTap;
   final bool isDisabled;
@@ -113,7 +113,7 @@ class _ActionContainerState extends State<ActionContainer> {
       child: Container(
         margin: _getOpositeMarginByBase(widget.base),
         decoration: BoxDecoration(
-          color: borderColor!,
+          color: borderColor,
           border: _getBorderByBase(widget.base),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),

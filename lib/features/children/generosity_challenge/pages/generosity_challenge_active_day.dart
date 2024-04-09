@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -36,7 +37,7 @@ class GenerosityChallengeActiveDay extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      // body: SafeArea(child: GenerosityDailyCard()),
+      body: const SafeArea(child: GenerosityDailyCard()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GivtElevatedButton(
         onTap: challenge.completeActiveDay,

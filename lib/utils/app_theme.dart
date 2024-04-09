@@ -76,6 +76,8 @@ class AppTheme {
   static const primary98 = Color(0xFFE9FFED);
   static const familyGoalStepperGray = Color(0xFF9694AB);
 
+  static const generosityChallangeCardBackground = Color(0xFFFFFDF7);
+  static const generosityChallangeCardBorder = Color(0xFFEEF2E4);
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
     fontFamily: 'AvenirLTStd',
