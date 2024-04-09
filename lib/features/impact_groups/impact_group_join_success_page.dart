@@ -106,7 +106,7 @@ class _ImpactGroupJoinSuccessPageState
                       onPressed: () {
                         unawaited(
                           AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.clickedSeeMyFamily,
+                            eventName: AmplitudeEvents.seeMyFamilyClicked,
                           ),
                         );
                         context.pushReplacementNamed(
@@ -122,6 +122,9 @@ class _ImpactGroupJoinSuccessPageState
                       onPressed: () {
                         context.pushReplacementNamed(
                           Pages.childrenOverview.name,
+                        );
+                        AnalyticsHelper.logEvent(
+                          eventName: AmplitudeEvents.iWillDonloadG4KLater,
                         );
                       },
                       child: Text(

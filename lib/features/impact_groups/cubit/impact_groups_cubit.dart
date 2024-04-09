@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -41,6 +44,12 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
           error: e.toString(),
         ),
       );
+      unawaited(
+        LoggingInfo.instance.error(
+          'Fetching impact groups failed: $e',
+          methodName: 'fetchImpactGroups',
+        ),
+      );
     }
   }
 
@@ -72,6 +81,12 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
         state.copyWith(
           status: ImpactGroupCubitStatus.error,
           error: e.toString(),
+        ),
+      );
+      unawaited(
+        LoggingInfo.instance.error(
+          'Accept impact group invite failed $e',
+          methodName: 'acceptGroupInvite',
         ),
       );
     }

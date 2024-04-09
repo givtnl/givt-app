@@ -2,7 +2,7 @@ enum AmplitudeEvents {
   letsGo('lets_go'),
   login('login'),
   familyClicked('family_clicked'),
-  clickedSeeMyFamily('clicked_see_my_family'),
+  seeMyFamilyClicked('see_my_family_clicked'),
   addChildProfile('add_child_profile'),
   addParentProfile('add_parent_profile'),
   addMemerClicked('add_member_clicked'),
@@ -81,6 +81,7 @@ enum AmplitudeEvents {
   invitedToImpactGroupBottomSheetShown(
       'invited_to_impact_group_bottom_sheet_shown'),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
+  iWillDonloadG4KLater('i_will_download_g4k_later'),
   ;
 
   const AmplitudeEvents(this.value);

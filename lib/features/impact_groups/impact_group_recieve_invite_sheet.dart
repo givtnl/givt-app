@@ -48,10 +48,11 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                 onPressed: () {
                   unawaited(
                     AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.inviteToImpactGroupAccepted,
-                        eventProperties: {
-                          'group_name': state.invitedGroup.name
-                        }),
+                      eventName: AmplitudeEvents.inviteToImpactGroupAccepted,
+                      eventProperties: {
+                        'group_name': state.invitedGroup.name,
+                      },
+                    ),
                   );
 
                   context
