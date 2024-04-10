@@ -4,9 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/day_item_placeholder.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeOverview extends StatelessWidget {
   const GenerosityChallengeOverview({super.key});
@@ -14,7 +15,10 @@ class GenerosityChallengeOverview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final challenge = context.read<GenerosityChallengeCubit>();
-    final user = context.read<AuthCubit>().state.user;
+    final auth = context.watch<AuthCubit>().state;
+    final arePersonalDetailsAvailable =
+        auth.status == AuthStatus.authenticated &&
+            auth.user.personalInfoRegistered;
     return Scaffold(
       appBar: const GenerosityAppBar(
         title: 'Generosity Mission',
@@ -23,29 +27,16 @@ class GenerosityChallengeOverview extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            SvgPicture.asset(
-              'assets/images/generosity_challenge_backdrop.svg',
-              width: MediaQuery.sizeOf(context).width,
-              fit: BoxFit.fitWidth,
-            ),
+            if (arePersonalDetailsAvailable)
+              SvgPicture.asset(
+                'assets/images/generosity_challenge_backdrop.svg',
+                width: MediaQuery.sizeOf(context).width,
+                fit: BoxFit.fitWidth,
+              ),
             Column(
               children: [
-                const SizedBox(height: 24),
-                SvgPicture.asset(
-                  'assets/images/family_avatar.svg',
-                  width: 60,
-                  height: 60,
-                ),
-                const SizedBox(height: 14),
-                Text(
-                  'The ${user.lastName} Family',
-                  style: const TextStyle(
-                    color: AppTheme.primary20,
-                    fontSize: 18,
-                    fontFamily: 'Rouna',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                if (arePersonalDetailsAvailable)
+                  _buildGenerosityHeader(auth.user.lastName),
                 GridView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: GenerosityChallengeHelper.generosityChallengeDays,
@@ -57,7 +48,7 @@ class GenerosityChallengeOverview extends StatelessWidget {
                     mainAxisSpacing: 10,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return DayItemPlaceholder(
+                    return DayButton(
                       isCompleted: challenge.state.days[index].isCompleted,
                       isActive: challenge.state.activeDayIndex == index,
                       dayIndex: index,
@@ -72,4 +63,26 @@ class GenerosityChallengeOverview extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildGenerosityHeader(String name) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 24),
+          SvgPicture.asset(
+            'assets/images/family_avatar.svg',
+            width: 60,
+            height: 60,
+          ),
+          const SizedBox(height: 14),
+          Text(
+            'The $name Family',
+            style: const TextStyle(
+              color: AppTheme.primary20,
+              fontSize: 18,
+              fontFamily: 'Rouna',
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ],
+      );
 }

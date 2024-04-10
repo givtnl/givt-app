@@ -4,8 +4,8 @@ import 'package:givt_app/features/children/generosity_challenge/models/color_com
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class DayItemPlaceholder extends StatelessWidget {
-  const DayItemPlaceholder({
+class DayButton extends StatelessWidget {
+  const DayButton({
     required this.isCompleted,
     required this.isActive,
     required this.dayIndex,
