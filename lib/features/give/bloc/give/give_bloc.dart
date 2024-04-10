@@ -500,6 +500,9 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
             instanceName: state.nearestLocation.name,
           ),
         );
+      } else {
+        //there is no nearest location found, prepare for donation from the list
+        emit(state.copyWith(status: GiveStatus.success));
       }
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
