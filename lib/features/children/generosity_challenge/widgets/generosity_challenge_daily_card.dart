@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityDailyCard extends StatelessWidget {
-  const GenerosityDailyCard({super.key});
-
+  const GenerosityDailyCard({required this.task, super.key});
+  final Task task;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,38 +23,42 @@ class GenerosityDailyCard extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(
-              'assets/images/generosity_challenge_placeholder.svg',
-              height: 140,
-              width: 140,
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'In a small village',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: AppTheme.givtGreen40,
-                fontSize: 18,
-                fontFamily: 'Rouna',
-                fontWeight: FontWeight.w700,
+            if (task.image.isNotEmpty)
+              SvgPicture.asset(
+                task.image,
+                height: 140,
+                width: 140,
               ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, “I will make a little boy and call him ‘Pinocchio’.”',
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                color: AppTheme.givtGreen40,
-                fontSize: 15,
-                fontFamily: 'Rouna',
-                fontWeight: FontWeight.w500,
-              ),
-            ),
             const SizedBox(height: 16),
-            GivtElevatedButton(
-              onTap: () {},
-              text: 'Placeholder',
-            )
+            if (task.title.isNotEmpty)
+              Text(
+                task.title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppTheme.givtGreen40,
+                  fontSize: 18,
+                  fontFamily: 'Rouna',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            if (task.description.isNotEmpty) const SizedBox(height: 8),
+            if (task.description.isNotEmpty)
+              Text(
+                task.description,
+                textAlign: TextAlign.justify,
+                style: const TextStyle(
+                  color: AppTheme.givtGreen40,
+                  fontSize: 15,
+                  fontFamily: 'Rouna',
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            if (task.buttonText.isNotEmpty) const SizedBox(height: 16),
+            if (task.buttonText.isNotEmpty)
+              GivtElevatedButton(
+                onTap: () {},
+                text: task.buttonText,
+              )
           ],
         ),
       ),
