@@ -19,6 +19,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
       if (event.status == AuthStatus.authenticated &&
           event.user.country == Country.us.countryCode) {
         await fetchImpactGroups();
+        checkForInvites();
       }
     });
   }

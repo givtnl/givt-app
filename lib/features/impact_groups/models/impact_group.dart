@@ -47,7 +47,7 @@ class ImpactGroup extends Equatable {
 
 enum ImpactGroupStatus {
   invited('Invited'),
-  joined('Joined'),
+  accepted('Accepted'),
   unknown('Unknown');
 
   const ImpactGroupStatus(this.value);

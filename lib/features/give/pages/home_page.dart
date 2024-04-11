@@ -58,7 +58,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<InfraCubit>().checkForUpdate();
-      context.read<ImpactGroupsCubit>().checkForInvites();
     });
   }
 
