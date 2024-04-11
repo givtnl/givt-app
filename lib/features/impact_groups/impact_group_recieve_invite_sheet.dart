@@ -28,7 +28,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '${context.l10n.youHaveBeenInvitedToImpactGroup} ${invitdImpactGroup.name}',
+            '${context.l10n.youHaveBeenInvitedToImpactGroup}${invitdImpactGroup.name}',
             textAlign: TextAlign.center,
             style: GoogleFonts.mulish(
               textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
