@@ -60,7 +60,9 @@ class _ActionContainerState extends State<ActionContainer> {
               widget.onTap();
             },
             onTapDown: (details) {
-              SystemSound.play(SystemSoundType.click);
+              if (!widget.isSelected) {
+                SystemSound.play(SystemSoundType.click);
+              }
               _setManualPressed(true);
             },
             onTapCancel: _unpress,
@@ -71,7 +73,9 @@ class _ActionContainerState extends State<ActionContainer> {
 
   Future<void> _unpress() async {
     await _actionDelay();
-    await HapticFeedback.lightImpact();
+    if (!widget.isSelected) {
+      await HapticFeedback.lightImpact();
+    }
     _setManualPressed(false);
   }
 
