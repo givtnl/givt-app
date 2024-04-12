@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/dialogs/feedback_banner_dialog.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_content_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
@@ -70,14 +71,21 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
               ),
             ),
           GivtElevatedButton(
-            onTap: () {
-              AnalyticsHelper.logEvent(
+            onTap: () async {
+              await showDialog<void>(
+                context: context,
+                barrierDismissible: false,
+                barrierColor:
+                    Theme.of(context).colorScheme.primary.withOpacity(.25),
+                builder: (context) => FeedbackBannerDialog(task: task),
+              );
+              await AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.generosityChallengeDayCompleted,
                 eventProperties: {
                   'day': challenge.state.detailedDayIndex,
                 },
               );
-              challenge.completeActiveDay();
+              await challenge.completeActiveDay();
             },
             text: 'Complete',
             isDisabled: day.isCompleted,
