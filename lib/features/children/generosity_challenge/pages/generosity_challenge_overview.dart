@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeOverview extends StatelessWidget {
@@ -48,11 +48,24 @@ class GenerosityChallengeOverview extends StatelessWidget {
                     mainAxisSpacing: 10,
                   ),
                   itemBuilder: (BuildContext context, int index) {
+                    final day = challenge.state.days[index];
                     return DayButton(
-                      isCompleted: challenge.state.days[index].isCompleted,
+                      isCompleted: day.isCompleted,
                       isActive: challenge.state.activeDayIndex == index,
                       dayIndex: index,
-                      onPressed: challenge.activeDay,
+                      onPressed: day.isCompleted ||
+                              challenge.state.activeDayIndex == index
+                          ? () {
+                              AnalyticsHelper.logEvent(
+                                eventName: AmplitudeEvents
+                                    .generosityChallengeDayClicked,
+                                eventProperties: {
+                                  'day': index,
+                                },
+                              );
+                              challenge.dayDetails(index);
+                            }
+                          : () {},
                     );
                   },
                 ),

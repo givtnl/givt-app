@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_active_day.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_day_details.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
 
 class GenerosityChallenge extends StatefulWidget {
@@ -42,8 +42,8 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
             return const Center(child: CircularProgressIndicator());
           case GenerosityChallengeStatus.overview:
             return const GenerosityChallengeOverview();
-          case GenerosityChallengeStatus.activeDay:
-            return const GenerosityChallengeActiveDay();
+          case GenerosityChallengeStatus.dayDetails:
+            return const GenerosityChallengeDayDetails();
           case GenerosityChallengeStatus.completed:
             //TODO:
             return const Center(child: Text('TODO: Create completed page'));

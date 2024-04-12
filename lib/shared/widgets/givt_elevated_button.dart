@@ -57,7 +57,9 @@ class GivtElevatedButton extends StatelessWidget {
             child: Icon(
               leftIcon,
               size: 24,
-              color: AppTheme.givtGreen40,
+              color: isDisabled
+                  ? Theme.of(context).colorScheme.outline
+                  : AppTheme.givtGreen40,
             ),
           ),
           Text(
@@ -101,7 +103,9 @@ class GivtElevatedButton extends StatelessWidget {
             child: Icon(
               rightIcon,
               size: 24,
-              color: AppTheme.givtGreen40,
+              color: isDisabled
+                  ? Theme.of(context).colorScheme.outline
+                  : AppTheme.givtGreen40,
             ),
           ),
         ],

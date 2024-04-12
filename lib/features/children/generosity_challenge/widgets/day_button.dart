@@ -26,7 +26,7 @@ class DayButton extends StatelessWidget {
       borderColor: isActive || isCompleted
           ? ColorCombo.values[dayIndex % ColorCombo.values.length].borderColor
           : AppTheme.neutralVariant80,
-      onTap: isActive && !isCompleted ? onPressed : () {},
+      onTap: onPressed,
       child: ColoredBox(
         color: isActive || isCompleted
             ? ColorCombo

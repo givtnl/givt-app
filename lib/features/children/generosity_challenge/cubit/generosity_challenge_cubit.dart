@@ -20,17 +20,35 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     _refreshState(days);
   }
 
-  void overview() =>
-      emit(state.copyWith(status: GenerosityChallengeStatus.overview));
+  void overview() => emit(
+        state.copyWith(
+          status: GenerosityChallengeStatus.overview,
+          detailedDayIndex: -1,
+        ),
+      );
 
-  void activeDay() =>
-      emit(state.copyWith(status: GenerosityChallengeStatus.activeDay));
+  void dayDetails(int dayIndex) => emit(
+        state.copyWith(
+          status: GenerosityChallengeStatus.dayDetails,
+          detailedDayIndex: dayIndex,
+        ),
+      );
 
   Future<void> completeActiveDay() async {
     emit(state.copyWith(status: GenerosityChallengeStatus.loading));
 
     state.days[state.activeDayIndex] =
         Day(dateCompleted: DateTime.now().toIso8601String());
+
+    await _generosityChallengeRepository.saveToCache(state.days);
+
+    _refreshState(state.days);
+  }
+
+  Future<void> undoCompletedDay(int index) async {
+    emit(state.copyWith(status: GenerosityChallengeStatus.loading));
+
+    state.days[index] = const Day.empty();
 
     await _generosityChallengeRepository.saveToCache(state.days);
 
