@@ -14,7 +14,7 @@ class GenerosityChallengeOverview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final challenge = context.read<GenerosityChallengeCubit>();
+    final challenge = context.watch<GenerosityChallengeCubit>();
     final auth = context.watch<AuthCubit>().state;
     final arePersonalDetailsAvailable =
         auth.status == AuthStatus.authenticated &&
