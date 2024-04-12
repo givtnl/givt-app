@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
@@ -23,7 +21,6 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    log('executed didChangeAppLifecycleState: $state');
     if (state == AppLifecycleState.resumed) {
       context.read<GenerosityChallengeCubit>().loadFromCache();
     }
