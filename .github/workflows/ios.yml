@@ -98,3 +98,6 @@ jobs:
           AMPLITUDE_KEY: ${{env.AMPLITUDE_KEY}}
           APP_IDENTIFIER: ${{ env.APP_IDENTIFIER }}
           FLAVOR: ${{ env.FLAVOR }}
+          STRIPE_PK: ${{ env.STRIPE_PK }}
+          STRIPE_MERCHANT_ID: ${{ env.STRIPE_MERCHANT_ID }}
+          
