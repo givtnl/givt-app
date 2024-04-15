@@ -1108,7 +1108,7 @@
         "description": "Givt B.V. voor SEPA-users",
         "type": "text"
     },
-    "givtCompanyInfoGb": "Givt is a product of Givt Ltd.\n Our office is located on Schutweg 47 in Lelystad, the Netherlands. \n For questions or complaints you can reach us via support@givt.co.uk\n \n\n We are registered under Company Number (CRN): 11396586.",
+    "givtCompanyInfoGb": "Givt is a product of Givt Ltd.\n Our office is located on Bongerd 159 in Lelystad, the Netherlands. \n For questions or complaints you can reach us via support@givt.co.uk\n \n\n We are registered under Company Number (CRN): 11396586.",
     "@givtCompanyInfoGb": {
         "description": "Givt Ltd. ...",
         "type": "text"
