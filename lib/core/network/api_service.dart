@@ -940,27 +940,26 @@ class APIService {
   Future<bool> acceptGroupInvite(
     String groupId,
   ) async {
-    // final url = Uri.https(_apiURL, '/givtservice/v1/$groupId/join');
+    final url = Uri.https(_apiURL, '/givtservice/v1/$groupId/accept');
 
-    // final response = await client.post(
-    //   url,
-    //   body: jsonEncode(body),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // );
+    final response = await client.post(
+      url,
+      body: '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
 
-    // if (response.statusCode >= 400) {
-    //   throw GivtServerFailure(
-    //     statusCode: response.statusCode,
-    //     body: response.body.isNotEmpty
-    //         ? jsonDecode(response.body) as Map<String, dynamic>
-    //         : null,
-    //   );
-    // }
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
 
-    // return response.statusCode == 200;
-    return true;
+    return response.statusCode == 200;
   }
 
   Future<List<dynamic>> fetchImpactGroups() async {
