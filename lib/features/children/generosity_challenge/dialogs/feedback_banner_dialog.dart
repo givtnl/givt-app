@@ -50,8 +50,8 @@ class _FeedbackBannerDialogState extends State<FeedbackBannerDialog>
 
   @override
   void initState() {
-    _animateBanner();
     super.initState();
+    _animateBanner();
   }
 
   @override
