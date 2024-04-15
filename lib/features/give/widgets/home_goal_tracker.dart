@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
