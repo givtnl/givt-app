@@ -4,8 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
-import 'package:givt_app/features/children/family_goal_tracker/repository/goal_tracker_repository.dart';
+import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
+import 'package:givt_app/features/children/goal_tracker/repository/goal_tracker_repository.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 
@@ -32,16 +32,16 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
     emit(
       state.copyWith(
         status: GoalTrackerStatus.initial,
-        activeGoal: const FamilyGoal.empty(),
+        activeGoal: const Goal.empty(),
       ),
     );
     try {
       final goal = await _goalTrackerRepository.fetchFamilyGoal();
 
-      if (goal == const FamilyGoal.empty()) {
+      if (goal == const Goal.empty()) {
         emit(
           state.copyWith(
-            activeGoal: const FamilyGoal.empty(),
+            activeGoal: const Goal.empty(),
             status: GoalTrackerStatus.noGoalSet,
           ),
         );
@@ -76,7 +76,7 @@ class GoalTrackerCubit extends Cubit<GoalTrackerState> {
   void clearGoal() {
     emit(
       state.copyWith(
-        activeGoal: const FamilyGoal.empty(),
+        activeGoal: const Goal.empty(),
         status: GoalTrackerStatus.noGoalSet,
       ),
     );

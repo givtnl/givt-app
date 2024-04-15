@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
-import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
-import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_active_widget.dart';
-import 'package:givt_app/features/children/family_goal_tracker/widgets/goal_completed_widget.dart';
-import 'package:givt_app/features/children/family_goal_tracker/widgets/no_goal_set_widget.dart';
+import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
+import 'package:givt_app/features/children/goal_tracker/widgets/goal_active_widget.dart';
+import 'package:givt_app/features/children/goal_tracker/widgets/goal_completed_widget.dart';
+import 'package:givt_app/features/children/goal_tracker/widgets/no_goal_set_widget.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +18,7 @@ class FamilyGoalTracker extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         if (context.read<GoalTrackerCubit>().state.activeGoal ==
-            const FamilyGoal.empty()) {
+            const Goal.empty()) {
           context.pushNamed(
             Pages.createFamilyGoal.name,
             extra: context.read<FamilyOverviewCubit>(),

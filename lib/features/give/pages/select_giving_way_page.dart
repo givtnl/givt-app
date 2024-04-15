@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
