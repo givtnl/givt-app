@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
-import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/widgets/context_list_tile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -124,7 +121,6 @@ class SelectGivingWayPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    _buildFamilyGoalTile(context),
                     _buildListTile(
                       onTap: () => context.goNamed(
                         Pages.giveByBeacon.name,
@@ -217,39 +213,6 @@ class SelectGivingWayPage extends StatelessWidget {
         context.pop();
       }
     });
-  }
-
-  Widget _buildFamilyGoalTile(BuildContext context) {
-    return BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
-      builder: (context, state) {
-        if (state.status == GoalTrackerStatus.activeGoal) {
-          return _buildListTile(
-            onTap: () {
-              context.read<GiveBloc>().add(
-                    GiveOrganisationSelected(
-                      nameSpace: state.activeGoal.mediumId,
-                      userGUID: context.read<AuthCubit>().state.user.guid,
-                      goalId: state.activeGoal.id,
-                    ),
-                  );
-
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.giveToFamilyGoalViaOptions,
-                eventProperties: {
-                  'charity_name': state.organisation.organisationName,
-                  'amount': context.read<GiveBloc>().state.collections.first,
-                },
-              );
-              GiveLoadingDialog.showGiveLoadingDialog(context);
-            },
-            title: context.l10n.yourFamilyGoalKey,
-            subtitle: 'Give to ${state.organisation.organisationName}',
-            image: 'assets/images/select_goal_list_tile.png',
-          );
-        }
-        return const SizedBox();
-      },
-    );
   }
 
   Widget _buildListTile({

@@ -71,7 +71,6 @@ enum AmplitudeEvents {
   utm('utm'),
 
   giveToFamilyGoalDirectly('give_to_family_goal_directly'),
-  giveToFamilyGoalViaOptions('give_to_family_goal_via_options'),
 
   skipBiometricWhenRegistered('skip_biometric_when_registered'),
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
