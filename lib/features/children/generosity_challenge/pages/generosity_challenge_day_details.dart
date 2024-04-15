@@ -49,7 +49,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                     eventName:
                         AmplitudeEvents.generosityChallengeDayUndoCompleting,
                     eventProperties: {
-                      'day': challenge.state.detailedDayIndex,
+                      'day': challenge.state.detailedDayIndex + 1,
                     },
                   );
                   challenge.undoCompletedDay(challenge.state.detailedDayIndex);
@@ -74,7 +74,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.generosityChallengeDayCompleted,
                 eventProperties: {
-                  'day': challenge.state.detailedDayIndex,
+                  'day': challenge.state.detailedDayIndex + 1,
                 },
               );
               challenge.completeActiveDay();

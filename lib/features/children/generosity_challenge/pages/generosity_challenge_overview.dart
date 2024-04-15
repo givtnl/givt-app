@@ -60,7 +60,7 @@ class GenerosityChallengeOverview extends StatelessWidget {
                                 eventName: AmplitudeEvents
                                     .generosityChallengeDayClicked,
                                 eventProperties: {
-                                  'day': index,
+                                  'day': index + 1,
                                 },
                               );
                               challenge.dayDetails(index);
