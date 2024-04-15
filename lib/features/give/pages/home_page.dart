@@ -23,7 +23,6 @@ import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -254,10 +253,11 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (_) => CupertinoAlertDialog(
         title: Text(
-            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                )),
+          isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
         content: Text(
           isUS
               ? context.l10n.registrationDialogG4K
@@ -408,7 +408,6 @@ class _HomePageViewState extends State<_HomePageView> {
                     'afterGivingRedirection': widget.afterGivingRedirection,
                   },
                 ),
-                showFamilyGoal: true,
               ),
               const ChooseCategory(),
             ],
