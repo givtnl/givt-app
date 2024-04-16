@@ -13,6 +13,7 @@ class UserExt extends Equatable {
     this.multipleCollectsFirstBallon = true,
     this.multipleCollectsSecondBallon = true,
     this.needRegistration = true,
+    this.isInvitedUser = false,
     this.personalInfoRegistered = false,
     this.pinSet = false,
     this.multipleCollectsAccepted = false,
@@ -47,6 +48,7 @@ class UserExt extends Equatable {
         multipleCollectsFirstBallon = true,
         multipleCollectsSecondBallon = true,
         needRegistration = true,
+        isInvitedUser = false,
         personalInfoRegistered = false,
         pinSet = false,
         multipleCollectsAccepted = false,
@@ -73,9 +75,13 @@ class UserExt extends Equatable {
   bool get isUsUser => Country.fromCode(country).isUS;
 
   factory UserExt.fromJson(Map<String, dynamic> json) {
+    final isInvitedUser = json['FirstName'] != Util.defaultFirstName &&
+        json['LastName'] == '' &&
+        json['PhoneNumber'] == '';
     final personalInfoRegistered = json['FirstName'] != Util.defaultFirstName &&
         json['LastName'] != Util.defaultLastName &&
-        json['PhoneNumber'] != Util.defaultPhoneNumber;
+        json['PhoneNumber'] != Util.defaultPhoneNumber &&
+        !isInvitedUser;
 
     return UserExt(
       email: json['Email'] as String,
@@ -99,6 +105,7 @@ class UserExt extends Equatable {
       accountType:
           AccountType.fromString((json['AccountType'] ?? '') as String),
       needRegistration: (json['IsTempUser'] ?? json['TempUser']) as bool,
+      isInvitedUser: isInvitedUser,
       personalInfoRegistered: personalInfoRegistered,
       payProvMandateStatus: (json['PayProvMandateStatus'] ?? '') as String,
       payProvMandate: json['PayProvMandate'] != null
@@ -141,6 +148,7 @@ class UserExt extends Equatable {
         'multipleCollectsFirstBallon': multipleCollectsFirstBallon,
         'multipleCollectsSecondBallon': multipleCollectsSecondBallon,
         'needRegistration': needRegistration,
+        'isInvitedUser': isInvitedUser,
         'personalInfoRegistered': personalInfoRegistered,
         'pinSet': pinSet,
         'multipleCollectsAccepted': multipleCollectsAccepted,
@@ -193,6 +201,7 @@ class UserExt extends Equatable {
 
   final bool multipleCollectsSecondBallon;
   final bool needRegistration;
+  final bool isInvitedUser;
   final bool personalInfoRegistered;
 
   final bool pinSet;
@@ -229,6 +238,7 @@ class UserExt extends Equatable {
     bool? multipleCollectsFirstBallon,
     bool? multipleCollectsSecondBallon,
     bool? needRegistration,
+    bool? isInvitedUser,
     bool? personalInfoRegistered,
     bool? pinSet,
     bool? multipleCollectsAccepted,
@@ -261,6 +271,7 @@ class UserExt extends Equatable {
       multipleCollectsSecondBallon:
           multipleCollectsSecondBallon ?? this.multipleCollectsSecondBallon,
       needRegistration: needRegistration ?? this.needRegistration,
+      isInvitedUser: isInvitedUser ?? this.isInvitedUser,
       personalInfoRegistered:
           personalInfoRegistered ?? this.personalInfoRegistered,
       pinSet: pinSet ?? this.pinSet,
@@ -297,6 +308,7 @@ class UserExt extends Equatable {
         multipleCollectsFirstBallon,
         multipleCollectsSecondBallon,
         needRegistration,
+        isInvitedUser,
         personalInfoRegistered,
         pinSet,
         multipleCollectsAccepted,

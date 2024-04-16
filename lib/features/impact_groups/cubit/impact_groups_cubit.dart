@@ -19,6 +19,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
     this._authCubit,
   ) : super(const ImpactGroupsState()) {
     _authCubit.stream.listen((event) async {
+      // TO DO: IT POPS UP OVER REGISTRATION NEEDS MORE HANDLING
       if (event.status == AuthStatus.authenticated &&
           event.user.country == Country.us.countryCode) {
         await fetchImpactGroups();
