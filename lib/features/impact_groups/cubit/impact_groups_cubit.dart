@@ -22,7 +22,8 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
       // this stops the cubit from executing when an invited user
       // finished registraion and is now in the user extention refresh loop
       // see _onStripeSuccess in registration_bloc.dart
-      if (event.user.tempUser && !event.user.isInvitedUser) {
+      if ((event.user.tempUser && !event.user.isInvitedUser) ||
+          state.status == ImpactGroupCubitStatus.loading) {
         return;
       }
       if (event.status == AuthStatus.authenticated &&
