@@ -55,9 +55,12 @@ class AuthCubit extends Cubit<AuthState> {
 
       final biometricSetting = await BiometricsHelper.getBiometricSetting();
 
+      final showBiometricCheck = biometricSetting == BiometricSetting.unknown &&
+          userExt.tempUser == false;
+
       emit(
         state.copyWith(
-          status: biometricSetting == BiometricSetting.unknown
+          status: showBiometricCheck
               ? AuthStatus.biometricCheck
               : AuthStatus.authenticated,
           user: userExt,
