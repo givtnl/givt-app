@@ -16,6 +16,12 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
     this._authCubit,
   ) : super(const ImpactGroupsState()) {
     _authCubit.stream.listen((event) async {
+      // this stops the cubit from executing when an invited user
+      // finished registraion and is now in the user extention refresh loop
+      // see _onStripeSuccess in registration_bloc.dart
+      if (event.user.tempUser && !event.user.isInvitedUser) {
+        return;
+      }
       if (event.status == AuthStatus.authenticated &&
           event.user.country == Country.us.countryCode) {
         await fetchImpactGroups();
