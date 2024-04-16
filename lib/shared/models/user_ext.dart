@@ -74,11 +74,10 @@ class UserExt extends Equatable {
 
   factory UserExt.fromJson(Map<String, dynamic> json) {
     final isInvitedUser = json['FirstName'] != Util.defaultFirstName &&
-        json['LastName'] == '' &&
-        json['PhoneNumber'] == '';
-    final personalInfoRegistered = json['FirstName'] != Util.defaultFirstName &&
-        json['LastName'] != Util.defaultLastName &&
-        json['PhoneNumber'] != Util.defaultPhoneNumber &&
+        json['LastName'] == Util.defaultLastName &&
+        json['PhoneNumber'] == Util.defaultPhoneNumber;
+    final personalInfoRegistered = (json['LastName'] != Util.defaultLastName ||
+            json['FirstName'] != Util.defaultFirstName) &&
         !isInvitedUser;
 
     return UserExt(
