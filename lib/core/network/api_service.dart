@@ -940,7 +940,7 @@ class APIService {
   Future<bool> acceptGroupInvite(
     String groupId,
   ) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/$groupId/accept');
+    final url = Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/accept');
 
     final response = await client.post(
       url,

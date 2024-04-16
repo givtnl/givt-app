@@ -184,10 +184,12 @@ class _HomePageState extends State<HomePage> {
               if (state is RemoteDataSourceSyncSuccess) {
                 if (!auth.user.needRegistration ||
                     auth.user.mandateSigned ||
+                    auth.user.isInvitedUser ||
                     impactGroupsState.status ==
                         ImpactGroupCubitStatus.invited) {
                   return;
                 }
+                // TODO: Not show over biometrics
                 _buildNeedsRegistrationDialog(context);
               }
             },
