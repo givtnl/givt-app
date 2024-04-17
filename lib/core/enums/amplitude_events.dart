@@ -82,6 +82,12 @@ enum AmplitudeEvents {
       'invited_to_impact_group_bottom_sheet_shown'),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
   iWillDonloadG4KLater('i_will_download_g4k_later'),
+
+  generosityChallengeDayClicked('generosity_challenge_day_clicked'),
+  generosityChallengeDayCompleted('generosity_challenge_day_completed'),
+  generosityChallengeDayUndoCompleting(
+    'generosity_challenge_day_undo_completing',
+  ),
   ;
 
   const AmplitudeEvents(this.value);
