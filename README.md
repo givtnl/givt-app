@@ -1,4 +1,5 @@
 # Givt App
+<a href="https://play.google.com/store/apps/details?id=net.givtapp.droid2&hl=us" target="_blank"><img alt="Get it on Google Play" src="https://imgur.com/YQzmZi9.png" width="153" height="46"></a></a> <a href="https://apps.apple.com/nl/app/givt/id1181435988" target="_blank"><img src="https://imgur.com/GdGqPMY.png" width="135" height="40"></a>
 
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 
