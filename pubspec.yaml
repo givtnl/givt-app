@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.2.9
+version: 4.2.10
 publish_to: none
 
 environment:
@@ -118,6 +118,14 @@ flutter:
           weight: 600
         - asset: assets/fonts/raleway/Raleway-Bold.ttf
           weight: 700
+    - family: Rouna
+      fonts:
+        - asset: assets/fonts/Rouna/rouna-bold-webfont.ttf
+          weight: 700
+        - asset: assets/fonts/Rouna/rouna-medium-webfont.ttf
+          weight: 500
+        - asset: assets/fonts/Rouna/rouna-regular-webfont.ttf
+          weight: 400
   assets:
     - assets/images/
     - assets/lotties/

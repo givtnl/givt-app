@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class FamilyGoal extends Equatable {
-  const FamilyGoal({
+class Goal extends Equatable {
+  const Goal({
     required this.id,
     required this.goalAmount,
     required this.amount,
@@ -11,7 +11,7 @@ class FamilyGoal extends Equatable {
     required this.dateCreated,
   });
 
-  const FamilyGoal.empty()
+  const Goal.empty()
       : this(
           id: '',
           goalAmount: 0,
@@ -22,8 +22,8 @@ class FamilyGoal extends Equatable {
           dateCreated: '2024-01-01T10:00:00Z',
         );
 
-  factory FamilyGoal.fromMap(Map<String, dynamic> map) {
-    return FamilyGoal(
+  factory Goal.fromMap(Map<String, dynamic> map) {
+    return Goal(
       id: (map['id'] ?? '').toString(),
       goalAmount: (map['goal'] as num).toInt(),
       amount: (map['amount'] as num).toDouble(),

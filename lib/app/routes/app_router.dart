@@ -22,8 +22,11 @@ import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
@@ -37,6 +40,7 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
+import 'package:givt_app/features/impact_groups/impact_group_join_success_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
@@ -104,6 +108,18 @@ class AppRouter {
               _checkAndRedirectAuth(state, context, routerState),
           child: const LoadingPage(),
         ),
+      ),
+      GoRoute(
+        path: Pages.generosityChallenge.path,
+        name: Pages.generosityChallenge.name,
+        builder: (context, state) {
+          return BlocProvider(
+            create: (_) => GenerosityChallengeCubit(
+              getIt(),
+            )..loadFromCache(),
+            child: const GenerosityChallenge(),
+          );
+        },
       ),
       GoRoute(
         path: Pages.home.path,
@@ -451,6 +467,11 @@ class AppRouter {
             builder: (_, state) => const RegistrationSuccessUs(),
           ),
           GoRoute(
+            path: Pages.joinImpactGroupSuccess.path,
+            name: Pages.joinImpactGroupSuccess.name,
+            builder: (context, state) => const ImpactGroupJoinSuccessPage(),
+          ),
+          GoRoute(
             path: Pages.sepaMandateExplanation.path,
             name: Pages.sepaMandateExplanation.name,
             routes: [
@@ -765,6 +786,15 @@ class AppRouter {
     final query = Uri(
       queryParameters: params,
     ).query;
+
+    if (GenerosityChallengeHelper.isActivated) {
+      return Pages.generosityChallenge.path;
+    }
+
+    if (navigatingPage == Pages.generosityChallenge.path) {
+      GenerosityChallengeHelper.activate();
+      return Pages.generosityChallenge.path;
+    }
 
     /// Display the splash screen while checking the auth status
     if (auth.status == AuthStatus.loading) {

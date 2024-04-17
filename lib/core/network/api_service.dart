@@ -937,6 +937,51 @@ class APIService {
     }
   }
 
+  Future<bool> acceptGroupInvite(
+    String groupId,
+  ) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/accept');
+
+    final response = await client.post(
+      url,
+      body: '',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
+
+  Future<List<dynamic>> fetchImpactGroups() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/groups');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400 && response.statusCode < 500) {
+      return [];
+    }
+
+    if (response.statusCode >= 500) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final itemMap = decodedBody['items']! as List<dynamic>;
+    return itemMap;
+  }
+
   Future<Map<String, dynamic>> fetchFamilyGoal() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/goal/family/latest');
     final response = await client.get(url);

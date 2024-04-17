@@ -1,8 +1,8 @@
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/children/family_goal_tracker/model/family_goal.dart';
+import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
 
 mixin GoalTrackerRepository {
-  Future<FamilyGoal> fetchFamilyGoal();
+  Future<Goal> fetchFamilyGoal();
 }
 
 class GoalTrackerRepositoryImpl with GoalTrackerRepository {
@@ -13,13 +13,13 @@ class GoalTrackerRepositoryImpl with GoalTrackerRepository {
   final APIService _apiService;
 
   @override
-  Future<FamilyGoal> fetchFamilyGoal() async {
+  Future<Goal> fetchFamilyGoal() async {
     final response = await _apiService.fetchFamilyGoal();
 
     if (response.isEmpty) {
-      return const FamilyGoal.empty();
+      return const Goal.empty();
     }
 
-    return FamilyGoal.fromMap(response);
+    return Goal.fromMap(response);
   }
 }

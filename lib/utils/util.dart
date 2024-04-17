@@ -1,7 +1,13 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:appcheck/appcheck.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:intl/intl.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'app_theme.dart';
 
@@ -60,6 +66,34 @@ AgMBAAE=
     }
 
     return icon;
+  }
+
+  static Future<bool> checkIfGivt4KidsAppInstalled() async {
+    try {
+      final String appUrl;
+      if (Platform.isIOS) {
+        appUrl = 'appscheme://net.givtapp.kids';
+      } else if (Platform.isAndroid) {
+        final currentAppInfo = await PackageInfo.fromPlatform();
+        if (currentAppInfo.packageName.contains('.test')) {
+          appUrl = 'net.givtapp.kids.test';
+        } else {
+          appUrl = 'net.givtapp.kids';
+        }
+      } else {
+        return false;
+      }
+
+      final kidsApp = await AppCheck.checkAvailability(appUrl);
+      if (kidsApp != null) {
+        log('${kidsApp.packageName} is installed on the device.');
+        return true;
+      }
+    } on PlatformException {
+      log('Givt4Kids app is not installed on the device.');
+      return false;
+    }
+    return false;
   }
 
   // todo remove this

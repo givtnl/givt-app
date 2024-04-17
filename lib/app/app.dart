@@ -8,7 +8,8 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/family_goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -75,6 +76,13 @@ class _AppState extends State<App> {
           BlocProvider(
             create: (context) => GoalTrackerCubit(
               getIt(),
+              getIt(),
+              context.read<AuthCubit>(),
+            ),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (context) => ImpactGroupsCubit(
               getIt(),
               context.read<AuthCubit>(),
             ),

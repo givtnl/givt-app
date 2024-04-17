@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:badges/badges.dart' as badges;
@@ -14,6 +15,8 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -21,6 +24,7 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -72,6 +76,7 @@ class _HomePageState extends State<HomePage> {
       );
 
     final auth = context.watch<AuthCubit>().state;
+    final impactGroupsState = context.watch<ImpactGroupsCubit>().state;
 
     if (widget.navigateTo.isNotEmpty &&
         auth.status == AuthStatus.authenticated) {
@@ -177,9 +182,14 @@ class _HomePageState extends State<HomePage> {
 
               // Needs registration dialog
               if (state is RemoteDataSourceSyncSuccess) {
-                if (!auth.user.needRegistration || auth.user.mandateSigned) {
+                if (!auth.user.needRegistration ||
+                    auth.user.mandateSigned ||
+                    auth.user.isInvitedUser ||
+                    impactGroupsState.status ==
+                        ImpactGroupCubitStatus.invited) {
                   return;
                 }
+                // TODO: Not show over biometrics
                 _buildNeedsRegistrationDialog(context);
               }
             },
@@ -190,6 +200,32 @@ class _HomePageState extends State<HomePage> {
                 _displayUpdateDialog(
                   context,
                   state.appUpdate,
+                );
+              }
+            },
+          ),
+          BlocListener<ImpactGroupsCubit, ImpactGroupsState>(
+            listener: (context, state) {
+              if (state.status == ImpactGroupCubitStatus.invited) {
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName:
+                        AmplitudeEvents.invitedToImpactGroupBottomSheetShown,
+                  ),
+                );
+
+                final impactGroup = state.invitedGroup;
+                showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  useSafeArea: true,
+                  isDismissible: false,
+                  enableDrag: false,
+                  builder: (_) {
+                    return ImpactGroupRecieveInviteSheet(
+                      invitdImpactGroup: impactGroup,
+                    );
+                  },
                 );
               }
             },

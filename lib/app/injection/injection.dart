@@ -15,12 +15,14 @@ import 'package:givt_app/features/children/details/repositories/child_details_re
 import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
-import 'package:givt_app/features/children/family_goal_tracker/repository/goal_tracker_repository.dart';
+import 'package:givt_app/features/children/goal_tracker/repository/goal_tracker_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
+import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
@@ -215,6 +217,16 @@ void initRepositories() {
     )
     ..registerLazySingleton<CreateFamilyGoalRepository>(
       () => CreateFamilyGoalRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<ImpactGroupsRepository>(
+      () => ImpactGroupsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<GenerosityChallengeRepository>(
+      () => GenerosityChallengeRepositoryImpl(
         getIt(),
       ),
     );
