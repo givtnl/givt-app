@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
@@ -35,12 +37,17 @@ class CreditCardDetailsPage extends StatelessWidget {
             context
                 .read<RegistrationBloc>()
                 .add(const RegistrationStripeSuccess());
-
+            final hasBeenInvited =
+                context.read<ImpactGroupsCubit>().state.invitedGroup !=
+                    const ImpactGroup.empty();
             context.goNamed(
               Pages.permitBiometric.name,
               extra: PermitBiometricRequest.registration(
-                redirect: (context) =>
-                    context.goNamed(Pages.registrationSuccessUs.name),
+                redirect: (context) => context.goNamed(
+                  hasBeenInvited
+                      ? Pages.joinImpactGroupSuccess.name
+                      : Pages.registrationSuccessUs.name,
+                ),
               ),
             );
           }).onError((e, stackTrace) {
