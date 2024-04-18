@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
-import 'package:givt_app/features/children/goal_tracker/widgets/gradient_progress_bar.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 
 class GoalActiveWidget extends StatelessWidget {
   const GoalActiveWidget({super.key});
@@ -13,9 +12,6 @@ class GoalActiveWidget extends StatelessWidget {
       builder: (context, state) {
         final currentGoal = state.activeGoal;
         final org = state.organisation;
-        final progress = currentGoal.amount / currentGoal.goalAmount.toDouble();
-        final totalProgress =
-            currentGoal.totalAmount / currentGoal.goalAmount.toDouble();
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
           child: Column(
@@ -42,17 +38,7 @@ class GoalActiveWidget extends StatelessWidget {
               const SizedBox(height: 4),
               Padding(
                 padding: const EdgeInsets.only(top: 16, bottom: 8),
-                child: GradientProgressBar(
-                  progress: progress > 1 ? 1 : progress,
-                  totalProgress: totalProgress > 1 ? 1 : totalProgress,
-                  colors: const [
-                    AppTheme.highlight90,
-                    AppTheme.progressGradient1,
-                    AppTheme.progressGradient2,
-                    AppTheme.progressGradient3,
-                    AppTheme.primary70,
-                  ],
-                ),
+                child: GoalProgressBar(goal: currentGoal),
               ),
             ],
           ),

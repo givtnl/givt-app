@@ -22,11 +22,11 @@ import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
@@ -40,7 +40,9 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
-import 'package:givt_app/features/impact_groups/impact_group_join_success_page.dart';
+import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/impact_groups/pages/impact_group_details_page.dart';
+import 'package:givt_app/features/impact_groups/pages/impact_group_join_success_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
@@ -214,7 +216,7 @@ class AppRouter {
             path: Pages.childrenOverview.path,
             name: Pages.childrenOverview.name,
             builder: (context, state) {
-              bool showAllowanceWarning = false;
+              var showAllowanceWarning = false;
               if (state.extra != null) {
                 showAllowanceWarning = state.extra!.toString().contains('true');
               }
@@ -470,6 +472,14 @@ class AppRouter {
             path: Pages.joinImpactGroupSuccess.path,
             name: Pages.joinImpactGroupSuccess.name,
             builder: (context, state) => const ImpactGroupJoinSuccessPage(),
+          ),
+          GoRoute(
+            path: Pages.impactGroupDetails.path,
+            name: Pages.impactGroupDetails.name,
+            builder: (context, state) {
+              final impactGroup = state.extra! as ImpactGroup;
+              return ImpactGroupDetailsPage(impactGroup: impactGroup);
+            },
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,

@@ -103,6 +103,9 @@ class AppTheme {
 
   static const generosityChallangeCardBackground = Color(0xFFFFFDF7);
   static const generosityChallangeCardBorder = Color(0xFFEEF2E4);
+
+  static const impactGroupDialogBarrierColor = Color(0xBF404A70);
+
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
     fontFamily: 'AvenirLTStd',

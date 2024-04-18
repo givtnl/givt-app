@@ -46,6 +46,8 @@ class ImpactGroup extends Equatable {
     );
   }
 
+  bool get isFamilyGroup => type == ImpactGroupType.family;
+
   final String id;
   final String name;
   final ImpactGroupStatus status;

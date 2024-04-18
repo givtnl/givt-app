@@ -3,11 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
+import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeGoalTracker extends StatelessWidget {
   const HomeGoalTracker({super.key});
@@ -29,11 +32,49 @@ class HomeGoalTracker extends StatelessWidget {
         builder: (context, state) {
           return GestureDetector(
             onTap: () {
-              _showEnterAmountBottomSheet(
-                context,
-                state.activeGoal.mediumId,
-                state.activeGoal.id,
+              final map = <String, dynamic>{
+                "id": "GUID",
+                "status": "Invited", // Invited or Accepted
+                "name": "",
+                "type": "Family", // or Impact
+
+                // New fields
+                // "description":
+                //     "Together as a family we want make a difference.",
+
+                "description":
+                    "In a small village lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'\n\nHe searched everywhere for a good piece of wood. To his good luck, he came upon a piece of pinewood. After examining the wood, he began to carve it. He worked tirelessly for many hours, and finally, his hard work paid off. He carved a beautiful wooden puppet boy who he named Pinocchio. He said, 'I wish Pinocchio were a real boy.'",
+
+                "image": "https://.......jpg",
+                "organiser": {
+                  "id": "Guid", // Givt user Id
+                  "firstName": "String",
+                  "lastName": "String",
+                  "avatar": "https://..........svg"
+                },
+                "amountOfMembers": 0,
+                "goal": {
+                  "creationDate": "Date",
+                  "id": "Guid",
+                  "mediumId": "Guid",
+                  "goal": 999,
+                  "amount": 100,
+                  "totalAmount": 430,
+                  "status": "InProgress", // or Completed
+                },
+              };
+
+              final fakeGroup = ImpactGroup.fromMap(map);
+              context.pushNamed(
+                Pages.impactGroupDetails.name,
+                extra: fakeGroup,
               );
+
+              // _showEnterAmountBottomSheet(
+              //   context,
+              //   state.activeGoal.mediumId,
+              //   state.activeGoal.id,
+              // );
             },
             child: Container(
               width: double.infinity,

@@ -16,14 +16,13 @@ import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/impact_groups/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -254,10 +253,11 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (_) => CupertinoAlertDialog(
         title: Text(
-            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                )),
+          isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
         content: Text(
           isUS
               ? context.l10n.registrationDialogG4K
