@@ -32,50 +32,85 @@ class HomeGoalTracker extends StatelessWidget {
         builder: (context, state) {
           return GestureDetector(
             onTap: () {
-              final map = <String, dynamic>{
+              final familyGroupMap = <String, dynamic>{
                 "id": "GUID",
-                "status": "Invited", // Invited or Accepted
-                "name": "",
+                "status": "Accepted", // Invited or Accepted
+                "name": "Peterson",
                 "type": "Family", // or Impact
-
                 // New fields
-                // "description":
-                //     "Together as a family we want make a difference.",
-
                 "description":
-                    "In a small village lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'\n\nHe searched everywhere for a good piece of wood. To his good luck, he came upon a piece of pinewood. After examining the wood, he began to carve it. He worked tirelessly for many hours, and finally, his hard work paid off. He carved a beautiful wooden puppet boy who he named Pinocchio. He said, 'I wish Pinocchio were a real boy.'",
-
-                "image": "https://.......jpg",
+                    "Together as a family we want make a difference.",
+                "image":
+                    "https://d2zp5xs5cp8zlg.cloudfront.net/image-53552-800.jpg",
                 "organiser": {
                   "id": "Guid", // Givt user Id
                   "firstName": "String",
                   "lastName": "String",
-                  "avatar": "https://..........svg"
+                  "avatar":
+                      "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero1.svg"
                 },
-                "amountOfMembers": 0,
+                "amountOfMembers": 5,
                 "goal": {
-                  "creationDate": "Date",
-                  "id": "Guid",
+                  "id": "dscbdshfjc",
                   "mediumId": "Guid",
-                  "goal": 999,
-                  "amount": 100,
-                  "totalAmount": 430,
-                  "status": "InProgress", // or Completed
+                  "collectGroupName": "PocketFull of Sunshine",
+                  "creationDate": "2024-01-01T10:00:00Z",
+                  "amount": 123,
+                  "totalAmount": 357,
+                  "goal": 500,
+                  "status": "InProgress",
                 },
               };
-
-              final fakeGroup = ImpactGroup.fromMap(map);
+              final fakeGroup = ImpactGroup.fromMap(familyGroupMap);
               context.pushNamed(
                 Pages.impactGroupDetails.name,
                 extra: fakeGroup,
               );
-
-              // _showEnterAmountBottomSheet(
-              //   context,
-              //   state.activeGoal.mediumId,
-              //   state.activeGoal.id,
-              // );
             },
+            onDoubleTap: () {
+              final impactGroupMap = <String, dynamic>{
+                "id": "GUID",
+                "status": "Accepted", // Invited or Accepted
+                "name": "Honduras",
+                "type": "Impact", // or Impact
+                // New fields
+                "description":
+                    "In a small village lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'\n\nHe searched everywhere for a good piece of wood. To his good luck, he came upon a piece of pinewood. After examining the wood, he began to carve it. He worked tirelessly for many hours, and finally, his hard work paid off. He carved a beautiful wooden puppet boy who he named Pinocchio. He said, 'I wish Pinocchio were a real boy.'",
+                "image":
+                    "https://d2zp5xs5cp8zlg.cloudfront.net/image-53552-800.jpg",
+                "organiser": {
+                  "id": "Guid", // Givt user Id
+                  "firstName": "Chris",
+                  "lastName": "String",
+                  "avatar":
+                      "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero1.svg"
+                },
+                "amountOfMembers": 135,
+                "goal": {
+                  "id": "sdbcldbfsh",
+                  "mediumId": "Guid",
+                  "collectGroupName": "Mission Trip to Honduras",
+                  "creationDate": "2024-01-01T10:00:00Z",
+                  "amount": 673,
+                  "totalAmount": 1560,
+                  "goal": 8000,
+                  "status": "InProgress",
+                },
+              };
+
+              final fakeGroup = ImpactGroup.fromMap(impactGroupMap);
+              context.pushNamed(
+                Pages.impactGroupDetails.name,
+                extra: fakeGroup,
+              );
+            },
+            // onTap: () {
+            // _showEnterAmountBottomSheet(
+            //   context,
+            //   state.activeGoal.mediumId,
+            //   state.activeGoal.id,
+            // );
+            // }
             child: Container(
               width: double.infinity,
               margin: const EdgeInsets.only(right: 10, left: 10, top: 20),

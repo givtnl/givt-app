@@ -17,51 +17,53 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 38),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 16),
       color: AppTheme.generosityChallangeCardBackground,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            //TODO: POEditor
-            'Goal',
-            // 'Goal${impactGroup.isFamilyGroup ? ': ${impactGroup.name}' : ''}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.mulish(
-              textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              //TODO: POEditor
+              'Goal',
+              // 'Goal${impactGroup.isFamilyGroup ? ': ${impactGroup.goal.orgName}' : ''}',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.mulish(
+                textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
             ),
-          ),
-          const SizedBox(height: 15),
-          GoalProgressBar(
-            goal: impactGroup.goal,
-            showFlag: true,
-            showCurrentLabel: true,
-            showGoalLabel: true,
-          ),
-          const SizedBox(height: 10),
-          CustomGreenElevatedButton(
-            title: context.l10n.give,
-            onPressed: () {
-              // final giveBloc = context.read<GiveBloc>();
-              // showModalBottomSheet<void>(
-              //   context: context,
-              //   isScrollControlled: true,
-              //   useSafeArea: true,
-              //   builder: (_) => BlocProvider.value(
-              //     value: giveBloc,
-              //     child: EnterAmountBottomSheet(
-              //       collectGroupNameSpace: impactGroup.goal.mediumId,
-              //       goalId: impactGroup.goal.id,
-              //     ),
-              //   ),
-              // );
-            },
-          ),
-        ],
+            const SizedBox(height: 5),
+            GoalProgressBar(
+              goal: impactGroup.goal,
+              showFlag: true,
+              showCurrentLabel: true,
+              showGoalLabel: true,
+            ),
+            const SizedBox(height: 15),
+            CustomGreenElevatedButton(
+              title: context.l10n.give,
+              onPressed: () {
+                // final giveBloc = context.read<GiveBloc>();
+                // showModalBottomSheet<void>(
+                //   context: context,
+                //   isScrollControlled: true,
+                //   useSafeArea: true,
+                //   builder: (_) => BlocProvider.value(
+                //     value: giveBloc,
+                //     child: EnterAmountBottomSheet(
+                //       collectGroupNameSpace: impactGroup.goal.mediumId,
+                //       goalId: impactGroup.goal.id,
+                //     ),
+                //   ),
+                // );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

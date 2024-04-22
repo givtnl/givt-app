@@ -25,49 +25,52 @@ class ImpactGroupDetailsExpandableDescription extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
     );
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final numLines = _calculateLinesNumber(
-          description,
-          textStyle,
-          constraints.maxWidth,
-        );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final numLines = _calculateLinesNumber(
+            description,
+            textStyle,
+            constraints.maxWidth,
+          );
 
-        if (numLines > 2) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: textStyle,
-              ),
-              TextButton(
-                onPressed: () {
-                  ImpactGroupDetailsDescriptionDialog
-                      .showImpactGroupDescriptionDialog(
-                    context: context,
-                    description: description,
-                  );
-                },
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 2),
+          if (numLines > 2) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: textStyle,
                 ),
-                child: Text(
-                  //TODO: POEditor
-                  'Read more',
-                  style: textStyle.copyWith(
-                    decoration: TextDecoration.underline,
+                TextButton(
+                  onPressed: () {
+                    ImpactGroupDetailsDescriptionDialog
+                        .showImpactGroupDescriptionDialog(
+                      context: context,
+                      description: description,
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                  ),
+                  child: Text(
+                    //TODO: POEditor
+                    'Read more',
+                    style: textStyle.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return Text(description, style: textStyle);
-        }
-      },
+              ],
+            );
+          } else {
+            return Text(description, style: textStyle);
+          }
+        },
+      ),
     );
   }
 }

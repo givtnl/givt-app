@@ -14,6 +14,11 @@ class ImpactGroupDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
+    //PP: this is a temp, ugly solution
+    final bottomPanelHeight = 231 + bottomPadding;
+
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
@@ -21,23 +26,13 @@ class ImpactGroupDetailsPage extends StatelessWidget {
         title:
             Text(impactGroup.isFamilyGroup ? 'Family Group' : impactGroup.name),
       ),
-      body: Column(
-        children: [
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 30),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: SafeArea(
               child: Column(
                 children: [
-                  ImpactGroupDetailsHeader(
-                    image: impactGroup.isFamilyGroup
-                        ? 'assets/images/family_avatar.svg'
-                        : impactGroup.organiser.avatar,
-                    title: impactGroup.isFamilyGroup
-                        ? impactGroup.name
-                        : impactGroup.organiser.fullName,
-                    goal: impactGroup.goal.goalAmount,
-                    members: impactGroup.amountOfMembers,
-                  ),
+                  ImpactGroupDetailsHeader(impactGroup: impactGroup),
                   Padding(
                     padding: const EdgeInsets.only(top: 10, right: 20),
                     child: ImpactGroupDetailsExpandableDescription(
@@ -48,9 +43,23 @@ class ImpactGroupDetailsPage extends StatelessWidget {
               ),
             ),
           ),
-          const Spacer(),
-          ImpactGroupDetailsBottomPanel(
-            impactGroup: impactGroup,
+          SliverFillRemaining(
+            hasScrollBody: false,
+            fillOverscroll: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  fit: FlexFit.loose,
+                  child: Container(),
+                ),
+                SizedBox(
+                  height: bottomPanelHeight,
+                  child:
+                      ImpactGroupDetailsBottomPanel(impactGroup: impactGroup),
+                ),
+              ],
+            ),
           ),
         ],
       ),
