@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/impact_groups/dialogs/impact_group_details_description_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupDetailsExpandableDescription extends StatelessWidget {
@@ -48,6 +50,11 @@ class ImpactGroupDetailsExpandableDescription extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
+                    AnalyticsHelper.logEvent(
+                      eventName:
+                          AmplitudeEvents.impactGroupDetailsReadMoreClicked,
+                    );
+
                     ImpactGroupDetailsDescriptionDialog
                         .showImpactGroupDescriptionDialog(
                       context: context,
