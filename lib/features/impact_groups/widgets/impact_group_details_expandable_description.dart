@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/impact_groups/dialogs/impact_group_details_description_dialog.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupDetailsExpandableDescription extends StatelessWidget {
@@ -57,8 +58,7 @@ class ImpactGroupDetailsExpandableDescription extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 2),
                   ),
                   child: Text(
-                    //TODO: POEditor
-                    'Read more',
+                    context.l10n.featureReadMore,
                     style: textStyle.copyWith(
                       decoration: TextDecoration.underline,
                     ),

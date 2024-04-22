@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupDetailsHeader extends StatelessWidget {
@@ -53,7 +54,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                   children: [
                     Text(
                       impactGroup.isFamilyGroup
-                          ? 'The ${impactGroup.name} Family'
+                          ? context.l10n.theFamilyWithName(impactGroup.name)
                           : impactGroup.organiser.fullName,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -67,7 +68,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Goal: \$${impactGroup.goal.goalAmount}',
+                          '${context.l10n.goal}: \$${impactGroup.goal.goalAmount}',
                           style: GoogleFonts.mulish(
                             textStyle: Theme.of(context)
                                 .textTheme
@@ -87,7 +88,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                           ),
                         if (!impactGroup.isFamilyGroup)
                           Text(
-                            '${impactGroup.amountOfMembers} members',
+                            '${impactGroup.amountOfMembers} ${context.l10n.members}',
                             style: GoogleFonts.mulish(
                               textStyle: Theme.of(context)
                                   .textTheme

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,7 +30,6 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
     return Center(
       child: SizedBox(
         width: size.width * 0.85,
-        // height: size.width * 0.95,
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25),
@@ -45,8 +45,7 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
                     width: double.maxFinite,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     child: Text(
-                      //TODO: POEditor
-                      'About',
+                      context.l10n.about,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontFamily: 'Raleway',

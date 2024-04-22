@@ -3,6 +3,7 @@ import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_details_bottom_panel.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_details_expandable_description.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_details_header.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class ImpactGroupDetailsPage extends StatelessWidget {
   const ImpactGroupDetailsPage({
@@ -22,9 +23,11 @@ class ImpactGroupDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        //TODO: POEditor
-        title:
-            Text(impactGroup.isFamilyGroup ? 'Family Group' : impactGroup.name),
+        title: Text(
+          impactGroup.isFamilyGroup
+              ? context.l10n.familyGroup
+              : impactGroup.name,
+        ),
       ),
       body: CustomScrollView(
         slivers: [
@@ -49,10 +52,7 @@ class ImpactGroupDetailsPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Flexible(
-                  fit: FlexFit.loose,
-                  child: Container(),
-                ),
+                const Flexible(child: SizedBox.shrink()),
                 SizedBox(
                   height: bottomPanelHeight,
                   child:

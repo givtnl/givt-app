@@ -25,8 +25,8 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              //TODO: POEditor
-              'Goal',
+              context.l10n.goal,
+              //TODO: update when goal will have name fiald
               // 'Goal${impactGroup.isFamilyGroup ? ': ${impactGroup.goal.orgName}' : ''}',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
