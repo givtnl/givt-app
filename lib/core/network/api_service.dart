@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
@@ -976,9 +977,75 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-
+    final mock = {
+      "totalItems": 0,
+      "items": [
+        {
+          "id": "5548fe6d-fcac-4253-a76e-1c8f1d6f21c3",
+          "status": "Accepted",
+          "name": "Didi Family",
+          "type": "Family",
+          "numberOfMembers": 0,
+          "description": null,
+          "image": null,
+          "goal": {
+            "id": "ed114a92-fec4-44f4-88c7-92ff2ab8caa0",
+            "groupId": "5548fe6d-fcac-4253-a76e-1c8f1d6f21c3",
+            "mediumId": null,
+            "collectGroupId": "28ca9222-faff-459c-ab3b-d7507cd7b1bd",
+            "totalAmount": 20,
+            "currentAmount": 230,
+            "goal": 400,
+            "status": "InProgress",
+            "creationDate": "2024-04-19T09:01:18.0987959Z",
+            "endDate": null
+          },
+          "organizer": {
+            "id": "477e7c00-7cd5-4ecd-96f5-7a95be3693c2",
+            "firstName": "Barry",
+            "lastName": "Doe",
+            "avatar":
+                "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero1.png"
+          }
+        },
+        {
+          "id": "5548fe6d-fcac-4253-a76e-1c8f1d6f21c3",
+          "status": "Accepted",
+          "name": "Honduras Mission Trip",
+          "type": "Impact",
+          "numberOfMembers": 432,
+          "description": null,
+          "image": "https://d2zp5xs5cp8zlg.cloudfront.net/image-53552-800.jpg",
+          "goal": {
+            "id": "ed114a92-fec4-44f4-88c7-92ff2ab8caa0",
+            "groupId": "5548fe6d-fcac-4253-a76e-1c8f1d6f21c3",
+            "mediumId": null,
+            "collectGroupId": "28ca9222-faff-459c-ab3b-d7507cd7b1bd",
+            "totalAmount": 20,
+            "currentAmount": 230,
+            "goal": 8000,
+            "status": "InProgress",
+            "creationDate": "2024-04-19T09:01:18.0987959Z",
+            "endDate": null
+          },
+          "organizer": {
+            "id": "477e7c00-7cd5-4ecd-96f5-7a95be3693c2",
+            "firstName": "Barry",
+            "lastName": "Doe",
+            "avatar":
+                "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero1.png"
+          }
+        }
+      ],
+      "isError": false,
+      "errorCode": null,
+      "errorMessage": null,
+      "errors": null
+    };
+    log(response.body);
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['items']! as List<dynamic>;
+
     return itemMap;
   }
 
@@ -996,7 +1063,7 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-
+    log(response.body);
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['item']! as Map<String, dynamic>;
     return itemMap;

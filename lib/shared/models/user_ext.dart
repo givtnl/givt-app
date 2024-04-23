@@ -70,6 +70,8 @@ class UserExt extends Equatable {
         notificationId = '',
         profilePicture = '';
 
+  bool get isUsUser => Country.fromCode(country).isUS;
+
   factory UserExt.fromJson(Map<String, dynamic> json) {
     final personalInfoRegistered = json['FirstName'] != Util.defaultFirstName &&
         json['LastName'] != Util.defaultLastName &&

@@ -14,6 +14,8 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/impact_groups/pages/impact_group_screen.dart';
+import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
@@ -49,7 +51,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isGive = true;
+  int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
 
   @override
@@ -100,7 +102,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _key,
       appBar: AppBar(
-        title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
+        title: switch (pageIndex) {
+          0 => Text(locals.amount),
+          1 => !auth.user.isUsUser
+              ? Text(locals.discoverHomeDiscoverTitle)
+              : Text('Choose group'),
+          2 => Text(locals.discoverHomeDiscoverTitle),
+          _ => Text('default'),
+        },
         leading: badges.Badge(
           showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
           position: badges.BadgePosition.topStart(
@@ -233,9 +242,9 @@ class _HomePageState extends State<HomePage> {
             given: widget.given,
             code: widget.code,
             afterGivingRedirection: widget.afterGivingRedirection,
-            onPageChanged: () => setState(
+            onPageChanged: (index) => setState(
               () {
-                isGive = !isGive;
+                pageIndex = index;
               },
             ),
           ),
@@ -363,7 +372,7 @@ class _HomePageView extends StatefulWidget {
   final bool given;
   final String code;
   final String afterGivingRedirection;
-  final VoidCallback onPageChanged;
+  final void Function(int) onPageChanged;
 
   @override
   State<_HomePageView> createState() => _HomePageViewState();
@@ -408,8 +417,8 @@ class _HomePageViewState extends State<_HomePageView> {
                     'afterGivingRedirection': widget.afterGivingRedirection,
                   },
                 ),
-                showFamilyGoal: true,
               ),
+              if (auth.user.isUsUser) const ImpactGroupScreen(),
               const ChooseCategory(),
             ],
           ),
@@ -422,10 +431,15 @@ class _HomePageViewState extends State<_HomePageView> {
               left: 15,
               bottom: 5,
             ),
-            child: AnimatedSwitch(
-              onChanged: onPageChanged,
-              pageIndex: pageIndex,
-            ),
+            child: auth.user.isUsUser
+                ? TripleAnimatedSwitch(
+                    pageIndex: pageIndex,
+                    onChanged: onPageChanged,
+                  )
+                : AnimatedSwitch(
+                    pageIndex: pageIndex,
+                    onChanged: onPageChanged,
+                  ),
           ),
         ),
       ],
@@ -438,8 +452,11 @@ class _HomePageViewState extends State<_HomePageView> {
     }
     setState(() {
       pageIndex = index;
-      widget.onPageChanged();
+      widget.onPageChanged(index);
     });
+    if (pageIndex == 1 && context.read<AuthCubit>().state.user.isUsUser) {
+      context.read<ImpactGroupsCubit>().fetchImpactGroups();
+    }
 
     pageController.animateToPage(
       index,
