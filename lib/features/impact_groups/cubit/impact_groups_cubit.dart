@@ -61,45 +61,22 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
 
   Future<void> getImpactGroupOrganisation() async {
     try {
-      // first fill in the organisation from a local cache
+      final impactGroups = state.impactGroups;
       for (final group in state.impactGroups) {
         if (group.goal != const Goal.empty() &&
             group.goal.mediumId.isNotEmpty) {
           final organisation = await _campaignRepository
               .getCachedOrganisation(group.goal.mediumId);
 
-          emit(
-            state.copyWith(
-                impactGroups: state.impactGroups.map((e) {
-              if (e.id == group.id) {
-                return e.copyWith(
-                  organisation: organisation,
-                );
-              }
-              return e;
-            }).toList()),
-          );
+          impactGroups[impactGroups.indexWhere((e) => e.id == group.id)] =
+              group.copyWith(organisation: organisation);
         }
       }
-      // then async refresh the org
-      for (final group in state.impactGroups) {
-        if (group.goal != const Goal.empty()) {
-          final organisation = await _campaignRepository
-              .getOrganisation(group.goal.collectGroupId);
-
-          emit(
-            state.copyWith(
-                impactGroups: state.impactGroups.map((e) {
-              if (e.id == group.id) {
-                return e.copyWith(
-                  organisation: organisation,
-                );
-              }
-              return e;
-            }).toList()),
-          );
-        }
-      }
+      emit(
+        state.copyWith(
+          impactGroups: impactGroups,
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(
