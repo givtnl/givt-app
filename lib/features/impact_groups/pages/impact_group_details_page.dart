@@ -34,6 +34,7 @@ class ImpactGroupDetailsPage extends StatelessWidget {
           SliverToBoxAdapter(
             child: SafeArea(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ImpactGroupDetailsHeader(impactGroup: impactGroup),
                   Padding(
@@ -52,7 +53,7 @@ class ImpactGroupDetailsPage extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Flexible(child: SizedBox.shrink()),
+                const Flexible(child: SizedBox.expand()),
                 SizedBox(
                   height: bottomPanelHeight,
                   child:
