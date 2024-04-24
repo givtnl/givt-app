@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 
 class GoalActiveWidget extends StatelessWidget {
@@ -29,7 +30,7 @@ class GoalActiveWidget extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Family Goal: \$${currentGoal.goalAmount}',
+                '${context.l10n.familyGoalPrefix}\$${currentGoal.goalAmount}',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontFamily: 'Mulish',
                       fontWeight: FontWeight.w400,

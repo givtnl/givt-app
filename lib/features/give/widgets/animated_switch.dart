@@ -24,7 +24,7 @@ class AnimatedSwitch extends StatelessWidget {
       dif: 1,
       indicatorSize: const Size.fromWidth(90),
       borderWidth: 1,
-      borderColor: const Color(0xFFDCDCE1),
+      borderColor: AppTheme.givtNeutralGrey,
       borderRadius: const BorderRadius.all(Radius.circular(4)),
       animationCurve: Curves.easeInOut,
       transitionType: ForegroundIndicatorTransitionType.fading,

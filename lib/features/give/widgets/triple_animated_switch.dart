@@ -1,5 +1,6 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class TripleAnimatedSwitch extends StatelessWidget {
@@ -21,24 +22,22 @@ class TripleAnimatedSwitch extends StatelessWidget {
       height: 40,
       dif: 1,
       iconOpacity: 1,
-      innerColor: const Color(0xFFDCDCE1),
+      innerColor: AppTheme.givtNeutralGrey,
       indicatorSize: const Size.fromWidth(90),
-      iconBuilder: iconBuilder,
+      iconBuilder: (int value, Size size) => switch (value) {
+        0 => _buildToggleSwitch(context.l10n.discoverSegmentNow, 0),
+        1 => _buildToggleSwitch(context.l10n.groups, 1),
+        2 => _buildToggleSwitch(context.l10n.discoverSegmentWho, 2),
+        _ => _buildToggleSwitch(context.l10n.default, 3),
+      },
       borderWidth: 1,
-      borderColor: const Color(0xFFDCDCE1),
+      borderColor: AppTheme.givtNeutralGrey,
       borderRadius: const BorderRadius.all(Radius.circular(4)),
       animationCurve: Curves.easeInOut,
       colorBuilder: (i) => i == pageIndex ? AppTheme.givtBlue : Colors.white,
       onChanged: onChanged,
     );
   }
-
-  Widget iconBuilder(int value, Size size) => switch (value) {
-        0 => _buildToggleSwitch('Give', 0),
-        1 => _buildToggleSwitch('Groups', 1),
-        2 => _buildToggleSwitch('Discover', 2),
-        _ => _buildToggleSwitch('Default', 3),
-      };
 
   Widget _buildToggleSwitch(
     String text,

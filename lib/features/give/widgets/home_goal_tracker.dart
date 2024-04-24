@@ -6,6 +6,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -107,8 +108,8 @@ class HomeGoalTracker extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   group.type == ImpactGroupType.family
-                      ? 'Family Goal: \$${currentGoal.goalAmount}'
-                      : 'Goal: \$${currentGoal.goalAmount} · ${group.amountOfMembers} members',
+                      ? '${context.l10n.familyGoalPrefix}\$${currentGoal.goalAmount}'
+                      : '${context.l10n.goal}: \$${currentGoal.goalAmount} · ${group.amountOfMembers} members',
                   style: GoogleFonts.mulish(
                     textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w400,
