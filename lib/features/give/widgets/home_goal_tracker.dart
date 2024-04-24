@@ -96,7 +96,7 @@ class HomeGoalTracker extends StatelessWidget {
               children: [
                 Text(
                   group.organisation.organisationName ??
-                      'Oops, did not get a name for the goal.',
+                      context.l10n.oopsNoNameForOrganisation,
                   style: GoogleFonts.mulish(
                     textStyle:
                         Theme.of(context).textTheme.titleMedium?.copyWith(

@@ -28,7 +28,7 @@ class TripleAnimatedSwitch extends StatelessWidget {
         0 => _buildToggleSwitch(context.l10n.discoverSegmentNow, 0),
         1 => _buildToggleSwitch(context.l10n.groups, 1),
         2 => _buildToggleSwitch(context.l10n.discoverSegmentWho, 2),
-        _ => _buildToggleSwitch(context.l10n.default, 3),
+        _ => _buildToggleSwitch(context.l10n.give, 3),
       },
       borderWidth: 1,
       borderColor: AppTheme.givtNeutralGrey,

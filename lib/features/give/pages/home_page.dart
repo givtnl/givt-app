@@ -106,9 +106,9 @@ class _HomePageState extends State<HomePage> {
           0 => Text(locals.amount),
           1 => !auth.user.isUsUser
               ? Text(locals.discoverHomeDiscoverTitle)
-              : Text('Choose group'),
+              : Text(locals.chooseGroup),
           2 => Text(locals.discoverHomeDiscoverTitle),
-          _ => Text('default'),
+          _ => Text(locals.give),
         },
         leading: badges.Badge(
           showBadge: auth.user.needRegistration || !auth.user.mandateSigned,

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/give/widgets/home_goal_tracker.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/l10n/l10n.dart';
 
 class ImpactGroupScreen extends StatelessWidget {
   const ImpactGroupScreen({super.key});
@@ -65,7 +66,7 @@ class NoGoalsWidget extends StatelessWidget {
           SvgPicture.asset('assets/images/family_superheroes.svg'),
           const SizedBox(height: 20),
           Text(
-            'Your Family Group and other\ngroups will appear here',
+            context.l10n.yourFamilyGroupWillAppearHere,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium,
           ),
