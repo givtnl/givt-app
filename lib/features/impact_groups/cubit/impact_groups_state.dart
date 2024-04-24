@@ -15,6 +15,21 @@ class ImpactGroupsState extends Equatable {
   final ImpactGroup invitedGroup;
   final String error;
 
+  List<Goal> get goals => impactGroups
+      .where((element) => element.goal != const Goal.empty())
+      .map((e) => e.goal)
+      .toList();
+  Goal get familyGoal => impactGroups
+      .firstWhere(
+        (element) => element.type == ImpactGroupType.family,
+        orElse: () => const ImpactGroup.empty(),
+      )
+      .goal;
+  bool get hasGoals => goals.isNotEmpty;
+
+  ImpactGroup getGoalGroup(Goal goal) =>
+      impactGroups.firstWhere((element) => element.goal.id == goal.id);
+
   @override
   List<Object> get props => [
         status,

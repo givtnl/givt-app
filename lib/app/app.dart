@@ -84,6 +84,7 @@ class _AppState extends State<App> {
           BlocProvider(
             create: (context) => ImpactGroupsCubit(
               getIt(),
+              getIt(),
               context.read<AuthCubit>(),
             ),
             lazy: false,
