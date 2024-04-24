@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
-import 'package:givt_app/features/give/widgets/home_goal_tracker.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -26,7 +25,6 @@ class ChooseAmount extends StatefulWidget {
     required this.arePresetsEnabled,
     required this.presets,
     this.showAddCollectionButton = true,
-    this.showFamilyGoal = false,
     super.key,
   });
 
@@ -37,7 +35,6 @@ class ChooseAmount extends StatefulWidget {
   final bool showAddCollectionButton;
   final List<Preset> presets;
   final ChooseAmountNextCallback onAmountChanged;
-  final bool showFamilyGoal;
 
   @override
   State<ChooseAmount> createState() => _ChooseAmountState();
@@ -211,7 +208,6 @@ class _ChooseAmountState extends State<ChooseAmount> {
                           },
                         ),
                       ),
-                      if (widget.showFamilyGoal) const HomeGoalTracker(),
                     ],
                   ),
                 ),

@@ -5,6 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
+import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 
@@ -13,6 +15,7 @@ part 'impact_groups_state.dart';
 class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
   ImpactGroupsCubit(
     this._impactGroupInviteRepository,
+    this._campaignRepository,
     this._authCubit,
   ) : super(const ImpactGroupsState()) {
     _authCubit.stream.listen((event) async {
@@ -31,6 +34,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
     });
   }
   final ImpactGroupsRepository _impactGroupInviteRepository;
+  final CampaignRepository _campaignRepository;
   final AuthCubit _authCubit;
   Future<void> fetchImpactGroups() async {
     emit(state.copyWith(status: ImpactGroupCubitStatus.loading));
@@ -45,6 +49,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
           impactGroups: impactGroups,
         ),
       );
+      await getImpactGroupOrganisation();
     } catch (e) {
       emit(
         state.copyWith(
@@ -55,6 +60,40 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
       unawaited(
         LoggingInfo.instance.error(
           'Fetching impact groups failed: $e',
+          methodName: 'fetchImpactGroups',
+        ),
+      );
+    }
+  }
+
+  Future<void> getImpactGroupOrganisation() async {
+    try {
+      final impactGroups = state.impactGroups;
+      for (final group in state.impactGroups) {
+        if (group.goal != const Goal.empty() &&
+            group.goal.mediumId.isNotEmpty) {
+          final organisation = await _campaignRepository
+              .getCachedOrganisation(group.goal.mediumId);
+
+          impactGroups[impactGroups.indexWhere((e) => e.id == group.id)] =
+              group.copyWith(organisation: organisation);
+        }
+      }
+      emit(
+        state.copyWith(
+          impactGroups: impactGroups,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: ImpactGroupCubitStatus.error,
+          error: e.toString(),
+        ),
+      );
+      unawaited(
+        LoggingInfo.instance.error(
+          'Adding organisation to impact group failed: $e',
           methodName: 'fetchImpactGroups',
         ),
       );

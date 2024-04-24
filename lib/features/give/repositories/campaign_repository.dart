@@ -10,6 +10,7 @@ mixin CampaignRepository {
   Future<Organisation> getOrganisation(String mediumId);
   Future<bool> saveLastDonation(Organisation organisation);
   Future<Organisation> getLastOrganisationDonated();
+  Future<Organisation> getCachedOrganisation(String mediumId);
 }
 
 class CampaignRepositoryImpl with CampaignRepository {
@@ -19,6 +20,19 @@ class CampaignRepositoryImpl with CampaignRepository {
   );
   final APIService apiService;
   final SharedPreferences prefs;
+
+  @override
+  Future<Organisation> getCachedOrganisation(String mediumId) async {
+    final collectGroup = (await _getCollectGroupList()).firstWhere(
+      (collectGroup) => mediumId.contains(collectGroup.nameSpace),
+      orElse: CollectGroup.empty,
+    );
+
+    return Organisation(
+      organisationName: collectGroup.orgName,
+      mediumId: collectGroup.nameSpace,
+    );
+  }
 
   @override
   Future<Organisation> getOrganisation(String mediumId) async {

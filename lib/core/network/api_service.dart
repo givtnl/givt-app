@@ -976,9 +976,9 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['items']! as List<dynamic>;
+
     return itemMap;
   }
 
@@ -996,7 +996,6 @@ class APIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-
     final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final itemMap = decodedBody['item']! as Map<String, dynamic>;
     return itemMap;

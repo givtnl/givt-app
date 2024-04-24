@@ -25,6 +25,8 @@ class GroupOrganiser extends Equatable {
     );
   }
 
+  String get fullName => '$firstName $lastName';
+
   final String id;
   final String firstName;
   final String lastName;
