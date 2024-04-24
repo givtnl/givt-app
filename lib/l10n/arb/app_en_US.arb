@@ -1549,5 +1549,10 @@
     "goal": "Goal",
     "theFamilyWithName": "The {value0} Family",
     "members": "members",
-    "completedLabel": "Completed!"
+    "completedLabel": "Completed!",
+    "chooseGroup": "Choose Group",
+    "default": "default",
+    "oopsNoNameForOrganisation": "Oops, did not get a name for the goal.",
+    "groups": "Groups",
+    "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here"
 }
