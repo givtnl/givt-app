@@ -41,7 +41,7 @@ class ImpactGroup extends Equatable {
       image: map['image'] as String? ?? '',
       amountOfMembers: (map['numberOfMembers'] as num? ?? 0).toInt(),
       organiser: map['organiser'] != null
-          ? GroupOrganiser.fromMap(map['organizer'] as Map<String, dynamic>)
+          ? GroupOrganiser.fromMap(map['organiser'] as Map<String, dynamic>)
           : const GroupOrganiser.empty(),
       goal: map['goal'] != null
           ? Goal.fromMap(map['goal'] as Map<String, dynamic>)
