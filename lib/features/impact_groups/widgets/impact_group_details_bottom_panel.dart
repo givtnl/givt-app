@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
+import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
@@ -26,9 +29,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              context.l10n.goal,
-              //TODO: update when goal will have name fiald
-              // 'Goal${impactGroup.isFamilyGroup ? ': ${impactGroup.goal.orgName}' : ''}',
+              '${context.l10n.goal}${impactGroup.isFamilyGroup ? ': ${impactGroup.organisation.organisationName}' : ''}',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: GoogleFonts.mulish(
@@ -52,22 +53,19 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
                   eventName: AmplitudeEvents.impactGroupDetailsGiveClicked,
                   eventProperties: {'name': impactGroup.name},
                 );
-
-                //TODO: imtegrate with giving flow when navigation is ready
-
-                // final giveBloc = context.read<GiveBloc>();
-                // showModalBottomSheet<void>(
-                //   context: context,
-                //   isScrollControlled: true,
-                //   useSafeArea: true,
-                //   builder: (_) => BlocProvider.value(
-                //     value: giveBloc,
-                //     child: EnterAmountBottomSheet(
-                //       collectGroupNameSpace: impactGroup.goal.mediumId,
-                //       goalId: impactGroup.goal.id,
-                //     ),
-                //   ),
-                // );
+                final giveBloc = context.read<GiveBloc>();
+                showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (_) => BlocProvider.value(
+                    value: giveBloc,
+                    child: EnterAmountBottomSheet(
+                      collectGroupNameSpace: impactGroup.goal.mediumId,
+                      goalId: impactGroup.goal.id,
+                    ),
+                  ),
+                );
               },
             ),
           ],

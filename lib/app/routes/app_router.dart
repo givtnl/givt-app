@@ -476,10 +476,16 @@ class AppRouter {
           GoRoute(
             path: Pages.impactGroupDetails.path,
             name: Pages.impactGroupDetails.name,
-            builder: (context, state) {
-              final impactGroup = state.extra! as ImpactGroup;
-              return ImpactGroupDetailsPage(impactGroup: impactGroup);
-            },
+            builder: (context, state) => BlocProvider(
+              create: (_) => GiveBloc(
+                getIt(),
+                getIt(),
+                getIt(),
+                getIt(),
+              ),
+              child: ImpactGroupDetailsPage(
+                  impactGroup: state.extra! as ImpactGroup),
+            ),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,

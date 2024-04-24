@@ -33,12 +33,6 @@ class HomeGoalTracker extends StatelessWidget {
             Pages.impactGroupDetails.name,
             extra: group,
           );
-
-          // _showEnterAmountBottomSheet(
-          //   context,
-          //   state.activeGoal.mediumId,
-          //   state.activeGoal.id,
-          // );
         },
         child: Container(
           width: double.infinity,
