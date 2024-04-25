@@ -4,7 +4,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/parental_approval/cubit/parental_approval_cubit.dart';
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_approved_page.dart';
@@ -12,6 +11,7 @@ import 'package:givt_app/features/children/parental_approval/widgets/parental_ap
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_declined_page.dart';
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_error_page.dart';
 import 'package:givt_app/features/children/parental_approval/widgets/parental_approval_loading_page.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,7 +30,7 @@ class ParentalApprovalDialogContent extends StatelessWidget {
     // Exectue the following cubits in parallel
     await Future.wait([
       context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true),
-      context.read<GoalTrackerCubit>().getGoal(),
+      context.read<ImpactGroupsCubit>().fetchImpactGroups(),
     ]);
   }
 

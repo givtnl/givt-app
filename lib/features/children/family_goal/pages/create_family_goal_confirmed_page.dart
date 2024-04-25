@@ -4,7 +4,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_circle.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +27,7 @@ class CreateFamilyGoalConfirmedPage extends StatelessWidget {
           CloseButton(
             color: AppTheme.givtBlue,
             onPressed: () {
-              context.read<GoalTrackerCubit>().getGoal();
+              context.read<ImpactGroupsCubit>().fetchImpactGroups();
 
               context
                 ..pop()
