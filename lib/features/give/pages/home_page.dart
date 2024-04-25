@@ -14,10 +14,10 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/impact_groups/pages/impact_group_screen.dart';
 import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/impact_groups/pages/impact_group_screen.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -383,6 +383,7 @@ class _HomePageView extends StatefulWidget {
 class _HomePageViewState extends State<_HomePageView> {
   late PageController pageController;
   int pageIndex = 0;
+  bool isPageAnimationActive = false;
 
   @override
   void initState() {
@@ -449,7 +450,7 @@ class _HomePageViewState extends State<_HomePageView> {
   }
 
   void onPageChanged(int index) {
-    if (index == pageIndex) {
+    if (index == pageIndex || isPageAnimationActive) {
       return;
     }
     setState(() {
@@ -460,10 +461,22 @@ class _HomePageViewState extends State<_HomePageView> {
       context.read<ImpactGroupsCubit>().fetchImpactGroups();
     }
 
-    pageController.animateToPage(
+    setState(() {
+      isPageAnimationActive = true;
+    });
+
+    pageController
+        .animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
+    )
+        .then(
+      (_) {
+        setState(() {
+          isPageAnimationActive = false;
+        });
+      },
     );
   }
 }
