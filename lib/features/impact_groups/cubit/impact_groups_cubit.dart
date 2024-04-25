@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
+import 'package:givt_app/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -137,5 +137,11 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
         ),
       );
     }
+  }
+
+  void dismissGoal(String id) {
+    emit(
+      state.copyWith(dismissedGoalId: id),
+    );
   }
 }
