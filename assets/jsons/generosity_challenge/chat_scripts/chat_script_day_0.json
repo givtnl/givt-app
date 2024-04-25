@@ -1,0 +1,20 @@
+{
+  "type": "textMessage",
+  "side": "interlocutor",
+  "text": "Before we start our adventure, what's the name of your Superhero team?",
+  "next": {
+    "type": "textMessage",
+    "side": "interlocutor",
+    "text": "I need to say at least two sentences, haha!",
+    "next": {
+      "type": "textMessage",
+      "side": "user",
+      "text": "My answer is yes!",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Awesome man!"
+      }
+    }
+  }
+}

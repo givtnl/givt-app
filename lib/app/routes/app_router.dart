@@ -26,6 +26,8 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_test_page.dart';
 import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
@@ -485,6 +487,17 @@ class AppRouter {
               ),
               child: ImpactGroupDetailsPage(
                   impactGroup: state.extra! as ImpactGroup),
+            ),
+          ),
+          GoRoute(
+            path: Pages.chatScriptTestPage.path,
+            name: Pages.chatScriptTestPage.name,
+            builder: (context, state) => BlocProvider(
+              create: (_) => ChatScriptsCubit(
+                getIt(),
+                getIt(),
+              )..preload(),
+              child: const ChatScriptTestPage(),
             ),
           ),
           GoRoute(
