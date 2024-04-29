@@ -75,6 +75,11 @@ enum Pages {
     name: 'JOIN-IMPACT-GROUP-SUCCESS',
   ),
   permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
+
+  impactGroupDetails(
+    path: 'impact-group-details',
+    name: 'IMPACT-GROUP-DETAILS',
+  ),
   ;
 
   const Pages({

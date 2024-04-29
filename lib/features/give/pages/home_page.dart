@@ -14,16 +14,17 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/impact_groups/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/impact_groups/pages/impact_group_screen.dart';
+import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -50,7 +51,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isGive = true;
+  int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
 
   @override
@@ -101,7 +102,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       key: _key,
       appBar: AppBar(
-        title: Text(isGive ? locals.amount : locals.discoverHomeDiscoverTitle),
+        title: switch (pageIndex) {
+          0 => Text(locals.amount),
+          1 => !auth.user.isUsUser
+              ? Text(locals.discoverHomeDiscoverTitle)
+              : Text(locals.chooseGroup),
+          2 => Text(locals.discoverHomeDiscoverTitle),
+          _ => Text(locals.give),
+        },
         leading: badges.Badge(
           showBadge: auth.user.needRegistration || !auth.user.mandateSigned,
           position: badges.BadgePosition.topStart(
@@ -236,9 +244,9 @@ class _HomePageState extends State<HomePage> {
             given: widget.given,
             code: widget.code,
             afterGivingRedirection: widget.afterGivingRedirection,
-            onPageChanged: () => setState(
+            onPageChanged: (index) => setState(
               () {
-                isGive = !isGive;
+                pageIndex = index;
               },
             ),
           ),
@@ -256,10 +264,11 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (_) => CupertinoAlertDialog(
         title: Text(
-            isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                )),
+          isUS ? context.l10n.goodToKnow : context.l10n.importantReminder,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
         content: Text(
           isUS
               ? context.l10n.registrationDialogG4K
@@ -365,7 +374,7 @@ class _HomePageView extends StatefulWidget {
   final bool given;
   final String code;
   final String afterGivingRedirection;
-  final VoidCallback onPageChanged;
+  final void Function(int) onPageChanged;
 
   @override
   State<_HomePageView> createState() => _HomePageViewState();
@@ -374,6 +383,7 @@ class _HomePageView extends StatefulWidget {
 class _HomePageViewState extends State<_HomePageView> {
   late PageController pageController;
   int pageIndex = 0;
+  bool isPageAnimationActive = false;
 
   @override
   void initState() {
@@ -410,8 +420,8 @@ class _HomePageViewState extends State<_HomePageView> {
                     'afterGivingRedirection': widget.afterGivingRedirection,
                   },
                 ),
-                showFamilyGoal: true,
               ),
+              if (auth.user.isUsUser) const ImpactGroupScreen(),
               const ChooseCategory(),
             ],
           ),
@@ -424,10 +434,15 @@ class _HomePageViewState extends State<_HomePageView> {
               left: 15,
               bottom: 5,
             ),
-            child: AnimatedSwitch(
-              onChanged: onPageChanged,
-              pageIndex: pageIndex,
-            ),
+            child: auth.user.isUsUser
+                ? TripleAnimatedSwitch(
+                    pageIndex: pageIndex,
+                    onChanged: onPageChanged,
+                  )
+                : AnimatedSwitch(
+                    pageIndex: pageIndex,
+                    onChanged: onPageChanged,
+                  ),
           ),
         ),
       ],
@@ -435,18 +450,33 @@ class _HomePageViewState extends State<_HomePageView> {
   }
 
   void onPageChanged(int index) {
-    if (index == pageIndex) {
+    if (index == pageIndex || isPageAnimationActive) {
       return;
     }
     setState(() {
       pageIndex = index;
-      widget.onPageChanged();
+      widget.onPageChanged(index);
+    });
+    if (pageIndex == 1 && context.read<AuthCubit>().state.user.isUsUser) {
+      context.read<ImpactGroupsCubit>().fetchImpactGroups();
+    }
+
+    setState(() {
+      isPageAnimationActive = true;
     });
 
-    pageController.animateToPage(
+    pageController
+        .animateToPage(
       index,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
+    )
+        .then(
+      (_) {
+        setState(() {
+          isPageAnimationActive = false;
+        });
+      },
     );
   }
 }

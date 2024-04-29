@@ -1543,5 +1543,15 @@
     "addAdultMemberDescriptionItem3": "Make an impact together",
     "joinImpactGroupCongrats": "Congrats, you’re in!\n",
     "youHaveBeenInvitedToImpactGroup": "You have been invited\nto the ",
-    "acceptInviteKey": "Accept the invite"
+    "acceptInviteKey": "Accept the invite",
+    "about": "About",
+    "familyGroup": "Family Group",
+    "goal": "Goal",
+    "theFamilyWithName": "The {value0}",
+    "members": "members",
+    "completedLabel": "Completed!",
+    "chooseGroup": "Choose Group",
+    "oopsNoNameForOrganisation": "Oops, did not get a name for the goal.",
+    "groups": "Groups",
+    "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here"
 }

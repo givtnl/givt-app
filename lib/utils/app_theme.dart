@@ -11,6 +11,7 @@ class AppTheme {
   static const givtLightBackgroundBlue = Color(0xFFF3F8FD);
   static const givtBlue = Color(0xFF2e2957);
   static const givtLightGray = Color(0xFFe3e2e7);
+  static const givtNeutralGrey = Color(0xFFDCDCE1);
   static const givtDarkerGray = Color(0xFF898989);
   static const givtLightBlue = Color(0xFF4699d2);
   static const givtDarkGrey = Color(0xFF555555);
@@ -103,6 +104,9 @@ class AppTheme {
 
   static const generosityChallangeCardBackground = Color(0xFFFFFDF7);
   static const generosityChallangeCardBorder = Color(0xFFEEF2E4);
+
+  static const impactGroupDialogBarrierColor = Color(0xBF404A70);
+
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
     fontFamily: 'AvenirLTStd',

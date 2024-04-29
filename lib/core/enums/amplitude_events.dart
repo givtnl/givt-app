@@ -71,7 +71,6 @@ enum AmplitudeEvents {
   utm('utm'),
 
   giveToFamilyGoalDirectly('give_to_family_goal_directly'),
-  giveToFamilyGoalViaOptions('give_to_family_goal_via_options'),
 
   skipBiometricWhenRegistered('skip_biometric_when_registered'),
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
@@ -88,6 +87,9 @@ enum AmplitudeEvents {
   generosityChallengeDayUndoCompleting(
     'generosity_challenge_day_undo_completing',
   ),
+
+  impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
+  impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

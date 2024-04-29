@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
+import 'package:givt_app/features/impact_groups/models/goal.dart';
+import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/impact_groups/models/group_organiser.dart';
 
 class ImpactGroup extends Equatable {
@@ -13,6 +14,7 @@ class ImpactGroup extends Equatable {
     required this.amountOfMembers,
     required this.organiser,
     required this.goal,
+    required this.organisation,
   });
 
   const ImpactGroup.empty()
@@ -26,6 +28,7 @@ class ImpactGroup extends Equatable {
           amountOfMembers: 0,
           organiser: const GroupOrganiser.empty(),
           goal: const Goal.empty(),
+          organisation: const Organisation.empty(),
         );
 
   factory ImpactGroup.fromMap(Map<String, dynamic> map) {
@@ -36,15 +39,18 @@ class ImpactGroup extends Equatable {
       type: ImpactGroupType.fromString(map['type'] as String),
       description: map['description'] as String? ?? '',
       image: map['image'] as String? ?? '',
-      amountOfMembers: (map['amountOfMembers'] as num? ?? 0).toInt(),
+      amountOfMembers: (map['numberOfMembers'] as num? ?? 0).toInt(),
       organiser: map['organiser'] != null
           ? GroupOrganiser.fromMap(map['organiser'] as Map<String, dynamic>)
           : const GroupOrganiser.empty(),
       goal: map['goal'] != null
           ? Goal.fromMap(map['goal'] as Map<String, dynamic>)
           : const Goal.empty(),
+      organisation: const Organisation.empty(),
     );
   }
+
+  bool get isFamilyGroup => type == ImpactGroupType.family;
 
   final String id;
   final String name;
@@ -55,6 +61,33 @@ class ImpactGroup extends Equatable {
   final int amountOfMembers;
   final GroupOrganiser organiser;
   final Goal goal;
+  final Organisation organisation;
+
+  ImpactGroup copyWith({
+    String? id,
+    String? name,
+    ImpactGroupStatus? status,
+    ImpactGroupType? type,
+    String? description,
+    String? image,
+    int? amountOfMembers,
+    GroupOrganiser? organiser,
+    Goal? goal,
+    Organisation? organisation,
+  }) {
+    return ImpactGroup(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      type: type ?? this.type,
+      description: description ?? this.description,
+      image: image ?? this.image,
+      amountOfMembers: amountOfMembers ?? this.amountOfMembers,
+      organiser: organiser ?? this.organiser,
+      goal: goal ?? this.goal,
+      organisation: organisation ?? this.organisation,
+    );
+  }
 
   @override
   List<Object?> get props => [
@@ -67,6 +100,7 @@ class ImpactGroup extends Equatable {
         amountOfMembers,
         organiser,
         goal,
+        organisation,
       ];
 }
 
