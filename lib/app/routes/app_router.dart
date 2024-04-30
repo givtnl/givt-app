@@ -25,6 +25,7 @@ import 'package:givt_app/features/children/family_goal/pages/create_family_goal_
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
@@ -110,6 +111,11 @@ class AppRouter {
               _checkAndRedirectAuth(state, context, routerState),
           child: const LoadingPage(),
         ),
+      ),
+      GoRoute(
+        path: Pages.generosityIntroduction.path,
+        name: Pages.generosityIntroduction.name,
+        builder: (context, state) => const GenrosityIntorductionScreen(),
       ),
       GoRoute(
         path: Pages.generosityChallenge.path,
@@ -808,8 +814,7 @@ class AppRouter {
     }
 
     if (navigatingPage == Pages.generosityChallenge.path) {
-      GenerosityChallengeHelper.activate();
-      return Pages.generosityChallenge.path;
+      return Pages.generosityIntroduction.path;
     }
 
     /// Display the splash screen while checking the auth status
