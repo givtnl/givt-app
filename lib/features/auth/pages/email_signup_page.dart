@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -300,5 +301,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
     log('Using API URL: $baseUrl');
     get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+
+    // update country iso in shared preferences
+    final prefs = get_it.getIt<SharedPreferences>();
+    unawaited(prefs.setString('countryIso', selectedCountry.countryCode));
   }
 }
