@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -206,7 +206,14 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildAcceptPolicy(locals),
+          AcceptPolicyRow(
+            onTap: (value) {
+              setState(() {
+                _acceptPolicy = value!;
+              });
+            },
+            checkBoxValue: _acceptPolicy,
+          ),
           ElevatedButton(
             onPressed: _isEnabled ? _register : null,
             style: ElevatedButton.styleFrom(
@@ -366,53 +373,6 @@ class _SignUpPageState extends State<SignUpPage> {
             textAlign: TextAlign.left,
           ),
           const SizedBox(height: 16),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAcceptPolicy(AppLocalizations locals) {
-    return GestureDetector(
-      onTap: () => showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        useSafeArea: true,
-        backgroundColor: AppTheme.givtPurple,
-        builder: (_) => const TermsAndConditionsDialog(
-          typeOfTerms: TypeOfTerms.privacyPolicy,
-        ),
-      ),
-      child: Row(
-        children: [
-          Checkbox(
-            value: _acceptPolicy,
-            onChanged: (value) {
-              setState(() {
-                _acceptPolicy = value!;
-              });
-            },
-          ),
-          Text.rich(
-            TextSpan(
-              children: [
-                WidgetSpan(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      locals.acceptPolicy,
-                    ),
-                  ),
-                ),
-                const WidgetSpan(
-                  child: Icon(
-                    Icons.info_rounded,
-                    size: 16,
-                  ),
-                ),
-              ],
-            ),
-            textAlign: TextAlign.center,
-          ),
         ],
       ),
     );

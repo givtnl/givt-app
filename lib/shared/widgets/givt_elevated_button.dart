@@ -144,10 +144,11 @@ class GivtElevatedButton extends StatelessWidget {
       child: Text(
         text,
         style: isDisabled == true
-            ? Theme.of(context)
-                .textTheme
-                .titleLarge
-                ?.copyWith(color: Theme.of(context).colorScheme.outline)
+            ? Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rouna',
+                )
             : Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: AppTheme.givtGreen40,
                   fontWeight: FontWeight.w700,
