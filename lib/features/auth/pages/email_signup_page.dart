@@ -304,6 +304,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
 
     // update country iso in shared preferences
     final prefs = get_it.getIt<SharedPreferences>();
-    unawaited(prefs.setString('countryIso', selectedCountry.countryCode));
+    unawaited(prefs.setString(Util.countryIso, selectedCountry.countryCode));
   }
 }

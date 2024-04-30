@@ -68,12 +68,11 @@ class _GenrosityIntorductionScreenState
                     ),
                   ),
                   const SizedBox(height: 20),
-                  const Text(
+                  Text(
                     '— The Mayor of Tulsa',
-                    style: TextStyle(
-                      color: Color(0xFF003920),
+                    style: purpleCardTextStyle?.copyWith(
+                      color: AppTheme.givtGreen40,
                       fontSize: 18,
-                      fontFamily: 'Rouna',
                       fontWeight: FontWeight.w700,
                     ),
                     textAlign: TextAlign.left,
