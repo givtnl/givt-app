@@ -87,6 +87,7 @@ enum AmplitudeEvents {
   generosityChallengeDayUndoCompleting(
     'generosity_challenge_day_undo_completing',
   ),
+  acceptedGenerosityChallenge('accepted_generosity_challenge'),
 
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),

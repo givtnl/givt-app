@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class GenrosityIntorductionScreen extends StatefulWidget {
@@ -104,6 +105,9 @@ class _GenrosityIntorductionScreenState
               isDisabled: !_acceptPolicy,
               onTap: () {
                 GenerosityChallengeHelper.activate();
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.acceptedGenerosityChallenge,
+                );
                 // should link to chat when finished
                 context.goNamed(Pages.generosityChallenge.name);
               },
