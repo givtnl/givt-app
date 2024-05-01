@@ -15,6 +15,8 @@ class Task extends Equatable {
     required this.feedbackImage,
     required this.feedbackTitle,
     required this.feedbackContent,
+    this.partnerCard,
+    this.redirect,
   });
 
   const Task.card({
@@ -22,11 +24,13 @@ class Task extends Equatable {
     required this.title,
     required this.description,
     required this.onTap,
-    required this.buttonText,
+    this.buttonText = '',
     this.feedbackImage =
         'assets/images/generosity_challenge_feedback_badge.svg',
     this.feedbackTitle = 'Awesome!',
     this.feedbackContent = 'You made it!',
+    this.partnerCard,
+    this.redirect,
   }) : type = TaskType.card;
 
   final TaskType type;
@@ -38,9 +42,11 @@ class Task extends Equatable {
   final String feedbackImage;
   final String feedbackTitle;
   final String feedbackContent;
+  final Task? partnerCard;
+  final String? redirect;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         type,
         image,
         title,
@@ -50,5 +56,7 @@ class Task extends Equatable {
         feedbackImage,
         feedbackTitle,
         feedbackContent,
+        partnerCard,
+        redirect,
       ];
 }

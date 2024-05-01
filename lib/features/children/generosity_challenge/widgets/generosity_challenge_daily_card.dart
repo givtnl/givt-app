@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/daily_assignment_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class GenerosityDailyCard extends StatelessWidget {
   const GenerosityDailyCard({
     required this.task,
     required this.isCompleted,
+    this.partnerCardDescription = '',
     super.key,
   });
 
   final Task task;
   final bool isCompleted;
+  final String partnerCardDescription;
 
   @override
   Widget build(BuildContext context) {
+    final bool redirect = task.redirect != null && task.redirect!.isNotEmpty;
     return Center(
       child: Stack(
         children: [
@@ -70,9 +77,17 @@ class GenerosityDailyCard extends StatelessWidget {
                   if (task.buttonText.isNotEmpty) const SizedBox(height: 16),
                   if (task.buttonText.isNotEmpty)
                     GivtElevatedButton(
-                      onTap: () {},
+                      onTap: redirect
+                          ? () {
+                              context.push(
+                                '${Pages.generosityChallenge.path}/${task.redirect}',
+                                extra: context.read<DailyAssignmentCubit>(),
+                              );
+                            }
+                          : task.onTap,
                       isDisabled: isCompleted,
                       text: task.buttonText,
+                      rightIcon: FontAwesomeIcons.arrowRight,
                     ),
                 ],
               ),

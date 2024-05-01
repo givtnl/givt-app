@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_asserts_with_message
 
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 
@@ -14,12 +15,23 @@ class GenerosityChallengeContentHelper {
       onTap: () {},
     ),
     Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Centuries ago there lived',
+      image: 'assets/images/generosity_challenge_day_2.svg',
+      title: 'Select Family Values',
       description:
-          'A king!” my little readers will say immediately. No, children, you are mistaken. Once upon a time there was a piece of wood. ',
-      buttonText: 'Hello',
-      onTap: () {},
+          'Chat together and pick 3 values from your welcome pack. These will help guide your decisions around generosity.\n\nMake sure everyone has at least 1 they want of the 3 chosen.',
+      buttonText: 'Select 3 values',
+      redirect: Pages.generositySelectValues.path,
+      onTap: () {
+        // navigate to value selection screen
+      },
+      partnerCard: Task.card(
+        image: 'assets/images/generosity_challenge_day_2.svg',
+        title: 'The 3 Family Values are selected!',
+        description:
+            '1. Everyone deserves help from disaster\n\n2. Everyone deserves a chance to learn\n\n3. Everyone should be able to live a healthy life',
+        buttonText: '',
+        onTap: () {},
+      ),
     ),
     Task.card(
       image: '',

@@ -23,7 +23,9 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/daily_assignment_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/assignments/select_family_values.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
@@ -121,13 +123,32 @@ class AppRouter {
         path: Pages.generosityChallenge.path,
         name: Pages.generosityChallenge.name,
         builder: (context, state) {
-          return BlocProvider(
-            create: (_) => GenerosityChallengeCubit(
-              getIt(),
-            )..loadFromCache(),
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => GenerosityChallengeCubit(
+                  getIt(),
+                )..loadFromCache(),
+              ),
+              BlocProvider(
+                create: (context) => DailyAssignmentCubit(),
+              ),
+            ],
             child: const GenerosityChallenge(),
           );
         },
+        routes: [
+          GoRoute(
+            path: Pages.generositySelectValues.path,
+            name: Pages.generositySelectValues.name,
+            builder: (context, state) {
+              return BlocProvider.value(
+                value: state.extra! as DailyAssignmentCubit,
+                child: const SelectFamilyValues(),
+              );
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: Pages.home.path,
