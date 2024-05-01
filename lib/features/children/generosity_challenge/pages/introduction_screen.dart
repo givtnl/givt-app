@@ -108,7 +108,7 @@ class _GenrosityIntorductionScreenState
               onTap: () {
                 GenerosityChallengeHelper.activate();
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.giveToFamilyGoalDirectly,
+                  eventName: AmplitudeEvents.acceptedGenerosityChallenge,
                 );
                 // should link to chat when finished
                 context.goNamed(Pages.generosityChallenge.name);
