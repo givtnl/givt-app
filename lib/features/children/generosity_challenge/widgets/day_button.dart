@@ -22,6 +22,7 @@ class DayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLocked = !isActive && !isCompleted;
     return ActionContainer(
+      isMuted: isLocked,
       isSelected: isCompleted || isLocked,
       borderColor: isActive || isCompleted
           ? ColorCombo.values[dayIndex % ColorCombo.values.length].borderColor

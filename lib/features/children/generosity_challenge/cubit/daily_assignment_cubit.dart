@@ -8,6 +8,10 @@ class DailyAssignmentCubit extends Cubit<DailyAssignmentState> {
 
   void complete() =>
       emit(const DailyAssignmentState(status: DailyAssignmentStatus.completed));
-  void completedFlow() =>
-      emit(const DailyAssignmentState(status: DailyAssignmentStatus.confirm));
+  void completedFlow(String description) => emit(
+        DailyAssignmentState(
+          status: DailyAssignmentStatus.confirm,
+          dynamicDescription: description,
+        ),
+      );
 }

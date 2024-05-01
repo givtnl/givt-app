@@ -13,17 +13,19 @@ class GenerosityDailyCard extends StatelessWidget {
   const GenerosityDailyCard({
     required this.task,
     required this.isCompleted,
-    this.partnerCardDescription = '',
+    this.dynamicDescription = '',
     super.key,
   });
 
   final Task task;
   final bool isCompleted;
-  final String partnerCardDescription;
+  final String dynamicDescription;
 
   @override
   Widget build(BuildContext context) {
     final bool redirect = task.redirect != null && task.redirect!.isNotEmpty;
+    final description =
+        dynamicDescription.isNotEmpty ? dynamicDescription : task.description;
     return Center(
       child: Stack(
         children: [
@@ -57,19 +59,24 @@ class GenerosityDailyCard extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: AppTheme.givtGreen40,
-                        fontSize: 18,
+                        fontSize: 20,
                         fontFamily: 'Rouna',
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                  if (task.description.isNotEmpty) const SizedBox(height: 8),
-                  if (task.description.isNotEmpty)
+                  if (description.isNotEmpty) const SizedBox(height: 8),
+                  if (description.isNotEmpty)
                     Text(
-                      task.description,
-                      textAlign: TextAlign.justify,
+                      description,
+                      // if we are filling in description
+                      // with user selection it is left aligned
+                      // with the default description it is justified
+                      textAlign: dynamicDescription.isNotEmpty
+                          ? TextAlign.left
+                          : TextAlign.justify,
                       style: const TextStyle(
                         color: AppTheme.givtGreen40,
-                        fontSize: 15,
+                        fontSize: 18,
                         fontFamily: 'Rouna',
                         fontWeight: FontWeight.w500,
                       ),

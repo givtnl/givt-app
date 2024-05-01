@@ -27,11 +27,6 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     return BlocProvider(
       create: (context) => DailyAssignmentCubit(),
       child: BlocBuilder<DailyAssignmentCubit, DailyAssignmentState>(
-        // listener: (context, state) {
-        //   if (state.status == DailyAssignmentStatus.flow) {
-        //     //redirect to flow
-        //   }
-        // },
         builder: (context, state) {
           final assignment = context.read<DailyAssignmentCubit>();
           return Scaffold(
@@ -128,6 +123,8 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
       return GenerosityDailyCard(
         task: task.partnerCard!,
         isCompleted: day.isCompleted,
+        dynamicDescription: state.dynamicDescription ??
+            'Something went wrong,\nplease contact support via\nsupport@givtapp.net',
       );
     }
     return GenerosityDailyCard(

@@ -23,9 +23,10 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/daily_assignment_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/pages/select_family_values_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
@@ -142,8 +143,15 @@ class AppRouter {
             path: Pages.generositySelectValues.path,
             name: Pages.generositySelectValues.name,
             builder: (context, state) {
-              return BlocProvider.value(
-                value: state.extra! as DailyAssignmentCubit,
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: state.extra! as DailyAssignmentCubit,
+                  ),
+                  BlocProvider(
+                    create: (context) => FamilyValuesCubit(),
+                  ),
+                ],
                 child: const SelectFamilyValues(),
               );
             },
