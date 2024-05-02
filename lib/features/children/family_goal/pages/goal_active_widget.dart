@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 
@@ -9,10 +9,10 @@ class GoalActiveWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GoalTrackerCubit, GoalTrackerState>(
+    return BlocBuilder<ImpactGroupsCubit, ImpactGroupsState>(
       builder: (context, state) {
-        final currentGoal = state.activeGoal;
-        final org = state.organisation;
+        final currentGoal = state.familyGoal;
+        final org = state.familyGroup.organisation;
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 32),
           child: Column(

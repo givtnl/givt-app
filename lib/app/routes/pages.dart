@@ -3,6 +3,10 @@ enum Pages {
   home(path: '/home', name: 'HOME'),
   loading(path: '/loading', name: 'LOADING'),
   welcome(path: '/welcome', name: 'WELCOME'),
+  generosityIntroduction(
+    path: '/generosity-introduction',
+    name: 'GENEROSITY-INTRODUCTION',
+  ),
   generosityChallenge(
     path: '/generosity-challenge',
     name: 'GENEROSITY-CHALLENGE',

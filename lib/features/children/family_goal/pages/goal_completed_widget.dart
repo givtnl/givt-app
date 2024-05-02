@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 
 class GoalCompletedWidget extends StatelessWidget {
   const GoalCompletedWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<GoalTrackerCubit>().state;
-    final org = state.organisation;
+    final impactGroupsCubit = context.watch<ImpactGroupsCubit>();
+    final org = impactGroupsCubit.state.familyGroup.organisation;
     return Stack(children: [
       Positioned(
         right: 0,
         child: IconButton(
-          onPressed: () {
-            context.read<GoalTrackerCubit>().clearGoal();
-          },
+          onPressed: () => impactGroupsCubit
+              .dismissGoal(impactGroupsCubit.state.familyGroup.goal.id),
           icon: const Icon(
             FontAwesomeIcons.xmark,
             size: 20,

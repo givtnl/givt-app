@@ -2,12 +2,12 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/parental_approval/dialogs/parental_approval_dialog.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -46,7 +46,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
 
         final familyHystoryCubit = context.read<FamilyHistoryCubit>();
         final familyOverviewCubit = context.read<FamilyOverviewCubit>();
-        final goalTrackercubit = context.read<GoalTrackerCubit>();
+        final impactGroupsCubit = context.read<ImpactGroupsCubit>();
 
         await showDialog<void>(
           barrierDismissible: false,
@@ -60,7 +60,7 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                 value: familyOverviewCubit,
               ),
               BlocProvider.value(
-                value: goalTrackercubit,
+                value: impactGroupsCubit,
               ),
             ],
             child: ParentalApprovalDialog(
