@@ -9,8 +9,17 @@ class FamilyValuesState extends Equatable {
 
   final List<FamilyValue> selectedValues;
 
-  int getUIindex(FamilyValue value) {
-    return selectedValues.indexOf(value) + 1;
+  String get selectedValuesString {
+    final formattedValues = <String>[];
+
+    for (var i = 0; i < selectedValues.length; i++) {
+      final e = selectedValues[i];
+      final formattedString =
+          '${i + 1}. ${e.displayText.replaceAll('\n', ' ')}';
+      formattedValues.add(formattedString);
+    }
+
+    return formattedValues.join('\n');
   }
 
   @override

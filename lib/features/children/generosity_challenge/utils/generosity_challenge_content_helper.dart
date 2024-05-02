@@ -11,7 +11,6 @@ class GenerosityChallengeContentHelper {
       title: 'In a small village',
       description:
           "Lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'",
-      buttonText: '',
       onTap: () {},
     ),
     Task.card(
@@ -21,15 +20,11 @@ class GenerosityChallengeContentHelper {
           'Chat together and pick 3 values from your welcome pack. These will help guide your decisions around generosity.\n\nMake sure everyone has at least 1 they want of the 3 chosen.',
       buttonText: 'Select 3 values',
       redirect: Pages.generositySelectValues.path,
-      onTap: () {
-        // navigate to value selection screen
-      },
+      onTap: () {},
       partnerCard: Task.card(
         image: 'assets/images/generosity_challenge_day_2.svg',
         title: 'The 3 Family Values are selected!',
-        description:
-            '1. Everyone deserves help from disaster\n\n2. Everyone deserves a chance to learn\n\n3. Everyone should be able to live a healthy life',
-        buttonText: '',
+        description: '',
         onTap: () {},
       ),
     ),

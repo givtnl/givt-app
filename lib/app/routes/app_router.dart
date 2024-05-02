@@ -149,7 +149,9 @@ class AppRouter {
                     value: state.extra! as DailyAssignmentCubit,
                   ),
                   BlocProvider(
-                    create: (context) => FamilyValuesCubit(),
+                    create: (context) => FamilyValuesCubit(
+                      valuesRepository: getIt(),
+                    ),
                   ),
                 ],
                 child: const SelectFamilyValues(),

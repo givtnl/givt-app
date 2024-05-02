@@ -71,9 +71,10 @@ class _FeedbackBannerDialogState extends State<FeedbackBannerDialog>
           child: SlideTransition(
             position: _offsetAnimation,
             child: GivtBanner(
-              badgeImage: widget.task.feedbackImage,
-              title: widget.task.feedbackTitle,
-              content: widget.task.feedbackContent,
+              badgeImage:
+                  'assets/images/generosity_challenge_feedback_badge.svg',
+              title: 'New Reward',
+              content: widget.task.title,
             ),
           ),
         )
