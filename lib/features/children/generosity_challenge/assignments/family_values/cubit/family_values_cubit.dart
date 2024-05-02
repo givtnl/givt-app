@@ -30,12 +30,4 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
 
     await valuesRepository.rememberValues(body: selectedValuesJson);
   }
-
-// this method is not used in the code
-  Future<void> fetchChachedFamilyValues() async {
-    final cachedFamilyValues = await valuesRepository.getRememberedValues();
-    for (var i = 0; i < cachedFamilyValues.length; i++) {
-      print(cachedFamilyValues[i].displayText);
-    }
-  }
 }
