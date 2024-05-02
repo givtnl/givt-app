@@ -85,7 +85,8 @@ class SelectFamilyValues extends StatelessWidget {
 
                         context
                             .read<DailyAssignmentCubit>()
-                            .completedFlow(state.selectedValuesString);
+                            .completedAssignmentFlow(
+                                state.selectedValuesString);
 
                         context.pop();
 

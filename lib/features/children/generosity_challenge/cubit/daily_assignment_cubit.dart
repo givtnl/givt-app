@@ -6,9 +6,9 @@ part 'daily_assignment_state.dart';
 class DailyAssignmentCubit extends Cubit<DailyAssignmentState> {
   DailyAssignmentCubit() : super(const DailyAssignmentState());
 
-  void complete() =>
+  void completeDay() =>
       emit(const DailyAssignmentState(status: DailyAssignmentStatus.completed));
-  void completedFlow(String description) => emit(
+  void completedAssignmentFlow(String description) => emit(
         DailyAssignmentState(
           status: DailyAssignmentStatus.confirm,
           dynamicDescription: description,

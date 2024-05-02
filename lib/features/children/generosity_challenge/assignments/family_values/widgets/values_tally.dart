@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class ValuesTally extends StatelessWidget {
@@ -13,9 +14,7 @@ class ValuesTally extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: List<Widget>.generate(
-        // FamilyValues.maxInterests,
-        3,
-        // index + 1 because we start 1 while the index starts at 0
+        FamilyValuesState.maxSelectedValues,
         (index) => _buildTallyIcon(index + 1, context),
       ),
     );
