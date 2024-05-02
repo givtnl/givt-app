@@ -4,36 +4,139 @@
     "side": "interlocutor",
     "text": "Before we start our adventure, what's the name of your Superhero team?",
     "next": {
+      "type": "inputAnswer",
+      "side": "user",
+      "text": "Last Name",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Great! Hi Peterson Family! I believe you're exactly what Tulsa needs to turn things around",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "I'm going to watch over your progress and keep your deeds safe. Let me write down some details so I don't forget!",
+          "next": {
+            "type": "buttonAnswer",
+            "side": "user",
+            "text": "Okay",
+            "answerText" : "Okay",
+            "next" : {
+              "type": "inputAnswer",
+              "side": "user",
+              "text": "First name of parent",
+              "amplitudeEvent": "utm",
+              "hidden" : true,
+              "next" : {
+                "type": "inputAnswer",
+                "side": "user",
+                "text": "E-mail address of parent",
+                "hidden" : true,
+                "next" : {
+                  "type": "inputAnswer",
+                  "side": "user",
+                  "text": "Password",
+                  "hidden" : true,
+                  "next": {
+                    "type": "textMessage",
+                    "side": "interlocutor",
+                    "text": "Thanks! I've made a note of that and it's all stored safely",
+                    "next" : {
+                      "type": "textMessage",
+                      "side": "interlocutor",
+                      "text": "I want to encourage you throughout your mission",
+                      "next": {
+                        "type": "textMessage",
+                        "side": "interlocutor",
+                        "text": "I need to let you know how great a job you are doing and notify you to keep going. Okay?",
+                        "next" : {
+                          "type": "buttonGroupAnswer",
+                          "side": "user",
+                          "options": [ 
+                            {
+                              "type": "textMessage",
+                              "side": "user",
+                              "text": "Not right now",
+                              "answerText" : "Not right now",
+                              "next" : {
+                                "type": "textMessage",
+                                "side": "interlocutor",
+                                "text": "That's ok. I'll still try and help as much as I can. Let me show you what I found walking round the city today",
+                                "next" : {
+                                  "branch" : "image01"
+                                }
+                              }
+                            },
+                            {
+                              "type": "textMessage",
+                              "side": "user",
+                              "text": "Yes",
+                              "amplitudeEvent": "utm",
+                              "answerText" : "Yes",
+                              "functionName" : "pushNotificationPermission",
+                              "next" : {
+                                "type": "textMessage",
+                                "side": "interlocutor",
+                                "text": "Awesome! Let me show you show you what I found walking round the city today",
+                                "next" : {
+                                  "branch" : "image01"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }        
+            }
+          }
+        }
+      }
+    }
+  },
+  "image01" :{
+    "type": "imageMessage",
+    "side": "interlocutor",
+    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+    "mediaSourceType": "network",
+    "next": {
       "type": "textMessage",
       "side": "interlocutor",
-      "text": "I need to say at least two sentences, haha!",
+      "text": "Generosity has become invisible. We just don't see generous acts like we used to and it's drained the color from Tulsa",
       "next": {
-        "type": "inputAnswer",
-        "side": "user",
-        "text": "Last name",
+        "type": "imageMessage",
+        "side": "interlocutor",
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+        "mediaSourceType": "network",
         "next": {
-          "type": "imageMessage",
+          "type": "textMessage",
           "side": "interlocutor",
-          "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
-          "mediaSourceType": "network",
-          "next": {
+          "text": "I've got our top research department to look into this and they found that there are 6 ways to show generosity",
+          "next" : {
             "type": "imageMessage",
-            "side": "user",
-            "path": "assets/images/day.gif",
-            "mediaSourceType": "asset",
-            "next": {
+            "side": "interlocutor",
+            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+            "mediaSourceType": "network",
+            "next" : {
               "type": "textMessage",
-              "side": "user",
-              "text": "Let me think...",
-              "next": {
-                "type": "buttonAnswer",
-                "side": "user",
-                "text": "Yes",
-                "answerText" : "My answer is yes!",
-                "next": {
+              "side": "interlocutor",
+              "text": "I believe with your help each day, we can bring the color back into Tulsa",
+              "next" : {
+                "type": "imageMessage",
+                "side": "interlocutor",
+                "path": "assets/images/day.gif",
+                "mediaSourceType": "asset",
+                "next" : {
                   "type": "textMessage",
                   "side": "interlocutor",
-                  "text": "Awesome!"
+                  "text": "Are you ready for your first assignment?",
+                  "next" : {
+                    "type": "buttonAnswer",
+                    "side": "user",
+                    "text": "Let's go!",
+                    "answerText" : "Let's go!"
+                  }
                 }
               }
             }

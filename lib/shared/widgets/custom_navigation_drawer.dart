@@ -112,28 +112,25 @@ class CustomNavigationDrawer extends StatelessWidget {
                     ),
                   ),
                   icon: Icons.family_restroom_rounded,
-                  onTap: () {
-                    context.goNamed(Pages.chatScriptTestPage.name);
-                  },
-                  // async => AuthUtils.checkToken(
-                  //   context,
-                  //   checkAuthRequest: CheckAuthRequest(
-                  //     navigate: (context) async {
-                  //       if (CachedFamilyUtils.isFamilyCacheExist()) {
-                  //         context.goNamed(
-                  //           Pages.cachedChildrenOverview.name,
-                  //         );
-                  //       } else {
-                  //         context.goNamed(Pages.childrenOverview.name);
-                  //       }
-                  //       unawaited(
-                  //         AnalyticsHelper.logEvent(
-                  //           eventName: AmplitudeEvents.familyClicked,
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
+                  onTap: () async => AuthUtils.checkToken(
+                    context,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context) async {
+                        if (CachedFamilyUtils.isFamilyCacheExist()) {
+                          context.goNamed(
+                            Pages.cachedChildrenOverview.name,
+                          );
+                        } else {
+                          context.goNamed(Pages.childrenOverview.name);
+                        }
+                        unawaited(
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.familyClicked,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
                 if (showFamilyItem) _buildEmptySpace(),
                 DrawerMenuItem(

@@ -85,9 +85,9 @@ enum Pages {
     name: 'IMPACT-GROUP-DETAILS',
   ),
 
-  chatScriptTestPage(
-    path: 'chat-script-test',
-    name: 'CHAT-SCRIPT-TEST',
+  chatScriptPage(
+    path: 'chat-script',
+    name: 'CHAT-SCRIPT',
   ),
   ;
 

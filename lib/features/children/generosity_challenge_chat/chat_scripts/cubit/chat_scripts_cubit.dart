@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/day_chat_state.dart';
@@ -10,6 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_script_interpreter_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_scripts_repository.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 part 'chat_scripts_state.dart';
 
@@ -17,12 +19,15 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   ChatScriptsCubit(
     this._chatScriptsRepository,
     this._chatScriptInterpreterRepository,
+    this._dayChatActiveIndex,
   ) : super(const ChatScriptsState.initial());
 
   static const Duration _typingDuration = Duration(milliseconds: 1500);
+  static const Duration _chatCompletedDelay = Duration(milliseconds: 3000);
 
   final ChatScriptsRepository _chatScriptsRepository;
   final ChatScriptInterpreterRepository _chatScriptInterpreterRepository;
+  final int _dayChatActiveIndex;
 
   Future<void> init(BuildContext context) async {
     emit(state.copyWith(status: ChatScriptsStatus.loading));
@@ -42,6 +47,10 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           chatActorsSettings: chatActorsSettings,
         ),
       );
+
+      if (_dayChatActiveIndex >= 0 && context.mounted) {
+        await activateChat(context, dayIndex: _dayChatActiveIndex);
+      }
 
       if (context.mounted) {
         await _interpretScript(context);
@@ -135,7 +144,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     emit(state.copyWith(dayChatStates: state.dayChatStates));
   }
 
-  Future<void> _completeDayChat() async {
+  Future<void> _completeDayChat(BuildContext context) async {
     state.dayChatStates[state.activeDayChatIndex] =
         state.dayChatStates[state.activeDayChatIndex].copyWith(
       status: DayChatStatus.completed,
@@ -144,6 +153,12 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         .saveDayChatStates(state.dayChatStates);
 
     emit(state.copyWith(dayChatStates: state.dayChatStates));
+
+    await Future.delayed(_chatCompletedDelay, () {});
+
+    if (context.mounted) {
+      context.goNamed(Pages.generosityChallenge.name);
+    }
   }
 
   Future<void> _interpretScript(BuildContext context) async {
@@ -228,8 +243,9 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           }
         }
       }
-
-      await _completeDayChat();
+      if (context.mounted) {
+        await _completeDayChat(context);
+      }
     }
   }
 }

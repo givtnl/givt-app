@@ -5,8 +5,8 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_history.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class ChatScriptTestPage extends StatelessWidget {
-  const ChatScriptTestPage({super.key});
+class ChatScriptPage extends StatelessWidget {
+  const ChatScriptPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,23 +19,26 @@ class ChatScriptTestPage extends StatelessWidget {
       builder: (BuildContext context, ChatScriptsState state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('ChatScriptTestPage'),
+            title: const Text('Chat'),
             actions: [
-              IconButton(
-                onPressed: () {
-                  context.read<ChatScriptsCubit>().clearChatHistory();
-                },
-                icon: const Icon(Icons.clear),
+              Opacity(
+                opacity: 0.1,
+                child: IconButton(
+                  onPressed: () {
+                    context.read<ChatScriptsCubit>().clearChatHistory();
+                  },
+                  icon: const Icon(Icons.clear),
+                ),
               ),
-              IconButton(
-                onPressed: () {
-                  context.read<ChatScriptsCubit>().activateChat(
-                        context,
-                        dayIndex: 2,
-                      );
-                },
-                icon: const Icon(Icons.start),
-              ),
+              // IconButton(
+              //   onPressed: () {
+              //     context.read<ChatScriptsCubit>().activateChat(
+              //           context,
+              //           dayIndex: 2,
+              //         );
+              //   },
+              //   icon: const Icon(Icons.start),
+              // ),
             ],
           ),
           body: state.status == ChatScriptsStatus.loading
