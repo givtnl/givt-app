@@ -4,6 +4,7 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_input_field.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class ChatBar extends StatelessWidget {
   const ChatBar({
@@ -41,9 +42,10 @@ class ChatBar extends StatelessWidget {
             flex: 5,
             child: GivtElevatedButton(
               onTap: () {
-                context
-                    .read<ChatScriptsCubit>()
-                    .provideAnswer(answer: state.currentConditionalItem);
+                context.read<ChatScriptsCubit>().provideAnswer(
+                      context,
+                      answer: state.currentConditionalItem,
+                    );
               },
               text: state.currentConditionalItem.text,
             ),
@@ -56,10 +58,46 @@ class ChatBar extends StatelessWidget {
         chatItem: state.currentConditionalItem,
         onComplete: (String value) {
           context.read<ChatScriptsCubit>().provideAnswer(
+                context,
                 answer:
                     state.currentConditionalItem.copyWith(answerText: value),
               );
         },
+      );
+    } else if (state.currentConditionalItem.type ==
+        ChatScriptItemType.buttonGroupAnswer) {
+      return Row(
+        children: [
+          Expanded(
+            child: TextButton(
+              onPressed: () {
+                context.read<ChatScriptsCubit>().provideAnswer(
+                      context,
+                      answer: state.currentConditionalItem.options[0],
+                    );
+              },
+              child: Text(
+                state.currentConditionalItem.options[0].text,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: AppTheme.givtGreen40,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GivtElevatedButton(
+              onTap: () {
+                context.read<ChatScriptsCubit>().provideAnswer(
+                      context,
+                      answer: state.currentConditionalItem.options[1],
+                    );
+              },
+              text: state.currentConditionalItem.options[1].text,
+            ),
+          ),
+        ],
       );
     }
     return const SizedBox.shrink();

@@ -486,7 +486,8 @@ class AppRouter {
                 getIt(),
               ),
               child: ImpactGroupDetailsPage(
-                  impactGroup: state.extra! as ImpactGroup),
+                impactGroup: state.extra! as ImpactGroup,
+              ),
             ),
           ),
           GoRoute(
@@ -496,7 +497,7 @@ class AppRouter {
               create: (_) => ChatScriptsCubit(
                 getIt(),
                 getIt(),
-              )..init(),
+              )..init(context),
               child: const ChatScriptTestPage(),
             ),
           ),

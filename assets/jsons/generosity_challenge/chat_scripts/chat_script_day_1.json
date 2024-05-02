@@ -1,5 +1,53 @@
+
 {
-  "type": "textMessage",
-  "side": "interlocutor",
-  "text": "Still in progress.. Stay tuned for the new updates!"
+  "main": {
+    "type": "textMessage",
+    "side": "interlocutor",
+    "text": "Let's test your decision making skill! Please choose one of the option below",
+    "next": {
+      "type": "buttonGroupAnswer",
+      "side": "user",
+      "options": [ 
+        {
+          "type": "textMessage",
+          "side": "user",
+          "text": "Not right now",
+          "answerText" : "I'm not sure",
+          "next" : {
+            "type": "textMessage",
+            "side": "interlocutor",
+            "text": "Hmmm, that's sad(",
+            "next" : {
+              "branch" : "image01"
+            }
+          }
+        },
+        {
+          "type": "textMessage",
+          "side": "user",
+          "text": "Yes",
+          "answerText" : "Sure!",
+          "next" : {
+            "type": "textMessage",
+            "side": "interlocutor",
+            "text": "Great, thanks!",
+            "next" : {
+              "branch" : "image01"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "image01" :{
+    "type": "imageMessage",
+    "side": "interlocutor",
+    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+    "mediaSourceType": "network",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Great job!"
+    }
+  }
 }

@@ -39,6 +39,14 @@ class _ChatInputFieldState extends State<ChatInputField> {
     super.dispose();
   }
 
+  void _onComplete() {
+    widget.onComplete(inputText);
+    setState(() {
+      inputText = '';
+      _textController.text = inputText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -55,6 +63,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 inputText = value.trim();
               });
             },
+            onEditingComplete: _onComplete,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   fontSize: 20,
                   fontFamily: 'Rouna',
@@ -92,9 +101,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
         GivtIconButton(
           isDisabled: inputText.isEmpty,
           iconData: FontAwesomeIcons.paperPlane,
-          onTap: () {
-            widget.onComplete(inputText);
-          },
+          onTap: _onComplete,
         ),
       ],
     );

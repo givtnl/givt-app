@@ -14,13 +14,22 @@ class ChatScriptItem extends Equatable {
     required this.amplitudeEvent,
     required this.functionName,
     required this.answerText,
+    required this.hidden,
     required this.options,
     required this.inputAnswerType,
     required this.mediaSourceType,
     this.next,
   });
 
-  factory ChatScriptItem.fromMap(Map<String, dynamic> map) {
+  factory ChatScriptItem.fromBranchesMap(Map<String, dynamic> branchesMap) {
+    final mainBranch = branchesMap['main'] as Map<String, dynamic>;
+    return ChatScriptItem.fromMap(mainBranch, branchesMap: branchesMap);
+  }
+
+  factory ChatScriptItem.fromMap(
+    Map<String, dynamic> map, {
+    Map<String, dynamic>? branchesMap,
+  }) {
     return ChatScriptItem(
       type: ChatScriptItemType.fromString((map['type'] ?? '').toString()),
       side: ChatScriptItemSide.fromString((map['side'] ?? '').toString()),
@@ -29,10 +38,15 @@ class ChatScriptItem extends Equatable {
       amplitudeEvent: (map['amplitudeEvent'] ?? '').toString(),
       functionName: (map['functionName'] ?? '').toString(),
       answerText: (map['answerText'] ?? '').toString(),
+      hidden: map['hidden'] != null && map['hidden'] == true,
       options: map['options'] != null
           ? List<ChatScriptItem>.from(
-              (map['options'] as List<Map<String, dynamic>>)
-                  .map(ChatScriptItem.fromMap),
+              (map['options'] as List<dynamic>).map<ChatScriptItem>((option) {
+                return ChatScriptItem.fromMap(
+                  option as Map<String, dynamic>,
+                  branchesMap: branchesMap,
+                );
+              }),
             )
           : [],
       inputAnswerType: ChatScriptInputAnswerType.fromString(
@@ -41,9 +55,7 @@ class ChatScriptItem extends Equatable {
       mediaSourceType: ChatScriptItemMediaSourceType.fromString(
         (map['mediaSourceType'] ?? '').toString(),
       ),
-      next: map['next'] != null
-          ? ChatScriptItem.fromMap(map['next'] as Map<String, dynamic>)
-          : null,
+      next: _readNextFromMap(map, branchesMap: branchesMap),
     );
   }
 
@@ -55,6 +67,7 @@ class ChatScriptItem extends Equatable {
         amplitudeEvent = '',
         functionName = '',
         answerText = '',
+        hidden = false,
         options = const [],
         inputAnswerType = ChatScriptInputAnswerType.none,
         mediaSourceType = ChatScriptItemMediaSourceType.none,
@@ -76,6 +89,23 @@ class ChatScriptItem extends Equatable {
       text: text,
       type: ChatScriptItemType.delimiter,
     );
+  }
+
+  static ChatScriptItem? _readNextFromMap(
+    Map<String, dynamic> map, {
+    Map<String, dynamic>? branchesMap,
+  }) {
+    if (map['next'] != null) {
+      final nextMap = map['next'] as Map<String, dynamic>;
+      final branchName = (nextMap['branch'] ?? '').toString();
+      if (branchName.isNotEmpty) {
+        final branchMap = branchesMap![branchName] as Map<String, dynamic>;
+        return ChatScriptItem.fromMap(branchMap, branchesMap: branchesMap);
+      } else {
+        return ChatScriptItem.fromMap(nextMap, branchesMap: branchesMap);
+      }
+    }
+    return null;
   }
 
   ChatScriptItem addHead({
@@ -107,6 +137,9 @@ class ChatScriptItem extends Equatable {
   bool get isDelimiter => type == ChatScriptItemType.delimiter;
   bool get isUserSide => side == ChatScriptItemSide.user;
 
+  bool get isHidden => hidden;
+  bool get hasFunction => functionName.isNotEmpty;
+
   final ChatScriptItemType type;
   final ChatScriptItemSide side;
   final String text;
@@ -114,6 +147,7 @@ class ChatScriptItem extends Equatable {
   final String amplitudeEvent;
   final String functionName;
   final String answerText;
+  final bool hidden;
   final List<ChatScriptItem> options;
   final ChatScriptInputAnswerType inputAnswerType;
   final ChatScriptItemMediaSourceType mediaSourceType;
@@ -127,6 +161,7 @@ class ChatScriptItem extends Equatable {
     String? amplitudeEvent,
     String? functionName,
     String? answerText,
+    bool? hidden,
     List<ChatScriptItem>? options,
     ChatScriptInputAnswerType? inputAnswerType,
     ChatScriptItemMediaSourceType? mediaSourceType,
@@ -140,6 +175,7 @@ class ChatScriptItem extends Equatable {
       amplitudeEvent: amplitudeEvent ?? this.amplitudeEvent,
       functionName: functionName ?? this.functionName,
       answerText: answerText ?? this.answerText,
+      hidden: hidden ?? this.hidden,
       options: options ?? this.options,
       inputAnswerType: inputAnswerType ?? this.inputAnswerType,
       mediaSourceType: mediaSourceType ?? this.mediaSourceType,
@@ -156,6 +192,7 @@ class ChatScriptItem extends Equatable {
       'amplitudeEvent': amplitudeEvent,
       'functionName': functionName,
       'answerText': answerText,
+      'hidden': hidden,
       'options': options.isNotEmpty
           ? options.map((option) => option.toMap()).toList()
           : null,
@@ -175,6 +212,7 @@ class ChatScriptItem extends Equatable {
       amplitudeEvent,
       functionName,
       answerText,
+      hidden,
       options,
       inputAnswerType,
       mediaSourceType,

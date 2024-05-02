@@ -1,12 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/day_chat_state.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_functions.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/day_chat_status.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_script_interpreter_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_scripts_repository.dart';
+import 'package:givt_app/utils/utils.dart';
 
 part 'chat_scripts_state.dart';
 
@@ -16,10 +19,12 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     this._chatScriptInterpreterRepository,
   ) : super(const ChatScriptsState.initial());
 
+  static const Duration _typingDuration = Duration(milliseconds: 1500);
+
   final ChatScriptsRepository _chatScriptsRepository;
   final ChatScriptInterpreterRepository _chatScriptInterpreterRepository;
 
-  Future<void> init() async {
+  Future<void> init(BuildContext context) async {
     emit(state.copyWith(status: ChatScriptsStatus.loading));
 
     try {
@@ -38,7 +43,9 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         ),
       );
 
-      await _interpretScript();
+      if (context.mounted) {
+        await _interpretScript(context);
+      }
     } catch (error) {
       emit(
         state.copyWith(
@@ -72,11 +79,14 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
       state.copyWith(
         chatHistory: const ChatScriptItem.empty(),
         dayChatStates: newDayChatStates,
+        status: ChatScriptsStatus.updated,
+        gainedAnswer: const ChatScriptItem.empty(),
       ),
     );
   }
 
-  Future<void> activateChat({
+  Future<void> activateChat(
+    BuildContext context, {
     required int dayIndex,
   }) async {
     if (state.dayChatStates[dayIndex].status == DayChatStatus.completed) {
@@ -89,17 +99,22 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         status: DayChatStatus.active,
       ),
     );
-    await _interpretScript();
+    if (context.mounted) {
+      await _interpretScript(context);
+    }
   }
 
-  Future<void> provideAnswer({required ChatScriptItem answer}) async {
+  Future<void> provideAnswer(
+    BuildContext context, {
+    required ChatScriptItem answer,
+  }) async {
     emit(
       state.copyWith(
         status: ChatScriptsStatus.updated,
         gainedAnswer: answer,
       ),
     );
-    await _interpretScript();
+    await _interpretScript(context);
   }
 
   Future<void> _addDelimiter() async {
@@ -124,7 +139,6 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     state.dayChatStates[state.activeDayChatIndex] =
         state.dayChatStates[state.activeDayChatIndex].copyWith(
       status: DayChatStatus.completed,
-      chatScriptItemIndex: -1,
     );
     await _chatScriptInterpreterRepository
         .saveDayChatStates(state.dayChatStates);
@@ -132,23 +146,20 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     emit(state.copyWith(dayChatStates: state.dayChatStates));
   }
 
-  Future<void> _interpretScript() async {
+  Future<void> _interpretScript(BuildContext context) async {
     if (state.activeDayChatIndex >= 0) {
-      ChatScriptItem? currentChatItem =
-          state.chatScripts[state.activeDayChatIndex];
+      final isContinuing =
+          state.dayChatStates[state.activeDayChatIndex].currentItem !=
+              const ChatScriptItem.empty();
+      ChatScriptItem? currentChatItem = isContinuing
+          ? state.dayChatStates[state.activeDayChatIndex].currentItem
+          : state.chatScripts[state.activeDayChatIndex];
 
-      for (var chatItemIndex = 0;
-          currentChatItem != null;
-          chatItemIndex++, currentChatItem = currentChatItem.next) {
-        if (chatItemIndex <=
-            state.dayChatStates[state.activeDayChatIndex].chatScriptItemIndex) {
-          continue;
-        }
+      if (!isContinuing) {
+        await _addDelimiter();
+      }
 
-        if (chatItemIndex == 0) {
-          await _addDelimiter();
-        }
-
+      for (; currentChatItem != null; currentChatItem = currentChatItem.next) {
         if (currentChatItem.isCondition) {
           if (state.gainedAnswer == const ChatScriptItem.empty()) {
             emit(
@@ -167,17 +178,31 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
               .addHead(head: ChatScriptItem.typing(side: currentChatItem.side));
 
           emit(state.copyWith(chatHistory: typingHead));
-          await Future.delayed(const Duration(milliseconds: 1500), () {});
+          await Future.delayed(_typingDuration, () {});
 
           newHead = state.chatHistory.replaceHead(head: currentChatItem);
         } else if (currentChatItem.isCondition &&
             state.gainedAnswer != const ChatScriptItem.empty()) {
-          newHead = state.chatHistory.addHead(
-            head: state.gainedAnswer.copyWith(
-              type: ChatScriptItemType.textMessage,
-              text: state.gainedAnswer.answerText,
-            ),
-          );
+          final amplitudeEvent = state.gainedAnswer.amplitudeEvent;
+          if (amplitudeEvent.isNotEmpty) {
+            await AnalyticsHelper.logChatScriptEvent(
+              eventName: amplitudeEvent,
+              eventProperties: {
+                'value': state.gainedAnswer.answerText,
+              },
+            );
+          }
+
+          if (state.gainedAnswer.isHidden) {
+            newHead = state.chatHistory;
+          } else {
+            newHead = state.chatHistory.addHead(
+              head: state.gainedAnswer.copyWith(
+                type: ChatScriptItemType.textMessage,
+                text: state.gainedAnswer.answerText,
+              ),
+            );
+          }
           currentChatItem = state.gainedAnswer;
 
           emit(state.copyWith(gainedAnswer: const ChatScriptItem.empty()));
@@ -191,8 +216,17 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         await _updateDayChat(
           state.activeDayChatIndex,
           state.dayChatStates[state.activeDayChatIndex]
-              .copyWith(chatScriptItemIndex: chatItemIndex),
+              .copyWith(currentItem: currentChatItem.next),
         );
+
+        if (currentChatItem.hasFunction) {
+          final itemFunction =
+              ChatScriptFunctions.fromString(currentChatItem.functionName);
+
+          if (context.mounted) {
+            await itemFunction.function(context);
+          }
+        }
       }
 
       await _completeDayChat();

@@ -21,8 +21,9 @@ class ChatScriptsAssetRepositoryImpl with ChatScriptsRepository {
 
       final json = await root_bundle.rootBundle.loadString(path);
 
-      final chatScriptMap = jsonDecode(json) as Map<String, dynamic>;
-      chatScripts.add(ChatScriptItem.fromMap(chatScriptMap));
+      final chatScriptBranchesMap = jsonDecode(json) as Map<String, dynamic>;
+
+      chatScripts.add(ChatScriptItem.fromBranchesMap(chatScriptBranchesMap));
     }
     return chatScripts;
   }

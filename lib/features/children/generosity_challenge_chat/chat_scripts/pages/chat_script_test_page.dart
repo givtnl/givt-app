@@ -30,7 +30,8 @@ class ChatScriptTestPage extends StatelessWidget {
               IconButton(
                 onPressed: () {
                   context.read<ChatScriptsCubit>().activateChat(
-                        dayIndex: 0,
+                        context,
+                        dayIndex: 2,
                       );
                 },
                 icon: const Icon(Icons.start),
