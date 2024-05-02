@@ -496,7 +496,7 @@ class AppRouter {
               create: (_) => ChatScriptsCubit(
                 getIt(),
                 getIt(),
-              )..preload(),
+              )..init(),
               child: const ChatScriptTestPage(),
             ),
           ),

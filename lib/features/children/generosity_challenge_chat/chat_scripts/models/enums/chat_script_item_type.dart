@@ -1,12 +1,14 @@
 enum ChatScriptItemType {
+  none,
   textMessage,
   imageMessage,
-  // lottieMessage,
+  lottieMessage,
   // audioMessage,
-  gifMessage,
   inputAnswer,
   buttonAnswer,
-  buttonGroupAnswer;
+  buttonGroupAnswer,
+  typing,
+  delimiter;
 
   static ChatScriptItemType fromString(String value) {
     return ChatScriptItemType.values.byName(value);

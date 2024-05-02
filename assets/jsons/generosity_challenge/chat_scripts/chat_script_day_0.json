@@ -7,13 +7,36 @@
     "side": "interlocutor",
     "text": "I need to say at least two sentences, haha!",
     "next": {
-      "type": "textMessage",
+      "type": "inputAnswer",
       "side": "user",
-      "text": "My answer is yes!",
+      "text": "Last name",
       "next": {
-        "type": "textMessage",
+        "type": "imageMessage",
         "side": "interlocutor",
-        "text": "Awesome man!"
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+        "mediaSourceType": "network",
+        "next": {
+          "type": "imageMessage",
+          "side": "user",
+          "path": "assets/images/day.gif",
+          "mediaSourceType": "asset",
+          "next": {
+            "type": "textMessage",
+            "side": "user",
+            "text": "Let me think...",
+            "next": {
+              "type": "buttonAnswer",
+              "side": "user",
+              "text": "Yes",
+              "answerText" : "My answer is yes!",
+              "next": {
+                "type": "textMessage",
+                "side": "interlocutor",
+                "text": "Awesome!"
+              }
+            }
+          }
+        }
       }
     }
   }

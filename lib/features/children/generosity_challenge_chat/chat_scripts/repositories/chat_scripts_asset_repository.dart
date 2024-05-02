@@ -1,18 +1,37 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' as root_bundle;
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_actors_settings.dart';
 
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_scripts_repository.dart';
 
 class ChatScriptsAssetRepositoryImpl with ChatScriptsRepository {
+  static const String _chatActorsSettingsPath =
+      'assets/jsons/generosity_challenge/chat_actors_settings.json';
+
   @override
-  Future<ChatScriptItem> loadChatScript({required int chatScriptIndex}) async {
-    final path =
-        'assets/jsons/generosity_challenge/chat_scripts/chat_script_day_$chatScriptIndex.json';
+  Future<List<ChatScriptItem>> loadChatScripts() async {
+    final chatScripts = <ChatScriptItem>[];
+    for (var dayIndex = 0;
+        dayIndex < GenerosityChallengeHelper.generosityChallengeDays;
+        dayIndex++) {
+      final path =
+          'assets/jsons/generosity_challenge/chat_scripts/chat_script_day_$dayIndex.json';
 
-    final json = await root_bundle.rootBundle.loadString(path);
+      final json = await root_bundle.rootBundle.loadString(path);
 
-    final chatScriptMap = jsonDecode(json) as Map<String, dynamic>;
-    return ChatScriptItem.fromMapInherited(chatScriptMap);
+      final chatScriptMap = jsonDecode(json) as Map<String, dynamic>;
+      chatScripts.add(ChatScriptItem.fromMap(chatScriptMap));
+    }
+    return chatScripts;
+  }
+
+  @override
+  Future<ChatActorsSettings> loadChatActorsSettings() async {
+    final json =
+        await root_bundle.rootBundle.loadString(_chatActorsSettingsPath);
+    final chatActorsSettingsMap = jsonDecode(json) as Map<String, dynamic>;
+    return ChatActorsSettings.fromMap(chatActorsSettingsMap);
   }
 }

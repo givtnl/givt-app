@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/day_chat_status.dart';
-import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_history.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChatScriptTestPage extends StatelessWidget {
@@ -15,34 +15,34 @@ class ChatScriptTestPage extends StatelessWidget {
         if (state.status == ChatScriptsStatus.error) {
           SnackBarHelper.showMessage(context, text: state.error, isError: true);
         }
-        if (state.status == ChatScriptsStatus.updated) {
-          // SnackBarHelper.showMessage(
-          //   context,
-          //   text: state.chatScriptHead.toString(),
-          // );
-        }
       },
       builder: (BuildContext context, ChatScriptsState state) {
         return Scaffold(
           appBar: AppBar(
             title: const Text('ChatScriptTestPage'),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.read<ChatScriptsCubit>().clearChatHistory();
+                },
+                icon: const Icon(Icons.clear),
+              ),
+              IconButton(
+                onPressed: () {
+                  context.read<ChatScriptsCubit>().activateChat(
+                        dayIndex: 0,
+                      );
+                },
+                icon: const Icon(Icons.start),
+              ),
+            ],
           ),
           body: state.status == ChatScriptsStatus.loading
               ? const Center(child: CircularProgressIndicator())
-              : Container(
-                  color: Colors.green,
-                ),
+              : const ChatHistory(),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: GivtElevatedButton(
-            onTap: () {
-              context.read<ChatScriptsCubit>().updateDayChatStatus(
-                    dayIndex: 0,
-                    dayChatStatus: DayChatStatus.active,
-                  );
-            },
-            text: 'Test',
-          ),
+          floatingActionButton: const ChatBar(),
         );
       },
     );
