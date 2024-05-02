@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/children/goal_tracker/model/goal.dart';
+import 'package:givt_app/features/impact_groups/models/goal.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar_label.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class GoalProgressBar extends StatefulWidget {
+class GoalProgressBar extends StatelessWidget {
   const GoalProgressBar({
     required this.goal,
     this.colors = _defaultColors,
@@ -34,32 +34,16 @@ class GoalProgressBar extends StatefulWidget {
   ];
 
   @override
-  State<GoalProgressBar> createState() => _GoalProgressBarState();
-}
-
-class _GoalProgressBarState extends State<GoalProgressBar> {
-  double _progress = 0;
-  double _totalProgress = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 100), () {
-      setState(() {
-        final progress = widget.goal.amount / widget.goal.goalAmount.toDouble();
-        _progress = progress > 1 ? 1 : progress;
-        final totalProgress =
-            widget.goal.totalAmount / widget.goal.goalAmount.toDouble();
-        _totalProgress = totalProgress > 1 ? 1 : totalProgress;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         const barHeight = 12.0;
+        final isCompleted = goal.amount >= goal.goalAmount;
+
+        final progress = goal.amount / goal.goalAmount.toDouble();
+        final _progress = progress > 1.0 ? 1.0 : progress;
+        final totalProgress = goal.totalAmount / goal.goalAmount.toDouble();
+        final _totalProgress = totalProgress > 1.0 ? 1.0 : totalProgress;
 
         final availableWidth = constraints.maxWidth;
         final widthToApply = availableWidth * _progress < barHeight
@@ -68,14 +52,11 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
         final totalWidthToApply = availableWidth * _totalProgress;
 
         const currentLabelOffsetY = 38.0;
-
-        final isCompleted = widget.goal.amount >= widget.goal.goalAmount;
-
         return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (widget.showCurrentLabel)
+            if (showCurrentLabel)
               isCompleted
                   ? Padding(
                       padding: const EdgeInsets.only(bottom: 14),
@@ -85,7 +66,7 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                           GoalProgressBarLabel(
                             //TODO: POEditor
                             text: 'Completed!',
-                            backgroundColor: widget.currentLabelBackgroundColor,
+                            backgroundColor: currentLabelBackgroundColor,
                           ),
                         ],
                       ),
@@ -94,13 +75,13 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
             Stack(
               clipBehavior: Clip.none,
               children: [
-                if (widget.showCurrentLabel && !isCompleted)
+                if (showCurrentLabel && !isCompleted)
                   Positioned(
                     left: widthToApply,
                     top: -currentLabelOffsetY,
                     child: GoalProgressBarLabel.amount(
-                      widget.goal.amount.toInt(),
-                      backgroundColor: widget.currentLabelBackgroundColor,
+                      goal.amount.toInt(),
+                      backgroundColor: currentLabelBackgroundColor,
                       isCenterAnchor: true,
                     ),
                   ),
@@ -110,8 +91,7 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     gradient: LinearGradient(
-                      colors:
-                          widget.colors.map((e) => e.withOpacity(0.3)).toList(),
+                      colors: colors.map((e) => e.withOpacity(0.3)).toList(),
                     ),
                   ),
                   child: Stack(
@@ -128,9 +108,7 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                             height: 12,
                           ),
                           decoration: _gradientProgressBarDecoration(
-                            widget.colors
-                                .map((e) => e.withOpacity(0.4))
-                                .toList(),
+                            colors.map((e) => e.withOpacity(0.4)).toList(),
                             _totalProgress,
                             false,
                           ),
@@ -147,13 +125,13 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                             height: 12,
                           ),
                           decoration: _gradientProgressBarDecoration(
-                            widget.colors,
+                            colors,
                             _progress,
                             true,
                           ),
                         ),
                       ),
-                      if (widget.showFlag && !isCompleted)
+                      if (showFlag && !isCompleted)
                         Positioned(
                           top: -19,
                           right: -1,
@@ -168,15 +146,15 @@ class _GoalProgressBarState extends State<GoalProgressBar> {
                 ),
               ],
             ),
-            if (widget.showGoalLabel)
+            if (showGoalLabel)
               Padding(
                 padding: const EdgeInsets.only(top: 14),
                 child: Row(
                   children: [
                     const Spacer(),
                     GoalProgressBarLabel.amount(
-                      widget.goal.goalAmount,
-                      backgroundColor: widget.goalLabelBackgroundColor,
+                      goal.goalAmount,
+                      backgroundColor: goalLabelBackgroundColor,
                       isBold: true,
                     ),
                   ],

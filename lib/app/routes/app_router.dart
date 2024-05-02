@@ -30,7 +30,6 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
-import 'package:givt_app/features/children/goal_tracker/cubit/goal_tracker_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
@@ -44,6 +43,7 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
+import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/pages/impact_group_details_page.dart';
 import 'package:givt_app/features/impact_groups/pages/impact_group_join_success_page.dart';
@@ -255,7 +255,7 @@ class AppRouter {
               if (state.extra != null) {
                 showAllowanceWarning = state.extra!.toString().contains('true');
               }
-              context.read<GoalTrackerCubit>().getGoal();
+              context.read<ImpactGroupsCubit>().fetchImpactGroups();
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(

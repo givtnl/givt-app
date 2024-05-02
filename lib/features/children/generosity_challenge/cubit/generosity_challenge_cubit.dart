@@ -65,7 +65,11 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         final lastCompletedDateTime =
             DateTime.parse(days[lastCompletedDayIndex].dateCompleted);
         final diff = lastCompletedDateTime.difference(DateTime.now());
-        if (diff.inDays != 0) {
+        final timeDifference =
+            state.unlockDayTimeDifference == UnlockDayTimeDifference.days
+                ? diff.inDays
+                : diff.inMinutes;
+        if (timeDifference != 0) {
           return nextActiveDayIndex;
         } else {
           //no active day yet
@@ -98,5 +102,15 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
             : GenerosityChallengeStatus.overview,
       ),
     );
+  }
+
+  Future<void> toggleTimeDifference(int index) async {
+    final newTimeDifference = index == 0
+        ? UnlockDayTimeDifference.days
+        : UnlockDayTimeDifference.minutes;
+
+    emit(state.copyWith(unlockDayTimeDifference: newTimeDifference));
+    final days = await _generosityChallengeRepository.loadFromCache();
+    _refreshState(days);
   }
 }
