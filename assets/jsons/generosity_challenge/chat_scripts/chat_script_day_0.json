@@ -7,6 +7,7 @@
       "type": "inputAnswer",
       "side": "user",
       "text": "Last Name",
+      "saveKey": "lastName",
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
@@ -24,17 +25,20 @@
               "type": "inputAnswer",
               "side": "user",
               "text": "First name of parent",
+              "saveKey": "firstName",
               "amplitudeEvent": "utm",
               "hidden" : true,
               "next" : {
                 "type": "inputAnswer",
                 "side": "user",
                 "text": "E-mail address of parent",
+                "saveKey": "email",
                 "hidden" : true,
                 "next" : {
                   "type": "inputAnswer",
                   "side": "user",
                   "text": "Password",
+                  "saveKey": "password",
                   "hidden" : true,
                   "next": {
                     "type": "textMessage",
