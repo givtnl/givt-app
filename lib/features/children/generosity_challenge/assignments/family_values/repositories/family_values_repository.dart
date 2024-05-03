@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 mixin FamilyValuesRepository {
   Future<bool> rememberValues({
-    required List<Map<String, dynamic>> body,
+    required List<FamilyValue> values,
   });
   Future<List<FamilyValue>> getRememberedValues();
 }
@@ -18,8 +18,9 @@ class FamilyValuesRepositoryImpl with FamilyValuesRepository {
 
   @override
   Future<bool> rememberValues({
-    required List<Map<String, dynamic>> body,
+    required List<FamilyValue> values,
   }) async {
+    final body = values.map((e) => e.toMap()).toList();
     await prefs.setString(FamilyValuesCubit.familyValuesKey, jsonEncode(body));
     return true;
   }
