@@ -72,8 +72,10 @@ class _FeedbackBannerDialogState extends State<FeedbackBannerDialog>
             position: _offsetAnimation,
             child: GivtBanner(
               badgeImage: widget.task.feedbackImage,
-              title: widget.task.feedbackTitle,
-              content: widget.task.feedbackContent,
+              label: widget.task.feedbackLabel,
+              title: widget.task.feedbackTitle.isEmpty
+                  ? widget.task.title
+                  : widget.task.feedbackTitle,
             ),
           ),
         )

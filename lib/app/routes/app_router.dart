@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -23,6 +25,8 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
@@ -70,7 +74,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -130,6 +133,27 @@ class AppRouter {
             child: const GenerosityChallenge(),
           );
         },
+        routes: [
+          GoRoute(
+            path: Pages.selectValues.path,
+            name: Pages.selectValues.name,
+            builder: (context, state) {
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: state.extra! as GenerosityChallengeCubit,
+                  ),
+                  BlocProvider(
+                    create: (context) => FamilyValuesCubit(
+                      valuesRepository: getIt(),
+                    ),
+                  ),
+                ],
+                child: const SelectFamilyValues(),
+              );
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: Pages.home.path,

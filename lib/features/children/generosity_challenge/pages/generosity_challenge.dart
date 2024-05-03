@@ -42,7 +42,8 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
             return const Center(child: CircularProgressIndicator());
           case GenerosityChallengeStatus.overview:
             return const GenerosityChallengeOverview();
-          case GenerosityChallengeStatus.dayDetails:
+          case GenerosityChallengeStatus.dailyAssigmentConfirm:
+          case GenerosityChallengeStatus.dailyAssigmentIntro:
             return const GenerosityChallengeDayDetails();
           case GenerosityChallengeStatus.completed:
             //TODO:

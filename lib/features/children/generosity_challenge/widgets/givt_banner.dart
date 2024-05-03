@@ -6,13 +6,13 @@ class GivtBanner extends StatelessWidget {
   const GivtBanner({
     required this.badgeImage,
     required this.title,
-    required this.content,
+    required this.label,
     super.key,
   });
 
   final String badgeImage;
   final String title;
-  final String content;
+  final String label;
 
   static const double _dropShadowHeight = 6;
 
@@ -50,7 +50,7 @@ class GivtBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  title,
+                  label,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -59,7 +59,7 @@ class GivtBanner extends StatelessWidget {
                       ),
                 ),
                 Text(
-                  content,
+                  title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(

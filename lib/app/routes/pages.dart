@@ -11,6 +11,10 @@ enum Pages {
     path: '/generosity-challenge',
     name: 'GENEROSITY-CHALLENGE',
   ),
+  selectValues(
+    path: 'select-values',
+    name: 'GENEROSITY-SELECT-VALUES',
+  ),
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
   giveSucess(path: 'give-offline', name: 'GIVE-OFFLINE'),
