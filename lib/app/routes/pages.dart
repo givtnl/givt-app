@@ -88,6 +88,11 @@ enum Pages {
     path: 'impact-group-details',
     name: 'IMPACT-GROUP-DETAILS',
   ),
+
+  chatScriptPage(
+    path: 'chat-script',
+    name: 'CHAT-SCRIPT',
+  ),
   ;
 
   const Pages({

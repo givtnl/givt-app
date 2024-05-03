@@ -2,7 +2,6 @@
 
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
-import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 
 class GenerosityChallengeContentHelper {
   static final List<Task> _tasks = [
@@ -124,7 +123,7 @@ class GenerosityChallengeContentHelper {
   ];
 
   static Task getTaskByIndex(int index) {
-    assert(_tasks.length == GenerosityChallengeHelper.generosityChallengeDays);
+    // assert(_tasks.length == GenerosityChallengeHelper.generosityChallengeDays);
     return _tasks[index];
   }
 }

@@ -31,6 +31,8 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
@@ -514,8 +516,24 @@ class AppRouter {
                 getIt(),
               ),
               child: ImpactGroupDetailsPage(
-                  impactGroup: state.extra! as ImpactGroup),
+                impactGroup: state.extra! as ImpactGroup,
+              ),
             ),
+          ),
+          GoRoute(
+            path: Pages.chatScriptPage.path,
+            name: Pages.chatScriptPage.name,
+            builder: (context, state) {
+              final extra = (state.extra ?? -1) as int;
+              return BlocProvider(
+                create: (_) => ChatScriptsCubit(
+                  getIt(),
+                  getIt(),
+                  extra,
+                )..init(context),
+                child: const ChatScriptPage(),
+              );
+            },
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,
