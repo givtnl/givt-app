@@ -44,7 +44,7 @@ class SelectFamilyValues extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Select 3 values',
+                            'Select ${FamilyValuesState.maxSelectedValues} values',
                             style: Theme.of(context)
                                 .textTheme
                                 .titleSmall

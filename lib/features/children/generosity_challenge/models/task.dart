@@ -12,6 +12,9 @@ class Task extends Equatable {
     required this.description,
     required this.onTap,
     required this.buttonText,
+    required this.feedbackTitle,
+    required this.feedbackLabel,
+    required this.feedbackImage,
     this.partnerCard,
     this.redirect,
   });
@@ -24,6 +27,10 @@ class Task extends Equatable {
     this.buttonText = '',
     this.partnerCard,
     this.redirect,
+    this.feedbackImage =
+        'assets/images/generosity_challenge_feedback_badge.svg',
+    this.feedbackTitle = '',
+    this.feedbackLabel = 'New Reward',
   }) : type = TaskType.card;
 
   final TaskType type;
@@ -32,6 +39,9 @@ class Task extends Equatable {
   final String description;
   final void Function() onTap;
   final String buttonText;
+  final String feedbackImage;
+  final String feedbackTitle;
+  final String feedbackLabel;
   final Task? partnerCard;
   final String? redirect;
 

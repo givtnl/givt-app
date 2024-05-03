@@ -9,7 +9,7 @@ class FamilyValue {
     required this.area,
   });
 
-  factory FamilyValue.fromJson(Map<String, dynamic> json) {
+  factory FamilyValue.fromMap(Map<String, dynamic> json) {
     return FamilyValue(
       displayText: json['displayText'] as String,
       imagePath: json['imagePath'] as String,
@@ -24,7 +24,7 @@ class FamilyValue {
   final ColorCombo colorCombo;
   final String area;
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toMap() {
     return {
       'displayText': displayText,
       'imagePath': imagePath,

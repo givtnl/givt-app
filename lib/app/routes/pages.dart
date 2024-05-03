@@ -11,7 +11,7 @@ enum Pages {
     path: '/generosity-challenge',
     name: 'GENEROSITY-CHALLENGE',
   ),
-  generositySelectValues(
+  selectValues(
     path: 'select-values',
     name: 'GENEROSITY-SELECT-VALUES',
   ),

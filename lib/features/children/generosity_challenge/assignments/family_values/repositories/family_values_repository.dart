@@ -32,7 +32,7 @@ class FamilyValuesRepositoryImpl with FamilyValuesRepository {
     }
     final familyValuesList = jsonDecode(familyValuesJson) as List<dynamic>;
     return familyValuesList
-        .map((e) => FamilyValue.fromJson(e as Map<String, dynamic>))
+        .map((e) => FamilyValue.fromMap(e as Map<String, dynamic>))
         .toList();
   }
 }

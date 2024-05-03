@@ -19,7 +19,7 @@ class GenerosityChallengeContentHelper {
       description:
           'Chat together and pick 3 values from your welcome pack. These will help guide your decisions around generosity.\n\nMake sure everyone has at least 1 they want of the 3 chosen.',
       buttonText: 'Select 3 values',
-      redirect: Pages.generositySelectValues.path,
+      redirect: Pages.selectValues.path,
       onTap: () {},
       partnerCard: Task.card(
         image: 'assets/images/generosity_challenge_day_2.svg',

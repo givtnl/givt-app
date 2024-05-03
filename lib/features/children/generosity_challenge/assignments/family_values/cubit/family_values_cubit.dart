@@ -26,7 +26,7 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
 
   Future<void> rememberValues() async {
     final selectedValuesJson =
-        state.selectedValues.map((e) => e.toJson()).toList();
+        state.selectedValues.map((e) => e.toMap()).toList();
 
     await valuesRepository.rememberValues(body: selectedValuesJson);
   }
