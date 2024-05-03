@@ -129,4 +129,6 @@ flutter:
   assets:
     - assets/images/
     - assets/lotties/
+    - assets/jsons/generosity_challenge/chat_scripts/
+    - assets/jsons/generosity_challenge/
     - assets/ca/

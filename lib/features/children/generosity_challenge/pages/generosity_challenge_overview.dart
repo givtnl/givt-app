@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeOverview extends StatefulWidget {
@@ -125,10 +127,15 @@ class _GenerosityChallengeOverviewState
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 24),
-          SvgPicture.asset(
-            'assets/images/family_avatar.svg',
-            width: 60,
-            height: 60,
+          GestureDetector(
+            onTap: () {
+              context.pushNamed(Pages.chatScriptPage.name, extra: 0);
+            },
+            child: SvgPicture.asset(
+              'assets/images/family_avatar.svg',
+              width: 60,
+              height: 60,
+            ),
           ),
           const SizedBox(height: 14),
           Text(

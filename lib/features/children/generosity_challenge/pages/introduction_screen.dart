@@ -108,8 +108,7 @@ class _GenrosityIntorductionScreenState
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.acceptedGenerosityChallenge,
                 );
-                // should link to chat when finished
-                context.goNamed(Pages.generosityChallenge.name);
+                context.goNamed(Pages.chatScriptPage.name, extra: 0);
               },
               text: 'Accept the challenge',
             ),
