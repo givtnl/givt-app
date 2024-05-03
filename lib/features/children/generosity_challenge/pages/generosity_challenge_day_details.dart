@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/daily_assignment_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/dialogs/feedback_banner_dialog.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
@@ -24,9 +23,9 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     );
     final day = challenge.state.days[challenge.state.detailedDayIndex];
     final isDualCard = task.partnerCard != null;
-    return BlocBuilder<DailyAssignmentCubit, DailyAssignmentState>(
+    return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
-        final assignment = context.read<DailyAssignmentCubit>();
+        // final assignment = context.read<DailyAssignmentCubit>();
         return Scaffold(
           appBar: GenerosityAppBar(
             title: 'Day ${challenge.state.detailedDayIndex + 1}',
@@ -74,8 +73,8 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                   ),
                 ),
               if (!isDualCard ||
-                  state.status == DailyAssignmentStatus.confirm ||
-                  state.status == DailyAssignmentStatus.completed ||
+                  state.status ==
+                      GenerosityChallengeStatus.dailyAssigmentConfirm ||
                   day.isCompleted)
                 GivtElevatedButton(
                   onTap: () async {
@@ -97,7 +96,6 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                       },
                     );
                     await challenge.completeActiveDay();
-                    assignment.completeDay();
                   },
                   text: 'Complete',
                   isDisabled: day.isCompleted,
@@ -110,16 +108,15 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(DailyAssignmentState state, Task task, Day day) {
+  Widget _buildCard(GenerosityChallengeState state, Task task, Day day) {
     final isDualCard = task.partnerCard != null;
 
     if (isDualCard &&
-        (state.status == DailyAssignmentStatus.confirm ||
-            state.status == DailyAssignmentStatus.completed)) {
+        state.status == GenerosityChallengeStatus.dailyAssigmentConfirm) {
       return GenerosityDailyCard(
         task: task.partnerCard!,
         isCompleted: day.isCompleted,
-        dynamicDescription: state.dynamicDescription ??
+        dynamicDescription: state.assignmentDynamicDescription ??
             'Something went wrong,\nplease contact support via\nsupport@givtapp.net',
       );
     }

@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -24,9 +26,8 @@ import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/daily_assignment_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
@@ -71,7 +72,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -124,17 +124,10 @@ class AppRouter {
         path: Pages.generosityChallenge.path,
         name: Pages.generosityChallenge.name,
         builder: (context, state) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) => GenerosityChallengeCubit(
-                  getIt(),
-                )..loadFromCache(),
-              ),
-              BlocProvider(
-                create: (context) => DailyAssignmentCubit(),
-              ),
-            ],
+          return BlocProvider(
+            create: (_) => GenerosityChallengeCubit(
+              getIt(),
+            )..loadFromCache(),
             child: const GenerosityChallenge(),
           );
         },
@@ -146,7 +139,7 @@ class AppRouter {
               return MultiBlocProvider(
                 providers: [
                   BlocProvider.value(
-                    value: state.extra! as DailyAssignmentCubit,
+                    value: state.extra! as GenerosityChallengeCubit,
                   ),
                   BlocProvider(
                     create: (context) => FamilyValuesCubit(

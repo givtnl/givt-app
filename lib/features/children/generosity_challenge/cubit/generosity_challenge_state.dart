@@ -4,7 +4,8 @@ enum GenerosityChallengeStatus {
   initial,
   loading,
   overview,
-  dayDetails,
+  dailyAssigmentIntro,
+  dailyAssigmentConfirm,
   completed,
 }
 
@@ -14,6 +15,7 @@ class GenerosityChallengeState extends Equatable {
   const GenerosityChallengeState({
     this.status = GenerosityChallengeStatus.initial,
     this.unlockDayTimeDifference = UnlockDayTimeDifference.days,
+    this.assignmentDynamicDescription,
     this.activeDayIndex = -1,
     this.detailedDayIndex = -1,
     this.days = const [],
@@ -24,6 +26,7 @@ class GenerosityChallengeState extends Equatable {
   final int detailedDayIndex;
   final UnlockDayTimeDifference unlockDayTimeDifference;
   final GenerosityChallengeStatus status;
+  final String? assignmentDynamicDescription;
 
   bool get hasActiveDay => activeDayIndex != -1;
 
@@ -36,6 +39,7 @@ class GenerosityChallengeState extends Equatable {
     int? detailedDayIndex,
     GenerosityChallengeStatus? status,
     UnlockDayTimeDifference? unlockDayTimeDifference,
+    String? assignmentDynamicDescription,
   }) {
     return GenerosityChallengeState(
       days: days ?? this.days,
@@ -44,10 +48,18 @@ class GenerosityChallengeState extends Equatable {
       status: status ?? this.status,
       unlockDayTimeDifference:
           unlockDayTimeDifference ?? this.unlockDayTimeDifference,
+      assignmentDynamicDescription:
+          assignmentDynamicDescription ?? this.assignmentDynamicDescription,
     );
   }
 
   @override
-  List<Object> get props =>
-      [days, activeDayIndex, detailedDayIndex, status, unlockDayTimeDifference];
+  List<Object?> get props => [
+        days,
+        activeDayIndex,
+        detailedDayIndex,
+        status,
+        unlockDayTimeDifference,
+        assignmentDynamicDescription,
+      ];
 }

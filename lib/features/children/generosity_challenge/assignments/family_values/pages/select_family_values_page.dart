@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_value_container.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/values_tally.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/daily_assignment_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/family_values_content_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
@@ -84,9 +84,10 @@ class SelectFamilyValues extends StatelessWidget {
                         context.read<FamilyValuesCubit>().rememberValues();
 
                         context
-                            .read<DailyAssignmentCubit>()
-                            .completedAssignmentFlow(
-                                state.selectedValuesString);
+                            .read<GenerosityChallengeCubit>()
+                            .confirmAssignment(
+                              state.selectedValuesString,
+                            );
 
                         context.pop();
 

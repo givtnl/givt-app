@@ -5,7 +5,7 @@ class GenerosityChallengeHelper {
   static const String _generosityChallengeActivatedKey =
       'generosityChallengeActivated';
 
-  static const int generosityChallengeDays = 14;
+  static const int generosityChallengeDays = 7;
 
   static bool get isActivated =>
       getIt<SharedPreferences>().getBool(_generosityChallengeActivatedKey) ??
