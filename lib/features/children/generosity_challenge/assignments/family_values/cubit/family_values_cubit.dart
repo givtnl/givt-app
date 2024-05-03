@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/repositories/family_values_repository.dart';
 
@@ -25,6 +26,13 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
   }
 
   Future<void> rememberValues() async {
-    await valuesRepository.rememberValues(values: state.selectedValues);
+    try {
+      await valuesRepository.rememberValues(values: state.selectedValues);
+    } on Exception catch (e) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: 'remebr family values',
+      );
+    }
   }
 }

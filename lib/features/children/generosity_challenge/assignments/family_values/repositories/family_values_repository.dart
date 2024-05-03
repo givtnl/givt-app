@@ -5,7 +5,7 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin FamilyValuesRepository {
-  Future<bool> rememberValues({
+  Future<void> rememberValues({
     required List<FamilyValue> values,
   });
   Future<List<FamilyValue>> getRememberedValues();
@@ -17,12 +17,11 @@ class FamilyValuesRepositoryImpl with FamilyValuesRepository {
   final SharedPreferences prefs;
 
   @override
-  Future<bool> rememberValues({
+  Future<void> rememberValues({
     required List<FamilyValue> values,
   }) async {
     final body = values.map((e) => e.toMap()).toList();
     await prefs.setString(FamilyValuesCubit.familyValuesKey, jsonEncode(body));
-    return true;
   }
 
   @override
