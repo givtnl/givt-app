@@ -2,6 +2,7 @@
   <configuration default="false" name="production" type="FlutterRunConfigurationType" factoryName="Flutter">
     <option name="buildFlavor" value="production" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main_production.dart" />
+    <option name="additionalArgs" value="--dart-define AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a --dart-define API_URL_US=backend.givt.app --dart-define API_URL_EU=backend.givtapp.net --dart-define API_URL_AWS_EU=api.production.givtapp.net --dart-define API_URL_AWS_US=api.production.givtapp.net --dart-define STRIPE_PK=pk_live_51NGl2uLM5mQffuXIiPJWhwISjD7y2tkztrobOIkxSBPUe535u3eDNEgA9ygaRSjKVqMrBdIQsowJieg5G0E5oPm100amoOlHZ1 --dart-define STRIPE_MERCHANT_ID=merchant.net.givtapp.ios"/>
     <method v="2" />
   </configuration>
 </component>
