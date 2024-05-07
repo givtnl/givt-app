@@ -136,7 +136,7 @@ class AppRouter {
               final challengeCubit = state.extra! as GenerosityChallengeCubit;
               return BlocProvider.value(
                 value: challengeCubit,
-                child: const GenerosityChallengeIntorduction(),
+                child: const GenerosityChallengeIntruduction(),
               );
             },
           ),

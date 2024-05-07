@@ -11,16 +11,16 @@ import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class GenerosityChallengeIntorduction extends StatefulWidget {
-  const GenerosityChallengeIntorduction({super.key});
+class GenerosityChallengeIntruduction extends StatefulWidget {
+  const GenerosityChallengeIntruduction({super.key});
 
   @override
-  State<GenerosityChallengeIntorduction> createState() =>
-      _GenerosityChallengeIntorductionState();
+  State<GenerosityChallengeIntruduction> createState() =>
+      _GenerosityChallengeIntruductionState();
 }
 
-class _GenerosityChallengeIntorductionState
-    extends State<GenerosityChallengeIntorduction> {
+class _GenerosityChallengeIntruductionState
+    extends State<GenerosityChallengeIntruduction> {
   bool _acceptPolicy = false;
 
   @override

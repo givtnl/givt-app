@@ -48,9 +48,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       );
 
   void dayDetails(int dayIndex) => emit(
-        //maybe here i need logic
         state.copyWith(
-          //maybe here i need logic
           status: GenerosityChallengeStatus.dailyAssigmentIntro,
           detailedDayIndex: dayIndex,
         ),
