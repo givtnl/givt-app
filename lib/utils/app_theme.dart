@@ -102,6 +102,8 @@ class AppTheme {
   static const neutralVariant80 = Color(0xFFC8C7BF);
   static const neutralVariant90 = Color(0xFFE4E3DB);
 
+  static const error50 = Color(0xFFDC3A26);
+
   static const familyGoalStepperGray = Color(0xFF9694AB);
 
   static const generosityChallangeCardBackground = Color(0xFFFFFDF7);

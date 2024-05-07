@@ -3,14 +3,19 @@ enum Pages {
   home(path: '/home', name: 'HOME'),
   loading(path: '/loading', name: 'LOADING'),
   welcome(path: '/welcome', name: 'WELCOME'),
-  generosityIntroduction(
-    path: '/generosity-introduction',
-    name: 'GENEROSITY-INTRODUCTION',
-  ),
   generosityChallenge(
     path: '/generosity-challenge',
     name: 'GENEROSITY-CHALLENGE',
   ),
+  generosityChallengeChat(
+    path: 'generosity-challenge-chat',
+    name: 'GENEROSITY-CHALLENGE-CHAT',
+  ),
+  generosityChallengeIntroduction(
+    path: 'generosity-challenge-introduction',
+    name: 'GENEROSITY-CHALLENGE-INTRODUCTION',
+  ),
+
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
   giveSucess(path: 'give-offline', name: 'GIVE-OFFLINE'),
@@ -83,11 +88,6 @@ enum Pages {
   impactGroupDetails(
     path: 'impact-group-details',
     name: 'IMPACT-GROUP-DETAILS',
-  ),
-
-  chatScriptPage(
-    path: 'chat-script',
-    name: 'CHAT-SCRIPT',
   ),
   ;
 

@@ -25,7 +25,7 @@ import 'package:givt_app/features/children/family_goal/pages/create_family_goal_
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/introduction_screen.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_introduction.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
@@ -115,21 +115,51 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: Pages.generosityIntroduction.path,
-        name: Pages.generosityIntroduction.name,
-        builder: (context, state) => const GenrosityIntorductionScreen(),
-      ),
-      GoRoute(
         path: Pages.generosityChallenge.path,
         name: Pages.generosityChallenge.name,
         builder: (context, state) {
           return BlocProvider(
             create: (_) => GenerosityChallengeCubit(
               getIt(),
+              getIt(),
             )..loadFromCache(),
             child: const GenerosityChallenge(),
           );
         },
+        routes: [
+          GoRoute(
+            path: Pages.generosityChallengeIntroduction.path,
+            name: Pages.generosityChallengeIntroduction.name,
+            builder: (context, state) {
+              final challengeCubit = state.extra! as GenerosityChallengeCubit;
+              return BlocProvider.value(
+                value: challengeCubit,
+                child: const GenerosityChallengeIntorduction(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.generosityChallengeChat.path,
+            name: Pages.generosityChallengeChat.name,
+            builder: (context, state) {
+              final challengeCubit = state.extra! as GenerosityChallengeCubit;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: challengeCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => ChatScriptsCubit(
+                      getIt(),
+                      challengeCubit: challengeCubit,
+                    )..init(context),
+                  ),
+                ],
+                child: const ChatScriptPage(),
+              );
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: Pages.home.path,
@@ -497,21 +527,6 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: Pages.chatScriptPage.path,
-            name: Pages.chatScriptPage.name,
-            builder: (context, state) {
-              final extra = (state.extra ?? -1) as int;
-              return BlocProvider(
-                create: (_) => ChatScriptsCubit(
-                  getIt(),
-                  getIt(),
-                  extra,
-                )..init(context),
-                child: const ChatScriptPage(),
-              );
-            },
-          ),
-          GoRoute(
             path: Pages.sepaMandateExplanation.path,
             name: Pages.sepaMandateExplanation.name,
             routes: [
@@ -831,8 +846,9 @@ class AppRouter {
       return Pages.generosityChallenge.path;
     }
 
-    if (navigatingPage == Pages.generosityChallenge.path) {
-      return Pages.generosityIntroduction.path;
+    if (navigatingPage == Pages.generosityChallenge.path &&
+        !GenerosityChallengeHelper.isActivated) {
+      return Pages.generosityChallengeIntroduction.path;
     }
 
     /// Display the splash screen while checking the auth status

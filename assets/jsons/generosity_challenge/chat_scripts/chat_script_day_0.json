@@ -102,7 +102,7 @@
   "image01" :{
     "type": "imageMessage",
     "side": "interlocutor",
-    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_001.png",
     "mediaSourceType": "network",
     "next": {
       "type": "textMessage",
@@ -111,7 +111,7 @@
       "next": {
         "type": "imageMessage",
         "side": "interlocutor",
-        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_002.png",
         "mediaSourceType": "network",
         "next": {
           "type": "textMessage",
@@ -120,7 +120,7 @@
           "next" : {
             "type": "imageMessage",
             "side": "interlocutor",
-            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
             "mediaSourceType": "network",
             "next" : {
               "type": "textMessage",

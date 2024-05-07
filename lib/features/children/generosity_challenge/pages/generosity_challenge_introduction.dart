@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
@@ -9,16 +11,16 @@ import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class GenrosityIntorductionScreen extends StatefulWidget {
-  const GenrosityIntorductionScreen({super.key});
+class GenerosityChallengeIntorduction extends StatefulWidget {
+  const GenerosityChallengeIntorduction({super.key});
 
   @override
-  State<GenrosityIntorductionScreen> createState() =>
-      _GenrosityIntorductionScreenState();
+  State<GenerosityChallengeIntorduction> createState() =>
+      _GenerosityChallengeIntorductionState();
 }
 
-class _GenrosityIntorductionScreenState
-    extends State<GenrosityIntorductionScreen> {
+class _GenerosityChallengeIntorductionState
+    extends State<GenerosityChallengeIntorduction> {
   bool _acceptPolicy = false;
 
   @override
@@ -105,10 +107,14 @@ class _GenrosityIntorductionScreenState
               isDisabled: !_acceptPolicy,
               onTap: () {
                 GenerosityChallengeHelper.activate();
+                context.pop();
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.acceptedGenerosityChallenge,
                 );
-                context.goNamed(Pages.chatScriptPage.name, extra: 0);
+                context.goNamed(
+                  Pages.generosityChallengeChat.name,
+                  extra: context.read<GenerosityChallengeCubit>(),
+                );
               },
               text: 'Accept the challenge',
             ),

@@ -1,10 +1,10 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' as root_bundle;
-import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_actors_settings.dart';
 
+import 'package:flutter/services.dart' as root_bundle;
+import 'package:givt_app/features/children/generosity_challenge/models/chat_actors_settings.dart';
+import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_scripts_repository.dart';
 
 class ChatScriptsAssetRepositoryImpl with ChatScriptsRepository {
   static const String _chatActorsSettingsPath =
