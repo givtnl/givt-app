@@ -9,6 +9,8 @@ class ActionContainer extends StatefulWidget {
     required this.child,
     this.isDisabled = false,
     this.isSelected = false,
+    this.isPressedDown = false,
+    this.isMuted = false,
     this.base = ActionContainerBase.bottom,
     this.margin,
     this.borderSize = 2,
@@ -18,6 +20,8 @@ class ActionContainer extends StatefulWidget {
   final VoidCallback onTap;
   final bool isDisabled;
   final bool isSelected;
+  final bool isPressedDown;
+  final bool isMuted;
   final Color borderColor;
   final ActionContainerBase base;
   final Widget child;
@@ -39,7 +43,10 @@ class _ActionContainerState extends State<ActionContainer> {
   bool _isManualPressed = false;
 
   bool get _isPressed {
-    return _isManualPressed || widget.isDisabled || widget.isSelected;
+    return _isManualPressed ||
+        widget.isDisabled ||
+        widget.isSelected ||
+        widget.isPressedDown;
   }
 
   void _setManualPressed(bool value) {
@@ -60,7 +67,7 @@ class _ActionContainerState extends State<ActionContainer> {
               widget.onTap();
             },
             onTapDown: (details) {
-              if (!widget.isSelected) {
+              if (!widget.isMuted) {
                 SystemSound.play(SystemSoundType.click);
               }
               _setManualPressed(true);
@@ -73,7 +80,7 @@ class _ActionContainerState extends State<ActionContainer> {
 
   Future<void> _unpress() async {
     await _actionDelay();
-    if (!widget.isSelected) {
+    if (!widget.isMuted) {
       await HapticFeedback.lightImpact();
     }
     _setManualPressed(false);

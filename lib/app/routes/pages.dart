@@ -7,6 +7,10 @@ enum Pages {
     path: '/generosity-challenge',
     name: 'GENEROSITY-CHALLENGE',
   ),
+  selectValues(
+    path: 'select-values',
+    name: 'GENEROSITY-SELECT-VALUES',
+  ),
   generosityChallengeChat(
     path: 'generosity-challenge-chat',
     name: 'GENEROSITY-CHALLENGE-CHAT',

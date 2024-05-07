@@ -18,6 +18,7 @@ import 'package:givt_app/features/children/family_goal/repositories/create_famil
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_asset_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/repositories/family_values_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
@@ -224,6 +225,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<GenerosityChallengeRepository>(
       () => GenerosityChallengeRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<FamilyValuesRepository>(
+      () => FamilyValuesRepositoryImpl(
         getIt(),
       ),
     )

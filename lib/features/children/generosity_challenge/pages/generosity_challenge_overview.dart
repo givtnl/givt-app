@@ -25,7 +25,11 @@ class _GenerosityChallengeOverviewState
   @override
   void initState() {
     super.initState();
-    _isDebug().then((value) => isDebug = value);
+    _isDebug().then(
+      (value) => setState(() {
+        isDebug = value;
+      }),
+    );
   }
 
   @override

@@ -90,7 +90,8 @@ class _GenerosityChallengeIntorductionState
           ),
         ),
       ),
-      bottomSheet: Padding(
+      bottomSheet: Container(
+        color: AppTheme.givtLightBackgroundGreen,
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,

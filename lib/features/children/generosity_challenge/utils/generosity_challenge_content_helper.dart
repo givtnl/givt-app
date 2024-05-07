@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_asserts_with_message
 
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 
 class GenerosityChallengeContentHelper {
@@ -9,16 +10,22 @@ class GenerosityChallengeContentHelper {
       title: 'In a small village',
       description:
           "Lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'",
-      buttonText: '',
       onTap: () {},
     ),
     Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Centuries ago there lived',
+      image: 'assets/images/generosity_challenge_day_2.svg',
+      title: 'Select Family Values',
       description:
-          'A king!” my little readers will say immediately. No, children, you are mistaken. Once upon a time there was a piece of wood. ',
-      buttonText: 'Hello',
+          'Chat together and pick 3 values from your welcome pack. These will help guide your decisions around generosity.\n\nMake sure everyone has at least 1 they want of the 3 chosen.',
+      buttonText: 'Select 3 values',
+      redirect: Pages.selectValues.path,
       onTap: () {},
+      partnerCard: Task.card(
+        image: 'assets/images/generosity_challenge_day_2.svg',
+        title: 'The 3 Family Values are selected!',
+        description: '',
+        onTap: () {},
+      ),
     ),
     Task.card(
       image: '',
