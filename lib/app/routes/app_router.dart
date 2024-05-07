@@ -867,11 +867,6 @@ class AppRouter {
       return Pages.generosityChallenge.path;
     }
 
-    if (navigatingPage == Pages.generosityChallenge.path &&
-        !GenerosityChallengeHelper.isActivated) {
-      return '${Pages.generosityChallenge.path}/${Pages.generosityChallengeIntroduction.path}';
-    }
-
     /// Display the splash screen while checking the auth status
     if (auth.status == AuthStatus.loading) {
       return '${Pages.loading.path}?$query';
