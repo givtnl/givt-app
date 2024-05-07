@@ -22,7 +22,10 @@ class ChatIconButton extends StatelessWidget {
                   extra: context.read<GenerosityChallengeCubit>(),
                 );
               },
-              icon: const Icon(FontAwesomeIcons.solidComments),
+              icon: const Icon(
+                FontAwesomeIcons.solidComments,
+                color: AppTheme.givtGreen40,
+              ),
             ),
             if (state.hasAvailableChat)
               const Positioned(
