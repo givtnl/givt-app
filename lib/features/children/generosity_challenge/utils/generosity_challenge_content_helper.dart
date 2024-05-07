@@ -9,7 +9,7 @@ class GenerosityChallengeContentHelper {
       image: 'assets/images/generosity_challenge_day_1.svg',
       title: 'Save the letter',
       description:
-          "Today's assignment is for each family member to answer the question on the Mayor's letter. Once you've done that, stick it on your fridge with the magnet where you will see it everyday!\n\nDone? Hit the Complete Button",
+          "Today's assignment is for each family member to answer the question in the Mayor's letter. Once you've done that, stick it on your fridge with the magnet where you will see it everyday!\n\nDone? Hit the Complete Button",
       onTap: () {},
     ),
     Task.card(
