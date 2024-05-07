@@ -18,6 +18,7 @@ class ChatScriptItem extends Equatable {
     required this.options,
     required this.inputAnswerType,
     required this.mediaSourceType,
+    required this.saveKey,
     this.next,
   });
 
@@ -55,6 +56,7 @@ class ChatScriptItem extends Equatable {
       mediaSourceType: ChatScriptItemMediaSourceType.fromString(
         (map['mediaSourceType'] ?? '').toString(),
       ),
+      saveKey: (map['saveKey'] ?? '').toString(),
       next: _readNextFromMap(map, branchesMap: branchesMap),
     );
   }
@@ -71,6 +73,7 @@ class ChatScriptItem extends Equatable {
         options = const [],
         inputAnswerType = ChatScriptInputAnswerType.none,
         mediaSourceType = ChatScriptItemMediaSourceType.none,
+        saveKey = '',
         next = null;
 
   factory ChatScriptItem.typing({
@@ -139,6 +142,7 @@ class ChatScriptItem extends Equatable {
 
   bool get isHidden => hidden;
   bool get hasFunction => functionName.isNotEmpty;
+  bool get shallBeSaved => saveKey.isNotEmpty;
 
   final ChatScriptItemType type;
   final ChatScriptItemSide side;
@@ -151,6 +155,7 @@ class ChatScriptItem extends Equatable {
   final List<ChatScriptItem> options;
   final ChatScriptInputAnswerType inputAnswerType;
   final ChatScriptItemMediaSourceType mediaSourceType;
+  final String saveKey;
   final ChatScriptItem? next;
 
   ChatScriptItem copyWith({
@@ -165,6 +170,7 @@ class ChatScriptItem extends Equatable {
     List<ChatScriptItem>? options,
     ChatScriptInputAnswerType? inputAnswerType,
     ChatScriptItemMediaSourceType? mediaSourceType,
+    String? saveKey,
     ChatScriptItem? next,
   }) {
     return ChatScriptItem(
@@ -179,6 +185,7 @@ class ChatScriptItem extends Equatable {
       options: options ?? this.options,
       inputAnswerType: inputAnswerType ?? this.inputAnswerType,
       mediaSourceType: mediaSourceType ?? this.mediaSourceType,
+      saveKey: saveKey ?? this.saveKey,
       next: next ?? this.next,
     );
   }
@@ -198,6 +205,7 @@ class ChatScriptItem extends Equatable {
           : null,
       'inputAnswerType': inputAnswerType.name,
       'mediaSourceType': mediaSourceType.name,
+      'saveKey': saveKey,
       if (next != null) 'next': next!.toMap(),
     };
   }
@@ -216,6 +224,7 @@ class ChatScriptItem extends Equatable {
       options,
       inputAnswerType,
       mediaSourceType,
+      saveKey,
       next,
     ];
   }

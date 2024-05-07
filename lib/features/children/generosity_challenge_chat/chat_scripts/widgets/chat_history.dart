@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_media_source_type.dart';
@@ -77,15 +78,17 @@ class _ChatHistoryState extends State<ChatHistory> {
   ) {
     final result = <Widget>[];
 
+    final challenge = context.read<GenerosityChallengeCubit>().state;
+
     for (var i = 0; i < historyItems.length; i++) {
       final item = historyItems[i];
       final isUserSide = item.isUserSide;
       final avatarPath = isUserSide
-          ? state.chatActorsSettings.userAvatar
-          : state.chatActorsSettings.interlocutorAvatar;
+          ? challenge.chatActorsSettings.userAvatar
+          : challenge.chatActorsSettings.interlocutorAvatar;
       final backgroundColor = isUserSide
-          ? state.chatActorsSettings.interlocutorBubbleColor
-          : state.chatActorsSettings.userBubbleColor;
+          ? challenge.chatActorsSettings.interlocutorBubbleColor
+          : challenge.chatActorsSettings.userBubbleColor;
 
       //compare with previous item's side
       final isSameSide = i - 1 >= 0 && item.side == historyItems[i - 1].side;

@@ -13,4 +13,7 @@ class GenerosityChallengeHelper {
 
   static Future<void> activate() async => getIt<SharedPreferences>()
       .setBool(_generosityChallengeActivatedKey, true);
+
+  static Future<void> deactivate() async => getIt<SharedPreferences>()
+      .setBool(_generosityChallengeActivatedKey, false);
 }

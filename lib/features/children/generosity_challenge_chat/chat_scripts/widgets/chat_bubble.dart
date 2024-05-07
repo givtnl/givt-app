@@ -79,6 +79,7 @@ class ChatBubble extends StatelessWidget {
 
   static const double _intervalBetweenSameMessages = 12;
   static const double _intervalBetweenNewMessages = 20;
+  static const double _cornerRadius = 24;
 
   final bool isUser;
   final String text;
@@ -97,11 +98,10 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const radius = 24.0;
     final size = MediaQuery.sizeOf(context);
     final bubbleMaxWidth = size.width * .7;
     final defaultMediaWidth = bubbleMaxWidth;
-    final defaultMediaHeight = defaultMediaWidth * 3 / 6;
+    final defaultMediaHeight = defaultMediaWidth * 0.65;
     return Padding(
       padding: EdgeInsets.only(
         top: isSameSide
@@ -125,13 +125,13 @@ class ChatBubble extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: backgroundColor,
                     borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(radius),
-                      topRight: const Radius.circular(radius),
+                      topLeft: const Radius.circular(_cornerRadius),
+                      topRight: const Radius.circular(_cornerRadius),
                       bottomLeft: Radius.circular(
-                        isUser ? radius : 0,
+                        isUser ? _cornerRadius : 0,
                       ),
                       bottomRight: Radius.circular(
-                        isUser ? 0 : radius,
+                        isUser ? 0 : _cornerRadius,
                       ),
                     ),
                   ),
@@ -195,23 +195,27 @@ class ChatBubble extends StatelessWidget {
   }
 
   Widget _createMediaContent(double width, double height) {
+    final Widget child;
     switch (mediaType) {
       case ChatBubbleMediaType.image:
-        return isAssetMedia
+        child = isAssetMedia
             ? Image.asset(mediaPath, width: width, height: height)
             : Image.network(
                 mediaPath,
                 width: width,
                 height: height,
-                fit: BoxFit.fill,
               );
       case ChatBubbleMediaType.lottie:
-        return isAssetMedia
+        child = isAssetMedia
             ? Lottie.asset(mediaPath, width: width, height: height)
             : Lottie.network(mediaPath, width: width, height: height);
       case ChatBubbleMediaType.none:
-        return const SizedBox.shrink();
+        child = const SizedBox.shrink();
     }
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(_cornerRadius)),
+      child: child,
+    );
   }
 }
 

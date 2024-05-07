@@ -7,6 +7,7 @@
       "type": "inputAnswer",
       "side": "user",
       "text": "Last Name",
+      "saveKey": "lastName",
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
@@ -24,17 +25,20 @@
               "type": "inputAnswer",
               "side": "user",
               "text": "First name of parent",
+              "saveKey": "firstName",
               "amplitudeEvent": "utm",
               "hidden" : true,
               "next" : {
                 "type": "inputAnswer",
                 "side": "user",
                 "text": "E-mail address of parent",
+                "saveKey": "email",
                 "hidden" : true,
                 "next" : {
                   "type": "inputAnswer",
                   "side": "user",
                   "text": "Password",
+                  "saveKey": "password",
                   "hidden" : true,
                   "next": {
                     "type": "textMessage",
@@ -98,7 +102,7 @@
   "image01" :{
     "type": "imageMessage",
     "side": "interlocutor",
-    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_001.png",
     "mediaSourceType": "network",
     "next": {
       "type": "textMessage",
@@ -107,7 +111,7 @@
       "next": {
         "type": "imageMessage",
         "side": "interlocutor",
-        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_002.png",
         "mediaSourceType": "network",
         "next": {
           "type": "textMessage",
@@ -116,7 +120,7 @@
           "next" : {
             "type": "imageMessage",
             "side": "interlocutor",
-            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
             "mediaSourceType": "network",
             "next" : {
               "type": "textMessage",

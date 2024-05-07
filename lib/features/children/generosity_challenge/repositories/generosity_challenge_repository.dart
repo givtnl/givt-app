@@ -20,7 +20,7 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
 
   @override
   Future<void> saveToCache(List<Day> days) async {
-    final daysJsonList = days.map((day) => day.toJson()).toList();
+    final daysJsonList = days.map((day) => day.toMap()).toList();
 
     await sharedPreferences.setString(
       _generosityChallengeDaysKey,
@@ -35,7 +35,7 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
     if (encodedString.isNotEmpty) {
       final result = (jsonDecode(encodedString) as List<dynamic>)
           .map<Day>(
-            (day) => Day.fromJson(day as Map<String, dynamic>),
+            (day) => Day.fromMap(day as Map<String, dynamic>),
           )
           .toList();
       return result;
