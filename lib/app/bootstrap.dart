@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:givt_app/app/firebase_options.dart' as firebase_prod_options;
 import 'package:givt_app/app/firebase_options_dev.dart' as firebase_dev_options;
@@ -33,21 +33,21 @@ class AppBlocObserver extends BlocObserver {
 }
 
 @pragma('vm:entry-point')
-Future<void> _processBackgroundNotification(RemoteMessage message) async {
-  // final (name, options) = await _firebaseOptions;
-  // await Firebase.initializeApp(
-  //   name: name,
-  //   options: options,
-  // );
+//Future<void> _processBackgroundNotification(RemoteMessage message) async {
+// final (name, options) = await _firebaseOptions;
+// await Firebase.initializeApp(
+//   name: name,
+//   options: options,
+// );
 
-  // Initialize the dependency injection
-  await get_it.init();
-  await get_it.getIt.allReady();
+// Initialize the dependency injection
+//  await get_it.init();
+// await get_it.getIt.allReady();
 
-  // Initialize the notification service
-  //await NotificationService.instance.init();
-  // await NotificationService.instance.silentNotification(message.data);
-}
+// Initialize the notification service
+//await NotificationService.instance.init();
+// await NotificationService.instance.silentNotification(message.data);
+//}
 
 Future<void> bootstrap(
   FutureOr<Widget> Function() builder,
