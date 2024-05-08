@@ -1547,7 +1547,7 @@
     "about": "About",
     "familyGroup": "Family Group",
     "goal": "Goal",
-    "theFamilyWithName": "The {value0}",
+    "theFamilyWithName": "The {value0} Family",
     "members": "members",
     "completedLabel": "Completed!",
     "chooseGroup": "Choose Group",
