@@ -18,6 +18,9 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   })  : _challengeCubit = challengeCubit,
         super(const ChatScriptsState.initial()) {
     _challengeCubit.stream.listen((challengeState) {
+      if (isClosed) {
+        return;
+      }
       emit(state.copyWith(availableChat: challengeState.availableChat));
     });
   }

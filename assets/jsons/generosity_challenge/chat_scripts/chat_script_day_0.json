@@ -148,5 +148,15 @@
         }
       }
     }
+  },
+  "postChat" :{
+    "type": "textMessage",
+    "side": "user",
+    "text": "We filled in your letter and now it's on our fridge!",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Great work! This is the start of building a habit of generosity in Tulsa."
+    }
   }
 }
