@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:format/format.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/enums/day_chat_status.dart';
@@ -111,14 +112,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   Future<String> formatChatTextWithUserData({
     required String source,
   }) async {
-    var result = source;
     final userData = await _generosityChallengeRepository.loadUserData();
-    for (final key in ChatScriptSaveKey.values) {
-      if (userData.containsKey(key.value)) {
-        result = result.replaceAll(key.value, userData[key.value].toString());
-      }
-    }
-    return result;
+    return format(source, userData);
   }
 
   Future<Map<String, dynamic>> loadUserData() =>

@@ -11,7 +11,7 @@
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
-        "text": "Great! Hi lastName Family! I believe you're exactly what Tulsa needs to turn things around",
+        "text": "Great! Hi {lastName} Family! I believe you're exactly what Tulsa needs to turn things around",
         "next": {
           "type": "textMessage",
           "side": "interlocutor",
