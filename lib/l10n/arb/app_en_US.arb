@@ -1555,7 +1555,5 @@
     "groups": "Groups",
     "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here",
     "genericSuccessTitle": "Consider it done!",
-    "Description when you've successfully edited the recurring monthly allowance of a child.": {
-        "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time."
-    }
+    "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time."
 }
