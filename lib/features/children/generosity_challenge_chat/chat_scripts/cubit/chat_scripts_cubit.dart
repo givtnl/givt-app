@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_functions.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_function.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -91,10 +93,35 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
   Future<void> _completeDayChat(BuildContext context) async {
     await _challengeCubit.onChatCompleted();
+    final userData = await _challengeCubit.loadUserData();
 
     await Future.delayed(_chatCompletedDelay, () {
       context.pop();
+      //for testing purposes just for now
+      SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
     });
+  }
+
+  Future<void> _trackAmplitudeIfNeeded(ChatScriptItem item) async {
+    final amplitudeEvent = item.amplitudeEvent.isNotEmpty
+        ? item.amplitudeEvent
+        : item.saveKey.isNotEmpty
+            ? AmplitudeEvents.generosityChallengeChatUserAction.value
+            : '';
+
+    if (amplitudeEvent.isNotEmpty) {
+      await AnalyticsHelper.logChatScriptEvent(
+        eventName: amplitudeEvent,
+        eventProperties: {
+          'day': _challengeCubit.state.availableChatDayIndex + 1,
+          'action_type': item.type == ChatScriptItemType.inputAnswer
+              ? ChatScriptItemType.inputAnswer.name
+              : ChatScriptItemType.buttonAnswer.name,
+          'answer_text': item.answerText,
+          'save_key': item.saveKey,
+        },
+      );
+    }
   }
 
   Future<void> _interpretScript(BuildContext context) async {
@@ -129,18 +156,20 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           emit(state.copyWith(chatHistory: typingHead));
           await Future.delayed(_typingDuration, () {});
 
-          newHead = state.chatHistory.replaceHead(head: currentChatItem);
+          final formattedText = await _challengeCubit
+              .formatChatTextWithUserData(source: currentChatItem.text);
+
+          newHead = state.chatHistory
+              .replaceHead(head: currentChatItem.copyWith(text: formattedText));
         } else if (currentChatItem.isCondition &&
             state.gainedAnswer != const ChatScriptItem.empty()) {
-          final amplitudeEvent = state.gainedAnswer.amplitudeEvent;
-          if (amplitudeEvent.isNotEmpty) {
-            await AnalyticsHelper.logChatScriptEvent(
-              eventName: amplitudeEvent,
-              eventProperties: {
-                'value': state.gainedAnswer.answerText,
-              },
-            );
+          final saveKey =
+              ChatScriptSaveKey.fromString(state.gainedAnswer.saveKey);
+          if (saveKey.isSupported) {
+            await _challengeCubit.saveUserData(state.gainedAnswer);
           }
+
+          await _trackAmplitudeIfNeeded(state.gainedAnswer);
 
           if (state.gainedAnswer.isHidden) {
             newHead = state.chatHistory;
@@ -164,7 +193,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
         if (currentChatItem.hasFunction) {
           final itemFunction =
-              ChatScriptFunctions.fromString(currentChatItem.functionName);
+              ChatScriptFunction.fromString(currentChatItem.functionName);
 
           if (context.mounted) {
             await itemFunction.function(context);

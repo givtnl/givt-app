@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:format/format.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/enums/day_chat_status.dart';
@@ -7,6 +8,7 @@ import 'package:givt_app/features/children/generosity_challenge/repositories/cha
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 
 part 'generosity_challenge_state.dart';
 
@@ -107,6 +109,22 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     await _generosityChallengeRepository.saveToCache(newDays);
     _refreshState(days: newDays);
   }
+
+  Future<void> saveUserData(ChatScriptItem item) =>
+      _generosityChallengeRepository.saveUserData(
+        ChatScriptSaveKey.fromString(item.saveKey),
+        item.answerText,
+      );
+
+  Future<String> formatChatTextWithUserData({
+    required String source,
+  }) async {
+    final userData = await _generosityChallengeRepository.loadUserData();
+    return format(source, userData);
+  }
+
+  Future<Map<String, dynamic>> loadUserData() =>
+      _generosityChallengeRepository.loadUserData();
 
   int _findAvailableChatDayIndex(List<Day> days, int activeChatIndex) {
     for (var dayIndex = 0; dayIndex < days.length; dayIndex++) {

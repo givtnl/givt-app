@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 
-enum ChatScriptFunctions {
+enum ChatScriptFunction {
   none(function: _empty),
   pushNotificationPermission(
     function: _askForPushNotificationPermission,
   ),
   ;
 
-  const ChatScriptFunctions({
+  const ChatScriptFunction({
     required this.function,
   });
 
   final Future<bool> Function(BuildContext context) function;
 
-  static ChatScriptFunctions fromString(String value) {
+  static ChatScriptFunction fromString(String value) {
     try {
-      return ChatScriptFunctions.values.byName(value);
+      return ChatScriptFunction.values.byName(value);
     } catch (error) {
-      return ChatScriptFunctions.none;
+      return ChatScriptFunction.none;
     }
   }
 

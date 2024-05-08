@@ -548,6 +548,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.7.0"
+  format:
+    dependency: "direct main"
+    description:
+      name: format
+      sha256: da3aeae9507f9e9ba3bd75308d5c0be14b97b0001abd74eba2e025457869b2a0
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.5.1"
   freezed_annotation:
     dependency: transitive
     description:
