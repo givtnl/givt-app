@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:format/format.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/enums/day_chat_status.dart';
@@ -7,6 +8,7 @@ import 'package:givt_app/features/children/generosity_challenge/repositories/cha
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 
 part 'generosity_challenge_state.dart';
 
@@ -81,13 +83,20 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
 
   Future<void> onChatCompleted() async {
     final availableChatDay = state.days[state.availableChatDayIndex];
+    //based on previos status
+    final isMainChatCompleted =
+        availableChatDay.chatStatus == DayChatStatus.available;
+
+    final postChat = state.chatScripts[state.availableChatDayIndex].postChat;
+    final isPostChatAvailable =
+        postChat != null && postChat != const ChatScriptItem.empty();
     state.days[state.availableChatDayIndex] = availableChatDay.copyWith(
-      chatStatus: DayChatStatus.completed,
-      // status: availableChatDay.status == DayChatStatus.available
-      //     ? DayChatStatus.postChat
-      //     : DayChatStatus.completed,
-      //TODO: switch to postChat branch here when ready
-      currentChatItem: const ChatScriptItem.empty(),
+      chatStatus: isMainChatCompleted && isPostChatAvailable
+          ? DayChatStatus.postChat
+          : DayChatStatus.completed,
+      currentChatItem: isMainChatCompleted && isPostChatAvailable
+          ? state.chatScripts[state.availableChatDayIndex].postChat
+          : const ChatScriptItem.empty(),
     );
     await _generosityChallengeRepository.saveToCache(state.days);
     _refreshState(days: state.days);
@@ -101,6 +110,22 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     _refreshState(days: newDays);
   }
 
+  Future<void> saveUserData(ChatScriptItem item) =>
+      _generosityChallengeRepository.saveUserData(
+        ChatScriptSaveKey.fromString(item.saveKey),
+        item.answerText,
+      );
+
+  Future<String> formatChatTextWithUserData({
+    required String source,
+  }) async {
+    final userData = await _generosityChallengeRepository.loadUserData();
+    return format(source, userData);
+  }
+
+  Future<Map<String, dynamic>> loadUserData() =>
+      _generosityChallengeRepository.loadUserData();
+
   int _findAvailableChatDayIndex(List<Day> days, int activeChatIndex) {
     for (var dayIndex = 0; dayIndex < days.length; dayIndex++) {
       final day = days[dayIndex];
@@ -109,7 +134,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         break;
       }
 
-      if (day.chatStatus != DayChatStatus.completed) {
+      if (day.chatStatus == DayChatStatus.available ||
+          (day.chatStatus == DayChatStatus.postChat && day.isCompleted)) {
         return dayIndex;
       }
     }

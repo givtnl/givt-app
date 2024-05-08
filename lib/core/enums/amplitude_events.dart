@@ -90,6 +90,8 @@ enum AmplitudeEvents {
   familyValuesSelected('family_values_selected'),
   acceptedGenerosityChallenge('accepted_generosity_challenge'),
 
+  generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
+
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
   ;

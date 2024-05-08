@@ -1416,7 +1416,7 @@
     "dateOfBirth": "Date of birth",
     "createChildGivingAllowanceHint": "Giving allowance",
     "createChildProfileButton": "Create child profile",
-    "createChildGivingAllowanceTitle": "Monthly giving allowance",
+    "createChildGivingAllowanceTitle": "Recurring Giving Allowance",
     "createChildGivingAllowanceText": "Empower your child with the joy of giving by setting up a Monthly Giving Allowance. This not only fosters a habit of generosity but also imparts important financial skills.\n\nFunds will be added to your child's wallet immediately upon set up and replenished monthly, enabling them to learn about budgeting and decision-making while experiencing the fulfilment of making a difference.\n\nShould you wish to stop the giving allowance please reach out to us at support@givt.app",
     "createChildAddProfileButton": "Add child profile",
     "childOverviewTotalAvailable": "Total available:",
@@ -1553,5 +1553,7 @@
     "chooseGroup": "Choose Group",
     "oopsNoNameForOrganisation": "Oops, did not get a name for the goal.",
     "groups": "Groups",
-    "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here"
+    "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here",
+    "genericSuccessTitle": "Consider it done!",
+    "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time."
 }
