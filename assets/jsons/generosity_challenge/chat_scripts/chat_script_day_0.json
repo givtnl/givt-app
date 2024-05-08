@@ -152,7 +152,7 @@
   "postChat" :{
     "type": "textMessage",
     "side": "user",
-    "text": "We filled in your letter and it's now on our fridge!",
+    "text": "We filled in your letter and now it's on our fridge!",
     "next": {
       "type": "textMessage",
       "side": "interlocutor",

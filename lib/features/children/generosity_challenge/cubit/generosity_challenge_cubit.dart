@@ -82,17 +82,17 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   Future<void> onChatCompleted() async {
     final availableChatDay = state.days[state.availableChatDayIndex];
     //based on previos status
-    final isMainChatComplited =
+    final isMainChatCompleted =
         availableChatDay.chatStatus == DayChatStatus.available;
 
     final postChat = state.chatScripts[state.availableChatDayIndex].postChat;
     final isPostChatAvailable =
         postChat != null && postChat != const ChatScriptItem.empty();
     state.days[state.availableChatDayIndex] = availableChatDay.copyWith(
-      chatStatus: isMainChatComplited && isPostChatAvailable
+      chatStatus: isMainChatCompleted && isPostChatAvailable
           ? DayChatStatus.postChat
           : DayChatStatus.completed,
-      currentChatItem: isMainChatComplited && isPostChatAvailable
+      currentChatItem: isMainChatCompleted && isPostChatAvailable
           ? state.chatScripts[state.availableChatDayIndex].postChat
           : const ChatScriptItem.empty(),
     );
