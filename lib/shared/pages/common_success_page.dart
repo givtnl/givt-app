@@ -28,16 +28,19 @@ class CommonSuccessPage extends StatelessWidget {
               Flexible(
                 child: Text(
                   title!,
-                  style: const TextStyle(
-                  ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700),
+                  textAlign: TextAlign.center,
                 ),
               ),
             if (text != null)
               Flexible(
                 child: Text(
                   text!,
-                  style: const TextStyle(
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
               ),
           ],

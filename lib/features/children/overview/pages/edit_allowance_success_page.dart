@@ -12,6 +12,9 @@ class EditAllowanceSuccessPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonSuccessPage(
       buttonText: context.l10n.ready,
+      title: 'Consider it done!',
+      text: 'Your child will receive ${uiModel.amountWithCurrencySymbol} each '
+          'month. You can edit this amount any time.',
     );
   }
 }
