@@ -27,7 +27,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     });
   }
 
-  static const Duration _typingDuration = Duration(milliseconds: 1000);
+  static const Duration _typingDuration = Duration(milliseconds: 2000);
   static const Duration _chatCompletedDelay = Duration(milliseconds: 3000);
 
   final ChatHistoryRepository _chatHistoryRepository;
