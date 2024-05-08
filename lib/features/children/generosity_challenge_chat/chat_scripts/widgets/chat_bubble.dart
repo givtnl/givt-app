@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -135,14 +138,26 @@ class ChatBubble extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: Padding(
-                    padding: contentPadding,
-                    child: mediaPath.isNotEmpty
-                        ? _createMediaContent(
-                            mediaWidth ?? defaultMediaWidth,
-                            mediaHeight ?? defaultMediaHeight,
-                          )
-                        : _createTextContent(context),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (mediaPath.isNotEmpty) {
+                        _showImageDialog(
+                          context,
+                          mediaPath,
+                          size.width,
+                          size.height,
+                        );
+                      }
+                    },
+                    child: Padding(
+                      padding: contentPadding,
+                      child: mediaPath.isNotEmpty
+                          ? _createMediaContent(
+                              mediaWidth ?? defaultMediaWidth,
+                              mediaHeight ?? defaultMediaHeight,
+                            )
+                          : _createTextContent(context),
+                    ),
                   ),
                 ),
               ),
@@ -215,6 +230,49 @@ class ChatBubble extends StatelessWidget {
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(_cornerRadius)),
       child: child,
+    );
+  }
+
+  void _showImageDialog(
+    BuildContext context,
+    String imageUrl,
+    double width,
+    double height,
+  ) {
+    showDialog<void>(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.7),
+      builder: (context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 24),
+          backgroundColor: Colors.transparent,
+          elevation: 90,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topRight,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  alignment: Alignment.topRight,
+                  onPressed: () => context.pop(),
+                  icon: const FaIcon(
+                    FontAwesomeIcons.xmark,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: _createMediaContent(
+                    width,
+                    height,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
