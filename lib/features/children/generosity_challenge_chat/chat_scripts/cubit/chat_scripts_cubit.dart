@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_function.dart';
@@ -99,12 +100,22 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   }
 
   Future<void> _trackAmplitudeIfNeeded(ChatScriptItem item) async {
-    final amplitudeEvent = item.amplitudeEvent;
+    final amplitudeEvent = item.amplitudeEvent.isNotEmpty
+        ? item.amplitudeEvent
+        : item.saveKey.isNotEmpty
+            ? AmplitudeEvents.generosityChallengeChatUserAction.value
+            : '';
+
     if (amplitudeEvent.isNotEmpty) {
       await AnalyticsHelper.logChatScriptEvent(
         eventName: amplitudeEvent,
         eventProperties: {
-          'value': item.answerText,
+          'day': _challengeCubit.state.availableChatDayIndex + 1,
+          'action_type': item.type == ChatScriptItemType.inputAnswer
+              ? ChatScriptItemType.inputAnswer.name
+              : ChatScriptItemType.buttonAnswer.name,
+          'answer_text': item.answerText,
+          'save_key': item.saveKey,
         },
       );
     }

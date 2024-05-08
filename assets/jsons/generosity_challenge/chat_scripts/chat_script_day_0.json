@@ -26,7 +26,6 @@
               "side": "user",
               "text": "First name of parent",
               "saveKey": "firstName",
-              "amplitudeEvent": "utm",
               "hidden" : true,
               "next" : {
                 "type": "inputAnswer",
@@ -61,6 +60,7 @@
                               "side": "user",
                               "text": "Not right now",
                               "answerText" : "Not right now",
+                              "amplitudeEvent": "custom_event_demo_name",
                               "next" : {
                                 "type": "textMessage",
                                 "side": "interlocutor",
@@ -74,7 +74,7 @@
                               "type": "textMessage",
                               "side": "user",
                               "text": "Yes",
-                              "amplitudeEvent": "utm",
+                              "amplitudeEvent": "generosity_challenge_chat_user_action",
                               "answerText" : "Yes",
                               "functionName" : "pushNotificationPermission",
                               "next" : {
