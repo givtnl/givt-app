@@ -1,14 +1,13 @@
 enum DayChatStatus {
-  unavailable,
   available,
-  active,
+  postChat,
   completed;
 
   static DayChatStatus fromString(String value) {
     try {
       return DayChatStatus.values.byName(value);
     } catch (_) {
-      return DayChatStatus.unavailable;
+      return DayChatStatus.available;
     }
   }
 }

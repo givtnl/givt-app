@@ -6,10 +6,10 @@ import 'package:givt_app/features/children/generosity_challenge/models/task.dart
 class GenerosityChallengeContentHelper {
   static final List<Task> _tasks = [
     Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'In a small village',
+      image: 'assets/images/generosity_challenge_day_1.svg',
+      title: 'Save the letter',
       description:
-          "Lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'",
+          "Today's assignment is for each family member to answer the question in the Mayor's letter. Once you've done that, stick it on your fridge with the magnet where you will see it everyday!\n\nDone? Hit the Complete Button",
       onTap: () {},
     ),
     Task.card(

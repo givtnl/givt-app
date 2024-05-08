@@ -7,10 +7,11 @@
       "type": "inputAnswer",
       "side": "user",
       "text": "Last Name",
+      "saveKey": "lastName",
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
-        "text": "Great! Hi Peterson Family! I believe you're exactly what Tulsa needs to turn things around",
+        "text": "Great! Hi {lastName} Family! I believe you're exactly what Tulsa needs to turn things around",
         "next": {
           "type": "textMessage",
           "side": "interlocutor",
@@ -24,17 +25,19 @@
               "type": "inputAnswer",
               "side": "user",
               "text": "First name of parent",
-              "amplitudeEvent": "utm",
+              "saveKey": "firstName",
               "hidden" : true,
               "next" : {
                 "type": "inputAnswer",
                 "side": "user",
                 "text": "E-mail address of parent",
+                "saveKey": "email",
                 "hidden" : true,
                 "next" : {
                   "type": "inputAnswer",
                   "side": "user",
                   "text": "Password",
+                  "saveKey": "password",
                   "hidden" : true,
                   "next": {
                     "type": "textMessage",
@@ -57,6 +60,7 @@
                               "side": "user",
                               "text": "Not right now",
                               "answerText" : "Not right now",
+                              "amplitudeEvent": "custom_event_demo_name",
                               "next" : {
                                 "type": "textMessage",
                                 "side": "interlocutor",
@@ -70,7 +74,7 @@
                               "type": "textMessage",
                               "side": "user",
                               "text": "Yes",
-                              "amplitudeEvent": "utm",
+                              "amplitudeEvent": "generosity_challenge_chat_user_action",
                               "answerText" : "Yes",
                               "functionName" : "pushNotificationPermission",
                               "next" : {
@@ -98,7 +102,7 @@
   "image01" :{
     "type": "imageMessage",
     "side": "interlocutor",
-    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_001.png",
     "mediaSourceType": "network",
     "next": {
       "type": "textMessage",
@@ -107,7 +111,7 @@
       "next": {
         "type": "imageMessage",
         "side": "interlocutor",
-        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_002.png",
         "mediaSourceType": "network",
         "next": {
           "type": "textMessage",
@@ -116,7 +120,7 @@
           "next" : {
             "type": "imageMessage",
             "side": "interlocutor",
-            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Default_Group_Image.jpeg",
+            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
             "mediaSourceType": "network",
             "next" : {
               "type": "textMessage",
@@ -143,6 +147,16 @@
           }
         }
       }
+    }
+  },
+  "postChat" :{
+    "type": "textMessage",
+    "side": "user",
+    "text": "We filled in your letter and now it's on our fridge!",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Great work! This is the start of building a habit of generosity in Tulsa."
     }
   }
 }

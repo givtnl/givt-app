@@ -3,5 +3,11 @@
     "type": "textMessage",
     "side": "interlocutor",
     "text": "Still in progress.. Stay tuned for the new updates!"
+  },
+  "postChat" :{
+    "type": "textMessage",
+    "side": "interlocutor",
+    "text": "Awesome!"
   }
+
 }

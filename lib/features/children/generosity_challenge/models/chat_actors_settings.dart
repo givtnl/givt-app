@@ -36,8 +36,7 @@ class ChatActorsSettings extends Equatable {
     );
   }
 
-  //TODO: replace with tertiary90
-  static const Color _defaultInterlocutorBubbleColor = AppTheme.tertiary95;
+  static const Color _defaultInterlocutorBubbleColor = AppTheme.tertiary90;
   static const Color _defaultUserBubbleColor = AppTheme.secondary95;
 
   final String interlocutorName;

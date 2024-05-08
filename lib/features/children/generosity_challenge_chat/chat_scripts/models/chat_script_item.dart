@@ -18,12 +18,23 @@ class ChatScriptItem extends Equatable {
     required this.options,
     required this.inputAnswerType,
     required this.mediaSourceType,
+    required this.saveKey,
     this.next,
+    this.postChat,
   });
 
   factory ChatScriptItem.fromBranchesMap(Map<String, dynamic> branchesMap) {
     final mainBranch = branchesMap['main'] as Map<String, dynamic>;
-    return ChatScriptItem.fromMap(mainBranch, branchesMap: branchesMap);
+    final mainItem =
+        ChatScriptItem.fromMap(mainBranch, branchesMap: branchesMap);
+    final postChatItem = branchesMap['postChat'] != null
+        ? ChatScriptItem.fromMap(
+            branchesMap['postChat'] as Map<String, dynamic>,
+            branchesMap: branchesMap,
+          )
+        : null;
+
+    return mainItem.copyWith(postChat: postChatItem);
   }
 
   factory ChatScriptItem.fromMap(
@@ -55,7 +66,14 @@ class ChatScriptItem extends Equatable {
       mediaSourceType: ChatScriptItemMediaSourceType.fromString(
         (map['mediaSourceType'] ?? '').toString(),
       ),
+      saveKey: (map['saveKey'] ?? '').toString(),
       next: _readNextFromMap(map, branchesMap: branchesMap),
+      postChat: map['postChat'] != null
+          ? ChatScriptItem.fromMap(
+              map['postChat'] as Map<String, dynamic>,
+              branchesMap: branchesMap,
+            )
+          : null,
     );
   }
 
@@ -71,7 +89,9 @@ class ChatScriptItem extends Equatable {
         options = const [],
         inputAnswerType = ChatScriptInputAnswerType.none,
         mediaSourceType = ChatScriptItemMediaSourceType.none,
-        next = null;
+        saveKey = '',
+        next = null,
+        postChat = null;
 
   factory ChatScriptItem.typing({
     required ChatScriptItemSide side,
@@ -139,6 +159,7 @@ class ChatScriptItem extends Equatable {
 
   bool get isHidden => hidden;
   bool get hasFunction => functionName.isNotEmpty;
+  bool get shallBeSaved => saveKey.isNotEmpty;
 
   final ChatScriptItemType type;
   final ChatScriptItemSide side;
@@ -151,7 +172,9 @@ class ChatScriptItem extends Equatable {
   final List<ChatScriptItem> options;
   final ChatScriptInputAnswerType inputAnswerType;
   final ChatScriptItemMediaSourceType mediaSourceType;
+  final String saveKey;
   final ChatScriptItem? next;
+  final ChatScriptItem? postChat;
 
   ChatScriptItem copyWith({
     ChatScriptItemType? type,
@@ -165,7 +188,9 @@ class ChatScriptItem extends Equatable {
     List<ChatScriptItem>? options,
     ChatScriptInputAnswerType? inputAnswerType,
     ChatScriptItemMediaSourceType? mediaSourceType,
+    String? saveKey,
     ChatScriptItem? next,
+    ChatScriptItem? postChat,
   }) {
     return ChatScriptItem(
       type: type ?? this.type,
@@ -179,7 +204,9 @@ class ChatScriptItem extends Equatable {
       options: options ?? this.options,
       inputAnswerType: inputAnswerType ?? this.inputAnswerType,
       mediaSourceType: mediaSourceType ?? this.mediaSourceType,
+      saveKey: saveKey ?? this.saveKey,
       next: next ?? this.next,
+      postChat: postChat ?? this.postChat,
     );
   }
 
@@ -198,7 +225,9 @@ class ChatScriptItem extends Equatable {
           : null,
       'inputAnswerType': inputAnswerType.name,
       'mediaSourceType': mediaSourceType.name,
+      'saveKey': saveKey,
       if (next != null) 'next': next!.toMap(),
+      if (postChat != null) 'postChat': postChat!.toMap(),
     };
   }
 
@@ -216,7 +245,9 @@ class ChatScriptItem extends Equatable {
       options,
       inputAnswerType,
       mediaSourceType,
+      saveKey,
       next,
+      postChat,
     ];
   }
 }

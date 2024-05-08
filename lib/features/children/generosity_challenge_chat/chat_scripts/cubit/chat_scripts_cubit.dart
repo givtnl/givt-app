@@ -1,15 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_actors_settings.dart';
+import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/day_chat_state.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_functions.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_function.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/day_chat_status.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_script_interpreter_repository.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_scripts_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,40 +15,39 @@ part 'chat_scripts_state.dart';
 
 class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   ChatScriptsCubit(
-    this._chatScriptsRepository,
-    this._chatScriptInterpreterRepository,
-    this._dayChatActiveIndex,
-  ) : super(const ChatScriptsState.initial());
+    this._chatHistoryRepository, {
+    required GenerosityChallengeCubit challengeCubit,
+  })  : _challengeCubit = challengeCubit,
+        super(const ChatScriptsState.initial()) {
+    _challengeCubit.stream.listen((challengeState) {
+      if (isClosed) {
+        return;
+      }
+      emit(state.copyWith(availableChat: challengeState.availableChat));
+    });
+  }
 
-  static const Duration _typingDuration = Duration(milliseconds: 1500);
+  static const Duration _typingDuration = Duration(milliseconds: 1000);
   static const Duration _chatCompletedDelay = Duration(milliseconds: 3000);
 
-  final ChatScriptsRepository _chatScriptsRepository;
-  final ChatScriptInterpreterRepository _chatScriptInterpreterRepository;
-  final int _dayChatActiveIndex;
+  final ChatHistoryRepository _chatHistoryRepository;
+  final GenerosityChallengeCubit _challengeCubit;
 
   Future<void> init(BuildContext context) async {
     emit(state.copyWith(status: ChatScriptsStatus.loading));
 
     try {
-      final chatScripts = await _loadScripts();
-      final chatActorsSettings = await _loadChatActorsSettings();
-      final dayChatStates = await _loadDayChatStates();
-      final chatHistory = _loadChatHistory();
+      final chatHistory = _chatHistoryRepository.loadChatHistory();
+
+      final activeChat = _challengeCubit.state.availableChat;
 
       emit(
         state.copyWith(
           status: ChatScriptsStatus.updated,
-          chatScripts: chatScripts,
-          dayChatStates: dayChatStates,
           chatHistory: chatHistory,
-          chatActorsSettings: chatActorsSettings,
+          availableChat: activeChat,
         ),
       );
-
-      if (_dayChatActiveIndex >= 0 && context.mounted) {
-        await activateChat(context, dayIndex: _dayChatActiveIndex);
-      }
 
       if (context.mounted) {
         await _interpretScript(context);
@@ -65,52 +62,10 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     }
   }
 
-  Future<List<ChatScriptItem>> _loadScripts() =>
-      _chatScriptsRepository.loadChatScripts();
-
-  Future<ChatActorsSettings> _loadChatActorsSettings() =>
-      _chatScriptsRepository.loadChatActorsSettings();
-
-  Future<List<DayChatState>> _loadDayChatStates() =>
-      _chatScriptInterpreterRepository.loadDayChatStates();
-
-  ChatScriptItem _loadChatHistory() =>
-      _chatScriptInterpreterRepository.loadChatHistory();
-
   Future<void> clearChatHistory() async {
-    await _chatScriptInterpreterRepository
-        .saveChatHistory(const ChatScriptItem.empty());
-
-    await _chatScriptInterpreterRepository.clearDayChatStates();
-    final newDayChatStates = await _loadDayChatStates();
-
-    emit(
-      state.copyWith(
-        chatHistory: const ChatScriptItem.empty(),
-        dayChatStates: newDayChatStates,
-        status: ChatScriptsStatus.updated,
-        gainedAnswer: const ChatScriptItem.empty(),
-      ),
-    );
-  }
-
-  Future<void> activateChat(
-    BuildContext context, {
-    required int dayIndex,
-  }) async {
-    if (state.dayChatStates[dayIndex].status == DayChatStatus.completed) {
-      return;
-    }
-
-    await _updateDayChat(
-      dayIndex,
-      state.dayChatStates[dayIndex].copyWith(
-        status: DayChatStatus.active,
-      ),
-    );
-    if (context.mounted) {
-      await _interpretScript(context);
-    }
+    await _chatHistoryRepository.saveChatHistory(const ChatScriptItem.empty());
+    await _challengeCubit.clearCache();
+    emit(const ChatScriptsState.initial());
   }
 
   Future<void> provideAnswer(
@@ -129,46 +84,52 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   Future<void> _addDelimiter() async {
     final delimiterHead = state.chatHistory.addHead(
       head: ChatScriptItem.delimiter(
-        text: 'Day ${state.activeDayChatIndex + 1}',
+        text: 'Day ${_challengeCubit.state.activeDayIndex + 1}',
       ),
     );
-    await _chatScriptInterpreterRepository.saveChatHistory(delimiterHead);
+    await _chatHistoryRepository.saveChatHistory(delimiterHead);
     emit(state.copyWith(chatHistory: delimiterHead));
   }
 
-  Future<void> _updateDayChat(int dayIndex, DayChatState dayChatState) async {
-    state.dayChatStates[dayIndex] = dayChatState;
-    await _chatScriptInterpreterRepository
-        .saveDayChatStates(state.dayChatStates);
+  Future<void> _completeDayChat(BuildContext context) async {
+    await _challengeCubit.onChatCompleted();
+    final userData = await _challengeCubit.loadUserData();
 
-    emit(state.copyWith(dayChatStates: state.dayChatStates));
+    await Future.delayed(_chatCompletedDelay, () {
+      context.pop();
+      //for testing purposes just for now
+      SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
+    });
   }
 
-  Future<void> _completeDayChat(BuildContext context) async {
-    state.dayChatStates[state.activeDayChatIndex] =
-        state.dayChatStates[state.activeDayChatIndex].copyWith(
-      status: DayChatStatus.completed,
-    );
-    await _chatScriptInterpreterRepository
-        .saveDayChatStates(state.dayChatStates);
+  Future<void> _trackAmplitudeIfNeeded(ChatScriptItem item) async {
+    final amplitudeEvent = item.amplitudeEvent.isNotEmpty
+        ? item.amplitudeEvent
+        : item.saveKey.isNotEmpty
+            ? AmplitudeEvents.generosityChallengeChatUserAction.value
+            : '';
 
-    emit(state.copyWith(dayChatStates: state.dayChatStates));
-
-    await Future.delayed(_chatCompletedDelay, () {});
-
-    if (context.mounted) {
-      context.goNamed(Pages.generosityChallenge.name);
+    if (amplitudeEvent.isNotEmpty) {
+      await AnalyticsHelper.logChatScriptEvent(
+        eventName: amplitudeEvent,
+        eventProperties: {
+          'day': _challengeCubit.state.availableChatDayIndex + 1,
+          'action_type': item.type == ChatScriptItemType.inputAnswer
+              ? ChatScriptItemType.inputAnswer.name
+              : ChatScriptItemType.buttonAnswer.name,
+          'answer_text': item.answerText,
+          'save_key': item.saveKey,
+        },
+      );
     }
   }
 
   Future<void> _interpretScript(BuildContext context) async {
-    if (state.activeDayChatIndex >= 0) {
-      final isContinuing =
-          state.dayChatStates[state.activeDayChatIndex].currentItem !=
-              const ChatScriptItem.empty();
+    if (state.hasAvailableChat) {
+      final isContinuing = _challengeCubit.state.isChatContinuing;
       ChatScriptItem? currentChatItem = isContinuing
-          ? state.dayChatStates[state.activeDayChatIndex].currentItem
-          : state.chatScripts[state.activeDayChatIndex];
+          ? state.availableChat
+          : _challengeCubit.state.availableChatOriginScript;
 
       if (!isContinuing) {
         await _addDelimiter();
@@ -195,18 +156,20 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           emit(state.copyWith(chatHistory: typingHead));
           await Future.delayed(_typingDuration, () {});
 
-          newHead = state.chatHistory.replaceHead(head: currentChatItem);
+          final formattedText = await _challengeCubit
+              .formatChatTextWithUserData(source: currentChatItem.text);
+
+          newHead = state.chatHistory
+              .replaceHead(head: currentChatItem.copyWith(text: formattedText));
         } else if (currentChatItem.isCondition &&
             state.gainedAnswer != const ChatScriptItem.empty()) {
-          final amplitudeEvent = state.gainedAnswer.amplitudeEvent;
-          if (amplitudeEvent.isNotEmpty) {
-            await AnalyticsHelper.logChatScriptEvent(
-              eventName: amplitudeEvent,
-              eventProperties: {
-                'value': state.gainedAnswer.answerText,
-              },
-            );
+          final saveKey =
+              ChatScriptSaveKey.fromString(state.gainedAnswer.saveKey);
+          if (saveKey.isSupported) {
+            await _challengeCubit.saveUserData(state.gainedAnswer);
           }
+
+          await _trackAmplitudeIfNeeded(state.gainedAnswer);
 
           if (state.gainedAnswer.isHidden) {
             newHead = state.chatHistory;
@@ -225,23 +188,19 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           newHead = state.chatHistory.addHead(head: currentChatItem);
         }
 
-        await _chatScriptInterpreterRepository.saveChatHistory(newHead);
+        await _chatHistoryRepository.saveChatHistory(newHead);
         emit(state.copyWith(chatHistory: newHead));
-
-        await _updateDayChat(
-          state.activeDayChatIndex,
-          state.dayChatStates[state.activeDayChatIndex]
-              .copyWith(currentItem: currentChatItem.next),
-        );
 
         if (currentChatItem.hasFunction) {
           final itemFunction =
-              ChatScriptFunctions.fromString(currentChatItem.functionName);
+              ChatScriptFunction.fromString(currentChatItem.functionName);
 
           if (context.mounted) {
             await itemFunction.function(context);
           }
         }
+
+        await _challengeCubit.updateActiveDayChat(currentChatItem.next);
       }
       if (context.mounted) {
         await _completeDayChat(context);

@@ -17,18 +17,18 @@ class SelectFamilyValues extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: GenerosityAppBar(
-        title: 'Day 2',
-        leading: BackButton(
-          onPressed: context.pop,
-          color: AppTheme.givtGreen40,
-        ),
-      ),
-      body: SafeArea(
-        child: BlocBuilder<FamilyValuesCubit, FamilyValuesState>(
-          builder: (context, state) {
-            return CustomScrollView(
+    return BlocBuilder<FamilyValuesCubit, FamilyValuesState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: GenerosityAppBar(
+            title: 'Day 2',
+            leading: BackButton(
+              onPressed: context.pop,
+              color: AppTheme.givtGreen40,
+            ),
+          ),
+          body: SafeArea(
+            child: CustomScrollView(
               slivers: [
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -74,40 +74,34 @@ class SelectFamilyValues extends StatelessWidget {
                     ),
                   ),
                 ),
-                SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  sliver: SliverToBoxAdapter(
-                    child: GivtElevatedButton(
-                      isDisabled: state.selectedValues.length !=
-                          FamilyValuesState.maxSelectedValues,
-                      onTap: () {
-                        context.read<FamilyValuesCubit>().rememberValues();
-
-                        context
-                            .read<GenerosityChallengeCubit>()
-                            .confirmAssignment(
-                              state.selectedValuesString,
-                            );
-
-                        context.pop();
-
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.familyValuesSelected,
-                          eventProperties: {
-                            FamilyValuesCubit.familyValuesKey:
-                                state.selectedValuesString,
-                          },
-                        );
-                      },
-                      text: 'Continue',
-                    ),
-                  ),
-                )
               ],
-            );
-          },
-        ),
-      ),
+            ),
+          ),
+          floatingActionButton: state.selectedValues.length !=
+                  FamilyValuesState.maxSelectedValues
+              ? const SizedBox()
+              : GivtElevatedButton(
+                  onTap: () {
+                    context.read<FamilyValuesCubit>().rememberValues();
+
+                    context.read<GenerosityChallengeCubit>().confirmAssignment(
+                          state.selectedValuesString,
+                        );
+
+                    context.pop();
+
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.familyValuesSelected,
+                      eventProperties: {
+                        FamilyValuesCubit.familyValuesKey:
+                            state.selectedValuesString,
+                      },
+                    );
+                  },
+                  text: 'Continue',
+                ),
+        );
+      },
     );
   }
 }

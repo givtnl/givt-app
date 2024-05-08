@@ -1553,5 +1553,7 @@
     "chooseGroup": "Choose Group",
     "oopsNoNameForOrganisation": "Oops, did not get a name for the goal.",
     "groups": "Groups",
-    "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here"
+    "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here",
+    "genericSuccessTitle": "Consider it done!",
+    "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time."
 }
