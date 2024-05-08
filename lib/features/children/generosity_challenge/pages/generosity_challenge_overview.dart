@@ -41,7 +41,7 @@ class _GenerosityChallengeOverviewState
             auth.user.personalInfoRegistered;
     return Scaffold(
       appBar: const GenerosityAppBar(
-        title: 'Generosity Mission',
+        title: 'Generosity Challenge',
         leading: null,
         actions: [
           ChatIconButton(),
