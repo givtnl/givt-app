@@ -34,19 +34,19 @@ class AppBlocObserver extends BlocObserver {
 
 @pragma('vm:entry-point')
 Future<void> _processBackgroundNotification(RemoteMessage message) async {
-  final (name, options) = await _firebaseOptions;
-  await Firebase.initializeApp(
-    name: name,
-    options: options,
-  );
+  // final (name, options) = await _firebaseOptions;
+  // await Firebase.initializeApp(
+  //   name: name,
+  //   options: options,
+  // );
 
   // Initialize the dependency injection
   await get_it.init();
   await get_it.getIt.allReady();
 
   // Initialize the notification service
-  await NotificationService.instance.init();
-  await NotificationService.instance.silentNotification(message.data);
+  //await NotificationService.instance.init();
+  // await NotificationService.instance.silentNotification(message.data);
 }
 
 Future<void> bootstrap(
@@ -56,11 +56,11 @@ Future<void> bootstrap(
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
-  final (name, options) = await _firebaseOptions;
-  await Firebase.initializeApp(
-    name: name,
-    options: options,
-  );
+  // final (name, options) = await _firebaseOptions;
+  // await Firebase.initializeApp(
+  //   name: name,
+  //   options: options,
+  // );
 
   await LoggingInfo.instance.info('App started');
 
@@ -68,28 +68,28 @@ Future<void> bootstrap(
   await get_it.init();
   await get_it.getIt.allReady();
 
-  await FirebaseMessaging.instance.requestPermission();
+  // await FirebaseMessaging.instance.requestPermission();
 
   // Process the notification when the app is in the background
   // Only works on Android, iOS is buggy
-  FirebaseMessaging.onBackgroundMessage(_processBackgroundNotification);
+  //FirebaseMessaging.onBackgroundMessage(_processBackgroundNotification);
 
   // Process of notifications
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-    await NotificationService.instance.navigateFirebaseNotification(message);
-  });
+  // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+  //   await NotificationService.instance.navigateFirebaseNotification(message);
+  // });
 
-  tz.initializeTimeZones();
+  // tz.initializeTimeZones();
 
-  FlutterError.onError = (details) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(details);
-    log(details.exceptionAsString(), stackTrace: details.stack);
-  };
+  // FlutterError.onError = (details) {
+  //   FirebaseCrashlytics.instance.recordFlutterFatalError(details);
+  //   log(details.exceptionAsString(), stackTrace: details.stack);
+  // };
 
-  PlatformDispatcher.instance.onError = (error, stack) {
-    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-    return true;
-  };
+  // PlatformDispatcher.instance.onError = (error, stack) {
+  //   FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  //   return true;
+  // };
 
   Bloc.observer = const AppBlocObserver();
 
@@ -99,14 +99,14 @@ Future<void> bootstrap(
 /// Returns the firebase options
 /// and the current platform
 /// based on the current build flavor
-Future<(String, FirebaseOptions)> get _firebaseOptions async {
-  final info = await PackageInfo.fromPlatform();
-  final isDebug = info.packageName.contains('test');
+// Future<(String, FirebaseOptions)> get _firebaseOptions async {
+//   final info = await PackageInfo.fromPlatform();
+//   final isDebug = info.packageName.contains('test');
 
-  final name = isDebug ? 'givt-dev-pre' : 'givtapp-ebde1';
-  final options = isDebug
-      ? firebase_dev_options.DefaultFirebaseOptions.currentPlatform
-      : firebase_prod_options.DefaultFirebaseOptions.currentPlatform;
+//   final name = isDebug ? 'givt-dev-pre' : 'givtapp-ebde1';
+//   final options = isDebug
+//       ? firebase_dev_options.DefaultFirebaseOptions.currentPlatform
+//       : firebase_prod_options.DefaultFirebaseOptions.currentPlatform;
 
-  return (name, options);
-}
+//   return (name, options);
+// }

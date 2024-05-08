@@ -42,19 +42,19 @@ class _AppState extends State<App> {
     resetAppBadge();
 
     /// Setup firebase messaging for background notifications
-    final notificationService = getIt<NotificationService>();
-    notificationService.init().then(
-          (_) => FirebaseMessaging.onMessage.listen(
-            (RemoteMessage message) async {
-              if (message.data.isEmpty) {
-                return;
-              }
-              await NotificationService.instance.silentNotification(
-                message.data,
-              );
-            },
-          ),
-        );
+    // final notificationService = getIt<NotificationService>();
+    // notificationService.init().then(
+    //       (_) => FirebaseMessaging.onMessage.listen(
+    //         (RemoteMessage message) async {
+    //           if (message.data.isEmpty) {
+    //             return;
+    //           }
+    //           await NotificationService.instance.silentNotification(
+    //             message.data,
+    //           );
+    //         },
+    //       ),
+    //     );
   }
 
   @override

@@ -446,7 +446,7 @@ class AuthRepositoyImpl with AuthRepository {
       );
 
   Future<void> setUserProperties(UserExt newUserExt) {
-    FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
+    //FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
 
     return AnalyticsHelper.setUserProperties(
       userId: newUserExt.guid,

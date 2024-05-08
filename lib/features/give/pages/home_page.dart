@@ -66,15 +66,15 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
-    getIt<NotificationService>()
-      ..scheduleMonthlySummaryNotification(
-        body: locals.budgetPushMonthly,
-        title: locals.budgetPushMonthlyBold,
-      )
-      ..scheduleYearlySummaryNotification(
-        body: locals.budgetPushYearlyNearlyEnd,
-        title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
-      );
+    // getIt<NotificationService>()
+    //   ..scheduleMonthlySummaryNotification(
+    //     body: locals.budgetPushMonthly,
+    //     title: locals.budgetPushMonthlyBold,
+    //   )
+    //   ..scheduleYearlySummaryNotification(
+    //     body: locals.budgetPushYearlyNearlyEnd,
+    //     title: locals.budgetPushYearlyNearlyEndBold(DateTime.now().year),
+    //   );
 
     final auth = context.watch<AuthCubit>().state;
     final impactGroupsState = context.watch<ImpactGroupsCubit>().state;
@@ -89,15 +89,15 @@ class _HomePageState extends State<HomePage> {
       });
     }
 
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      // @TODO - This is a workaround to navigate to the correct page when
-      // the app is opened from a notification and the user is authenticated,
-      // but it should be refactored to use the GoRouter (or another solution)
+    // FirebaseMessaging.instance.getInitialMessage().then((message) {
+    //   // @TODO - This is a workaround to navigate to the correct page when
+    //   // the app is opened from a notification and the user is authenticated,
+    //   // but it should be refactored to use the GoRouter (or another solution)
 
-      if (message != null && auth.status == AuthStatus.authenticated) {
-        NotificationService.instance.navigateFirebaseNotification(message);
-      }
-    });
+    //   // if (message != null && auth.status == AuthStatus.authenticated) {
+    //   //   NotificationService.instance.navigateFirebaseNotification(message);
+    //   // }
+    // });
 
     return Scaffold(
       key: _key,

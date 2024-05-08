@@ -134,6 +134,9 @@ class NotificationService implements INotificationService {
       InitializationSettings(
         android: const AndroidInitializationSettings('icon'),
         iOS: DarwinInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
           onDidReceiveLocalNotification: (id, title, body, payload) async =>
               _navigateToScreen(
             NotificationResponse(
@@ -155,12 +158,12 @@ class NotificationService implements INotificationService {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    // await FirebaseMessaging.instance
+    //     .setForegroundNotificationPresentationOptions(
+    //   alert: true,
+    //   badge: true,
+    //   sound: true,
+    // );
   }
 
   @override

@@ -450,27 +450,27 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (Platform.isIOS) {
         // On iOS be sure that APNS token is available before asking for a firebase token
-        await FirebaseMessaging.instance.getAPNSToken();
+        //  await FirebaseMessaging.instance.getAPNSToken();
       }
 
-      final notificationId = await FirebaseMessaging.instance.getToken();
+      // final notificationId = await FirebaseMessaging.instance.getToken();
 
-      await LoggingInfo.instance.info('New FCM token: $notificationId');
+      // await LoggingInfo.instance.info('New FCM token: $notificationId');
 
-      if (currentNotificationId == notificationId) {
-        await LoggingInfo.instance.info(
-          'FCM token: $notificationId is the same as the current one',
-        );
+      // if (currentNotificationId == notificationId) {
+      //   await LoggingInfo.instance.info(
+      //     'FCM token: $notificationId is the same as the current one',
+      //   );
 
-        return currentNotificationId;
-      }
+      //   return currentNotificationId;
+      // }
 
-      if (notificationId == null) {
-        await LoggingInfo.instance.warning(
-          'FCM token: is null',
-        );
-        return currentNotificationId;
-      }
+      // if (notificationId == null) {
+      //   await LoggingInfo.instance.warning(
+      //     'FCM token: is null',
+      //   );
+      //   return currentNotificationId;
+      // }
 
       await LoggingInfo.instance.info('Updating notification id');
 
@@ -481,11 +481,11 @@ class AuthCubit extends Cubit<AuthState> {
         return currentNotificationId;
       }
 
-      await _authRepositoy.updateNotificationId(
-        notificationId: notificationId,
-        guid: guid,
-      );
-      return notificationId;
+      // await _authRepositoy.updateNotificationId(
+      //   notificationId: notificationId,
+      //   guid: guid,
+      // );
+      return '';
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),
