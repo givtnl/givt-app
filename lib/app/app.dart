@@ -39,7 +39,7 @@ class _AppState extends State<App> {
     AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
 
     initializeStripe();
-    resetAppBadge();
+    //resetAppBadge();
 
     /// Setup firebase messaging for background notifications
     // final notificationService = getIt<NotificationService>();
