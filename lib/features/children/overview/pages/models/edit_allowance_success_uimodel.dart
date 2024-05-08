@@ -1,5 +1,5 @@
 class EditAllowanceSuccessUIModel {
-  const EditAllowanceSuccessUIModel({this.amount});
+  const EditAllowanceSuccessUIModel({this.amountWithCurrencySymbol});
 
-  final String? amount;
+  final String? amountWithCurrencySymbol;
 }
