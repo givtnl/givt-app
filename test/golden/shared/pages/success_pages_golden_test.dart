@@ -12,10 +12,8 @@ import '../../golden_utils.dart';
 
 void main() {
   testGoldens('Success Pages render correctly', (tester) async {
-    final builder = GoldenBuilder.grid(
+    final builder = GoldenBuilder.column(
       bgColor: Colors.white,
-      columns: 2,
-      widthToHeightRatio: 1,
       wrap: (widget) => SizedBox(height: 500, child: widget,),
     )
       ..addScenario(
@@ -39,7 +37,7 @@ void main() {
         theme: AppTheme.lightTheme,
         localizations: AppLocalizations.localizationsDelegates,
       ),
-      surfaceSize: const Size(1000, 500),
+      surfaceSize: const Size(500, 1200),
     );
     await screenMatchesGolden(tester, 'success_pages_golden');
   });
