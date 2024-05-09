@@ -27,6 +27,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
   String inputText = '';
   String errorMessage = '';
 
+  bool _passwordVisible = false;
+
   @override
   void initState() {
     super.initState();
@@ -102,7 +104,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     ? TextInputType.number
                     : TextInputType.text,
                 obscureText: widget.chatItem.inputAnswerType ==
-                    ChatScriptInputAnswerType.password,
+                        ChatScriptInputAnswerType.password &&
+                    !_passwordVisible,
                 obscuringCharacter: '*',
                 onChanged: (value) {
                   setState(() {
@@ -136,6 +139,22 @@ class _ChatInputFieldState extends State<ChatInputField> {
                       color: AppTheme.inputFieldBorderSelected,
                     ),
                   ),
+                  suffixIcon: widget.chatItem.inputAnswerType ==
+                          ChatScriptInputAnswerType.password
+                      ? IconButton(
+                          icon: FaIcon(
+                            _passwordVisible
+                                ? FontAwesomeIcons.solidEyeSlash
+                                : FontAwesomeIcons.solidEye,
+                            color: AppTheme.primary30,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
+                        )
+                      : null,
                 ),
               ),
             ),
