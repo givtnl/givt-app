@@ -23,9 +23,14 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_introduction.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
@@ -118,10 +123,64 @@ class AppRouter {
           return BlocProvider(
             create: (_) => GenerosityChallengeCubit(
               getIt(),
+              getIt(),
             )..loadFromCache(),
             child: const GenerosityChallenge(),
           );
         },
+        routes: [
+          GoRoute(
+            path: Pages.generosityChallengeIntroduction.path,
+            name: Pages.generosityChallengeIntroduction.name,
+            builder: (context, state) {
+              final challengeCubit = state.extra! as GenerosityChallengeCubit;
+              return BlocProvider.value(
+                value: challengeCubit,
+                child: const GenerosityChallengeIntruduction(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.generosityChallengeChat.path,
+            name: Pages.generosityChallengeChat.name,
+            builder: (context, state) {
+              final challengeCubit = state.extra! as GenerosityChallengeCubit;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: challengeCubit,
+                  ),
+                  BlocProvider(
+                    create: (_) => ChatScriptsCubit(
+                      getIt(),
+                      challengeCubit: challengeCubit,
+                    )..init(context),
+                  ),
+                ],
+                child: const ChatScriptPage(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.selectValues.path,
+            name: Pages.selectValues.name,
+            builder: (context, state) {
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: state.extra! as GenerosityChallengeCubit,
+                  ),
+                  BlocProvider(
+                    create: (context) => FamilyValuesCubit(
+                      valuesRepository: getIt(),
+                    ),
+                  ),
+                ],
+                child: const SelectFamilyValues(),
+              );
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: Pages.home.path,
@@ -484,7 +543,8 @@ class AppRouter {
                 getIt(),
               ),
               child: ImpactGroupDetailsPage(
-                  impactGroup: state.extra! as ImpactGroup),
+                impactGroup: state.extra! as ImpactGroup,
+              ),
             ),
           ),
           GoRoute(
@@ -803,12 +863,8 @@ class AppRouter {
       queryParameters: params,
     ).query;
 
-    if (GenerosityChallengeHelper.isActivated) {
-      return Pages.generosityChallenge.path;
-    }
-
-    if (navigatingPage == Pages.generosityChallenge.path) {
-      GenerosityChallengeHelper.activate();
+    if (GenerosityChallengeHelper.isActivated ||
+        navigatingPage == Pages.generosityChallenge.path) {
       return Pages.generosityChallenge.path;
     }
 

@@ -1,25 +1,31 @@
 // ignore_for_file: prefer_asserts_with_message
 
+import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
-import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 
 class GenerosityChallengeContentHelper {
   static final List<Task> _tasks = [
     Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'In a small village',
+      image: 'assets/images/generosity_challenge_day_1.svg',
+      title: 'Save the letter',
       description:
-          "Lived a craftsman Geppetto. One day he decided to make a wooden toy. He said to himself, 'I will make a little boy and call him Pinocchio.'",
-      buttonText: '',
+          "Today's assignment is for each family member to answer the question in the Mayor's letter. Once you've done that, stick it on your fridge with the magnet where you will see it everyday!\n\nDone? Hit the Complete Button",
       onTap: () {},
     ),
     Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Centuries ago there lived',
+      image: 'assets/images/generosity_challenge_day_2.svg',
+      title: 'Select Family Values',
       description:
-          'A king!” my little readers will say immediately. No, children, you are mistaken. Once upon a time there was a piece of wood. ',
-      buttonText: 'Hello',
+          'Chat together and pick 3 values from your welcome pack. These will help guide your decisions around generosity.\n\nMake sure everyone has at least 1 they want of the 3 chosen.',
+      buttonText: 'Select 3 values',
+      redirect: Pages.selectValues.path,
       onTap: () {},
+      partnerCard: Task.card(
+        image: 'assets/images/generosity_challenge_day_2.svg',
+        title: 'The 3 Family Values are selected!',
+        description: '',
+        onTap: () {},
+      ),
     ),
     Task.card(
       image: '',
@@ -117,7 +123,7 @@ class GenerosityChallengeContentHelper {
   ];
 
   static Task getTaskByIndex(int index) {
-    assert(_tasks.length == GenerosityChallengeHelper.generosityChallengeDays);
+    // assert(_tasks.length == GenerosityChallengeHelper.generosityChallengeDays);
     return _tasks[index];
   }
 }

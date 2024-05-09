@@ -12,16 +12,28 @@ class AnalyticsHelper {
     await _amplitude!.trackingSessionEvents(true);
   }
 
+  static Future<void> logChatScriptEvent({
+    required String eventName,
+    Map<String, dynamic>? eventProperties,
+  }) =>
+      _logEvent(eventName, eventProperties);
+
   static Future<void> logEvent({
     required AmplitudeEvents eventName,
     Map<String, dynamic>? eventProperties,
-  }) async {
+  }) =>
+      _logEvent(eventName.value, eventProperties);
+
+  static Future<void> _logEvent(
+    String eventName,
+    Map<String, dynamic>? eventProperties,
+  ) async {
     await _amplitude?.logEvent(
-      eventName.value,
+      eventName,
       eventProperties: eventProperties,
     );
 
-    log('${eventName.value} pressed with properties: $eventProperties');
+    log('$eventName pressed with properties: $eventProperties');
   }
 
   static Future<void> setUserProperties({

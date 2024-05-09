@@ -3,10 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class GenerosityAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const GenerosityAppBar(
-      {required this.title, required this.leading, super.key});
+  const GenerosityAppBar({
+    required this.title,
+    required this.leading,
+    this.actions,
+    super.key,
+  });
+
   final String title;
   final Widget? leading;
+  final List<Widget>? actions;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -28,6 +35,8 @@ class GenerosityAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: AppTheme.givtLightBackgroundGreen,
       elevation: 0,
       centerTitle: true,
+      actions: actions,
+      automaticallyImplyLeading: leading != null,
     );
   }
 

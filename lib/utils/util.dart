@@ -28,6 +28,7 @@ class Util {
   static const String nativeAppKeysMigration = 'nativeAppKeysMigration';
   static const String defaultUSPhoneNumber = '1231231234';
   static const String empty = '';
+  static const String countryIso = 'countryIso';
 
   static final ukPostCodeRegEx = RegExp(
       r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$');
