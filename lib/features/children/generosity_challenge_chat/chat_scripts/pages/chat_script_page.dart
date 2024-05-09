@@ -28,6 +28,7 @@ class ChatScriptPage extends StatelessWidget {
                 .availableChatDayIndex !=
             0;
         return Scaffold(
+          backgroundColor: AppTheme.primary99,
           appBar: GenerosityAppBar(
             title: 'Chat',
             leading: showBackButton
@@ -51,12 +52,18 @@ class ChatScriptPage extends StatelessWidget {
               ),
             ],
           ),
-          body: state.status == ChatScriptsStatus.loading
-              ? const Center(child: CircularProgressIndicator())
-              : const ChatHistory(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: const ChatBar(),
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: state.status == ChatScriptsStatus.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : const ChatHistory(),
+                ),
+                const ChatBar(),
+              ],
+            ),
+          ),
         );
       },
     );

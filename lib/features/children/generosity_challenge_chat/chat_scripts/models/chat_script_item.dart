@@ -62,7 +62,7 @@ class ChatScriptItem extends Equatable {
             )
           : [],
       inputAnswerType: ChatScriptInputAnswerType.fromString(
-        (map['inputAnswerType'] ?? '').toString(),
+        (map['inputAnswerType'] ?? 'text').toString(),
       ),
       mediaSourceType: ChatScriptItemMediaSourceType.fromString(
         (map['mediaSourceType'] ?? '').toString(),
@@ -89,7 +89,7 @@ class ChatScriptItem extends Equatable {
         answerText = '',
         hidden = false,
         options = const [],
-        inputAnswerType = ChatScriptInputAnswerType.none,
+        inputAnswerType = ChatScriptInputAnswerType.text,
         mediaSourceType = ChatScriptItemMediaSourceType.none,
         saveKey = '',
         saveInAmplitude = true,

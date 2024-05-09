@@ -5,6 +5,7 @@
     "text": "Before we start our adventure, what's the name of your Superhero team?",
     "next": {
       "type": "inputAnswer",
+      "inputAnswerType" : "text",
       "side": "user",
       "text": "Last Name",
       "saveKey": "lastName",
@@ -23,18 +24,21 @@
             "answerText": "Okay",
             "next": {
               "type": "inputAnswer",
+              "inputAnswerType" : "text",
               "side": "user",
               "text": "First name of parent",
               "saveKey": "firstName",
               "hidden": true,
               "next": {
                 "type": "inputAnswer",
+                "inputAnswerType" : "email",
                 "side": "user",
                 "text": "E-mail address of parent",
                 "saveKey": "email",
                 "hidden": true,
                 "next": {
                   "type": "inputAnswer",
+                  "inputAnswerType" : "password",
                   "side": "user",
                   "text": "Password",
                   "saveKey": "password",

@@ -11,15 +11,11 @@ class ChatBar extends StatelessWidget {
     super.key,
   });
 
-  static const double chatBarHeight = 140;
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ChatScriptsCubit, ChatScriptsState>(
       builder: (BuildContext context, ChatScriptsState state) {
         return Container(
-          height: chatBarHeight,
-          color: Colors.white,
           padding: const EdgeInsets.only(left: 24, right: 24),
           alignment: Alignment.bottomCenter,
           child: state.status == ChatScriptsStatus.waitingForAnswer
