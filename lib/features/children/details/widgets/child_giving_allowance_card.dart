@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';

@@ -60,7 +60,7 @@ class _GenerosityChallengeOverviewState
             Column(
               children: [
                 if (arePersonalDetailsAvailable)
-                  _buildGenerosityHeader(auth.user.lastName),
+                  _buildGenerosityHeader(userData['lastName'].toString()),
                 GridView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: GenerosityChallengeHelper.generosityChallengeDays,
