@@ -93,7 +93,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
   Future<void> _completeDayChat(BuildContext context) async {
     await _challengeCubit.onChatCompleted();
-    final userData = await _challengeCubit.loadUserData();
+    final userData = _challengeCubit.loadUserData();
 
     await Future.delayed(_chatCompletedDelay, () {
       context.pop();
