@@ -2,12 +2,260 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Still in progress.. Stay tuned for the new updates!"
+    "text": "Hey! Great to see you again! I was looking at my notes and I only wrote down {firstName}'s name.",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Are there any other parents?",
+      "next": {
+        "type": "buttonGroupAnswer",
+        "side": "user",
+        "options": [
+          {
+            "type": "textMessage",
+            "side": "user",
+            "text": "Yes",
+            "answerText": "Yes",
+            "next": {
+              "branch": "addParent"
+            }
+          },
+          {
+            "type": "textMessage",
+            "side": "user",
+            "text": "No",
+            "answerText": "No",
+            "next": {
+              "branch": "continueChildren"
+            }
+          }
+        ]
+      }
+    }
   },
-  "postChat" :{
+  "addParent": {
+    "type": "inputAnswer",
+    "side": "user",
+    "text": "Parent's name",
+    "saveKey": "parent2FirstName",
+    "next": {
+      "branch": "continueChildren"
+    }
+  },
+  "continueChildren": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Awesome!"
+    "text": "Any children?",
+    "next": {
+      "type": "buttonGroupAnswer",
+      "side": "user",
+      "options": [
+        {
+          "type": "textMessage",
+          "side": "user",
+          "text": "Yes",
+          "answerText": "Yes",
+          "next": {
+            "type": "inputAnswer",
+            "side": "user",
+            "text": "Child's name",
+            "saveKey": "child1FirstName",
+            "next": {
+              "type": "textMessage",
+              "side": "interlocutor",
+              "text": "Any other children?",
+              "next": {
+                "type": "buttonGroupAnswer",
+                "side": "user",
+                "options": [
+                  {
+                    "type": "textMessage",
+                    "side": "user",
+                    "text": "Yes",
+                    "answerText": "Yes",
+                    "next": {
+                      "type": "inputAnswer",
+                      "side": "user",
+                      "text": "Child's name",
+                      "saveKey": "child2FirstName",
+                      "next": {
+                        "type": "textMessage",
+                        "side": "interlocutor",
+                        "text": "Any other children?",
+                        "next": {
+                          "type": "buttonGroupAnswer",
+                          "side": "user",
+                          "options": [
+                            {
+                              "type": "textMessage",
+                              "side": "user",
+                              "text": "Yes",
+                              "answerText": "Yes",
+                              "next": {
+                                "type": "inputAnswer",
+                                "side": "user",
+                                "text": "Child's name",
+                                "saveKey": "child3FirstName",
+                                "next": {
+                                  "type": "textMessage",
+                                  "side": "interlocutor",
+                                  "text": "Any other children?",
+                                  "next": {
+                                    "type": "buttonGroupAnswer",
+                                    "side": "user",
+                                    "options": [
+                                      {
+                                        "type": "textMessage",
+                                        "side": "user",
+                                        "text": "Yes",
+                                        "answerText": "Yes",
+                                        "next": {
+                                          "type": "inputAnswer",
+                                          "side": "user",
+                                          "text": "Child's name",
+                                          "saveKey": "child4FirstName",
+                                          "next": {
+                                            "branch": "continueChat"
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "type": "textMessage",
+                                        "side": "user",
+                                        "text": "No",
+                                        "answerText": "No",
+                                        "next": {
+                                          "branch": "continueChat"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            },
+                            {
+                              "type": "textMessage",
+                              "side": "user",
+                              "text": "No",
+                              "answerText": "No",
+                              "next": {
+                                "branch": "continueChat"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "type": "textMessage",
+                    "side": "user",
+                    "text": "No",
+                    "answerText": "No",
+                    "next": {
+                      "branch": "continueChat"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "textMessage",
+          "side": "user",
+          "text": "No",
+          "answerText": "No",
+          "next": {
+            "branch": "continueChat"
+          }
+        }
+      ]
+    }
+  },
+  "continueChat": {
+    "type": "textMessage",
+    "side": "interlocutor",
+    "text": "Okay, I've got all your names in my notebook now. Thanks",
+    "next": {
+      "type": "imageMessage",
+      "side": "interlocutor",
+      "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
+      "mediaSourceType": "network",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Your family looks super!",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "The first generosity activity our research department identified was - Knowledge.",
+          "next": {
+            "type": "buttonAnswer",
+            "side": "user",
+            "text": "What does that mean?",
+            "answerText": "What does that mean?",
+            "next": {
+              "type": "textMessage",
+              "side": "interlocutor",
+              "text": "It means sharing with others what you know, so they can learn from you.",
+              "next": {
+                "type": "textMessage",
+                "side": "interlocutor",
+                "text": "Our city has lost it’s identity and doesn’t know what to value any more.",
+                "next": {
+                  "type": "imageMessage",
+                  "side": "interlocutor",
+                  "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
+                  "mediaSourceType": "network",
+                  "next": {
+                    "type": "textMessage",
+                    "side": "interlocutor",
+                    "text": "Are you ready to share your knowledge and complete today’s assignment?",
+                    "next": {
+                      "type": "buttonAnswer",
+                      "side": "user",
+                      "text": "Let's go",
+                      "answerText": "Let's go"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "postChat": {
+    "type": "textMessage",
+    "side": "user",
+    "text": "We the {lastName} Family, have chosen '{familyValue1Value}', '{familyValue2Value}', & '{familyValue3Value}' as our family values to inspire the city!",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "I love your values! They will definitely inspire our people.",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Tip: Keep the value cards in the car with you as you drive around.",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "You can use them in conversations of how each of you put these into practice each day.",
+          "next": {
+            "type": "buttonAnswer",
+            "side": "user",
+            "text": "See you tomorrow!",
+            "answerText": "See you tomorrow!",
+            "next": {
+              "type": "textMessage",
+              "side": "interlocutor",
+              "text": "I can't wait! Bye!"
+            }
+          }
+        }
+      }
+    }
   }
-
 }
