@@ -36,9 +36,10 @@ class _GenerosityChallengeOverviewState
   Widget build(BuildContext context) {
     final challenge = context.watch<GenerosityChallengeCubit>();
     final auth = context.watch<AuthCubit>().state;
-    final arePersonalDetailsAvailable =
-        auth.status == AuthStatus.authenticated &&
-            auth.user.personalInfoRegistered;
+    final userData = challenge.loadUserData();
+
+    final arePersonalDetailsAvailable = userData.isNotEmpty;
+
     return Scaffold(
       appBar: const GenerosityAppBar(
         title: 'Generosity Challenge',

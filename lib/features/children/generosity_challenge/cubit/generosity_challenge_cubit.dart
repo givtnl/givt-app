@@ -123,7 +123,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     return format(source, userData);
   }
 
-  Future<Map<String, dynamic>> loadUserData() =>
+  Map<String, dynamic> loadUserData() =>
       _generosityChallengeRepository.loadUserData();
 
   int _findAvailableChatDayIndex(List<Day> days, int activeChatIndex) {
