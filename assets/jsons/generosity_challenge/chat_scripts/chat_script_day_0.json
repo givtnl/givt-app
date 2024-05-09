@@ -39,6 +39,7 @@
                   "text": "Password",
                   "saveKey": "password",
                   "hidden": true,
+                  "saveInAmplitude": false,
                   "next": {
                     "type": "textMessage",
                     "side": "interlocutor",

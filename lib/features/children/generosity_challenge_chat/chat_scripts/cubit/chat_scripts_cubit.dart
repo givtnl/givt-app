@@ -106,7 +106,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   Future<void> _trackAmplitudeIfNeeded(ChatScriptItem item) async {
     final amplitudeEvent = item.amplitudeEvent.isNotEmpty
         ? item.amplitudeEvent
-        : item.saveKey.isNotEmpty
+        : item.saveKey.isNotEmpty && item.saveInAmplitude
             ? AmplitudeEvents.generosityChallengeChatUserAction.value
             : '';
 
