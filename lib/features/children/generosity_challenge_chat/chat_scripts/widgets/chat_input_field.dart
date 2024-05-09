@@ -116,10 +116,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
             child: Text(
               'It must contain at least 7 characters\nincluding at least one capital and one digit.',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontFamily: 'Rouna',
-                    color: AppTheme.givtBlue,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  fontFamily: 'Rouna',
+                  color: AppTheme.givtBlue,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4),
             ),
           ),
         Row(
@@ -133,6 +133,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
                         ChatScriptInputAnswerType.number
                     ? TextInputType.number
                     : TextInputType.text,
+                obscureText: widget.chatItem.inputAnswerType ==
+                    ChatScriptInputAnswerType.password,
+                obscuringCharacter: '*',
                 onChanged: (value) {
                   setState(() {
                     inputText = value.trim();
