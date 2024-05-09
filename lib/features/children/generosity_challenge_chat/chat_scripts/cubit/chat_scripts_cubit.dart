@@ -28,7 +28,8 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     });
   }
 
-  static const Duration _typingDuration = Duration(milliseconds: kDebugMode ? 10 : 2000);
+  static const Duration _typingDuration =
+      Duration(milliseconds: kDebugMode ? 10 : 2000);
   static const Duration _chatCompletedDelay = Duration(milliseconds: 3000);
 
   final ChatHistoryRepository _chatHistoryRepository;
@@ -98,8 +99,10 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
     await Future.delayed(_chatCompletedDelay, () {
       context.pop();
-      //for testing purposes just for now
-      SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
+      
+      if (kDebugMode) {
+        SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
+      }
     });
   }
 
