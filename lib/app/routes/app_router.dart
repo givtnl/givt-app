@@ -172,7 +172,7 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) => FamilyValuesCubit(
-                      valuesRepository: getIt(),
+                      generosityChallengeRepository: getIt(),
                     ),
                   ),
                 ],
@@ -862,7 +862,7 @@ class AppRouter {
     final query = Uri(
       queryParameters: params,
     ).query;
-
+    
     if (GenerosityChallengeHelper.isActivated ||
         navigatingPage == Pages.generosityChallenge.path) {
       return Pages.generosityChallenge.path;

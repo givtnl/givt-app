@@ -21,33 +21,34 @@
             "type": "buttonAnswer",
             "side": "user",
             "text": "Okay",
-            "answerText" : "Okay",
-            "next" : {
+            "answerText": "Okay",
+            "next": {
               "type": "inputAnswer",
               "inputAnswerType" : "text",
               "side": "user",
               "text": "First name of parent",
               "saveKey": "firstName",
-              "hidden" : true,
-              "next" : {
+              "hidden": true,
+              "next": {
                 "type": "inputAnswer",
                 "inputAnswerType" : "email",
                 "side": "user",
                 "text": "E-mail address of parent",
                 "saveKey": "email",
-                "hidden" : true,
-                "next" : {
+                "hidden": true,
+                "next": {
                   "type": "inputAnswer",
                   "inputAnswerType" : "password",
                   "side": "user",
                   "text": "Password",
                   "saveKey": "password",
-                  "hidden" : true,
+                  "hidden": true,
+                  "saveInAmplitude": false,
                   "next": {
                     "type": "textMessage",
                     "side": "interlocutor",
                     "text": "Thanks! I've made a note of that and it's all stored safely",
-                    "next" : {
+                    "next": {
                       "type": "textMessage",
                       "side": "interlocutor",
                       "text": "I want to encourage you throughout your mission",
@@ -55,22 +56,22 @@
                         "type": "textMessage",
                         "side": "interlocutor",
                         "text": "I need to let you know how great a job you are doing and notify you to keep going. Okay?",
-                        "next" : {
+                        "next": {
                           "type": "buttonGroupAnswer",
                           "side": "user",
-                          "options": [ 
+                          "options": [
                             {
                               "type": "textMessage",
                               "side": "user",
                               "text": "Not right now",
-                              "answerText" : "Not right now",
+                              "answerText": "Not right now",
                               "amplitudeEvent": "custom_event_demo_name",
-                              "next" : {
+                              "next": {
                                 "type": "textMessage",
                                 "side": "interlocutor",
                                 "text": "That's ok. I'll still try and help as much as I can. Let me show you what I found walking round the city today",
-                                "next" : {
-                                  "branch" : "image01"
+                                "next": {
+                                  "branch": "image01"
                                 }
                               }
                             },
@@ -79,14 +80,14 @@
                               "side": "user",
                               "text": "Yes",
                               "amplitudeEvent": "generosity_challenge_chat_user_action",
-                              "answerText" : "Yes",
-                              "functionName" : "pushNotificationPermission",
-                              "next" : {
+                              "answerText": "Yes",
+                              "functionName": "pushNotificationPermission",
+                              "next": {
                                 "type": "textMessage",
                                 "side": "interlocutor",
                                 "text": "Awesome! Let me show you show you what I found walking round the city today",
-                                "next" : {
-                                  "branch" : "image01"
+                                "next": {
+                                  "branch": "image01"
                                 }
                               }
                             }
@@ -96,14 +97,14 @@
                     }
                   }
                 }
-              }        
+              }
             }
           }
         }
       }
     }
   },
-  "image01" :{
+  "image01": {
     "type": "imageMessage",
     "side": "interlocutor",
     "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_001.png",
@@ -121,29 +122,29 @@
           "type": "textMessage",
           "side": "interlocutor",
           "text": "I've got our top research department to look into this and they found that there are 6 ways to show generosity",
-          "next" : {
+          "next": {
             "type": "imageMessage",
             "side": "interlocutor",
             "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
             "mediaSourceType": "network",
-            "next" : {
+            "next": {
               "type": "textMessage",
               "side": "interlocutor",
               "text": "I believe with your help each day, we can bring the color back into Tulsa",
-              "next" : {
+              "next": {
                 "type": "imageMessage",
                 "side": "interlocutor",
                 "path": "assets/images/day.gif",
                 "mediaSourceType": "asset",
-                "next" : {
+                "next": {
                   "type": "textMessage",
                   "side": "interlocutor",
                   "text": "Are you ready for your first assignment?",
-                  "next" : {
+                  "next": {
                     "type": "buttonAnswer",
                     "side": "user",
                     "text": "Let's go!",
-                    "answerText" : "Let's go!"
+                    "answerText": "Let's go!"
                   }
                 }
               }
@@ -153,7 +154,7 @@
       }
     }
   },
-  "postChat" :{
+  "postChat": {
     "type": "textMessage",
     "side": "user",
     "text": "We filled in your letter and now it's on our fridge!",

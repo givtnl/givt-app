@@ -19,6 +19,7 @@ class ChatScriptItem extends Equatable {
     required this.inputAnswerType,
     required this.mediaSourceType,
     required this.saveKey,
+    required this.saveInAmplitude,
     this.next,
     this.postChat,
   });
@@ -67,6 +68,7 @@ class ChatScriptItem extends Equatable {
         (map['mediaSourceType'] ?? '').toString(),
       ),
       saveKey: (map['saveKey'] ?? '').toString(),
+      saveInAmplitude: map['saveInAmplitude'] == null || map['saveInAmplitude'] == true,
       next: _readNextFromMap(map, branchesMap: branchesMap),
       postChat: map['postChat'] != null
           ? ChatScriptItem.fromMap(
@@ -90,6 +92,7 @@ class ChatScriptItem extends Equatable {
         inputAnswerType = ChatScriptInputAnswerType.none,
         mediaSourceType = ChatScriptItemMediaSourceType.none,
         saveKey = '',
+        saveInAmplitude = true,
         next = null,
         postChat = null;
 
@@ -173,6 +176,7 @@ class ChatScriptItem extends Equatable {
   final ChatScriptInputAnswerType inputAnswerType;
   final ChatScriptItemMediaSourceType mediaSourceType;
   final String saveKey;
+  final bool saveInAmplitude;
   final ChatScriptItem? next;
   final ChatScriptItem? postChat;
 
@@ -189,6 +193,7 @@ class ChatScriptItem extends Equatable {
     ChatScriptInputAnswerType? inputAnswerType,
     ChatScriptItemMediaSourceType? mediaSourceType,
     String? saveKey,
+    bool? saveInAmplitude,
     ChatScriptItem? next,
     ChatScriptItem? postChat,
   }) {
@@ -205,6 +210,7 @@ class ChatScriptItem extends Equatable {
       inputAnswerType: inputAnswerType ?? this.inputAnswerType,
       mediaSourceType: mediaSourceType ?? this.mediaSourceType,
       saveKey: saveKey ?? this.saveKey,
+      saveInAmplitude: saveInAmplitude ?? this.saveInAmplitude,
       next: next ?? this.next,
       postChat: postChat ?? this.postChat,
     );
@@ -226,6 +232,7 @@ class ChatScriptItem extends Equatable {
       'inputAnswerType': inputAnswerType.name,
       'mediaSourceType': mediaSourceType.name,
       'saveKey': saveKey,
+      'saveInAmplitude': saveInAmplitude,
       if (next != null) 'next': next!.toMap(),
       if (postChat != null) 'postChat': postChat!.toMap(),
     };
@@ -246,6 +253,7 @@ class ChatScriptItem extends Equatable {
       inputAnswerType,
       mediaSourceType,
       saveKey,
+      saveInAmplitude,
       next,
       postChat,
     ];

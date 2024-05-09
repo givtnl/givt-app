@@ -2,15 +2,16 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/repositories/family_values_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 
 part 'family_values_state.dart';
 
 class FamilyValuesCubit extends Cubit<FamilyValuesState> {
-  FamilyValuesCubit({required this.valuesRepository})
+  FamilyValuesCubit({required this.generosityChallengeRepository})
       : super(const FamilyValuesState(selectedValues: []));
 
-  final FamilyValuesRepository valuesRepository;
+  final GenerosityChallengeRepository generosityChallengeRepository;
 
   static const String familyValuesKey = 'family_values';
 
@@ -27,11 +28,21 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
 
   Future<void> rememberValues() async {
     try {
-      await valuesRepository.rememberValues(values: state.selectedValues);
+      // I guess it's ugly, but it does what it needs to do ¯\_(ツ)_/¯
+      for (var i = 0; i < state.selectedValues.length; i++) {
+        await generosityChallengeRepository.saveUserData(
+          ChatScriptSaveKey.fromString('familyValue${i + 1}Value'),
+          state.selectedValues[i].displayText,
+        );
+        await generosityChallengeRepository.saveUserData(
+          ChatScriptSaveKey.fromString('familyValue${i + 1}Key'),
+          state.selectedValues[i].area.name,
+        );
+      }
     } on Exception catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: 'remebr family values',
+        methodName: 'remember family values',
       );
     }
   }
