@@ -70,8 +70,8 @@
       "next": {
         "type": "buttonAnswer",
         "side": "user",
-        "text": "Let's test you know!",
-        "answerText": "Let's test you know!",
+        "text": "Let's test you now!",
+        "answerText": "Let's test you now!",
         "next": {
           "type": "textMessage",
           "side": "interlocutor",
@@ -80,7 +80,7 @@
             "type": "buttonAnswer",
             "side": "user",
             "text": "Where did you...",
-            "answerText": "Where did you ask us to keep our value cards",
+            "answerText": "Where did you ask us to keep our value cards?",
             "next": {
               "type": "textMessage",
               "side": "interlocutor",

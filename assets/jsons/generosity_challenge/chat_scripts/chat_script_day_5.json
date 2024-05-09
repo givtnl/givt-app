@@ -14,37 +14,43 @@
           {
             "type": "textMessage",
             "side": "user",
-            "text": "You're a great Mayor!",
-            "answerText": "You're a great Mayor!"
+            "text": "Encourage Mayor",
+            "answerText": "You're a great Mayor!",
+            "next": {
+              "branch": "continueChat"
+            }
           },
           {
             "type": "textMessage",
             "side": "user",
-            "text": "Tulsa is lucky to have you!",
-            "answerText": "Tulsa is lucky to have you!"
-          }
-        ],
-        "next": {
-          "type": "textMessage",
-          "side": "interlocutor",
-          "text": "Aww I'm blushing. Thank you so much. Being generous with your words really do make a difference",
-          "next": {
-            "type": "imageMessage",
-            "side": "interlocutor",
-            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_009.png",
-            "mediaSourceType": "network",
+            "text": "Compliment Mayor",
+            "answerText": "Tulsa is lucky to have you!",
             "next": {
-              "type": "textMessage",
-              "side": "interlocutor",
-              "text": "Ready for today's assignment?",
-              "next": {
-                "type": "buttonAnswer",
-                "side": "user",
-                "text": "Yes!",
-                "answerText": "Yes!"
-              }
+              "branch": "continueChat"
             }
           }
+        ]
+      }
+    }
+  },
+  "continueChat": {
+    "type": "textMessage",
+    "side": "interlocutor",
+    "text": "Aww I'm blushing. Thank you so much. Being generous with your words really do make a difference",
+    "next": {
+      "type": "imageMessage",
+      "side": "interlocutor",
+      "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_009.png",
+      "mediaSourceType": "network",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Ready for today's assignment?",
+        "next": {
+          "type": "buttonAnswer",
+          "side": "user",
+          "text": "Yes!",
+          "answerText": "Yes!"
         }
       }
     }

@@ -24,7 +24,7 @@
             "next": {
               "type": "textMessage",
               "side": "interlocutor",
-              "text": "This generosity activity teaches us to share our stuff with others",
+              "text": "This generosity activity teaches us to share our stuff with others.",
               "next": {
                 "type": "buttonAnswer",
                 "side": "user",
@@ -44,11 +44,11 @@
     "next": {
       "type": "textMessage",
       "side": "interlocutor",
-      "text": "Nice work! This will really make a difference to your community",
+      "text": "Nice work! This will really make a difference to your community.",
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
-        "text": "Find a local thrift store and donate your items"
+        "text": "Find a local thrift store and donate your items."
       }
     }
   }
