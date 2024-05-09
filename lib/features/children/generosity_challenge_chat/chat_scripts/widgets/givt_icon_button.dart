@@ -18,7 +18,7 @@ class GivtIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionContainer(
       borderColor: AppTheme.givtGreen40,
-      borderSize: 1,
+      borderSize: 0.1,
       baseBorderSize: 4,
       isDisabled: isDisabled,
       onTap: onTap,

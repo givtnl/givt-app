@@ -99,6 +99,7 @@ class AppTheme {
   static const highlight95 = Color(0xFFFFF1B2);
   static const highlight98 = Color(0xFFFFF9EB);
 
+  static const neutralVariant40 = Color(0xFF5B6055);
   static const neutralVariant50 = Color(0xFF74796D);
   static const neutralVariant80 = Color(0xFFC8C7BF);
   static const neutralVariant90 = Color(0xFFE4E3DB);
