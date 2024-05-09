@@ -51,12 +51,18 @@ class ChatScriptPage extends StatelessWidget {
               ),
             ],
           ),
-          body: state.status == ChatScriptsStatus.loading
-              ? const Center(child: CircularProgressIndicator())
-              : const ChatHistory(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: const ChatBar(),
+          body: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: state.status == ChatScriptsStatus.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : const ChatHistory(),
+                ),
+                const ChatBar(),
+              ],
+            ),
+          ),
         );
       },
     );

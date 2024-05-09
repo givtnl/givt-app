@@ -44,14 +44,19 @@ class _ChatHistoryState extends State<ChatHistory> {
     return BlocBuilder<ChatScriptsCubit, ChatScriptsState>(
       builder: (BuildContext context, ChatScriptsState state) {
         return Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 190),
+          padding: const EdgeInsets.only(left: 24, right: 24),
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Column(
-              children: _convertToWidgets(
-                _convertToList(state.chatHistory),
-                state,
-              ),
+              children: [
+                ..._convertToWidgets(
+                  _convertToList(state.chatHistory),
+                  state,
+                ),
+                Container(
+                  height: 24,
+                ),
+              ],
             ),
           ),
         );
