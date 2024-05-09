@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_input_answer_type.dart';
@@ -116,10 +115,11 @@ class _ChatInputFieldState extends State<ChatInputField> {
             child: Text(
               'It must contain at least 7 characters\nincluding at least one capital and one digit.',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontFamily: 'Rouna',
-                  color: AppTheme.givtBlue,
-                  fontWeight: FontWeight.w500,
-                  height: 1.4),
+                    fontFamily: 'Rouna',
+                    color: AppTheme.givtBlue,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                  ),
             ),
           ),
         Row(
