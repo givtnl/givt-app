@@ -29,32 +29,16 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
   Future<void> rememberValues() async {
     try {
       // I guess it's ugly, but it does what it needs to do ¯\_(ツ)_/¯
-      
-      await generosityChallengeRepository.saveUserData(
-        ChatScriptSaveKey.familyValue1Value,
-        state.selectedValues[0].displayText,
-      );
-      await generosityChallengeRepository.saveUserData(
-        ChatScriptSaveKey.familyValue1Key,
-        state.selectedValues[0].area.name,
-      );
-      await generosityChallengeRepository.saveUserData(
-        ChatScriptSaveKey.familyValue2Value,
-        state.selectedValues[1].displayText,
-      );
-      await generosityChallengeRepository.saveUserData(
-        ChatScriptSaveKey.familyValue2Key,
-        state.selectedValues[1].area.name,
-      );
-      await generosityChallengeRepository.saveUserData(
-        ChatScriptSaveKey.familyValue3Value,
-        state.selectedValues[2].displayText,
-      );
-      await generosityChallengeRepository.saveUserData(
-        ChatScriptSaveKey.familyValue3Key,
-        state.selectedValues[2].area.name,
-      );
-
+      for (var i = 0; i < state.selectedValues.length; i++) {
+        await generosityChallengeRepository.saveUserData(
+          ChatScriptSaveKey.familyValue1Value,
+          state.selectedValues[i].displayText,
+        );
+        await generosityChallengeRepository.saveUserData(
+          ChatScriptSaveKey.familyValue1Key,
+          state.selectedValues[i].area.name,
+        );
+      }
     } on Exception catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
