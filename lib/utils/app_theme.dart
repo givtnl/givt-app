@@ -80,6 +80,7 @@ class AppTheme {
   static const primary80 = Color(0xFF60DD9B);
   static const primary90 = Color(0xFF6BFCAB);
   static const primary98 = Color(0xFFE9FFED);
+  static const primary99 = Color(0xFFF5FFF5);
   static const primary95 = Color(0xFFC0FFD6);
 
   static const secondary30 = Color(0xFF004F50);

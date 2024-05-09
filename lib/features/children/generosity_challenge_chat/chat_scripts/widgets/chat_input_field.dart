@@ -121,10 +121,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   }
                 },
                 onEditingComplete: _onComplete,
-                style: textStyle?.copyWith(
-                  color: AppTheme.primary20,
-                ),
+                style: textStyle,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
                   hintText: widget.chatItem.text,
                   hintStyle: textStyle?.copyWith(
                     color: AppTheme.neutralVariant40,
@@ -136,7 +136,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   ),
                   focusedBorder: buildInputBorder.copyWith(
                     borderSide: borderSide.copyWith(
-                      color: AppTheme.inputFieldBorderSelected,
+                      color: AppTheme.inputFieldBorderEnabled,
                     ),
                   ),
                   suffixIcon: widget.chatItem.inputAnswerType ==

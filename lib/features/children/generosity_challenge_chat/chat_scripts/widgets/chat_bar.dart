@@ -16,7 +16,6 @@ class ChatBar extends StatelessWidget {
     return BlocBuilder<ChatScriptsCubit, ChatScriptsState>(
       builder: (BuildContext context, ChatScriptsState state) {
         return Container(
-          color: Colors.white,
           padding: const EdgeInsets.only(left: 24, right: 24),
           alignment: Alignment.bottomCenter,
           child: state.status == ChatScriptsStatus.waitingForAnswer

@@ -25,7 +25,7 @@ class GivtIconButton extends StatelessWidget {
       child: Container(
         width: 58,
         height: 58,
-        color: isDisabled ? AppTheme.givtGraycece : AppTheme.givtLightGreen,
+        color: isDisabled ? AppTheme.givtGraycece : AppTheme.primary80,
         child: Icon(
           iconData,
           size: 30,

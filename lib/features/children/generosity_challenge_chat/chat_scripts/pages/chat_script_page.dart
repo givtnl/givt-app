@@ -28,6 +28,7 @@ class ChatScriptPage extends StatelessWidget {
                 .availableChatDayIndex !=
             0;
         return Scaffold(
+          backgroundColor: AppTheme.primary99,
           appBar: GenerosityAppBar(
             title: 'Chat',
             leading: showBackButton
