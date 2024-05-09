@@ -44,49 +44,17 @@ class _ChatInputFieldState extends State<ChatInputField> {
   bool _isValidInput(String input, ChatScriptInputAnswerType type) {
     switch (type) {
       case ChatScriptInputAnswerType.email:
-        final isValid = Util.emailRegEx.hasMatch(input);
-        if (!isValid) {
-          setState(() {
-            errorMessage = 'Not a valid email address.';
-          });
-        }
-        return isValid;
+        return Util.emailRegEx.hasMatch(input);
       case ChatScriptInputAnswerType.text:
-        final isValid = Util.nameFieldsRegEx.hasMatch(input);
-        if (!isValid) {
-          setState(() {
-            errorMessage = 'Input contains invalid characters.';
-          });
-        }
-        return isValid;
+        return Util.nameFieldsRegEx.hasMatch(input);
       case ChatScriptInputAnswerType.password:
         final isLongEnough = input.length > 6;
-        if (!isLongEnough) {
-          setState(() {
-            errorMessage = 'Must contain at least 6 charachters.';
-          });
-        }
         final containsNumber = input.contains(RegExp('[0-9]'));
-        if (!containsNumber) {
-          setState(() {
-            errorMessage = 'Must contain one number.';
-          });
-        }
         final containsCaptialLetter = input.contains(RegExp('[A-Z]'));
-        if (!containsCaptialLetter) {
-          setState(() {
-            errorMessage = 'Must contain at least one capital letter.';
-          });
-        }
+
         return isLongEnough && containsNumber && containsCaptialLetter;
       case ChatScriptInputAnswerType.number:
-        final isValid = Util.numberInputFieldRegExp().hasMatch(input);
-        if (!isValid) {
-          setState(() {
-            errorMessage = 'Only numeric characters please.';
-          });
-        }
-        return isValid;
+        return Util.numberInputFieldRegExp().hasMatch(input);
       case ChatScriptInputAnswerType.none:
         return false;
     }
@@ -163,12 +131,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
                       color: AppTheme.inputFieldBorderEnabled,
                     ),
                   ),
-                  focusedErrorBorder: buildInputBorder.copyWith(
-                    borderSide: borderSide.copyWith(
-                      color: AppTheme.error50,
-                    ),
-                  ),
-                  errorText: errorMessage.isNotEmpty ? errorMessage : null,
                   focusedBorder: buildInputBorder.copyWith(
                     borderSide: borderSide.copyWith(
                       color: AppTheme.inputFieldBorderSelected,
@@ -178,14 +140,11 @@ class _ChatInputFieldState extends State<ChatInputField> {
               ),
             ),
             const SizedBox(width: 12),
-            Padding(
-              padding:
-                  EdgeInsets.only(bottom: errorMessage.isNotEmpty ? 22 : 0),
-              child: GivtIconButton(
-                isDisabled: inputText.isEmpty,
-                iconData: FontAwesomeIcons.paperPlane,
-                onTap: _onComplete,
-              ),
+            GivtIconButton(
+              isDisabled: inputText.isEmpty ||
+                  !_isValidInput(inputText, widget.chatItem.inputAnswerType),
+              iconData: FontAwesomeIcons.paperPlane,
+              onTap: _onComplete,
             ),
           ],
         ),
