@@ -87,8 +87,8 @@ class _ChatHistoryState extends State<ChatHistory> {
           ? challenge.chatActorsSettings.userAvatar
           : challenge.chatActorsSettings.interlocutorAvatar;
       final backgroundColor = isUserSide
-          ? challenge.chatActorsSettings.interlocutorBubbleColor
-          : challenge.chatActorsSettings.userBubbleColor;
+          ? challenge.chatActorsSettings.userBubbleColor
+          : challenge.chatActorsSettings.interlocutorBubbleColor;
 
       //compare with previous item's side
       final isSameSide = i - 1 >= 0 && item.side == historyItems[i - 1].side;
