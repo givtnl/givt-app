@@ -31,18 +31,18 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
       // I guess it's ugly, but it does what it needs to do ¯\_(ツ)_/¯
       for (var i = 0; i < state.selectedValues.length; i++) {
         await generosityChallengeRepository.saveUserData(
-          ChatScriptSaveKey.familyValue1Value,
+          ChatScriptSaveKey.fromString('familyValue${i + 1}Value'),
           state.selectedValues[i].displayText,
         );
         await generosityChallengeRepository.saveUserData(
-          ChatScriptSaveKey.familyValue1Key,
+          ChatScriptSaveKey.fromString('familyValue${i + 1}Key'),
           state.selectedValues[i].area.name,
         );
       }
     } on Exception catch (e) {
       await LoggingInfo.instance.error(
         e.toString(),
-        methodName: 'remebr family values',
+        methodName: 'remember family values',
       );
     }
   }
