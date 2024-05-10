@@ -53,6 +53,7 @@ class ChatScriptPage extends StatelessWidget {
             ],
           ),
           body: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 24),
             child: Column(
               children: [
                 Expanded(
