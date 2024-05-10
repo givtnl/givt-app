@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
@@ -35,13 +34,13 @@ class _GenerosityChallengeOverviewState
   @override
   Widget build(BuildContext context) {
     final challenge = context.watch<GenerosityChallengeCubit>();
-    final auth = context.watch<AuthCubit>().state;
-    final arePersonalDetailsAvailable =
-        auth.status == AuthStatus.authenticated &&
-            auth.user.personalInfoRegistered;
+    final userData = challenge.loadUserData();
+
+    final arePersonalDetailsAvailable = userData.isNotEmpty;
+
     return Scaffold(
       appBar: const GenerosityAppBar(
-        title: 'Generosity Mission',
+        title: 'Generosity Challenge',
         leading: null,
         actions: [
           ChatIconButton(),
@@ -59,7 +58,7 @@ class _GenerosityChallengeOverviewState
             Column(
               children: [
                 if (arePersonalDetailsAvailable)
-                  _buildGenerosityHeader(auth.user.lastName),
+                  _buildGenerosityHeader(userData['lastName'].toString()),
                 GridView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: GenerosityChallengeHelper.generosityChallengeDays,

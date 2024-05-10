@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
@@ -27,7 +28,8 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
     });
   }
 
-  static const Duration _typingDuration = Duration(milliseconds: 1000);
+  static const Duration _typingDuration =
+      Duration(milliseconds: kDebugMode ? 10 : 2000);
   static const Duration _chatCompletedDelay = Duration(milliseconds: 3000);
 
   final ChatHistoryRepository _chatHistoryRepository;
@@ -93,19 +95,21 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
   Future<void> _completeDayChat(BuildContext context) async {
     await _challengeCubit.onChatCompleted();
-    final userData = await _challengeCubit.loadUserData();
+    final userData = _challengeCubit.loadUserData();
 
     await Future.delayed(_chatCompletedDelay, () {
       context.pop();
-      //for testing purposes just for now
-      SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
+      
+      if (kDebugMode) {
+        SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
+      }
     });
   }
 
   Future<void> _trackAmplitudeIfNeeded(ChatScriptItem item) async {
     final amplitudeEvent = item.amplitudeEvent.isNotEmpty
         ? item.amplitudeEvent
-        : item.saveKey.isNotEmpty
+        : item.saveKey.isNotEmpty && item.saveInAmplitude
             ? AmplitudeEvents.generosityChallengeChatUserAction.value
             : '';
 

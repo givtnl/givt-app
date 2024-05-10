@@ -36,7 +36,7 @@ class GivtElevatedButton extends StatelessWidget {
         height: 58,
         width: MediaQuery.sizeOf(context).width * widthMultiplier,
         decoration: BoxDecoration(
-          color: isDisabled ? AppTheme.givtGraycece : AppTheme.givtLightGreen,
+          color: isDisabled ? AppTheme.givtGraycece : AppTheme.primary80,
         ),
         child: getChild(context),
       ),

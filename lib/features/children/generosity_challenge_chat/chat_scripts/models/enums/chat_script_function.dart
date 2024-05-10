@@ -1,5 +1,6 @@
+import 'package:app_settings/app_settings.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 
 enum ChatScriptFunction {
   none(function: _empty),
@@ -31,13 +32,10 @@ enum ChatScriptFunction {
   static Future<bool> _askForPushNotificationPermission(
     BuildContext context,
   ) async {
-    await showDialog<void>(
-      context: context,
-      builder: (_) => const WarningDialog(
-        title: 'Placeholder',
-        content: 'Here will be a push notification permission ask soon ;)',
-      ),
-    );
+    final settings = await FirebaseMessaging.instance.getNotificationSettings();
+    if (settings.authorizationStatus != AuthorizationStatus.authorized) {
+      await AppSettings.openAppSettings(type: AppSettingsType.notification);
+    }
     return true;
   }
 }

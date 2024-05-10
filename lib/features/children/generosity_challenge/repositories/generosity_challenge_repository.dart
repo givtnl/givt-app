@@ -9,7 +9,7 @@ mixin GenerosityChallengeRepository {
   Future<List<Day>> loadFromCache();
   Future<void> clearCache();
   Future<void> saveUserData(ChatScriptSaveKey key, String value);
-  Future<Map<String, dynamic>> loadUserData();
+  Map<String, dynamic> loadUserData();
 }
 
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
@@ -60,7 +60,7 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> loadUserData() async {
+  Map<String, dynamic> loadUserData() {
     final encodedString =
         sharedPreferences.getString(_generosityChallengeUserDataKey) ?? '';
 
@@ -75,7 +75,7 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
       return;
     }
 
-    final currentData = await loadUserData();
+    final currentData = loadUserData();
     currentData[key.value] = value;
 
     await sharedPreferences.setString(

@@ -63,7 +63,12 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       );
 
   Future<void> completeActiveDay() async {
-    emit(state.copyWith(status: GenerosityChallengeStatus.loading));
+    emit(
+      state.copyWith(
+        status: GenerosityChallengeStatus.loading,
+        showMayor: true,
+      ),
+    );
 
     state.days[state.activeDayIndex] = state.days[state.activeDayIndex]
         .copyWith(dateCompleted: DateTime.now().toIso8601String());
@@ -73,7 +78,12 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   }
 
   Future<void> undoCompletedDay(int index) async {
-    emit(state.copyWith(status: GenerosityChallengeStatus.loading));
+    emit(
+      state.copyWith(
+        status: GenerosityChallengeStatus.loading,
+        showMayor: false,
+      ),
+    );
 
     state.days[index] = state.days[index].copyWith(dateCompleted: '');
 
@@ -123,7 +133,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     return format(source, userData);
   }
 
-  Future<Map<String, dynamic>> loadUserData() =>
+  Map<String, dynamic> loadUserData() =>
       _generosityChallengeRepository.loadUserData();
 
   int _findAvailableChatDayIndex(List<Day> days, int activeChatIndex) {
@@ -210,5 +220,9 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     emit(state.copyWith(unlockDayTimeDifference: newTimeDifference));
     final days = await _generosityChallengeRepository.loadFromCache();
     _refreshState(days: days);
+  }
+
+  void dismissMayorPopup() {
+    emit(state.copyWith(showMayor: false));
   }
 }

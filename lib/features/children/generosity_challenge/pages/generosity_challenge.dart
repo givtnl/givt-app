@@ -5,6 +5,7 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_day_details.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/mayor_chat_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallenge extends StatefulWidget {
@@ -51,7 +52,38 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
+    final challenge = context.read<GenerosityChallengeCubit>();
+    return BlocConsumer<GenerosityChallengeCubit, GenerosityChallengeState>(
+      listener: (context, state) {
+        if (state.showMayor &&
+            state.status == GenerosityChallengeStatus.overview) {
+          Future.delayed(
+            const Duration(milliseconds: 400),
+            () => showDialog<void>(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) {
+                return MayorChatDialog(
+                  onGoToChat: () {
+                    challenge.dismissMayorPopup();
+                    context
+                      ..pop()
+                      ..goNamed(
+                        Pages.generosityChallengeChat.name,
+                        extra: challenge,
+                      );
+                  },
+                  onDismiss: () {
+                    challenge.dismissMayorPopup();
+                    context.pop();
+                  },
+                  isFirstDay: state.availableChatDayIndex == 0,
+                );
+              },
+            ),
+          );
+        }
+      },
       builder: (BuildContext context, GenerosityChallengeState state) {
         switch (state.status) {
           case GenerosityChallengeStatus.initial:

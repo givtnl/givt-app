@@ -2,11 +2,77 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Still in progress.. Stay tuned for the new updates!"
+    "text": "I'm so glad to see you again. Let's keep this generosity habit going",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "It always makes me feel good when someone encourages me or gives me a compliment",
+      "next": {
+        "type": "buttonGroupAnswer",
+        "side": "user",
+        "options": [
+          {
+            "type": "textMessage",
+            "side": "user",
+            "text": "Encourage Mayor",
+            "answerText": "You're a great Mayor!",
+            "next": {
+              "branch": "continueChat"
+            }
+          },
+          {
+            "type": "textMessage",
+            "side": "user",
+            "text": "Compliment Mayor",
+            "answerText": "Tulsa is lucky to have you!",
+            "next": {
+              "branch": "continueChat"
+            }
+          }
+        ]
+      }
+    }
   },
-  "postChat" :{
+  "continueChat": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Awesome!"
+    "text": "Aww I'm blushing. Thank you so much. Being generous with your words really do make a difference",
+    "next": {
+      "type": "imageMessage",
+      "side": "interlocutor",
+      "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_009.png",
+      "mediaSourceType": "network",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Ready for today's assignment?",
+        "next": {
+          "type": "buttonAnswer",
+          "side": "user",
+          "text": "Yes!",
+          "answerText": "Yes!"
+        }
+      }
+    }
+  },
+  "postChat": {
+    "type": "textMessage",
+    "side": "interlocutor",
+    "text": "Doesn’t it feel great to hear nice things and share kind words?",
+    "next": {
+      "type": "buttonAnswer",
+      "side": "user",
+      "text": "Absolutely!",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "As you keep doing this at work and school, others will also be generous with their words.",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "Tulsa will soon be filled with kind and generous people. Great job superheroes."
+        }
+      }
+    }
   }
 }

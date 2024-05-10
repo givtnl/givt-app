@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChildGivingAllowanceCard extends StatelessWidget {
@@ -68,18 +68,18 @@ class ChildGivingAllowanceCard extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SvgPicture.asset(
-                    'assets/images/refresh_arrows.svg',
-                    width: 20,
-                  ),
+                  calendarClockIcon(width: 23, height: 20),
                   const SizedBox(width: 10),
-                  Text(
-                    context.l10n.createChildGivingAllowanceTitle,
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: AppTheme.inputFieldBorderSelected,
-                          fontFamily: 'Raleway',
-                          fontWeight: FontWeight.w800,
-                        ),
+                  Flexible(
+                    child: Text(
+                      context.l10n.createChildGivingAllowanceTitle,
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            color: AppTheme.inputFieldBorderSelected,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w800,
+                        height: 1.2,
+                          ),
+                    ),
                   ),
                 ],
               ),
@@ -88,7 +88,11 @@ class ChildGivingAllowanceCard extends StatelessWidget {
                     ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
                     : '${context.l10n.childNextTopUpPrefix}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: AppTheme.inputFieldBorderSelected,
+                      color: AppTheme.childGivingAllowanceHint,
+                      fontFamily: 'Raleway',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      height: 1.2,
                     ),
               ),
             ],
