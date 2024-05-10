@@ -1409,7 +1409,7 @@
     "createChildNameErrorTextFirstPart1": "Name must be at least ",
     "createChildNameErrorTextFirstPart2": " characters.",
     "createChildDateErrorText": "Please select date of birth.",
-    "createChildAllowanceErrorText": "Giving allowance must be grater than zero.",
+    "createChildAllowanceErrorText": "Giving allowance must be greater than zero.",
     "createChildErrorText": "Cannot create child profile. Please try again later.",
     "createChildGivingAllowanceInfoButton": "More about giving allowance",
     "createChildPageTitle": "Please enter some information about your child",
