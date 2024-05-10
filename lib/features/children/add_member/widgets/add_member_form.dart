@@ -9,6 +9,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
@@ -24,6 +25,7 @@ class AddMemberForm extends StatefulWidget {
     required this.ageFocusNode,
     super.key,
   });
+
   final bool firstMember;
   final VoidCallback onRemove;
   final FocusNode ageFocusNode;
@@ -38,36 +40,14 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final _emailParentController = TextEditingController();
   final _ageController = TextEditingController();
   bool isChildSelected = true;
-  int _allowanceController = 15;
+  int _allowance = 15;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
   late final FocusNode _childNameFocusNode;
   late final FocusNode _parentNameFocusNode;
-  Timer? _timer;
-  Duration _heldDuration = Duration.zero;
-  int tapTime = 240;
-  int holdDownDuration = 1000;
-  int holdDownDuration2 = 2000;
-  int maxAllowance = 999;
-  int minAllowance = 1;
-  int allowanceIncrement = 5;
-  int allowanceIncrement2 = 10;
-
-  void _startTimer(void Function() callback) {
-    _timer = Timer.periodic(Duration(milliseconds: tapTime), (_) {
-      _heldDuration += Duration(milliseconds: tapTime);
-      callback();
-    });
-  }
-
-  void _stopTimer() {
-    _timer?.cancel();
-    _heldDuration = Duration.zero;
-  }
 
   @override
   void dispose() {
-    _stopTimer();
     _childNameFocusNode.dispose();
     _parentNameFocusNode.dispose();
     super.dispose();
@@ -78,54 +58,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
     super.initState();
     _childNameFocusNode = FocusNode()..requestFocus();
     _parentNameFocusNode = FocusNode()..requestFocus();
-  }
-
-  void _incrementCounter() {
-    final isHeldDurationShortEnoughForIncrement1 =
-        (_heldDuration.inMilliseconds > holdDownDuration) &&
-            _allowanceController >= maxAllowance - allowanceIncrement;
-    final isHeldDurationShortEnoughForIncrement2 =
-        (_heldDuration.inMilliseconds > holdDownDuration2) &&
-            _allowanceController >= maxAllowance - allowanceIncrement2;
-
-    if (_allowanceController >= maxAllowance ||
-        isHeldDurationShortEnoughForIncrement1 ||
-        isHeldDurationShortEnoughForIncrement2) {
-      return;
-    }
-    setState(() {
-      HapticFeedback.lightImpact();
-      SystemSound.play(SystemSoundType.click);
-      _allowanceController += (_heldDuration.inMilliseconds < holdDownDuration)
-          ? 1
-          : (_heldDuration.inMilliseconds < holdDownDuration2)
-              ? allowanceIncrement
-              : allowanceIncrement2;
-    });
-  }
-
-  void _decrementCounter() {
-    final isHeldDurationLongEnoughForNegative1 =
-        (_heldDuration.inMilliseconds > holdDownDuration) &&
-            _allowanceController <= minAllowance + allowanceIncrement;
-    final isHeldDurationLongEnoughForNegative2 =
-        (_heldDuration.inMilliseconds > holdDownDuration2) &&
-            _allowanceController <= minAllowance + allowanceIncrement2;
-
-    if (_allowanceController <= minAllowance ||
-        isHeldDurationLongEnoughForNegative1 ||
-        isHeldDurationLongEnoughForNegative2) {
-      return;
-    }
-    setState(() {
-      HapticFeedback.lightImpact();
-      SystemSound.play(SystemSoundType.click);
-      _allowanceController -= (_heldDuration.inMilliseconds < holdDownDuration)
-          ? 1
-          : (_heldDuration.inMilliseconds < holdDownDuration2)
-              ? allowanceIncrement
-              : allowanceIncrement2;
-    });
   }
 
   @override
@@ -155,7 +87,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               firstName: name,
               dateOfBirth: dateOfBirth,
               age: age,
-              allowance: _allowanceController,
+              allowance: _allowance,
               key: formKeyChild.toString(),
               type: ProfileType.Child,
             );
@@ -169,7 +101,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               eventProperties: {
                 'name': name,
                 'age': age,
-                'allowance': _allowanceController,
+                'allowance': _allowance,
               },
             );
           } else {
@@ -342,85 +274,6 @@ class _AddMemberFormState extends State<AddMemberForm> {
     );
   }
 
-  Widget allowanceCounter(String currency) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTapDown: (_) {
-            _startTimer(_decrementCounter);
-          },
-          onTapUp: (_) {
-            _stopTimer();
-          },
-          onTapCancel: _stopTimer,
-          onTap: (_allowanceController < 2) ? null : _decrementCounter,
-          child: Container(
-            width: 32,
-            height: 32,
-            child: Icon(
-              FontAwesomeIcons.circleMinus,
-              size: 32,
-              color: (_allowanceController < 2)
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          width: _allowanceController < 100 ? 75 : 95,
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: currency,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextSpan(
-                  text: '$_allowanceController',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.w700,
-                    fontFeatures: <FontFeature>[FontFeature.liningFigures()],
-                  ),
-                ),
-              ],
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        GestureDetector(
-          onTapDown: (_) {
-            _startTimer(_incrementCounter);
-          },
-          onTapUp: (_) {
-            _stopTimer();
-          },
-          onTapCancel: _stopTimer,
-          onTap: (_allowanceController > 998) ? null : _incrementCounter,
-          child: Container(
-            width: 32,
-            height: 32,
-            child: Icon(
-              FontAwesomeIcons.circlePlus,
-              size: 32,
-              color: (_allowanceController > 998)
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget createChildForm(String currency) {
     return Form(
       key: formKeyChild,
@@ -472,7 +325,11 @@ class _AddMemberFormState extends State<AddMemberForm> {
           ),
           const SizedBox(height: 10),
           const GivingAllowanceInfoButton(),
-          allowanceCounter(currency),
+          AllowanceCounter(
+            currency: currency,
+            initialAllowance: _allowance,
+            onAllowanceChanged: (allowance) => _allowance = allowance,
+          ),
         ],
       ),
     );
