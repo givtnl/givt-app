@@ -14,19 +14,19 @@
           {
             "type": "textMessage",
             "side": "user",
-            "text": "Yes",
-            "answerText": "Yes",
+            "text": "No",
+            "answerText": "No",
             "next": {
-              "branch": "addParent"
+              "branch": "continueChildren"
             }
           },
           {
             "type": "textMessage",
             "side": "user",
-            "text": "No",
-            "answerText": "No",
+            "text": "Yes",
+            "answerText": "Yes",
             "next": {
-              "branch": "continueChildren"
+              "branch": "addParent"
             }
           }
         ]
