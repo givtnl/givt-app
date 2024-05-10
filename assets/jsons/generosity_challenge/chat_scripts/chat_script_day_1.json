@@ -53,6 +53,15 @@
         {
           "type": "textMessage",
           "side": "user",
+          "text": "No",
+          "answerText": "No",
+          "next": {
+            "branch": "continueChat"
+          }
+        },
+        {
+          "type": "textMessage",
+          "side": "user",
           "text": "Yes",
           "answerText": "Yes",
           "next": {
@@ -61,113 +70,132 @@
             "text": "Child's name",
             "saveKey": "child1FirstName",
             "next": {
-              "type": "textMessage",
-              "side": "interlocutor",
-              "text": "Any other children?",
+              "type": "inputAnswer",
+              "inputAnswerType": "number",
+              "side": "user",
+              "text": "Child's age",
+              "saveKey": "child1Age",
               "next": {
-                "type": "buttonGroupAnswer",
-                "side": "user",
-                "options": [
-                  {
-                    "type": "textMessage",
-                    "side": "user",
-                    "text": "Yes",
-                    "answerText": "Yes",
-                    "next": {
-                      "type": "inputAnswer",
+                "type": "textMessage",
+                "side": "interlocutor",
+                "text": "Any other children?",
+                "next": {
+                  "type": "buttonGroupAnswer",
+                  "side": "user",
+                  "options": [
+                    {
+                      "type": "textMessage",
                       "side": "user",
-                      "text": "Child's name",
-                      "saveKey": "child2FirstName",
+                      "text": "No",
+                      "answerText": "No",
                       "next": {
-                        "type": "textMessage",
-                        "side": "interlocutor",
-                        "text": "Any other children?",
+                        "branch": "continueChat"
+                      }
+                    },
+                    {
+                      "type": "textMessage",
+                      "side": "user",
+                      "text": "Yes",
+                      "answerText": "Yes",
+                      "next": {
+                        "type": "inputAnswer",
+                        "side": "user",
+                        "text": "Child's name",
+                        "saveKey": "child2FirstName",
                         "next": {
-                          "type": "buttonGroupAnswer",
+                          "type": "inputAnswer",
+                          "inputAnswerType": "number",
                           "side": "user",
-                          "options": [
-                            {
-                              "type": "textMessage",
+                          "text": "Child's age",
+                          "saveKey": "child2Age",
+                          "next": {
+                            "type": "textMessage",
+                            "side": "interlocutor",
+                            "text": "Any other children?",
+                            "next": {
+                              "type": "buttonGroupAnswer",
                               "side": "user",
-                              "text": "Yes",
-                              "answerText": "Yes",
-                              "next": {
-                                "type": "inputAnswer",
-                                "side": "user",
-                                "text": "Child's name",
-                                "saveKey": "child3FirstName",
-                                "next": {
+                              "options": [
+                                {
                                   "type": "textMessage",
-                                  "side": "interlocutor",
-                                  "text": "Any other children?",
+                                  "side": "user",
+                                  "text": "No",
+                                  "answerText": "No",
                                   "next": {
-                                    "type": "buttonGroupAnswer",
+                                    "branch": "continueChat"
+                                  }
+                                },
+                                {
+                                  "type": "textMessage",
+                                  "side": "user",
+                                  "text": "Yes",
+                                  "answerText": "Yes",
+                                  "next": {
+                                    "type": "inputAnswer",
                                     "side": "user",
-                                    "options": [
-                                      {
+                                    "text": "Child's name",
+                                    "saveKey": "child3FirstName",
+                                    "next": {
+                                      "type": "inputAnswer",
+                                      "inputAnswerType": "number",
+                                      "side": "user",
+                                      "text": "Child's age",
+                                      "saveKey": "child3Age",
+                                      "next": {
                                         "type": "textMessage",
-                                        "side": "user",
-                                        "text": "Yes",
-                                        "answerText": "Yes",
+                                        "side": "interlocutor",
+                                        "text": "Any other children?",
                                         "next": {
-                                          "type": "inputAnswer",
+                                          "type": "buttonGroupAnswer",
                                           "side": "user",
-                                          "text": "Child's name",
-                                          "saveKey": "child4FirstName",
-                                          "next": {
-                                            "branch": "continueChat"
-                                          }
-                                        }
-                                      },
-                                      {
-                                        "type": "textMessage",
-                                        "side": "user",
-                                        "text": "No",
-                                        "answerText": "No",
-                                        "next": {
-                                          "branch": "continueChat"
+                                          "options": [
+                                            {
+                                              "type": "textMessage",
+                                              "side": "user",
+                                              "text": "Yes",
+                                              "answerText": "Yes",
+                                              "next": {
+                                                "type": "inputAnswer",
+                                                "side": "user",
+                                                "text": "Child's name",
+                                                "saveKey": "child4FirstName",
+                                                "next": {
+                                                  "type": "inputAnswer",
+                                                  "inputAnswerType": "number",
+                                                  "side": "user",
+                                                  "text": "Child's age",
+                                                  "saveKey": "child4Age",
+                                                  "next": {
+                                                    "branch": "continueChat"
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            {
+                                              "type": "textMessage",
+                                              "side": "user",
+                                              "text": "No",
+                                              "answerText": "No",
+                                              "next": {
+                                                "branch": "continueChat"
+                                              }
+                                            }
+                                          ]
                                         }
                                       }
-                                    ]
+                                    }
                                   }
                                 }
-                              }
-                            },
-                            {
-                              "type": "textMessage",
-                              "side": "user",
-                              "text": "No",
-                              "answerText": "No",
-                              "next": {
-                                "branch": "continueChat"
-                              }
+                              ]
                             }
-                          ]
+                          }
                         }
                       }
                     }
-                  },
-                  {
-                    "type": "textMessage",
-                    "side": "user",
-                    "text": "No",
-                    "answerText": "No",
-                    "next": {
-                      "branch": "continueChat"
-                    }
-                  }
-                ]
+                  ]
+                }
               }
             }
-          }
-        },
-        {
-          "type": "textMessage",
-          "side": "user",
-          "text": "No",
-          "answerText": "No",
-          "next": {
-            "branch": "continueChat"
           }
         }
       ]
@@ -206,7 +234,7 @@
                 "next": {
                   "type": "imageMessage",
                   "side": "interlocutor",
-                  "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
+                  "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_005.png",
                   "mediaSourceType": "network",
                   "next": {
                     "type": "textMessage",

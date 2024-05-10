@@ -125,7 +125,7 @@
           "next": {
             "type": "imageMessage",
             "side": "interlocutor",
-            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_003.png",
+            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_004.png",
             "mediaSourceType": "network",
             "next": {
               "type": "textMessage",
