@@ -1556,6 +1556,6 @@
     "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here",
     "genericSuccessTitle": "Consider it done!",
     "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time.",
-    "editGivingAllowanceDescription": "Which amount should be added to\u2028your child’s Wallet each month?",
+    "editGivingAllowanceDescription": "Which amount should be added to your child’s Wallet each month?",
     "editGivingAllowanceHint": "Choose an amount between $1 to $999."
 }
