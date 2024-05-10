@@ -63,6 +63,7 @@
       "type": "buttonAnswer",
       "side": "user",
       "text": "Absolutely!",
+      "answerText": "Absolutely!",
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
