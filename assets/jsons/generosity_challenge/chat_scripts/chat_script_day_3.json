@@ -2,44 +2,39 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Did you know, before there were clocks, people used sundials to tell time. They worked by using the shadow of the sun!",
+    "text": "Hey again! Did you know before clocks, people used hourglasses to measure time.",
     "next": {
       "type": "buttonAnswer",
       "side": "user",
-      "text": "What about clouds?",
-      "answerText": "What about clouds?",
+      "text": "Hourglasses?",
+      "answerText": "Hourglasses?",
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
-        "text": "If it were cloudy, the sundial would say, \"Oops, I can't see my shadow, no time-telling today!\"",
+        "text": "Yeah, they worked by counting the grains of sand as they fell!",
         "next": {
           "type": "buttonAnswer",
           "side": "user",
-          "text": "Really?",
-          "answerText": "Really?",
+          "text": "Neat!",
+          "answerText": "Neat!",
           "next": {
             "type": "textMessage",
             "side": "interlocutor",
-            "text": "Only joking! They just wouldn't work and you would have to use a water clock or an hourglass.",
+            "text": "Anyway time is ticking on and that’s exactly what our third generosity activity is all about...time!",
             "next": {
-              "type": "textMessage",
+              "type": "imageMessage",
               "side": "interlocutor",
-              "text": "Anyway time is ticking on and that's exactly what our third generosity activity is all about...time!",
+              "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_007.png",
+              "mediaSourceType": "network",
               "next": {
-                "type": "imageMessage",
+                "type": "textMessage",
                 "side": "interlocutor",
-                "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_007.png",
-                "mediaSourceType": "network",
+                "text": "Giving your time is probably one of the most precious things you can give! Ready for the next assignment?",
                 "next": {
-                  "type": "textMessage",
-                  "side": "interlocutor",
-                  "text": "Giving your time is probably one of the most precious things you can give! Ready for the next assignment?",
-                  "next": {
-                    "type": "buttonAnswer",
-                    "side": "user",
-                    "text": "You bet!",
-                    "answerText": "You bet!"
-                  }
+                  "type": "buttonAnswer",
+                  "side": "user",
+                  "text": "You bet!",
+                  "answerText": "You bet!"
                 }
               }
             }
