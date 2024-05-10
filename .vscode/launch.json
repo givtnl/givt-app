@@ -84,6 +84,15 @@
         "--dart-define",
         "STRIPE_MERCHANT_ID=merchant.net.givtapp.ios",
       ]
+    },
+    {
+      "name": "Golden",
+      "request": "launch",
+      "type": "dart",
+      "codeLens": {
+        "for": ["run-test", "run-test-file"]
+      },
+      "args": ["--update-goldens"]
     }
   ]
 }
