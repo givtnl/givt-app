@@ -5,6 +5,7 @@ import 'package:givt_app/shared/pages/common_success_page.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 
 import '../../golden_utils.dart';
+import '../../screen_sizes.dart';
 
 // https://pub.dev/packages/golden_toolkit
 
@@ -38,6 +39,7 @@ void main() {
       'success_pages_golden',
       tester,
       builder.build(),
+      size: SurfaceSizes.twoScenariosPortrait,
     );
   });
 }

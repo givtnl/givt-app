@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 
 class CommonSuccessPage extends StatelessWidget {
@@ -45,8 +48,12 @@ class CommonSuccessPage extends StatelessWidget {
               ),
           ],
         ),
-        SvgPicture.asset(
-          'assets/images/registered_check_background.svg',
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            registeredCheckBackground(),
+            registeredCheck(),
+          ],
         ),
         CustomGreenElevatedButton(
           title: buttonText,

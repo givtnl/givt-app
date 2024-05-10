@@ -42,6 +42,6 @@ Future<void> checkIfScreenMatchesGolden(
   Widget widget, {
   Size? size,
 }) async {
-  await prepareWidgetForGolden(tester, widget);
+  await prepareWidgetForGolden(tester, widget, size: size);
   await screenMatchesGolden(tester, goldenFileName);
 }
