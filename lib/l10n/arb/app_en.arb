@@ -1409,7 +1409,7 @@
     "createChildNameErrorTextFirstPart1": "Name must be at least ",
     "createChildNameErrorTextFirstPart2": " characters.",
     "createChildDateErrorText": "Please select date of birth.",
-    "createChildAllowanceErrorText": "Giving allowance must be grater than zero.",
+    "createChildAllowanceErrorText": "Giving allowance must be greater than zero.",
     "createChildErrorText": "Cannot create child profile. Please try again later.",
     "createChildGivingAllowanceInfoButton": "More about giving allowance",
     "createChildPageTitle": "Please enter some information about your child",
@@ -1555,5 +1555,7 @@
     "groups": "Groups",
     "yourFamilyGroupWillAppearHere": "Your Family Group and other\ngroups will appear here",
     "genericSuccessTitle": "Consider it done!",
-    "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time."
+    "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time.",
+    "editGivingAllowanceDescription": "Which amount should be added to your child’s Wallet each month?",
+    "editGivingAllowanceHint": "Choose an amount between $1 to $999."
 }
