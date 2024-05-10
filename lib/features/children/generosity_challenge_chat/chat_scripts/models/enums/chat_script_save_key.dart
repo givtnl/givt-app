@@ -7,9 +7,13 @@ enum ChatScriptSaveKey {
 
   parent2FirstName(value: 'parent2FirstName'),
   child1FirstName(value: 'child1FirstName'),
+  child1Age(value: 'child1Age'),
   child2FirstName(value: 'child2FirstName'),
+  child2Age(value: 'child2Age'),
   child3FirstName(value: 'child3FirstName'),
+  child3Age(value: 'child3Age'),
   child4FirstName(value: 'child4FirstName'),
+  child4Age(value: 'child4Age'),
 
   familyValue1Key(value: 'familyValue1Key'),
   familyValue1Value(value: 'familyValue1Value'),
