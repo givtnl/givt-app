@@ -30,15 +30,11 @@ class _RegisteredCheckAnimationState extends State<RegisteredCheckAnimation> {
               imageSize = size.width * (0.42 * value);
 
               return Stack(
+                alignment: Alignment.center,
                 children: [
-                  registeredCheckBackground(height: size.height + 0.3),
-                  Positioned(
-                    left: leftPosition,
-                    top: topPosition,
-                    child: registeredCheck(
-                      width: imageSize,
-                      clipBehavior: Clip.none,
-                    ),
+                  registeredCheckBackground(height: size.height * 0.3),
+                  registeredCheck(
+                    clipBehavior: Clip.none,
                   ),
                 ],
               );
