@@ -74,6 +74,7 @@ class ChatBar extends StatelessWidget {
               },
               child: Text(
                 state.currentConditionalItem.options[0].text,
+                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: AppTheme.givtGreen40,
                       fontWeight: FontWeight.w700,
