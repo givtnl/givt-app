@@ -36,7 +36,7 @@ class GivtElevatedButton extends StatelessWidget {
         height: 58,
         width: MediaQuery.sizeOf(context).width * widthMultiplier,
         decoration: BoxDecoration(
-          color: isDisabled ? AppTheme.givtGraycece : AppTheme.givtLightGreen,
+          color: isDisabled ? AppTheme.givtGraycece : AppTheme.primary80,
         ),
         child: getChild(context),
       ),
@@ -64,6 +64,7 @@ class GivtElevatedButton extends StatelessWidget {
           ),
           Text(
             text,
+            textAlign: TextAlign.center,
             style: isDisabled == true
                 ? Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.outline,
@@ -86,6 +87,7 @@ class GivtElevatedButton extends StatelessWidget {
         children: [
           Text(
             text,
+            textAlign: TextAlign.center,
             style: isDisabled == true
                 ? Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.outline,
@@ -121,6 +123,7 @@ class GivtElevatedButton extends StatelessWidget {
             leadingImage!,
             Text(
               text,
+              textAlign: TextAlign.center,
               style: isDisabled == true
                   ? Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: Theme.of(context).colorScheme.outline,
@@ -143,6 +146,7 @@ class GivtElevatedButton extends StatelessWidget {
     return Center(
       child: Text(
         text,
+        textAlign: TextAlign.center,
         style: isDisabled == true
             ? Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: Theme.of(context).colorScheme.outline,

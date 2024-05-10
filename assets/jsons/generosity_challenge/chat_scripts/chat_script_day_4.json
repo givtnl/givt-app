@@ -2,11 +2,54 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Still in progress.. Stay tuned for the new updates!"
+    "text": "Hey! You are making great progress!",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Did you know the average US home has 300,000 items?",
+      "next": {
+        "type": "buttonAnswer",
+        "side": "user",
+        "text": "That's a lot!",
+        "answerText": "That's a lot!",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "You bet it is. And we probably don't use most of it...So that's why today is about material generosity.",
+          "next": {
+            "type": "imageMessage",
+            "side": "interlocutor",
+            "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_008.png",
+            "mediaSourceType": "network",
+            "next": {
+              "type": "textMessage",
+              "side": "interlocutor",
+              "text": "This generosity activity teaches us to share our stuff with others.",
+              "next": {
+                "type": "buttonAnswer",
+                "side": "user",
+                "text": "We are ready.",
+                "answerText": "We are ready."
+              }
+            }
+          }
+        }
+      }
+    }
   },
-  "postChat" :{
+  "postChat": {
     "type": "textMessage",
-    "side": "interlocutor",
-    "text": "Awesome!"
+    "side": "user",
+    "text": "We each chose an item to give away.",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Nice work! This will really make a difference to your community.",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Find a local thrift store and donate your items."
+      }
+    }
   }
 }

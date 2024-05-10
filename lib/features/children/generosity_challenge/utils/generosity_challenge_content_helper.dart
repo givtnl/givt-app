@@ -28,42 +28,37 @@ class GenerosityChallengeContentHelper {
       ),
     ),
     Task.card(
-      image: '',
-      title: 'It was not an expensive piece of wood. ',
+      image: 'assets/images/generosity_challenge_day_3.svg',
+      title: 'Attention',
       description:
-          'Far from it. Just a common block of firewood, one of those thick, solid logs that are put on the fire in winter to make cold rooms cozy and warm.',
-      buttonText: 'Next',
+          'Take turns to share something you have done today or yesterday and practice giving your attention to each other.',
       onTap: () {},
     ),
     Task.card(
-      image: '',
-      title: '',
+      image: 'assets/images/generosity_challenge_day_4.svg',
+      title: 'Time to help',
       description:
-          'I do not know how this really happened, yet the fact remains that one fine day this piece of wood found itself in the shop of an old carpenter. ',
-      buttonText: 'Laugh',
+          'Set a timer for 5 minutes and quickly do as many helpful tasks as you can like feeding the dog or washing dishes. When time\'s up, see how many tasks you\'ve completed. \n\nReady, set, go!',
       onTap: () {},
     ),
     Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Mastro Cherry was filled with joy. ',
-      description: '',
-      buttonText: '',
+      image: 'assets/images/generosity_challenge_day_5.svg',
+      title: 'Sharing is caring',
+      description: 'Today’s assignment is for each family member to choose 1 item to give away and donate.\n\nWhat will you pick?',
       onTap: () {},
     ),
     Task.card(
-      image: '',
-      title: '',
+      image: 'assets/images/generosity_challenge_day_6.svg',
+      title: 'Words of kindness',
       description:
-          'As soon as he saw that piece of wood, Mastro Cherry was filled with joy. Rubbing his hands together happily, he mumbled half to himself: “This has come in the nick of time. I shall use it to make the leg of a table.”',
-      buttonText: 'joy!',
+          'Each person say one nice thing you like about someone else.\n\nFor example, "I love it when you hug me if I\'m sad."',
       onTap: () {},
     ),
     Task.card(
-      image: '',
+      image: 'assets/images/generosity_challenge_day_7.svg',
       title: 'What a look of surprise shone on Mastro Cherry’s face!',
       description:
           'His funny face became still funnier. He turned frightened eyes about the room to find out where that wee, little voice had come from and he saw no one! He looked under the bench—no one! He peeped inside the closet—no one! He searched among the shavings—no one!',
-      buttonText: '',
       onTap: () {},
     ),
     Task.card(

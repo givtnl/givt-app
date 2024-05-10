@@ -2,11 +2,66 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Still in progress.. Stay tuned for the new updates!"
+    "text": "Hey again! Did you know before clocks, people used hourglasses to measure time.",
+    "next": {
+      "type": "buttonAnswer",
+      "side": "user",
+      "text": "Hourglasses?",
+      "answerText": "Hourglasses?",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Yeah, they worked by counting the grains of sand as they fell!",
+        "next": {
+          "type": "buttonAnswer",
+          "side": "user",
+          "text": "Neat!",
+          "answerText": "Neat!",
+          "next": {
+            "type": "textMessage",
+            "side": "interlocutor",
+            "text": "Anyway time is ticking on and that’s exactly what our third generosity activity is all about...time!",
+            "next": {
+              "type": "imageMessage",
+              "side": "interlocutor",
+              "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_007.png",
+              "mediaSourceType": "network",
+              "next": {
+                "type": "textMessage",
+                "side": "interlocutor",
+                "text": "Giving your time is probably one of the most precious things you can give! Ready for the next assignment?",
+                "next": {
+                  "type": "buttonAnswer",
+                  "side": "user",
+                  "text": "You bet!",
+                  "answerText": "You bet!"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
-  "postChat" :{
+  "postChat": {
     "type": "textMessage",
-    "side": "interlocutor",
-    "text": "Awesome!"
+    "side": "user",
+    "text": "We helped out and gave our time.",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Wow! It's amazing how by working together we can do so much more than on our own.",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Be on the lookout this week for opportunities where you can give your time to help others.",
+        "next": {
+          "type": "buttonAnswer",
+          "side": "user",
+          "text": "We will!",
+          "answerText": "We will!"
+        }
+      }
+    }
   }
 }

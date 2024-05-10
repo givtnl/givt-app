@@ -44,14 +44,19 @@ class _ChatHistoryState extends State<ChatHistory> {
     return BlocBuilder<ChatScriptsCubit, ChatScriptsState>(
       builder: (BuildContext context, ChatScriptsState state) {
         return Padding(
-          padding: const EdgeInsets.only(left: 24, right: 24, bottom: 190),
+          padding: const EdgeInsets.only(left: 24, right: 24),
           child: SingleChildScrollView(
             controller: _scrollController,
             child: Column(
-              children: _convertToWidgets(
-                _convertToList(state.chatHistory),
-                state,
-              ),
+              children: [
+                ..._convertToWidgets(
+                  _convertToList(state.chatHistory),
+                  state,
+                ),
+                Container(
+                  height: 24,
+                ),
+              ],
             ),
           ),
         );
@@ -87,8 +92,8 @@ class _ChatHistoryState extends State<ChatHistory> {
           ? challenge.chatActorsSettings.userAvatar
           : challenge.chatActorsSettings.interlocutorAvatar;
       final backgroundColor = isUserSide
-          ? challenge.chatActorsSettings.interlocutorBubbleColor
-          : challenge.chatActorsSettings.userBubbleColor;
+          ? challenge.chatActorsSettings.userBubbleColor
+          : challenge.chatActorsSettings.interlocutorBubbleColor;
 
       //compare with previous item's side
       final isSameSide = i - 1 >= 0 && item.side == historyItems[i - 1].side;

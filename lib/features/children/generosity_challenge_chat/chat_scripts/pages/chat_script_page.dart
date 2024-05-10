@@ -8,9 +8,31 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_history.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-class ChatScriptPage extends StatelessWidget {
+class ChatScriptPage extends StatefulWidget {
   const ChatScriptPage({super.key});
+
+  @override
+  State<ChatScriptPage> createState() => _ChatScriptPageState();
+}
+
+class _ChatScriptPageState extends State<ChatScriptPage> {
+  bool isDebug = false;
+  @override
+  void initState() {
+    super.initState();
+    _isDebug().then(
+      (value) => setState(() {
+        isDebug = value;
+      }),
+    );
+  }
+
+  Future<bool> _isDebug() async {
+    final info = await PackageInfo.fromPlatform();
+    return info.packageName.contains('test');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +50,7 @@ class ChatScriptPage extends StatelessWidget {
                 .availableChatDayIndex !=
             0;
         return Scaffold(
+          backgroundColor: AppTheme.primary99,
           appBar: GenerosityAppBar(
             title: 'Chat',
             leading: showBackButton
@@ -39,24 +62,32 @@ class ChatScriptPage extends StatelessWidget {
                   )
                 : null,
             actions: [
-              Opacity(
-                opacity: 0.1,
-                child: IconButton(
-                  onPressed: () {
-                    context.read<ChatScriptsCubit>().clearChatHistory();
-                    context.pop();
-                  },
-                  icon: const Icon(Icons.clear),
+              if (isDebug)
+                Opacity(
+                  opacity: 0.1,
+                  child: IconButton(
+                    onPressed: () {
+                      context.read<ChatScriptsCubit>().clearChatHistory();
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
                 ),
-              ),
             ],
           ),
-          body: state.status == ChatScriptsStatus.loading
-              ? const Center(child: CircularProgressIndicator())
-              : const ChatHistory(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: const ChatBar(),
+          body: SafeArea(
+            minimum: const EdgeInsets.only(bottom: 24),
+            child: Column(
+              children: [
+                Expanded(
+                  child: state.status == ChatScriptsStatus.loading
+                      ? const Center(child: CircularProgressIndicator())
+                      : const ChatHistory(),
+                ),
+                const ChatBar(),
+              ],
+            ),
+          ),
         );
       },
     );

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_icon_button.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeOverview extends StatefulWidget {
@@ -35,10 +36,10 @@ class _GenerosityChallengeOverviewState
   @override
   Widget build(BuildContext context) {
     final challenge = context.watch<GenerosityChallengeCubit>();
-    final auth = context.watch<AuthCubit>().state;
-    final arePersonalDetailsAvailable =
-        auth.status == AuthStatus.authenticated &&
-            auth.user.personalInfoRegistered;
+    final userData = challenge.loadUserData();
+
+    final arePersonalDetailsAvailable = userData.isNotEmpty;
+
     return Scaffold(
       appBar: const GenerosityAppBar(
         title: 'Generosity Challenge',
@@ -59,7 +60,7 @@ class _GenerosityChallengeOverviewState
             Column(
               children: [
                 if (arePersonalDetailsAvailable)
-                  _buildGenerosityHeader(auth.user.lastName),
+                  _buildGenerosityHeader(userData['lastName'].toString()),
                 GridView.builder(
                   padding: const EdgeInsets.all(20),
                   itemCount: GenerosityChallengeHelper.generosityChallengeDays,
@@ -86,7 +87,19 @@ class _GenerosityChallengeOverviewState
                                   'day': index + 1,
                                 },
                               );
-                              challenge.dayDetails(index);
+                              
+                              // If the (pre)chat is available for the day, navigate to the chat screen
+                              if (challenge.state.hasAvailableChat &&
+                                  challenge.state.availableChatDayIndex ==
+                                      index) {
+                                context.goNamed(
+                                  Pages.generosityChallengeChat.name,
+                                  extra:
+                                      context.read<GenerosityChallengeCubit>(),
+                                );
+                              } else {
+                                challenge.dayDetails(index);
+                              }
                             }
                           : () {},
                     );

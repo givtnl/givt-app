@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class RegisteredCheckAnimation extends StatefulWidget {
   @override
@@ -29,19 +30,11 @@ class _RegisteredCheckAnimationState extends State<RegisteredCheckAnimation> {
               imageSize = size.width * (0.42 * value);
 
               return Stack(
+                alignment: Alignment.center,
                 children: [
-                  SvgPicture.asset(
-                    'assets/images/registered_check_background.svg',
-                    height: size.height * 0.3,
-                  ),
-                  Positioned(
-                    left: leftPosition,
-                    top: topPosition,
-                    child: SvgPicture.asset(
-                      'assets/images/registered_check.svg',
-                      width: imageSize,
-                      clipBehavior: Clip.none,
-                    ),
+                  registeredCheckBackground(height: size.height * 0.3),
+                  registeredCheck(
+                    clipBehavior: Clip.none,
                   ),
                 ],
               );
