@@ -45,6 +45,7 @@ enum ChatScriptFunction {
   static Future<bool> _registerUser(
     BuildContext context,
   ) async {
+    // KIDS-941: Implement registration
     throw UnimplementedError();
     return true;
   }
