@@ -10,7 +10,7 @@
       "next": {
         "type": "textMessage",
         "side": "interlocutor",
-        "text": "To do that I'll need to register your details you've given me so far.",
+        "text": "To do that I'll need to register the details you've given me so far.",
         "next": {
           "type": "textMessage",
           "side": "interlocutor",
