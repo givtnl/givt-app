@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/overview/widgets/models/edit_allowance_uimodel.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class EditAllowancePage extends StatefulWidget {
-  const EditAllowancePage({this.initialAllowance, super.key});
+class EditAllowanceWidget extends StatelessWidget {
+  const EditAllowanceWidget(
+      {required this.uiModel, this.onAllowanceChanged, super.key});
 
-  final int? initialAllowance;
-
-  @override
-  State<EditAllowancePage> createState() => _EditAllowancePageState();
-}
-
-class _EditAllowancePageState extends State<EditAllowancePage> {
-  late int _allowance;
-
-  @override
-  void initState() {
-    super.initState();
-    _allowance = widget.initialAllowance ?? 15;
-  }
+  final EditAllowanceUIModel uiModel;
+  final void Function(int allowance)? onAllowanceChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -67,22 +57,17 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                 ),
                 const SizedBox(height: 10),
                 AllowanceCounter(
-                  currency: "TODO",
-                  initialAllowance: _allowance,
-                  onAllowanceChanged: (allowance) => setState(() {
-                    _allowance = allowance;
-                  }),
+                  currency: uiModel.currency,
+                  initialAllowance: uiModel.initialAllowance,
+                  onAllowanceChanged: onAllowanceChanged,
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  'Choose an amount between TODO1 and TODO999.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(
-                    color: AppTheme
-                        .childGivingAllowanceHint,
-                  ),
+                  'Choose an amount between ${uiModel.currency}1 and '
+                  '${uiModel.currency}999.',
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: AppTheme.childGivingAllowanceHint,
+                      ),
                 ),
               ],
             ),
