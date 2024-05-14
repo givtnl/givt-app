@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
@@ -54,10 +55,8 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
         return await _saveAndReturnEmptyDays();
       }
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      log(e.toString());
+      log(s.toString());
       return _saveAndReturnEmptyDays();
     }
   }
