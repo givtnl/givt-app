@@ -20,7 +20,6 @@ class EditChildRepositoryImpl with EditChildRepository {
 
   @override
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
-    final response = await apiService.editChildAllowance(childGUID, allowance);
-    return response;
+    return apiService.editChildAllowance(childGUID, allowance);
   }
 }

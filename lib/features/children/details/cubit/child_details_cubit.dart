@@ -55,14 +55,22 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
 
     try {
       _emitLoading();
-      await _editChildRepository.editChildAllowance(
+      final isSuccess = await _editChildRepository.editChildAllowance(
         _profile.id,
         allowance,
       );
-      _emitData();
-      emit(ChildEditGivingAllowanceSuccessState(allowance: allowance));
-      //retrieve updated profile after changing the allowance
-      unawaited(fetchChildDetails());
+      if (isSuccess) {
+        _emitData();
+        emit(ChildEditGivingAllowanceSuccessState(allowance: allowance));
+        //retrieve updated profile after changing the allowance
+        unawaited(fetchChildDetails());
+      } else {
+        emit(
+          const ChildDetailsErrorState(
+            errorMessage: 'Failed to update allowance',
+          ),
+        );
+      }
     } catch (e, s) {
       _emitData();
       await _handleEditAllowanceApiError(e, s);
