@@ -21,45 +21,56 @@ class CommonSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (title != null)
-              Flexible(
-                child: Text(
-                  title!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(fontWeight: FontWeight.w700),
-                  textAlign: TextAlign.center,
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (title != null)
+                    Flexible(
+                      child: Text(
+                        title!,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  const SizedBox(height: 4),
+                  if (text != null)
+                    Flexible(
+                      child: Text(
+                        text!,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
               ),
-            if (text != null)
-              Flexible(
-                child: Text(
-                  text!,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
-                ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  registeredCheckBackground(),
+                  registeredCheck(),
+                ],
               ),
-          ],
+              CustomGreenElevatedButton(
+                title: buttonText,
+                onPressed: onClickButton ?? () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
         ),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            registeredCheckBackground(),
-            registeredCheck(),
-          ],
-        ),
-        CustomGreenElevatedButton(
-          title: buttonText,
-          onPressed: onClickButton ?? () => Navigator.of(context).pop(),
-        ),
-      ],
+      ),
     );
   }
 }

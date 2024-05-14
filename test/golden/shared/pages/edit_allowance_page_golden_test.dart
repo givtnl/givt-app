@@ -20,7 +20,8 @@ void main() {
       ),
     )..addScenario(
         'Edit Allowance Page',
-        const EditAllowancePage(
+      const EditAllowancePage(
+          currency: r'$',
           initialAllowance: 20,
         ),
       );

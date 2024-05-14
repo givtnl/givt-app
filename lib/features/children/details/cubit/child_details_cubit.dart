@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
@@ -32,5 +35,13 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
           .error(error.toString(), methodName: stackTrace.toString());
       emit(ChildDetailsErrorState(errorMessage: error.toString()));
     }
+  }
+
+  void updateAllowance(int result) {
+    if (kDebugMode) {
+      log("Test updateAllowance: $result");
+    }
+
+    emit(ChildEditGivingAllowanceSuccessState(allowance: result));
   }
 }

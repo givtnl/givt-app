@@ -21,6 +21,9 @@ final class ChildDetailsErrorState extends ChildDetailsState {
   });
 
   final String errorMessage;
+
+  @override
+  List<Object> get props => [errorMessage];
 }
 
 final class ChildDetailsFetchedState extends ChildDetailsState {
@@ -29,4 +32,18 @@ final class ChildDetailsFetchedState extends ChildDetailsState {
   });
 
   final ProfileExt profileDetails;
+
+  @override
+  List<Object> get props => [profileDetails];
+}
+
+final class ChildEditGivingAllowanceSuccessState extends ChildDetailsState {
+  const ChildEditGivingAllowanceSuccessState({
+    required this.allowance,
+  });
+
+  final int allowance;
+
+  @override
+  List<Object> get props => [allowance];
 }
