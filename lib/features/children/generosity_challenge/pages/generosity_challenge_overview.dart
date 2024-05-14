@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -31,6 +32,37 @@ class _GenerosityChallengeOverviewState
         isDebug = value;
       }),
     );
+  }
+
+  Future<void> _undoProgress(int dayIndax) async {
+    if (!kDebugMode) {
+      return;
+    }
+
+    final challenge = context.read<GenerosityChallengeCubit>();
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Undo Challenge Progress'),
+          content: Text(
+              'Are you sure you want to undo generosity challenge progress including Day ${dayIndax + 1}?'),
+          actions: [
+            TextButton(
+              onPressed: () => context.pop(true),
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () => context.pop(false),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+    if (true == result) {
+      await challenge.undoProgress(dayIndax);
+    }
   }
 
   @override
@@ -74,6 +106,7 @@ class _GenerosityChallengeOverviewState
                   itemBuilder: (BuildContext context, int index) {
                     final day = challenge.state.days[index];
                     return DayButton(
+                      onLongPressed: () => _undoProgress(index),
                       isCompleted: day.isCompleted,
                       isActive: challenge.state.activeDayIndex == index,
                       dayIndex: index,
@@ -87,7 +120,7 @@ class _GenerosityChallengeOverviewState
                                   'day': index + 1,
                                 },
                               );
-                              
+
                               // If the (pre)chat is available for the day, navigate to the chat screen
                               if (challenge.state.hasAvailableChat &&
                                   challenge.state.availableChatDayIndex ==
