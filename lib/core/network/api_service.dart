@@ -26,6 +26,7 @@ class APIService {
   String _apiURLAWS;
 
   String get apiURL => _apiURL;
+
   String get apiURLAWS => _apiURLAWS;
 
   void updateApiUrl(String url, String awsurl) {
@@ -491,6 +492,27 @@ class APIService {
     final response = await client.put(
       url,
       body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> editChildAllowance(String childGUID, int allowance) async {
+    final url =
+        Uri.https(apiURL, '/givtservice/v1/ChildProfile/$childGUID/allowance');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode({'amount': allowance}),
       headers: {
         'Content-Type': 'application/json',
       },

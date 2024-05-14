@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/children/edit_child/mixins/mixins.dart';
-import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
+import 'package:givt_app/features/children/edit_child/mixins/mixins.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
+import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -14,7 +14,7 @@ part 'edit_child_state.dart';
 class EditChildCubit extends Cubit<EditChildState>
     with ChildNameValidator, ChildGivingAllowanceValidator {
   EditChildCubit(
-    this._createChildRepository,
+    this._editChildRepository,
     this._locals,
     this._profileDetails,
   ) : super(const EditChildInitialState()) {
@@ -28,7 +28,7 @@ class EditChildCubit extends Cubit<EditChildState>
     });
   }
 
-  final EditChildRepository _createChildRepository;
+  final EditChildRepository _editChildRepository;
   final AppLocalizations _locals;
   final ProfileExt _profileDetails;
 
@@ -67,7 +67,7 @@ class EditChildCubit extends Cubit<EditChildState>
 
     emit(const EditChildUploadingState());
     try {
-      final isChildUpdated = await _createChildRepository.editChild(
+      final isChildUpdated = await _editChildRepository.editChild(
         _profileDetails.profile.id,
         child,
       );
