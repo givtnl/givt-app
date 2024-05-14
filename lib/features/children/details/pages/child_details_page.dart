@@ -165,8 +165,8 @@ class ChildDetailsPage extends StatelessWidget {
         initialAllowance: currentAllowance,
       ).toRoute(context),
     );
-    if (result != null && result is int) {
-      context.read<ChildDetailsCubit>().updateAllowance(result);
+    if (result != null && result is int && context.mounted) {
+      await context.read<ChildDetailsCubit>().updateAllowance(result);
     }
   }
 }

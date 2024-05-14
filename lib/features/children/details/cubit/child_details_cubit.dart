@@ -25,16 +25,12 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   ProfileExt? _profileExt;
 
   Future<void> fetchChildDetails() async {
-    emit(const ChildDetailsFetchingState());
+    _emitLoading();
     try {
       _profileExt = await _childDetailsRepository.fetchChildDetails(
         _profile,
       );
-      emit(
-        ChildDetailsFetchedState(
-          profileDetails: _profileExt!,
-        ),
-      );
+      _emitData();
     } catch (error, stackTrace) {
       await LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
@@ -42,18 +38,33 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     }
   }
 
+  void _emitLoading() {
+    emit(const ChildDetailsFetchingState());
+  }
+
+  void _emitData() {
+    emit(
+      ChildDetailsFetchedState(
+        profileDetails: _profileExt!,
+      ),
+    );
+  }
+
   Future<void> updateAllowance(int allowance) async {
     await _logConfirmUpdateAllowanceEvent(allowance);
 
     try {
+      _emitLoading();
       await _editChildRepository.editChildAllowance(
         _profile.id,
         allowance,
       );
+      _emitData();
       emit(ChildEditGivingAllowanceSuccessState(allowance: allowance));
       //retrieve updated profile after changing the allowance
       unawaited(fetchChildDetails());
     } catch (e, s) {
+      _emitData();
       await _handleEditAllowanceApiError(e, s);
     }
   }
