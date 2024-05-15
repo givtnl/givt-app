@@ -202,6 +202,8 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           if (context.mounted) {
             final success = await itemFunction.function(context);
             if (itemFunction == ChatScriptFunction.registerUser && !success) {
+              //TODO error handling needs work
+              //i want a retry button chat script item here ideally
               _emitRegistrationFailedError();
               return;
             }
