@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 
 class OrganisationHeader extends StatelessWidget {
@@ -21,7 +20,7 @@ class OrganisationHeader extends StatelessWidget {
                     (tag) => Container(
                       margin: const EdgeInsets.symmetric(vertical: 3),
                       decoration: BoxDecoration(
-                        color: value.colorCombo.backgroundColor,
+                        color: value.colorCombo.accentColor,
                         borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(25),
                           bottomRight: Radius.circular(25),

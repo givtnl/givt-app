@@ -11,8 +11,9 @@ class FamilyValue {
     required this.interestList,
     required this.area,
     required this.organisation,
-    required this.devOrganisation,
     required this.orgImagePath,
+    required this.collectGroupId,
+    required this.longDescription,
   });
 
   factory FamilyValue.fromMap(Map<String, dynamic> json) {
@@ -25,9 +26,9 @@ class FamilyValue {
       area: Area.fromString(json['area'] as String),
       organisation:
           Organisation.fromJson(json['organisation'] as Map<String, dynamic>),
-      devOrganisation: Organisation.fromJson(
-          json['devOrganisation'] as Map<String, dynamic>),
       orgImagePath: json['orgImagePath'] as String,
+      collectGroupId: json['collectGroupId'] as String,
+      longDescription: json['longDescription'] as String,
     );
   }
   final String displayText;
@@ -36,8 +37,9 @@ class FamilyValue {
   final ColorCombo colorCombo;
   final Area area;
   final Organisation organisation;
-  final Organisation devOrganisation;
   final String orgImagePath;
+  final String collectGroupId;
+  final String longDescription;
 
   Map<String, dynamic> toMap() {
     return {
@@ -47,8 +49,9 @@ class FamilyValue {
       'colorCombo': ColorCombo.values.indexOf(colorCombo),
       'area': area.value,
       'organisation': organisation.toJson(),
-      'devOrganisation': devOrganisation.toJson(),
       'orgImagePath': orgImagePath,
+      'collectGroupId': collectGroupId,
+      'longDescription': longDescription,
     };
   }
 }
