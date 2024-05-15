@@ -26,6 +26,7 @@ class APIService {
   String _apiURLAWS;
 
   String get apiURL => _apiURL;
+
   String get apiURLAWS => _apiURLAWS;
 
   void updateApiUrl(String url, String awsurl) {
@@ -109,6 +110,29 @@ class APIService {
       throw HttpException(response.body);
     }
     return response.body;
+  }
+
+  Future<Map<String, dynamic>> registerGenerosityChallengeUser(
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(apiURL, '/api/v2/users'); //TODO
+
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
   }
 
   Future<Map<String, dynamic>> getOrganisationDetailsFromMedium(

@@ -15,29 +15,49 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepository {
   Future<Session> refreshToken();
+
   Future<Session> login(String email, String password);
+
   Future<UserExt> fetchUserExtension(String guid);
+
   Future<(UserExt, Session, UserPresets)?> isAuthenticated();
+
   Future<bool> logout();
+
   Future<bool> checkTld(String email);
+
   Future<String> checkEmail(String email);
+
   Future<bool> resetPassword(String email);
+
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
   });
+
   Future<StripeResponse> fetchStripeSetupIntent();
+
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
   });
+
+  Future<bool> registerGenerosityChallengeUser({
+    required String firstname,
+    required String lastname,
+    required String email,
+    required String password,
+  });
+
   Future<bool> changeGiftAid({
     required String guid,
     required bool giftAid,
   });
+
   Future<bool> unregisterUser({
     required String email,
   });
+
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
@@ -57,6 +77,7 @@ mixin AuthRepository {
     required String guid,
     required String notificationId,
   });
+
   Future<void> updateFingerprintCertificate();
 }
 
@@ -65,6 +86,7 @@ class AuthRepositoyImpl with AuthRepository {
     this._prefs,
     this._apiService,
   );
+
   final SharedPreferences _prefs;
   final APIService _apiService;
 
@@ -477,5 +499,30 @@ class AuthRepositoyImpl with AuthRepository {
     } on Exception catch (e) {
       throw CertificatesException(message: e.toString());
     }
+  }
+
+  @override
+  Future<bool> registerGenerosityChallengeUser({required String firstname, required String lastname, required String email, required String password}) async {
+
+    final response = await _apiService.registerGenerosityChallengeUser(
+      {
+        'firstname': firstname,
+        'lastname': lastname,
+        'email': email,
+        'password': password,
+      },
+    );
+    var newSession = Session.fromJson(response);
+    newSession = newSession.copyWith(
+      isLoggedIn: true,
+    );
+    await _prefs.setString(
+      Session.tag,
+      jsonEncode(
+        newSession.toJson(),
+      ),
+    );
+    await _fetchUserExtension();
+    return true;
   }
 }
