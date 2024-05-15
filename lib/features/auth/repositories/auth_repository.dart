@@ -517,7 +517,6 @@ class AuthRepositoyImpl with AuthRepository {
       required String lastname,
       required String email,
       required String password}) async {
-    await updateFingerprintCertificate();
     final response = await _apiService.registerGenerosityChallengeUser(
       {
         'firstname': firstname,
@@ -526,10 +525,8 @@ class AuthRepositoyImpl with AuthRepository {
         'password': password,
       },
     );
-    var newSession = Session.fromJson(response);
-    newSession = newSession.copyWith(
-      isLoggedIn: true,
-    );
+    var newSession =
+        Session.fromGenerosityJson(response['item'] as Map<String, dynamic>);
     await _prefs.setString(
       Session.tag,
       jsonEncode(

@@ -219,6 +219,8 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
                 ),
               );
               return;
+            } else {
+              emit(state.copyWith(status: ChatScriptsStatus.updated));
             }
           }
         }
