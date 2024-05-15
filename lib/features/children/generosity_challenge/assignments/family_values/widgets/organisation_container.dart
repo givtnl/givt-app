@@ -11,12 +11,12 @@ class OrganisationContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Image image = Image.network(
-    //   familyValue.imagePath,
-    //   fit: BoxFit.cover,
-    // );
+    Image image = Image.network(
+      familyValue.orgImagePath,
+      fit: BoxFit.cover,
+    );
 
-    //  precacheImage(image.image, context);
+    precacheImage(image.image, context);
     return ActionContainer(
       onTap: () {},
       borderColor: ColorCombo.primary.borderColor,
@@ -33,12 +33,7 @@ class OrganisationContainer extends StatelessWidget {
               height: 168,
               width: double.maxFinite,
               margin: const EdgeInsets.symmetric(vertical: 12),
-              child: Image.network(
-                familyValue.orgImagePath,
-                fit: BoxFit.cover,
-                width: 140,
-                height: 140,
-              ),
+              child: image,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
