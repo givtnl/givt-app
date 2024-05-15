@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -79,6 +80,8 @@ mixin AuthRepository {
   });
 
   Future<void> updateFingerprintCertificate();
+
+  Stream<bool> hasSessionStream();
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -89,6 +92,13 @@ class AuthRepositoyImpl with AuthRepository {
 
   final SharedPreferences _prefs;
   final APIService _apiService;
+
+  // bool hasSession
+  final StreamController<bool> _hasSessionStreamController =
+      StreamController<bool>();
+
+  @override
+  Stream<bool> hasSessionStream() => _hasSessionStreamController.stream;
 
   @override
   Future<Session> refreshToken() async {
@@ -502,8 +512,11 @@ class AuthRepositoyImpl with AuthRepository {
   }
 
   @override
-  Future<bool> registerGenerosityChallengeUser({required String firstname, required String lastname, required String email, required String password}) async {
-
+  Future<bool> registerGenerosityChallengeUser(
+      {required String firstname,
+      required String lastname,
+      required String email,
+      required String password}) async {
     final response = await _apiService.registerGenerosityChallengeUser(
       {
         'firstname': firstname,
@@ -523,6 +536,7 @@ class AuthRepositoyImpl with AuthRepository {
       ),
     );
     await _fetchUserExtension();
+    _hasSessionStreamController.add(true);
     return true;
   }
 }
