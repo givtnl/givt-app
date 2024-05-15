@@ -115,7 +115,7 @@ class APIService {
   Future<Map<String, dynamic>> registerGenerosityChallengeUser(
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(apiURL, '/api/v2/users'); //TODO
+    final url = Uri.https(apiURL, '/givtservice/v1/generosity-challenge/user');
 
     final response = await client.post(
       url,

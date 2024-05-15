@@ -234,6 +234,8 @@ void initRepositories() {
     ..registerLazySingleton<ChatScriptRegistrationHandler>(
       () => ChatScriptRegistrationHandler(
         getIt(),
+        getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<ChatHistoryRepository>(

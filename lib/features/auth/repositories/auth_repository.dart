@@ -508,7 +508,7 @@ class AuthRepositoyImpl with AuthRepository {
       {
         'firstname': firstname,
         'lastname': lastname,
-        'email': email,
+        'emailaddress': email,
         'password': password,
       },
     );
