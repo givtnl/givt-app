@@ -202,6 +202,8 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
           if (context.mounted) {
             final success = await itemFunction.function(context);
+            //if a function fails and that function is registration show a "
+            // retry button" in the chat (their internet might have been spotty)
             if (itemFunction == ChatScriptFunction.registerUser && !success) {
               var retryChatItem = ChatScriptItem.empty().copyWith(
                 type: ChatScriptItemType.buttonAnswer,

@@ -517,11 +517,12 @@ class AuthRepositoyImpl with AuthRepository {
       required String lastname,
       required String email,
       required String password}) async {
+    await updateFingerprintCertificate();
     final response = await _apiService.registerGenerosityChallengeUser(
       {
         'firstname': firstname,
         'lastname': lastname,
-        'emailaddress': email,
+        'email': email,
         'password': password,
       },
     );

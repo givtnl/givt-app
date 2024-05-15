@@ -24,7 +24,7 @@ class ChatScriptRegistrationHandler {
   Future<bool> handleRegistration() async {
     try {
       _updateAws();
-      return _registerUser();
+      return await _registerUser();
     } catch (e, s) {
       log(e.toString());
       log(s.toString());
