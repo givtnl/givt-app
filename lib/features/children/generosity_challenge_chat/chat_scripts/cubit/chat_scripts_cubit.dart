@@ -6,6 +6,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_function.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_side.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
@@ -202,9 +203,19 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
           if (context.mounted) {
             final success = await itemFunction.function(context);
             if (itemFunction == ChatScriptFunction.registerUser && !success) {
-              //TODO error handling needs work
-              //i want a retry button chat script item here ideally
-              _emitRegistrationFailedError();
+              var retryChatItem = ChatScriptItem.empty().copyWith(
+                type: ChatScriptItemType.buttonAnswer,
+                text: 'Click to retry',
+                answerText: 'Can you try again please?',
+                side: ChatScriptItemSide.user,
+                next: currentChatItem,
+              );
+              emit(
+                state.copyWith(
+                  status: ChatScriptsStatus.waitingForAnswer,
+                  currentConditionalItem: retryChatItem,
+                ),
+              );
               return;
             }
           }
@@ -216,15 +227,5 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         await _completeDayChat(context);
       }
     }
-  }
-
-  void _emitRegistrationFailedError() {
-    emit(
-      state.copyWith(
-        status: ChatScriptsStatus.error,
-        error: 'Could not register, please check your internet and '
-            'try again.',
-      ),
-    );
   }
 }
