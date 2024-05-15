@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
@@ -25,7 +24,7 @@ class DayButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLocked = !isActive && !isCompleted;
     return GestureDetector(
-      onLongPress: !isLocked && kDebugMode ? onLongPressed : null,
+      onLongPress: !isLocked ? onLongPressed : null,
       child: ActionContainer(
         isMuted: isLocked,
         isSelected: isCompleted || isLocked,
