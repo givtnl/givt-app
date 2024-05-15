@@ -260,18 +260,4 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   void dismissMayorPopup() {
     emit(state.copyWith(showMayor: false));
   }
-
-  //just for dev purposes
-  Future<void> bringMeToDaySevenAlready() async {
-    //complete day 6
-    state.days[5] =
-        state.days[5].copyWith(dateCompleted: DateTime.now().toIso8601String());
-    state.copyWith(
-      availableChatDayIndex: 6,
-      activeDayIndex: 6,
-    );
-    emit(state);
-    await _generosityChallengeRepository.saveToCache(state.days);
-    _refreshState(days: state.days);
-  }
 }
