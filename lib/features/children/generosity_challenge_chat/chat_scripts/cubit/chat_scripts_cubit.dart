@@ -99,7 +99,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
     await Future.delayed(_chatCompletedDelay, () {
       context.pop();
-      
+
       if (kDebugMode) {
         SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
       }
@@ -200,7 +200,11 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
               ChatScriptFunction.fromString(currentChatItem.functionName);
 
           if (context.mounted) {
-            await itemFunction.function(context);
+            final success = await itemFunction.function(context);
+            if (itemFunction == ChatScriptFunction.registerUser && !success) {
+              _emitRegistrationFailedError();
+              return;
+            }
           }
         }
 
@@ -210,5 +214,15 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         await _completeDayChat(context);
       }
     }
+  }
+
+  void _emitRegistrationFailedError() {
+    emit(
+      state.copyWith(
+        status: ChatScriptsStatus.error,
+        error: 'Could not register, please check your internet and '
+            'try again.',
+      ),
+    );
   }
 }
