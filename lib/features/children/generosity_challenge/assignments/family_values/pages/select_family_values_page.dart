@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_value_container.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_values_sliver_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/values_tally.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/family_values_content_helper.dart';
@@ -32,13 +33,8 @@ class SelectFamilyValues extends StatelessWidget {
               slivers: [
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    primary: false,
-                    backgroundColor: Colors.white,
-                    surfaceTintColor: AppTheme.primary90,
-                    automaticallyImplyLeading: false,
-                    title: Padding(
+                  sliver: FamilyValuesSliverAppBar(
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

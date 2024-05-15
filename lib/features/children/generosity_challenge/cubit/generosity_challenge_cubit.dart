@@ -166,7 +166,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         final timeDifference =
             state.unlockDayTimeDifference == UnlockDayTimeDifference.days
                 ? diff.inDays
-                : diff.inMinutes;
+                : diff.inSeconds;
         if (timeDifference != 0) {
           return nextActiveDayIndex;
         } else {

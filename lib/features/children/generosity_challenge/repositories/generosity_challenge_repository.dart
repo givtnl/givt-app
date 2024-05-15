@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:flutter/foundation.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
@@ -16,6 +15,8 @@ mixin GenerosityChallengeRepository {
   Future<void> saveUserData(ChatScriptSaveKey key, String value);
 
   Map<String, dynamic> loadUserData();
+
+  Future<String> loadFromKey(String key);
 }
 
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
@@ -59,6 +60,12 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
       log(s.toString());
       return _saveAndReturnEmptyDays();
     }
+  }
+
+  @override
+  Future<String> loadFromKey(String key) async {
+    final response = loadUserData();
+    return response[key] as String? ?? '';
   }
 
   Future<List<Day>> _saveAndReturnEmptyDays() async {

@@ -7,19 +7,27 @@ import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyValueContainer extends StatelessWidget {
-  const FamilyValueContainer(
-      {required this.familyValue, required this.isSelected, super.key});
+  const FamilyValueContainer({
+    required this.familyValue,
+    required this.isSelected,
+    this.isPressed = false,
+    super.key,
+  });
   final FamilyValue familyValue;
   final bool isSelected;
+  final bool isPressed;
 
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
       borderColor: familyValue.colorCombo.borderColor,
       isSelected: isSelected,
-      onTap: () {
-        context.read<FamilyValuesCubit>().selectValue(familyValue);
-      },
+      onTap: isPressed
+          ? () {}
+          : () {
+              context.read<FamilyValuesCubit>().selectValue(familyValue);
+            },
+      isPressedDown: isPressed,
       child: Stack(
         children: [
           Container(

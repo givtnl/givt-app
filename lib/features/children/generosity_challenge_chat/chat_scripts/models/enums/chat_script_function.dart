@@ -46,7 +46,7 @@ enum ChatScriptFunction {
     BuildContext context,
   ) async {
     // KIDS-941: Implement registration
-    throw UnimplementedError();
+    //throw UnimplementedError();
     return true;
   }
 }
