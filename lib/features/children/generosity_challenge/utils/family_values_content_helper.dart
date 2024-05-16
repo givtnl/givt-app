@@ -23,7 +23,7 @@ class FamilyValuesContentHelper {
       longDescription:
           'Crime Prevention Network is a group of people who want to make our city safer. They teach us how to stay safe and prevent crimes from happening. They work with the police and other important people to make sure everyone knows how to protect themselves. They have special programs to help us learn about being alert, reporting crimes, and escaping safely if we need to. Their goal is to make our community a better and safer place for everyone.',
       organisation: Organisation(
-        organisationName: 'Crime Commission Inc',
+        organisationName: 'Crime Prevention Network',
         mediumId: 'NjFmN2VkMDE1NTUzMTEyM2QwNTE=',
         currency: 'USD',
         organisationLogoLink:
@@ -102,9 +102,9 @@ class FamilyValuesContentHelper {
       longDescription:
           'Trinity Woods is a place where older people can live happily and get the help they need. They have nice homes, good food, and doctors to take care of them. They also make sure that the seniors feel loved and happy by giving them lots of kindness and support. Trinity Woods has been doing this for a long time and they always try to make life better for older people.',
       orgImagePath:
-          'https://givtstorageus.blob.core.windows.net/public/cdn/pog-logos/946F6389-BEED-4D2D-9783-DDE61510CD5B_Action.png',
+          'https://givtstorageus.blob.core.windows.net/public/cdn/pog-logos/3EBDE99F-877E-40ED-A1A3-072AE332F1AD_Action.png',
       organisation: Organisation(
-        organisationName: 'Oklahoma Methodist Manor Inc',
+        organisationName: 'Trinity Woods',
         mediumId: 'NjFmN2VkMDE1NTUzMTEyM2QwNjc=',
         currency: 'USD',
         organisationLogoLink:
