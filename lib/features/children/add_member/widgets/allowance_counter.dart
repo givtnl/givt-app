@@ -12,7 +12,7 @@ class AllowanceCounter extends StatefulWidget {
     super.key,
   });
 
-  final String currency;
+  final String? currency;
   final int? initialAllowance;
   final void Function(int allowance)? onAllowanceChanged;
 

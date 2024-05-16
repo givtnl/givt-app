@@ -25,6 +25,7 @@ enum AmplitudeEvents {
     'child_details_edit_card_clicked',
   ),
   childEditSaveClicked('child_edit_save_clicked'),
+  childEditMonthlyAllowanceSaveClicked('child_edit_monthly_allowance_save_clicked'),
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),

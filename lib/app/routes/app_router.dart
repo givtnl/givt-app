@@ -326,6 +326,7 @@ class AppRouter {
                   BlocProvider(
                     create: (_) => ChildDetailsCubit(
                       getIt(),
+                      getIt(),
                       childProfile,
                     )..fetchChildDetails(),
                   ),

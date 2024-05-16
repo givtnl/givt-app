@@ -529,6 +529,27 @@ class APIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> editChildAllowance(String childGUID, int allowance) async {
+    final url =
+        Uri.https(apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode({'amount': allowance}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
   Future<List<dynamic>> fetchProfiles() async {
     final url = Uri.https(
       apiURL,
