@@ -28,7 +28,7 @@ class _GenerosityStripeRegistrationPageState
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (bool didPop) => widget.onBackPressed?.call(),
-      canPop: false,
+      canPop: widget.onBackPressed == null,
       child: CreditCardDetailsPage(
         onRegistrationFailed: _cubit.onRegistrationFailed,
         onRegistrationSuccess: widget.onRegistrationSuccess,
