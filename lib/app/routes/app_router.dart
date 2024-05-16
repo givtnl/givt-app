@@ -23,6 +23,8 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
@@ -39,6 +41,7 @@ import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/gps_scan_page.dart';
@@ -218,6 +221,24 @@ class AppRouter {
                 child: DisplayOrganisations(
                   familyValues: extra[FamilyValuesCubit.familyValuesKey]
                       as List<FamilyValue>,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.chooseAmountSlider.path,
+            name: Pages.chooseAmountSlider.name,
+            builder: (context, state) {
+              final organisation = state.extra! as Organisation;
+              return MultiBlocProvider(
+                providers: [
+                  //TODO: provide GiveBloc here for futher donate
+                  BlocProvider(
+                    create: (context) => CreateChallengeDonationCubit(),
+                  ),
+                ],
+                child: ChooseAmountSliderPage(
+                  organisation: organisation,
                 ),
               );
             },
@@ -904,7 +925,7 @@ class AppRouter {
     final query = Uri(
       queryParameters: params,
     ).query;
-    
+
     if (GenerosityChallengeHelper.isActivated ||
         navigatingPage == Pages.generosityChallenge.path) {
       return Pages.generosityChallenge.path;

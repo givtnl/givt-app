@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_container.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:go_router/go_router.dart';
 
 class DisplayOrganisations extends StatelessWidget {
   const DisplayOrganisations({required this.familyValues, super.key});
@@ -16,12 +15,9 @@ class DisplayOrganisations extends StatelessWidget {
           .map((e) => Image.network(e.orgImagePath, fit: BoxFit.cover)),
     ];
     return Scaffold(
-      appBar: GenerosityAppBar(
+      appBar: const GenerosityAppBar(
         title: 'Day 7',
-        leading: BackButton(
-          onPressed: context.pop,
-          color: AppTheme.givtGreen40,
-        ),
+        leading: GenerosityBackButton(),
       ),
       body: SafeArea(
         child: CustomScrollView(

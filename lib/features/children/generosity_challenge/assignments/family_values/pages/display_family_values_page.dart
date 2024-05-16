@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -9,8 +8,8 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,12 +21,9 @@ class DisplayFamilyValues extends StatelessWidget {
     return BlocBuilder<FamilyValuesCubit, FamilyValuesState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: GenerosityAppBar(
+          appBar: const GenerosityAppBar(
             title: 'Day 7',
-            leading: BackButton(
-              onPressed: context.pop,
-              color: AppTheme.givtGreen40,
-            ),
+            leading: GenerosityBackButton(),
           ),
           body: SafeArea(
             child: CustomScrollView(

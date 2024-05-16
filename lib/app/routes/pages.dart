@@ -27,6 +27,10 @@ enum Pages {
     path: 'display-values-organisations',
     name: 'DISPLAY-VALUES-ORGANISATIONS',
   ),
+  chooseAmountSlider(
+    path: 'choose-amount-slider',
+    name: 'CHOOSE-AMOUNT-SLIDER',
+  ),
 
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
