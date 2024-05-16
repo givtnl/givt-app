@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_detail_bottomsheet.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class OrganisationContainer extends StatelessWidget {
   const OrganisationContainer(
@@ -16,6 +18,14 @@ class OrganisationContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ActionContainer(
       onTap: () {
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.organisationCardClicked,
+          eventProperties: {
+            'organisation_name': familyValue.organisation.organisationName,
+            'family_value': familyValue.displayText,
+          },
+        );
+
         showModalBottomSheet<void>(
           context: context,
           isScrollControlled: true,

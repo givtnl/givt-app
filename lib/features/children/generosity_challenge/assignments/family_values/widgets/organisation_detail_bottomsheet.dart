@@ -69,7 +69,6 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                             ),
                       ),
                       const SizedBox(height: 12),
-                      // should be short description
                       Text(
                         value.longDescription,
                         textAlign: TextAlign.start,
@@ -79,7 +78,6 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                               fontFamily: 'Rouna',
                             ),
                       ),
-
                       const SizedBox(height: 12),
                     ],
                   ),
