@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_stripe_registration_custom.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
+import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_error_dialog.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/utils/auth_utils.dart';
 
 class GenerosityStripeRegistrationPage extends StatefulWidget {
   const GenerosityStripeRegistrationPage({
@@ -22,17 +28,62 @@ class GenerosityStripeRegistrationPage extends StatefulWidget {
 class _GenerosityStripeRegistrationPageState
     extends State<GenerosityStripeRegistrationPage> {
   final GenerosityStripeRegistrationCubit _cubit =
-      GenerosityStripeRegistrationCubit();
+      GenerosityStripeRegistrationCubit(getIt());
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit.init();
+  }
+
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (bool didPop) => widget.onBackPressed?.call(),
       canPop: widget.onBackPressed == null,
-      child: CreditCardDetailsPage(
-        onRegistrationFailed: _cubit.onRegistrationFailed,
-        onRegistrationSuccess: widget.onRegistrationSuccess,
+      child: BaseStateConsumer(
+        onCustom: (context, custom) => _handleCustom(
+            context, custom as GenerosityStripeRegistrationCustom),
+        onData: (context, uiModel) {
+          //TODO
+          return const CircularProgressIndicator();
+        },
+        bloc: _cubit,
       ),
     );
+  }
+
+  void _handleCustom(
+      BuildContext context, GenerosityStripeRegistrationCustom custom) {
+    switch (custom) {
+      case OpenStripeRegistration():
+        Navigator.push(
+          context,
+          CreditCardDetailsPage(
+            onRegistrationFailed: _cubit.onRegistrationFailed,
+            onRegistrationSuccess: _cubit.onRegistrationSuccess,
+          ).toRoute(context),
+        );
+      case OpenLoginPopup():
+        AuthUtils.checkToken(
+          context,
+          checkAuthRequest: CheckAuthRequest(
+            navigate: (context) async => _cubit.onLoggedIn(),
+          ),
+        );
+      case StripeRegistrationSuccess():
+        NoFundsErrorDialog.show(context, onClickRetry: _cubit.onClickRetry);
+      case ShowStripeNoFundsError():
+        if (widget.onBackPressed == null) {
+          Navigator.pop(context);
+        }
+        _cubit.onRegistrationSuccess();
+    }
   }
 }
