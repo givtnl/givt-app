@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,7 +34,7 @@ class _GenerosityChallengeOverviewState
   }
 
   Future<void> _undoProgress(int dayIndax) async {
-    if (!kDebugMode) {
+    if (!isDebug) {
       return;
     }
 
@@ -106,7 +105,8 @@ class _GenerosityChallengeOverviewState
                   itemBuilder: (BuildContext context, int index) {
                     final day = challenge.state.days[index];
                     return DayButton(
-                      onLongPressed: () => _undoProgress(index),
+                      onLongPressed:
+                          isDebug ? () => _undoProgress(index) : null,
                       isCompleted: day.isCompleted,
                       isActive: challenge.state.activeDayIndex == index,
                       dayIndex: index,
