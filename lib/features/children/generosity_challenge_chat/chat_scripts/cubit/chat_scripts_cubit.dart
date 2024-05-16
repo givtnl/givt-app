@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -205,27 +207,11 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
             //if a function fails and that function is registration show a "
             // retry button" in the chat (their internet might have been spotty)
             if (itemFunction == ChatScriptFunction.registerUser && !success) {
-              var retryChatItem = ChatScriptItem.empty().copyWith(
-                type: ChatScriptItemType.buttonAnswer,
-                text: 'Click to retry',
-                answerText: 'Can you try again please?',
-                side: ChatScriptItemSide.user,
-                next: currentChatItem.next,
-              );
-              emit(
-                state.copyWith(
-                  status: ChatScriptsStatus.waitingForAnswer,
-                  currentConditionalItem: retryChatItem,
-                ),
-              );
+              _addRetryRegistrationChatItem(currentChatItem);
               return;
             } else {
-              emit(
-                state.copyWith(
-                  currentConditionalItem: const ChatScriptItem.empty(),
-                  gainedAnswer: const ChatScriptItem.empty(),
-                ),
-              );
+              _logRegistrationSucceeded();
+              _clearRetryRegistrationState();
             }
           }
         }
@@ -236,5 +222,39 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         await _completeDayChat(context);
       }
     }
+  }
+
+  void _clearRetryRegistrationState() {
+    emit(
+      state.copyWith(
+        currentConditionalItem: const ChatScriptItem.empty(),
+        gainedAnswer: const ChatScriptItem.empty(),
+      ),
+    );
+  }
+
+  void _addRetryRegistrationChatItem(ChatScriptItem currentChatItem) {
+    var retryChatItem = ChatScriptItem.empty().copyWith(
+      type: ChatScriptItemType.buttonAnswer,
+      text: 'Click to retry',
+      answerText: 'Can you try again please?',
+      side: ChatScriptItemSide.user,
+      next: currentChatItem.next,
+    );
+    emit(
+      state.copyWith(
+        status: ChatScriptsStatus.waitingForAnswer,
+        currentConditionalItem: retryChatItem,
+      ),
+    );
+  }
+
+  void _logRegistrationSucceeded() {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName:
+            AmplitudeEvents.generosityChallengeRegistrationSucceeded,
+      ),
+    );
   }
 }

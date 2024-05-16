@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
@@ -27,8 +28,10 @@ class ChatScriptRegistrationHandler {
       _updateAws();
       return await _registerUser();
     } catch (e, s) {
-      log(e.toString());
-      log(s.toString());
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
       return false;
     }
   }
