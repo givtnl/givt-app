@@ -25,7 +25,7 @@ class ChatScriptRegistrationHandler {
 
   Future<bool> handleRegistration() async {
     try {
-      _updateAws();
+      _updateUrlsAndCountry();
       return await _registerUser();
     } catch (e, s) {
       await LoggingInfo.instance.error(
@@ -51,7 +51,7 @@ class ChatScriptRegistrationHandler {
     );
   }
 
-  void _updateAws() {
+  void _updateUrlsAndCountry() {
     const baseUrl = String.fromEnvironment('API_URL_US');
     const baseUrlAWS = String.fromEnvironment('API_URL_AWS_US');
 
@@ -59,6 +59,10 @@ class ChatScriptRegistrationHandler {
     _apiService.updateApiUrl(baseUrl, baseUrlAWS);
 
     unawaited(
-        _sharedPreferences.setString(Util.countryIso, Country.us.countryCode));
+      _sharedPreferences.setString(
+        Util.countryIso,
+        Country.us.countryCode,
+      ),
+    );
   }
 }
