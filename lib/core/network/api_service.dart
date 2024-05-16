@@ -508,7 +508,7 @@ class APIService {
 
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
     final url =
-        Uri.https(apiURL, '/givtservice/v1/ChildProfile/$childGUID/allowance');
+        Uri.https(apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
 
     final response = await client.put(
       url,
