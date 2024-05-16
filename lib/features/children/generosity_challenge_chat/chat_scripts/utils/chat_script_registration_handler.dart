@@ -27,14 +27,6 @@ class ChatScriptRegistrationHandler {
       _updateAws();
       return await _registerUser();
     } catch (e, s) {
-      if(e is PlatformException && e.code == "CONNECTION_NOT_SECURE") {
-        try {
-          await _authRepository.updateFingerprintCertificate();
-        } catch (e, s) {
-          log(e.toString());
-          log(s.toString());
-        }
-      }
       log(e.toString());
       log(s.toString());
       return false;

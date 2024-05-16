@@ -210,7 +210,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
                 text: 'Click to retry',
                 answerText: 'Can you try again please?',
                 side: ChatScriptItemSide.user,
-                next: currentChatItem,
+                next: currentChatItem.next,
               );
               emit(
                 state.copyWith(
@@ -220,7 +220,12 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
               );
               return;
             } else {
-              emit(state.copyWith(status: ChatScriptsStatus.updated));
+              emit(
+                state.copyWith(
+                  currentConditionalItem: const ChatScriptItem.empty(),
+                  gainedAnswer: const ChatScriptItem.empty(),
+                ),
+              );
             }
           }
         }

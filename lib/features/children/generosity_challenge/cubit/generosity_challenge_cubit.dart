@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:format/format.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/enums/day_chat_status.dart';
@@ -165,8 +166,12 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   Future<String> formatChatTextWithUserData({
     required String source,
   }) async {
-    final userData = _generosityChallengeRepository.loadUserData();
-    return format(source, userData);
+    try {
+      final userData = _generosityChallengeRepository.loadUserData();
+      return format(source, userData);
+    } catch (e, s) {
+      return source;
+    }
   }
 
   Map<String, dynamic> loadUserData() =>
