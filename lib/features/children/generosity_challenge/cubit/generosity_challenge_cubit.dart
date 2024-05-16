@@ -197,7 +197,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       if (nextActiveDayIndex <
           GenerosityChallengeHelper.generosityChallengeDays) {
         if (state.unlockDayTimeDifference == UnlockDayTimeDifference.minutes) {
-          // the intention of this mode is just to unlock the next day fast for development/testing purposes, no need to do an actual timecheck
+          // the intention of this mode is just to unlock the next day fast
+          // for development/testing purposes, no need to do an actual time-check
           return nextActiveDayIndex;
         } else {
           final lastCompletedDateTime = DateTime.parse(
