@@ -26,7 +26,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             automaticallyImplyLeading: false,
             actions: [
               Padding(
-                padding: EdgeInsets.only(right: 12, top: 12),
+                padding: const EdgeInsets.only(right: 12, top: 12),
                 child: ActionContainer(
                   onTap: () => context.pop(),
                   borderColor: ColorCombo.primary.borderColor,
@@ -86,25 +86,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                               fontFamily: 'Rouna',
                             ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'About us',
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: AppTheme.primary20,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'Rouna',
-                            ),
-                      ),
-                      Text(
-                        value.longDescription,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                              color: AppTheme.primary20,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'Rouna',
-                            ),
-                      ),
+
                       const SizedBox(height: 12),
                     ],
                   ),

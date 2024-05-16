@@ -6,18 +6,14 @@ import 'package:givt_app/features/children/generosity_challenge/models/color_com
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class OrganisationContainer extends StatelessWidget {
-  const OrganisationContainer({required this.familyValue, super.key});
+  const OrganisationContainer(
+      {required this.familyValue, required this.image, super.key});
 
   final FamilyValue familyValue;
+  final Image image;
 
   @override
   Widget build(BuildContext context) {
-    Image image = Image.network(
-      familyValue.orgImagePath,
-      fit: BoxFit.cover,
-    );
-
-    precacheImage(image.image, context);
     return ActionContainer(
       onTap: () {
         showModalBottomSheet<void>(

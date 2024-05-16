@@ -11,6 +11,10 @@ class DisplayOrganisations extends StatelessWidget {
   final List<FamilyValue> familyValues;
   @override
   Widget build(BuildContext context) {
+    final image = [
+      ...familyValues
+          .map((e) => Image.network(e.orgImagePath, fit: BoxFit.cover)),
+    ];
     return Scaffold(
       appBar: GenerosityAppBar(
         title: 'Day 7',
@@ -44,7 +48,9 @@ class DisplayOrganisations extends StatelessWidget {
               (e) => SliverPadding(
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 sliver: SliverToBoxAdapter(
-                    child: OrganisationContainer(familyValue: e)),
+                  child: OrganisationContainer(
+                      familyValue: e, image: image[familyValues.indexOf(e)]),
+                ),
               ),
             ),
           ],
