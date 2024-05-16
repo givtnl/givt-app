@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
-import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
-import 'package:givt_app/shared/widgets/action_container.dart';
+import 'package:givt_app/shared/widgets/custom_icon_button.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -27,19 +26,13 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 12, top: 12),
-                child: ActionContainer(
-                  onTap: () => context.pop(),
-                  borderColor: ColorCombo.primary.borderColor,
-                  child: Container(
-                    color: Colors.white,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                    child: const FaIcon(
-                      FontAwesomeIcons.xmark,
-                      color: AppTheme.primary40,
-                      size: 20,
-                    ),
+                child: GivtIconBorderButton(
+                  child: const FaIcon(
+                    FontAwesomeIcons.xmark,
+                    color: AppTheme.primary40,
+                    size: 20,
                   ),
+                  onTap: () => context.pop(),
                 ),
               ),
             ],
