@@ -247,7 +247,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         days: days,
         activeDayIndex: activeDayIndex,
         status: isChallengeCompleted
-            ? GenerosityChallengeStatus.completed
+            ? GenerosityChallengeStatus.stripeRegistration ?? GenerosityChallengeStatus.completed
             : GenerosityChallengeStatus.overview,
         chatScripts: chatScripts,
         chatActorsSettings: chatActorsSettings,
@@ -268,5 +268,13 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
 
   void dismissMayorPopup() {
     emit(state.copyWith(showMayor: false));
+  }
+
+  void onRegistrationFailed() {
+    //TODO
+  }
+
+  void onRegistrationSucces() {
+    //TODO
   }
 }

@@ -11,7 +11,14 @@ import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class CreditCardDetailsPage extends StatelessWidget {
-  const CreditCardDetailsPage({super.key});
+  const CreditCardDetailsPage({
+    this.onRegistrationSuccess,
+    this.onRegistrationFailed,
+    super.key,
+  });
+
+  final void Function()? onRegistrationSuccess;
+  final void Function()? onRegistrationFailed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,24 +41,18 @@ class CreditCardDetailsPage extends StatelessWidget {
           }
 
           StripeHelper(context).showPaymentSheet().then((value) {
-            context
-                .read<RegistrationBloc>()
-                .add(const RegistrationStripeSuccess());
-            final hasBeenInvited =
-                context.read<ImpactGroupsCubit>().state.invitedGroup !=
-                    const ImpactGroup.empty();
-            context.goNamed(
-              Pages.permitBiometric.name,
-              extra: PermitBiometricRequest.registration(
-                redirect: (context) => context.goNamed(
-                  hasBeenInvited
-                      ? Pages.joinImpactGroupSuccess.name
-                      : Pages.registrationSuccessUs.name,
-                ),
-              ),
-            );
+            if (onRegistrationSuccess != null) {
+              context.pop();
+              onRegistrationSuccess!.call();
+            } else {
+              _handleStripeRegistrationSuccess(context);
+            }
           }).onError((e, stackTrace) {
-            context.goNamed(Pages.home.name);
+            if (onRegistrationFailed != null) {
+              onRegistrationFailed!.call();
+            } else {
+              context.goNamed(Pages.home.name);
+            }
 
             /* Logged as info as stripe is giving exception
                when for example people close the bottomsheet. 
@@ -65,6 +66,23 @@ class CreditCardDetailsPage extends StatelessWidget {
 
           return const Center(child: CircularProgressIndicator());
         },
+      ),
+    );
+  }
+
+  void _handleStripeRegistrationSuccess(BuildContext context) {
+    context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
+    final hasBeenInvited =
+        context.read<ImpactGroupsCubit>().state.invitedGroup !=
+            const ImpactGroup.empty();
+    context.goNamed(
+      Pages.permitBiometric.name,
+      extra: PermitBiometricRequest.registration(
+        redirect: (context) => context.goNamed(
+          hasBeenInvited
+              ? Pages.joinImpactGroupSuccess.name
+              : Pages.registrationSuccessUs.name,
+        ),
       ),
     );
   }

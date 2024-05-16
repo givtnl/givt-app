@@ -7,6 +7,7 @@ enum GenerosityChallengeStatus {
   dailyAssigmentIntro,
   dailyAssigmentConfirm,
   completed,
+  stripeRegistration,
 }
 
 enum UnlockDayTimeDifference { minutes, days }
