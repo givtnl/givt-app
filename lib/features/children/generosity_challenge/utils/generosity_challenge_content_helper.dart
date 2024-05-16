@@ -66,7 +66,7 @@ class GenerosityChallengeContentHelper {
       partnerCard: Task.card(
         image: 'assets/images/generosity_challenge_day_7.svg',
         title: 'Giving together',
-        description: 'You gave 15 dollars to the American Red Cross. Awesome!',
+        description: '',
         onTap: () {},
       ),
     ),

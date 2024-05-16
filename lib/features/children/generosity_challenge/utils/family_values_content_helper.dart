@@ -100,7 +100,7 @@ class FamilyValuesContentHelper {
       area: Area.health,
       collectGroupId: '3EBDE99F-877E-40ED-A1A3-072AE332F1AD',
       longDescription:
-          ' Trinity Woods is a place where older people can live happily and get the help they need. They have nice homes, good food, and doctors to take care of them. They also make sure that the seniors feel loved and happy by giving them lots of kindness and support. Trinity Woods has been doing this for a long time and they always try to make life better for older people.',
+          'Trinity Woods is a place where older people can live happily and get the help they need. They have nice homes, good food, and doctors to take care of them. They also make sure that the seniors feel loved and happy by giving them lots of kindness and support. Trinity Woods has been doing this for a long time and they always try to make life better for older people.',
       orgImagePath:
           'https://givtstorageus.blob.core.windows.net/public/cdn/pog-logos/946F6389-BEED-4D2D-9783-DDE61510CD5B_Action.png',
       organisation: Organisation(
