@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
@@ -6,6 +8,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_function.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_side.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
@@ -99,7 +102,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
 
     await Future.delayed(_chatCompletedDelay, () {
       context.pop();
-      
+
       if (kDebugMode) {
         SnackBarHelper.showMessage(context, text: 'SAVED: $userData');
       }
@@ -200,7 +203,16 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
               ChatScriptFunction.fromString(currentChatItem.functionName);
 
           if (context.mounted) {
-            await itemFunction.function(context);
+            final success = await itemFunction.function(context);
+            //if a function fails and that function is registration show a "
+            // retry button" in the chat (their internet might have been spotty)
+            if (itemFunction == ChatScriptFunction.registerUser && !success) {
+              _addRetryRegistrationChatItem(currentChatItem);
+              return;
+            } else {
+              _logRegistrationSucceeded();
+              _clearRetryRegistrationState();
+            }
           }
         }
 
@@ -210,5 +222,39 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
         await _completeDayChat(context);
       }
     }
+  }
+
+  void _clearRetryRegistrationState() {
+    emit(
+      state.copyWith(
+        currentConditionalItem: const ChatScriptItem.empty(),
+        gainedAnswer: const ChatScriptItem.empty(),
+      ),
+    );
+  }
+
+  void _addRetryRegistrationChatItem(ChatScriptItem currentChatItem) {
+    var retryChatItem = ChatScriptItem.empty().copyWith(
+      type: ChatScriptItemType.buttonAnswer,
+      text: 'Click to retry',
+      answerText: 'Can you try again please?',
+      side: ChatScriptItemSide.user,
+      next: currentChatItem.next,
+    );
+    emit(
+      state.copyWith(
+        status: ChatScriptsStatus.waitingForAnswer,
+        currentConditionalItem: retryChatItem,
+      ),
+    );
+  }
+
+  void _logRegistrationSucceeded() {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName:
+            AmplitudeEvents.generosityChallengeRegistrationSucceeded,
+      ),
+    );
   }
 }
