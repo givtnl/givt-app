@@ -2,11 +2,81 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Still in progress.. Stay tuned for the new updates!"
+    "text": "Hey {lastName} Family. Your nearly at the end of this challenge!",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Our sixth generosity activity is about giving with our money.",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "To do that I'll need to register the details you've given me so far.",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "One sec....",
+          "functionName": "registerUser",
+          "next": {
+            "type": "textMessage",
+            "side": "interlocutor",
+            "text": "All done!",
+            "next": {
+              "type": "textMessage",
+              "side": "interlocutor",
+              "text": "Now you can give your money to help people and causes that you care about.",
+              "next": {
+                "type": "buttonAnswer",
+                "side": "user",
+                "text": "Like who?",
+                "answerText": "Like who?",
+                "next": {
+                  "type": "textMessage",
+                  "side": "interlocutor",
+                  "text": "Great question. Today's assignment will guide you.",
+                  "next": {
+                    "type": "imageMessage",
+                    "side": "interlocutor",
+                    "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_010.png",
+                    "mediaSourceType": "network",
+                    "next": {
+                      "type": "buttonAnswer",
+                      "side": "user",
+                      "text": "Let's give!",
+                      "answerText": "Let's give!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
-  "postChat" :{
+  "postChat": {
     "type": "textMessage",
-    "side": "interlocutor",
-    "text": "Awesome!"
+    "side": "user",
+    "text": "We gave to {organisation}",
+    "next": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "That's incredible. When we all join in, we can make a big impact.",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "That's why giving a little can become a lot when we all give together.",
+        "next": {
+          "type": "buttonAnswer",
+          "side": "user",
+          "text": "See you soon.",
+          "answerText": "See you soon.",
+          "next": {
+            "type": "textMessage",
+            "side": "interlocutor",
+            "text": "😊"
+          }
+        }
+      }
+    }
   }
 }

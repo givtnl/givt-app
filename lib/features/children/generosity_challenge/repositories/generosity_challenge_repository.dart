@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
@@ -6,9 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GenerosityChallengeRepository {
   Future<void> saveToCache(List<Day> days);
+
   Future<List<Day>> loadFromCache();
+
   Future<void> clearCache();
+
   Future<void> saveUserData(ChatScriptSaveKey key, String value);
+
   Map<String, dynamic> loadUserData();
 }
 
@@ -35,23 +40,33 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
 
   @override
   Future<List<Day>> loadFromCache() async {
-    final encodedString =
-        sharedPreferences.getString(_generosityChallengeDaysKey) ?? '';
-    if (encodedString.isNotEmpty) {
-      final result = (jsonDecode(encodedString) as List<dynamic>)
-          .map<Day>(
-            (day) => Day.fromMap(day as Map<String, dynamic>),
-          )
-          .toList();
-      return result;
-    } else {
-      final days = List<Day>.filled(
-        GenerosityChallengeHelper.generosityChallengeDays,
-        const Day.empty(),
-      );
-      await saveToCache(days);
-      return days;
+    try {
+      final encodedString =
+          sharedPreferences.getString(_generosityChallengeDaysKey) ?? '';
+      if (encodedString.isNotEmpty) {
+        final result = (jsonDecode(encodedString) as List<dynamic>)
+            .map<Day>(
+              (day) => Day.fromMap(day as Map<String, dynamic>),
+            )
+            .toList();
+        return result;
+      } else {
+        return await _saveAndReturnEmptyDays();
+      }
+    } catch (e, s) {
+      log(e.toString());
+      log(s.toString());
+      return _saveAndReturnEmptyDays();
     }
+  }
+
+  Future<List<Day>> _saveAndReturnEmptyDays() async {
+    final days = List<Day>.filled(
+      GenerosityChallengeHelper.generosityChallengeDays,
+      const Day.empty(),
+    );
+    await saveToCache(days);
+    return days;
   }
 
   @override

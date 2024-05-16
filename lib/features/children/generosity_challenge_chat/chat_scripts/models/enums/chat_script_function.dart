@@ -7,6 +7,9 @@ enum ChatScriptFunction {
   pushNotificationPermission(
     function: _askForPushNotificationPermission,
   ),
+  registerUser(
+    function: _registerUser,
+  ),
   ;
 
   const ChatScriptFunction({
@@ -36,6 +39,14 @@ enum ChatScriptFunction {
     if (settings.authorizationStatus != AuthorizationStatus.authorized) {
       await AppSettings.openAppSettings(type: AppSettingsType.notification);
     }
+    return true;
+  }
+
+  static Future<bool> _registerUser(
+    BuildContext context,
+  ) async {
+    // KIDS-941: Implement registration
+    throw UnimplementedError();
     return true;
   }
 }

@@ -8,7 +8,9 @@ import 'package:givt_app/features/children/generosity_challenge/repositories/cha
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
 
 part 'generosity_challenge_state.dart';
 
@@ -16,10 +18,12 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   GenerosityChallengeCubit(
     this._generosityChallengeRepository,
     this._chatScriptsRepository,
+    this._chatHistoryRepository,
   ) : super(const GenerosityChallengeState.initial());
 
   final GenerosityChallengeRepository _generosityChallengeRepository;
   final ChatScriptsRepository _chatScriptsRepository;
+  final ChatHistoryRepository _chatHistoryRepository;
 
   Future<void> loadFromCache() async {
     emit(state.copyWith(status: GenerosityChallengeStatus.loading));
@@ -42,6 +46,37 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     await loadFromCache();
   }
 
+  Future<void> undoProgress(int dayIndex) async {
+    if (dayIndex < 0 ||
+        dayIndex >= GenerosityChallengeHelper.generosityChallengeDays) {
+      return;
+    }
+
+    final newDays = [...state.days]..fillRange(
+        dayIndex,
+        GenerosityChallengeHelper.generosityChallengeDays,
+        const Day.empty(),
+      );
+    await _generosityChallengeRepository.saveToCache(newDays);
+    _refreshState(
+      days: newDays,
+    );
+
+    final chatHistory = _chatHistoryRepository.loadChatHistory();
+    ChatScriptItem? currentItem;
+
+    for (currentItem = chatHistory;
+        currentItem != null && currentItem != const ChatScriptItem.empty();
+        currentItem = currentItem.next) {
+      if (currentItem.type == ChatScriptItemType.delimiter &&
+          currentItem.text == 'Day ${dayIndex + 1}') {
+        final newHistory = currentItem.next ?? const ChatScriptItem.empty();
+        await _chatHistoryRepository.saveChatHistory(newHistory);
+        return;
+      }
+    }
+  }
+
   void overview() => emit(
         state.copyWith(
           status: GenerosityChallengeStatus.overview,
@@ -55,6 +90,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
           detailedDayIndex: dayIndex,
         ),
       );
+
   void confirmAssignment(String description) => emit(
         state.copyWith(
           status: GenerosityChallengeStatus.dailyAssigmentConfirm,
@@ -129,7 +165,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   Future<String> formatChatTextWithUserData({
     required String source,
   }) async {
-    final userData = await _generosityChallengeRepository.loadUserData();
+    final userData = _generosityChallengeRepository.loadUserData();
     return format(source, userData);
   }
 
@@ -160,18 +196,21 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       final nextActiveDayIndex = lastCompletedDayIndex + 1;
       if (nextActiveDayIndex <
           GenerosityChallengeHelper.generosityChallengeDays) {
-        final lastCompletedDateTime =
-            DateTime.parse(days[lastCompletedDayIndex].dateCompleted);
-        final diff = lastCompletedDateTime.difference(DateTime.now());
-        final timeDifference =
-            state.unlockDayTimeDifference == UnlockDayTimeDifference.days
-                ? diff.inDays
-                : diff.inMinutes;
-        if (timeDifference != 0) {
+        if (state.unlockDayTimeDifference == UnlockDayTimeDifference.minutes) {
+          // the intention of this mode is just to unlock the next day fast
+          // for development/testing purposes, no need to do an actual time-check
           return nextActiveDayIndex;
         } else {
-          //no active day yet
-          return -1;
+          final lastCompletedDateTime = DateTime.parse(
+            days[lastCompletedDayIndex].dateCompleted,
+          );
+          final nowDateTime = DateTime.now();
+          if (lastCompletedDateTime.day != nowDateTime.day) {
+            return nextActiveDayIndex;
+          } else {
+            //no active day yet
+            return -1;
+          }
         }
       } else {
         //the challenge is completed, no active day
