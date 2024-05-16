@@ -124,6 +124,7 @@ class AppRouter {
             create: (_) => GenerosityChallengeCubit(
               getIt(),
               getIt(),
+              getIt(),
             )..loadFromCache(),
             child: const GenerosityChallenge(),
           );
@@ -863,7 +864,7 @@ class AppRouter {
     final query = Uri(
       queryParameters: params,
     ).query;
-    
+
     if (GenerosityChallengeHelper.isActivated ||
         navigatingPage == Pages.generosityChallenge.path) {
       return Pages.generosityChallenge.path;
