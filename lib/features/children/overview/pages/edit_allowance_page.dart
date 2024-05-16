@@ -55,18 +55,8 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Which amount should be added to',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                              color: AppTheme.childGivingAllowanceHint,
-                              fontFamily: 'Raleway',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              height: 1.2,
-                            ),
-                      ),
-                      Text(
-                        "your child's wallet each month?",
+                        'Which amount should be added to\n'
+                            "your child's wallet each month?",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium!.copyWith(
                               color: AppTheme.childGivingAllowanceHint,
