@@ -90,6 +90,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
           detailedDayIndex: dayIndex,
         ),
       );
+
   void confirmAssignment(String description) => emit(
         state.copyWith(
           status: GenerosityChallengeStatus.dailyAssigmentConfirm,
@@ -195,18 +196,20 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       final nextActiveDayIndex = lastCompletedDayIndex + 1;
       if (nextActiveDayIndex <
           GenerosityChallengeHelper.generosityChallengeDays) {
-        final lastCompletedDateTime =
-            DateTime.parse(days[lastCompletedDayIndex].dateCompleted);
-        final diff = lastCompletedDateTime.difference(DateTime.now());
-        final timeDifference =
-            state.unlockDayTimeDifference == UnlockDayTimeDifference.days
-                ? diff.inDays
-                : diff.inMinutes;
-        if (timeDifference != 0) {
+        if (state.unlockDayTimeDifference == UnlockDayTimeDifference.minutes) {
+          // the intention of this mode is just to unlock the next day fast for development/testing purposes, no need to do an actual timecheck
           return nextActiveDayIndex;
         } else {
-          //no active day yet
-          return -1;
+          final lastCompletedDateTime = DateTime.parse(
+            days[lastCompletedDayIndex].dateCompleted,
+          );
+          final nowDateTime = DateTime.now();
+          if (lastCompletedDateTime.day != nowDateTime.day) {
+            return nextActiveDayIndex;
+          } else {
+            //no active day yet
+            return -1;
+          }
         }
       } else {
         //the challenge is completed, no active day
