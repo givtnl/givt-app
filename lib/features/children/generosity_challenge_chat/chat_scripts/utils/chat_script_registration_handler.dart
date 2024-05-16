@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -26,6 +27,14 @@ class ChatScriptRegistrationHandler {
       _updateAws();
       return await _registerUser();
     } catch (e, s) {
+      if(e is PlatformException && e.code == "CONNECTION_NOT_SECURE") {
+        try {
+          await _authRepository.updateFingerprintCertificate();
+        } catch (e, s) {
+          log(e.toString());
+          log(s.toString());
+        }
+      }
       log(e.toString());
       log(s.toString());
       return false;
