@@ -99,7 +99,15 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
           case GenerosityChallengeStatus.completed:
             return const Center(child: Text('TODO: Create completed page'));
           case GenerosityChallengeStatus.stripeRegistration:
-            return const GenerosityStripeRegistrationPage();
+            return GenerosityStripeRegistrationPage(
+              onRegistrationFailed: () =>
+                  print("TODO: Handle registration failed"),
+              onRegistrationSuccess: () =>
+                  print("TODO: Handle registration success"),
+              onBackPressed: () {
+                challenge.stripeRegistrationBackPressed();
+              },
+            );
         }
       },
     );

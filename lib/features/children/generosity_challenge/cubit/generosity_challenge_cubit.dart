@@ -277,4 +277,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   void onRegistrationSucces() {
     //TODO
   }
+
+  void stripeRegistrationBackPressed() {
+    emit(state.copyWith(status: GenerosityChallengeStatus.overview));
+  }
 }

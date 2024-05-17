@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_stripe_registration_custom.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
 import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_error_dialog.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
@@ -28,7 +30,7 @@ class GenerosityStripeRegistrationPage extends StatefulWidget {
 class _GenerosityStripeRegistrationPageState
     extends State<GenerosityStripeRegistrationPage> {
   final GenerosityStripeRegistrationCubit _cubit =
-      GenerosityStripeRegistrationCubit(getIt());
+      GenerosityStripeRegistrationCubit(getIt(), getIt(), getIt());
 
   @override
   void didChangeDependencies() {
@@ -47,14 +49,19 @@ class _GenerosityStripeRegistrationPageState
     return PopScope(
       onPopInvoked: (bool didPop) => widget.onBackPressed?.call(),
       canPop: widget.onBackPressed == null,
-      child: BaseStateConsumer(
-        onCustom: (context, custom) => _handleCustom(
-            context, custom as GenerosityStripeRegistrationCustom),
-        onData: (context, uiModel) {
-          //TODO
-          return const CircularProgressIndicator();
-        },
-        bloc: _cubit,
+      child: Scaffold(
+        appBar: AppBar(
+          actions: const [BackButton()],
+        ),
+        body: BaseStateConsumer(
+          onCustom: (context, custom) => _handleCustom(
+              context, custom as GenerosityStripeRegistrationCustom),
+          onData: (context, uiModel) {
+            //TODO
+            return const CircularProgressIndicator();
+          },
+          bloc: _cubit,
+        ),
       ),
     );
   }
@@ -65,9 +72,18 @@ class _GenerosityStripeRegistrationPageState
       case OpenStripeRegistration():
         Navigator.push(
           context,
-          CreditCardDetailsPage(
-            onRegistrationFailed: _cubit.onRegistrationFailed,
-            onRegistrationSuccess: _cubit.onRegistrationSuccess,
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) => StripeCubit(
+                  authRepositoy: getIt(),
+                ),
+              ),
+            ],
+            child: CreditCardDetailsPage(
+              onRegistrationFailed: _cubit.onRegistrationFailed,
+              onRegistrationSuccess: _cubit.onRegistrationSuccess,
+            ),
           ).toRoute(context),
         );
       case OpenLoginPopup():
@@ -78,12 +94,9 @@ class _GenerosityStripeRegistrationPageState
           ),
         );
       case StripeRegistrationSuccess():
-        NoFundsErrorDialog.show(context, onClickRetry: _cubit.onClickRetry);
+        widget.onRegistrationSuccess?.call();
       case ShowStripeNoFundsError():
-        if (widget.onBackPressed == null) {
-          Navigator.pop(context);
-        }
-        _cubit.onRegistrationSuccess();
+        NoFundsErrorDialog.show(context, onClickRetry: _cubit.onClickRetry);
     }
   }
 }
