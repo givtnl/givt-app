@@ -1,6 +1,8 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/utils/chat_script_registration_handler.dart';
 
 enum ChatScriptFunction {
   none(function: _empty),
@@ -45,8 +47,6 @@ enum ChatScriptFunction {
   static Future<bool> _registerUser(
     BuildContext context,
   ) async {
-    // KIDS-941: Implement registration
-    //throw UnimplementedError();
-    return true;
+    return getIt<ChatScriptRegistrationHandler>().handleRegistration();
   }
 }

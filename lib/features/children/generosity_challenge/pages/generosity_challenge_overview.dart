@@ -33,6 +33,37 @@ class _GenerosityChallengeOverviewState
     );
   }
 
+  Future<void> _undoProgress(int dayIndax) async {
+    if (!isDebug) {
+      return;
+    }
+
+    final challenge = context.read<GenerosityChallengeCubit>();
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Undo Challenge Progress'),
+          content: Text(
+              'Are you sure you want to undo generosity challenge progress including Day ${dayIndax + 1}?'),
+          actions: [
+            TextButton(
+              onPressed: () => context.pop(true),
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () => context.pop(false),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+    if (true == result) {
+      await challenge.undoProgress(dayIndax);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final challenge = context.watch<GenerosityChallengeCubit>();
@@ -74,6 +105,8 @@ class _GenerosityChallengeOverviewState
                   itemBuilder: (BuildContext context, int index) {
                     final day = challenge.state.days[index];
                     return DayButton(
+                      onLongPressed:
+                          isDebug ? () => _undoProgress(index) : null,
                       isCompleted: day.isCompleted,
                       isActive: challenge.state.activeDayIndex == index,
                       dayIndex: index,
@@ -87,7 +120,7 @@ class _GenerosityChallengeOverviewState
                                   'day': index + 1,
                                 },
                               );
-                              
+
                               // If the (pre)chat is available for the day, navigate to the chat screen
                               if (challenge.state.hasAvailableChat &&
                                   challenge.state.availableChatDayIndex ==

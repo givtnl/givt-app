@@ -130,6 +130,7 @@ class AppRouter {
             create: (_) => GenerosityChallengeCubit(
               getIt(),
               getIt(),
+              getIt(),
             )..loadFromCache(),
             child: const GenerosityChallenge(),
           );
@@ -400,6 +401,7 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (_) => ChildDetailsCubit(
+                      getIt(),
                       getIt(),
                       childProfile,
                     )..fetchChildDetails(),
