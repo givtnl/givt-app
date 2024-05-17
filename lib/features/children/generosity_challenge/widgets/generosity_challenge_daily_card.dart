@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
@@ -89,6 +90,13 @@ class GenerosityDailyCard extends StatelessWidget {
                               context.push(
                                 '${Pages.generosityChallenge.path}/${task.redirect}',
                                 extra: context.read<GenerosityChallengeCubit>(),
+                              );
+                              AnalyticsHelper.logEvent(
+                                eventName: AmplitudeEvents
+                                    .startAssignmentFromGenerosityChallenge,
+                                eventProperties: {
+                                  'title': task.title,
+                                },
                               );
                             }
                           : task.onTap,

@@ -15,6 +15,8 @@ mixin GenerosityChallengeRepository {
   Future<void> saveUserData(ChatScriptSaveKey key, String value);
 
   Map<String, dynamic> loadUserData();
+
+  Future<String> loadFromKey(String key);
 }
 
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
@@ -58,6 +60,12 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
       log(s.toString());
       return _saveAndReturnEmptyDays();
     }
+  }
+
+  @override
+  Future<String> loadFromKey(String key) async {
+    final response = loadUserData();
+    return response[key] as String? ?? '';
   }
 
   Future<List<Day>> _saveAndReturnEmptyDays() async {

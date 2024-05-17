@@ -24,6 +24,9 @@ import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_organisations_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
@@ -178,6 +181,45 @@ class AppRouter {
                   ),
                 ],
                 child: const SelectFamilyValues(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.displayValues.path,
+            name: Pages.displayValues.name,
+            builder: (context, state) {
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: state.extra! as GenerosityChallengeCubit,
+                  ),
+                  BlocProvider(
+                    create: (context) => FamilyValuesCubit(
+                      generosityChallengeRepository: getIt(),
+                    )..getSavedValues(),
+                  ),
+                ],
+                child: const DisplayFamilyValues(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.displayValuesOrganisations.path,
+            name: Pages.displayValuesOrganisations.name,
+            builder: (context, state) {
+              final extra = state.extra! as Map<String, dynamic>;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value:
+                        extra[GenerosityChallengeHelper.generosityChallengeKey]
+                            as GenerosityChallengeCubit,
+                  ),
+                ],
+                child: DisplayOrganisations(
+                  familyValues: extra[FamilyValuesCubit.familyValuesKey]
+                      as List<FamilyValue>,
+                ),
               );
             },
           ),

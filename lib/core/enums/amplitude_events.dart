@@ -87,9 +87,15 @@ enum AmplitudeEvents {
   generosityChallengeDayUndoCompleting(
     'generosity_challenge_day_undo_completing',
   ),
+  startAssignmentFromGenerosityChallenge(
+    'start_assignment_from_generosity_challenge',
+  ),
+  daySevenFamilyValuesSeenContinueClicked(
+    'day_7_family_values_seen_continue_clicked',
+  ),
   familyValuesSelected('family_values_selected'),
   acceptedGenerosityChallenge('accepted_generosity_challenge'),
-
+  organisationCardClicked('organisation_card_clicked'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
   generosityChallengeRegistrationSucceeded('generosity_challenge_registration_succeeded'),
 
