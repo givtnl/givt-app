@@ -13,10 +13,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScriptRegistrationHandler {
   const ChatScriptRegistrationHandler(
-      this._authRepository,
-      this._sharedPreferences,
-      this._generosityChallengeRepository,
-      this._apiService);
+    this._authRepository,
+    this._sharedPreferences,
+    this._generosityChallengeRepository,
+    this._apiService,
+  );
 
   final AuthRepository _authRepository;
   final SharedPreferences _sharedPreferences;

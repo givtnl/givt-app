@@ -18,6 +18,7 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:intl/intl.dart';
 
 part 'give_event.dart';
+
 part 'give_state.dart';
 
 class GiveBloc extends Bloc<GiveEvent, GiveState> {
@@ -46,6 +47,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     on<GiveCheckLastDonation>(_checkLastDonation);
 
     on<GiveToLastOrganisation>(_onGiveToLastOrganisation);
+
+    on<GiveStripeRegistrationError>(_onStripeRegistrationError);
   }
 
   final CampaignRepository _campaignRepository;
@@ -589,5 +592,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         instanceName: qrCode.name,
       ),
     );
+  }
+
+  FutureOr<void> _onStripeRegistrationError(
+    GiveStripeRegistrationError event,
+    Emitter<GiveState> emit,
+  ) {
+    emit(state.copyWith(status: GiveStatus.error));
   }
 }

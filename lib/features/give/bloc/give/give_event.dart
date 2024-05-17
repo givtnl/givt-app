@@ -141,3 +141,10 @@ class GiveGPSConfirm extends GiveEvent {
   @override
   List<Object> get props => [userGUID];
 }
+
+class GiveStripeRegistrationError extends GiveEvent {
+  const GiveStripeRegistrationError();
+
+  @override
+  List<Object> get props => [];
+}

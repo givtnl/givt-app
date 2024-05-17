@@ -172,7 +172,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     try {
       final userData = _generosityChallengeRepository.loadUserData();
       return format(source, userData);
-    } catch (e, s) {
+    } catch (e) {
       return source;
     }
   }
