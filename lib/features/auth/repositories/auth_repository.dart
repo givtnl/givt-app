@@ -552,7 +552,7 @@ class AuthRepositoyImpl with AuthRepository {
         newSession.toJson(),
       ),
     );
-    await _fetchUserExtension();
+    await fetchUserExtension(newSession.userGUID);
     _hasSessionStreamController.add(true);
     return true;
   }
