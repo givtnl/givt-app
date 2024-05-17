@@ -5,6 +5,8 @@ class GenerosityChallengeHelper {
   static const String _generosityChallengeActivatedKey =
       'generosityChallengeActivated';
 
+  static const String generosityChallengeKey = 'generosityChallenge';
+
   static const int generosityChallengeDays = 7;
 
   static bool get isActivated =>

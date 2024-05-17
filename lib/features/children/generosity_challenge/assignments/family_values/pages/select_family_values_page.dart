@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_value_container.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_values_sliver_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/values_tally.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/family_values_content_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -20,25 +22,17 @@ class SelectFamilyValues extends StatelessWidget {
     return BlocBuilder<FamilyValuesCubit, FamilyValuesState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: GenerosityAppBar(
+          appBar: const GenerosityAppBar(
             title: 'Day 2',
-            leading: BackButton(
-              onPressed: context.pop,
-              color: AppTheme.givtGreen40,
-            ),
+            leading: GenerosityBackButton(),
           ),
           body: SafeArea(
             child: CustomScrollView(
               slivers: [
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  sliver: SliverAppBar(
-                    pinned: true,
-                    primary: false,
-                    backgroundColor: Colors.white,
-                    surfaceTintColor: AppTheme.primary90,
-                    automaticallyImplyLeading: false,
-                    title: Padding(
+                  sliver: FamilyValuesSliverAppBar(
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 24),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

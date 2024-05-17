@@ -44,7 +44,8 @@ class GenerosityChallengeContentHelper {
     Task.card(
       image: 'assets/images/generosity_challenge_day_5.svg',
       title: 'Sharing is caring',
-      description: 'Today’s assignment is for each family member to choose 1 item to give away and donate.\n\nWhat will you pick?',
+      description:
+          'Today’s assignment is for each family member to choose 1 item to give away and donate.\n\nWhat will you pick?',
       onTap: () {},
     ),
     Task.card(
@@ -56,10 +57,18 @@ class GenerosityChallengeContentHelper {
     ),
     Task.card(
       image: 'assets/images/generosity_challenge_day_7.svg',
-      title: 'What a look of surprise shone on Mastro Cherry’s face!',
+      title: 'Giving together',
+      buttonText: 'Find a charity',
       description:
-          'His funny face became still funnier. He turned frightened eyes about the room to find out where that wee, little voice had come from and he saw no one! He looked under the bench—no one! He peeped inside the closet—no one! He searched among the shavings—no one!',
+          'Using your Family Values see what charities align with what you care about. Give to one of them.',
+      redirect: Pages.displayValues.path,
       onTap: () {},
+      partnerCard: Task.card(
+        image: 'assets/images/generosity_challenge_day_7.svg',
+        title: 'Giving together',
+        description: '',
+        onTap: () {},
+      ),
     ),
     Task.card(
       image: '',

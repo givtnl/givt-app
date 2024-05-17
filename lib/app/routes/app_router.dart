@@ -23,7 +23,12 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_organisations_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
@@ -36,6 +41,7 @@ import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/give/pages/gps_scan_page.dart';
@@ -178,6 +184,76 @@ class AppRouter {
                   ),
                 ],
                 child: const SelectFamilyValues(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.displayValues.path,
+            name: Pages.displayValues.name,
+            builder: (context, state) {
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value: state.extra! as GenerosityChallengeCubit,
+                  ),
+                  BlocProvider(
+                    create: (context) => FamilyValuesCubit(
+                      generosityChallengeRepository: getIt(),
+                    )..getSavedValues(),
+                  ),
+                ],
+                child: const DisplayFamilyValues(),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.displayValuesOrganisations.path,
+            name: Pages.displayValuesOrganisations.name,
+            builder: (context, state) {
+              final extra = state.extra! as Map<String, dynamic>;
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider.value(
+                    value:
+                        extra[GenerosityChallengeHelper.generosityChallengeKey]
+                            as GenerosityChallengeCubit,
+                  ),
+                ],
+                child: DisplayOrganisations(
+                  familyValues: extra[FamilyValuesCubit.familyValuesKey]
+                      as List<FamilyValue>,
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: Pages.chooseAmountSlider.path,
+            name: Pages.chooseAmountSlider.name,
+            builder: (context, state) {
+              final extras = state.extra! as List;
+              final organisation = extras[0] as Organisation;
+              final challengeCubit = extras[1] as GenerosityChallengeCubit;
+
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (_) => GiveBloc(
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                    ),
+                  ),
+                  BlocProvider(
+                    create: (context) => CreateChallengeDonationCubit(),
+                  ),
+                  BlocProvider.value(
+                    value: challengeCubit,
+                  ),
+                ],
+                child: ChooseAmountSliderPage(
+                  organisation: organisation,
+                ),
               );
             },
           ),

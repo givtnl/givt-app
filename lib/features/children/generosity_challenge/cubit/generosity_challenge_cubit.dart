@@ -163,6 +163,9 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         item.answerText,
       );
 
+  Future<void> saveUserDataByKey(ChatScriptSaveKey key, String value) =>
+      _generosityChallengeRepository.saveUserData(key, value);
+
   Future<String> formatChatTextWithUserData({
     required String source,
   }) async {

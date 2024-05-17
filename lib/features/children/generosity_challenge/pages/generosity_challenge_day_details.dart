@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/generosity_challenge/models/day.dart'
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_content_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -29,10 +30,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
         return Scaffold(
           appBar: GenerosityAppBar(
             title: 'Day ${challenge.state.detailedDayIndex + 1}',
-            leading: BackButton(
-              onPressed: challenge.overview,
-              color: AppTheme.givtGreen40,
-            ),
+            leading: GenerosityBackButton(onPressed: challenge.overview),
           ),
           body: SafeArea(child: _buildCard(state, task, day)),
           floatingActionButtonLocation:
