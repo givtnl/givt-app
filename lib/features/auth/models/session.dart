@@ -29,6 +29,16 @@ class Session {
     );
   }
 
+  factory Session.fromGenerosityJson(Map<String, dynamic> json) => Session(
+    email: json['email'] as String,
+    userGUID: json['userId'] as String,
+    accessToken: json['accessToken'] as String,
+    refreshToken: json['refreshToken'] as String,
+    expires: json['expirationDate'] as String,
+    expiresIn: json['expiresIn'] as int,
+    isLoggedIn: true,
+  );
+
   factory Session.fromJson(Map<String, dynamic> json) => Session(
         email: json['Email'] as String,
         userGUID: json['GUID'] as String,

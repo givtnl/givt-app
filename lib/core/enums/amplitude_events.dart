@@ -97,6 +97,7 @@ enum AmplitudeEvents {
   acceptedGenerosityChallenge('accepted_generosity_challenge'),
   organisationCardClicked('organisation_card_clicked'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
+  generosityChallengeRegistrationSucceeded('generosity_challenge_registration_succeeded'),
 
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),

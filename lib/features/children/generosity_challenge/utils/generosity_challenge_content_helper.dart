@@ -52,7 +52,7 @@ class GenerosityChallengeContentHelper {
       image: 'assets/images/generosity_challenge_day_6.svg',
       title: 'Words of kindness',
       description:
-          'Each person say one nice thing you like about someone else.\n\nFor example, "I love it when you hug me if I\'m sad."',
+          'Each person say one nice thing you like about someone else.\n\nFor example, "I love it when you hug me when I\'m sad."',
       onTap: () {},
     ),
     Task.card(

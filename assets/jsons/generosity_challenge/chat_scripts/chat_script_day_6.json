@@ -2,7 +2,7 @@
   "main": {
     "type": "textMessage",
     "side": "interlocutor",
-    "text": "Hey {lastName} Family. Your nearly at the end of this challenge!",
+    "text": "Hey {lastName} Family. You're nearly at the end of this challenge!",
     "next": {
       "type": "textMessage",
       "side": "interlocutor",
