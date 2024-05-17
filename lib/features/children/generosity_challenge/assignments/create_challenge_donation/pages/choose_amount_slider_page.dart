@@ -44,9 +44,8 @@ class ChooseAmountSliderPage extends StatelessWidget {
         CreateChallengeDonationState>(
       builder: (context, state) {
         return BlocListener<GiveBloc, GiveState>(
-          listener: (context, giveState) {
-            if (giveState.status == GiveStatus.processed ||
-                giveState.status == GiveStatus.error) {
+          listener: (context, giveState) async {
+            if (giveState.status == GiveStatus.processed) {
               context.read<GenerosityChallengeCubit>()
                 ..confirmAssignment(
                   _createAssignmentDescription(
@@ -59,6 +58,8 @@ class ChooseAmountSliderPage extends StatelessWidget {
                   organisation.organisationName!,
                 );
               context.goNamed(Pages.generosityChallenge.name);
+            } else if (giveState.status == GiveStatus.error) {
+              NoFundsInitialDialog.show(context);
             }
           },
           child: Scaffold(
@@ -104,16 +105,22 @@ class ChooseAmountSliderPage extends StatelessWidget {
               onTap: () async {
                 _logDonationAnalytics(state);
                 try {
+                  unawaited(
+                    GiveLoadingDialog.showGiveLoadingDialog(
+                      context,
+                    ),
+                  );
                   final stripeResponse =
                       await getIt<GenerosityStripeRegistrationCubit>()
                           .setupStripeRegistration();
+                  context.pop();
                   if (context.mounted) {
                     await StripeHelper(context)
                         .showPaymentSheet(stripe: stripeResponse)
                         .then((value) {
                       _handleStripeRegistrationSuccess(context, state);
                     }).onError((e, stackTrace) {
-                      _handleStripeError(context, e, stackTrace);
+                      _handleStripeOrDonationError(context, e, stackTrace);
                     });
                   } else {
                     throw Exception(
@@ -122,7 +129,7 @@ class ChooseAmountSliderPage extends StatelessWidget {
                   }
                 } catch (e, stackTrace) {
                   if (context.mounted) {
-                    _handleStripeError(context, e, stackTrace);
+                    _handleStripeOrDonationError(context, e, stackTrace);
                   }
                 }
               },
@@ -149,8 +156,6 @@ class ChooseAmountSliderPage extends StatelessWidget {
     BuildContext context,
     CreateChallengeDonationState state,
   ) {
-    unawaited(GiveLoadingDialog.showGiveLoadingDialog(context));
-
     final decodedMediumId = utf8.decode(base64.decode(organisation.mediumId!));
 
     context.read<GiveBloc>()
@@ -169,9 +174,12 @@ class ChooseAmountSliderPage extends StatelessWidget {
       );
   }
 
-  void _handleStripeError(
-      BuildContext context, Object? e, StackTrace stackTrace) {
-    NoFundsInitialDialog.show(context);
+  void _handleStripeOrDonationError(
+    BuildContext context,
+    Object? e,
+    StackTrace stackTrace,
+  ) {
+    context.read<GiveBloc>().add(const GiveStripeRegistrationError());
     LoggingInfo.instance.info(
       e.toString(),
       methodName: stackTrace.toString(),
