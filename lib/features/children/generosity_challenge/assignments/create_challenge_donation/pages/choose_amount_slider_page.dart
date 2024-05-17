@@ -105,11 +105,7 @@ class ChooseAmountSliderPage extends StatelessWidget {
               onTap: () async {
                 _logDonationAnalytics(state);
                 try {
-                  unawaited(
-                    GiveLoadingDialog.showGiveLoadingDialog(
-                      context,
-                    ),
-                  );
+                  _showLoadingDialog(context);
                   final stripeResponse =
                       await getIt<GenerosityStripeRegistrationCubit>()
                           .setupStripeRegistration();
@@ -137,6 +133,14 @@ class ChooseAmountSliderPage extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void _showLoadingDialog(BuildContext context) {
+    unawaited(
+      GiveLoadingDialog.showGiveLoadingDialog(
+        context,
+      ),
     );
   }
 
