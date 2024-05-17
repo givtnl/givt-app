@@ -68,6 +68,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
                   widget.organisation.organisationName!,
                 );
               context.goNamed(Pages.generosityChallenge.name);
+              _logSuccessFullDonation(state);
             } else if (giveState.status == GiveStatus.error) {
               _setLoading(false);
               NoFundsInitialDialog.show(context);
@@ -166,6 +167,17 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
             ),
           ),
         );
+      },
+    );
+  }
+
+  void _logSuccessFullDonation(CreateChallengeDonationState state) {
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents
+          .generosityChallengeDonationSuccess,
+      eventProperties: {
+        'organisation_name': widget.organisation.organisationName,
+        'amount' : state.amount,
       },
     );
   }
