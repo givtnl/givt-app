@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_history.dart';
@@ -53,14 +53,7 @@ class _ChatScriptPageState extends State<ChatScriptPage> {
           backgroundColor: AppTheme.primary99,
           appBar: GenerosityAppBar(
             title: 'Chat',
-            leading: showBackButton
-                ? IconButton(
-                    onPressed: () {
-                      context.pop();
-                    },
-                    icon: const Icon(FontAwesomeIcons.arrowLeft),
-                  )
-                : null,
+            leading: showBackButton ? const GenerosityBackButton() : null,
             actions: [
               if (isDebug)
                 Opacity(

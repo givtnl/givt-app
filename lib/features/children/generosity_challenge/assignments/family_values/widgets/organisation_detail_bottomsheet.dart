@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
-import 'package:givt_app/shared/widgets/custom_icon_button.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/shared/widgets/custom_icon_border_button.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class OrganisationDetailBottomSheet extends StatelessWidget {
@@ -17,7 +21,9 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
       heightFactor: 0.9,
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -26,7 +32,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(right: 12, top: 12),
-                child: GivtIconBorderButton(
+                child: CustomIconBorderButton(
                   child: const FaIcon(
                     FontAwesomeIcons.xmark,
                     color: AppTheme.primary40,
@@ -90,10 +96,23 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12),
             child: GivtElevatedButton(
-              text: "Donate",
+              text: 'Continue',
               onTap: () {
-                // TODO: KIDS-943 - implement Choose amount slider screen redirection
-                // TODO: AMPLITUDE
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.organisationDetailsContinueClicked,
+                  eventProperties: {
+                    'organisation_name': value.organisation.organisationName,
+                    'family_value': value.displayText,
+                  },
+                );
+
+                context.pushNamed(
+                  Pages.chooseAmountSlider.name,
+                  extra: [
+                    value.organisation,
+                    context.read<GenerosityChallengeCubit>(),
+                  ],
+                );
               },
             ),
           ),
