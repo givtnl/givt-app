@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/shared/widgets/custom_icon_border_button.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -106,7 +108,10 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
 
                 context.pushNamed(
                   Pages.chooseAmountSlider.name,
-                  extra: value.organisation,
+                  extra: [
+                    value.organisation,
+                    context.read<GenerosityChallengeCubit>(),
+                  ],
                 );
               },
             ),

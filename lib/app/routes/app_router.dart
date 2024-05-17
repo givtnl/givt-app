@@ -229,12 +229,25 @@ class AppRouter {
             path: Pages.chooseAmountSlider.path,
             name: Pages.chooseAmountSlider.name,
             builder: (context, state) {
-              final organisation = state.extra! as Organisation;
+              final extras = state.extra! as List;
+              final organisation = extras[0] as Organisation;
+              final challengeCubit = extras[1] as GenerosityChallengeCubit;
+
               return MultiBlocProvider(
                 providers: [
-                  //TODO: provide GiveBloc here for futher donate
+                  BlocProvider(
+                    create: (_) => GiveBloc(
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                      getIt(),
+                    ),
+                  ),
                   BlocProvider(
                     create: (context) => CreateChallengeDonationCubit(),
+                  ),
+                  BlocProvider.value(
+                    value: challengeCubit,
                   ),
                 ],
                 child: ChooseAmountSliderPage(

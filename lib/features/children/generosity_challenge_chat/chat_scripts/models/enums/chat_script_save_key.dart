@@ -21,6 +21,8 @@ enum ChatScriptSaveKey {
   familyValue2Value(value: 'familyValue2Value'),
   familyValue3Key(value: 'familyValue3Key'),
   familyValue3Value(value: 'familyValue3Value'),
+
+  organisation(value: 'organisation'),
   ;
 
   const ChatScriptSaveKey({required this.value});
