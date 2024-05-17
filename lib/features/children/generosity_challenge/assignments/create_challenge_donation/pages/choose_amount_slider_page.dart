@@ -1,21 +1,27 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/widgets/organisation_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/widgets/slider_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
+import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_initial_dialog.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
+import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,7 +33,7 @@ class ChooseAmountSliderPage extends StatelessWidget {
 
   final Organisation organisation;
 
-  String _createAssignementDescription(String organisationName, double amount) {
+  String _createAssignmentDescription(String organisationName, double amount) {
     final intAmount = amount.toInt();
     return 'You gave $intAmount dollar${intAmount > 1 ? 's' : ''} to the $organisationName. Awesome!';
   }
@@ -43,7 +49,7 @@ class ChooseAmountSliderPage extends StatelessWidget {
                 giveState.status == GiveStatus.error) {
               context.read<GenerosityChallengeCubit>()
                 ..confirmAssignment(
-                  _createAssignementDescription(
+                  _createAssignmentDescription(
                     organisation.organisationName!,
                     state.amount,
                   ),
@@ -95,41 +101,80 @@ class ChooseAmountSliderPage extends StatelessWidget {
             floatingActionButton: GivtElevatedButton(
               isDisabled: state.amount == 0,
               text: 'Donate',
-              onTap: () {
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.chooseAmountDonateClicked,
-                  eventProperties: {
-                    'organisation_name': organisation.organisationName,
-                    'amount': state.amount.toInt(),
-                  },
-                );
-
-                //TODO integrate with Stripe registration when ready (kids-944)
-
-                GiveLoadingDialog.showGiveLoadingDialog(context);
-
-                final decodedMediumId =
-                    utf8.decode(base64.decode(organisation.mediumId!));
-
-                context.read<GiveBloc>()
-                  ..add(
-                    GiveAmountChanged(
-                      firstCollectionAmount: state.amount,
-                      secondCollectionAmount: 0,
-                      thirdCollectionAmount: 0,
-                    ),
-                  )
-                  ..add(
-                    GiveOrganisationSelected(
-                      nameSpace: decodedMediumId,
-                      userGUID: context.read<AuthCubit>().state.user.guid,
-                    ),
-                  );
+              onTap: () async {
+                _logDonationAnalytics(state);
+                try {
+                  final stripeResponse =
+                      await getIt<GenerosityStripeRegistrationCubit>()
+                          .setupStripeRegistration();
+                  if (context.mounted) {
+                    await StripeHelper(context)
+                        .showPaymentSheet(stripe: stripeResponse)
+                        .then((value) {
+                      _handleStripeRegistrationSuccess(context, state);
+                    }).onError((e, stackTrace) {
+                      _handleStripeError(context, e, stackTrace);
+                    });
+                  } else {
+                    throw Exception(
+                      'Context is not mounted after stripe registration.',
+                    );
+                  }
+                } catch (e, stackTrace) {
+                  if (context.mounted) {
+                    _handleStripeError(context, e, stackTrace);
+                  }
+                }
               },
             ),
           ),
         );
       },
+    );
+  }
+
+  void _logDonationAnalytics(CreateChallengeDonationState state) {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.chooseAmountDonateClicked,
+        eventProperties: {
+          'organisation_name': organisation.organisationName,
+          'amount': state.amount.toInt(),
+        },
+      ),
+    );
+  }
+
+  void _handleStripeRegistrationSuccess(
+    BuildContext context,
+    CreateChallengeDonationState state,
+  ) {
+    unawaited(GiveLoadingDialog.showGiveLoadingDialog(context));
+
+    final decodedMediumId = utf8.decode(base64.decode(organisation.mediumId!));
+
+    context.read<GiveBloc>()
+      ..add(
+        GiveAmountChanged(
+          firstCollectionAmount: state.amount,
+          secondCollectionAmount: 0,
+          thirdCollectionAmount: 0,
+        ),
+      )
+      ..add(
+        GiveOrganisationSelected(
+          nameSpace: decodedMediumId,
+          userGUID: context.read<AuthCubit>().state.user.guid,
+        ),
+      );
+  }
+
+  void _handleStripeError(
+      BuildContext context, Object? e, StackTrace stackTrace) {
+    NoFundsInitialDialog.show(context);
+    LoggingInfo.instance.info(
+      e.toString(),
+      methodName: stackTrace.toString(),
     );
   }
 }

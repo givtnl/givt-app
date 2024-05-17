@@ -172,7 +172,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     try {
       final userData = _generosityChallengeRepository.loadUserData();
       return format(source, userData);
-    } catch (e, s) {
+    } catch (e) {
       return source;
     }
   }
@@ -250,7 +250,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         days: days,
         activeDayIndex: activeDayIndex,
         status: isChallengeCompleted
-            ? GenerosityChallengeStatus.stripeRegistration ?? GenerosityChallengeStatus.completed
+            ? GenerosityChallengeStatus.completed
             : GenerosityChallengeStatus.overview,
         chatScripts: chatScripts,
         chatActorsSettings: chatActorsSettings,
@@ -271,17 +271,5 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
 
   void dismissMayorPopup() {
     emit(state.copyWith(showMayor: false));
-  }
-
-  void onRegistrationFailed() {
-    //TODO
-  }
-
-  void onRegistrationSucces() {
-    //TODO
-  }
-
-  void stripeRegistrationBackPressed() {
-    emit(state.copyWith(status: GenerosityChallengeStatus.overview));
   }
 }

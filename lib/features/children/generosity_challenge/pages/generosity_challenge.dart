@@ -4,10 +4,8 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_day_details.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/generosity_stripe_registration_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/mayor_chat_dialog.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallenge extends StatefulWidget {
@@ -97,18 +95,6 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
           case GenerosityChallengeStatus.dailyAssigmentConfirm:
           case GenerosityChallengeStatus.dailyAssigmentIntro:
             return const GenerosityChallengeDayDetails();
-          case GenerosityChallengeStatus.completed:
-            return const Center(child: Text('TODO: Create completed page'));
-          case GenerosityChallengeStatus.stripeRegistration:
-            return GenerosityStripeRegistrationPage(
-              onRegistrationFailed: () =>
-                  print("TODO: Handle registration failed"),
-              onRegistrationSuccess: () =>
-                  print("TODO: Handle registration success"),
-              onBackPressed: () {
-                challenge.stripeRegistrationBackPressed();
-              },
-            );
         }
       },
     );
