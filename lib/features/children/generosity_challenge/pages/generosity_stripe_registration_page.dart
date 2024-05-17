@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_stripe_registration_custom.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
 import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_error_dialog.dart';
+import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_initial_dialog.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/auth_utils.dart';
+import 'package:givt_app/utils/stripe_helper.dart';
 
 class GenerosityStripeRegistrationPage extends StatefulWidget {
   const GenerosityStripeRegistrationPage({
@@ -30,11 +33,11 @@ class GenerosityStripeRegistrationPage extends StatefulWidget {
 class _GenerosityStripeRegistrationPageState
     extends State<GenerosityStripeRegistrationPage> {
   final GenerosityStripeRegistrationCubit _cubit =
-      GenerosityStripeRegistrationCubit(getIt(), getIt(), getIt());
+      getIt<GenerosityStripeRegistrationCubit>();
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     _cubit.init();
   }
 
@@ -50,6 +53,7 @@ class _GenerosityStripeRegistrationPageState
       onPopInvoked: (bool didPop) => widget.onBackPressed?.call(),
       canPop: widget.onBackPressed == null,
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           actions: const [BackButton()],
         ),
@@ -58,7 +62,9 @@ class _GenerosityStripeRegistrationPageState
               context, custom as GenerosityStripeRegistrationCustom),
           onData: (context, uiModel) {
             //TODO
-            return const CircularProgressIndicator();
+            return NoFundsInitialDialog(
+              onClickContinue: _cubit.onClickContinueInitiallyNoFunds,
+            );
           },
           bloc: _cubit,
         ),
@@ -69,34 +75,33 @@ class _GenerosityStripeRegistrationPageState
   void _handleCustom(
       BuildContext context, GenerosityStripeRegistrationCustom custom) {
     switch (custom) {
-      case OpenStripeRegistration():
-        Navigator.push(
-          context,
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) => StripeCubit(
-                  authRepositoy: getIt(),
-                ),
-              ),
-            ],
-            child: CreditCardDetailsPage(
-              onRegistrationFailed: _cubit.onRegistrationFailed,
-              onRegistrationSuccess: _cubit.onRegistrationSuccess,
-            ),
-          ).toRoute(context),
-        );
-      case OpenLoginPopup():
-        AuthUtils.checkToken(
-          context,
-          checkAuthRequest: CheckAuthRequest(
-            navigate: (context) async => _cubit.onLoggedIn(),
-          ),
-        );
+      case final OpenStripeRegistration stripeRegistration:
+        _showStripeRegistrationSheet(context, stripeRegistration);
       case StripeRegistrationSuccess():
         widget.onRegistrationSuccess?.call();
       case ShowStripeNoFundsError():
-        NoFundsErrorDialog.show(context, onClickRetry: _cubit.onClickRetry);
+        NoFundsErrorDialog.show(context, onClickContinue: _cubit.onClickRetry);
+      case ShowSetupError():
+      // TODO: Handle this case.
     }
+  }
+
+  void _showStripeRegistrationSheet(BuildContext context, OpenStripeRegistration stripeRegistration) {
+    StripeHelper(context)
+        .showPaymentSheet(stripe: stripeRegistration.stripeResponse)
+        .then((value) {
+      _cubit.onRegistrationSuccess();
+    }).onError((e, stackTrace) {
+      _cubit.onRegistrationFailed();
+
+      /* Logged as info as stripe is giving exception
+           when for example people close the bottomsheet.
+           So it's not a real error :)
+        */
+      LoggingInfo.instance.info(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+    });
   }
 }

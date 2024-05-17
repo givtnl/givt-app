@@ -1,41 +1,54 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_stripe_registration_custom.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/utils/chat_script_registration_handler.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
+import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GenerosityStripeRegistrationCubit extends Cubit<BaseState<Object>> {
   GenerosityStripeRegistrationCubit(
       this._authRepository, this._sharedPreferences, this._apiService)
-      : super(const BaseState.loading());
+      : super(const BaseState.loading()) {
+    print("test");
+  }
+
   final AuthRepository _authRepository;
   final SharedPreferences _sharedPreferences;
   final APIService _apiService;
 
+  // normally this would not be needed but
+  // the stripe page resets the flutter lifecycle
+  bool _hasInitBeenCalled = false;
+
   void init() {
-    _checkLoginStatus();
+    if (_hasInitBeenCalled) return;
+    _hasInitBeenCalled = true;
+    _setupRegistration();
   }
 
-  Future<void> _checkLoginStatus() async {
+  Future<void> _setupRegistration() async {
     _updateUrlsAndCountry();
     try {
       try {
         await _authRepository.updateFingerprintCertificate();
       } catch (e, s) {
-        print("test");
+        unawaited(
+          LoggingInfo.instance.info(
+            e.toString(),
+            methodName: s.toString(),
+          ),
+        );
       }
-      final stripeIntent = await _authRepository.fetchStripeSetupIntent();
-      _openRegistration();
+      final stripeResponse = await _authRepository.fetchStripeSetupIntent();
+      _openRegistration(stripeResponse);
     } catch (e, s) {
-      _openLogin();
+      _showSetupError();
     }
   }
 
@@ -53,20 +66,12 @@ class GenerosityStripeRegistrationCubit extends Cubit<BaseState<Object>> {
     );
   }
 
-  void _openRegistration() {
+  void _openRegistration(StripeResponse stripeResponse) {
     emit(const BaseState.clear());
     emit(
-      const BaseState.custom(
-        GenerosityStripeRegistrationCustom.openStripeRegistration(),
-      ),
-    );
-  }
-
-  void _openLogin() {
-    emit(const BaseState.clear());
-    emit(
-      const BaseState.custom(
-        GenerosityStripeRegistrationCustom.openLoginPopup(),
+      BaseState.custom(
+        GenerosityStripeRegistrationCustom.openStripeRegistration(
+            stripeResponse),
       ),
     );
   }
@@ -80,6 +85,15 @@ class GenerosityStripeRegistrationCubit extends Cubit<BaseState<Object>> {
     );
   }
 
+  void _showSetupError() {
+    emit(const BaseState.clear());
+    emit(
+      const BaseState.custom(
+        GenerosityStripeRegistrationCustom.showSetupError(),
+      ),
+    );
+  }
+
   void onRegistrationSuccess() {
     emit(const BaseState.clear());
     emit(
@@ -89,7 +103,7 @@ class GenerosityStripeRegistrationCubit extends Cubit<BaseState<Object>> {
     );
   }
 
-  void onClickRetry() => _openRegistration();
+  void onClickRetry() => _setupRegistration();
 
-  void onLoggedIn() => _openRegistration();
+  void onClickContinueInitiallyNoFunds() => _setupRegistration();
 }

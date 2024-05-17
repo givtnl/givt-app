@@ -13,7 +13,7 @@ class CachedMembersDialogErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return NoFundsErrorDialog(
-      onClickRetry: () {
+      onClickContinue: () {
         context.read<CachedMembersCubit>().overviewCached();
       },
     );

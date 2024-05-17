@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class NoFundsErrorDialog extends StatelessWidget {
-  const NoFundsErrorDialog({this.onClickContinue, super.key});
+class NoFundsInitialDialog extends StatelessWidget {
+  const NoFundsInitialDialog({this.onClickContinue, super.key});
 
   final void Function()? onClickContinue;
 
@@ -15,10 +17,9 @@ class NoFundsErrorDialog extends StatelessWidget {
       context: context,
       barrierColor: Colors.white,
       useRootNavigator: false,
-      builder: (context) => NoFundsErrorDialog(onClickContinue: onClickContinue),
+      builder: (context) => NoFundsInitialDialog(onClickContinue: onClickContinue),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,20 +34,20 @@ class NoFundsErrorDialog extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         Text(
-          context.l10n.vpcNoFundsSorry,
+          context.l10n.vpcNoFundsAlmostDone,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppTheme.givtBlue,
-                fontWeight: FontWeight.w700,
-              ),
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: AppTheme.givtBlue,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         const SizedBox(height: 20),
         Text(
-          context.l10n.vpcNoFundsError,
+          context.l10n.vpcNoFundsInitial,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppTheme.givtBlue,
-              ),
+            color: AppTheme.givtBlue,
+          ),
         ),
         const SizedBox(height: 30),
         SizedBox(
@@ -64,9 +65,9 @@ class NoFundsErrorDialog extends StatelessWidget {
             child: Text(
               context.l10n.continueKey,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppTheme.childHistoryApproved,
-                    fontWeight: FontWeight.bold,
-                  ),
+                color: AppTheme.childHistoryApproved,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
