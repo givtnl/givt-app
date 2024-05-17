@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -18,20 +19,28 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_initial_dialog.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
-import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
+import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class ChooseAmountSliderPage extends StatelessWidget {
+class ChooseAmountSliderPage extends StatefulWidget {
   const ChooseAmountSliderPage({
     required this.organisation,
     super.key,
   });
 
   final Organisation organisation;
+
+  @override
+  State<ChooseAmountSliderPage> createState() => _ChooseAmountSliderPageState();
+}
+
+class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
+  bool _isLoading = false;
 
   String _createAssignmentDescription(String organisationName, double amount) {
     final intAmount = amount.toInt();
@@ -46,19 +55,21 @@ class ChooseAmountSliderPage extends StatelessWidget {
         return BlocListener<GiveBloc, GiveState>(
           listener: (context, giveState) async {
             if (giveState.status == GiveStatus.processed) {
+              _setLoading(false);
               context.read<GenerosityChallengeCubit>()
                 ..confirmAssignment(
                   _createAssignmentDescription(
-                    organisation.organisationName!,
+                    widget.organisation.organisationName!,
                     state.amount,
                   ),
                 )
                 ..saveUserDataByKey(
                   ChatScriptSaveKey.organisation,
-                  organisation.organisationName!,
+                  widget.organisation.organisationName!,
                 );
               context.goNamed(Pages.generosityChallenge.name);
             } else if (giveState.status == GiveStatus.error) {
+              _setLoading(false);
               NoFundsInitialDialog.show(context);
             }
           },
@@ -68,32 +79,56 @@ class ChooseAmountSliderPage extends StatelessWidget {
               leading: GenerosityBackButton(),
             ),
             body: SafeArea(
-              child: Column(
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        OrganisationWidget(organisation),
-                        const Spacer(),
-                        Text(
-                          'How much would you like to give?',
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                  Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            OrganisationWidget(widget.organisation),
+                            const Spacer(),
+                            Text(
+                              'How much would you like to give?',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
                                     color: AppTheme.primary20,
                                     fontWeight: FontWeight.w500,
                                     fontFamily: 'Rouna',
                                     fontSize: 18,
                                   ),
+                            ),
+                            const SizedBox(height: 32),
+                          ],
                         ),
-                        const SizedBox(height: 32),
-                      ],
+                      ),
+                      SliderWidget(
+                        currentAmount: state.amount,
+                        maxAmount:
+                            CreateChallengeDonationState.maxAvailableAmount,
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                  if (_isLoading)
+                    Align(
+                      child: CardDialog(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const CircularProgressIndicator(),
+                            const SizedBox(height: 16),
+                            Text(
+                              context.l10n.loadingTitle,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  SliderWidget(
-                    currentAmount: state.amount,
-                    maxAmount: CreateChallengeDonationState.maxAvailableAmount,
-                  ),
-                  const Spacer(),
                 ],
               ),
             ),
@@ -105,11 +140,10 @@ class ChooseAmountSliderPage extends StatelessWidget {
               onTap: () async {
                 _logDonationAnalytics(state);
                 try {
-                  _showLoadingDialog(context);
+                  _setLoading(true);
                   final stripeResponse =
                       await getIt<GenerosityStripeRegistrationCubit>()
                           .setupStripeRegistration();
-                  context.pop();
                   if (context.mounted) {
                     await StripeHelper(context)
                         .showPaymentSheet(stripe: stripeResponse)
@@ -136,12 +170,10 @@ class ChooseAmountSliderPage extends StatelessWidget {
     );
   }
 
-  void _showLoadingDialog(BuildContext context) {
-    unawaited(
-      GiveLoadingDialog.showGiveLoadingDialog(
-        context,
-      ),
-    );
+  void _setLoading(bool isLoading) {
+    setState(() {
+      _isLoading = isLoading;
+    });
   }
 
   void _logDonationAnalytics(CreateChallengeDonationState state) {
@@ -149,7 +181,7 @@ class ChooseAmountSliderPage extends StatelessWidget {
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.chooseAmountDonateClicked,
         eventProperties: {
-          'organisation_name': organisation.organisationName,
+          'organisation_name': widget.organisation.organisationName,
           'amount': state.amount.toInt(),
         },
       ),
@@ -160,7 +192,8 @@ class ChooseAmountSliderPage extends StatelessWidget {
     BuildContext context,
     CreateChallengeDonationState state,
   ) {
-    final decodedMediumId = utf8.decode(base64.decode(organisation.mediumId!));
+    final decodedMediumId =
+        utf8.decode(base64.decode(widget.organisation.mediumId!));
 
     context.read<GiveBloc>()
       ..add(
@@ -183,10 +216,15 @@ class ChooseAmountSliderPage extends StatelessWidget {
     Object? e,
     StackTrace stackTrace,
   ) {
-    context.read<GiveBloc>().add(const GiveStripeRegistrationError());
-    LoggingInfo.instance.info(
-      e.toString(),
-      methodName: stackTrace.toString(),
-    );
+    _setLoading(false);
+    if (e is StripeException && e.error.code == FailureCode.Canceled) {
+      // do nothing
+    } else {
+      context.read<GiveBloc>().add(const GiveStripeRegistrationError());
+      LoggingInfo.instance.info(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+    }
   }
 }

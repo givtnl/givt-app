@@ -18,8 +18,11 @@ class NoFundsInitialDialog extends StatelessWidget {
       context: context,
       barrierColor: AppTheme.givtLightBackgroundGreen,
       builder: (context) => CardDialog(
-        child: NoFundsInitialDialog(
-          onClickContinue: onClickContinue,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
+          child: NoFundsInitialDialog(
+            onClickContinue: onClickContinue,
+          ),
         ),
       ),
     );
