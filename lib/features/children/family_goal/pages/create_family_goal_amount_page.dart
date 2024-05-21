@@ -117,7 +117,7 @@ class _CreateFamilyGoalAmountPageState
                           focusNode: focusNode,
                           maxLength: 4,
                           inputFormatters: [
-                            CurrencyTextInputFormatter(
+                            CurrencyTextInputFormatter.currency(
                               locale: currency.locale,
                               decimalDigits: 0,
                               turnOffGrouping: true,

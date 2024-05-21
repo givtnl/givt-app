@@ -89,7 +89,7 @@ class _EditChildPageState extends State<EditChildPage> {
                 state.errorMessage,
                 textAlign: TextAlign.center,
               ),
-              backgroundColor: Theme.of(context).errorColor,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         } else if (state is EditChildInputState ||
