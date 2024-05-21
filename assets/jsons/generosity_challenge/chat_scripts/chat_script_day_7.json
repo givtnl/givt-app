@@ -7,7 +7,7 @@
       "next": {
         "type": "imageMessage",
         "side": "interlocutor",
-        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_010.png",
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_011.png",
         "mediaSourceType": "network",
         "next": {
           "type": "textMessage",
@@ -38,7 +38,7 @@
                     "next": {
                       "type": "imageMessage",
                       "side": "interlocutor",
-                      "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_010.png",
+                      "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_012.png",
                       "mediaSourceType": "network",
                       "next": {
                         "type": "textMessage",
