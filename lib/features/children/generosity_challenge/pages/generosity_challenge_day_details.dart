@@ -70,10 +70,11 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (!isDualCard ||
-                  state.status ==
-                      GenerosityChallengeStatus.dailyAssigmentConfirm ||
-                  day.isCompleted)
+              if (challenge.state.islastDay &
+                  (!isDualCard ||
+                      state.status ==
+                          GenerosityChallengeStatus.dailyAssigmentConfirm ||
+                      day.isCompleted))
                 GivtElevatedButton(
                   onTap: () async {
                     await showDialog<void>(
@@ -121,6 +122,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     return GenerosityDailyCard(
       task: task,
       isCompleted: day.isCompleted,
+      isLastDay: state.islastDay,
     );
   }
 }

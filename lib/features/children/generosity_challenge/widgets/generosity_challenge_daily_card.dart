@@ -15,11 +15,13 @@ class GenerosityDailyCard extends StatelessWidget {
     required this.task,
     required this.isCompleted,
     this.dynamicDescription = '',
+    this.isLastDay = false,
     super.key,
   });
 
   final Task task;
   final bool isCompleted;
+  final bool isLastDay;
   final String dynamicDescription;
 
   @override
@@ -103,6 +105,40 @@ class GenerosityDailyCard extends StatelessWidget {
                       isDisabled: isCompleted,
                       text: task.buttonText,
                       rightIcon: FontAwesomeIcons.arrowRight,
+                    ),
+                  if (isLastDay)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: TextButton(
+                        onPressed: () {
+                          // TODO: link to VPC page
+                          context.push(
+                            '${Pages.generosityChallenge.path}/${task.redirect}',
+                            extra: context.read<GenerosityChallengeCubit>(),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Skip',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                    color: AppTheme.givtGreen40,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Rouna',
+                                  ),
+                            ),
+                            const SizedBox(width: 8),
+                            const FaIcon(
+                              FontAwesomeIcons.arrowRight,
+                              color: AppTheme.givtGreen40,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                 ],
               ),

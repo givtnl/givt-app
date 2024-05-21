@@ -71,57 +71,12 @@ class GenerosityChallengeContentHelper {
       ),
     ),
     Task.card(
-      image: '',
-      title: '',
+      image: 'assets/images/generosity_challenge_day_8.svg',
+      title: 'Keep the generosity alive',
+      buttonText: 'Yeah sure!',
       description:
-          'He opened the door to look up and down the street—and still no one! “Oh, I see!” he then said, laughing and scratching his Wig. “It can easily be seen that I only thought I heard the tiny voice say the words! Well, well—to work once more.”',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'He struck a most solemn blow upon the piece of wood.',
-      description: '“Oh, oh! You hurt!” cried the same far-away little voice.',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Mastro Cherry grew dumb',
-      description:
-          'His eyes popped out of his head, his mouth opened wide, and his tongue hung down on his chin. As soon as he regained the use of his senses, he said, trembling and stuttering from fright.',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: '',
-      title: '',
-      description: '',
-      buttonText: 'Move on',
-      onTap: () {},
-    ),
-    Task.card(
-      image: '',
-      title: '',
-      description:
-          '“Where did that voice come from, when there is no one around? Might it be that this piece of wood has learned to weep and cry like a child? I can hardly believe it. Here it is—a piece of common firewood, good only to burn in the stove, the same as any other.”',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: '',
-      title:
-          'Yet—might someone be hidden in it? If so, the worse for him. I’ll fix him!',
-      description: '',
-      buttonText: 'Fix him!',
-      onTap: () {},
-    ),
-    Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Goodness gracious me!',
-      description:
-          'Goodbye my friend! Goodbye! There are new heights yet to explore',
-      buttonText: 'Move on',
+          "Foster your children's spirit of giving with a recurring giving allowance. It's a simple way to encourage a lifelong habit of kindness. \n\nAre you ready to help them become generous individuals?",
+      redirect: Pages.walletMock.path,
       onTap: () {},
     ),
   ];
