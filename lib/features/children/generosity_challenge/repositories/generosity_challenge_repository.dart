@@ -51,6 +51,10 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
               (day) => Day.fromMap(day as Map<String, dynamic>),
             )
             .toList();
+        if (result.length !=
+            GenerosityChallengeHelper.generosityChallengeDays) {
+          return await _addExtraDays(result);
+        }
         return result;
       } else {
         return await _saveAndReturnEmptyDays();
@@ -66,6 +70,16 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   Future<String> loadFromKey(String key) async {
     final response = loadUserData();
     return response[key] as String? ?? '';
+  }
+
+  Future<List<Day>> _addExtraDays(List<Day> days) async {
+    final extraDays = List<Day>.filled(
+      GenerosityChallengeHelper.generosityChallengeDays - days.length,
+      const Day.empty(),
+    );
+    days.addAll(extraDays);
+    await saveToCache(days);
+    return days;
   }
 
   Future<List<Day>> _saveAndReturnEmptyDays() async {
