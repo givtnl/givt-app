@@ -1,0 +1,12 @@
+{
+    "main": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "Hey {lastName} Family. This is a placeholder!",
+      "next": {
+        "type": "textMessage",
+        "side": "interlocutor",
+        "text": "Make a recurring allowance pls pls pls"
+      }
+    }
+  }

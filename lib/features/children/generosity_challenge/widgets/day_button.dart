@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -23,6 +24,9 @@ class DayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLocked = !isActive && !isCompleted;
+    final isLastDay =
+        dayIndex + 1 == GenerosityChallengeHelper.generosityChallengeDays;
+    final dayText = isLastDay ? 'Finish' : 'Day ${dayIndex + 1}';
     return GestureDetector(
       onLongPress: !isLocked ? onLongPressed : null,
       child: ActionContainer(
@@ -41,7 +45,7 @@ class DayButton extends StatelessWidget {
             children: [
               Center(
                 child: Text(
-                  'Day ${dayIndex + 1}',
+                  dayText,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: isActive || isCompleted

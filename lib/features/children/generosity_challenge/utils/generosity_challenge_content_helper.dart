@@ -127,7 +127,6 @@ class GenerosityChallengeContentHelper {
   ];
 
   static Task getTaskByIndex(int index) {
-    // assert(_tasks.length == GenerosityChallengeHelper.generosityChallengeDays);
     return _tasks[index];
   }
 }
