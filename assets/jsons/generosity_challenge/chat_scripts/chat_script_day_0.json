@@ -85,7 +85,7 @@
                               "next": {
                                 "type": "textMessage",
                                 "side": "interlocutor",
-                                "text": "Awesome! Let me show you show you what I found walking round the city today",
+                                "text": "Awesome! Let me show you what I found walking round the city today",
                                 "next": {
                                   "branch": "image01"
                                 }
