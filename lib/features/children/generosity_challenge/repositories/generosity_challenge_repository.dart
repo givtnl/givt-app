@@ -51,8 +51,7 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
               (day) => Day.fromMap(day as Map<String, dynamic>),
             )
             .toList();
-        if (result.length !=
-            GenerosityChallengeHelper.generosityChallengeDays) {
+        if (result.length < GenerosityChallengeHelper.generosityChallengeDays) {
           return await _addExtraDays(result);
         }
         return result;
