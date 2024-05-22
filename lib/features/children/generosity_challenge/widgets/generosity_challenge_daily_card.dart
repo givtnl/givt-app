@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
@@ -14,11 +15,13 @@ class GenerosityDailyCard extends StatelessWidget {
     required this.task,
     required this.isCompleted,
     this.dynamicDescription = '',
+    this.isLastDay = false,
     super.key,
   });
 
   final Task task;
   final bool isCompleted;
+  final bool isLastDay;
   final String dynamicDescription;
 
   @override
@@ -90,11 +93,52 @@ class GenerosityDailyCard extends StatelessWidget {
                                 '${Pages.generosityChallenge.path}/${task.redirect}',
                                 extra: context.read<GenerosityChallengeCubit>(),
                               );
+                              AnalyticsHelper.logEvent(
+                                eventName: AmplitudeEvents
+                                    .startAssignmentFromGenerosityChallenge,
+                                eventProperties: {
+                                  'title': task.title,
+                                },
+                              );
                             }
                           : task.onTap,
                       isDisabled: isCompleted,
                       text: task.buttonText,
                       rightIcon: FontAwesomeIcons.arrowRight,
+                    ),
+                  if (isLastDay)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: TextButton(
+                        onPressed: () {
+                          // TODO: link to VPC page
+                          context.push(
+                            '${Pages.generosityChallenge.path}/${task.redirect}',
+                            extra: context.read<GenerosityChallengeCubit>(),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Skip',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(
+                                    color: AppTheme.givtGreen40,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: 'Rouna',
+                                  ),
+                            ),
+                            const SizedBox(width: 8),
+                            const FaIcon(
+                              FontAwesomeIcons.arrowRight,
+                              color: AppTheme.givtGreen40,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                 ],
               ),

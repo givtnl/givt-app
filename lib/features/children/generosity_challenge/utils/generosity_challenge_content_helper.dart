@@ -44,81 +44,44 @@ class GenerosityChallengeContentHelper {
     Task.card(
       image: 'assets/images/generosity_challenge_day_5.svg',
       title: 'Sharing is caring',
-      description: 'Today’s assignment is for each family member to choose 1 item to give away and donate.\n\nWhat will you pick?',
+      description:
+          'Today’s assignment is for each family member to choose 1 item to give away and donate.\n\nWhat will you pick?',
       onTap: () {},
     ),
     Task.card(
       image: 'assets/images/generosity_challenge_day_6.svg',
       title: 'Words of kindness',
       description:
-          'Each person say one nice thing you like about someone else.\n\nFor example, "I love it when you hug me if I\'m sad."',
+          'Each person say one nice thing you like about someone else.\n\nFor example, "I love it when you hug me when I\'m sad."',
       onTap: () {},
     ),
     Task.card(
       image: 'assets/images/generosity_challenge_day_7.svg',
-      title: 'What a look of surprise shone on Mastro Cherry’s face!',
+      title: 'Giving together',
+      buttonText: 'Find a charity',
       description:
-          'His funny face became still funnier. He turned frightened eyes about the room to find out where that wee, little voice had come from and he saw no one! He looked under the bench—no one! He peeped inside the closet—no one! He searched among the shavings—no one!',
+          'Using your Family Values see what charities align with what you care about. Give to one of them.',
+      redirect: Pages.displayValues.path,
       onTap: () {},
+      partnerCard: Task.card(
+        image: 'assets/images/generosity_challenge_day_7.svg',
+        title: 'Giving together',
+        description: '',
+        onTap: () {},
+      ),
     ),
     Task.card(
-      image: '',
-      title: '',
+      image: 'assets/images/generosity_challenge_day_8.svg',
+      title: 'Keep the generosity alive',
+      buttonText: 'Yeah sure!',
       description:
-          'He opened the door to look up and down the street—and still no one! “Oh, I see!” he then said, laughing and scratching his Wig. “It can easily be seen that I only thought I heard the tiny voice say the words! Well, well—to work once more.”',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'He struck a most solemn blow upon the piece of wood.',
-      description: '“Oh, oh! You hurt!” cried the same far-away little voice.',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Mastro Cherry grew dumb',
-      description:
-          'His eyes popped out of his head, his mouth opened wide, and his tongue hung down on his chin. As soon as he regained the use of his senses, he said, trembling and stuttering from fright.',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: '',
-      title: '',
-      description: '',
-      buttonText: 'Move on',
-      onTap: () {},
-    ),
-    Task.card(
-      image: '',
-      title: '',
-      description:
-          '“Where did that voice come from, when there is no one around? Might it be that this piece of wood has learned to weep and cry like a child? I can hardly believe it. Here it is—a piece of common firewood, good only to burn in the stove, the same as any other.”',
-      buttonText: '',
-      onTap: () {},
-    ),
-    Task.card(
-      image: '',
-      title:
-          'Yet—might someone be hidden in it? If so, the worse for him. I’ll fix him!',
-      description: '',
-      buttonText: 'Fix him!',
-      onTap: () {},
-    ),
-    Task.card(
-      image: 'assets/images/generosity_challenge_placeholder.svg',
-      title: 'Goodness gracious me!',
-      description:
-          'Goodbye my friend! Goodbye! There are new heights yet to explore',
-      buttonText: 'Move on',
+          "Foster your children's spirit of giving with a recurring giving allowance. It's a simple way to encourage a lifelong habit of kindness. \n\nAre you ready to help them become generous individuals?",
+      redirect: Pages.walletMock.path,
       onTap: () {},
     ),
   ];
 
   static Task getTaskByIndex(int index) {
-    // assert(_tasks.length == GenerosityChallengeHelper.generosityChallengeDays);
     return _tasks[index];
   }
 }

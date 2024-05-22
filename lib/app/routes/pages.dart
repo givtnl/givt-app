@@ -17,8 +17,21 @@ enum Pages {
   ),
   selectValues(
     path: 'select-values',
-    name: 'GENEROSITY-SELECT-VALUES',
+    name: 'SELECT-VALUES',
   ),
+  displayValues(
+    path: 'display-values',
+    name: 'DISPLAY-VALUES',
+  ),
+  displayValuesOrganisations(
+    path: 'display-values-organisations',
+    name: 'DISPLAY-VALUES-ORGANISATIONS',
+  ),
+  chooseAmountSlider(
+    path: 'choose-amount-slider',
+    name: 'CHOOSE-AMOUNT-SLIDER',
+  ),
+  walletMock(path: 'wallet-mock', name: 'WALLET-MOCK'),
 
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),

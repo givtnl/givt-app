@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -18,9 +19,21 @@ import 'package:givt_app/utils/utils.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit(this._authRepositoy) : super(const AuthState());
+  AuthCubit(this._authRepositoy) : super(const AuthState()) {
+    _sessionSubscription =
+        _authRepositoy.hasSessionStream().listen((hasSession) {
+      checkAuth();
+    });
+  }
 
   final AuthRepository _authRepositoy;
+  late StreamSubscription<bool> _sessionSubscription;
+
+  @override
+  Future<void> close() async {
+    await _sessionSubscription.cancel();
+    await super.close();
+  }
 
   Future<void> login({
     required String email,

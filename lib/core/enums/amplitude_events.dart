@@ -25,6 +25,7 @@ enum AmplitudeEvents {
     'child_details_edit_card_clicked',
   ),
   childEditSaveClicked('child_edit_save_clicked'),
+  childEditMonthlyAllowanceSaveClicked('child_edit_monthly_allowance_save_clicked'),
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),
@@ -87,10 +88,21 @@ enum AmplitudeEvents {
   generosityChallengeDayUndoCompleting(
     'generosity_challenge_day_undo_completing',
   ),
+  startAssignmentFromGenerosityChallenge(
+    'start_assignment_from_generosity_challenge',
+  ),
+  daySevenFamilyValuesSeenContinueClicked(
+    'day_7_family_values_seen_continue_clicked',
+  ),
+  generosityChallengeDonationSuccess('generosity_challenge_donation_success'),
   familyValuesSelected('family_values_selected'),
   acceptedGenerosityChallenge('accepted_generosity_challenge'),
-
+  organisationCardClicked('organisation_card_clicked'),
+  organisationDetailsContinueClicked('organisation_details_continue_clicked'),
+  sliderAmountChanged('slider_amount_changed'),
+  chooseAmountDonateClicked('choose_amount_donate_clicked'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
+  generosityChallengeRegistrationSucceeded('generosity_challenge_registration_succeeded'),
 
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),

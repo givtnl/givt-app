@@ -1,0 +1,69 @@
+{
+    "main": {
+      "type": "textMessage",
+      "side": "interlocutor",
+      "text": "You did it {lastName} Family! Through your acts of generosity Tulsa is full of colour again!",
+      "functionName": "showConfetti",
+      "next": {
+        "type": "imageMessage",
+        "side": "interlocutor",
+        "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_011.png",
+        "mediaSourceType": "network",
+        "next": {
+          "type": "textMessage",
+          "side": "interlocutor",
+          "text": "You have made a real difference but this isn't the end of your generosity journey",
+          "next": {
+            "type": "buttonAnswer",
+            "side": "user",
+            "text": "It isn't?",
+            "answerText": "It isn't?",
+            "next": {
+              "type": "textMessage",
+              "side": "interlocutor",
+              "text": "No, it's just the beginning. You have built a great habit but you need to keep this going.",
+              "next": {
+                "type": "textMessage",
+                "side": "interlocutor",
+                "text": "Otherwise we will end up right back where we started!",
+                "next": {
+                  "type": "buttonAnswer",
+                  "side": "user",
+                  "text": "What shall we do?",
+                  "answerText": "What shall we do?",
+                  "next": {
+                    "type": "textMessage",
+                    "side": "interlocutor",
+                    "text": "Keep helping, keep sharing and keep giving",
+                    "next": {
+                      "type": "imageMessage",
+                      "side": "interlocutor",
+                      "path": "https://givtstoragedebug.blob.core.windows.net/public/cdn/generosity-challenge/Givt_Superhero_THUMBNAILS_012.png",
+                      "mediaSourceType": "network",
+                      "next": {
+                        "type": "textMessage",
+                        "side": "interlocutor",
+                        "text": "And to help you along, I am giving the kids a Wallet",
+                        "next": {
+                          "type": "imageMessage",
+                          "side": "interlocutor",
+                          "path": "assets/images/wallet.svg",
+                          "mediaSourceType": "asset",
+                          "next": {
+                            "type": "buttonAnswer",
+                            "side": "user",
+                            "text": "Show us",
+                            "answerText": "Show us"
+                          }
+                        }
+                      }              
+                    }
+                  }
+                }
+              }
+            }    
+          }
+        }
+      }
+    }
+  }

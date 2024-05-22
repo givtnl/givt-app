@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -14,30 +15,50 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin AuthRepository {
-  Future<Session> refreshToken();
+  Future<Session> refreshToken({bool refreshUserExt = false});
+
   Future<Session> login(String email, String password);
+
   Future<UserExt> fetchUserExtension(String guid);
+
   Future<(UserExt, Session, UserPresets)?> isAuthenticated();
+
   Future<bool> logout();
+
   Future<bool> checkTld(String email);
+
   Future<String> checkEmail(String email);
+
   Future<bool> resetPassword(String email);
+
   Future<String> signSepaMandate({
     required String guid,
     required String appLanguage,
   });
+
   Future<StripeResponse> fetchStripeSetupIntent();
+
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isTempUser,
   });
+
+  Future<bool> registerGenerosityChallengeUser({
+    required String firstname,
+    required String lastname,
+    required String email,
+    required String password,
+  });
+
   Future<bool> changeGiftAid({
     required String guid,
     required bool giftAid,
   });
+
   Future<bool> unregisterUser({
     required String email,
   });
+
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
@@ -57,7 +78,10 @@ mixin AuthRepository {
     required String guid,
     required String notificationId,
   });
+
   Future<void> updateFingerprintCertificate();
+
+  Stream<bool> hasSessionStream();
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -65,11 +89,19 @@ class AuthRepositoyImpl with AuthRepository {
     this._prefs,
     this._apiService,
   );
+
   final SharedPreferences _prefs;
   final APIService _apiService;
 
+  // bool hasSession
+  final StreamController<bool> _hasSessionStreamController =
+      StreamController<bool>();
+
   @override
-  Future<Session> refreshToken() async {
+  Stream<bool> hasSessionStream() => _hasSessionStreamController.stream;
+
+  @override
+  Future<Session> refreshToken({bool refreshUserExt = false}) async {
     final currentSession = _prefs.getString(Session.tag);
     if (currentSession == null) {
       return const Session.empty();
@@ -93,7 +125,18 @@ class AuthRepositoyImpl with AuthRepository {
         newSession.toJson(),
       ),
     );
+    if (refreshUserExt) {
+      try {
+        await fetchUserExtension(newSession.userGUID);
+      } catch (e, s) {
+        await LoggingInfo.instance.error(
+          e.toString(),
+          methodName: s.toString(),
+        );
+      }
+    }
     await _fetchUserExtension();
+    _hasSessionStreamController.add(true);
     return newSession;
   }
 
@@ -477,5 +520,40 @@ class AuthRepositoyImpl with AuthRepository {
     } on Exception catch (e) {
       throw CertificatesException(message: e.toString());
     }
+  }
+
+  @override
+  Future<bool> registerGenerosityChallengeUser(
+      {required String firstname,
+      required String lastname,
+      required String email,
+      required String password}) async {
+    try {
+      await updateFingerprintCertificate();
+    } catch (e, s) {
+      await LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
+    final response = await _apiService.registerGenerosityChallengeUser(
+      {
+        'firstname': firstname,
+        'lastname': lastname,
+        'email': email,
+        'password': password,
+      },
+    );
+    var newSession =
+        Session.fromGenerosityJson(response['item'] as Map<String, dynamic>);
+    await _prefs.setString(
+      Session.tag,
+      jsonEncode(
+        newSession.toJson(),
+      ),
+    );
+    await fetchUserExtension(newSession.userGUID);
+    _hasSessionStreamController.add(true);
+    return true;
   }
 }

@@ -6,7 +6,12 @@ import 'package:givt_app/features/children/details/cubit/child_details_cubit.dar
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
+import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
+import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -28,16 +33,29 @@ class ChildDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ChildDetailsCubit, ChildDetailsState>(
+      listenWhen: (previous, current) {
+        return current is ChildDetailsErrorState ||
+            current is ChildEditGivingAllowanceSuccessState;
+      },
+      buildWhen: (previous, current) {
+        return current is ChildDetailsFetchingState ||
+            current is ChildDetailsFetchedState;
+      },
       listener: (context, state) {
         if (state is ChildDetailsErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                state.errorMessage,
-                textAlign: TextAlign.center,
+          SnackBarHelper.showMessage(
+            context,
+            text: state.errorMessage,
+            isError: true,
+          );
+        } else if (state is ChildEditGivingAllowanceSuccessState) {
+          Navigator.push(
+            context,
+            EditAllowanceSuccessPage(
+              uiModel: EditAllowanceSuccessUIModel(
+                amountWithCurrencySymbol: '\$${state.allowance}',
               ),
-              backgroundColor: Theme.of(context).errorColor,
-            ),
+            ).toRoute(context),
           );
         }
       },
@@ -119,7 +137,11 @@ class ChildDetailsPage extends StatelessWidget {
                                       .profileDetails.givingAllowance.amount,
                                 },
                               );
-                              _pushToEdit(context);
+                              _navigateToEditAllowanceScreen(
+                                context,
+                                state.profileDetails.givingAllowance.amount
+                                    .toInt(),
+                              );
                             },
                           ),
                         ),
@@ -130,5 +152,21 @@ class ChildDetailsPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> _navigateToEditAllowanceScreen(
+    BuildContext context,
+    int currentAllowance,
+  ) async {
+    final dynamic result = await Navigator.push(
+      context,
+      EditAllowancePage(
+        currency: r'$',
+        initialAllowance: currentAllowance,
+      ).toRoute(context),
+    );
+    if (result != null && result is int && context.mounted) {
+      await context.read<ChildDetailsCubit>().updateAllowance(result);
+    }
   }
 }

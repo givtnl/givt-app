@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/generosity_challenge/models/day.dart'
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_content_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
 import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -17,22 +18,32 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final challenge = context.read<GenerosityChallengeCubit>();
+    final challenge = context.watch<GenerosityChallengeCubit>();
     final task = GenerosityChallengeContentHelper.getTaskByIndex(
       challenge.state.detailedDayIndex,
     );
     final day = challenge.state.days[challenge.state.detailedDayIndex];
-    final isDualCard = task.partnerCard != null;
+    final isSingleCard = task.partnerCard == null;
+    final isLastDay = challenge.state.islastDay;
+    final isDailyAssignmentConfirm = challenge.state.status ==
+        GenerosityChallengeStatus.dailyAssigmentConfirm;
+    final isDayCompleted = day.isCompleted;
+    // We do NOT show the 'Complete' button if:
+    // - the challenge is on the last day
+    // We show the 'Complete' button if:
+    // - it is a single card task (day 3- 6)
+    // - the day is already completed (disabled state)
+    // - the status is dailyAssigmentConfirm (happens for dual cards day 2/7)
+    final shouldShowCompleteButton = !isLastDay &
+        (isSingleCard || isDailyAssignmentConfirm || isDayCompleted);
+
     return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
         // final assignment = context.read<DailyAssignmentCubit>();
         return Scaffold(
           appBar: GenerosityAppBar(
             title: 'Day ${challenge.state.detailedDayIndex + 1}',
-            leading: BackButton(
-              onPressed: challenge.overview,
-              color: AppTheme.givtGreen40,
-            ),
+            leading: GenerosityBackButton(onPressed: challenge.overview),
           ),
           body: SafeArea(child: _buildCard(state, task, day)),
           floatingActionButtonLocation:
@@ -72,10 +83,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (!isDualCard ||
-                  state.status ==
-                      GenerosityChallengeStatus.dailyAssigmentConfirm ||
-                  day.isCompleted)
+              if (shouldShowCompleteButton)
                 GivtElevatedButton(
                   onTap: () async {
                     await showDialog<void>(
@@ -123,6 +131,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     return GenerosityDailyCard(
       task: task,
       isCompleted: day.isCompleted,
+      isLastDay: state.islastDay,
     );
   }
 }

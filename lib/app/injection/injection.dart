@@ -12,14 +12,16 @@ import 'package:givt_app/features/children/add_member/repository/add_member_repo
 import 'package:givt_app/features/children/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
-import 'package:givt_app/features/children/edit_child/repositories/create_child_repository.dart';
+import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_asset_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/utils/chat_script_registration_handler.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
@@ -229,6 +231,21 @@ void initRepositories() {
     )
     ..registerLazySingleton<ChatScriptsRepository>(
       ChatScriptsAssetRepositoryImpl.new,
+    )
+    ..registerLazySingleton<ChatScriptRegistrationHandler>(
+      () => ChatScriptRegistrationHandler(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<GenerosityStripeRegistrationCubit>(
+      () => GenerosityStripeRegistrationCubit(
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
     )
     ..registerLazySingleton<ChatHistoryRepository>(
       () => ChatHistoryRepositoryImpl(

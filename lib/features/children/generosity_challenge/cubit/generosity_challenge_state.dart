@@ -75,6 +75,9 @@ class GenerosityChallengeState extends Equatable {
       availableChat != const ChatScriptItem.empty() &&
       availableChat != availableChatOriginScript;
 
+  bool get islastDay =>
+      detailedDayIndex == GenerosityChallengeHelper.generosityChallengeDays - 1;
+
   GenerosityChallengeState copyWith({
     List<Day>? days,
     int? activeDayIndex,

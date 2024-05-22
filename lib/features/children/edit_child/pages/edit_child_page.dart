@@ -89,7 +89,7 @@ class _EditChildPageState extends State<EditChildPage> {
                 state.errorMessage,
                 textAlign: TextAlign.center,
               ),
-              backgroundColor: Theme.of(context).errorColor,
+              backgroundColor: Theme.of(context).colorScheme.error,
             ),
           );
         } else if (state is EditChildInputState ||
@@ -182,48 +182,6 @@ class _EditChildPageState extends State<EditChildPage> {
                                     textInputAction: TextInputAction.next,
                                     readOnly: true,
                                   ),
-                                  const SizedBox(height: 40),
-                                  CreateChildTextField(
-                                    enabled:
-                                        !state.profileDetails.pendingAllowance,
-                                    labelText: context
-                                        .l10n.createChildGivingAllowanceTitle,
-                                    errorText: state is EditChildInputErrorState
-                                        ? state.allowanceErrorMessage
-                                        : null,
-                                    controller: _allowanceController,
-                                    maxLength: 4,
-                                    textInputAction: TextInputAction.done,
-                                    inputFormatters: [
-                                      CurrencyTextInputFormatter(
-                                        locale: currency.locale,
-                                        decimalDigits: 0,
-                                        turnOffGrouping: true,
-                                        enableNegative: false,
-                                        symbol: currency.currencySymbol,
-                                      )
-                                    ],
-                                    keyboardType: TextInputType.number,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 5),
-                                    child: Text(
-                                      state.profileDetails.pendingAllowance
-                                          ? context.l10n
-                                              .editChildAllowancePendingInfo
-                                          : context.l10n
-                                              .childMonthlyGivingAllowanceRange,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(
-                                            color: AppTheme
-                                                .childGivingAllowanceHint,
-                                          ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  const GivingAllowanceInfoButton(),
                                   const SizedBox(
                                     height: 80,
                                   ),

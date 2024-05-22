@@ -26,6 +26,7 @@ class APIService {
   String _apiURLAWS;
 
   String get apiURL => _apiURL;
+
   String get apiURLAWS => _apiURLAWS;
 
   void updateApiUrl(String url, String awsurl) {
@@ -109,6 +110,29 @@ class APIService {
       throw HttpException(response.body);
     }
     return response.body;
+  }
+
+  Future<Map<String, dynamic>> registerGenerosityChallengeUser(
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(apiURL, '/givtservice/v1/generositychallenge/user');
+
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: jsonEncode(body),
+    );
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      return jsonDecode(response.body) as Map<String, dynamic>;
+    }
   }
 
   Future<Map<String, dynamic>> getOrganisationDetailsFromMedium(
@@ -491,6 +515,27 @@ class APIService {
     final response = await client.put(
       url,
       body: jsonEncode(body),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> editChildAllowance(String childGUID, int allowance) async {
+    final url =
+        Uri.https(apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode({'amount': allowance}),
       headers: {
         'Content-Type': 'application/json',
       },
