@@ -38,10 +38,8 @@ class SliderWidget extends StatelessWidget {
               activeTrackColor: AppTheme.secondary80,
               thumbShape: const SliderWidgetThumb(thumbRadius: 17),
               inactiveTrackColor: AppTheme.neutralVariant90,
-              activeTickMarkColor:
-                  Theme.of(context).colorScheme.onInverseSurface,
-              inactiveTickMarkColor:
-                  Theme.of(context).colorScheme.surfaceVariant,
+              activeTickMarkColor: Colors.transparent,
+              inactiveTickMarkColor: Colors.transparent,
               valueIndicatorColor: Colors.white,
               thumbColor: AppTheme.secondary80,
               disabledThumbColor: AppTheme.secondary30,
