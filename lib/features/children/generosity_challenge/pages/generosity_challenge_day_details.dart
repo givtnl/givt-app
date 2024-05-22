@@ -18,7 +18,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final challenge = context.read<GenerosityChallengeCubit>();
+    final challenge = context.watch<GenerosityChallengeCubit>();
     final task = GenerosityChallengeContentHelper.getTaskByIndex(
       challenge.state.detailedDayIndex,
     );
