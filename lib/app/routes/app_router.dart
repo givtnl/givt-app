@@ -30,7 +30,6 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_organisations_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/cubit/generosity_allowances_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/generosity_allowance_flow_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
@@ -262,17 +261,10 @@ class AppRouter {
           GoRoute(
             path: Pages.allowanceFlow.path,
             name: Pages.allowanceFlow.name,
-            builder: (context, state) {
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: state.extra! as GenerosityChallengeCubit,
-                  ),
-                  BlocProvider(create: (_) => GenerosityAllowancesCubit())
-                ],
-                child: const GenerosityAllowanceFlowPage(),
-              );
-            },
+            builder: (context, state) => BlocProvider.value(
+              value: state.extra! as GenerosityChallengeCubit,
+              child: const GenerosityAllowanceFlowPage(),
+            ),
           ),
         ],
       ),
@@ -914,7 +906,7 @@ class AppRouter {
   ) {
     final auth = context.read<AuthCubit>().state;
     var code = '';
-    var navigatingPage = '';
+    var navigatingPage = '/generosity-challenge';
     var afterGivingRedirection = '';
 
     UTMHelper.trackToAnalytics(uri: state.uri);

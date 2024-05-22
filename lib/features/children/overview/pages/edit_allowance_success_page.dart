@@ -16,6 +16,7 @@ class EditAllowanceSuccessPage extends StatelessWidget {
       text: context.l10n.monthlyAllowanceEditSuccessDescription(
         uiModel.amountWithCurrencySymbol ?? '',
       ),
+      onClickButton: uiModel.onClickButton,
     );
   }
 }
