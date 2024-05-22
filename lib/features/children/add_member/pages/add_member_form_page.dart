@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
+import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
@@ -136,19 +137,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
       },
       builder: (context, state) {
         if (state.status == AddMemberStateStatus.loading) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  context.l10n.holdOnSetUpFamily,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                const CircularProgressIndicator.adaptive(),
-              ],
-            ),
-          );
+          return const SettingUpFamilySpaceLoadingWidget();
         }
         if (state.status == AddMemberStateStatus.success ||
             state.status == AddMemberStateStatus.successCached ||
