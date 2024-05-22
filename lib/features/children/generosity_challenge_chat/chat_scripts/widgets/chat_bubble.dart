@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_picture.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
@@ -203,8 +203,7 @@ class ChatBubble extends StatelessWidget {
             fontSize: 18,
             fontFamily: 'Rouna',
             fontWeight: FontWeight.w500,
-            //TODO: replace with secondary20
-            color: AppTheme.secondary30,
+            color: AppTheme.secondary20,
           ),
     );
   }
@@ -213,13 +212,12 @@ class ChatBubble extends StatelessWidget {
     final Widget child;
     switch (mediaType) {
       case ChatBubbleMediaType.image:
-        child = isAssetMedia
-            ? Image.asset(mediaPath, width: width, height: height)
-            : Image.network(
-                mediaPath,
-                width: width,
-                height: height,
-              );
+        child = ChatPicture(
+          width: width,
+          height: height,
+          path: mediaPath,
+          isAsset: isAssetMedia,
+        );
       case ChatBubbleMediaType.lottie:
         child = isAssetMedia
             ? Lottie.asset(mediaPath, width: width, height: height)
