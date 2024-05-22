@@ -70,7 +70,14 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (challenge.state.islastDay &
+              // We do NOT show the 'Complete' button if:
+              // - the challenge is on the last day
+              // - the assignment has a flow between two cards (dualCard task) & the status is dailyAssigmentIntro
+              // We show the 'Complete' button if:
+              // - it is not a dual card task (day 3- 6)
+              // - the day is already completed (disabled state)
+              // - the assignment has a flow between two cards (dualCard task) & the status is dailyAssigmentConfirm
+              if (!challenge.state.islastDay &
                   (!isDualCard ||
                       state.status ==
                           GenerosityChallengeStatus.dailyAssigmentConfirm ||
