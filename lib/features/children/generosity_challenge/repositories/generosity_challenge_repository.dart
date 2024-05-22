@@ -17,6 +17,10 @@ mixin GenerosityChallengeRepository {
   Map<String, dynamic> loadUserData();
 
   Future<String> loadFromKey(String key);
+
+  Future<bool> isAlreadyRegistered();
+
+  Future<void> setAlreadyRegistered({required bool isAlreadyRegistered});
 }
 
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
@@ -27,6 +31,8 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   static const String _generosityChallengeDaysKey = 'generosityChallengeDays';
   static const String _generosityChallengeUserDataKey =
       'generosityChallengeUserDataKey';
+  static const String _generosityChallengeIsAlreadyRegisteredKey =
+      'generosityChallengeIsAlreadyRegisteredKey';
 
   final SharedPreferences sharedPreferences;
 
@@ -117,6 +123,21 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
     await sharedPreferences.setString(
       _generosityChallengeUserDataKey,
       jsonEncode(currentData),
+    );
+  }
+
+  @override
+  Future<bool> isAlreadyRegistered() async {
+    return sharedPreferences
+            .getBool(_generosityChallengeIsAlreadyRegisteredKey) ??
+        false;
+  }
+
+  @override
+  Future<void> setAlreadyRegistered({required bool isAlreadyRegistered}) async {
+    await sharedPreferences.setBool(
+      _generosityChallengeIsAlreadyRegisteredKey,
+      isAlreadyRegistered,
     );
   }
 }

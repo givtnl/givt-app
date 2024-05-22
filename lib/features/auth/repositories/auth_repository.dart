@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/session.dart';
+import 'package:givt_app/features/children/generosity_challenge/domain/models/generosity_registration_result.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -43,7 +45,7 @@ mixin AuthRepository {
     required bool isTempUser,
   });
 
-  Future<bool> registerGenerosityChallengeUser({
+  Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
     required String firstname,
     required String lastname,
     required String email,
@@ -523,11 +525,12 @@ class AuthRepositoyImpl with AuthRepository {
   }
 
   @override
-  Future<bool> registerGenerosityChallengeUser(
-      {required String firstname,
-      required String lastname,
-      required String email,
-      required String password}) async {
+  Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
+    required String firstname,
+    required String lastname,
+    required String email,
+    required String password,
+  }) async {
     try {
       await updateFingerprintCertificate();
     } catch (e, s) {
@@ -536,24 +539,44 @@ class AuthRepositoyImpl with AuthRepository {
         methodName: s.toString(),
       );
     }
-    final response = await _apiService.registerGenerosityChallengeUser(
-      {
-        'firstname': firstname,
-        'lastname': lastname,
-        'email': email,
-        'password': password,
-      },
-    );
-    var newSession =
-        Session.fromGenerosityJson(response['item'] as Map<String, dynamic>);
-    await _prefs.setString(
-      Session.tag,
-      jsonEncode(
-        newSession.toJson(),
-      ),
-    );
-    await fetchUserExtension(newSession.userGUID);
-    _hasSessionStreamController.add(true);
-    return true;
+    Map<String, dynamic>? response;
+    try {
+      response = await _apiService.registerGenerosityChallengeUser(
+        {
+          'firstname': firstname,
+          'lastname': lastname,
+          'email': email,
+          'password': password,
+        },
+      );
+    } on GivtServerFailure catch (e) {
+      // user is already registered, we can skip the rest
+      if (e.statusCode == 180) {
+        // TODO(Tamara): KIDS-999 | KIDS-998
+        // https://linear.app/givt/issue/KIDS-998/api-register-generosity-challenge-user-handle-already-existing-account
+        return GenerosityRegistrationResult.alreadyRegistered();
+      } else {
+        return GenerosityRegistrationResult.failure();
+      }
+    } catch (e, s) {
+      return GenerosityRegistrationResult.failure();
+    }
+
+    try {
+      final newSession =
+          Session.fromGenerosityJson(response['item'] as Map<String, dynamic>);
+      await _prefs.setString(
+        Session.tag,
+        jsonEncode(
+          newSession.toJson(),
+        ),
+      );
+      await fetchUserExtension(newSession.userGUID);
+    } catch (e, s) {
+      //failing one of these is non-blocking
+    } finally {
+      _hasSessionStreamController.add(true);
+    }
+    return GenerosityRegistrationResult.success();
   }
 }
