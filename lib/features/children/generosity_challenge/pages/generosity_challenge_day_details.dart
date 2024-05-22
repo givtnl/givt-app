@@ -23,7 +23,20 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
       challenge.state.detailedDayIndex,
     );
     final day = challenge.state.days[challenge.state.detailedDayIndex];
-    final isDualCard = task.partnerCard != null;
+    final isSingleCard = task.partnerCard == null;
+    final isLastDay = challenge.state.islastDay;
+    final isDailyAssignmentConfirm = challenge.state.status ==
+        GenerosityChallengeStatus.dailyAssigmentConfirm;
+    final isDayCompleted = day.isCompleted;
+    // We do NOT show the 'Complete' button if:
+    // - the challenge is on the last day
+    // We show the 'Complete' button if:
+    // - it is a single card task (day 3- 6)
+    // - the day is already completed (disabled state)
+    // - the status is dailyAssigmentConfirm (happens for dual cards day 2/7)
+    final shouldShowCompleteButton = !isLastDay &
+        (isSingleCard || isDailyAssignmentConfirm || isDayCompleted);
+
     return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
         // final assignment = context.read<DailyAssignmentCubit>();
@@ -70,10 +83,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (!isDualCard ||
-                  state.status ==
-                      GenerosityChallengeStatus.dailyAssigmentConfirm ||
-                  day.isCompleted)
+              if (shouldShowCompleteButton)
                 GivtElevatedButton(
                   onTap: () async {
                     await showDialog<void>(
@@ -121,6 +131,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     return GenerosityDailyCard(
       task: task,
       isCompleted: day.isCompleted,
+      isLastDay: state.islastDay,
     );
   }
 }
