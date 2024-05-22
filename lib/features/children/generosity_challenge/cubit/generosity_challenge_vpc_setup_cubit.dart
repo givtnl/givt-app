@@ -72,7 +72,11 @@ class GenerosityChallengeVpcSetupCubit extends Cubit<BaseState<dynamic>> {
     return children;
   }
 
-  void _skipVPC() {}
+  void _skipVPC() {
+    emit(BaseState.custom(null)); //TODO create object
+  }
+
+
 
   Future<void> _handleVPC() async {
     try {
