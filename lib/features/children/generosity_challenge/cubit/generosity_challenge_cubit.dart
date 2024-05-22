@@ -271,4 +271,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   void dismissMayorPopup() {
     emit(state.copyWith(showMayor: false));
   }
+
+  void onClickSkipDay8Challenge() {
+
+  }
 }

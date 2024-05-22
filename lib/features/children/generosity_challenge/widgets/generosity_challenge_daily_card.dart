@@ -117,26 +117,31 @@ class GenerosityDailyCard extends StatelessWidget {
                             extra: context.read<GenerosityChallengeCubit>(),
                           );
                         },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Skip',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(
-                                    color: AppTheme.givtGreen40,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: 'Rouna',
-                                  ),
-                            ),
-                            const SizedBox(width: 8),
-                            const FaIcon(
-                              FontAwesomeIcons.arrowRight,
-                              color: AppTheme.givtGreen40,
-                            ),
-                          ],
+                        child: GestureDetector(
+                          onTap: () => context
+                              .read<GenerosityChallengeCubit>()
+                              .onClickSkipDay8Challenge(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Skip',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      color: AppTheme.givtGreen40,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Rouna',
+                                    ),
+                              ),
+                              const SizedBox(width: 8),
+                              const FaIcon(
+                                FontAwesomeIcons.arrowRight,
+                                color: AppTheme.givtGreen40,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
