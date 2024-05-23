@@ -74,6 +74,9 @@ class ChildDetailsPage extends StatelessWidget {
             TopUpSuccessPage(
               uiModel: TopUpSuccessUIModel(
                 amountWithCurrencySymbol: '\$${state.amount}',
+                onClickButton: () => context
+                  ..read<FamilyOverviewCubit>().fetchFamilyProfiles()
+                  ..pop(),
               ),
             ).toRoute(context),
           );
