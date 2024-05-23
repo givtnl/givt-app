@@ -1,26 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
-import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class ChildTopUpCard extends StatelessWidget {
   const ChildTopUpCard({
-    required this.profileDetails,
     this.onPressed,
     super.key,
   });
 
-  final ProfileExt profileDetails;
   final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final nextTopUpDate =
-        DateTime.parse(profileDetails.givingAllowance.nextGivingAllowanceDate);
-
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
       width: double.infinity,
@@ -50,7 +42,7 @@ class ChildTopUpCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                'Top Up',
+                context.l10n.topUp,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppTheme.inputFieldBorderSelected,
                       fontFamily: 'Raleway',
@@ -59,7 +51,7 @@ class ChildTopUpCard extends StatelessWidget {
                     ),
               ),
               Text(
-                "Add a one-time amount to your\nchild's Wallet",
+                context.l10n.topUpCardInfo,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium!.copyWith(
                       color: AppTheme.childGivingAllowanceHint,
