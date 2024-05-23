@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class CardDialog extends StatelessWidget {
   const CardDialog({
-    required this.child, super.key,
+    required this.child,
+    super.key,
   });
 
   final Widget child;

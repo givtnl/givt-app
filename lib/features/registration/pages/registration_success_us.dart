@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/registration/widgets/registered_check_animation.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
-import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
 import 'package:go_router/go_router.dart';
 
 class RegistrationSuccessUs extends StatelessWidget {
