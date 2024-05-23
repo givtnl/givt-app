@@ -24,8 +24,10 @@ enum AmplitudeEvents {
   childDetailsEditCardClicked(
     'child_details_edit_card_clicked',
   ),
+  childTopUpCardClicked('child_top_up_card_clicked'),
   childEditSaveClicked('child_edit_save_clicked'),
-  childEditMonthlyAllowanceSaveClicked('child_edit_monthly_allowance_save_clicked'),
+  childEditMonthlyAllowanceSaveClicked(
+      'child_edit_monthly_allowance_save_clicked'),
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),
@@ -102,7 +104,8 @@ enum AmplitudeEvents {
   sliderAmountChanged('slider_amount_changed'),
   chooseAmountDonateClicked('choose_amount_donate_clicked'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
-  generosityChallengeRegistrationSucceeded('generosity_challenge_registration_succeeded'),
+  generosityChallengeRegistrationSucceeded(
+      'generosity_challenge_registration_succeeded'),
 
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),

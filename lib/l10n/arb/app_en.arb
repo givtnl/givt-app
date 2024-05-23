@@ -1557,5 +1557,7 @@
     "genericSuccessTitle": "Consider it done!",
     "monthlyAllowanceEditSuccessDescription": "Your child will receive {value0} each month. You can edit this amount any time.",
     "editGivingAllowanceDescription": "Which amount should be added to your child’s Wallet each month?",
-    "editGivingAllowanceHint": "Choose an amount between $1 to $999."
+    "editGivingAllowanceHint": "Choose an amount between $1 to $999.",
+    "topUp": "Top Up",
+    "topUpCardInfo": "Add a one-time amount to your\\nchild's Wallet"
 }
