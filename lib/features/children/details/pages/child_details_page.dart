@@ -7,6 +7,7 @@ import 'package:givt_app/features/children/details/widgets/child_details_item.da
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/pages/add_top_up_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
@@ -35,7 +36,9 @@ class ChildDetailsPage extends StatelessWidget {
     return BlocConsumer<ChildDetailsCubit, ChildDetailsState>(
       listenWhen: (previous, current) {
         return current is ChildDetailsErrorState ||
-            current is ChildEditGivingAllowanceSuccessState;
+            current is ChildEditGivingAllowanceSuccessState ||
+            current is ChildTopUpFundsErrorState ||
+            current is ChildTopUpSuccessState;
       },
       buildWhen: (previous, current) {
         return current is ChildDetailsFetchingState ||
@@ -57,6 +60,10 @@ class ChildDetailsPage extends StatelessWidget {
               ),
             ).toRoute(context),
           );
+        } else if (state is ChildTopUpFundsErrorState) {
+          // TODO Kids-845
+        } else if (state is ChildTopUpSuccessState) {
+          // TODO Kids-844
         }
       },
       builder: (context, state) {
@@ -171,7 +178,15 @@ class ChildDetailsPage extends StatelessWidget {
   Future<void> _navigateToTopUpScreen(
     BuildContext context,
   ) async {
-    // TODO: Implement kids-843
+    final dynamic result = await Navigator.push(
+      context,
+      const AddTopUpPage(
+        currency: r'$',
+      ).toRoute(context),
+    );
+    if (result != null && result is int && context.mounted) {
+      await context.read<ChildDetailsCubit>().topUp(result);
+    }
   }
 
   Future<void> _navigateToEditAllowanceScreen(
