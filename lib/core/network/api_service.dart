@@ -982,6 +982,38 @@ class APIService {
     }
   }
 
+  Future<bool> topUpChild(String childGUID, int amount) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/topup');
+
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({'amount': amount}),
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
+
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
   Future<bool> acceptGroupInvite(
     String groupId,
   ) async {

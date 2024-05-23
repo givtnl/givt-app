@@ -5,37 +5,31 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class EditAllowancePage extends StatefulWidget {
-  const EditAllowancePage({
+class AddTopUpPage extends StatefulWidget {
+  const AddTopUpPage({
     required this.currency,
-    this.initialAllowance,
-    this.extraHeader,
-    this.isMultipleChildren = false,
+    this.initialAmount,
     super.key,
   });
 
   final String currency;
-  final int? initialAllowance;
-  final Widget? extraHeader;
-  final bool isMultipleChildren;
+  final int? initialAmount;
 
   @override
-  State<EditAllowancePage> createState() => _EditAllowancePageState();
+  State<AddTopUpPage> createState() => _AddTopUpPageState();
 }
 
-class _EditAllowancePageState extends State<EditAllowancePage> {
-  late int _allowance;
+class _AddTopUpPageState extends State<AddTopUpPage> {
+  late int _amount;
 
   @override
   void initState() {
     super.initState();
-    _allowance = widget.initialAllowance ?? 15;
+    _amount = widget.initialAmount ?? 5;
   }
 
   @override
   Widget build(BuildContext context) {
-    final child =
-        widget.isMultipleChildren ? 'each of your children' : 'your child';
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -44,11 +38,6 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
             padding: const EdgeInsets.all(20),
             child: Stack(
               children: [
-                if (widget.extraHeader != null)
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: widget.extraHeader,
-                  ),
                 Align(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 80),
@@ -56,10 +45,12 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        calendarClockIcon(),
+                        plusIcon(
+                          size: 40,
+                        ),
                         const SizedBox(height: 16),
                         Text(
-                          context.l10n.createChildGivingAllowanceTitle,
+                          context.l10n.topUp,
                           style:
                               Theme.of(context).textTheme.titleLarge!.copyWith(
                                     color: AppTheme.inputFieldBorderSelected,
@@ -70,8 +61,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Which amount should be added to\n'
-                          "$child's wallet each month?",
+                          "How much would you like to add to\nyour child's Wallet?",
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
@@ -85,9 +75,9 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                         const SizedBox(height: 12),
                         AllowanceCounter(
                           currency: widget.currency,
-                          initialAllowance: _allowance,
-                          onAllowanceChanged: (allowance) => setState(() {
-                            _allowance = allowance;
+                          initialAllowance: _amount,
+                          onAllowanceChanged: (amount) => setState(() {
+                            _amount = amount;
                           }),
                         ),
                         const SizedBox(height: 12),
@@ -108,7 +98,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                   child: CustomGreenElevatedButton(
                     title: context.l10n.confirm,
                     onPressed: () {
-                      Navigator.of(context).pop(_allowance);
+                      Navigator.of(context).pop(_amount);
                     },
                   ),
                 ),

@@ -15,6 +15,10 @@ final class ChildDetailsFetchingState extends ChildDetailsState {
   const ChildDetailsFetchingState();
 }
 
+final class ChildTupUpFundsErrorState extends ChildDetailsState {
+  const ChildTupUpFundsErrorState();
+}
+
 final class ChildDetailsErrorState extends ChildDetailsState {
   const ChildDetailsErrorState({
     required this.errorMessage,
@@ -46,4 +50,15 @@ final class ChildEditGivingAllowanceSuccessState extends ChildDetailsState {
 
   @override
   List<Object> get props => [allowance];
+}
+
+final class ChildTopUpSuccessState extends ChildDetailsState {
+  const ChildTopUpSuccessState({
+    required this.amount,
+  });
+
+  final int amount;
+
+  @override
+  List<Object> get props => [amount];
 }
