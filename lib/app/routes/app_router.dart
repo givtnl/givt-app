@@ -906,7 +906,7 @@ class AppRouter {
   ) {
     final auth = context.read<AuthCubit>().state;
     var code = '';
-    var navigatingPage = '/generosity-challenge';
+    var navigatingPage = '';
     var afterGivingRedirection = '';
 
     UTMHelper.trackToAnalytics(uri: state.uri);
