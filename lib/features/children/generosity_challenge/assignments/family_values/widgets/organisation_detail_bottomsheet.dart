@@ -6,8 +6,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/shared/widgets/custom_icon_border_button.dart';
-import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 

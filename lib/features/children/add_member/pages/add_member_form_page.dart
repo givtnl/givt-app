@@ -6,8 +6,8 @@ import 'package:givt_app/features/children/add_member/widgets/add_member_form.da
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
-import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
