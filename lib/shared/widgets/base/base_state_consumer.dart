@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
-import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/widgets/errors/unrecoverable_error.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
@@ -15,7 +14,7 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
     this.onLoading,
   });
 
-  final CommonCubit<E, K> bloc;
+  final Cubit<BaseState<E, K>> bloc;
   final Widget Function(BuildContext context)? onInitial;
   final Widget Function(BuildContext context)? onLoading;
   final Widget Function(BuildContext context, E uiModel) onData;
@@ -23,7 +22,7 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<CommonCubit<E, K>, BaseState<E, K>>(
+    return BlocConsumer<Cubit<BaseState<E, K>>, BaseState<E, K>>(
       bloc: bloc,
       listener: (context, state) {
         if (state is CustomState<E, K>) {
