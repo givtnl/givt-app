@@ -272,6 +272,18 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     emit(state.copyWith(showMayor: false));
   }
 
+  int getNrOfChildren() {
+    final userdata = _generosityChallengeRepository.loadUserData();
+    var nrOfChildren = 0;
+    for (var i = 0; i < 4; i++) {
+      final child = userdata['child${i}FirstName'];
+      if (child != null) {
+        nrOfChildren++;
+      }
+    }
+    return nrOfChildren;
+  }
+
   void onClickSkipDay8Challenge() {
 
   }

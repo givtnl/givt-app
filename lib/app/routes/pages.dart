@@ -31,7 +31,10 @@ enum Pages {
     path: 'choose-amount-slider',
     name: 'CHOOSE-AMOUNT-SLIDER',
   ),
-  walletMock(path: 'wallet-mock', name: 'WALLET-MOCK'),
+  allowanceFlow(
+    path: 'allowance-flow',
+    name: 'ALLOWANCE-FLOW',
+  ),
 
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
