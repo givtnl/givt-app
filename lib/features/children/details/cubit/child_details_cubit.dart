@@ -117,7 +117,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     if (e is GivtServerFailure && e.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.failedTopUp,
+          eventName: AmplitudeEvents.failedTopUpNoFunds,
         ),
       );
       emit(
