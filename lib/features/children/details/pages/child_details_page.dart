@@ -6,6 +6,7 @@ import 'package:givt_app/features/children/details/cubit/child_details_cubit.dar
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
+import 'package:givt_app/features/children/details/widgets/child_top_up_failure_dialog.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/pages/add_top_up_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
@@ -61,7 +62,10 @@ class ChildDetailsPage extends StatelessWidget {
             ).toRoute(context),
           );
         } else if (state is ChildTopUpFundsErrorState) {
-          // TODO Kids-845
+          showDialog<void>(
+            context: context,
+            builder: (_) => const TopUpFailureDialog(),
+          );
         } else if (state is ChildTopUpSuccessState) {
           // TODO Kids-844
         }

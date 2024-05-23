@@ -22,7 +22,7 @@ import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
-import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -173,11 +173,10 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
 
   void _logSuccessFullDonation(CreateChallengeDonationState state) {
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents
-          .generosityChallengeDonationSuccess,
+      eventName: AmplitudeEvents.generosityChallengeDonationSuccess,
       eventProperties: {
         'organisation_name': widget.organisation.organisationName,
-        'amount' : state.amount,
+        'amount': state.amount,
       },
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 
 class CommonSuccessPage extends StatelessWidget {
   const CommonSuccessPage({

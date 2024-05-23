@@ -1560,5 +1560,6 @@
     "editGivingAllowanceHint": "Choose an amount between $1 to $999.",
     "topUp": "Top Up",
     "topUpCardInfo": "Add a one-time amount to your\nchild's Wallet",
-    "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?"
+    "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
+    "topUpFundsFailureText": "We are having trouble getting the\nfunds from your card.\nPlease try again."
 }
