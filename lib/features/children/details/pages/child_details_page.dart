@@ -11,7 +11,6 @@ import 'package:givt_app/features/children/overview/pages/edit_allowance_success
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 

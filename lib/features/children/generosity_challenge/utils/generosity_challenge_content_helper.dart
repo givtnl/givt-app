@@ -76,7 +76,7 @@ class GenerosityChallengeContentHelper {
       buttonText: 'Yeah sure!',
       description:
           "Foster your children's spirit of giving with a recurring giving allowance. It's a simple way to encourage a lifelong habit of kindness. \n\nAre you ready to help them become generous individuals?",
-      redirect: Pages.walletMock.path,
+      redirect: Pages.allowanceFlow.path,
       onTap: () {},
     ),
   ];

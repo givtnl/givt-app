@@ -8,11 +8,16 @@ import 'package:givt_app/utils/app_theme.dart';
 class EditAllowancePage extends StatefulWidget {
   const EditAllowancePage({
     required this.currency,
-    this.initialAllowance, super.key,
+    this.initialAllowance,
+    this.extraHeader,
+    this.isMultipleChildren = false,
+    super.key,
   });
 
   final String currency;
   final int? initialAllowance;
+  final Widget? extraHeader;
+  final bool isMultipleChildren;
 
   @override
   State<EditAllowancePage> createState() => _EditAllowancePageState();
@@ -29,6 +34,8 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
 
   @override
   Widget build(BuildContext context) {
+    final child =
+        widget.isMultipleChildren ? 'each of your children' : 'your child';
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -37,6 +44,11 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
             padding: const EdgeInsets.all(20),
             child: Stack(
               children: [
+                if (widget.extraHeader != null)
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: widget.extraHeader,
+                  ),
                 Align(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -56,15 +68,16 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       const SizedBox(height: 8),
                       Text(
                         'Which amount should be added to\n'
-                            "your child's wallet each month?",
+                        "$child's wallet each month?",
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                              color: AppTheme.childGivingAllowanceHint,
-                              fontFamily: 'Raleway',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              height: 1.2,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  color: AppTheme.childGivingAllowanceHint,
+                                  fontFamily: 'Raleway',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 1.2,
+                                ),
                       ),
                       const SizedBox(height: 12),
                       AllowanceCounter(
