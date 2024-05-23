@@ -59,10 +59,6 @@ class GenerosityChallengeVpcSetupCubit
     _navigateToLogin();
   }
 
-  void _navigateToLogin() {
-    emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToLogin());
-  }
-
   Future<void> _handleVPC() async {
     try {
       final userData = _generosityChallengeRepository.loadUserData();
@@ -85,6 +81,13 @@ class GenerosityChallengeVpcSetupCubit
       ),
     );
   }
+
+  //TODO after KIDS-958 is done, deactivate challenge
+
+  void _navigateToLogin() {
+    emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToLogin());
+  }
+
 
   void _navigateToFamilyOverview() {
     emitCustom(
