@@ -111,7 +111,7 @@ class GenerosityDailyCard extends StatelessWidget {
                       padding: const EdgeInsets.only(top: 8),
                       child: TextButton(
                         onPressed: () {
-                          // TODO: link to VPC page
+                          // TODO integrate with add member & navigate to VPC KIDS-957
                           context.push(
                             '${Pages.generosityChallenge.path}/${task.redirect}',
                             extra: context.read<GenerosityChallengeCubit>(),
