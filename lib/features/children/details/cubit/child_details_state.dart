@@ -15,8 +15,8 @@ final class ChildDetailsFetchingState extends ChildDetailsState {
   const ChildDetailsFetchingState();
 }
 
-final class ChildTupUpFundsErrorState extends ChildDetailsState {
-  const ChildTupUpFundsErrorState();
+final class ChildTopUpFundsErrorState extends ChildDetailsState {
+  const ChildTopUpFundsErrorState();
 }
 
 final class ChildDetailsErrorState extends ChildDetailsState {

@@ -36,7 +36,9 @@ class ChildDetailsPage extends StatelessWidget {
     return BlocConsumer<ChildDetailsCubit, ChildDetailsState>(
       listenWhen: (previous, current) {
         return current is ChildDetailsErrorState ||
-            current is ChildEditGivingAllowanceSuccessState;
+            current is ChildEditGivingAllowanceSuccessState ||
+            current is ChildTopUpFundsErrorState ||
+            current is ChildTopUpSuccessState;
       },
       buildWhen: (previous, current) {
         return current is ChildDetailsFetchingState ||

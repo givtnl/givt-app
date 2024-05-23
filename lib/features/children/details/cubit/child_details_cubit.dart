@@ -79,7 +79,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   }
 
   Future<void> topUp(int amount) async {
-    await _logTopUpEvent(amount);
+    unawaited(_logTopUpEvent(amount));
 
     try {
       _emitLoading();
@@ -121,7 +121,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         ),
       );
       emit(
-        const ChildTupUpFundsErrorState(),
+        const ChildTopUpFundsErrorState(),
       );
     }
     emit(
