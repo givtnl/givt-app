@@ -61,7 +61,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "How much would you like to add to\nyour child's Wallet?",
+                          context.l10n.topUpScreenInfo,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.titleMedium!.copyWith(
