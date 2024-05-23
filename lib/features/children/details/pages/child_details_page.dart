@@ -60,7 +60,7 @@ class ChildDetailsPage extends StatelessWidget {
               ),
             ).toRoute(context),
           );
-        } else if (state is ChildTupUpFundsErrorState) {
+        } else if (state is ChildTopUpFundsErrorState) {
           // TODO Kids-845
         } else if (state is ChildTopUpSuccessState) {
           // TODO Kids-844
