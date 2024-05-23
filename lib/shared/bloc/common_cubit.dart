@@ -1,10 +1,14 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 
 class CommonCubit<T, S> extends Cubit<BaseState<T, S>> {
   CommonCubit(super.initialState);
 
+  // no need to define equatable anymore
+  // also fixes the problem where even if you use equatable
+  // and there are no props it still wouldn't emit the state one after another
   void emitWithClear(BaseState<T, S> state) {
     emit(const BaseState.clear());
     emit(state);
@@ -30,6 +34,9 @@ class CommonCubit<T, S> extends Cubit<BaseState<T, S>> {
     emitWithClear(BaseState.showSnackbarMessage(text: text, isError: isError));
   }
 
+  // allows you to wrap logic in a try catch
+  // without having to define the catch if it's non-important
+  // also will automatically log exceptions in debug mode for easy development
   Future<void> inTryCatchFinally({
     required Future<void> Function() inTry,
     Future<void> Function(Object e, StackTrace? s)? inCatch,
@@ -39,7 +46,9 @@ class CommonCubit<T, S> extends Cubit<BaseState<T, S>> {
       await inTry.call();
     } catch (e, s) {
       await inCatch?.call(e, s);
-      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+      if (kDebugMode) {
+        LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+      }
     } finally {
       await inFinally?.call();
     }

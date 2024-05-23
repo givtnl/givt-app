@@ -30,7 +30,7 @@ class _GenerosityChallengeVpcSetupPageState
           return _vpc(context);
         },
         onInitial: _vpc,
-        bloc: _cubit,
+        cubit: _cubit,
       ),
     );
   }

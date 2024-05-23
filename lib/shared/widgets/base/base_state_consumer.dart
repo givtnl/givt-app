@@ -7,23 +7,30 @@ import 'package:givt_app/utils/snack_bar_helper.dart';
 class BaseStateConsumer<E, K> extends StatelessWidget {
   const BaseStateConsumer({
     required this.onData,
-    required this.bloc,
+    required this.cubit,
     super.key,
     this.onInitial,
     this.onCustom,
     this.onLoading,
   });
 
-  final Cubit<BaseState<E, K>> bloc;
+  final Cubit<BaseState<E, K>> cubit;
+  // for displaying the widget in an initial state
+  // not every widget has an initial state so this is optional
+  // but if you call it without defining it it will display an error
   final Widget Function(BuildContext context)? onInitial;
+  // for displaying the widget in a loading state
   final Widget Function(BuildContext context)? onLoading;
+  // for building UI
   final Widget Function(BuildContext context, E uiModel) onData;
+  // for (one-off) methods only, not for building UI!
+  // so for example showing a dialog, a bottom sheet, etc.
   final void Function(BuildContext context, K custom)? onCustom;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<Cubit<BaseState<E, K>>, BaseState<E, K>>(
-      bloc: bloc,
+      bloc: cubit,
       listener: (context, state) {
         if (state is CustomState<E, K>) {
           onCustom?.call(context, state.custom);
@@ -35,9 +42,12 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
           );
         }
       },
+      // these states will only be fired in the listener and not in the builder
+      // so they will not trigger a rebuild of the widget (for efficiency)
       listenWhen: (previousState, currentState) {
         return currentState is CustomState || currentState is SnackbarState;
       },
+      // these states will trigger a rebuild of the widget
       buildWhen: (previousState, currentState) {
         return currentState is InitialState ||
             currentState is DataState ||
