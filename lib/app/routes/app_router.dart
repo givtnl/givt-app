@@ -937,12 +937,19 @@ class AppRouter {
 
     params['afterGivingRedirection'] = afterGivingRedirection;
 
+    if (navigatingPage == Pages.generosityChallenge.path &&
+        GenerosityChallengeHelper.isCompleted) {
+      navigatingPage = '';
+      params.remove('page');
+    }
+
     final query = Uri(
       queryParameters: params,
     ).query;
 
     if (GenerosityChallengeHelper.isActivated ||
-        navigatingPage == Pages.generosityChallenge.path) {
+        (navigatingPage == Pages.generosityChallenge.path &&
+            !GenerosityChallengeHelper.isCompleted)) {
       return Pages.generosityChallenge.path;
     }
 
