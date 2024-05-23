@@ -13,9 +13,11 @@ class EditAllowanceSuccessPage extends StatelessWidget {
     return CommonSuccessPage(
       buttonText: context.l10n.ready,
       title: context.l10n.genericSuccessTitle,
-      text: context.l10n.monthlyAllowanceEditSuccessDescription(
-        uiModel.amountWithCurrencySymbol ?? '',
-      ),
+      text: uiModel.isMultipleChildren
+          ? 'Your children will receive ${uiModel.amountWithCurrencySymbol} each month. You can edit this amount any time.'
+          : context.l10n.monthlyAllowanceEditSuccessDescription(
+              uiModel.amountWithCurrencySymbol ?? '',
+            ),
       onClickButton: uiModel.onClickButton,
     );
   }

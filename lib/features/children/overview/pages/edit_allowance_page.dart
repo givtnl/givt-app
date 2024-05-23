@@ -10,12 +10,14 @@ class EditAllowancePage extends StatefulWidget {
     required this.currency,
     this.initialAllowance,
     this.extraHeader,
+    this.isMultipleChildren = false,
     super.key,
   });
 
   final String currency;
   final int? initialAllowance;
   final Widget? extraHeader;
+  final bool isMultipleChildren;
 
   @override
   State<EditAllowancePage> createState() => _EditAllowancePageState();
@@ -32,6 +34,8 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
 
   @override
   Widget build(BuildContext context) {
+    final child =
+        widget.isMultipleChildren ? 'each of your children' : 'your child';
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -64,7 +68,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       const SizedBox(height: 8),
                       Text(
                         'Which amount should be added to\n'
-                        "your child's wallet each month?",
+                        "$child's wallet each month?",
                         textAlign: TextAlign.center,
                         style:
                             Theme.of(context).textTheme.titleMedium!.copyWith(

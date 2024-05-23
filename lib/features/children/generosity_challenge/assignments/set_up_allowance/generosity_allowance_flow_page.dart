@@ -22,12 +22,15 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
   Future<void> _navigateToEditAllowanceScreen(
     BuildContext context,
   ) async {
+    final cubit = context.read<GenerosityChallengeCubit>();
+    final nrOfChildren = cubit.getNrOfChildren();
     final dynamic result = await Navigator.push(
       context,
       EditAllowancePage(
         extraHeader: _allowancesHeader(context),
         currency: r'$',
         initialAllowance: 15,
+        isMultipleChildren: nrOfChildren > 1,
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
@@ -68,7 +71,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Foster your children’s spirit of giving.',
+          'Foster your children\'s spirit of giving.',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium,
         ),
