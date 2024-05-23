@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_oval_green_button.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:go_router/go_router.dart';
 
@@ -14,7 +14,7 @@ class TopUpFailureDialog extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SvgPicture.asset('assets/images/wallet.svg'),
+          walletIcon(),
           Column(
             children: [
               Text(
