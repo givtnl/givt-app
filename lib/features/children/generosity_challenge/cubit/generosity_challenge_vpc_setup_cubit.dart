@@ -32,41 +32,21 @@ class GenerosityChallengeVpcSetupCubit
     }
   }
 
-  Future<Member?> _retrieveFirstParentData(
-    Map<String, dynamic> userData,
-  ) async {
-    try {
-      final firstname = userData[ChatScriptSaveKey.firstName.value] as String;
-      final lastname = userData[ChatScriptSaveKey.lastName.value] as String;
-      final email = userData[ChatScriptSaveKey.email.value] as String;
-      return Member(
-        firstName: firstname,
-        lastName: lastname,
-        email: email,
-        type: ProfileType.Parent,
-      );
-    } catch (e, s) {
-      _showInitialScreenWithError();
-      unawaited(LoggingInfo.instance.error(
-        'GenerosityChallengeVPCSetupCubit: _retrieveFirstParentData\n\n$e',
-        methodName: s.toString(),
-      ));
-    }
-    return null;
-  }
-
   List<Member> _retrieveChildrenData(Map<String, dynamic> userData) {
     final children = <Member>[];
     final lastname = userData[ChatScriptSaveKey.lastName.value] as String;
+    final allowance =
+        userData[ChatScriptSaveKey.allowanceAmount.value] as String?;
     for (var i = 1; i < 5; i++) {
       final firstname = userData['child${i}FirstName'] as String?;
-      final age = userData['child${i}Age'] as int?;
+      final age = userData['child${i}Age'] as String?;
       if (firstname != null && age != null) {
         children.add(
           Member(
             firstName: firstname,
             lastName: lastname,
-            age: age,
+            allowance: int.tryParse(allowance ?? ''),
+            age: int.tryParse(age),
             type: ProfileType.Child,
           ),
         );
@@ -86,28 +66,24 @@ class GenerosityChallengeVpcSetupCubit
   Future<void> _handleVPC() async {
     try {
       final userData = _generosityChallengeRepository.loadUserData();
-      final parent = await _retrieveFirstParentData(userData);
-      if (parent == null) {
-        _navigateToLogin();
-        await LoggingInfo.instance.error(
-          'GenerosityChallengeVPCSetupCubit: parent data is not complete',
-        );
-      } else {
-        final children = _retrieveChildrenData(userData);
-        await _vpcRepository.addMembers([parent, ...children]);
-        _navigateToFamilyOverview();
-      }
+      final children = _retrieveChildrenData(userData);
+      await _vpcRepository.addMembers(children);
+      _navigateToFamilyOverview();
     } on NotLoggedInException {
       _navigateToLogin();
     } catch (e, s) {
-      _showInitialScreenWithError();
-      unawaited(
-        LoggingInfo.instance.error(
-          'GenerosityChallengeVPCSetupCubit: onClickReadyForVPC\n\n$e',
-          methodName: s.toString(),
-        ),
-      );
+      _handleError(e, s);
     }
+  }
+
+  void _handleError(Object e, StackTrace s) {
+    _showInitialScreenWithError();
+    unawaited(
+      LoggingInfo.instance.error(
+        'GenerosityChallengeVPCSetupCubit: onClickReadyForVPC\n\n$e',
+        methodName: s.toString(),
+      ),
+    );
   }
 
   void _navigateToFamilyOverview() {

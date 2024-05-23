@@ -4,7 +4,6 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
-import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:go_router/go_router.dart';
@@ -48,7 +47,7 @@ class _GenerosityChallengeVpcSetupPageState
       BuildContext context, GenerosityChallengeVpcSetupCustom custom) {
     switch (custom) {
       case NavigateToFamilyOverview():
-        context.pushNamed(Pages.overview.name);
+        context.pushNamed(Pages.childrenOverview.name);
       case NavigateToLogin():
         context.pushNamed(Pages.welcome.name);
     }
