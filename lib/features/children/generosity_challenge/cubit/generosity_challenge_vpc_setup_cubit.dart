@@ -10,7 +10,8 @@ import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class GenerosityChallengeVpcSetupCubit extends CommonCubit<BaseState<dynamic>> {
+class GenerosityChallengeVpcSetupCubit
+    extends CommonCubit<dynamic, GenerosityChallengeVpcSetupCustom> {
   GenerosityChallengeVpcSetupCubit(
     this._generosityChallengeRepository,
     this._vpcRepository,

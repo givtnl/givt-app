@@ -10,10 +10,13 @@ import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class GenerosityStripeRegistrationCubit extends Cubit<BaseState<Object>> {
+class GenerosityStripeRegistrationCubit
+    extends Cubit<BaseState<dynamic, dynamic>> {
   GenerosityStripeRegistrationCubit(
-      this._authRepository, this._sharedPreferences, this._apiService)
-      : super(const BaseState.loading());
+    this._authRepository,
+    this._sharedPreferences,
+    this._apiService,
+  ) : super(const BaseState.loading());
 
   final AuthRepository _authRepository;
   final SharedPreferences _sharedPreferences;

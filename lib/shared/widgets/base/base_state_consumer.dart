@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
+import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/widgets/errors/unrecoverable_error.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
-class BaseStateConsumer<T extends StateStreamable<S>,
-    S extends BaseState<dynamic>> extends StatelessWidget {
+class BaseStateConsumer<E, K> extends StatelessWidget {
   const BaseStateConsumer({
     required this.onData,
     required this.bloc,
@@ -15,20 +15,20 @@ class BaseStateConsumer<T extends StateStreamable<S>,
     this.onLoading,
   });
 
-  final T bloc;
+  final CommonCubit<E, K> bloc;
   final Widget Function(BuildContext context)? onInitial;
   final Widget Function(BuildContext context)? onLoading;
-  final Widget Function(BuildContext context, dynamic uiModel) onData;
-  final void Function(BuildContext context, dynamic object)? onCustom;
+  final Widget Function(BuildContext context, E uiModel) onData;
+  final void Function(BuildContext context, K custom)? onCustom;
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<T, S>(
+    return BlocConsumer<CommonCubit<E, K>, BaseState<E, K>>(
       bloc: bloc,
       listener: (context, state) {
-        if (state is CustomState) {
+        if (state is CustomState<E, K>) {
           onCustom?.call(context, state.custom);
-        } else if (state is SnackbarState) {
+        } else if (state is SnackbarState<E, K>) {
           SnackBarHelper.showMessage(
             context,
             text: state.text,
@@ -49,7 +49,7 @@ class BaseStateConsumer<T extends StateStreamable<S>,
           return onInitial?.call(context) ?? const UnrecoverableError();
         } else if (state is LoadingState) {
           return onLoading?.call(context) ?? const CircularProgressIndicator();
-        } else if (state is DataState) {
+        } else if (state is DataState<E, K>) {
           return onData(context, state.data);
         } else {
           return const UnrecoverableError();

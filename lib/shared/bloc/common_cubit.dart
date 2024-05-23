@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 
-class CommonCubit<T> extends Cubit<BaseState<T>> {
+class CommonCubit<T, S> extends Cubit<BaseState<T, S>> {
   CommonCubit(super.initialState);
 
-  void emitWithClear(BaseState<T> state) {
+  void emitWithClear(BaseState<T, S> state) {
     emit(const BaseState.clear());
     emit(state);
   }
@@ -22,7 +22,7 @@ class CommonCubit<T> extends Cubit<BaseState<T>> {
     emitWithClear(BaseState.data(data));
   }
 
-  void emitCustom(dynamic custom) {
+  void emitCustom(S custom) {
     emitWithClear(BaseState.custom(custom));
   }
 

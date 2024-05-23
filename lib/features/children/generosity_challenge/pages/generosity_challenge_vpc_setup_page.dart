@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
+import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 
