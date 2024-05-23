@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
+import 'package:givt_app/features/children/generosity_challenge/domain/exceptions/not_logged_in_exception.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_vpc_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
@@ -96,6 +97,8 @@ class GenerosityChallengeVpcSetupCubit
         await _vpcRepository.addMembers([parent, ...children]);
         _navigateToFamilyOverview();
       }
+    } on NotLoggedInException {
+      _navigateToLogin();
     } catch (e, s) {
       _showInitialScreenWithError();
       unawaited(

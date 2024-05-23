@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
+import 'package:go_router/go_router.dart';
 
 class GenerosityChallengeVpcSetupPage extends StatefulWidget {
   const GenerosityChallengeVpcSetupPage({super.key});
@@ -31,6 +33,7 @@ class _GenerosityChallengeVpcSetupPageState
         },
         onInitial: _vpc,
         cubit: _cubit,
+        onCustom: _onCustom,
       ),
     );
   }
@@ -39,5 +42,15 @@ class _GenerosityChallengeVpcSetupPageState
     return VPCPage(
       onReadyClicked: _cubit.onClickReadyForVPC,
     );
+  }
+
+  void _onCustom(
+      BuildContext context, GenerosityChallengeVpcSetupCustom custom) {
+    switch (custom) {
+      case NavigateToFamilyOverview():
+        context.pushNamed(Pages.overview.name);
+      case NavigateToLogin():
+        context.pushNamed(Pages.welcome.name);
+    }
   }
 }
