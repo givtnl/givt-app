@@ -5,6 +5,8 @@ mixin EditChildRepository {
   Future<bool> editChild(String childGUID, EditChild child);
 
   Future<bool> editChildAllowance(String childGUID, int allowance);
+
+  Future<bool> topUpChild(String childGUID, int amount);
 }
 
 class EditChildRepositoryImpl with EditChildRepository {
@@ -21,5 +23,10 @@ class EditChildRepositoryImpl with EditChildRepository {
   @override
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
     return apiService.editChildAllowance(childGUID, allowance);
+  }
+
+  @override
+  Future<bool> topUpChild(String childGUID, int amount) async {
+    return apiService.topUpChild(childGUID, amount);
   }
 }

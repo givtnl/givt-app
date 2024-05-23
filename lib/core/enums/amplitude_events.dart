@@ -9,6 +9,7 @@ enum AmplitudeEvents {
   memberCreatedSuccesfully('member_created_succesfully'),
   failedToCreateMember('failed_to_create_member'),
   failedToGetVpc('failed_to_get_vpc'),
+  failedTopUpNoFunds('failed_top_up_no_funds'),
   allowanceNotSuccessful('allowance_not_successful'),
   backClicked('back_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),
@@ -25,6 +26,7 @@ enum AmplitudeEvents {
     'child_details_edit_card_clicked',
   ),
   childTopUpCardClicked('child_top_up_card_clicked'),
+  childTopUpSubmitted('child_top_up_submitted'),
   childEditSaveClicked('child_edit_save_clicked'),
   childEditMonthlyAllowanceSaveClicked(
       'child_edit_monthly_allowance_save_clicked'),
