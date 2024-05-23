@@ -25,7 +25,7 @@ class TopUpFailureDialog extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                context.l10n.topUp,
+                context.l10n.topUpFundsFailureText,
                 textAlign: TextAlign.center,
               ),
             ],
