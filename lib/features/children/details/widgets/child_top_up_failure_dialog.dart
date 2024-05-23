@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_oval_green_button.dart';
 import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:go_router/go_router.dart';
@@ -17,14 +18,14 @@ class TopUpFailureDialog extends StatelessWidget {
           Column(
             children: [
               Text(
-                'Oops, something went wrong.',
+                context.l10n.somethingWentWrong,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'We are having trouble getting the\nfunds from your card.\nPlease try again.',
+              Text(
+                context.l10n.topUp,
                 textAlign: TextAlign.center,
               ),
             ],
