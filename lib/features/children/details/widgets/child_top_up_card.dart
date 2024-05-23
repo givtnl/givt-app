@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class ChildTopUpCard extends StatelessWidget {
@@ -35,11 +35,7 @@ class ChildTopUpCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const FaIcon(
-                FontAwesomeIcons.plus,
-                size: 40,
-                color: AppTheme.givtLightGreen,
-              ),
+              plusIcon(size: 40),
               const SizedBox(height: 10),
               Text(
                 context.l10n.topUp,
