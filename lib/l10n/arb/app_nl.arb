@@ -1559,5 +1559,6 @@
     "editGivingAllowanceDescription": "Which amount should be added to your child’s Wallet each month?",
     "editGivingAllowanceHint": "Choose an amount between $1 to $999.",
     "topUp": "Top Up",
-    "topUpCardInfo": "Add a one-time amount to your\nchild's Wallet"
+    "topUpCardInfo": "Add a one-time amount to your\nchild's Wallet",
+    "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?"
 }
