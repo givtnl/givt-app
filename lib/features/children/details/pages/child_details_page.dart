@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
+import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
@@ -144,13 +145,33 @@ class ChildDetailsPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        const Spacer(),
+                        Expanded(
+                          child: ChildTopUpCard(
+                            onPressed: () {
+                              AnalyticsHelper.logEvent(
+                                eventName:
+                                    AmplitudeEvents.childTopUpCardClicked,
+                                eventProperties: {
+                                  'child_name': state.profileDetails.firstName,
+                                },
+                              );
+                              _navigateToTopUpScreen(context);
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 40)
                       ],
                     )
                   : Container(),
         );
       },
     );
+  }
+
+  Future<void> _navigateToTopUpScreen(
+    BuildContext context,
+  ) async {
+    // TODO: Implement kids-843
   }
 
   Future<void> _navigateToEditAllowanceScreen(
