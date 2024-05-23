@@ -5,8 +5,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
-import 'package:givt_app/shared/widgets/custom_secondary_border_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 

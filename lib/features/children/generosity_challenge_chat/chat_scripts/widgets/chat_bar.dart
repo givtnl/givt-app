@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_input_field.dart';
-import 'package:givt_app/shared/widgets/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChatBar extends StatelessWidget {

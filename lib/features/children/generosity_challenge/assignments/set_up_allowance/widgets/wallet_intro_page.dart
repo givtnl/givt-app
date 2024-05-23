@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 
 class WalletIntroPage extends StatelessWidget {
   const WalletIntroPage({required this.onContinue, super.key});

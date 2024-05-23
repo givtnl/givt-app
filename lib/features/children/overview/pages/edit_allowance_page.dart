@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowancePage extends StatefulWidget {
