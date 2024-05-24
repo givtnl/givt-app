@@ -160,6 +160,7 @@ class ChildDetailsPage extends StatelessWidget {
                                       .profileDetails.givingAllowance.amount,
                                 },
                               );
+
                               _navigateToEditAllowanceScreen(
                                 context,
                                 state.profileDetails.givingAllowance.amount
