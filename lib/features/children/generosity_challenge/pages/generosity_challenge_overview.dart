@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
@@ -64,6 +65,44 @@ class _GenerosityChallengeOverviewState
     }
   }
 
+  Widget _deactivateButton() {
+    return IconButton(
+      onPressed: () async {
+        final challenge = context.read<GenerosityChallengeCubit>();
+        final result = await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Complete Generosity Challenge?'),
+              content: const Text(
+                  'Are you sure you want to complete the generosity challenge and go to the Givt app?'),
+              actions: [
+                TextButton(
+                  onPressed: () => context.pop(true),
+                  child: const Text('Yes'),
+                ),
+                TextButton(
+                  onPressed: () => context.pop(),
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+        if (true == result) {
+          await challenge.completeChallenge();
+          if (mounted) {
+            context.goNamed(Pages.home.name);
+          }
+        }
+      },
+      icon: const Icon(
+        FontAwesomeIcons.circleArrowLeft,
+        color: AppTheme.givtGreen40,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final challenge = context.watch<GenerosityChallengeCubit>();
@@ -72,12 +111,10 @@ class _GenerosityChallengeOverviewState
     final arePersonalDetailsAvailable = userData.isNotEmpty;
 
     return Scaffold(
-      appBar: const GenerosityAppBar(
+      appBar: GenerosityAppBar(
         title: 'Generosity Challenge',
-        leading: null,
-        actions: [
-          ChatIconButton(),
-        ],
+        leading: isDebug ? _deactivateButton() : null,
+        actions: const [ChatIconButton()],
       ),
       body: SafeArea(
         child: Stack(
