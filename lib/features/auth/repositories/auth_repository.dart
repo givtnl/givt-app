@@ -549,15 +549,6 @@ class AuthRepositoyImpl with AuthRepository {
           'password': password,
         },
       );
-    } on GivtServerFailure catch (e) {
-      // user is already registered, we can skip the rest
-      if (e.statusCode == 180) {
-        // TODO(Tamara): KIDS-999 | KIDS-998
-        // https://linear.app/givt/issue/KIDS-998/api-register-generosity-challenge-user-handle-already-existing-account
-        return GenerosityRegistrationResult.alreadyRegistered();
-      } else {
-        return GenerosityRegistrationResult.failure();
-      }
     } catch (e, s) {
       return GenerosityRegistrationResult.failure();
     }
@@ -577,6 +568,10 @@ class AuthRepositoyImpl with AuthRepository {
     } finally {
       _hasSessionStreamController.add(true);
     }
-    return GenerosityRegistrationResult.success();
+    if (response['errorMessage'] == 'USER_ALREADY_EXISTS') {
+      return GenerosityRegistrationResult.alreadyRegistered();
+    } else {
+      return GenerosityRegistrationResult.success();
+    }
   }
 }
