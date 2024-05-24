@@ -9,9 +9,10 @@ import 'package:givt_app/utils/utils.dart';
 class ChildDetailsItem extends StatelessWidget {
   const ChildDetailsItem({
     required this.profileDetails,
+    required this.balance,
     super.key,
   });
-
+  final double balance;
   final ProfileExt profileDetails;
 
   @override
@@ -45,7 +46,7 @@ class ChildDetailsItem extends StatelessWidget {
                 ),
           ),
           Text(
-            '${currency.currencySymbol}${profileDetails.profile.wallet.balance.toStringAsFixed(0)}${context.l10n.childInWalletPostfix}',
+            '${currency.currencySymbol}${balance.toStringAsFixed(0)}${context.l10n.childInWalletPostfix}',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppTheme.inputFieldBorderSelected,
