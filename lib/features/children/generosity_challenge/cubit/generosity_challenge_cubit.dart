@@ -19,7 +19,9 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     this._generosityChallengeRepository,
     this._chatScriptsRepository,
     this._chatHistoryRepository,
-  ) : super(const GenerosityChallengeState.initial());
+  ) : super(const GenerosityChallengeState.initial()) {
+    GenerosityChallengeHelper.updateUrlsAndCountry();
+  }
 
   final GenerosityChallengeRepository _generosityChallengeRepository;
   final ChatScriptsRepository _chatScriptsRepository;
@@ -44,6 +46,13 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   Future<void> clearCache() async {
     await _generosityChallengeRepository.clearCache();
     await loadFromCache();
+  }
+
+  Future<void> completeChallenge() async {
+    await _generosityChallengeRepository.clearCache();
+    await _generosityChallengeRepository.clearUserData();
+    await _chatHistoryRepository.saveChatHistory(const ChatScriptItem.empty());
+    await GenerosityChallengeHelper.complete();
   }
 
   Future<void> undoProgress(int dayIndex) async {
