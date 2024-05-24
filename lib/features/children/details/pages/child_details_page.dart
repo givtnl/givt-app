@@ -12,6 +12,8 @@ import 'package:givt_app/features/children/overview/pages/add_top_up_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
+import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
+import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -67,7 +69,17 @@ class ChildDetailsPage extends StatelessWidget {
             builder: (_) => const TopUpFailureDialog(),
           );
         } else if (state is ChildTopUpSuccessState) {
-          // TODO Kids-844
+          Navigator.push(
+            context,
+            TopUpSuccessPage(
+              onClickButton: () => context
+                ..read<FamilyOverviewCubit>().fetchFamilyProfiles()
+                ..pop(),
+              uiModel: TopUpSuccessUIModel(
+                amountWithCurrencySymbol: '\$${state.amount}',
+              ),
+            ).toRoute(context),
+          );
         }
       },
       builder: (context, state) {
@@ -131,6 +143,8 @@ class ChildDetailsPage extends StatelessWidget {
                             width: double.maxFinite,
                             color: AppTheme.givtLightBackgroundGreen,
                             child: ChildDetailsItem(
+                              //ugly fix, for some reason ChildDetailsCubit doesnt update
+                              balance: getBalance(context),
                               profileDetails: state.profileDetails,
                             ),
                           ),
@@ -148,6 +162,7 @@ class ChildDetailsPage extends StatelessWidget {
                                       .profileDetails.givingAllowance.amount,
                                 },
                               );
+
                               _navigateToEditAllowanceScreen(
                                 context,
                                 state.profileDetails.givingAllowance.amount
@@ -177,6 +192,28 @@ class ChildDetailsPage extends StatelessWidget {
         );
       },
     );
+  }
+
+  double getBalance(BuildContext context) {
+    var family = context.watch<FamilyOverviewCubit>().state;
+    if (family is FamilyOverviewUpdatedState) {
+      return family.profiles
+          .firstWhere((element) =>
+              element.id ==
+              (context.watch<ChildDetailsCubit>().state
+                      as ChildDetailsFetchedState)
+                  .profileDetails
+                  .profile
+                  .id)
+          .wallet
+          .balance;
+    }
+    return (context.watch<ChildDetailsCubit>().state
+            as ChildDetailsFetchedState)
+        .profileDetails
+        .profile
+        .wallet
+        .balance;
   }
 
   Future<void> _navigateToTopUpScreen(
