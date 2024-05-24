@@ -247,7 +247,11 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     List<ChatScriptItem>? chatScripts,
     ChatActorsSettings? chatActorsSettings,
   }) {
-    final activeDayIndex = _findActiveDayIndex(days);
+    var activeDayIndex = _findActiveDayIndex(days);
+    //temporary hack to disable day 8
+    if (activeDayIndex >= 7) {
+      activeDayIndex = 7;
+    }
     final isChallengeCompleted = _isChallengeCompleted(days);
 
     final availableChatDayIndex =
