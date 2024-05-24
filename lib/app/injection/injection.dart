@@ -250,6 +250,8 @@ void initRepositories() {
       () => GenerosityChallengeVpcRepository(
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<GenerosityChallengeVpcSetupCubit>(

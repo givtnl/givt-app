@@ -6,15 +6,23 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/domain/exceptions/not_logged_in_exception.dart';
+import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
 
 class GenerosityChallengeVpcRepository {
   const GenerosityChallengeVpcRepository(
     this._addMemberRepository,
     this._authRepository,
+    this._chatHistoryRepository,
+    this._generosityChallengeRepository,
   );
 
   final AddMemberRepository _addMemberRepository;
   final AuthRepository _authRepository;
+  final ChatHistoryRepository _chatHistoryRepository;
+  final GenerosityChallengeRepository _generosityChallengeRepository;
 
   Future<void> addMembers(List<Member> list) async {
     try {
@@ -43,5 +51,12 @@ class GenerosityChallengeVpcRepository {
     } else {
       throw const NotLoggedInException();
     }
+  }
+
+  Future<void> completeChallenge() async {
+    await _generosityChallengeRepository.clearCache();
+    await _generosityChallengeRepository.clearUserData();
+    await _chatHistoryRepository.saveChatHistory(const ChatScriptItem.empty());
+    await GenerosityChallengeHelper.complete();
   }
 }

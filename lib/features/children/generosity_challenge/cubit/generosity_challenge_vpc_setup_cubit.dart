@@ -82,14 +82,13 @@ class GenerosityChallengeVpcSetupCubit
     );
   }
 
-  //TODO after KIDS-958 is done, deactivate challenge
-
   void _navigateToLogin() {
+    _vpcRepository.completeChallenge();
     emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToLogin());
   }
 
-
   void _navigateToFamilyOverview() {
+    _vpcRepository.completeChallenge();
     emitCustom(
       const GenerosityChallengeVpcSetupCustom.navigateToFamilyOverview(),
     );
