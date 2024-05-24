@@ -90,8 +90,8 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
       if (isSuccess) {
         _emitData();
         emit(ChildTopUpSuccessState(amount: amount));
-        //retrieve updated profile after topping up
-        unawaited(fetchChildDetails());
+        //has to be awaited in order for the ui to update properly
+        await fetchChildDetails();
       } else {
         emit(
           const ChildDetailsErrorState(
