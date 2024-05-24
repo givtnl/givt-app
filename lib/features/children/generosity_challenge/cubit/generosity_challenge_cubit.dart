@@ -249,8 +249,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   }) {
     var activeDayIndex = _findActiveDayIndex(days);
     //temporary hack to disable day 8
-    if (activeDayIndex >= 7) {
-      activeDayIndex = 7;
+    if (activeDayIndex >= 6) {
+      activeDayIndex = 6;
     }
     final isChallengeCompleted = false;
     //temporary hack to disable day 8
