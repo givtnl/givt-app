@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -47,8 +49,10 @@ class _GenerosityChallengeVpcSetupPageState
       BuildContext context, GenerosityChallengeVpcSetupCustom custom) {
     switch (custom) {
       case NavigateToFamilyOverview():
+        context.read<GenerosityChallengeCubit>().completeChallenge();
         context.goNamed(Pages.childrenOverview.name);
       case NavigateToLogin():
+        context.read<GenerosityChallengeCubit>().completeChallenge();
         context.goNamed(Pages.welcome.name);
     }
   }

@@ -74,12 +74,7 @@ class GenerosityDailyCard extends StatelessWidget {
                     if (description.isNotEmpty)
                       Text(
                         description,
-                        // if we are filling in description
-                        // with user selection it is left aligned
-                        // with the default description it is justified
-                        textAlign: dynamicDescription.isNotEmpty
-                            ? TextAlign.left
-                            : TextAlign.justify,
+                        textAlign: TextAlign.left,
                         style: const TextStyle(
                           color: AppTheme.givtGreen40,
                           fontSize: 18,
