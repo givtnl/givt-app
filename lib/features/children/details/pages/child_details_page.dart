@@ -171,18 +171,22 @@ class ChildDetailsPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        Expanded(
-                          child: ChildTopUpCard(
-                            onPressed: () {
-                              AnalyticsHelper.logEvent(
-                                eventName:
-                                    AmplitudeEvents.childTopUpCardClicked,
-                                eventProperties: {
-                                  'child_name': state.profileDetails.firstName,
-                                },
-                              );
-                              _navigateToTopUpScreen(context);
-                            },
+                        Visibility(
+                          visible: false,
+                          child: Expanded(
+                            child: ChildTopUpCard(
+                              onPressed: () {
+                                AnalyticsHelper.logEvent(
+                                  eventName:
+                                      AmplitudeEvents.childTopUpCardClicked,
+                                  eventProperties: {
+                                    'child_name':
+                                        state.profileDetails.firstName,
+                                  },
+                                );
+                                _navigateToTopUpScreen(context);
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(height: 40)
