@@ -73,8 +73,8 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         );
       }
     } catch (e, s) {
-      _emitData();
       await _handleEditAllowanceApiError(e, s);
+      _emitData();
     }
   }
 
@@ -100,8 +100,8 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         );
       }
     } catch (e, s) {
-      _emitData();
       await _handleTopUpApiError(e, s);
+      _emitData();
     }
   }
 
