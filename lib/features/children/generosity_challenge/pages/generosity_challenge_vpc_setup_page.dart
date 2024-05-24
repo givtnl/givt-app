@@ -49,7 +49,9 @@ class _GenerosityChallengeVpcSetupPageState
       BuildContext context, GenerosityChallengeVpcSetupCustom custom) {
     switch (custom) {
       case NavigateToFamilyOverview():
-        context.goNamed(Pages.childrenOverview.name);
+        context
+          ..pushReplacementNamed(Pages.home.name)
+          ..pushNamed(Pages.childrenOverview.name);
       case NavigateToLogin():
         context.goNamed(Pages.welcome.name);
     }
