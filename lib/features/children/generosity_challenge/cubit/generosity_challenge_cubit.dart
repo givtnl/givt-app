@@ -19,7 +19,9 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     this._generosityChallengeRepository,
     this._chatScriptsRepository,
     this._chatHistoryRepository,
-  ) : super(const GenerosityChallengeState.initial());
+  ) : super(const GenerosityChallengeState.initial()) {
+    GenerosityChallengeHelper.updateUrlsAndCountry();
+  }
 
   final GenerosityChallengeRepository _generosityChallengeRepository;
   final ChatScriptsRepository _chatScriptsRepository;
@@ -282,9 +284,5 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       }
     }
     return nrOfChildren;
-  }
-
-  void onClickSkipDay8Challenge() {
-
   }
 }

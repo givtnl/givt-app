@@ -239,20 +239,15 @@ void initRepositories() {
         getIt(),
         getIt(),
         getIt(),
-        getIt(),
       ),
     )
     ..registerLazySingleton<GenerosityStripeRegistrationCubit>(
       () => GenerosityStripeRegistrationCubit(
         getIt(),
-        getIt(),
-        getIt(),
       ),
     )
     ..registerLazySingleton<GenerosityChallengeVpcRepository>(
       () => GenerosityChallengeVpcRepository(
-        getIt(),
-        getIt(),
         getIt(),
         getIt(),
       ),
