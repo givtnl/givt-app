@@ -19,7 +19,9 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     this._generosityChallengeRepository,
     this._chatScriptsRepository,
     this._chatHistoryRepository,
-  ) : super(const GenerosityChallengeState.initial());
+  ) : super(const GenerosityChallengeState.initial()) {
+    GenerosityChallengeHelper.updateUrlsAndCountry();
+  }
 
   final GenerosityChallengeRepository _generosityChallengeRepository;
   final ChatScriptsRepository _chatScriptsRepository;
@@ -44,6 +46,13 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   Future<void> clearCache() async {
     await _generosityChallengeRepository.clearCache();
     await loadFromCache();
+  }
+
+  Future<void> completeChallenge() async {
+    await _generosityChallengeRepository.clearCache();
+    await _generosityChallengeRepository.clearUserData();
+    await _chatHistoryRepository.saveChatHistory(const ChatScriptItem.empty());
+    await GenerosityChallengeHelper.complete();
   }
 
   Future<void> undoProgress(int dayIndex) async {
@@ -270,5 +279,17 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
 
   void dismissMayorPopup() {
     emit(state.copyWith(showMayor: false));
+  }
+
+  int getNrOfChildren() {
+    final userdata = _generosityChallengeRepository.loadUserData();
+    var nrOfChildren = 0;
+    for (var i = 0; i < 4; i++) {
+      final child = userdata['child${i}FirstName'];
+      if (child != null) {
+        nrOfChildren++;
+      }
+    }
+    return nrOfChildren;
   }
 }

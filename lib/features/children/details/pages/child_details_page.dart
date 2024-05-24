@@ -5,13 +5,17 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
+import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
+import 'package:givt_app/features/children/details/widgets/child_top_up_failure_dialog.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/pages/add_top_up_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
+import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
+import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,7 +39,9 @@ class ChildDetailsPage extends StatelessWidget {
     return BlocConsumer<ChildDetailsCubit, ChildDetailsState>(
       listenWhen: (previous, current) {
         return current is ChildDetailsErrorState ||
-            current is ChildEditGivingAllowanceSuccessState;
+            current is ChildEditGivingAllowanceSuccessState ||
+            current is ChildTopUpFundsErrorState ||
+            current is ChildTopUpSuccessState;
       },
       buildWhen: (previous, current) {
         return current is ChildDetailsFetchingState ||
@@ -54,6 +60,23 @@ class ChildDetailsPage extends StatelessWidget {
             EditAllowanceSuccessPage(
               uiModel: EditAllowanceSuccessUIModel(
                 amountWithCurrencySymbol: '\$${state.allowance}',
+              ),
+            ).toRoute(context),
+          );
+        } else if (state is ChildTopUpFundsErrorState) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => const TopUpFailureDialog(),
+          );
+        } else if (state is ChildTopUpSuccessState) {
+          Navigator.push(
+            context,
+            TopUpSuccessPage(
+              onClickButton: () => context
+                ..read<FamilyOverviewCubit>().fetchFamilyProfiles()
+                ..pop(),
+              uiModel: TopUpSuccessUIModel(
+                amountWithCurrencySymbol: '\$${state.amount}',
               ),
             ).toRoute(context),
           );
@@ -120,6 +143,8 @@ class ChildDetailsPage extends StatelessWidget {
                             width: double.maxFinite,
                             color: AppTheme.givtLightBackgroundGreen,
                             child: ChildDetailsItem(
+                              //ugly fix, for some reason ChildDetailsCubit doesnt update
+                              balance: getBalance(context),
                               profileDetails: state.profileDetails,
                             ),
                           ),
@@ -137,6 +162,7 @@ class ChildDetailsPage extends StatelessWidget {
                                       .profileDetails.givingAllowance.amount,
                                 },
                               );
+
                               _navigateToEditAllowanceScreen(
                                 context,
                                 state.profileDetails.givingAllowance.amount
@@ -145,13 +171,67 @@ class ChildDetailsPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        const Spacer(),
+                        Visibility(
+                          visible: false,
+                          child: Expanded(
+                            child: ChildTopUpCard(
+                              onPressed: () {
+                                AnalyticsHelper.logEvent(
+                                  eventName:
+                                      AmplitudeEvents.childTopUpCardClicked,
+                                  eventProperties: {
+                                    'child_name':
+                                        state.profileDetails.firstName,
+                                  },
+                                );
+                                _navigateToTopUpScreen(context);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 40)
                       ],
                     )
                   : Container(),
         );
       },
     );
+  }
+
+  double getBalance(BuildContext context) {
+    var family = context.watch<FamilyOverviewCubit>().state;
+    if (family is FamilyOverviewUpdatedState) {
+      return family.profiles
+          .firstWhere((element) =>
+              element.id ==
+              (context.watch<ChildDetailsCubit>().state
+                      as ChildDetailsFetchedState)
+                  .profileDetails
+                  .profile
+                  .id)
+          .wallet
+          .balance;
+    }
+    return (context.watch<ChildDetailsCubit>().state
+            as ChildDetailsFetchedState)
+        .profileDetails
+        .profile
+        .wallet
+        .balance;
+  }
+
+  Future<void> _navigateToTopUpScreen(
+    BuildContext context,
+  ) async {
+    final dynamic result = await Navigator.push(
+      context,
+      const AddTopUpPage(
+        currency: r'$',
+      ).toRoute(context),
+    );
+    if (result != null && result is int && context.mounted) {
+      await context.read<ChildDetailsCubit>().topUp(result);
+    }
   }
 
   Future<void> _navigateToEditAllowanceScreen(

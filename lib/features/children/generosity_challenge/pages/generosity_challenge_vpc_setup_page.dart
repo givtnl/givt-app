@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
+import 'package:go_router/go_router.dart';
+
+class GenerosityChallengeVpcSetupPage extends StatefulWidget {
+  const GenerosityChallengeVpcSetupPage({super.key});
+
+  @override
+  State<GenerosityChallengeVpcSetupPage> createState() =>
+      _GenerosityChallengeVpcSetupPageState();
+}
+
+class _GenerosityChallengeVpcSetupPageState
+    extends State<GenerosityChallengeVpcSetupPage> {
+  final _cubit = getIt<GenerosityChallengeVpcSetupCubit>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: BaseStateConsumer(
+        onLoading: (BuildContext context) {
+          return const SettingUpFamilySpaceLoadingWidget();
+        },
+        onData: (BuildContext context, uiModel) {
+          return _vpc(context);
+        },
+        onInitial: _vpc,
+        cubit: _cubit,
+        onCustom: _onCustom,
+      ),
+    );
+  }
+
+  VPCPage _vpc(BuildContext context) {
+    return VPCPage(
+      onReadyClicked: _cubit.onClickReadyForVPC,
+    );
+  }
+
+  void _onCustom(
+      BuildContext context, GenerosityChallengeVpcSetupCustom custom) {
+    switch (custom) {
+      case NavigateToFamilyOverview():
+        context
+          ..pushReplacementNamed(Pages.home.name)
+          ..pushNamed(Pages.childrenOverview.name);
+      case NavigateToLogin():
+        context.goNamed(Pages.welcome.name);
+    }
+  }
+}

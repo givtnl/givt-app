@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as dev;
 import 'dart:io';
@@ -21,6 +22,8 @@ mixin ILoggingInfo {
   Future<void> warning(String message);
 
   Future<void> error(String message);
+
+  void logExceptionForDebug(Object e, {StackTrace? stacktrace});
 }
 
 class LoggingInfo implements ILoggingInfo {
@@ -167,4 +170,9 @@ class LoggingInfo implements ILoggingInfo {
   }
 
   static const _androidDeviceUUIDKey = 'androidDeviceUUID';
+
+  @override
+  void logExceptionForDebug(Object e, {StackTrace? stacktrace}) {
+    unawaited(debug(e.toString(), methodName: stacktrace.toString()));
+  }
 }

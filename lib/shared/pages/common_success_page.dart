@@ -1,9 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:lottie/lottie.dart';
 
 class CommonSuccessPage extends StatelessWidget {
   const CommonSuccessPage({
@@ -56,12 +53,9 @@ class CommonSuccessPage extends StatelessWidget {
                     ),
                 ],
               ),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  registeredCheckBackground(),
-                  registeredCheck(),
-                ],
+              LottieBuilder.asset(
+                'assets/lotties/check.json',
+                repeat: false,
               ),
               CustomGreenElevatedButton(
                 title: buttonText,

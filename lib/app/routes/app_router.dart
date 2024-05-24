@@ -30,6 +30,7 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_organisations_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/generosity_allowance_flow_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_introduction.dart';
@@ -256,6 +257,14 @@ class AppRouter {
                 ),
               );
             },
+          ),
+          GoRoute(
+            path: Pages.allowanceFlow.path,
+            name: Pages.allowanceFlow.name,
+            builder: (context, state) => BlocProvider.value(
+              value: state.extra! as GenerosityChallengeCubit,
+              child: const GenerosityAllowanceFlowPage(),
+            ),
           ),
         ],
       ),
@@ -937,12 +946,19 @@ class AppRouter {
 
     params['afterGivingRedirection'] = afterGivingRedirection;
 
+    if (navigatingPage == Pages.generosityChallenge.path &&
+        GenerosityChallengeHelper.isCompleted) {
+      navigatingPage = '';
+      params.remove('page');
+    }
+
     final query = Uri(
       queryParameters: params,
     ).query;
 
     if (GenerosityChallengeHelper.isActivated ||
-        navigatingPage == Pages.generosityChallenge.path) {
+        (navigatingPage == Pages.generosityChallenge.path &&
+            !GenerosityChallengeHelper.isCompleted)) {
       return Pages.generosityChallenge.path;
     }
 

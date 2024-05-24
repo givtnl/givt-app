@@ -50,12 +50,21 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
     super.dispose();
   }
 
+  Future<void> _onCompleteChallenge() async {
+    await context.read<GenerosityChallengeCubit>().completeChallenge();
+    if (mounted) {
+      context.goNamed(Pages.childrenOverview.name);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final challenge = context.read<GenerosityChallengeCubit>();
     return BlocConsumer<GenerosityChallengeCubit, GenerosityChallengeState>(
       listener: (context, state) {
-        if (state.showMayor &&
+        if (state.status == GenerosityChallengeStatus.completed) {
+          _onCompleteChallenge();
+        } else if (state.showMayor &&
             state.status == GenerosityChallengeStatus.overview) {
           Future.delayed(
             const Duration(milliseconds: 400),
