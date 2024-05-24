@@ -252,7 +252,9 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     if (activeDayIndex >= 7) {
       activeDayIndex = 7;
     }
-    final isChallengeCompleted = _isChallengeCompleted(days);
+    final isChallengeCompleted = false;
+    //temporary hack to disable day 8
+    //_isChallengeCompleted(days);
 
     final availableChatDayIndex =
         _findAvailableChatDayIndex(days, activeDayIndex);
