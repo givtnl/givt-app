@@ -1,4 +1,4 @@
-sealed class BaseState<T> {
+sealed class BaseState<T, S> {
   const BaseState();
 
   const factory BaseState.initial() = InitialState;
@@ -7,7 +7,7 @@ sealed class BaseState<T> {
 
   const factory BaseState.data(T data) = DataState;
 
-  const factory BaseState.custom(dynamic custom) = CustomState;
+  const factory BaseState.custom(S custom) = CustomState;
 
   const factory BaseState.showSnackbarMessage({
     required String text,
@@ -21,31 +21,31 @@ sealed class BaseState<T> {
 // so if you want to show the same pop-up twice
 // (ie. users keeps pressing send when a required field isn't entered)
 // you need to emit the ClearState first before emitting the same state again
-class ClearState<T> extends BaseState<T> {
+class ClearState<T, S> extends BaseState<T, S> {
   const ClearState();
 }
 
-class InitialState<T> extends BaseState<T> {
+class InitialState<T, S> extends BaseState<T, S> {
   const InitialState();
 }
 
-class LoadingState<T> extends BaseState<T> {
+class LoadingState<T, S> extends BaseState<T, S> {
   const LoadingState();
 }
 
-class DataState<T> extends BaseState<T> {
+class DataState<T, S> extends BaseState<T, S> {
   const DataState(this.data);
 
   final T data;
 }
 
-class CustomState<T> extends BaseState<T> {
+class CustomState<T, S> extends BaseState<T, S> {
   const CustomState(this.custom);
 
-  final dynamic custom;
+  final S custom;
 }
 
-class SnackbarState<T> extends BaseState<T> {
+class SnackbarState<T, S> extends BaseState<T, S> {
   const SnackbarState({required this.text, this.isError = false});
 
   final String text;

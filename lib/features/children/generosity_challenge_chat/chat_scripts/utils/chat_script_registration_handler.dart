@@ -18,17 +18,14 @@ class ChatScriptRegistrationHandler {
     this._authRepository,
     this._sharedPreferences,
     this._generosityChallengeRepository,
-    this._apiService,
   );
 
   final AuthRepository _authRepository;
   final SharedPreferences _sharedPreferences;
   final GenerosityChallengeRepository _generosityChallengeRepository;
-  final APIService _apiService;
 
   Future<bool> handleRegistration() async {
     try {
-      _updateUrlsAndCountry();
       return await _registerUser();
     } catch (e, s) {
       await LoggingInfo.instance.error(
@@ -56,20 +53,5 @@ class ChatScriptRegistrationHandler {
       isAlreadyRegistered: result.isAlreadyRegistered,
     );
     return result.success;
-  }
-
-  void _updateUrlsAndCountry() {
-    const baseUrl = String.fromEnvironment('API_URL_US');
-    const baseUrlAWS = String.fromEnvironment('API_URL_AWS_US');
-
-    log('Using API URL: $baseUrl');
-    _apiService.updateApiUrl(baseUrl, baseUrlAWS);
-
-    unawaited(
-      _sharedPreferences.setString(
-        Util.countryIso,
-        Country.us.countryCode,
-      ),
-    );
   }
 }

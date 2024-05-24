@@ -10,7 +10,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class VPCPage extends StatelessWidget {
-  const VPCPage({super.key});
+  const VPCPage({super.key, this.onReadyClicked});
+
+  final void Function()? onReadyClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +100,11 @@ class VPCPage extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(left: 15, right: 15, bottom: 12),
                     child: ElevatedButton(
-                      onPressed: () {
-                        context.pop();
-                        context.read<AddMemberCubit>().createMember();
-                      },
+                      onPressed: onReadyClicked ??
+                          () {
+                            context.pop();
+                            context.read<AddMemberCubit>().createMember();
+                          },
                       child: Text(
                         context.l10n.ready,
                         style:

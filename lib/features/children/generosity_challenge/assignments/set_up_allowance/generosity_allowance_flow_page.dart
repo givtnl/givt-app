@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/widgets/wallet_intro_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_vpc_setup_page.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
@@ -47,11 +48,9 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
                 uiModel: EditAllowanceSuccessUIModel(
                   amountWithCurrencySymbol: '\$$result',
                   onClickButton: () {
-                    // TODO integrate with add member & navigate to VPC KIDS-957
-                    // for now it navigates back to the assignment screen
-                    context
-                      ..pop()
-                      ..pop();
+                    Navigator.of(context).push(
+                        const GenerosityChallengeVpcSetupPage()
+                            .toRoute(context));
                   },
                 ),
               ).toRoute(context),
