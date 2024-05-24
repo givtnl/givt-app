@@ -72,11 +72,11 @@ class ChildDetailsPage extends StatelessWidget {
           Navigator.push(
             context,
             TopUpSuccessPage(
+              onClickButton: () => context
+                ..read<FamilyOverviewCubit>().fetchFamilyProfiles()
+                ..pop(),
               uiModel: TopUpSuccessUIModel(
                 amountWithCurrencySymbol: '\$${state.amount}',
-                onClickButton: () => context
-                  ..read<FamilyOverviewCubit>().fetchFamilyProfiles()
-                  ..pop(),
               ),
             ).toRoute(context),
           );
