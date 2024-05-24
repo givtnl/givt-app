@@ -48,6 +48,13 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     await loadFromCache();
   }
 
+  Future<void> completeChallenge() async {
+    await _generosityChallengeRepository.clearCache();
+    await _generosityChallengeRepository.clearUserData();
+    await _chatHistoryRepository.saveChatHistory(const ChatScriptItem.empty());
+    await GenerosityChallengeHelper.complete();
+  }
+
   Future<void> undoProgress(int dayIndex) async {
     if (dayIndex < 0 ||
         dayIndex >= GenerosityChallengeHelper.generosityChallengeDays) {

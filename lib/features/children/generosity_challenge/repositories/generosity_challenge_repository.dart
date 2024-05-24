@@ -16,6 +16,8 @@ mixin GenerosityChallengeRepository {
 
   Map<String, dynamic> loadUserData();
 
+  Future<void> clearUserData();
+
   Future<String> loadFromKey(String key);
 
   Future<bool> isAlreadyRegistered();
@@ -124,6 +126,11 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
       _generosityChallengeUserDataKey,
       jsonEncode(currentData),
     );
+  }
+
+  @override
+  Future<void> clearUserData() async {
+    await sharedPreferences.remove(_generosityChallengeUserDataKey);
   }
 
   @override
