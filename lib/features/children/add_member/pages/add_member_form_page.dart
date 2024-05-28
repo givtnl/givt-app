@@ -101,6 +101,10 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
+        LoggingInfo.instance.info(
+          'State: ${state.status}',
+          methodName: 'listener',
+        );
         if (state.status == AddMemberStateStatus.error) {
           SnackBarHelper.showMessage(
             context,
