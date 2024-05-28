@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/utils/member_utils.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
@@ -78,8 +79,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
 
             final name = _nameChildController.text.trim();
             final age = int.parse(_ageController.text);
-            final birthYear = DateTime.now().year - age;
-            final dateOfBirth = DateTime(birthYear);
+            final dateOfBirth = getDateOfBirthFromAge(age);
 
             final profile = Member(
               firstName: name,
