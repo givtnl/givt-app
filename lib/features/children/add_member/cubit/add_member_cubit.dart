@@ -30,6 +30,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       emit(state.copyWith(nrOfForms: state.nrOfForms + 1));
 
   void validateForms() {
+    LoggingInfo.instance.info(
+      'Validate forms',
+      methodName: 'validateForms',
+    );
     emit(
       state.copyWith(
         members: state.members,
@@ -40,6 +44,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   void resetFormStatus() {
+    LoggingInfo.instance.info(
+      'Reset form status',
+      methodName: 'resetFormStatus',
+    );
     emit(
       state.copyWith(
         members: state.members,
@@ -50,6 +58,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   void allFormsFilled() {
+    LoggingInfo.instance.info(
+      'All forms filled (hasChildren: ${state.hasChildren})',
+      methodName: 'allFormsFilled',
+    );
     if (state.hasChildren) {
       emit(
         state.copyWith(
@@ -70,6 +82,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   void dismissedVPC() {
+    LoggingInfo.instance.info(
+      'Dismissed VPC',
+      methodName: 'dismissedVPC',
+    );
     emit(
       state.copyWith(
         members: state.members,
@@ -82,6 +98,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     required Member member,
     required String invisibleSecondKey,
   }) {
+    LoggingInfo.instance.info(
+      'Remember profile: ${member.firstName}',
+      methodName: 'rememberProfile',
+    );
     final invisibleSecondMemberIndex =
         state.members.indexWhere((p) => p.key == invisibleSecondKey);
     final existingChildIndex =
@@ -131,6 +151,12 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   Future<void> createMember() async {
+    unawaited(
+      LoggingInfo.instance.info(
+        'Create member',
+        methodName: 'createMember',
+      ),
+    );
     final members = state.members;
     final memberNames = members.map((member) => member.firstName).toList();
 
