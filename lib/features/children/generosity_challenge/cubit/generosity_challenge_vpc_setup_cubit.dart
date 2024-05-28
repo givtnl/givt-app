@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/utils/member_utils.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
 import 'package:givt_app/features/children/generosity_challenge/domain/exceptions/not_logged_in_exception.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
@@ -47,6 +48,7 @@ class GenerosityChallengeVpcSetupCubit
             lastName: lastname,
             allowance: int.tryParse(allowance ?? ''),
             age: int.tryParse(age),
+            dateOfBirth: getDateOfBirthFromAge(int.tryParse(age) ?? 0),
             type: ProfileType.Child,
           ),
         );
