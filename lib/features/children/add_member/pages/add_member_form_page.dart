@@ -102,7 +102,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
         LoggingInfo.instance.info(
-          'State: ${state.status}',
+          'State: ${state.status}, formStatus: ${state.formStatus}',
           methodName: 'listener',
         );
         if (state.status == AddMemberStateStatus.error) {
