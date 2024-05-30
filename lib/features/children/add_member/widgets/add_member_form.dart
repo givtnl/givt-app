@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
@@ -72,6 +73,11 @@ class _AddMemberFormState extends State<AddMemberForm> {
         if (state.formStatus == AddMemberFormStatus.validate) {
           final cubit = context.read<AddMemberCubit>();
           if (isChildSelected) {
+            final validation = formKeyChild.currentState!.validate();
+            LoggingInfo.instance.info(
+              'Form is valid: $validation',
+              methodName: 'listenerToValidation',
+            );
             if (!formKeyChild.currentState!.validate()) {
               cubit.resetFormStatus();
               return;
