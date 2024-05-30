@@ -16,7 +16,9 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
   const CreateMemberPage({required this.familyAlreadyExists, super.key});
+
   final bool familyAlreadyExists;
+
   @override
   State<CreateMemberPage> createState() => _CreateMemberPageState();
 }
@@ -150,6 +152,12 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           );
           context.read<AddMemberCubit>().allFormsFilled();
           return;
+        }
+        if (state.formStatus == AddMemberFormStatus.initial) {
+          LoggingInfo.instance.info(
+            'We are getting to Tamaras log point. nrOfForms: ${state.nrOfForms}, membersLength: ${state.members.length}',
+            methodName: 'addmemberformpage, listener',
+          );
         }
       },
       builder: (context, state) {

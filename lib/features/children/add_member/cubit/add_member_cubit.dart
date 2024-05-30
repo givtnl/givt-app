@@ -127,8 +127,8 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     } else {
       if (invisibleSecondMemberIndex != -1) {
         // Invisible second member exists, remove it
-        final updatedChildren = List<Member>.from(state.members)
-          ..removeAt(invisibleSecondMemberIndex);
+        final List<Member> updatedChildren = List.from(state.members);
+        updatedChildren.removeAt(invisibleSecondMemberIndex);
 
         emit(
           state.copyWith(
