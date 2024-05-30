@@ -102,12 +102,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       'Remember profile: ${member.firstName}',
       methodName: 'rememberProfile',
     );
-    final invisibleSecondMemberIndex = state.members.indexWhere(
-      (p) => p.key == invisibleSecondKey && p.isAdult != member.isAdult,
-    );
-    final existingChildIndex = state.members.indexWhere(
-      (p) => p.key == member.key && p.isAdult == member.isAdult,
-    );
+    final invisibleSecondMemberIndex =
+        state.members.indexWhere((p) => p.key == invisibleSecondKey);
+    final existingChildIndex =
+        state.members.indexWhere((p) => p.key == member.key);
 
     if (existingChildIndex != -1) {
       // Child with the same key exists, replace it
