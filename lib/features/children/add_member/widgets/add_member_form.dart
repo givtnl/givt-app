@@ -43,6 +43,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
   int _allowance = 15;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
+  final uniqueKeyChild = UniqueKey();
+  final uniqueKeyParent = UniqueKey();
   late final FocusNode _childNameFocusNode;
   late final FocusNode _parentNameFocusNode;
 
@@ -75,7 +77,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
           if (isChildSelected) {
             final validation = formKeyChild.currentState!.validate();
             LoggingInfo.instance.info(
-              'Form is valid: $validation',
+              'Child form is valid: $validation',
               methodName: 'listenerToValidation',
             );
             if (!formKeyChild.currentState!.validate()) {
@@ -92,13 +94,13 @@ class _AddMemberFormState extends State<AddMemberForm> {
               dateOfBirth: dateOfBirth,
               age: age,
               allowance: _allowance,
-              key: formKeyChild.toString(),
+              key: uniqueKeyChild.toString(),
               type: ProfileType.Child,
             );
 
             cubit.rememberProfile(
               member: profile,
-              invisibleSecondKey: formKeyParent.toString(),
+              invisibleSecondKey: uniqueKeyParent.toString(),
             );
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.addChildProfile,
@@ -109,6 +111,11 @@ class _AddMemberFormState extends State<AddMemberForm> {
               },
             );
           } else {
+            final validation = formKeyChild.currentState!.validate();
+            LoggingInfo.instance.info(
+              'Paren form is valid: $validation',
+              methodName: 'listenerToValidation',
+            );
             if (!formKeyParent.currentState!.validate()) {
               cubit.resetFormStatus();
               return;
@@ -119,14 +126,14 @@ class _AddMemberFormState extends State<AddMemberForm> {
 
             final profile = Member(
               firstName: name,
-              key: formKeyParent.toString(),
+              key: uniqueKeyParent.toString(),
               type: ProfileType.Parent,
               email: email,
             );
 
             cubit.rememberProfile(
               member: profile,
-              invisibleSecondKey: formKeyChild.toString(),
+              invisibleSecondKey: uniqueKeyChild.toString(),
             );
 
             AnalyticsHelper.logEvent(
