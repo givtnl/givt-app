@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
@@ -100,6 +101,10 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
   Widget build(BuildContext context) {
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {
+        LoggingInfo.instance.info(
+          'State: ${state.status}, formStatus: ${state.formStatus}',
+          methodName: 'listener',
+        );
         if (state.status == AddMemberStateStatus.error) {
           SnackBarHelper.showMessage(
             context,
@@ -109,6 +114,10 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           context.goNamed(Pages.childrenOverview.name);
         }
         if (state.status == AddMemberStateStatus.vpc) {
+          LoggingInfo.instance.info(
+            'Show VPC bottom sheet',
+            methodName: 'listener',
+          );
           showModalBottomSheet<void>(
             context: context,
             showDragHandle: true,
@@ -127,10 +136,18 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           });
         }
         if (state.status == AddMemberStateStatus.continueWithoutVPC) {
+          LoggingInfo.instance.info(
+            'Continue without VPC',
+            methodName: 'listener',
+          );
           context.read<AddMemberCubit>().createMember();
         }
         if (state.nrOfForms == state.members.length &&
             state.formStatus == AddMemberFormStatus.initial) {
+          LoggingInfo.instance.info(
+            'All forms filled',
+            methodName: 'listener',
+          );
           context.read<AddMemberCubit>().allFormsFilled();
           return;
         }
