@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -46,24 +46,23 @@ class ProfileSelectionScreen extends StatelessWidget {
               );
 
               if (flow.isQRCode) {
-                context.pushNamed(Pages.camera.name);
+                context.pushNamed(FamilyPages.camera.name);
                 return;
               }
               if (flow.isRecommendation) {
-                context.pushNamed(Pages.recommendationStart.name);
+                context.pushNamed(FamilyPages.recommendationStart.name);
                 return;
               }
               if (flow.flowType == FlowType.deepLinkCoin) {
-                context.pushNamed(Pages.chooseAmountSlider.name);
+                context.pushNamed(FamilyPages.chooseAmountSlider.name);
                 return;
               }
               if (flow.isCoin) {
-                context.pushNamed(Pages.scanNFC.name);
+                context.pushNamed(FamilyPages.scanNFC.name);
                 return;
               }
 
-              context.pushReplacementNamed(Pages.wallet.name);
-
+              context.pushReplacementNamed(FamilyPages.wallet.name);
             },
             child: ProfileItem(
               name: profiles[i].firstName,

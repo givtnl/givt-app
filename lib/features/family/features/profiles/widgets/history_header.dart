@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,7 +23,7 @@ class HistoryHeader extends StatelessWidget {
         ),
         TextButton(
           onPressed: () {
-            context.pushNamed(Pages.history.name);
+            context.pushNamed(FamilyPages.history.name);
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.seeDonationHistoryPressed,
             );

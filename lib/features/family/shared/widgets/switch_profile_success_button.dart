@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -11,7 +11,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class SwitchProfileSuccessButton extends StatelessWidget {
-  const SwitchProfileSuccessButton({super.key,});
+  const SwitchProfileSuccessButton({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class SwitchProfileSuccessButton extends StatelessWidget {
           flowsCubit.startInAppCoinFlow();
         }
 
-        context.goNamed(Pages.profileSelection.name);
+        context.goNamed(FamilyPages.profileSelection.name);
         await AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.profileSwitchPressed,
         );

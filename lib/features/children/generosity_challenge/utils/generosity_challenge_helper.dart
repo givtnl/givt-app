@@ -33,6 +33,7 @@ class GenerosityChallengeHelper {
     await sp.setBool(_generosityChallengeActivatedKey, false);
     await sp.setBool(_generosityChallengeCompletedKey, true);
   }
+
   static Future<void> deactivate() async => getIt<SharedPreferences>()
       .setBool(_generosityChallengeActivatedKey, false);
 

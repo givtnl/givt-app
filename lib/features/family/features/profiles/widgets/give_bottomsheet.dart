@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -58,7 +58,7 @@ class GiveBottomSheet extends StatelessWidget {
                           .state
                           .getGoalGroup(familyGoal);
                       context.pushNamed(
-                        Pages.chooseAmountSliderGoal.name,
+                        FamilyPages.chooseAmountSliderGoal.name,
                         extra: group,
                       );
                       AnalyticsHelper.logEvent(
@@ -90,7 +90,7 @@ class GiveBottomSheet extends StatelessWidget {
                     onTap: () {
                       context
                         ..pop()
-                        ..pushNamed(Pages.scanNFC.name);
+                        ..pushNamed(FamilyPages.scanNFC.name);
                       context.read<FlowsCubit>().startInAppCoinFlow();
                       AnalyticsHelper.logEvent(
                         eventName: AmplitudeEvents.choseGiveWithCoin,
@@ -111,7 +111,7 @@ class GiveBottomSheet extends StatelessWidget {
                     AnalyticsHelper.logEvent(
                       eventName: AmplitudeEvents.choseGiveWithQRCode,
                     );
-                    context.pushNamed(Pages.camera.name);
+                    context.pushNamed(FamilyPages.camera.name);
                     context.read<FlowsCubit>().startInAppQRCodeFlow();
                   },
                 ),

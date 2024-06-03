@@ -10,7 +10,7 @@ class CreateTransactionRepositoryImpl with CreateTransactionRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<void> createTransaction({required Transaction transaction}) async {

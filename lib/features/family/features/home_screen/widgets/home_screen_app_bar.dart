@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -44,7 +44,7 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
               profiles.fetchAllProfiles();
               context.read<FlowsCubit>().resetFlow();
 
-              context.pushReplacementNamed(Pages.profileSelection.name);
+              context.pushReplacementNamed(FamilyPages.profileSelection.name);
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.profileSwitchPressed,
               );

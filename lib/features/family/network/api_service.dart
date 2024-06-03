@@ -1,19 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:givt_app/app/injection/injection.dart' as main_get_it;
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 
-class APIService {
-  APIService({
-    required String apiURL,
-    required String apiURLAWS,
-  })  : _apiURL = apiURL,
-        _apiURLAWS = apiURLAWS;
-
+class FamilyAPIService {
   Client client = InterceptedClient.build(
     requestTimeout: const Duration(seconds: 30),
     interceptors: [
@@ -23,78 +18,7 @@ class APIService {
     retryPolicy: ExpiredTokenRetryPolicy(),
   );
 
-  String _apiURL;
-  String _apiURLAWS;
-
-  String get apiURL => _apiURL;
-
-  String get apiURLAWS => _apiURLAWS;
-
-  void updateApiUrl(String url, String awsurl) {
-    _apiURL = url;
-    _apiURLAWS = awsurl;
-  }
-
-  Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/Authentication/login');
-
-    final response = await client.post(
-      url,
-      body: body,
-    );
-
-    if (response.statusCode >= 400) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    }
-  }
-
-  Future<Map<String, dynamic>> loginByVoucherCode(
-    Map<String, dynamic> body,
-  ) async {
-    final url =
-        Uri.https(_apiURL, '/givt4kidsservice/v1/Authentication/voucher');
-
-    final response = await client.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode >= 400) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    }
-  }
-
-  Future<Map<String, dynamic>> loginByFamilyName(
-    Map<String, dynamic> body,
-  ) async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/Authentication/event');
-
-    final response = await client.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
-
-    if (response.statusCode >= 400) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    }
-  }
+  String get _apiURL => main_get_it.getIt<APIService>().apiURL;
 
   Future<List<dynamic>> fetchAllProfiles() async {
     final url = Uri.https(_apiURL, '/givt4kidsservice/v1/profiles');

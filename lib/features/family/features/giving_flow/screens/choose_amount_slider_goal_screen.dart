@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
@@ -49,7 +49,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
           }
 
           context.pushReplacementNamed(
-            Pages.successCoin.name,
+            FamilyPages.successCoin.name,
             extra: group.goal.isActive,
           );
         }

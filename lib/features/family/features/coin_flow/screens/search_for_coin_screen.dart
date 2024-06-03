@@ -2,16 +2,14 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/extensions/route_extensions.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/coin_error_page.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/coin_found_page.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/coin_search_page.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -68,12 +66,11 @@ class SearchForCoinScreen extends StatelessWidget {
                             // final pageName = isLoggedIn
                             //     ? Pages.profileSelection.name
                             //     : Pages.login.name;
-                            final pageName = Pages.profileSelection.name;
+                            final pageName = FamilyPages.profileSelection.name;
 
                             context.read<FlowsCubit>().startDeepLinkCoinFlow();
 
-                            // context.pushNamed(pageName);
-                            Navigator.push(context, const ProfileSelectionScreen().toRoute(context));
+                            context.pushNamed(pageName);
                           },
                         )
                       : null,

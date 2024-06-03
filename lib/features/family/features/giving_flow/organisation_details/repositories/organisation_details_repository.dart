@@ -11,7 +11,7 @@ class OrganisationDetailsRepositoryImpl with OrganisationDetailsRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<OrganisationDetails> fetchOrganisationDetails(String mediumId) async {

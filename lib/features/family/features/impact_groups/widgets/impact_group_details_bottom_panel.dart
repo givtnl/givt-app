@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -63,7 +63,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
                     .getOrganisationDetails(generatedMediumId);
 
                 context.pushNamed(
-                  Pages.chooseAmountSliderGoal.name,
+                  FamilyPages.chooseAmountSliderGoal.name,
                   extra: impactGroup,
                 );
               },

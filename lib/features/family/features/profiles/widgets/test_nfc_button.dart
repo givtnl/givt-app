@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:go_router/go_router.dart';
 
 class TestNFCButton extends StatelessWidget {
@@ -10,7 +10,7 @@ class TestNFCButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => context.pushNamed(Pages.scanNFC.name),
+      onPressed: () => context.pushNamed(FamilyPages.scanNFC.name),
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.maxFinite, 60),
         shape: RoundedRectangleBorder(

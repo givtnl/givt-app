@@ -16,7 +16,7 @@ class HistoryRepositoryImpl with HistoryRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<List<HistoryItem>> fetchHistory({

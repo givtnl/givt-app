@@ -10,7 +10,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<List<ImpactGroup>> fetchImpactGroups(String guid) async {

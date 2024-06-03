@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 
 import 'package:givt_app/utils/utils.dart';
@@ -66,7 +66,7 @@ class _GivtBackButtonState extends State<GivtBackButton> {
                   widget.onPressedForced!();
                 } else if (isDeepLink) {
                   //TODO: kids-576 Let's refactor it and make the button simple: either pop or not (and move navigation to the 'screen' level)
-                  context.goNamed(Pages.wallet.name);
+                  context.goNamed(FamilyPages.wallet.name);
                 } else {
                   widget.onPressedExt?.call();
                   context.pop();
@@ -96,8 +96,6 @@ class _GivtBackButtonState extends State<GivtBackButton> {
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(context).colorScheme.primaryContainer,
-                      blurRadius: 0,
-                      offset: const Offset(0, 0),
                     ),
                   ],
                 ),

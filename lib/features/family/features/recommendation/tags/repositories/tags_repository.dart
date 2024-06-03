@@ -10,7 +10,7 @@ class TagsRepositoryImpl with TagsRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<List<Tag>> fetchTags() async {

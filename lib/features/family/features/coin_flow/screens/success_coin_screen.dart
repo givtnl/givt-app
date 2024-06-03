@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
@@ -119,7 +119,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
       return GivtElevatedButton(
         text: 'Done',
         onTap: () {
-          context.goNamed(Pages.wallet.name);
+          context.goNamed(FamilyPages.wallet.name);
           context.read<FlowsCubit>().resetFlow();
 
           AnalyticsHelper.logEvent(

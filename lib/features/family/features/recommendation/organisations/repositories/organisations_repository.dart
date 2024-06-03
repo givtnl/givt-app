@@ -17,7 +17,7 @@ class OrganisationsRepositoryImpl with OrganisationsRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<List<Organisation>> getRecommendedOrganisations({

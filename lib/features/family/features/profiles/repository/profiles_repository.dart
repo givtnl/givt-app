@@ -11,7 +11,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<List<Profile>> fetchAllProfiles() async {

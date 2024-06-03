@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:go_router/go_router.dart';
@@ -46,7 +46,7 @@ class StartRecommendationScreen extends StatelessWidget {
             GivtElevatedButton(
               text: 'Start',
               onTap: () =>
-                  context.pushReplacementNamed(Pages.locationSelection.name),
+                  context.pushReplacementNamed(FamilyPages.locationSelection.name),
             ),
           ],
         ),

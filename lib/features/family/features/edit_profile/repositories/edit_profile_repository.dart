@@ -13,7 +13,7 @@ class EditProfileRepositoryImpl with EditProfileRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<void> editProfile({
