@@ -3,7 +3,7 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class CustomGreenElevatedButton extends StatelessWidget {
   const CustomGreenElevatedButton(
-      {required this.title, required this.onPressed, super.key});
+      {required this.title, required this.onPressed, super.key,});
   final String title;
   final VoidCallback? onPressed;
   @override

@@ -11,7 +11,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectGivingWayPage extends StatelessWidget {
-  const SelectGivingWayPage({super.key});
+  const SelectGivingWayPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

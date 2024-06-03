@@ -33,6 +33,7 @@ class AppTheme {
   static const presetsButtonColor = Color(0xFF918fa6);
   static const givtLightYellow = Color(0xFFFFF9E3);
   static const givtKidsYellow = Color(0xFFFFE075);
+  static const givt4KidsBlue = Color(0xFF54A1EE);
 
   static const sliderIndicatorFilled = Color(0xFF184869);
   static const sliderIndicatorNotFilled = Color(0xFFD9D9D9);
@@ -67,15 +68,14 @@ class AppTheme {
 
   static const keyboardBackgroundColor = Color(0xFFD2D4D9);
 
-  static const highlight90 = Color(0xFFFAE366);
   static const progressGradient1 = Color(0xFFC6D96D);
   static const progressGradient2 = Color(0xFF9DD273);
   static const progressGradient3 = Color(0xFF74CA79);
-  static const highlight80 = Color(0xFFDCC74D);
-  static const primary20 = Color(0xFF003920);
 
+  static const primary20 = Color(0xFF003920);
   static const primary30 = Color(0xFF005231);
   static const primary40 = Color(0xFF006D42);
+  static const primary50 = Color(0xFF008954);
   static const primary70 = Color(0xFF40C181);
   static const primary80 = Color(0xFF60DD9B);
   static const primary90 = Color(0xFF6BFCAB);
@@ -89,9 +89,11 @@ class AppTheme {
   static const secondary80 = Color(0xFF4CDADB);
   static const secondary95 = Color(0xFFAEFFFF);
   static const secondary98 = Color(0xFFE2FFFE);
+  static const secondary99 = Color(0xFFF1FFFE);
 
   static const tertiary20 = Color(0xFF431573);
   static const tertiary40 = Color(0xFF744AA5);
+  static const tertiary50 = Color(0xFF8E63C0);
   static const tertiary80 = Color(0xFFDAB9FF);
   static const tertiary90 = Color(0xFFEEDBFF);
   static const tertiary95 = Color(0xFFEEDBFF);
@@ -99,13 +101,18 @@ class AppTheme {
 
   static const highlight30 = Color(0xFF514700);
   static const highlight40 = Color(0xFF6C5E00);
+  static const highlight80 = Color(0xFFDCC74D);
+  static const highlight90 = Color(0xFFFAE366);
   static const highlight95 = Color(0xFFFFF1B2);
   static const highlight98 = Color(0xFFFFF9EB);
+  static const highlight99 = Color(0xFFFFFDF7);
 
   static const neutralVariant40 = Color(0xFF5B6055);
   static const neutralVariant50 = Color(0xFF74796D);
+  static const neutralVariant60 = Color(0xFF8E9286);
   static const neutralVariant80 = Color(0xFFC8C7BF);
   static const neutralVariant90 = Color(0xFFE4E3DB);
+  static const neutralVariant95 = Color(0xFFEEF2E4);
 
   static const error50 = Color(0xFFDC3A26);
 
@@ -115,6 +122,23 @@ class AppTheme {
   static const generosityChallangeCardBorder = Color(0xFFEEF2E4);
 
   static const impactGroupDialogBarrierColor = Color(0xBF404A70);
+  static const disabledTileBackground = Color(0xFFF5F4F5);
+  static const disabledTileBorder = Color(0xFFC8C6C9);
+  static const disabledCameraGrey = Color(0xFFD8D8D8);
+  static final historyAllowanceColor =
+      const Color(0xFF89BCEF).withAlpha((255 * 0.1).toInt());
+
+  // static const recommendationItemSelected = Color(0xFFC7DFBC);
+  static const recommendationItemText = Color(0xFF405A66);
+  // static const interestsTallyText = Color(0xFFFBFCFF);
+  // static const interestCardRadio = Color(0xFF7AAA35);
+
+
+  static const info40 = Color(0xFF914C00);
+  static const info20 = Color(0xFF4E2600);
+
+  // Family features
+  static const defaultTextColor = AppTheme.primary20;
 
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,

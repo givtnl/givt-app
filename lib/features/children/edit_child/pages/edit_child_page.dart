@@ -16,7 +16,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class EditChildPage extends StatefulWidget {
-  const EditChildPage({super.key});
+  const EditChildPage({super.key,});
 
   @override
   State<EditChildPage> createState() => _EditChildPageState();

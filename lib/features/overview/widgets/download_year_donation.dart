@@ -8,8 +8,11 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class DownloadYearOverviewSheet extends StatefulWidget {
-  const DownloadYearOverviewSheet(
-      {required this.state, required this.givtbloc, super.key});
+  const DownloadYearOverviewSheet({
+    required this.state,
+    required this.givtbloc,
+    super.key,
+  });
   final GivtState state;
   final GivtBloc givtbloc;
   @override
@@ -64,13 +67,15 @@ class _DownloadYearOverviewSheetState extends State<DownloadYearOverviewSheet> {
             widget.givtbloc.add(const GivtInit());
           },
           child: Text(locals.send),
-        )
+        ),
       ],
     );
   }
 
-  Widget _buildAnnualOverviewHeader(
-      {required String text, required String email}) {
+  Widget _buildAnnualOverviewHeader({
+    required String text,
+    required String email,
+  }) {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(

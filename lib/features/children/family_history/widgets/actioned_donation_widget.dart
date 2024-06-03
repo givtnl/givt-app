@@ -7,7 +7,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
 
 class ActionedDonationWidget extends StatelessWidget {
-  const ActionedDonationWidget({required this.donation, super.key});
+  const ActionedDonationWidget({required this.donation, super.key,});
   final ChildDonation donation;
 
   @override
@@ -75,7 +75,7 @@ class ActionedDonationWidget extends StatelessWidget {
                       : 'assets/images/coin.svg',
                 ),
               ),
-            )
+            ),
         ],
       ),
     );

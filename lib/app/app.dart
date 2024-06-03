@@ -8,6 +8,12 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart'
+    as FamilyImpactGroupsCubit;
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -79,6 +85,22 @@ class _AppState extends State<App> {
               context.read<AuthCubit>(),
             ),
             lazy: false,
+          ),
+          BlocProvider<ProfilesCubit>(
+            create: (BuildContext context) => ProfilesCubit(getIt()),
+          ),
+          BlocProvider<OrganisationDetailsCubit>(
+            create: (BuildContext context) => OrganisationDetailsCubit(getIt()),
+          ),
+          BlocProvider<FlowsCubit>(
+            create: (BuildContext context) => FlowsCubit(),
+          ),
+          BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
+            create: (BuildContext context) =>
+                FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
+          ),
+          BlocProvider(
+            create: (context) => ScanNfcCubit(),
           ),
         ],
         child: const _AppView(),

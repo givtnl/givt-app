@@ -12,7 +12,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilyHistory extends StatelessWidget {
-  const FamilyHistory({super.key});
+  const FamilyHistory({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class FamilyHistory extends StatelessWidget {
                     bottom: 20,
                     left: size.width * 0.5 - 20,
                     child: const CircularProgressIndicator(),
-                  )
+                  ),
               ],
             );
           },

@@ -14,7 +14,7 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeDayDetails extends StatelessWidget {
-  const GenerosityChallengeDayDetails({super.key});
+  const GenerosityChallengeDayDetails({super.key,});
 
   @override
   Widget build(BuildContext context) {

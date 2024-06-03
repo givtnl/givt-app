@@ -78,7 +78,7 @@ class _FeedbackBannerDialogState extends State<FeedbackBannerDialog>
                   : widget.task.feedbackTitle,
             ),
           ),
-        )
+        ),
       ],
     );
   }

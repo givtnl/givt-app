@@ -176,7 +176,9 @@ class GoalProgressBar extends StatelessWidget {
     if (colorsToApply.isEmpty) {
       return BoxDecoration(
         border: Border.all(
-            color: Colors.white, strokeAlign: BorderSide.strokeAlignOutside),
+          color: Colors.white,
+          strokeAlign: BorderSide.strokeAlignOutside,
+        ),
         borderRadius: BorderRadius.circular(5),
         color: colors[0],
       );
@@ -186,7 +188,9 @@ class GoalProgressBar extends StatelessWidget {
       borderRadius: BorderRadius.circular(5),
       border: whiteShadow
           ? Border.all(
-              color: Colors.white, strokeAlign: BorderSide.strokeAlignOutside)
+              color: Colors.white,
+              strokeAlign: BorderSide.strokeAlignOutside,
+            )
           : null,
       gradient: LinearGradient(
         colors: colorsToApply,

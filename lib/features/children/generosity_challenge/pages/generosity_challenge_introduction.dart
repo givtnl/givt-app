@@ -12,7 +12,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallengeIntruduction extends StatefulWidget {
-  const GenerosityChallengeIntruduction({super.key});
+  const GenerosityChallengeIntruduction({super.key,});
 
   @override
   State<GenerosityChallengeIntruduction> createState() =>

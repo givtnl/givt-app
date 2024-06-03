@@ -6,7 +6,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DownloadG4KButton extends StatelessWidget {
-  const DownloadG4KButton({super.key});
+  const DownloadG4KButton({super.key,});
 
   @override
   Widget build(BuildContext context) {

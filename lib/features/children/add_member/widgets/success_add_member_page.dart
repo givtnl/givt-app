@@ -8,10 +8,11 @@ import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dar
 import 'package:go_router/go_router.dart';
 
 class AddMemeberSuccessPage extends StatelessWidget {
-  const AddMemeberSuccessPage(
-      {required this.familyAlreadyExists,
-      this.showAllowanceWarning = false,
-      super.key});
+  const AddMemeberSuccessPage({
+    required this.familyAlreadyExists,
+    this.showAllowanceWarning = false,
+    super.key,
+  });
   final bool familyAlreadyExists;
   final bool showAllowanceWarning;
   @override
@@ -26,7 +27,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
             textAlign: TextAlign.center,
             text: TextSpan(
               text: familyAlreadyExists
-                  ? "${context.l10n.membersAreAdded}\n"
+                  ? '${context.l10n.membersAreAdded}\n'
                   : '${context.l10n.congratulationsKey}\n',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,

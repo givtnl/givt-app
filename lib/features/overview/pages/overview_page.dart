@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class OverviewPage extends StatefulWidget {
-  const OverviewPage({super.key});
+  const OverviewPage({super.key,});
 
   @override
   State<OverviewPage> createState() => _OverviewPageState();

@@ -9,7 +9,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/mayor_ch
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallenge extends StatefulWidget {
-  const GenerosityChallenge({super.key});
+  const GenerosityChallenge({super.key,});
 
   @override
   State<GenerosityChallenge> createState() => _GenerosityChallengeState();

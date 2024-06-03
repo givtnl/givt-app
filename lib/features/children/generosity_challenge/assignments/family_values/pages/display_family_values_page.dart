@@ -14,7 +14,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class DisplayFamilyValues extends StatelessWidget {
-  const DisplayFamilyValues({super.key});
+  const DisplayFamilyValues({super.key,});
 
   @override
   Widget build(BuildContext context) {

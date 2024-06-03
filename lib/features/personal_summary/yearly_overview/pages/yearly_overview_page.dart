@@ -11,7 +11,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class YearlyOverviewPage extends StatelessWidget {
-  const YearlyOverviewPage({super.key});
+  const YearlyOverviewPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

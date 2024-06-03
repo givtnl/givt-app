@@ -7,7 +7,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class CachedMembersDialogSuccessPage extends StatelessWidget {
-  const CachedMembersDialogSuccessPage({super.key});
+  const CachedMembersDialogSuccessPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class CachedMembersDialogRetryingPage extends StatelessWidget {
-  const CachedMembersDialogRetryingPage({super.key});
+  const CachedMembersDialogRetryingPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

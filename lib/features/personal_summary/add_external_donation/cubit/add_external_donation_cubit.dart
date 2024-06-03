@@ -84,7 +84,8 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
             status: AddExternalDonationStatus.success,
             externalDonations: state.externalDonations
               ..removeWhere(
-                  (element) => element.id == state.currentExternalDonation.id)
+                (element) => element.id == state.currentExternalDonation.id,
+              )
               ..insert(indexOfCurrent, toBeAdded),
             currentExternalDonation: const ExternalDonation.empty(),
             isEdit: false,

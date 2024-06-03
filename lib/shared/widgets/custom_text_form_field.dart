@@ -16,7 +16,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.inputFormatters = const [],
-    this.autofillHints = null,
+    this.autofillHints,
     this.autocorrect = true,
   });
 

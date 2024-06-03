@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
-  const BTScanPage({super.key});
+  const BTScanPage({super.key,});
 
   @override
   State<BTScanPage> createState() => _BTScanPageState();

@@ -7,7 +7,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DownloadGivtForKidsAppWidget extends StatefulWidget {
-  const DownloadGivtForKidsAppWidget({super.key});
+  const DownloadGivtForKidsAppWidget({super.key,});
 
   @override
   State<DownloadGivtForKidsAppWidget> createState() =>

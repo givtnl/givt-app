@@ -36,11 +36,12 @@ class ProfileOverviewTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           side: BorderSide(
-              width: 2,
-              color: _getBorderColor(
-                context,
-                isGivtAccount,
-              )),
+            width: 2,
+            color: _getBorderColor(
+              context,
+              isGivtAccount,
+            ),
+          ),
           backgroundColor: _getBackgroundColor(context),
         ),
         onPressed: () => _onTap(context, isGivtAccount),

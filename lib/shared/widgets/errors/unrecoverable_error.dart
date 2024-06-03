@@ -3,7 +3,7 @@ import 'package:givt_app/l10n/l10n.dart';
 
 // A widget that only shows when an error occurs in the app that we can't recover from.
 class UnrecoverableError extends StatelessWidget {
-  const UnrecoverableError({super.key});
+  const UnrecoverableError({super.key,});
 
   @override
   Widget build(BuildContext context) {

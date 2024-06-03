@@ -6,7 +6,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FeatureOverlay extends StatefulWidget {
-  const FeatureOverlay({required this.onDismiss, super.key});
+  const FeatureOverlay({required this.onDismiss, super.key,});
 
   final VoidCallback onDismiss;
 

@@ -8,7 +8,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class UnregisterPage extends StatefulWidget {
-  const UnregisterPage({super.key});
+  const UnregisterPage({super.key,});
 
   @override
   State<UnregisterPage> createState() => _UnregisterPageState();

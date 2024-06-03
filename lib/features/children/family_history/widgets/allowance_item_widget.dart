@@ -6,7 +6,7 @@ import 'package:givt_app/utils/string_datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AllowanceItemWidget extends StatelessWidget {
-  const AllowanceItemWidget({required this.allowance, super.key});
+  const AllowanceItemWidget({required this.allowance, super.key,});
   final Allowance allowance;
   @override
   Widget build(BuildContext context) {

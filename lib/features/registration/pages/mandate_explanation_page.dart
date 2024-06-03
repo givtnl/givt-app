@@ -11,7 +11,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class MandateExplanationPage extends StatelessWidget {
-  const MandateExplanationPage({super.key});
+  const MandateExplanationPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +102,7 @@ class _SepaMandateExplanationPageView extends StatelessWidget {
                 extra: context.read<RegistrationBloc>(),
               ),
               child: Text(locals.next),
-            )
+            ),
           ],
         ),
       ),

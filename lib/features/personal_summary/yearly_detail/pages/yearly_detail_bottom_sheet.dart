@@ -10,7 +10,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class YearlyDetailBottomSheet extends StatelessWidget {
-  const YearlyDetailBottomSheet({super.key});
+  const YearlyDetailBottomSheet({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,9 @@ class YearlyDetailBottomSheet extends StatelessWidget {
               : () {
                   context.read<YearlyOverviewCubit>().downloadSummary();
                   AnalyticsHelper.logEvent(
-                      eventName:
-                          AmplitudeEvents.annualOverviewReceiveViaMailClicked);
+                    eventName:
+                        AmplitudeEvents.annualOverviewReceiveViaMailClicked,
+                  );
                 },
           child: isLoading
               ? const CircularProgressIndicator()

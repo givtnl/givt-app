@@ -13,7 +13,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupJoinSuccessPage extends StatefulWidget {
-  const ImpactGroupJoinSuccessPage({super.key});
+  const ImpactGroupJoinSuccessPage({
+    super.key,
+  });
 
   @override
   State<ImpactGroupJoinSuccessPage> createState() =>
@@ -102,17 +104,18 @@ class _ImpactGroupJoinSuccessPageState
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: CustomGreenElevatedButton(
-                      title: context.l10n.seeMyFamily,
-                      onPressed: () {
-                        unawaited(
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.seeMyFamilyClicked,
-                          ),
-                        );
-                        context.pushReplacementNamed(
-                          Pages.childrenOverview.name,
-                        );
-                      }),
+                    title: context.l10n.seeMyFamily,
+                    onPressed: () {
+                      unawaited(
+                        AnalyticsHelper.logEvent(
+                          eventName: AmplitudeEvents.seeMyFamilyClicked,
+                        ),
+                      );
+                      context.pushReplacementNamed(
+                        Pages.childrenOverview.name,
+                      );
+                    },
+                  ),
                 )
               else
                 Column(

@@ -10,7 +10,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class BacsExplanationPage extends StatefulWidget {
-  const BacsExplanationPage({super.key});
+  const BacsExplanationPage({super.key,});
 
   @override
   State<BacsExplanationPage> createState() => _BacsExplanationPageState();
@@ -70,7 +70,7 @@ class _BacsExplanationPageState extends State<BacsExplanationPage> {
             icon: const Icon(
               Icons.question_mark_outlined,
             ),
-          )
+          ),
         ],
       ),
       body: Padding(

@@ -189,7 +189,7 @@ class ChildDetailsPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 40)
+                        const SizedBox(height: 40),
                       ],
                     )
                   : Container(),
@@ -202,13 +202,15 @@ class ChildDetailsPage extends StatelessWidget {
     var family = context.watch<FamilyOverviewCubit>().state;
     if (family is FamilyOverviewUpdatedState) {
       return family.profiles
-          .firstWhere((element) =>
-              element.id ==
-              (context.watch<ChildDetailsCubit>().state
-                      as ChildDetailsFetchedState)
-                  .profileDetails
-                  .profile
-                  .id)
+          .firstWhere(
+            (element) =>
+                element.id ==
+                (context.watch<ChildDetailsCubit>().state
+                        as ChildDetailsFetchedState)
+                    .profileDetails
+                    .profile
+                    .id,
+          )
           .wallet
           .balance;
     }

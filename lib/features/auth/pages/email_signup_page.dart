@@ -21,7 +21,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailSignupPage extends StatefulWidget {
-  const EmailSignupPage({super.key});
+  const EmailSignupPage({super.key,});
 
   static CupertinoPageRoute<dynamic> route() {
     return CupertinoPageRoute(

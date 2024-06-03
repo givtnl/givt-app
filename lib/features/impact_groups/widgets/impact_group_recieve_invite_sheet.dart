@@ -16,8 +16,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupRecieveInviteSheet extends StatelessWidget {
-  const ImpactGroupRecieveInviteSheet(
-      {required this.invitdImpactGroup, super.key});
+  const ImpactGroupRecieveInviteSheet({
+    required this.invitdImpactGroup,
+    super.key,
+  });
   final ImpactGroup invitdImpactGroup;
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,8 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
             builder: (context, state) {
               final groupId = state.impactGroups
                   .firstWhere(
-                      (element) => element.status == ImpactGroupStatus.invited)
+                    (element) => element.status == ImpactGroupStatus.invited,
+                  )
                   .id;
               return CustomGreenElevatedButton(
                 title: context.l10n.acceptInviteKey,

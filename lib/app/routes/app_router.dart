@@ -40,6 +40,17 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
+import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_logic/history_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/home_screen.dart';
+import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart'
+    as FamilyImpactGroupsCubit;
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
+import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
+import 'package:givt_app/features/family/utils/app_theme.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -885,6 +896,70 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        path: Pages.profileSelection.path,
+        name: Pages.profileSelection.name,
+        builder: (_, routerState) => MultiBlocProvider(
+          providers: [
+            BlocListener<AuthCubit, AuthState>(
+              listener: (context, state) =>
+                  _checkAndRedirectAuth(state, context, routerState),
+            ),
+            BlocProvider<ProfilesCubit>(
+              create: (BuildContext context) => ProfilesCubit(getIt()),
+              lazy: true,
+            ),
+            BlocProvider<OrganisationDetailsCubit>(
+              create: (BuildContext context) =>
+                  OrganisationDetailsCubit(getIt()),
+              lazy: true,
+            ),
+            BlocProvider<FlowsCubit>(
+              create: (BuildContext context) => FlowsCubit(),
+            ),
+            BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
+              create: (BuildContext context) =>
+                  FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
+              lazy: true,
+            ),
+            BlocProvider(
+              create: (context) => ScanNfcCubit(),
+            ),
+          ],
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const ProfileSelectionScreen(),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: Pages.wallet.path,
+            name: Pages.wallet.name,
+            builder: (context, state) {
+              context.read<ProfilesCubit>().fetchActiveProfile();
+              final user = context.read<ProfilesCubit>().state.activeProfile;
+              context
+                  .read<FamilyImpactGroupsCubit.ImpactGroupsCubit>()
+                  .fetchImpactGroups(user.id, true);
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => NavigationCubit(),
+                  ),
+                  BlocProvider(
+                    create: (context) =>
+                        HistoryCubit(getIt())..fetchHistory(user.id),
+                  ),
+                ],
+                child: Theme(
+                  data: const FamilyAppTheme().toThemeData(),
+                  child: const HomeScreen(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      GoRoute(
         path: Pages.welcome.path,
         name: Pages.welcome.name,
         builder: (_, routerState) => BlocListener<AuthCubit, AuthState>(
@@ -998,6 +1073,12 @@ class AppRouter {
       if (routerState.name == Pages.home.name) {
         return;
       }
+
+      if (state.user.isUsUser) {
+        context.goNamed(Pages.profileSelection.name);
+        return;
+      }
+
       context.goNamed(
         Pages.home.name,
         queryParameters: routerState.uri.queryParameters,

@@ -7,7 +7,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ChatIconButton extends StatelessWidget {
-  const ChatIconButton({super.key});
+  const ChatIconButton({super.key,});
 
   @override
   Widget build(BuildContext context) {

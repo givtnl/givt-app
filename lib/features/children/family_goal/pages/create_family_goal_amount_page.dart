@@ -205,7 +205,7 @@ class _CreateFamilyGoalAmountPageState
                                 }
                               : null,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

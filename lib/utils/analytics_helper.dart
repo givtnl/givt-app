@@ -4,6 +4,20 @@ import 'package:amplitude_flutter/amplitude.dart';
 import 'package:givt_app/core/enums/enums.dart';
 
 class AnalyticsHelper {
+  static const String amountKey = 'amount';
+  static const String goalKey = 'goal_name';
+  static const String walletAmountKey = 'wallet_amount';
+  static const String mediumIdKey = 'medium_id';
+  static const String locationKey = 'location';
+  static const String interestKey = 'all_selected_interests';
+  static const String recommendedCharitiesKey = 'recommended_charities';
+  static const String charityNameKey = 'charity_name';
+  static const String avatarImageKey = 'avatar_image_selected';
+  static const String rewardKey = 'reward';
+  static const String cityKey = 'city';
+  static const String dateEUKey = 'start_date_eu_format';
+  static const String familyNameKey = 'family_name';
+
   static Amplitude? _amplitude;
 
   static Future<void> init(String key) async {

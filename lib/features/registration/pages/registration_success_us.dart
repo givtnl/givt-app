@@ -7,7 +7,9 @@ import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.d
 import 'package:go_router/go_router.dart';
 
 class RegistrationSuccessUs extends StatelessWidget {
-  const RegistrationSuccessUs({super.key});
+  const RegistrationSuccessUs({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +42,12 @@ class RegistrationSuccessUs extends StatelessWidget {
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.normal,
                                 ),
-                      )
+                      ),
                     ],
                   ),
                 ),
                 const Spacer(),
-                RegisteredCheckAnimation(),
+                const RegisteredCheckAnimation(),
                 const Spacer(),
                 CustomSecondaryBorderButton(
                   title: context.l10n.notRightNow,

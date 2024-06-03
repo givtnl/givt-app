@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NoGoalSetWidget extends StatelessWidget {
-  const NoGoalSetWidget({super.key});
+  const NoGoalSetWidget({super.key,});
 
   @override
   Widget build(BuildContext context) {

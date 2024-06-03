@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
-  const CreateMemberPage({required this.familyAlreadyExists, super.key});
+  const CreateMemberPage({required this.familyAlreadyExists, super.key,});
   final bool familyAlreadyExists;
   @override
   State<CreateMemberPage> createState() => _CreateMemberPageState();
@@ -206,7 +206,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                               title: context.l10n.continueKey,
                               onPressed:
                                   context.read<AddMemberCubit>().validateForms,
-                            )
+                            ),
                           ],
                         ),
                       ),

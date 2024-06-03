@@ -3,7 +3,7 @@ import 'package:givt_app/features/children/cached_members/widgets/cached_members
 import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 
 class CachedMembersDialog extends StatelessWidget {
-  const CachedMembersDialog({super.key});
+  const CachedMembersDialog({super.key,});
 
   @override
   Widget build(BuildContext context) {

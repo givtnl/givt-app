@@ -11,7 +11,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AvatarSelectionScreen extends StatelessWidget {
-  const AvatarSelectionScreen({super.key});
+  const AvatarSelectionScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {

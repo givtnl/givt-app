@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 
 class WalletIntroPage extends StatelessWidget {
-  const WalletIntroPage({required this.onContinue, super.key});
+  const WalletIntroPage({required this.onContinue, super.key,});
   final VoidCallback onContinue;
   @override
   Widget build(BuildContext context) {

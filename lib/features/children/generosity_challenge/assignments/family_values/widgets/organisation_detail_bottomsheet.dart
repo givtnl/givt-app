@@ -12,7 +12,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class OrganisationDetailBottomSheet extends StatelessWidget {
-  const OrganisationDetailBottomSheet({required this.value, super.key});
+  const OrganisationDetailBottomSheet({required this.value, super.key,});
 
   final FamilyValue value;
   @override

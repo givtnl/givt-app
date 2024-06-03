@@ -4,7 +4,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/pages/common_success_page.dart';
 
 class EditAllowanceSuccessPage extends StatelessWidget {
-  const EditAllowanceSuccessPage({required this.uiModel, super.key});
+  const EditAllowanceSuccessPage({required this.uiModel, super.key,});
 
   final EditAllowanceSuccessUIModel uiModel;
 

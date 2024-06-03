@@ -16,7 +16,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
-  const FamilyOverviewPage({super.key});
+  const FamilyOverviewPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +118,9 @@ class FamilyOverviewPage extends StatelessWidget {
   }
 
   Widget buildFamilyOverviewBody(
-      FamilyOverviewState state, BuildContext context) {
+    FamilyOverviewState state,
+    BuildContext context,
+  ) {
     if (state is FamilyOverviewLoadingState) {
       return const ChildrenLoadingPage();
     }

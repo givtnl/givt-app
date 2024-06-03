@@ -8,7 +8,7 @@ import 'package:givt_app/shared/pages/pages.dart';
 import 'package:go_router/go_router.dart';
 
 class GiftAidRequestPage extends StatelessWidget {
-  const GiftAidRequestPage({super.key});
+  const GiftAidRequestPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

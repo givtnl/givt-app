@@ -11,7 +11,7 @@ import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart'
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class CreateFamilyGoalFlowPage extends StatelessWidget {
-  const CreateFamilyGoalFlowPage({super.key});
+  const CreateFamilyGoalFlowPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

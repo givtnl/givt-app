@@ -14,7 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeOverview extends StatefulWidget {
-  const GenerosityChallengeOverview({super.key});
+  const GenerosityChallengeOverview({super.key,});
 
   @override
   State<GenerosityChallengeOverview> createState() =>
@@ -46,7 +46,8 @@ class _GenerosityChallengeOverviewState
         return AlertDialog(
           title: const Text('Undo Challenge Progress'),
           content: Text(
-              'Are you sure you want to undo generosity challenge progress including Day ${dayIndax + 1}?'),
+            'Are you sure you want to undo generosity challenge progress including Day ${dayIndax + 1}?',
+          ),
           actions: [
             TextButton(
               onPressed: () => context.pop(true),
@@ -75,7 +76,8 @@ class _GenerosityChallengeOverviewState
             return AlertDialog(
               title: const Text('Complete Generosity Challenge?'),
               content: const Text(
-                  'Are you sure you want to complete the generosity challenge and go to the Givt app?'),
+                'Are you sure you want to complete the generosity challenge and go to the Givt app?',
+              ),
               actions: [
                 TextButton(
                   onPressed: () => context.pop(true),

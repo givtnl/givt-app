@@ -95,7 +95,8 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                       '\$${widget.donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${widget.donation.name}',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: DonationState.getAmountColor(
-                                widget.donation.state),
+                              widget.donation.state,
+                            ),
                             fontFamily: 'Roboto',
                             fontWeight: FontWeight.w500,
                           ),
