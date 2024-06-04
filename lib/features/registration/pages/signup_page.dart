@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -31,10 +32,13 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _passwordController;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
+  late TextEditingController _phoneNumberController;
+
   bool _acceptPolicy = false;
   bool isLoading = false;
   bool _obscureText = true;
   Country _selectedCountry = Country.sortedCountries().first;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
+    _phoneNumberController = TextEditingController();
     final user = context.read<AuthCubit>().state.user;
     _selectedCountry = Country.fromCode(user.country);
   }
@@ -161,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
               city: Util.defaultCity,
               postalCode: Util.defaultPostCode,
               country: _selectedCountry.countryCode,
-              phoneNumber: Util.defaultUSPhoneNumber,
+              phoneNumber: _phoneNumberController.text,
               iban: Util.defaultIban,
               sortCode: Util.empty,
               accountNumber: Util.empty,
@@ -287,6 +292,53 @@ class _SignUpPageState extends State<SignUpPage> {
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
           ),
+          // Height 6 because of the 10px padding in MobileNumberFormField
+          const SizedBox(height: 6),
+          if (_selectedCountry == Country.us)
+            MobileNumberFormField(
+              phone: _phoneNumberController,
+              selectedCountryPrefix: _selectedCountry.prefix,
+              hintText: locals.mobileNumberUsDigits,
+              onPhoneChanged: (String value) => setState(() {}),
+              onPrefixChanged: (String selected) {
+                setState(() {
+                  _selectedCountry = Country.sortedCountries().firstWhere(
+                    (Country country) => country.countryCode == selected,
+                  );
+                });
+              },
+              formatter: [
+                FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(10),
+              ],
+              validator: (String? value) {
+                if (value == null || value.isEmpty) {
+                  return '';
+                }
+
+                if (Country.us == _selectedCountry) {
+                  final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
+                  var formatted = '';
+                  if (numericOnly.length == 10) {
+                    final chunkSize = [3, 3, 4];
+                    var startIndex = 0;
+
+                    final chunks = chunkSize.map((size) {
+                      final chunk =
+                          numericOnly.substring(startIndex, startIndex + size);
+                      startIndex += size;
+                      return chunk;
+                    });
+                    formatted = chunks.join('-');
+                  }
+                  if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
+                    return '';
+                  }
+                }
+
+                return null;
+              },
+            ),
           Visibility(
             visible: !isUS,
             child: const SizedBox(height: 16),
@@ -372,7 +424,6 @@ class _SignUpPageState extends State<SignUpPage> {
             locals.passwordRule,
             textAlign: TextAlign.left,
           ),
-          const SizedBox(height: 16),
         ],
       ),
     );
