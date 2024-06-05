@@ -3,6 +3,7 @@ import 'package:givt_app/features/children/family_history/models/allowance.dart'
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/children/family_history/models/topup.dart';
 
 mixin FamilyDonationHistoryRepository {
   Future<List<HistoryItem>> fetchHistory({
@@ -27,6 +28,7 @@ class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
       'type': [
         HistoryTypes.donation.value,
         HistoryTypes.allowance.value,
+        HistoryTypes.topUp.value,
       ]
     };
     final response = await _apiService.fetchHistory(body);
@@ -41,6 +43,8 @@ class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
             .add(ChildDonation.fromMap(historyItemMap as Map<String, dynamic>));
       } else if (type == HistoryTypes.allowance.value) {
         result.add(Allowance.fromMap(historyItemMap as Map<String, dynamic>));
+      } else if (type == HistoryTypes.topUp.value) {
+        result.add(Topup.fromMap(historyItemMap as Map<String, dynamic>));
       }
     }
     return result;
