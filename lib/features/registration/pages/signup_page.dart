@@ -299,7 +299,9 @@ class _SignUpPageState extends State<SignUpPage> {
               phone: _phoneNumberController,
               selectedCountryPrefix: _selectedCountry.prefix,
               hintText: locals.mobileNumberUsDigits,
-              onPhoneChanged: (String value) => setState(() {}),
+              onPhoneChanged: (String value) => setState(() {
+                _formKey.currentState!.validate();
+              }),
               onPrefixChanged: (String selected) {
                 setState(() {
                   _selectedCountry = Country.sortedCountries().firstWhere(
