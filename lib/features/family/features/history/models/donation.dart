@@ -26,7 +26,7 @@ class Donation extends HistoryItem {
         (element) => element.value == map['donationType'],
         orElse: () => HistoryTypes.donation,
       ),
-      goalId: map['goalId'] as String,
+      goalId: map['goalId'] as String? ?? '',
     );
   }
 

@@ -33,12 +33,12 @@ class HistoryRepositoryImpl with HistoryRepository {
 
     List<HistoryItem> result = [];
 
-    for (final donationMap in response as List<Map<String, dynamic>>) {
+    for (final donationMap in response) {
       if (type == HistoryTypes.donation) {
-        result.add(Donation.fromMap(donationMap));
+        result.add(Donation.fromMap(donationMap as Map<String, dynamic>));
       }
       if (type == HistoryTypes.allowance) {
-        result.add(Allowance.fromMap(donationMap));
+        result.add(Allowance.fromMap(donationMap as Map<String, dynamic>));
       }
     }
     return result;
