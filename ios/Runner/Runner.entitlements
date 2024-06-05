@@ -18,5 +18,10 @@
 		<string>applinks:givtapp.net</string>
 		<string>applinks:api.givt.app</string>
 	</array>
+	<key>com.apple.developer.in-app-payments</key>
+	<array>
+		<string>merchant.net.givtapp.ios.test</string>
+		<string>merchant.net.givtapp.ios</string>
+	</array>
 </dict>
 </plist>
