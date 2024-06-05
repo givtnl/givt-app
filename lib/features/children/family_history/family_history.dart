@@ -5,9 +5,11 @@ import 'package:givt_app/features/children/family_history/models/allowance.dart'
 import 'package:givt_app/features/children/family_history/models/child_donation.dart';
 import 'package:givt_app/features/children/family_history/models/child_donation_helper.dart';
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/children/family_history/models/topup.dart';
 import 'package:givt_app/features/children/family_history/widgets/allowance_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/donation_item_widget.dart';
 import 'package:givt_app/features/children/family_history/widgets/empty_history_widget.dart';
+import 'package:givt_app/features/children/family_history/widgets/topup_item_widget.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -56,6 +58,11 @@ class FamilyHistory extends StatelessWidget {
                     if (state.history[index].type == HistoryTypes.allowance) {
                       return AllowanceItemWidget(
                         allowance: state.history[index] as Allowance,
+                      );
+                    } else if (state.history[index].type ==
+                        HistoryTypes.topUp) {
+                      return TopupItemWidget(
+                        topup: state.history[index] as Topup,
                       );
                     }
                     return Padding(
