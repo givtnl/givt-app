@@ -5,17 +5,29 @@
     
     
       
+<<<<<<< Updated upstream
       <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000171">
+=======
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.000182">
+>>>>>>> Stashed changes
         
       </testcase>
     
       
+<<<<<<< Updated upstream
       <testcase classname="fastlane.lanes" name="1: match" time="10.070003">
+=======
+      <testcase classname="fastlane.lanes" name="1: match" time="10.470422">
+>>>>>>> Stashed changes
         
       </testcase>
     
       
+<<<<<<< Updated upstream
       <testcase classname="fastlane.lanes" name="2: match" time="8.896024">
+=======
+      <testcase classname="fastlane.lanes" name="2: match" time="9.696958">
+>>>>>>> Stashed changes
         
       </testcase>
     
