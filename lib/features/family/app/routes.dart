@@ -36,6 +36,7 @@ import 'package:givt_app/features/family/features/recommendation/start_recommend
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -43,71 +44,70 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
-
-      // GoRoute(
-      //   path: FamilyPages.profileSelection.path,
-      //   name: FamilyPages.profileSelection.name,
-      //   builder: (_, routerState) => MultiBlocProvider(
-      //     providers: [
-      //       BlocListener<AuthCubit, AuthState>(
-      //         listener: (context, state) =>
-      //             _checkAndRedirectAuth(state, context, routerState),
-      //       ),
-      //       BlocProvider<ProfilesCubit>(
-      //         create: (BuildContext context) => ProfilesCubit(getIt()),
-      //         lazy: true,
-      //       ),
-      //       BlocProvider<OrganisationDetailsCubit>(
-      //         create: (BuildContext context) =>
-      //             OrganisationDetailsCubit(getIt()),
-      //         lazy: true,
-      //       ),
-      //       BlocProvider<FlowsCubit>(
-      //         create: (BuildContext context) => FlowsCubit(),
-      //       ),
-      //       BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
-      //         create: (BuildContext context) =>
-      //             FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
-      //         lazy: true,
-      //       ),
-      //       BlocProvider(
-      //         create: (context) => ScanNfcCubit(),
-      //       ),
-      //     ],
-      //     child: Theme(
-      //       data: const FamilyAppTheme().toThemeData(),
-      //       child: const ProfileSelectionScreen(),
-      //     ),
-      //   ),
-      //   routes: [
-      //     GoRoute(
-      //       path: FamilyPages.wallet.path,
-      //       name: FamilyPages.wallet.name,
-      //       builder: (context, state) {
-      //         context.read<ProfilesCubit>().fetchActiveProfile();
-      //         final user = context.read<ProfilesCubit>().state.activeProfile;
-      //         context
-      //             .read<FamilyImpactGroupsCubit.ImpactGroupsCubit>()
-      //             .fetchImpactGroups(user.id, true);
-      //         return MultiBlocProvider(
-      //           providers: [
-      //             BlocProvider(
-      //               create: (context) => NavigationCubit(),
-      //             ),
-      //             BlocProvider(
-      //               create: (context) =>
-      //                   HistoryCubit(getIt())..fetchHistory(user.id),
-      //             ),
-      //           ],
-      //           child: Theme(
-      //             data: const FamilyAppTheme().toThemeData(),
-      //             child: const HomeScreen(),
-      //           ),
-      //         );
-      //       },
-      //     ),
-      //   ],
-      // ),
+    // GoRoute(
+    //   path: FamilyPages.profileSelection.path,
+    //   name: FamilyPages.profileSelection.name,
+    //   builder: (_, routerState) => MultiBlocProvider(
+    //     providers: [
+    //       BlocListener<AuthCubit, AuthState>(
+    //         listener: (context, state) =>
+    //             _checkAndRedirectAuth(state, context, routerState),
+    //       ),
+    //       BlocProvider<ProfilesCubit>(
+    //         create: (BuildContext context) => ProfilesCubit(getIt()),
+    //         lazy: true,
+    //       ),
+    //       BlocProvider<OrganisationDetailsCubit>(
+    //         create: (BuildContext context) =>
+    //             OrganisationDetailsCubit(getIt()),
+    //         lazy: true,
+    //       ),
+    //       BlocProvider<FlowsCubit>(
+    //         create: (BuildContext context) => FlowsCubit(),
+    //       ),
+    //       BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
+    //         create: (BuildContext context) =>
+    //             FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
+    //         lazy: true,
+    //       ),
+    //       BlocProvider(
+    //         create: (context) => ScanNfcCubit(),
+    //       ),
+    //     ],
+    //     child: Theme(
+    //       data: const FamilyAppTheme().toThemeData(),
+    //       child: const ProfileSelectionScreen(),
+    //     ),
+    //   ),
+    //   routes: [
+    //     GoRoute(
+    //       path: FamilyPages.wallet.path,
+    //       name: FamilyPages.wallet.name,
+    //       builder: (context, state) {
+    //         context.read<ProfilesCubit>().fetchActiveProfile();
+    //         final user = context.read<ProfilesCubit>().state.activeProfile;
+    //         context
+    //             .read<FamilyImpactGroupsCubit.ImpactGroupsCubit>()
+    //             .fetchImpactGroups(user.id, true);
+    //         return MultiBlocProvider(
+    //           providers: [
+    //             BlocProvider(
+    //               create: (context) => NavigationCubit(),
+    //             ),
+    //             BlocProvider(
+    //               create: (context) =>
+    //                   HistoryCubit(getIt())..fetchHistory(user.id),
+    //             ),
+    //           ],
+    //           child: Theme(
+    //             data: const FamilyAppTheme().toThemeData(),
+    //             child: const HomeScreen(),
+    //           ),
+    //         );
+    //       },
+    //     ),
+    //   ],
+    // ),
 
     GoRoute(
       path: FamilyPages.profileSelection.path,
@@ -131,7 +131,10 @@ class FamilyAppRoutes {
                     HistoryCubit(getIt())..fetchHistory(user.id),
               ),
             ],
-            child: const HomeScreen(),
+            child: Theme(
+              data: const FamilyAppTheme().toThemeData(),
+              child: const HomeScreen(),
+            ),
           );
         }),
     GoRoute(
@@ -139,7 +142,10 @@ class FamilyAppRoutes {
       name: FamilyPages.camera.name,
       builder: (context, state) => BlocProvider(
         create: (context) => CameraCubit()..checkPermission(),
-        child: const CameraScreen(),
+        child: Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: const CameraScreen(),
+        ),
       ),
     ),
     GoRoute(
@@ -148,7 +154,10 @@ class FamilyAppRoutes {
       builder: (context, state) => BlocProvider(
         create: (BuildContext context) =>
             CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-        child: const ChooseAmountSliderScreen(),
+        child: Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: const ChooseAmountSliderScreen(),
+        ),
       ),
     ),
     GoRoute(
@@ -160,15 +169,21 @@ class FamilyAppRoutes {
           return BlocProvider(
             create: (BuildContext context) =>
                 CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-            child: ChooseAmountSliderGoalScreen(
-              group: group,
+            child: Theme(
+              data: const FamilyAppTheme().toThemeData(),
+              child: ChooseAmountSliderGoalScreen(
+                group: group,
+              ),
             ),
           );
         }),
     GoRoute(
       path: FamilyPages.success.path,
       name: FamilyPages.success.name,
-      builder: (context, state) => const SuccessScreen(),
+      builder: (context, state) => Theme(
+        data: const FamilyAppTheme().toThemeData(),
+        child: const SuccessScreen(),
+      ),
     ),
     GoRoute(
       path: FamilyPages.history.path,
@@ -179,7 +194,10 @@ class FamilyAppRoutes {
           create: (context) => HistoryCubit(getIt())
             ..fetchHistory(
                 context.read<ProfilesCubit>().state.activeProfile.id),
-          child: const HistoryScreen(),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const HistoryScreen(),
+          ),
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(
@@ -195,7 +213,10 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.recommendationStart.path,
       name: FamilyPages.recommendationStart.name,
-      builder: (context, state) => const StartRecommendationScreen(),
+      builder: (context, state) => Theme(
+        data: const FamilyAppTheme().toThemeData(),
+        child: const StartRecommendationScreen(),
+      ),
     ),
     GoRoute(
       path: FamilyPages.locationSelection.path,
@@ -204,7 +225,10 @@ class FamilyAppRoutes {
         create: (context) => TagsCubit(
           getIt(),
         )..fetchTags(),
-        child: const LocationSelectionScreen(),
+        child: Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: const LocationSelectionScreen(),
+        ),
       ),
     ),
     GoRoute(
@@ -219,7 +243,10 @@ class FamilyAppRoutes {
             cityName: tagsState.selectedCity,
             interests: tagsState.interests,
           ),
-          child: const InterestsSelectionScreen(),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const InterestsSelectionScreen(),
+          ),
         );
       },
     ),
@@ -238,7 +265,10 @@ class FamilyAppRoutes {
               interests: interestsState.selectedInterests,
               fakeComputingExtraDelay: const Duration(seconds: 1),
             ),
-          child: const OrganisationsScreen(),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const OrganisationsScreen(),
+          ),
         );
       },
     ),
@@ -274,7 +304,10 @@ class FamilyAppRoutes {
         return BlocProvider(
           create: (BuildContext context) =>
               CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-          child: const ChooseAmountSliderScreen(),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const ChooseAmountSliderScreen(),
+          ),
         );
       },
     ),
@@ -282,10 +315,9 @@ class FamilyAppRoutes {
       path: FamilyPages.outAppCoinFlow.path,
       name: FamilyPages.outAppCoinFlow.name,
       builder: (context, state) {
-        final String mediumID =
-            state.uri.queryParameters['code']!.contains('null')
-                ? OrganisationDetailsCubit.defaultMediumId
-                : state.uri.queryParameters['code']!;
+        final mediumID = state.uri.queryParameters['code']!.contains('null')
+            ? OrganisationDetailsCubit.defaultMediumId
+            : state.uri.queryParameters['code']!;
 
         context
             .read<OrganisationDetailsCubit>()
@@ -293,7 +325,10 @@ class FamilyAppRoutes {
         return BlocProvider<SearchCoinCubit>(
           lazy: false,
           create: (context) => SearchCoinCubit()..startAnimation(mediumID),
-          child: const SearchForCoinScreen(),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const SearchForCoinScreen(),
+          ),
         );
       },
     ),
@@ -301,7 +336,10 @@ class FamilyAppRoutes {
       path: FamilyPages.scanNFC.path,
       name: FamilyPages.scanNFC.name,
       builder: (context, state) {
-        return const NFCScanPage();
+        return Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: const NFCScanPage(),
+        );
       },
     ),
     GoRoute(
@@ -311,7 +349,10 @@ class FamilyAppRoutes {
         final extra = state.extra ?? false;
         final isGoal = extra as bool;
         log('isGoal: $isGoal');
-        return SuccessCoinScreen(isGoal: isGoal);
+        return Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: SuccessCoinScreen(isGoal: isGoal),
+        );
       },
     ),
     GoRoute(
@@ -334,7 +375,10 @@ class FamilyAppRoutes {
               ),
             ),
           ],
-          child: const AvatarSelectionScreen(),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const AvatarSelectionScreen(),
+          ),
         );
       },
     ),
@@ -343,7 +387,10 @@ class FamilyAppRoutes {
       name: FamilyPages.impactGroupDetails.name,
       builder: (context, state) {
         final impactGroup = state.extra! as ImpactGroup;
-        return ImpactGroupDetailsPage(impactGroup: impactGroup);
+        return Theme(
+          data: const FamilyAppTheme().toThemeData(),
+          child: ImpactGroupDetailsPage(impactGroup: impactGroup),
+        );
       },
     ),
   ];
