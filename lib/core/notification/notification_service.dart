@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -286,6 +288,15 @@ class NotificationService implements INotificationService {
     id ??= Random().nextInt(9999 - 1000) + 1000;
 
     await setupFlutterNotifications();
+
+    if (Platform.isAndroid) {
+      final androidInfo = await DeviceInfoPlugin().androidInfo;
+
+      // Java Datetime support only working for Android 8+
+      // So we will not schedule notifications for Android 7 and below
+      if (androidInfo.version.sdkInt <= 25) return;
+    }
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
