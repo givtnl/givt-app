@@ -290,23 +290,32 @@ class NotificationService implements INotificationService {
     await setupFlutterNotifications();
 
     if (Platform.isAndroid) {
-      final androidInfo = await DeviceInfoPlugin().androidInfo;
+      try {
+        final androidInfo = await DeviceInfoPlugin().androidInfo;
 
-      // Java Datetime support only working for Android 8+
-      // So we will not schedule notifications for Android 7 and below
-      if (androidInfo.version.sdkInt <= 25) return;
+        // Java Datetime support only working for Android 8+
+        // So we will not schedule notifications for Android 7 and below
+        if (androidInfo.version.sdkInt <= 25) return;
+      } catch (e) {
+        await LoggingInfo.instance.error('Error getting Android version: $e');
+        return;
+      }
     }
 
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduledDate,
-      notificationDetailsAndroid,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      payload: jsonEncode(payload),
-    );
+    try {
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        scheduledDate,
+        notificationDetailsAndroid,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        payload: jsonEncode(payload),
+      );
+    } catch (e) {
+      await LoggingInfo.instance.error('Error scheduling notification: $e');
+    }
   }
 
   @override
