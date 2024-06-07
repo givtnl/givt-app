@@ -143,8 +143,6 @@ class ChildDetailsPage extends StatelessWidget {
                             width: double.maxFinite,
                             color: AppTheme.givtLightBackgroundGreen,
                             child: ChildDetailsItem(
-                              //ugly fix, for some reason ChildDetailsCubit doesnt update
-                              balance: getBalance(context),
                               profileDetails: state.profileDetails,
                             ),
                           ),
@@ -192,28 +190,6 @@ class ChildDetailsPage extends StatelessWidget {
         );
       },
     );
-  }
-
-  double getBalance(BuildContext context) {
-    var family = context.watch<FamilyOverviewCubit>().state;
-    if (family is FamilyOverviewUpdatedState) {
-      return family.profiles
-          .firstWhere((element) =>
-              element.id ==
-              (context.watch<ChildDetailsCubit>().state
-                      as ChildDetailsFetchedState)
-                  .profileDetails
-                  .profile
-                  .id)
-          .wallet
-          .balance;
-    }
-    return (context.watch<ChildDetailsCubit>().state
-            as ChildDetailsFetchedState)
-        .profileDetails
-        .profile
-        .wallet
-        .balance;
   }
 
   Future<void> _navigateToTopUpScreen(
