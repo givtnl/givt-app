@@ -376,7 +376,7 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) =>
-                        FamilyHistoryCubit(getIt())..fetchHistory(),
+                        FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
                   ),
                 ],
                 child: const FamilyOverviewPage(),
