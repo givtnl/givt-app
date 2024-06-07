@@ -123,10 +123,11 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
       emit(
         const ChildTopUpFundsErrorState(),
       );
+    } else {
+      emit(
+        ChildDetailsErrorState(errorMessage: e.toString()),
+      );
     }
-    emit(
-      ChildDetailsErrorState(errorMessage: e.toString()),
-    );
   }
 
   Future<void> _logTopUpEvent(int amount) async {

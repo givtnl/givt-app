@@ -2,14 +2,35 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 
 part 'family_history_state.dart';
 
 class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
-  FamilyHistoryCubit(this.historyRepo) : super(const FamilyHistoryState());
+  FamilyHistoryCubit(this.historyRepo, this._editChildRepository)
+      : super(const FamilyHistoryState()) {
+    _init();
+  }
+
   final FamilyDonationHistoryRepository historyRepo;
+  final EditChildRepository _editChildRepository;
+
+  StreamSubscription<String>? _walletChangedSubscription;
+
+  void _init() {
+    _walletChangedSubscription =
+        _editChildRepository.walletChangedStream().listen((childGUID) {
+      fetchHistory(fromScratch: true);
+    });
+  }
+
+  @override
+  Future<void> close() async {
+    await _walletChangedSubscription?.cancel();
+    await super.close();
+  }
 
   Future<void> fetchHistory({bool fromScratch = false}) async {
     emit(
