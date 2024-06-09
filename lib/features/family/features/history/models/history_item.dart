@@ -19,6 +19,7 @@ enum HistoryTypes {
   donation('WalletDonation'),
   allowance('RecurringAllowance');
 
-  final String value;
   const HistoryTypes(this.value);
+
+  final String value;
 }
