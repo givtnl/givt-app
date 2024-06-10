@@ -37,8 +37,7 @@ Future<void> initAPIService() async {
   }
   log('Using API URL: $baseUrl');
   if (Platform.isAndroid) {
-    final data =
-        await PlatformAssetBundle().load('assets/family/ca/isrgrootx1.pem');
+    final data = await PlatformAssetBundle().load('assets/ca/isrgrootx1.pem');
     SecurityContext.defaultContext.setTrustedCertificatesBytes(
       data.buffer.asUint8List(),
     );
