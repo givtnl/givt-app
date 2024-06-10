@@ -1008,15 +1008,13 @@ class AppRouter {
       if (state.user.isUsUser) {
         if (state.user.needRegistration) {
           final createStripe = state.user.personalInfoRegistered;
-          context
-            ..goNamed(
-              Pages.registration.name,
-              queryParameters: {
-                'email': state.user.email,
-                'createStripe': createStripe.toString(),
-              },
-            )
-            ..pop();
+          context.goNamed(
+            Pages.registration.name,
+            queryParameters: {
+              'email': state.user.email,
+              'createStripe': createStripe.toString(),
+            },
+          );
           return;
         }
 
