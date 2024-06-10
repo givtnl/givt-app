@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:givt_app/features/family/features/history/history_logic/history_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/models/donation.dart';
 import 'package:givt_app/features/family/features/history/models/donation_item_uimodel.dart';
 import 'package:givt_app/features/family/features/history/models/history_item.dart';
@@ -46,7 +45,7 @@ class HistoryScreen extends StatelessWidget {
             child: Stack(
               children: [
                 ListView.separated(
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.all(0),
                   controller: scrollController,
                   itemCount: state.history.length,
                   itemBuilder: (BuildContext context, int index) {

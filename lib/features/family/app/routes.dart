@@ -16,7 +16,7 @@ import 'package:givt_app/features/family/features/giving_flow/organisation_detai
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
-import 'package:givt_app/features/family/features/history/history_logic/history_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/home_screen.dart';

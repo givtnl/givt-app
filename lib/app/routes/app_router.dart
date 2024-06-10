@@ -1006,6 +1006,18 @@ class AppRouter {
 
       // US users need to select a profile before they can continue
       if (state.user.isUsUser) {
+        if (state.user.needRegistration) {
+          final createStripe = state.user.personalInfoRegistered;
+          context.goNamed(
+            Pages.registration.name,
+            queryParameters: {
+              'email': state.user.email,
+              'createStripe': createStripe.toString(),
+            },
+          );
+          return;
+        }
+
         context.goNamed(FamilyPages.profileSelection.name);
         return;
       }
