@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/children/family_history/models/allowance.dart';
-import 'package:givt_app/features/children/family_history/models/history_item.dart';
+import 'package:givt_app/features/children/family_history/models/topup.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/string_datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class AllowanceItemWidget extends StatelessWidget {
-  const AllowanceItemWidget({required this.allowance, super.key,});
-  final Allowance allowance;
+class TopupItemWidget extends StatelessWidget {
+  const TopupItemWidget({required this.topup, super.key});
+  final Topup topup;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      color: allowance.isNotSuccessful
+      color: topup.isNotSuccessful
           ? Colors.white
           : AppTheme.givtLightBackgroundBlue,
       child: Row(
         children: [
-          if (allowance.isNotSuccessful)
-            SvgPicture.asset('assets/images/donation_states_pending.svg')
+          if (topup.isNotSuccessful)
+            SvgPicture.asset('assets/images/donation_states_declined.svg')
           else
             SvgPicture.asset('assets/images/donation_states_added.svg'),
           const SizedBox(width: 15),
@@ -29,10 +28,10 @@ class AllowanceItemWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
+                '+\$${topup.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${topup.name}',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: allowance.isNotSuccessful
-                          ? AppTheme.childHistoryPendingDark
+                      color: topup.isNotSuccessful
+                          ? AppTheme.childHistoryDeclined
                           : AppTheme.childHistoryAllowance,
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w600,
@@ -41,9 +40,9 @@ class AllowanceItemWidget extends StatelessWidget {
               SizedBox(
                 width: size.width * 0.7,
                 child: Text(
-                  allowance.isNotSuccessful
-                      ? locals.allowanceOopsCouldntGetAllowances
-                      : '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
+                  topup.isNotSuccessful
+                      ? "Oops! We couldn't top up your child’s Wallet."
+                      : '${locals.childHistoryYay} ${topup.name} ${locals.childHistoryCanContinueMakingADifference}',
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
@@ -55,11 +54,9 @@ class AllowanceItemWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                allowance.isNotSuccessful
-                    ? allowance.status == HistoryItemStatus.rejected
-                        ? locals.weWillTryAgainNxtMonth
-                        : locals.weWillTryAgainTmr
-                    : allowance.date.formatDate(locals),
+                topup.isNotSuccessful
+                    ? 'Please try again later.'
+                    : topup.date.formatDate(locals),
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontFamily: 'Raleway',
                       fontWeight: FontWeight.w600,

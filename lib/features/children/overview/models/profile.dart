@@ -40,6 +40,28 @@ class Profile extends Equatable {
     );
   }
 
+  Profile copyWith({
+    String? id,
+    String? firstName,
+    String? lastName,
+    String? nickname,
+    String? comment,
+    Wallet? wallet,
+    String? pictureURL,
+    ProfileType? type,
+  }) {
+    return Profile(
+      id: id ?? this.id,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      nickname: nickname ?? this.nickname,
+      comment: comment ?? this.comment,
+      wallet: wallet ?? this.wallet,
+      pictureURL: pictureURL ?? this.pictureURL,
+      type: type ?? this.type,
+    );
+  }
+
   final String id;
   final String firstName;
   final String lastName;

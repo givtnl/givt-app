@@ -143,8 +143,6 @@ class ChildDetailsPage extends StatelessWidget {
                             width: double.maxFinite,
                             color: AppTheme.givtLightBackgroundGreen,
                             child: ChildDetailsItem(
-                              //ugly fix, for some reason ChildDetailsCubit doesnt update
-                              balance: getBalance(context),
                               profileDetails: state.profileDetails,
                             ),
                           ),
@@ -171,22 +169,18 @@ class ChildDetailsPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        Visibility(
-                          visible: false,
-                          child: Expanded(
-                            child: ChildTopUpCard(
-                              onPressed: () {
-                                AnalyticsHelper.logEvent(
-                                  eventName:
-                                      AmplitudeEvents.childTopUpCardClicked,
-                                  eventProperties: {
-                                    'child_name':
-                                        state.profileDetails.firstName,
-                                  },
-                                );
-                                _navigateToTopUpScreen(context);
-                              },
-                            ),
+                        Expanded(
+                          child: ChildTopUpCard(
+                            onPressed: () {
+                              AnalyticsHelper.logEvent(
+                                eventName:
+                                    AmplitudeEvents.childTopUpCardClicked,
+                                eventProperties: {
+                                  'child_name': state.profileDetails.firstName,
+                                },
+                              );
+                              _navigateToTopUpScreen(context);
+                            },
                           ),
                         ),
                         const SizedBox(height: 40),

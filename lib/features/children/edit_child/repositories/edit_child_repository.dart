@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 
@@ -7,12 +9,16 @@ mixin EditChildRepository {
   Future<bool> editChildAllowance(String childGUID, int allowance);
 
   Future<bool> topUpChild(String childGUID, int amount);
+
+  Stream<String> walletChangedStream();
 }
 
 class EditChildRepositoryImpl with EditChildRepository {
   EditChildRepositoryImpl(this.apiService);
 
   final APIService apiService;
+
+  final StreamController<String> _childGUIDController = StreamController();
 
   @override
   Future<bool> editChild(String childGUID, EditChild child) async {
@@ -22,11 +28,18 @@ class EditChildRepositoryImpl with EditChildRepository {
 
   @override
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
-    return apiService.editChildAllowance(childGUID, allowance);
+    final response = await apiService.editChildAllowance(childGUID, allowance);
+    _childGUIDController.add(childGUID);
+    return response;
   }
 
   @override
   Future<bool> topUpChild(String childGUID, int amount) async {
-    return apiService.topUpChild(childGUID, amount);
+    final response = await apiService.topUpChild(childGUID, amount);
+    _childGUIDController.add(childGUID);
+    return response;
   }
+
+  @override
+  Stream<String> walletChangedStream() => _childGUIDController.stream;
 }
