@@ -4,7 +4,7 @@ enum FamilyPages {
   camera(path: '/camera', name: 'CAMERA'),
   success(path: '/success', name: 'SUCCESS'),
   chooseAmountSlider(
-      path: '/choose-amount-slider', name: 'CHOOSE_AMOUNT_SLIDER'),
+      path: '/kids-choose-amount-slider', name: 'KIDS_CHOOSE_AMOUNT_SLIDER'),
   test(path: '/test', name: 'TEST'),
   scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),
   history(path: '/history', name: 'HISTORY'),
