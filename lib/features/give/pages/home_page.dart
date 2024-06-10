@@ -193,6 +193,7 @@ class _HomePageState extends State<HomePage> {
                 if (!auth.user.needRegistration ||
                     auth.user.mandateSigned ||
                     auth.user.isInvitedUser ||
+                    auth.user.isUsUser || // Don't show to US users
                     impactGroupsState.status ==
                         ImpactGroupCubitStatus.invited) {
                   return;
