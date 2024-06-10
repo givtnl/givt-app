@@ -19,6 +19,7 @@ abstract class HistoryItem extends Equatable {
 
 enum HistoryTypes {
   donation('WalletDonation'),
+  topUp('WalletTopup'),
   allowance('RecurringAllowance');
 
   const HistoryTypes(this.value);
@@ -29,6 +30,23 @@ enum HistoryTypes {
     return HistoryTypes.values.firstWhere(
       (element) => element.value == value,
       orElse: () => HistoryTypes.donation,
+    );
+  }
+}
+
+enum HistoryItemStatus {
+  entered('Entered'),
+  proccessed('Processed'),
+  rejected('Rejected');
+
+  const HistoryItemStatus(this.value);
+
+  final String value;
+
+  static HistoryItemStatus fromString(String value) {
+    return HistoryItemStatus.values.firstWhere(
+      (element) => element.value == value,
+      orElse: () => HistoryItemStatus.proccessed,
     );
   }
 }

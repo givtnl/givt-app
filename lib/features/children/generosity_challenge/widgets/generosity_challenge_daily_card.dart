@@ -108,40 +108,31 @@ class GenerosityDailyCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: TextButton(
-                          onPressed: () {
-                            // TODO integrate with add member & navigate to VPC KIDS-957
-                            context.push(
-                              '${Pages.generosityChallenge.path}/${task.redirect}',
-                              extra: context.read<GenerosityChallengeCubit>(),
-                            );
-                          },
-                          child: GestureDetector(
-                            onTap: () => Navigator.of(context).push(
-                              const GenerosityChallengeVpcSetupPage().toRoute(
-                                context,
+                          onPressed: () => Navigator.of(context).push(
+                            const GenerosityChallengeVpcSetupPage().toRoute(
+                              context,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Skip',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                      color: AppTheme.givtGreen40,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Rouna',
+                                    ),
                               ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Skip',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleLarge
-                                      ?.copyWith(
-                                        color: AppTheme.givtGreen40,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: 'Rouna',
-                                      ),
-                                ),
-                                const SizedBox(width: 8),
-                                const FaIcon(
-                                  FontAwesomeIcons.arrowRight,
-                                  color: AppTheme.givtGreen40,
-                                ),
-                              ],
-                            ),
+                              const SizedBox(width: 8),
+                              const FaIcon(
+                                FontAwesomeIcons.arrowRight,
+                                color: AppTheme.givtGreen40,
+                              ),
+                            ],
                           ),
                         ),
                       ),
