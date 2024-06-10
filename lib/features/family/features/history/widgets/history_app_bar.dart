@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/heading_2.dart';
 
 class HistoryAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HistoryAppBar({super.key,});
+  const HistoryAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

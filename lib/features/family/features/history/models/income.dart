@@ -7,15 +7,8 @@ class Income extends HistoryItem {
     required super.type,
   });
 
-  factory Income.fromMap(Map<String, dynamic> map) {
-    return Income(
-        amount: double.tryParse(map['amount'].toString()) ?? 0,
-        date:
-            DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
-        type: HistoryTypes.values.firstWhere(
-          (element) => element.value == map['donationType'],
-        ));
-  }
+  @override
+  List<Object?> get props => [amount, date, type];
 
   Income.empty()
       : this(
@@ -24,8 +17,14 @@ class Income extends HistoryItem {
           type: HistoryTypes.donation,
         );
 
-  @override
-  List<Object?> get props => [amount, date, type];
+  factory Income.fromMap(Map<String, dynamic> map) {
+    return Income(
+        amount: double.tryParse(map['amount'].toString()) ?? 0,
+        date: DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
+        type: HistoryTypes.values.firstWhere(
+          (element) => element.value == map['donationType'],
+        ));
+  }
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,

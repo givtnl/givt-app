@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/features/history/history_logic/history_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/custom_navigation_bar.dart';
