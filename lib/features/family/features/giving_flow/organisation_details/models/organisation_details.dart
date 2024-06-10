@@ -12,8 +12,8 @@ class OrganisationDetails extends Equatable {
     return OrganisationDetails(
       collectGroupId: map['collectGroupId'] as String,
       name: map['title'] as String,
-      logoLink: map['organisationLogoLink'] as String,
-      thankYou: map['thankYou'] as String,
+      logoLink: map['organisationLogoLink'] as String?,
+      thankYou: map['thankYou'] as String?,
     );
   }
 
