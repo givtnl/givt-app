@@ -29,7 +29,7 @@ class HistoryHeader extends StatelessWidget {
             );
           },
           style: ButtonStyle(
-            padding: WidgetStateProperty.all(EdgeInsets.zero),
+            padding: MaterialStateProperty.all(EdgeInsets.zero),
           ),
           child: const Text(
             'See all givts',

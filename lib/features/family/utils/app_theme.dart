@@ -197,7 +197,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       extensions: [this],
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      cardTheme: CardTheme(color: colorScheme.surfaceContainerHighest),
+      cardTheme: CardTheme(color: colorScheme.background),
     );
   }
 
@@ -253,9 +253,11 @@ extension on Scheme {
       onErrorContainer: Color(onErrorContainer),
       outline: Color(outline),
       outlineVariant: Color(outlineVariant),
+      background: Color(surface),
+      onBackground: Color(onSurface),
       surface: Color(surface),
       onSurface: Color(onSurface),
-      surfaceContainerHighest: Color(surfaceVariant),
+      surfaceVariant: Color(surfaceVariant),
       onSurfaceVariant: Color(onSurfaceVariant),
       inverseSurface: Color(inverseSurface),
       onInverseSurface: Color(inverseOnSurface),

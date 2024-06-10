@@ -899,7 +899,7 @@ class AppRouter {
       ),
 
       // Family features
-      ...FamilyAppRoutes.routes
+      ...FamilyAppRoutes.routes,
     ],
   );
 
