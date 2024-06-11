@@ -39,6 +39,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>givt</string>
+				<string>givt.app</string>
 			</array>
 		</dict>
 	</array>
@@ -48,6 +49,31 @@
 	<true/>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+    <key>com.apple.developer.nfc.readersession.felica.systemcodes</key>
+     <array>
+       <string>8005</string>
+       <string>8008</string>
+       <string>0003</string>
+       <string>fe00</string>
+       <string>90b7</string>
+       <string>927a</string>
+       <string>86a7</string>
+     </array>
+    <key>com.apple.developer.nfc.readersession.iso7816.select-identifiers</key>
+    <array>
+        <string>A0000002471001</string>
+        <string>A000000003101001</string>
+        <string>A000000003101002</string>
+        <string>A0000000041010</string>
+        <string>A0000000042010</string>
+        <string>A0000000044010</string>
+        <string>44464D46412E44466172653234313031</string>
+        <string>D2760000850100</string>
+        <string>D2760000850101</string>
+        <string>00000000000000</string>
+    </array>
+    <key>NFCReaderUsageDescription</key>
+    <string>Read NFC Tags</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
