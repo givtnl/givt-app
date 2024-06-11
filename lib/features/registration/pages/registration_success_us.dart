@@ -3,7 +3,6 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/registration/widgets/registered_check_animation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
 import 'package:go_router/go_router.dart';
 
 class RegistrationSuccessUs extends StatelessWidget {
@@ -16,46 +15,32 @@ class RegistrationSuccessUs extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Center(
             child: Column(
               children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                RichText(
+                const SizedBox(height: 64),
+                Text(
+                  'Registration complete',
                   textAlign: TextAlign.center,
-                  text: TextSpan(
-                    text: '${context.l10n.youAreRegistered}\n',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                    children: [
-                      TextSpan(
-                        text: '${context.l10n.youCanNowDonate}\n\n',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.normal,
-                                ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextSpan(
-                        text: context.l10n.setUpG4kQ,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.normal,
-                                ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Set up your family and experience generosity together.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.normal,
                       ),
-                    ],
-                  ),
                 ),
                 const Spacer(),
                 const RegisteredCheckAnimation(),
                 const Spacer(),
-                CustomSecondaryBorderButton(
-                  title: context.l10n.notRightNow,
-                  onPressed: () => context.goNamed(Pages.home.name),
-                ),
                 CustomGreenElevatedButton(
                   title: context.l10n.setUpFamily,
-                  onPressed: () => context.goNamed(Pages.childrenOverview.name),
+                  onPressed: () => context.goNamed(Pages.addMember.name),
                 ),
                 const SizedBox(height: 10),
               ],

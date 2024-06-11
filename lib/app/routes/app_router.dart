@@ -454,7 +454,7 @@ class AppRouter {
             path: Pages.addMember.path,
             name: Pages.addMember.name,
             builder: (context, state) {
-              final familyAlreadyExists = state.extra! as bool;
+              final familyAlreadyExists = state.extra as bool? ?? false;
               return BlocProvider(
                 create: (_) => AddMemberCubit(getIt(), getIt()),
                 child: AddMemberMainScaffold(
