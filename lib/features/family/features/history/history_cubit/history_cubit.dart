@@ -13,40 +13,53 @@ class HistoryCubit extends Cubit<HistoryState> {
   final HistoryRepository historyRepo;
 
   FutureOr<void> fetchHistory(String childId) async {
-    emit(state.copyWith(status: HistroryStatus.loading));
+    emit(state.copyWith(status: HistoryStatus.loading));
 
     try {
-      List<HistoryItem> history = [];
-      history.addAll(state.history);
-      // fetch donations
       final donationHistory = await historyRepo.fetchHistory(
-          childId: childId,
-          pageNumber: state.pageNr,
-          type: HistoryTypes.donation);
-      history.addAll(donationHistory);
-      // fetch allowances
+        childId: childId,
+        pageNumber: state.pageNr,
+        type: HistoryTypes.donation,
+      );
+
       final allowanceHistory = await historyRepo.fetchHistory(
-          childId: childId,
-          pageNumber: state.pageNr,
-          type: HistoryTypes.allowance);
-      history.addAll(allowanceHistory);
-      // sort from newest to oldest
-      history.sort((a, b) => b.date.compareTo(a.date));
+        childId: childId,
+        pageNumber: state.pageNr,
+        type: HistoryTypes.allowance,
+      );
+
+      final history = <HistoryItem>[
+        ...state.history,
+        ...donationHistory,
+        ...allowanceHistory,
+      ]
+        // sort from newest to oldest
+        ..sort((a, b) => b.date.compareTo(a.date));
+
       // check if they reached end of history
       // if end of history do not increment page nr
       if (donationHistory.isEmpty && allowanceHistory.isEmpty) {
-        emit(state.copyWith(status: HistroryStatus.loaded, history: history));
+        emit(state.copyWith(status: HistoryStatus.loaded, history: history));
         return;
       }
+
       // update state
-      emit(state.copyWith(
-          status: HistroryStatus.loaded,
+      emit(
+        state.copyWith(
+          status: HistoryStatus.loaded,
           history: history,
-          pageNr: state.pageNr + 1));
+          pageNr: state.pageNr + 1,
+        ),
+      );
     } catch (e, stackTrace) {
-      LoggingInfo.instance.error('Error while fetching history: $e',
-          methodName: stackTrace.toString());
-      emit(state.copyWith(status: HistroryStatus.error, error: e.toString()));
+      unawaited(
+        LoggingInfo.instance.error(
+          'Error while fetching history: $e',
+          methodName: stackTrace.toString(),
+        ),
+      );
+
+      emit(state.copyWith(status: HistoryStatus.error, error: e.toString()));
     }
   }
 }
