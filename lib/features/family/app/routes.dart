@@ -44,71 +44,6 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
-    // GoRoute(
-    //   path: FamilyPages.profileSelection.path,
-    //   name: FamilyPages.profileSelection.name,
-    //   builder: (_, routerState) => MultiBlocProvider(
-    //     providers: [
-    //       BlocListener<AuthCubit, AuthState>(
-    //         listener: (context, state) =>
-    //             _checkAndRedirectAuth(state, context, routerState),
-    //       ),
-    //       BlocProvider<ProfilesCubit>(
-    //         create: (BuildContext context) => ProfilesCubit(getIt()),
-    //         lazy: true,
-    //       ),
-    //       BlocProvider<OrganisationDetailsCubit>(
-    //         create: (BuildContext context) =>
-    //             OrganisationDetailsCubit(getIt()),
-    //         lazy: true,
-    //       ),
-    //       BlocProvider<FlowsCubit>(
-    //         create: (BuildContext context) => FlowsCubit(),
-    //       ),
-    //       BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
-    //         create: (BuildContext context) =>
-    //             FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
-    //         lazy: true,
-    //       ),
-    //       BlocProvider(
-    //         create: (context) => ScanNfcCubit(),
-    //       ),
-    //     ],
-    //     child: Theme(
-    //       data: const FamilyAppTheme().toThemeData(),
-    //       child: const ProfileSelectionScreen(),
-    //     ),
-    //   ),
-    //   routes: [
-    //     GoRoute(
-    //       path: FamilyPages.wallet.path,
-    //       name: FamilyPages.wallet.name,
-    //       builder: (context, state) {
-    //         context.read<ProfilesCubit>().fetchActiveProfile();
-    //         final user = context.read<ProfilesCubit>().state.activeProfile;
-    //         context
-    //             .read<FamilyImpactGroupsCubit.ImpactGroupsCubit>()
-    //             .fetchImpactGroups(user.id, true);
-    //         return MultiBlocProvider(
-    //           providers: [
-    //             BlocProvider(
-    //               create: (context) => NavigationCubit(),
-    //             ),
-    //             BlocProvider(
-    //               create: (context) =>
-    //                   HistoryCubit(getIt())..fetchHistory(user.id),
-    //             ),
-    //           ],
-    //           child: Theme(
-    //             data: const FamilyAppTheme().toThemeData(),
-    //             child: const HomeScreen(),
-    //           ),
-    //         );
-    //       },
-    //     ),
-    //   ],
-    // ),
-
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
@@ -196,7 +131,8 @@ class FamilyAppRoutes {
         child: BlocProvider(
           create: (context) => HistoryCubit(getIt())
             ..fetchHistory(
-                context.read<ProfilesCubit>().state.activeProfile.id),
+              context.read<ProfilesCubit>().state.activeProfile.id,
+            ),
           child: Theme(
             data: const FamilyAppTheme().toThemeData(),
             child: const HistoryScreen(),

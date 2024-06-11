@@ -19,8 +19,8 @@ class DonationItemUIModel {
   String get trailingSvgAsset =>
       donation.medium == DonationMediumType.nfc || donation.isToGoal
           ? donation.isToGoal
-              ? 'assets/images/goal_flag.svg'
-              : 'assets/images/coin.svg'
+              ? 'assets/family/images/goal_flag.svg'
+              : 'assets/family/images/coin.svg'
           : '';
   double get trailingSvgAssetOpacity =>
       donation.state == DonationState.pending ? 0.6 : 1.0;
