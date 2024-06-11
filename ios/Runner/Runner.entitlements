@@ -17,11 +17,17 @@
 		<string>applinks:dev-backend.givtapp.net</string>
 		<string>applinks:givtapp.net</string>
 		<string>applinks:api.givt.app</string>
+		<string>applinks:www.givt.app</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>
 		<string>merchant.net.givtapp.ios.test</string>
 		<string>merchant.net.givtapp.ios</string>
+	</array>
+	<key>com.apple.developer.nfc.readersession.formats</key>
+	<array>
+		<string>TAG</string>
+		<string>NDEF</string>
 	</array>
 </dict>
 </plist>
