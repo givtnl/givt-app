@@ -1,15 +1,16 @@
 part of 'history_cubit.dart';
 
-enum HistroryStatus { initial, loading, loaded, error }
+enum HistoryStatus { initial, loading, loaded, error }
 
 class HistoryState extends Equatable {
-  const HistoryState(
-      {this.status = HistroryStatus.initial,
-      this.history = const [],
-      this.pageNr = 1,
-      this.error = ''});
+  const HistoryState({
+    this.status = HistoryStatus.initial,
+    this.history = const [],
+    this.pageNr = 1,
+    this.error = '',
+  });
 
-  final HistroryStatus status;
+  final HistoryStatus status;
   final List<HistoryItem> history;
   final int pageNr;
   final String error;
@@ -18,7 +19,7 @@ class HistoryState extends Equatable {
   List<Object> get props => [status, history, pageNr, error];
 
   HistoryState copyWith({
-    HistroryStatus? status,
+    HistoryStatus? status,
     List<HistoryItem>? history,
     int? pageNr,
     String? error,

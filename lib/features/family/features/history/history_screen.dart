@@ -16,28 +16,34 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ScrollController scrollController = ScrollController();
+    final scrollController = ScrollController();
     final childid = context.read<ProfilesCubit>().state.activeProfile.id;
     final historyCubit = context.read<HistoryCubit>();
+
     scrollController.addListener(() {
+      // Load more data when user scrolls to the bottom of the list
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
-        if (historyCubit.state.status != HistroryStatus.loading) {
-          // Scrolled to end of list try to fetch more data
+        if (historyCubit.state.status != HistoryStatus.loading) {
           historyCubit.fetchHistory(childid);
         }
       }
     });
+
     return BlocBuilder<HistoryCubit, HistoryState>(
       builder: (context, state) {
-        if (state.status == HistroryStatus.loading && state.history.isEmpty) {
+        // Display loading indicator if no data is available
+        if (state.status == HistoryStatus.loading && state.history.isEmpty) {
           return const CustomCircularProgressIndicator();
         }
-        if (state.status == HistroryStatus.error) {
+
+        // Display error message if data is not available
+        if (state.status == HistoryStatus.error) {
           return Center(
             child: Text(state.error),
           );
         }
+
         // Display List of donations and allowances in descending date order
         return Scaffold(
           backgroundColor: Colors.white,
@@ -45,16 +51,18 @@ class HistoryScreen extends StatelessWidget {
             child: Stack(
               children: [
                 ListView.separated(
-                  padding: const EdgeInsets.all(0),
+                  padding: EdgeInsets.zero,
                   controller: scrollController,
                   itemCount: state.history.length,
                   itemBuilder: (BuildContext context, int index) {
                     if (state.history[index].type != HistoryTypes.donation) {
                       return IncomeItemWidget(
-                          uimodel: IncomeItemUIModel(
-                        income: state.history[index] as Income,
-                      ));
+                        uimodel: IncomeItemUIModel(
+                          income: state.history[index] as Income,
+                        ),
+                      );
                     }
+
                     return DonationItemWidget(
                       uimodel: DonationItemUIModel(
                         donation: state.history[index] as Donation,
@@ -69,7 +77,9 @@ class HistoryScreen extends StatelessWidget {
                     indent: 20,
                   ),
                 ),
-                if (state.status == HistroryStatus.loading &&
+
+                // Overlay loading indicator on top of list when loading (more) data
+                if (state.status == HistoryStatus.loading &&
                     state.history.isNotEmpty)
                   const CustomCircularProgressIndicator(),
               ],
