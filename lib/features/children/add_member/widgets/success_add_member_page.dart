@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/features/children/add_member/widgets/download_g4k_button.dart';
 import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
@@ -64,10 +63,6 @@ class AddMemeberSuccessPage extends StatelessWidget {
           ),
           Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: DownloadG4KButton(),
-              ),
               if (familyAlreadyExists)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
