@@ -24,9 +24,10 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final activeProfile = context.read<ProfilesCubit>().state.activeProfile;
     return Container(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 16),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
       color: AppTheme.highlight99,
       child: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
