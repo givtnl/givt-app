@@ -1000,10 +1000,6 @@ class AppRouter {
         return;
       }
 
-      if (routerState.name == Pages.home.name) {
-        return;
-      }
-
       // US users need to select a profile before they can continue
       if (state.user.isUsUser) {
         if (state.user.needRegistration) {
@@ -1019,6 +1015,11 @@ class AppRouter {
         }
 
         context.goNamed(FamilyPages.profileSelection.name);
+        return;
+      }
+
+      //needs to be after isUsUser check
+      if (routerState.name == Pages.home.name) {
         return;
       }
 
