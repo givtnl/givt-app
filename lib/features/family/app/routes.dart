@@ -112,7 +112,10 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
-      builder: (context, state) => const ProfileSelectionScreen(),
+      builder: (context, state) => Theme(
+        data: const FamilyAppTheme().toThemeData(),
+        child: const ProfileSelectionScreen(),
+      ),
     ),
     GoRoute(
         path: FamilyPages.wallet.path,

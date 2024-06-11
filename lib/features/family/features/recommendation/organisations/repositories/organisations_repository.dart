@@ -36,17 +36,17 @@ class OrganisationsRepositoryImpl with OrganisationsRepository {
       },
     );
 
-    List<Organisation> result = [];
-    for (final organisationMap in response as List<Map<String, dynamic>>) {
-      final organisation = Organisation.fromMap(organisationMap);
+    final result = <Organisation>[];
+    for (final organisationMap in response) {
+      final org = Organisation.fromMap(organisationMap as Map<String, dynamic>);
       if (filterInterests) {
-        organisation.tags.removeWhere(
+        org.tags.removeWhere(
           (tag) =>
               !interests.contains(tag) && tag.type == TagType.INTERESTS ||
               location.key != tag.key && tag.type == TagType.LOCATION,
         );
       }
-      result.add(organisation);
+      result.add(org);
     }
     return result;
   }

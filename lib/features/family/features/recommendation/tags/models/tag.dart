@@ -10,6 +10,28 @@ class Tag extends Equatable {
     required this.type,
   });
 
+  factory Tag.fromMap(Map<String, dynamic> map) {
+    return Tag(
+      key: map['key'] as String,
+      area: Areas.fromMap(map),
+      displayText: map['displayText'] as String,
+      pictureUrl: map['pictureUrl'] as String,
+      type: TagType.values.firstWhere(
+        (element) => element.name == map['type'],
+        orElse: () => TagType.INTERESTS,
+      ),
+    );
+  }
+
+  const Tag.empty()
+      : this(
+          key: '',
+          area: Areas.location,
+          displayText: 'Empty Tag',
+          pictureUrl: '',
+          type: TagType.INTERESTS,
+        );
+
   final String key;
   final Areas area;
   final String displayText;
@@ -24,28 +46,6 @@ class Tag extends Equatable {
         pictureUrl,
         type,
       ];
-
-  const Tag.empty()
-      : this(
-          key: '',
-          area: Areas.location,
-          displayText: 'Empty Tag',
-          pictureUrl: '',
-          type: TagType.INTERESTS,
-        );
-
-  factory Tag.fromMap(Map<String, dynamic> map) {
-    return Tag(
-      key: map['key'] as String,
-      area: Areas.fromMap(map),
-      displayText: map['displayText'] as String,
-      pictureUrl: map['pictureUrl'] as String,
-      type: TagType.values.firstWhere(
-        (element) => element.name == map['type'],
-        orElse: () => TagType.INTERESTS,
-      ),
-    );
-  }
 
   Map<String, dynamic> toJson() {
     return {
