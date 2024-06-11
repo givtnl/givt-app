@@ -29,7 +29,8 @@ class Organisation extends Equatable {
       shortDescription: map['shortDescription'] as String,
       longDescription: map['longDescription'] as String,
       tags: List<Tag>.from(
-        (map['tags'] as List<Map<String, dynamic>>).map(Tag.fromMap).toList(),
+        (map['tags'] as List<dynamic>)
+            .map((e) => Tag.fromMap(e as Map<String, dynamic>)),
       ),
     );
   }

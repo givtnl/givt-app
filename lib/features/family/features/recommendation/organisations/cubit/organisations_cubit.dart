@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 
 import 'package:equatable/equatable.dart';
@@ -85,10 +87,13 @@ class OrganisationsCubit extends Cubit<OrganisationsState> {
 
       emit(OrganisationsFetchedState(organisations: response));
     } catch (error, stackTrace) {
-      LoggingInfo.instance.error(
-        'Error while fetching recommended organisations: $error',
-        methodName: stackTrace.toString(),
+      unawaited(
+        LoggingInfo.instance.error(
+          'Error while fetching recommended organisations: $error',
+          methodName: stackTrace.toString(),
+        ),
       );
+
       emit(OrganisationsExternalErrorState(errorMessage: error.toString()));
     }
   }

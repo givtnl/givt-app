@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
@@ -101,7 +102,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                     AnalyticsHelper.charityNameKey: organisation.name,
                   },
                 );
-                context.pushNamed(Pages.chooseAmountSlider.name);
+                context.pushNamed(FamilyPages.chooseAmountSlider.name);
               },
             ),
           ),
