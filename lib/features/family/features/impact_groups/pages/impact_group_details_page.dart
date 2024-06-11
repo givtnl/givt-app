@@ -31,8 +31,10 @@ class ImpactGroupDetailsPage extends StatelessWidget {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Theme.of(context).colorScheme.onPrimary,
         ),
-        title:
-            Text(impactGroup.isFamilyGroup ? 'Family Group' : impactGroup.name),
+        title: Text(
+          impactGroup.isFamilyGroup ? 'Family Group' : impactGroup.name,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       ),
       body: CustomScrollView(
         slivers: [
