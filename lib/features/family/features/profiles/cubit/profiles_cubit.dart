@@ -55,6 +55,14 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           activeProfileIndex: state.activeProfileIndex,
         ),
       );
+      if (newProfiles.isEmpty) {
+        emit(
+          ProfilesNotSetupState(
+            profiles: newProfiles,
+            activeProfileIndex: state.activeProfileIndex,
+          ),
+        );
+      }
     } catch (error, stackTrace) {
       unawaited(
         LoggingInfo.instance.error(

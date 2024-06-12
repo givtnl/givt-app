@@ -32,6 +32,7 @@ class AnalyticsHelper {
   }) =>
       _logEvent(eventName, eventProperties);
 
+  //KIDS-1055 TODO tamara property isFamily: true/false
   static Future<void> logEvent({
     required AmplitudeEvents eventName,
     Map<String, dynamic>? eventProperties,

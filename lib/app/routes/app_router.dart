@@ -1011,10 +1011,10 @@ class AppRouter {
               'createStripe': createStripe.toString(),
             },
           );
-          return;
+        } else if (routerState.name == Pages.loading.name) {
+          context.goNamed(FamilyPages.profileSelection.name);
         }
 
-        context.goNamed(FamilyPages.profileSelection.name);
         return;
       }
 

@@ -20,7 +20,7 @@ class FamilyAPIService {
 
   String get _apiURL => main_get_it.getIt<APIService>().apiURL;
 
-  Future<List<dynamic>> fetchAllProfiles() async {
+  Future<List<dynamic>?> fetchAllProfiles() async {
     final url = Uri.https(_apiURL, '/givt4kidsservice/v1/profiles');
 
     final response = await client.get(url);
@@ -32,8 +32,8 @@ class FamilyAPIService {
       );
     } else {
       final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-      final item = decodedBody['item'] as Map<String, dynamic>;
-      return item['profiles'] as List<dynamic>;
+      final item = decodedBody['item'] as Map<String, dynamic>?;
+      return item?['profiles'] as List<dynamic>?;
     }
   }
 
