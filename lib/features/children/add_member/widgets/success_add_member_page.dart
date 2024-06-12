@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/add_member/widgets/download_g4k_button.dart';
 import 'package:givt_app/features/children/utils/cached_family_utils.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:go_router/go_router.dart';
@@ -74,7 +75,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
                   child: CustomGreenElevatedButton(
                     title: context.l10n.seeMyFamily,
                     onPressed: () => context.pushReplacementNamed(
-                      Pages.childrenOverview.name,
+                      FamilyPages.childrenOverview.name,
                       extra: showAllowanceWarning,
                     ),
                   ),
@@ -88,7 +89,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
                       );
                     } else {
                       context.pushReplacementNamed(
-                        Pages.childrenOverview.name,
+                        FamilyPages.childrenOverview.name,
                         extra: showAllowanceWarning,
                       );
                     }

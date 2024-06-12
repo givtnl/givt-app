@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -37,7 +38,7 @@ class ParentOverviewWidget extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           context.pushNamed(
-                            Pages.childrenOverview.name,
+                            FamilyPages.childrenOverview.name,
                           );
                           AnalyticsHelper.logEvent(
                             eventName: AmplitudeEvents.profilePressed,

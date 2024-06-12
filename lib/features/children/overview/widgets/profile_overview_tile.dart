@@ -97,7 +97,7 @@ class ProfileOverviewTile extends StatelessWidget {
         },
       );
       if (isGivtAccount) {
-        context.goNamed(
+        context.pushNamed(
           Pages.personalInfoEdit.name,
           extra: true,
         );

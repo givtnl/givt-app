@@ -360,32 +360,6 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: Pages.childrenOverview.path,
-            name: Pages.childrenOverview.name,
-            builder: (context, state) {
-              var showAllowanceWarning = false;
-              if (state.extra != null) {
-                showAllowanceWarning = state.extra!.toString().contains('true');
-              }
-              context.read<ImpactGroupsCubit>().fetchImpactGroups();
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) => FamilyOverviewCubit(getIt())
-                      ..fetchFamilyProfiles(
-                        showAllowanceWarning: showAllowanceWarning,
-                      ),
-                  ),
-                  BlocProvider(
-                    create: (context) =>
-                        FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
-                  ),
-                ],
-                child: const FamilyOverviewPage(),
-              );
-            },
-          ),
-          GoRoute(
             path: Pages.cachedChildrenOverview.path,
             name: Pages.cachedChildrenOverview.name,
             builder: (context, state) => BlocProvider(
@@ -897,7 +871,6 @@ class AppRouter {
           ),
         ),
       ),
-
       // Family features
       ...FamilyAppRoutes.routes,
     ],

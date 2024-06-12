@@ -85,7 +85,7 @@ class ProfileSelectionScreen extends StatelessWidget {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          context.pushNamed(Pages.childrenOverview.name);
+          context.pushNamed(FamilyPages.childrenOverview.name);
         }
       },
       listenWhen: (previous, current) => current is ProfilesNotSetupState,

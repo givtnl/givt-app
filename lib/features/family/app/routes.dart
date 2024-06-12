@@ -2,6 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
@@ -19,7 +22,7 @@ import 'package:givt_app/features/family/features/giving_flow/screens/success_sc
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
@@ -110,6 +113,36 @@ class FamilyAppRoutes {
     // ),
 
     GoRoute(
+      routes: [
+        GoRoute(
+          path: FamilyPages.childrenOverview.path,
+          name: FamilyPages.childrenOverview.name,
+          builder: (context, state) {
+            var showAllowanceWarning = false;
+            if (state.extra != null) {
+              showAllowanceWarning = state.extra!.toString().contains('true');
+            }
+            context.read<ProfilesCubit>().fetchActiveProfile();
+            final user = context.read<ProfilesCubit>().state.activeProfile;
+            context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => FamilyOverviewCubit(getIt())
+                    ..fetchFamilyProfiles(
+                      showAllowanceWarning: showAllowanceWarning,
+                    ),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                  FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
+                ),
+              ],
+              child: const FamilyOverviewPage(),
+            );
+          },
+        ),
+      ],
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
       builder: (context, state) => const ProfileSelectionScreen(),
@@ -133,7 +166,7 @@ class FamilyAppRoutes {
             ],
             child: Theme(
               data: const FamilyAppTheme().toThemeData(),
-              child: const HomeScreen(),
+              child: const KidsHomeScreen(),
             ),
           );
         }),

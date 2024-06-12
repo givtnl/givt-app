@@ -9,6 +9,7 @@ enum FamilyPages {
   scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),
   history(path: '/history', name: 'HISTORY'),
   avatarSelection(path: '/avatar-selection', name: 'AVATAR_SELECTION'),
+  childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
 
   //recommendation flow
   recommendationStart(

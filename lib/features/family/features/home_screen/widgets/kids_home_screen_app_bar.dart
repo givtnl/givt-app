@@ -10,8 +10,8 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeScreenAppBar({
+class KidsHomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const KidsHomeScreenAppBar({
     super.key,
   });
 
