@@ -122,22 +122,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               AuthUtils.checkToken(
                 context,
                 checkAuthRequest: CheckAuthRequest(
-                  navigate: (context, {isUSUser}) async {
-                    if (true == isUSUser) {
-                      final createStripe = state.user.personalInfoRegistered;
-                      context.goNamed(
-                        Pages.registration.name,
-                        queryParameters: {
-                          'email': state.user.email,
-                          'createStripe': createStripe.toString(),
-                        },
-                      );
-                    } else {
-                      context.goNamed(
-                        Pages.home.name,
-                      );
-                    }
-                  },
+                  navigate: (context, {isUSUser}) async => context.goNamed(
+                    true == isUSUser
+                        ? FamilyPages.profileSelection.name
+                        : Pages.home.name,
+                  ),
                   email: state.email.trim(),
                   forceLogin: true,
                 ),
