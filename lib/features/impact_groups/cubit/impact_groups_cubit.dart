@@ -123,6 +123,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
         groupId: groupId,
       );
       await fetchImpactGroups();
+      context.goNamed(Pages.childrenOverview.name);
     } catch (e) {
       emit(
         state.copyWith(
