@@ -73,7 +73,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       ..pop();
                   } else {
                     context
-                      ..goNamed(Pages.joinImpactGroupSuccess.name)
+                      ..goNamed(Pages.familyOverview.name)
                       ..pop();
                   }
                 },
