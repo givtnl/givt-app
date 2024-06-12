@@ -162,18 +162,6 @@
 
             </intent-filter>
 
-            <intent-filter android:label="testDeepLink"
-                android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:scheme="https"
-                    android:host="www.givt.app"
-                    android:pathPrefix="/search-for-coin"/>
-
-            </intent-filter>
             <intent-filter android:label="testDeepLinkNFC"
                 android:autoVerify="true">
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
