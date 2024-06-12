@@ -75,7 +75,7 @@ class KidsHomeScreen extends StatelessWidget {
         context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id);
         return const GoalScreen();
       case NavigationDestinationData.myGivts:
-        context.read<HistoryCubit>().fetchHistory(user.id);
+        context.read<HistoryCubit>().fetchHistory(user.id, fromBeginning: true);
         return const HistoryScreen();
     }
   }

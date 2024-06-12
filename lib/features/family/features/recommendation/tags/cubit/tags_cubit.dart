@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -17,8 +19,6 @@ class TagsCubit extends Cubit<TagsState> {
       TagsStateFetched(
         tags: state.tags,
         selectedLocation: state.selectedLocation,
-        status: LocationSelectionStatus.general,
-        selectedCity: '',
       ),
     );
   }
@@ -85,13 +85,15 @@ class TagsCubit extends Cubit<TagsState> {
     emit(const TagsStateFetching());
 
     try {
-      final List<Tag> response = await _tagsRepository.fetchTags();
+      final response = await _tagsRepository.fetchTags();
 
       emit(TagsStateFetched(tags: response));
     } catch (error, stackTrace) {
-      LoggingInfo.instance.error(
-        'Error while fetching tags: $error',
-        methodName: stackTrace.toString(),
+      unawaited(
+        LoggingInfo.instance.error(
+          'Error while fetching tags: $error',
+          methodName: stackTrace.toString(),
+        ),
       );
       emit(TagsStateError(errorMessage: error.toString()));
     }

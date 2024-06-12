@@ -23,8 +23,8 @@ abstract class TagsState extends Equatable {
 
   List<Map<String, String>> get hardcodedCities {
     return [
-      {"cityName": "Jacksonville", "stateName": "Florida, USA"},
-      {"cityName": "Tulsa", "stateName": "Oklahoma, USA"},
+      {'cityName': 'Jacksonville', 'stateName': 'Florida, USA'},
+      {'cityName': 'Tulsa', 'stateName': 'Oklahoma, USA'},
     ];
   }
 

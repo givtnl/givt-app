@@ -146,14 +146,13 @@ class FamilyAPIService {
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
-    } else {
-      final decodedBody = jsonDecode(response.body);
-      final itemMap = decodedBody['items'] as List<dynamic>;
-      return itemMap;
     }
+
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 
-  Future<List<Map<String, dynamic>>> fetchTags() async {
+  Future<List<dynamic>> fetchTags() async {
     final url = Uri.https(_apiURL, '/givt4kidsservice/v1/Organisation/tags');
 
     final response = await client.get(url);
@@ -163,11 +162,10 @@ class FamilyAPIService {
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
-    } else {
-      final decodedBody = json.decode(response.body);
-      final itemsList = decodedBody['items'] as List<Map<String, dynamic>>;
-      return itemsList;
     }
+
+    final decodedBody = json.decode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 
   Future<List<dynamic>> getRecommendedOrganisations(
@@ -187,11 +185,10 @@ class FamilyAPIService {
         statusCode: response.statusCode,
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
-    } else {
-      final decodedBody = json.decode(response.body);
-      final itemsList = decodedBody['items'] as List<dynamic>;
-      return itemsList;
     }
+
+    final decodedBody = json.decode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
   }
 
   Future<List<dynamic>> fetchAvatars() async {
@@ -246,7 +243,7 @@ class FamilyAPIService {
         body: jsonDecode(response.body) as Map<String, dynamic>,
       );
     }
-    final decodedBody = jsonDecode(response.body);
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
     final item = decodedBody['item'] as Map<String, dynamic>;
     return item;
   }
