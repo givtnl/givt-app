@@ -6,6 +6,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -112,7 +113,7 @@ class ProfileOverviewTile extends StatelessWidget {
     );
 
     context.pushNamed(
-      Pages.childDetails.name,
+      FamilyPages.childDetails.name,
       extra: [
         context.read<FamilyOverviewCubit>(),
         profile,

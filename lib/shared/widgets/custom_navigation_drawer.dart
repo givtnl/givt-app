@@ -119,7 +119,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       navigate: (context, {isUSUser}) async {
                         if (CachedFamilyUtils.isFamilyCacheExist()) {
                           context.goNamed(
-                            Pages.cachedChildrenOverview.name,
+                            FamilyPages.cachedChildrenOverview.name,
                           );
                         } else {
                           context.goNamed(FamilyPages.childrenOverview.name);

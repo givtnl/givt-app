@@ -360,84 +360,6 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: Pages.cachedChildrenOverview.path,
-            name: Pages.cachedChildrenOverview.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => CachedMembersCubit(
-                getIt(),
-                getIt(),
-                familyLeaderName:
-                    context.read<AuthCubit>().state.user.firstName,
-              )..loadFromCache(),
-              child: const CachedFamilyOverviewPage(),
-            ),
-          ),
-          GoRoute(
-            path: Pages.childDetails.path,
-            name: Pages.childDetails.name,
-            builder: (context, state) {
-              final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-              final childProfile = extras[1] as Profile;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: childrenOverviewCubit,
-                  ),
-                  BlocProvider(
-                    create: (_) => ChildDetailsCubit(
-                      getIt(),
-                      getIt(),
-                      childProfile,
-                    )..fetchChildDetails(),
-                  ),
-                ],
-                child: const ChildDetailsPage(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.editChild.path,
-            name: Pages.editChild.name,
-            builder: (context, state) {
-              final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-              final childDetailsCubit = extras[1] as ChildDetailsCubit;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: childDetailsCubit,
-                  ),
-                  BlocProvider.value(
-                    value: childrenOverviewCubit,
-                  ),
-                  BlocProvider(
-                    create: (_) => EditChildCubit(
-                      getIt(),
-                      AppLocalizations.of(context),
-                      (childDetailsCubit.state as ChildDetailsFetchedState)
-                          .profileDetails,
-                    ),
-                  ),
-                ],
-                child: const EditChildPage(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.addMember.path,
-            name: Pages.addMember.name,
-            builder: (context, state) {
-              final familyAlreadyExists = state.extra as bool? ?? false;
-              return BlocProvider(
-                create: (_) => AddMemberCubit(getIt(), getIt()),
-                child: AddMemberMainScaffold(
-                  familyAlreadyExists: familyAlreadyExists,
-                ),
-              );
-            },
-          ),
-          GoRoute(
             path: Pages.avatarSelection.path,
             name: Pages.avatarSelection.name,
             builder: (context, state) {
@@ -457,35 +379,6 @@ class AppRouter {
                   ),
                 ],
                 child: const AvatarSelectionScreen(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.createFamilyGoal.path,
-            name: Pages.createFamilyGoal.name,
-            builder: (context, state) {
-              final user = context.read<AuthCubit>().state.user;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: state.extra! as FamilyOverviewCubit,
-                  ),
-                  BlocProvider(
-                    create: (_) => OrganisationBloc(
-                      getIt(),
-                      getIt(),
-                    )..add(
-                        OrganisationFetch(
-                          Country.fromCode(user.country),
-                          type: CollectGroupType.none.index,
-                        ),
-                      ),
-                  ),
-                  BlocProvider(
-                    create: (_) => CreateFamilyGoalCubit(getIt()),
-                  ),
-                ],
-                child: const CreateFamilyGoalFlowPage(),
               );
             },
           ),

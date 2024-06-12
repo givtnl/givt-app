@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/registration/widgets/registered_check_animation.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
@@ -40,7 +41,7 @@ class RegistrationSuccessUs extends StatelessWidget {
                 const Spacer(),
                 CustomGreenElevatedButton(
                   title: context.l10n.setUpFamily,
-                  onPressed: () => context.goNamed(Pages.addMember.name),
+                  onPressed: () => context.pushNamed(FamilyPages.addMember.name),
                 ),
                 const SizedBox(height: 10),
               ],

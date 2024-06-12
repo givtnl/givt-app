@@ -85,7 +85,7 @@ class AddMemeberSuccessPage extends StatelessWidget {
                   onPressed: () {
                     if (CachedFamilyUtils.isFamilyCacheExist()) {
                       context.pushReplacementNamed(
-                        Pages.cachedChildrenOverview.name,
+                        FamilyPages.cachedChildrenOverview.name,
                       );
                     } else {
                       context.pushReplacementNamed(
