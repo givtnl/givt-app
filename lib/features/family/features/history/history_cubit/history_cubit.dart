@@ -12,21 +12,34 @@ class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit(this.historyRepo) : super(const HistoryState());
   final HistoryRepository historyRepo;
 
-  FutureOr<void> fetchHistory(String childId) async {
+  FutureOr<void> fetchHistory(
+    String childId, {
+    bool fromBeginning = false,
+  }) async {
+    // Make sure that it's not loading already
+    if (state.status == HistoryStatus.loading) return;
     emit(state.copyWith(status: HistoryStatus.loading));
 
+    if (fromBeginning) emit(state.copyWith(history: [], pageNr: 1));
+
     try {
-      final donationHistory = await historyRepo.fetchHistory(
+      final donationHistoryFuture = historyRepo.fetchHistory(
         childId: childId,
         pageNumber: state.pageNr,
         type: HistoryTypes.donation,
       );
 
-      final allowanceHistory = await historyRepo.fetchHistory(
+      final allowanceHistoryFuture = historyRepo.fetchHistory(
         childId: childId,
         pageNumber: state.pageNr,
         type: HistoryTypes.allowance,
       );
+
+      // In this way the second future will already start fetching
+      // while waiting for the first one to finish
+      // This will make the fetching faster
+      final donationHistory = await donationHistoryFuture;
+      final allowanceHistory = await allowanceHistoryFuture;
 
       final history = <HistoryItem>[
         ...state.history,
