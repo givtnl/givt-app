@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeScreenAppBar({
-    super.key,
-  });
+  const HomeScreenAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +34,7 @@ class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
         if (navigation.state.activeDestination ==
             NavigationDestinationData.home)
           IconButton(
-            icon: FaIcon(
-              FontAwesomeIcons.retweet,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
+            icon: switchProfilesIcon(),
             onPressed: () {
               profiles.fetchAllProfiles();
               context.read<FlowsCubit>().resetFlow();
