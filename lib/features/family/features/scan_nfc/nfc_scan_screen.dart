@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
@@ -101,12 +102,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
           // Android needs the delay to show the success bottom sheet animation
           // iOS needs this delay to allow for the bottomsheet to close
           Future.delayed(ScanNfcCubit.animationDuration, () {
-            // close the android success bottom sheet animation
-            if (Platform.isAndroid) {
-              context.pop();
-            }
 
-            context.pushReplacementNamed(Pages.chooseAmountSlider.name);
+            context.pushReplacementNamed(FamilyPages.chooseAmountSlider.name);
 
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
