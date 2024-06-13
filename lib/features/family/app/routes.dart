@@ -2,6 +2,23 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
+import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
+import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
+import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
+import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
+import 'package:givt_app/features/children/details/pages/child_details_page.dart';
+import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
+import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
+import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
+import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
+import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
+import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
+import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
@@ -19,7 +36,7 @@ import 'package:givt_app/features/family/features/giving_flow/screens/success_sc
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
@@ -37,6 +54,8 @@ import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,6 +64,143 @@ class FamilyAppRoutes {
 
   static final List<RouteBase> _routes = [
     GoRoute(
+      routes: [
+        GoRoute(
+          path: FamilyPages.createFamilyGoal.path,
+          name: FamilyPages.createFamilyGoal.name,
+          builder: (context, state) {
+            final user = context.read<AuthCubit>().state.user;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: state.extra! as FamilyOverviewCubit,
+                ),
+                BlocProvider(
+                  create: (_) => OrganisationBloc(
+                    getIt(),
+                    getIt(),
+                  )..add(
+                    OrganisationFetch(
+                      Country.fromCode(user.country),
+                      type: CollectGroupType.none.index,
+                    ),
+                  ),
+                ),
+                BlocProvider(
+                  create: (_) => CreateFamilyGoalCubit(getIt()),
+                ),
+              ],
+              child: const CreateFamilyGoalFlowPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.cachedChildrenOverview.path,
+          name: FamilyPages.cachedChildrenOverview.name,
+          builder: (context, state) => BlocProvider(
+            create: (_) => CachedMembersCubit(
+              getIt(),
+              getIt(),
+              familyLeaderName:
+              context.read<AuthCubit>().state.user.firstName,
+            )..loadFromCache(),
+            child: const CachedFamilyOverviewPage(),
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.childDetails.path,
+          name: FamilyPages.childDetails.name,
+          builder: (context, state) {
+            final extras = state.extra! as List<dynamic>;
+            final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
+            final childProfile = extras[1] as Profile;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: childrenOverviewCubit,
+                ),
+                BlocProvider(
+                  create: (_) => ChildDetailsCubit(
+                    getIt(),
+                    getIt(),
+                    childProfile,
+                  )..fetchChildDetails(),
+                ),
+              ],
+              child: const ChildDetailsPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.editChild.path,
+          name: FamilyPages.editChild.name,
+          builder: (context, state) {
+            final extras = state.extra! as List<dynamic>;
+            final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
+            final childDetailsCubit = extras[1] as ChildDetailsCubit;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: childDetailsCubit,
+                ),
+                BlocProvider.value(
+                  value: childrenOverviewCubit,
+                ),
+                BlocProvider(
+                  create: (_) => EditChildCubit(
+                    getIt(),
+                    AppLocalizations.of(context),
+                    (childDetailsCubit.state as ChildDetailsFetchedState)
+                        .profileDetails,
+                  ),
+                ),
+              ],
+              child: const EditChildPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.addMember.path,
+          name: FamilyPages.addMember.name,
+          builder: (context, state) {
+            final familyAlreadyExists = state.extra as bool? ?? false;
+            return BlocProvider(
+              create: (_) => AddMemberCubit(getIt(), getIt()),
+              child: AddMemberMainScaffold(
+                familyAlreadyExists: familyAlreadyExists,
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.childrenOverview.path,
+          name: FamilyPages.childrenOverview.name,
+          builder: (context, state) {
+            var showAllowanceWarning = false;
+            if (state.extra != null) {
+              showAllowanceWarning = state.extra!.toString().contains('true');
+            }
+            context.read<ProfilesCubit>().fetchActiveProfile();
+            final user = context.read<ProfilesCubit>().state.activeProfile;
+            context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => FamilyOverviewCubit(getIt())
+                    ..fetchFamilyProfiles(
+                      showAllowanceWarning: showAllowanceWarning,
+                    ),
+                ),
+                BlocProvider(
+                  create: (context) =>
+                  FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
+                ),
+              ],
+              child: const FamilyOverviewPage(),
+            );
+          },
+        ),
+      ],
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
       builder: (context, state) => Theme(
@@ -71,7 +227,7 @@ class FamilyAppRoutes {
             ],
             child: Theme(
               data: const FamilyAppTheme().toThemeData(),
-              child: const HomeScreen(),
+              child: const KidsHomeScreen(),
             ),
           );
         }),

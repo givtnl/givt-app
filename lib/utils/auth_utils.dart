@@ -15,7 +15,7 @@ class CheckAuthRequest {
     this.forceLogin = false,
   });
 
-  final Future<void> Function(BuildContext context) navigate;
+  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
   final String email;
   final bool forceLogin;
 }
@@ -65,7 +65,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await checkAuthRequest.navigate(context);
+      await checkAuthRequest.navigate(context, isUSUser: auth.state.user.isUsUser);
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',

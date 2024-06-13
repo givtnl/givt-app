@@ -87,7 +87,7 @@ class _AppState extends State<App> {
             lazy: false,
           ),
           BlocProvider<ProfilesCubit>(
-            create: (BuildContext context) => ProfilesCubit(getIt()),
+            create: (BuildContext context) => ProfilesCubit(getIt(), getIt()),
           ),
           BlocProvider<OrganisationDetailsCubit>(
             create: (BuildContext context) => OrganisationDetailsCubit(getIt()),

@@ -9,6 +9,16 @@ enum FamilyPages {
   scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),
   history(path: '/history', name: 'HISTORY'),
   avatarSelection(path: '/avatar-selection', name: 'AVATAR_SELECTION'),
+  childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
+  addMember(path: 'add-member', name: 'ADD-MEMBER'),
+  childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
+  editChild(path: 'edit-child', name: 'EDIT-CHILD'),
+  createChild(path: 'create-child', name: 'CREATE-CHILD'),
+  createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
+  cachedChildrenOverview(
+    path: 'cached-children-overview',
+    name: 'CACHED-CHILDREN-OVERVIEW',
+  ),
 
   //recommendation flow
   recommendationStart(

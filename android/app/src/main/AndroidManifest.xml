@@ -58,61 +58,32 @@
             <intent-filter
                 android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="www.givtapp.net"
-                    android:path="/download"
-                    android:scheme="https" />
+                <data android:host="*givtapp.net"/>
+                <data android:path="/download" />
+                <data android:path="/*/download" />
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
+                <data android:pathPrefix="/search-for-coin"/>
+
             </intent-filter>
             <intent-filter
                 android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="www.givt.app"
-                    android:path="/download"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter
-                android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
+                <data android:host="*givt.app"/>
+                <data android:path="/download" />
+                <data android:path="/*/download" />
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
+                <data android:pathPrefix="/search-for-coin"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="givt.app"
-                    android:path="/download"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter
-                android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="givtapp.net"
-                    android:path="/download"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="www.givtapp.net"
-                    android:path="/en/download"
-                    android:scheme="https" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -121,28 +92,6 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="givt" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="www.givtapp.net"
-                    android:path="/en-gb/download"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*.givtapp.net"
-                    android:path="/givt"
-                    android:scheme="https" />
             </intent-filter>
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"

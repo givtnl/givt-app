@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/widgets/download_g4k_button.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -112,7 +113,7 @@ class _ImpactGroupJoinSuccessPageState
                         ),
                       );
                       context.pushReplacementNamed(
-                        Pages.childrenOverview.name,
+                        FamilyPages.childrenOverview.name,
                       );
                     },
                   ),
@@ -124,7 +125,7 @@ class _ImpactGroupJoinSuccessPageState
                     TextButton(
                       onPressed: () {
                         context.pushReplacementNamed(
-                          Pages.childrenOverview.name,
+                          FamilyPages.childrenOverview.name,
                         );
                         AnalyticsHelper.logEvent(
                           eventName: AmplitudeEvents.iWillDonloadG4KLater,

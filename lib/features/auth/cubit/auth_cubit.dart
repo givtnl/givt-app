@@ -38,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login({
     required String email,
     required String password,
-    Future<void> Function(BuildContext context)? navigate,
+    Future<void> Function(BuildContext context, {bool? isUSUser})? navigate,
   }) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {

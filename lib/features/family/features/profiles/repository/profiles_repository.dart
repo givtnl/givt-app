@@ -17,7 +17,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   Future<List<Profile>> fetchAllProfiles() async {
     final response = await _apiService.fetchAllProfiles();
     final result = <Profile>[];
-    for (final profileMap in response) {
+    for (final profileMap in response ?? []) {
       result.add(Profile.fromMap(profileMap as Map<String, dynamic>));
     }
     return result;
