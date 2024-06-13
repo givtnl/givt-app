@@ -86,7 +86,6 @@
             <intent-filter
                 android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -101,7 +100,6 @@
             <intent-filter
                 android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -120,6 +118,34 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="givt" />
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="*givtapp.net"/>
+                <data android:path="/download" />
+                <data android:path="/*/download" />
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
+                <data android:pathPrefix="/search-for-coin"/>
+
+            </intent-filter>
+            <intent-filter
+                android:autoVerify="true">
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="*givt.app"/>
+                <data android:path="/download" />
+                <data android:path="/*/download" />
+                <data android:scheme="https"/>
+                <data android:scheme="http"/>
+                <data android:pathPrefix="/search-for-coin"/>
+
             </intent-filter>
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
