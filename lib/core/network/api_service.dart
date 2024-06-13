@@ -920,7 +920,7 @@ class APIService {
 
   Future<List<dynamic>> fetchHistory(Map<String, dynamic> body) async {
     final url =
-        Uri.https(_apiURL, '/givtservice/v1/ChildProfile/all/transactions');
+        Uri.https(_apiURL, '/givtservice/v1/profile/transactions');
 
     final response = await client.post(
       url,
