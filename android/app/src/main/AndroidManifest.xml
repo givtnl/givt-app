@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.NFC" />
 
     <queries>
         <!-- tel:<phone-number> -->
@@ -85,10 +86,8 @@
             </intent-filter>
             <intent-filter
                 android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="*givtapp.net"/>
                 <data android:path="/download" />
@@ -100,10 +99,8 @@
             </intent-filter>
             <intent-filter
                 android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:host="*givt.app"/>
                 <data android:path="/download" />
