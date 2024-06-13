@@ -21,7 +21,8 @@ class Profile extends Equatable {
       nickname: map['nickname'] as String? ?? '',
       comment: map['comment'] as String? ?? '',
       type: map['type'] as String,
-      hasDonations: map['hasDonations'] as bool? ?? false,
+      hasDonations:
+          map['hasDonations'] as bool? ?? map['latestDonation'] != null,
       wallet: walletMap,
       lastDonationItem: donationMap,
       pictureURL: pictureMap['pictureURL'] as String,
