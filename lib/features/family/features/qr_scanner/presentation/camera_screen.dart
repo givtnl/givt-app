@@ -75,7 +75,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   'goal_name': orgState.organisation.name,
                 },
               );
-              context.pushReplacementNamed(FamilyPages.chooseAmountSlider.name);
+              context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
             }
           },
           builder: (context, orgState) {

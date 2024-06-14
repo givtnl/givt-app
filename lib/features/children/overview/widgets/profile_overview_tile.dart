@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
@@ -18,6 +17,7 @@ class ProfileOverviewTile extends StatelessWidget {
   });
 
   final Profile profile;
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
@@ -99,7 +99,7 @@ class ProfileOverviewTile extends StatelessWidget {
       );
       if (isGivtAccount) {
         context.pushNamed(
-          Pages.personalInfoEdit.name,
+          FamilyPages.familyPersonalInfoEdit.name,
           extra: true,
         );
       }

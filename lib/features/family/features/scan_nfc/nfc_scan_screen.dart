@@ -103,7 +103,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
           // iOS needs this delay to allow for the bottomsheet to close
           Future.delayed(ScanNfcCubit.animationDuration, () {
 
-            context.pushReplacementNamed(FamilyPages.chooseAmountSlider.name);
+            context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
 
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,

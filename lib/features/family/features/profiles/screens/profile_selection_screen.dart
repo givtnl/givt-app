@@ -55,7 +55,7 @@ class ProfileSelectionScreen extends StatelessWidget {
                 return;
               }
               if (flow.flowType == FlowType.deepLinkCoin) {
-                context.pushNamed(FamilyPages.chooseAmountSlider.name);
+                context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
                 return;
               }
               if (flow.isCoin) {

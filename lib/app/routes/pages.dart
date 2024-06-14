@@ -68,10 +68,6 @@ enum Pages {
     path: 'registration-success',
     name: 'REGISTRATION-SUCCESS',
   ),
-  registrationSuccessUs(
-    path: 'registration-success-us',
-    name: 'REGISTRATION-SUCCESS-US',
-  ),
   overview(path: 'overview', name: 'OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
   giveVPC(path: 'give-vpc', name: 'GIVE-VPC'),
@@ -83,20 +79,19 @@ enum Pages {
     name: 'ADD-EXTERNAL-DONATION',
   ),
   recurringDonations(path: 'recurring-donations', name: 'RECURRING-DONATIONS'),
-  creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   editCreditCardDetails(
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
   avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
   joinImpactGroupSuccess(
-    path: 'join-impact-group-success',
+    path: '/join-impact-group-success',
     name: 'JOIN-IMPACT-GROUP-SUCCESS',
   ),
-  permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
+  permitBiometric(path: '/permit-biometric', name: 'PERMIT-BIOMETRIC'),
 
   impactGroupDetails(
-    path: 'impact-group-details',
+    path: '/impact-group-details',
     name: 'IMPACT-GROUP-DETAILS',
   ),
   ;
