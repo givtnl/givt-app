@@ -38,9 +38,11 @@ class ChildDonation extends HistoryItem {
       state: DonationState.getState(map['status'].toString()),
       userId: map['userId'].toString(),
       id: map['id'] as int,
-      medium: DonationMediumType.fromString(
-        map['donationMedium'].toString(),
-      ),
+      medium: map['donationMedium'] != null
+          ? DonationMediumType.fromString(
+              map['donationMedium'].toString(),
+            )
+          : DonationMediumType.unknown,
       type: HistoryTypes.fromString(
         map['donationType'].toString(),
       ),
