@@ -20,7 +20,9 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
     required this.invitdImpactGroup,
     super.key,
   });
+
   final ImpactGroup invitdImpactGroup;
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
@@ -75,9 +77,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       )
                       ..pop();
                   } else {
-                    context
-                      ..goNamed(Pages.joinImpactGroupSuccess.name)
-                      ..pop();
+                    context.pushNamed(Pages.joinImpactGroupSuccess.name);
                   }
                 },
               );

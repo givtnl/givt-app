@@ -16,7 +16,7 @@ class GiftAidRequestPage extends StatelessWidget {
       listenWhen: (previous, current) => previous != current,
       listener: (context, state) {
         if (state.status == RegistrationStatus.giftAidChanged) {
-          context.goNamed(
+          context.pushNamed(
             Pages.permitBiometric.name,
             extra: PermitBiometricRequest.registration(
               redirect: (context) =>

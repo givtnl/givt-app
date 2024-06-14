@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
@@ -55,6 +57,10 @@ import 'package:givt_app/features/family/features/recommendation/tags/screens/lo
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
+import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,6 +71,54 @@ class FamilyAppRoutes {
   static final List<RouteBase> _routes = [
     GoRoute(
       routes: [
+        GoRoute(
+          path: FamilyPages.creditCardDetails.path,
+          name: FamilyPages.creditCardDetails.name,
+          builder: (context, state) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                ),
+                BlocProvider(
+                  create: (_) => StripeCubit(
+                    authRepositoy: getIt(),
+                  ),
+                ),
+              ],
+              child: const CreditCardDetailsPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.registrationSuccessUs.path,
+          name: FamilyPages.registrationSuccessUs.name,
+          builder: (_, state) => const RegistrationSuccessUs(),
+        ),
+        GoRoute(
+          path: FamilyPages.familyPersonalInfoEdit.path,
+          name: FamilyPages.familyPersonalInfoEdit.name,
+          builder: (context, state) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => PersonalInfoEditBloc(
+                    loggedInUserExt: context.read<AuthCubit>().state.user,
+                    authRepositoy: getIt(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (context) => StripeCubit(
+                    authRepositoy: getIt(),
+                  ),
+                ),
+              ],
+              child: const PersonalInfoEditPage(
+                navigatingFromFamily: true,
+              ),
+            );
+          },
+        ),
         GoRoute(
           path: FamilyPages.createFamilyGoal.path,
           name: FamilyPages.createFamilyGoal.name,
@@ -242,8 +296,8 @@ class FamilyAppRoutes {
       ),
     ),
     GoRoute(
-      path: FamilyPages.chooseAmountSlider.path,
-      name: FamilyPages.chooseAmountSlider.name,
+      path: FamilyPages.familyChooseAmountSlider.path,
+      name: FamilyPages.familyChooseAmountSlider.name,
       builder: (context, state) => BlocProvider(
         create: (BuildContext context) =>
             CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),

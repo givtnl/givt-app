@@ -102,7 +102,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                     AnalyticsHelper.charityNameKey: organisation.name,
                   },
                 );
-                context.pushNamed(FamilyPages.chooseAmountSlider.name);
+                context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
               },
             ),
           ),

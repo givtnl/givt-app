@@ -46,7 +46,7 @@ class Donation extends HistoryItem {
       amount: double.tryParse(map['amount'].toString()) ?? 0,
       date: DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
       organizationName: map['collectGroupName'] as String? ?? '',
-      state: DonationState.getState(map['status'] as String),
+      state: DonationState.getState(map['status'] as String?),
       medium: DonationMediumType.values.firstWhere(
           (element) => element.type == map['mediumType'],
           orElse: () => DonationMediumType.unknown),

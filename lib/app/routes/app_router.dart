@@ -110,6 +110,39 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        path: Pages.permitBiometric.path,
+        name: Pages.permitBiometric.name,
+        builder: (context, state) {
+          final permitBiometricRequest = state.extra! as PermitBiometricRequest;
+          return BlocProvider(
+            create: (_) => PermitBiometricCubit(
+              permitBiometricRequest: permitBiometricRequest,
+            )..checkBiometric(),
+            child: const PermitBiometricPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: Pages.joinImpactGroupSuccess.path,
+        name: Pages.joinImpactGroupSuccess.name,
+        builder: (context, state) => const ImpactGroupJoinSuccessPage(),
+      ),
+      GoRoute(
+        path: Pages.impactGroupDetails.path,
+        name: Pages.impactGroupDetails.name,
+        builder: (context, state) => BlocProvider(
+          create: (_) => GiveBloc(
+            getIt(),
+            getIt(),
+            getIt(),
+            getIt(),
+          ),
+          child: ImpactGroupDetailsPage(
+            impactGroup: state.extra! as ImpactGroup,
+          ),
+        ),
+      ),
+      GoRoute(
         path: Pages.generosityChallenge.path,
         name: Pages.generosityChallenge.name,
         builder: (context, state) {
@@ -337,9 +370,7 @@ class AppRouter {
                     ),
                   ),
                 ],
-                child: PersonalInfoEditPage(
-                  navigatingFromFamily: state.extra != null,
-                ),
+                child: const PersonalInfoEditPage(),
               );
             },
           ),
@@ -422,70 +453,12 @@ class AppRouter {
                   child: const PersonalInfoPage(),
                 ),
               ),
-              GoRoute(
-                path: Pages.creditCardDetails.path,
-                name: Pages.creditCardDetails.name,
-                builder: (context, state) {
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: state.extra! as RegistrationBloc,
-                      ),
-                      BlocProvider(
-                        create: (_) => StripeCubit(
-                          authRepositoy: getIt(),
-                        ),
-                      ),
-                    ],
-                    child: const CreditCardDetailsPage(),
-                  );
-                },
-              ),
             ],
-          ),
-          GoRoute(
-            path: Pages.permitBiometric.path,
-            name: Pages.permitBiometric.name,
-            builder: (context, state) {
-              final permitBiometricRequest =
-                  state.extra! as PermitBiometricRequest;
-              return BlocProvider(
-                create: (_) => PermitBiometricCubit(
-                  permitBiometricRequest: permitBiometricRequest,
-                )..checkBiometric(),
-                child: const PermitBiometricPage(),
-              );
-            },
           ),
           GoRoute(
             path: Pages.registrationSuccess.path,
             name: Pages.registrationSuccess.name,
             builder: (_, state) => const RegistrationCompletedPage(),
-          ),
-          GoRoute(
-            path: Pages.registrationSuccessUs.path,
-            name: Pages.registrationSuccessUs.name,
-            builder: (_, state) => const RegistrationSuccessUs(),
-          ),
-          GoRoute(
-            path: Pages.joinImpactGroupSuccess.path,
-            name: Pages.joinImpactGroupSuccess.name,
-            builder: (context, state) => const ImpactGroupJoinSuccessPage(),
-          ),
-          GoRoute(
-            path: Pages.impactGroupDetails.path,
-            name: Pages.impactGroupDetails.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => GiveBloc(
-                getIt(),
-                getIt(),
-                getIt(),
-                getIt(),
-              ),
-              child: ImpactGroupDetailsPage(
-                impactGroup: state.extra! as ImpactGroup,
-              ),
-            ),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,
@@ -736,6 +709,16 @@ class AppRouter {
             ),
           ),
         ),
+        redirect: (context, state) {
+          final auth = context.read<AuthCubit>().state;
+          if (auth.status == AuthStatus.authenticated &&
+              auth.user.isUsUser &&
+              !auth.user.needRegistration) {
+            return FamilyPages.profileSelection.path;
+          } else {
+            return null;
+          }
+        },
       ),
       GoRoute(
         path: Pages.welcome.path,
