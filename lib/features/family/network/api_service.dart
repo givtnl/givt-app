@@ -106,7 +106,7 @@ class FamilyAPIService {
   ) async {
     final url = Uri.https(
       _apiURL,
-      '/givtservice/v1/transactions/$childId',
+      '/givtservice/v1/profiles/$childId/transactions',
     );
 
     final response = await client.post(
