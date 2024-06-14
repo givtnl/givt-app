@@ -21,8 +21,7 @@ class FamilyAPIService {
   String get _apiURL => main_get_it.getIt<APIService>().apiURL;
 
   Future<List<dynamic>> fetchAllProfiles() async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/profiles');
-
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles');
     final response = await client.get(url);
 
     if (response.statusCode >= 400) {
@@ -32,13 +31,13 @@ class FamilyAPIService {
       );
     } else {
       final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-      final item = decodedBody['item'] as Map<String, dynamic>;
-      return item['profiles'] as List<dynamic>;
+      final item = decodedBody['item'] as Map<String, dynamic>?;
+      return item?['profiles'] as List<dynamic>;
     }
   }
 
-  Future<Map<String, dynamic>> fetchChildDetails(String id) async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/profiles/$id');
+  Future<Map<String, dynamic>> fetchChildDetails(String childGuid) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/$childGuid');
 
     final response = await client.get(url);
 
@@ -49,15 +48,14 @@ class FamilyAPIService {
       );
     } else {
       final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-      final temp = decodedBody['item']['profile'] as Map<String, dynamic>;
-      return temp;
+      return decodedBody['item'] as Map<String, dynamic>;
     }
   }
 
   Future<Map<String, dynamic>> fetchOrganisationDetails(String mediumId) async {
     final url = Uri.https(
       _apiURL,
-      'givt4kidsservice/v1/organisation/organisation-detail/$mediumId',
+      'givtservice/v1/organisation/organisation-detail/$mediumId',
     );
 
     final response = await client.get(
@@ -82,7 +80,7 @@ class FamilyAPIService {
   Future<void> createTransaction({required Transaction transaction}) async {
     final url = Uri.https(
       _apiURL,
-      '/givt4kidsservice/v1/transaction/create-transaction',
+      '/givtservice/v1/transaction',
     );
 
     final response = await client.post(
@@ -102,34 +100,13 @@ class FamilyAPIService {
     }
   }
 
-  Future<Map<String, dynamic>> refreshToken(Map<String, dynamic> body) async {
-    final url = Uri.https(
-      _apiURL,
-      '/givt4kidsservice/v1/Authentication/refresh-accesstoken',
-    );
-
-    final response = await client.post(
-      url,
-      body: body,
-    );
-
-    if (response.statusCode >= 400) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    } else {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    }
-  }
-
   Future<List<dynamic>> fetchHistory(
     String childId,
     Map<String, dynamic> body,
   ) async {
     final url = Uri.https(
       _apiURL,
-      '/givt4kidsservice/v1/transaction/transaction-history/$childId',
+      '/givtservice/v1/transactions/$childId',
     );
 
     final response = await client.post(
@@ -153,7 +130,7 @@ class FamilyAPIService {
   }
 
   Future<List<dynamic>> fetchTags() async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/Organisation/tags');
+    final url = Uri.https(_apiURL, '/givtservice/v1/organisation/tags');
 
     final response = await client.get(url);
 
@@ -172,7 +149,7 @@ class FamilyAPIService {
     Map<String, dynamic> body,
   ) async {
     final url =
-        Uri.https(_apiURL, '/givt4kidsservice/v1/Organisation/recommendations');
+        Uri.https(_apiURL, '/givtservice/v1/organisation/recommendations');
 
     final response = await client.post(
       url,
@@ -192,7 +169,7 @@ class FamilyAPIService {
   }
 
   Future<List<dynamic>> fetchAvatars() async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/profiles/avatars');
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/avatars');
 
     final response = await client.get(url);
 
@@ -213,7 +190,7 @@ class FamilyAPIService {
     String childGUID,
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/profiles/$childGUID');
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID');
 
     final response = await client.put(
       url,
@@ -235,7 +212,7 @@ class FamilyAPIService {
   }
 
   Future<Map<String, dynamic>?> fetchFamilyGoal() async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/goal/family/latest');
+    final url = Uri.https(_apiURL, '/givtservice/v1/goal/family/latest');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
       throw GivtServerFailure(
@@ -248,8 +225,9 @@ class FamilyAPIService {
     return item;
   }
 
-  Future<List<dynamic>> fetchImpactGroups(String guid) async {
-    final url = Uri.https(_apiURL, '/givt4kidsservice/v1/groups/$guid');
+  Future<List<dynamic>> fetchImpactGroups(String childGuid) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGuid/groups');
     final response = await client.get(url);
     if (response.statusCode >= 400) {
       throw GivtServerFailure(

@@ -6,6 +6,7 @@ import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dar
 import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
@@ -111,7 +112,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             text: state.error,
             isError: true,
           );
-          context.goNamed(Pages.childrenOverview.name);
+          context.goNamed(FamilyPages.childrenOverview.name);
         }
         if (state.status == AddMemberStateStatus.vpc) {
           LoggingInfo.instance.info(

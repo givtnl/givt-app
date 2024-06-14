@@ -10,8 +10,11 @@ import 'package:givt_app/features/family/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class HomeScreenAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeScreenAppBar({super.key});
+class KidsHomeScreenAppBar extends StatelessWidget
+    implements PreferredSizeWidget {
+  const KidsHomeScreenAppBar({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
