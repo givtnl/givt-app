@@ -50,6 +50,7 @@ class CreditCardDetailsPage extends StatelessWidget {
             }
           }).onError((e, stackTrace) {
             if (onRegistrationFailed != null) {
+              context.pop();
               onRegistrationFailed!.call();
             } else {
               context.pop();
