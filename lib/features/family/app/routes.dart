@@ -134,11 +134,11 @@ class FamilyAppRoutes {
                     getIt(),
                     getIt(),
                   )..add(
-                    OrganisationFetch(
-                      Country.fromCode(user.country),
-                      type: CollectGroupType.none.index,
+                      OrganisationFetch(
+                        Country.fromCode(user.country),
+                        type: CollectGroupType.none.index,
+                      ),
                     ),
-                  ),
                 ),
                 BlocProvider(
                   create: (_) => CreateFamilyGoalCubit(getIt()),
@@ -155,8 +155,7 @@ class FamilyAppRoutes {
             create: (_) => CachedMembersCubit(
               getIt(),
               getIt(),
-              familyLeaderName:
-              context.read<AuthCubit>().state.user.firstName,
+              familyLeaderName: context.read<AuthCubit>().state.user.firstName,
             )..loadFromCache(),
             child: const CachedFamilyOverviewPage(),
           ),
@@ -247,7 +246,7 @@ class FamilyAppRoutes {
                 ),
                 BlocProvider(
                   create: (context) =>
-                  FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
+                      FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
                 ),
               ],
               child: const FamilyOverviewPage(),
@@ -263,28 +262,28 @@ class FamilyAppRoutes {
       ),
     ),
     GoRoute(
-        path: FamilyPages.wallet.path,
-        name: FamilyPages.wallet.name,
-        builder: (context, state) {
-          context.read<ProfilesCubit>().fetchActiveProfile();
-          final user = context.read<ProfilesCubit>().state.activeProfile;
-          context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (context) => NavigationCubit(),
-              ),
-              BlocProvider(
-                create: (context) =>
-                    HistoryCubit(getIt())..fetchHistory(user.id),
-              ),
-            ],
-            child: Theme(
-              data: const FamilyAppTheme().toThemeData(),
-              child: const KidsHomeScreen(),
+      path: FamilyPages.wallet.path,
+      name: FamilyPages.wallet.name,
+      builder: (context, state) {
+        context.read<ProfilesCubit>().fetchActiveProfile();
+        final user = context.read<ProfilesCubit>().state.activeProfile;
+        context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => NavigationCubit(),
             ),
-          );
-        }),
+            BlocProvider(
+              create: (context) => HistoryCubit(getIt())..fetchHistory(user.id),
+            ),
+          ],
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: const KidsHomeScreen(),
+          ),
+        );
+      },
+    ),
     GoRoute(
       path: FamilyPages.camera.path,
       name: FamilyPages.camera.name,
@@ -309,22 +308,23 @@ class FamilyAppRoutes {
       ),
     ),
     GoRoute(
-        path: FamilyPages.chooseAmountSliderGoal.path,
-        name: FamilyPages.chooseAmountSliderGoal.name,
-        builder: (context, state) {
-          final extra = state.extra ?? const Goal.empty();
-          final group = extra as ImpactGroup;
-          return BlocProvider(
-            create: (BuildContext context) =>
-                CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-            child: Theme(
-              data: const FamilyAppTheme().toThemeData(),
-              child: ChooseAmountSliderGoalScreen(
-                group: group,
-              ),
+      path: FamilyPages.chooseAmountSliderGoal.path,
+      name: FamilyPages.chooseAmountSliderGoal.name,
+      builder: (context, state) {
+        final extra = state.extra ?? const Goal.empty();
+        final group = extra as ImpactGroup;
+        return BlocProvider(
+          create: (BuildContext context) =>
+              CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+          child: Theme(
+            data: const FamilyAppTheme().toThemeData(),
+            child: ChooseAmountSliderGoalScreen(
+              group: group,
             ),
-          );
-        }),
+          ),
+        );
+      },
+    ),
     GoRoute(
       path: FamilyPages.success.path,
       name: FamilyPages.success.name,
@@ -350,13 +350,14 @@ class FamilyAppRoutes {
         ),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(
-                position: animation.drive(
-                  Tween<Offset>(
-                    begin: const Offset(2, 0),
-                    end: Offset.zero,
-                  ).chain(CurveTween(curve: Curves.ease)),
-                ),
-                child: child),
+          position: animation.drive(
+            Tween<Offset>(
+              begin: const Offset(2, 0),
+              end: Offset.zero,
+            ).chain(CurveTween(curve: Curves.ease)),
+          ),
+          child: child,
+        ),
       ),
     ),
     GoRoute(

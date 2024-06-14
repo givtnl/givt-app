@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -64,7 +64,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       child: InkWell(
                         onTap: () {
                           SystemSound.play(SystemSoundType.click);
-                          context.pushNamed(Pages.avatarSelection.name);
+                          context.pushNamed(FamilyPages.avatarSelection.name);
                           AnalyticsHelper.logEvent(
                             eventName:
                                 AmplitudeEvents.editProfilePictureClicked,
@@ -123,7 +123,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       ),
                       onPressed: () {
                         SystemSound.play(SystemSoundType.click);
-                        context.pushNamed(Pages.avatarSelection.name);
+                        context.pushNamed(FamilyPages.avatarSelection.name);
                         AnalyticsHelper.logEvent(
                           eventName: AmplitudeEvents.editAvatarIconClicked,
                         );

@@ -1,5 +1,5 @@
-import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/children/avatars/models/avatar.dart';
+import 'package:givt_app/features/family/features/avatars/models/avatar.dart';
+import 'package:givt_app/features/family/network/api_service.dart';
 
 mixin AvatarsRepository {
   Future<List<Avatar>> fetchAvatars();
@@ -10,7 +10,7 @@ class AvatarsRepositoryImpl with AvatarsRepository {
     this._apiService,
   );
 
-  final APIService _apiService;
+  final FamilyAPIService _apiService;
 
   @override
   Future<List<Avatar>> fetchAvatars() async {
