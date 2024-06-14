@@ -417,22 +417,15 @@ class AppRouter {
               final createStripe = bool.parse(
                 state.uri.queryParameters['createStripe'] ?? 'false',
               );
+
+              if (createStripe) {
+                context
+                    .read<RegistrationBloc>()
+                    .add(const RegistrationStripeInit());
+              }
+
               return MultiBlocProvider(
                 providers: [
-                  BlocProvider(
-                    create: (_) {
-                      final registrationBloc = RegistrationBloc(
-                        authCubit: context.read<AuthCubit>(),
-                        authRepositoy: getIt(),
-                      );
-
-                      if (createStripe) {
-                        registrationBloc.add(const RegistrationStripeInit());
-                      }
-
-                      return registrationBloc;
-                    },
-                  ),
                   BlocProvider(
                     create: (_) => StripeCubit(
                       authRepositoy: getIt(),
