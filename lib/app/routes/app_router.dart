@@ -113,8 +113,7 @@ class AppRouter {
         path: Pages.permitBiometric.path,
         name: Pages.permitBiometric.name,
         builder: (context, state) {
-          final permitBiometricRequest =
-          state.extra! as PermitBiometricRequest;
+          final permitBiometricRequest = state.extra! as PermitBiometricRequest;
           return BlocProvider(
             create: (_) => PermitBiometricCubit(
               permitBiometricRequest: permitBiometricRequest,
@@ -712,7 +711,9 @@ class AppRouter {
         ),
         redirect: (context, state) {
           final auth = context.read<AuthCubit>().state;
-          if (auth.status == AuthStatus.authenticated && auth.user.isUsUser) {
+          if (auth.status == AuthStatus.authenticated &&
+              auth.user.isUsUser &&
+              !auth.user.needRegistration) {
             return FamilyPages.profileSelection.path;
           } else {
             return null;

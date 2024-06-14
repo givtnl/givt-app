@@ -49,12 +49,8 @@ class CreditCardDetailsPage extends StatelessWidget {
               _handleStripeRegistrationSuccess(context);
             }
           }).onError((e, stackTrace) {
-            if (onRegistrationFailed != null) {
-              context.pop();
-              onRegistrationFailed!.call();
-            } else {
-              context.goNamed(Pages.home.name);
-            }
+            context.pop();
+            onRegistrationFailed?.call();
 
             /* Logged as info as stripe is giving exception
                when for example people close the bottomsheet. 
