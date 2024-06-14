@@ -919,8 +919,7 @@ class APIService {
   }
 
   Future<List<dynamic>> fetchHistory(Map<String, dynamic> body) async {
-    final url =
-        Uri.https(_apiURL, '/givtservice/v1/profiles/transactions');
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/transactions');
 
     final response = await client.post(
       url,
@@ -1114,5 +1113,4 @@ class APIService {
     }
     return Uri.https('certs.givt.app', '/v1');
   }
-
 }
