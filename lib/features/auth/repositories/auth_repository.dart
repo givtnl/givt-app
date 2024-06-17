@@ -97,7 +97,7 @@ class AuthRepositoyImpl with AuthRepository {
 
   // bool hasSession
   final StreamController<bool> _hasSessionStreamController =
-      StreamController<bool>();
+      StreamController<bool>.broadcast();
 
   @override
   Stream<bool> hasSessionStream() => _hasSessionStreamController.stream;
