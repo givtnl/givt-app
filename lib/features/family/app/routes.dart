@@ -87,152 +87,152 @@ class FamilyAppRoutes {
 
   static final List<RouteBase> _routes = [
     GoRoute(
+      path: FamilyPages.generosityChallenge.path,
+      name: FamilyPages.generosityChallenge.name,
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => GenerosityChallengeCubit(
+            getIt(),
+            getIt(),
+            getIt(),
+          )..loadFromCache(),
+          child: const GenerosityChallenge(),
+        );
+      },
       routes: [
         GoRoute(
-          path: FamilyPages.generosityChallenge.path,
-          name: FamilyPages.generosityChallenge.name,
+          path: FamilyPages.generosityChallengeIntroduction.path,
+          name: FamilyPages.generosityChallengeIntroduction.name,
           builder: (context, state) {
-            return BlocProvider(
-              create: (_) => GenerosityChallengeCubit(
-                getIt(),
-                getIt(),
-                getIt(),
-              )..loadFromCache(),
-              child: const GenerosityChallenge(),
+            final challengeCubit = state.extra! as GenerosityChallengeCubit;
+            return BlocProvider.value(
+              value: challengeCubit,
+              child: const GenerosityChallengeIntruduction(),
             );
           },
-          routes: [
-            GoRoute(
-              path: FamilyPages.generosityChallengeIntroduction.path,
-              name: FamilyPages.generosityChallengeIntroduction.name,
-              builder: (context, state) {
-                final challengeCubit = state.extra! as GenerosityChallengeCubit;
-                return BlocProvider.value(
-                  value: challengeCubit,
-                  child: const GenerosityChallengeIntruduction(),
-                );
-              },
-            ),
-            GoRoute(
-              path: FamilyPages.generosityChallengeChat.path,
-              name: FamilyPages.generosityChallengeChat.name,
-              builder: (context, state) {
-                final challengeCubit = state.extra! as GenerosityChallengeCubit;
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(
-                      value: challengeCubit,
-                    ),
-                    BlocProvider(
-                      create: (_) => ChatScriptsCubit(
-                        getIt(),
-                        challengeCubit: challengeCubit,
-                      )..init(context),
-                    ),
-                  ],
-                  child: const ChatScriptPage(),
-                );
-              },
-            ),
-            GoRoute(
-              path: FamilyPages.selectValues.path,
-              name: FamilyPages.selectValues.name,
-              builder: (context, state) {
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(
-                      value: state.extra! as GenerosityChallengeCubit,
-                    ),
-                    BlocProvider(
-                      create: (context) => FamilyValuesCubit(
-                        generosityChallengeRepository: getIt(),
-                      ),
-                    ),
-                  ],
-                  child: const SelectFamilyValues(),
-                );
-              },
-            ),
-            GoRoute(
-              path: FamilyPages.displayValues.path,
-              name: FamilyPages.displayValues.name,
-              builder: (context, state) {
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(
-                      value: state.extra! as GenerosityChallengeCubit,
-                    ),
-                    BlocProvider(
-                      create: (context) => FamilyValuesCubit(
-                        generosityChallengeRepository: getIt(),
-                      )..getSavedValues(),
-                    ),
-                  ],
-                  child: const DisplayFamilyValues(),
-                );
-              },
-            ),
-            GoRoute(
-              path: FamilyPages.displayValuesOrganisations.path,
-              name: FamilyPages.displayValuesOrganisations.name,
-              builder: (context, state) {
-                final extra = state.extra! as Map<String, dynamic>;
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(
-                      value:
-                      extra[GenerosityChallengeHelper.generosityChallengeKey]
-                      as GenerosityChallengeCubit,
-                    ),
-                  ],
-                  child: DisplayOrganisations(
-                    familyValues: extra[FamilyValuesCubit.familyValuesKey]
-                    as List<FamilyValue>,
-                  ),
-                );
-              },
-            ),
-            GoRoute(
-              path: FamilyPages.chooseAmountSlider.path,
-              name: FamilyPages.chooseAmountSlider.name,
-              builder: (context, state) {
-                final extras = state.extra! as List;
-                final organisation = extras[0] as Organisation;
-                final challengeCubit = extras[1] as GenerosityChallengeCubit;
-
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (_) => GiveBloc(
-                        getIt(),
-                        getIt(),
-                        getIt(),
-                        getIt(),
-                      ),
-                    ),
-                    BlocProvider(
-                      create: (context) => CreateChallengeDonationCubit(),
-                    ),
-                    BlocProvider.value(
-                      value: challengeCubit,
-                    ),
-                  ],
-                  child: ChooseAmountSliderPage(
-                    organisation: organisation,
-                  ),
-                );
-              },
-            ),
-            GoRoute(
-              path: FamilyPages.allowanceFlow.path,
-              name: FamilyPages.allowanceFlow.name,
-              builder: (context, state) => BlocProvider.value(
-                value: state.extra! as GenerosityChallengeCubit,
-                child: const GenerosityAllowanceFlowPage(),
-              ),
-            ),
-          ],
         ),
+        GoRoute(
+          path: FamilyPages.generosityChallengeChat.path,
+          name: FamilyPages.generosityChallengeChat.name,
+          builder: (context, state) {
+            final challengeCubit = state.extra! as GenerosityChallengeCubit;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: challengeCubit,
+                ),
+                BlocProvider(
+                  create: (_) => ChatScriptsCubit(
+                    getIt(),
+                    challengeCubit: challengeCubit,
+                  )..init(context),
+                ),
+              ],
+              child: const ChatScriptPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.selectValues.path,
+          name: FamilyPages.selectValues.name,
+          builder: (context, state) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: state.extra! as GenerosityChallengeCubit,
+                ),
+                BlocProvider(
+                  create: (context) => FamilyValuesCubit(
+                    generosityChallengeRepository: getIt(),
+                  ),
+                ),
+              ],
+              child: const SelectFamilyValues(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.displayValues.path,
+          name: FamilyPages.displayValues.name,
+          builder: (context, state) {
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: state.extra! as GenerosityChallengeCubit,
+                ),
+                BlocProvider(
+                  create: (context) => FamilyValuesCubit(
+                    generosityChallengeRepository: getIt(),
+                  )..getSavedValues(),
+                ),
+              ],
+              child: const DisplayFamilyValues(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.displayValuesOrganisations.path,
+          name: FamilyPages.displayValuesOrganisations.name,
+          builder: (context, state) {
+            final extra = state.extra! as Map<String, dynamic>;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value:
+                  extra[GenerosityChallengeHelper.generosityChallengeKey]
+                  as GenerosityChallengeCubit,
+                ),
+              ],
+              child: DisplayOrganisations(
+                familyValues: extra[FamilyValuesCubit.familyValuesKey]
+                as List<FamilyValue>,
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.chooseAmountSlider.path,
+          name: FamilyPages.chooseAmountSlider.name,
+          builder: (context, state) {
+            final extras = state.extra! as List;
+            final organisation = extras[0] as Organisation;
+            final challengeCubit = extras[1] as GenerosityChallengeCubit;
+
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => GiveBloc(
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (context) => CreateChallengeDonationCubit(),
+                ),
+                BlocProvider.value(
+                  value: challengeCubit,
+                ),
+              ],
+              child: ChooseAmountSliderPage(
+                organisation: organisation,
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.allowanceFlow.path,
+          name: FamilyPages.allowanceFlow.name,
+          builder: (context, state) => BlocProvider.value(
+            value: state.extra! as GenerosityChallengeCubit,
+            child: const GenerosityAllowanceFlowPage(),
+          ),
+        ),
+      ],
+    ),
+    GoRoute(
+      routes: [
         GoRoute(
           path: FamilyPages.creditCardDetails.path,
           name: FamilyPages.creditCardDetails.name,
