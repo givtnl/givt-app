@@ -2,12 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
-import 'package:givt_app/features/children/overview/widgets/download_givt_for_kids_app_widget.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/family/app/pages.dart';
@@ -107,12 +105,6 @@ class FamilyOverviewPage extends StatelessWidget {
           body: SafeArea(
             child: buildFamilyOverviewBody(state, context),
           ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: (state is FamilyOverviewUpdatedState &&
-                  (state.hasChildren || !state.isAdultSingle))
-              ? const DownloadGivtForKidsAppWidget()
-              : null,
         );
       },
     );
