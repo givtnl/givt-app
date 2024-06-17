@@ -18,7 +18,8 @@ class EditChildRepositoryImpl with EditChildRepository {
 
   final APIService apiService;
 
-  final StreamController<String> _childGUIDController = StreamController();
+  final StreamController<String> _childGUIDController =
+      StreamController.broadcast();
 
   @override
   Future<bool> editChild(String childGUID, EditChild child) async {
