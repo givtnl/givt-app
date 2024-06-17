@@ -2,6 +2,7 @@
 
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 
 class GenerosityChallengeContentHelper {
   static final List<Task> _tasks = [
@@ -18,7 +19,7 @@ class GenerosityChallengeContentHelper {
       description:
           'Chat together and pick 3 values from your welcome pack. These will help guide your decisions around generosity.\n\nMake sure everyone has at least 1 they want of the 3 chosen.',
       buttonText: 'Select 3 values',
-      redirect: Pages.selectValues.path,
+      redirect: FamilyPages.selectValues.path,
       onTap: () {},
       partnerCard: Task.card(
         image: 'assets/images/generosity_challenge_day_2.svg',
@@ -61,7 +62,7 @@ class GenerosityChallengeContentHelper {
       buttonText: 'Find a charity',
       description:
           'Using your Family Values see what charities align with what you care about. Give to one of them.',
-      redirect: Pages.displayValues.path,
+      redirect: FamilyPages.displayValues.path,
       onTap: () {},
       partnerCard: Task.card(
         image: 'assets/images/generosity_challenge_day_7.svg',
@@ -76,7 +77,7 @@ class GenerosityChallengeContentHelper {
       buttonText: 'Yeah sure!',
       description:
           "Let's setup a recurring giving allowance to encourage a lifelong habit of generosity.\n\nAre you ready to help them become generous individuals?",
-      redirect: Pages.allowanceFlow.path,
+      redirect: FamilyPages.allowanceFlow.path,
       onTap: () {},
     ),
   ];

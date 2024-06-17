@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -113,7 +113,7 @@ class _GenerosityChallengeIntruductionState
                   eventName: AmplitudeEvents.acceptedGenerosityChallenge,
                 );
                 context.goNamed(
-                  Pages.generosityChallengeChat.name,
+                  FamilyPages.generosityChallengeChat.name,
                   extra: context.read<GenerosityChallengeCubit>(),
                 );
               },
