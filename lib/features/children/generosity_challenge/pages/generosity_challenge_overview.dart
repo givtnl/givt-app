@@ -15,7 +15,9 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeOverview extends StatefulWidget {
-  const GenerosityChallengeOverview({super.key,});
+  const GenerosityChallengeOverview({
+    super.key,
+  });
 
   @override
   State<GenerosityChallengeOverview> createState() =>
@@ -25,6 +27,7 @@ class GenerosityChallengeOverview extends StatefulWidget {
 class _GenerosityChallengeOverviewState
     extends State<GenerosityChallengeOverview> {
   bool isDebug = false;
+
   @override
   void initState() {
     super.initState();
@@ -179,29 +182,6 @@ class _GenerosityChallengeOverviewState
                   },
                 ),
                 const Spacer(),
-                if(isDebug)
-                  ToggleButtons(
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                    selectedBorderColor: Colors.blue[700],
-                    selectedColor: Colors.white,
-                    fillColor: Colors.blue[200],
-                    color: Colors.blue[400],
-                    constraints: const BoxConstraints(
-                      minHeight: 40,
-                      minWidth: 80,
-                    ),
-                    isSelected: [
-                      challenge.state.unlockDayTimeDifference ==
-                          UnlockDayTimeDifference.days,
-                      challenge.state.unlockDayTimeDifference ==
-                          UnlockDayTimeDifference.minutes,
-                    ],
-                    onPressed: challenge.toggleTimeDifference,
-                    children: [
-                      Text(UnlockDayTimeDifference.days.name),
-                      Text(UnlockDayTimeDifference.minutes.name),
-                    ],
-                  ),
                 if (isDebug)
                   ToggleButtons(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),

@@ -49,7 +49,6 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   void setDebugQuickFlow({required bool enabled}) {
     _isDebugQuickFlowEnabled = enabled;
     emit(state.copyWith(isDebugQuickFlowEnabled: enabled));
-    clearCache();
   }
 
   Future<void> clearCache() async {
@@ -272,6 +271,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         chatScripts: chatScripts,
         chatActorsSettings: chatActorsSettings,
         availableChatDayIndex: availableChatDayIndex,
+        isDebugQuickFlowEnabled: _isDebugQuickFlowEnabled,
       ),
     );
   }
