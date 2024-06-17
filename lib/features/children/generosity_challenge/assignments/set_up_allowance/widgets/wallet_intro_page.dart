@@ -22,13 +22,13 @@ class WalletIntroPage extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'The Mayor has given each child their own Wallet that can be found in Givt4Kids.',
+                'The Mayor has gifted each child their own Wallet.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 16),
               Text(
-                'Afterwards you can download the app so they can continue their giving journey.',
+                'They can use the money to discover different ways to spread generosity.',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
