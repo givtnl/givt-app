@@ -7,7 +7,6 @@ import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -23,20 +22,9 @@ class ImpactGroupJoinSuccessPage extends StatefulWidget {
 
 class _ImpactGroupJoinSuccessPageState
     extends State<ImpactGroupJoinSuccessPage> {
-  var _isGivt4KidsAppInstalled = true;
-
   @override
   void initState() {
-    _initialise();
     super.initState();
-  }
-
-  Future<void> _initialise() async {
-    final isAppInstalled = await Util.checkIfGivt4KidsAppInstalled();
-
-    setState(() {
-      _isGivt4KidsAppInstalled = isAppInstalled;
-    });
   }
 
   @override
@@ -99,48 +87,22 @@ class _ImpactGroupJoinSuccessPageState
                 'assets/images/vpc_success.svg',
                 width: size.width * 0.8,
               ),
-              if (_isGivt4KidsAppInstalled)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: CustomGreenElevatedButton(
-                    title: context.l10n.seeMyFamily,
-                    onPressed: () {
-                      unawaited(
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.seeMyFamilyClicked,
-                        ),
-                      );
-                      context.pushReplacementNamed(
-                        FamilyPages.childrenOverview.name,
-                      );
-                    },
-                  ),
-                )
-              else
-                Column(
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        context.pushReplacementNamed(
-                          FamilyPages.childrenOverview.name,
-                        );
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.iWillDonloadG4KLater,
-                        );
-                      },
-                      child: Text(
-                        context.l10n.iWillDoThisLater,
-                        style: GoogleFonts.mulish(
-                          textStyle:
-                              Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontSize: 16,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: CustomGreenElevatedButton(
+                  title: context.l10n.seeMyFamily,
+                  onPressed: () {
+                    unawaited(
+                      AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.seeMyFamilyClicked,
                       ),
-                    ),
-                  ],
+                    );
+                    context.pushReplacementNamed(
+                      FamilyPages.childrenOverview.name,
+                    );
+                  },
                 ),
+              ),
             ],
           ),
         ),
