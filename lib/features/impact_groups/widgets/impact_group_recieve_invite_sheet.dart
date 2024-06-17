@@ -78,7 +78,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       )
                       ..pop();
                   } else {
-                    context.pushNamed(FamilyPages.profileSelection.name);
+                    context.goNamed(FamilyPages.profileSelection.name);
                   }
                 },
               );
