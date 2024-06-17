@@ -121,11 +121,6 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: Pages.joinImpactGroupSuccess.path,
-        name: Pages.joinImpactGroupSuccess.name,
-        builder: (context, state) => const ImpactGroupJoinSuccessPage(),
-      ),
-      GoRoute(
         path: Pages.impactGroupDetails.path,
         name: Pages.impactGroupDetails.name,
         builder: (context, state) => BlocProvider(

@@ -84,10 +84,6 @@ enum Pages {
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
   avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
-  joinImpactGroupSuccess(
-    path: '/join-impact-group-success',
-    name: 'JOIN-IMPACT-GROUP-SUCCESS',
-  ),
   permitBiometric(path: '/permit-biometric', name: 'PERMIT-BIOMETRIC'),
 
   impactGroupDetails(
