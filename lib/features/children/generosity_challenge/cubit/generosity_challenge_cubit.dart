@@ -27,12 +27,15 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   final ChatScriptsRepository _chatScriptsRepository;
   final ChatHistoryRepository _chatHistoryRepository;
 
+  bool _isDebugQuickFlowEnabled = false;
+
   Future<void> loadFromCache() async {
     emit(state.copyWith(status: GenerosityChallengeStatus.loading));
 
     final days = await _generosityChallengeRepository.loadFromCache();
 
-    final chatScripts = await _chatScriptsRepository.loadChatScripts();
+    final chatScripts = await _chatScriptsRepository.loadChatScripts(
+        isDebugQuickFlowEnabled: _isDebugQuickFlowEnabled);
     final chatActorsSettings =
         await _chatScriptsRepository.loadChatActorsSettings();
 
@@ -41,6 +44,12 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       chatScripts: chatScripts,
       chatActorsSettings: chatActorsSettings,
     );
+  }
+
+  void setDebugQuickFlow({required bool enabled}) {
+    _isDebugQuickFlowEnabled = enabled;
+    emit(state.copyWith(isDebugQuickFlowEnabled: enabled));
+    clearCache();
   }
 
   Future<void> clearCache() async {

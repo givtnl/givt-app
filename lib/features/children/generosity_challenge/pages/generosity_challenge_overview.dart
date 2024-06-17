@@ -179,6 +179,29 @@ class _GenerosityChallengeOverviewState
                   },
                 ),
                 const Spacer(),
+                if(isDebug)
+                  ToggleButtons(
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    selectedBorderColor: Colors.blue[700],
+                    selectedColor: Colors.white,
+                    fillColor: Colors.blue[200],
+                    color: Colors.blue[400],
+                    constraints: const BoxConstraints(
+                      minHeight: 40,
+                      minWidth: 80,
+                    ),
+                    isSelected: [
+                      challenge.state.unlockDayTimeDifference ==
+                          UnlockDayTimeDifference.days,
+                      challenge.state.unlockDayTimeDifference ==
+                          UnlockDayTimeDifference.minutes,
+                    ],
+                    onPressed: challenge.toggleTimeDifference,
+                    children: [
+                      Text(UnlockDayTimeDifference.days.name),
+                      Text(UnlockDayTimeDifference.minutes.name),
+                    ],
+                  ),
                 if (isDebug)
                   ToggleButtons(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
