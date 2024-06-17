@@ -49,6 +49,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   void setDebugQuickFlow({required bool enabled}) {
     _isDebugQuickFlowEnabled = enabled;
     emit(state.copyWith(isDebugQuickFlowEnabled: enabled));
+    loadFromCache();
   }
 
   Future<void> clearCache() async {

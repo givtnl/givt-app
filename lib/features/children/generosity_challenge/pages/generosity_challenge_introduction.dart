@@ -13,7 +13,9 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeIntruduction extends StatefulWidget {
-  const GenerosityChallengeIntruduction({super.key,});
+  const GenerosityChallengeIntruduction({
+    super.key,
+  });
 
   @override
   State<GenerosityChallengeIntruduction> createState() =>
@@ -24,12 +26,13 @@ class _GenerosityChallengeIntruductionState
     extends State<GenerosityChallengeIntruduction> {
   bool _acceptPolicy = false;
   bool isDebug = false;
+  bool isDebugQuickFlowEnabled = false;
 
   @override
   void initState() {
     super.initState();
     _isDebug().then(
-          (value) => setState(() {
+      (value) => setState(() {
         isDebug = value;
       }),
     );
@@ -126,11 +129,15 @@ class _GenerosityChallengeIntruductionState
                   minWidth: 80,
                 ),
                 isSelected: [
-                  challenge.state.isDebugQuickFlowEnabled == true,
-                  challenge.state.isDebugQuickFlowEnabled == false,
+                  isDebugQuickFlowEnabled == true,
+                  isDebugQuickFlowEnabled == false,
                 ],
-                onPressed: (index) =>
-                    challenge.setDebugQuickFlow(enabled: index == 0),
+                onPressed: (index) {
+                  challenge.setDebugQuickFlow(enabled: index == 0);
+                  setState(() {
+                    isDebugQuickFlowEnabled = index == 0;
+                  });
+                },
                 children: const [
                   Text('Enable quick flow'),
                   Text('Disable quick flow'),
