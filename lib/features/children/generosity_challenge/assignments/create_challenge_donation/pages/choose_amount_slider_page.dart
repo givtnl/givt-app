@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -18,11 +17,12 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_initial_dialog.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -67,7 +67,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
                   ChatScriptSaveKey.organisation,
                   widget.organisation.organisationName!,
                 );
-              context.goNamed(Pages.generosityChallenge.name);
+              context.goNamed(FamilyPages.generosityChallenge.name);
               _logSuccessFullDonation(state);
             } else if (giveState.status == GiveStatus.error) {
               _setLoading(false);

@@ -11,21 +11,38 @@ class ChatScriptsAssetRepositoryImpl with ChatScriptsRepository {
       'assets/jsons/generosity_challenge/chat_actors_settings.json';
 
   @override
-  Future<List<ChatScriptItem>> loadChatScripts() async {
+  Future<List<ChatScriptItem>> loadChatScripts({
+    bool isDebugQuickFlowEnabled = false,
+  }) async {
     final chatScripts = <ChatScriptItem>[];
-    for (var dayIndex = 0;
-        dayIndex < GenerosityChallengeHelper.generosityChallengeDays;
-        dayIndex++) {
-      final path =
-          'assets/jsons/generosity_challenge/chat_scripts/chat_script_day_$dayIndex.json';
+    if (isDebugQuickFlowEnabled) {
+      chatScripts
+        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(0)))
+        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(1)))
+        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(6)))
+        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(7)));
+      return chatScripts;
+    } else {
+      for (var dayIndex = 0;
+          dayIndex < GenerosityChallengeHelper.generosityChallengeDays;
+          dayIndex++) {
+        final chatScriptBranchesMap = await _getChatScriptForDay(dayIndex);
 
-      final json = await root_bundle.rootBundle.loadString(path);
-
-      final chatScriptBranchesMap = jsonDecode(json) as Map<String, dynamic>;
-
-      chatScripts.add(ChatScriptItem.fromBranchesMap(chatScriptBranchesMap));
+        chatScripts.add(ChatScriptItem.fromBranchesMap(chatScriptBranchesMap));
+      }
     }
+
     return chatScripts;
+  }
+
+  Future<Map<String, dynamic>> _getChatScriptForDay(int dayIndex) async {
+    final path =
+        'assets/jsons/generosity_challenge/chat_scripts/chat_script_day_$dayIndex.json';
+
+    final json = await root_bundle.rootBundle.loadString(path);
+
+    final chatScriptBranchesMap = jsonDecode(json) as Map<String, dynamic>;
+    return chatScriptBranchesMap;
   }
 
   @override

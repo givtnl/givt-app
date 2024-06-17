@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_day_details.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
@@ -31,7 +30,7 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
       Future.delayed(
         Duration.zero,
         () => context.pushNamed(
-          Pages.generosityChallengeIntroduction.name,
+          FamilyPages.generosityChallengeIntroduction.name,
           extra: context.read<GenerosityChallengeCubit>(),
         ),
       );
@@ -79,7 +78,7 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
                     context
                       ..pop()
                       ..goNamed(
-                        Pages.generosityChallengeChat.name,
+                        FamilyPages.generosityChallengeChat.name,
                         extra: challenge,
                       );
                   },
