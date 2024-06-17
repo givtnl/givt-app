@@ -3,38 +3,6 @@ enum Pages {
   home(path: '/home', name: 'HOME'),
   loading(path: '/loading', name: 'LOADING'),
   welcome(path: '/welcome', name: 'WELCOME'),
-  generosityChallenge(
-    path: '/generosity-challenge',
-    name: 'GENEROSITY-CHALLENGE',
-  ),
-  generosityChallengeChat(
-    path: 'generosity-challenge-chat',
-    name: 'GENEROSITY-CHALLENGE-CHAT',
-  ),
-  generosityChallengeIntroduction(
-    path: 'generosity-challenge-introduction',
-    name: 'GENEROSITY-CHALLENGE-INTRODUCTION',
-  ),
-  selectValues(
-    path: 'select-values',
-    name: 'SELECT-VALUES',
-  ),
-  displayValues(
-    path: 'display-values',
-    name: 'DISPLAY-VALUES',
-  ),
-  displayValuesOrganisations(
-    path: 'display-values-organisations',
-    name: 'DISPLAY-VALUES-ORGANISATIONS',
-  ),
-  chooseAmountSlider(
-    path: 'choose-amount-slider',
-    name: 'CHOOSE-AMOUNT-SLIDER',
-  ),
-  allowanceFlow(
-    path: 'allowance-flow',
-    name: 'ALLOWANCE-FLOW',
-  ),
 
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
