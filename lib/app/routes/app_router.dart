@@ -9,20 +9,9 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
 import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/children/avatars/screens/avatar_selection_screen.dart';
-import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
-import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
-import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
-import 'package:givt_app/features/children/details/pages/child_details_page.dart';
-import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
-import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
-import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
-import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
-import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
@@ -37,9 +26,6 @@ import 'package:givt_app/features/children/generosity_challenge/pages/generosity
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
-import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
-import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/app/routes.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
@@ -53,7 +39,6 @@ import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
 import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/pages/impact_group_details_page.dart';
 import 'package:givt_app/features/impact_groups/pages/impact_group_join_success_page.dart';
@@ -77,7 +62,6 @@ import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
-import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -123,6 +107,39 @@ class AppRouter {
           listener: (context, state) =>
               _checkAndRedirectAuth(state, context, routerState),
           child: const LoadingPage(),
+        ),
+      ),
+      GoRoute(
+        path: Pages.permitBiometric.path,
+        name: Pages.permitBiometric.name,
+        builder: (context, state) {
+          final permitBiometricRequest = state.extra! as PermitBiometricRequest;
+          return BlocProvider(
+            create: (_) => PermitBiometricCubit(
+              permitBiometricRequest: permitBiometricRequest,
+            )..checkBiometric(),
+            child: const PermitBiometricPage(),
+          );
+        },
+      ),
+      GoRoute(
+        path: Pages.joinImpactGroupSuccess.path,
+        name: Pages.joinImpactGroupSuccess.name,
+        builder: (context, state) => const ImpactGroupJoinSuccessPage(),
+      ),
+      GoRoute(
+        path: Pages.impactGroupDetails.path,
+        name: Pages.impactGroupDetails.name,
+        builder: (context, state) => BlocProvider(
+          create: (_) => GiveBloc(
+            getIt(),
+            getIt(),
+            getIt(),
+            getIt(),
+          ),
+          child: ImpactGroupDetailsPage(
+            impactGroup: state.extra! as ImpactGroup,
+          ),
         ),
       ),
       GoRoute(
@@ -353,113 +370,7 @@ class AppRouter {
                     ),
                   ),
                 ],
-                child: PersonalInfoEditPage(
-                  navigatingFromFamily: state.extra != null,
-                ),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.childrenOverview.path,
-            name: Pages.childrenOverview.name,
-            builder: (context, state) {
-              var showAllowanceWarning = false;
-              if (state.extra != null) {
-                showAllowanceWarning = state.extra!.toString().contains('true');
-              }
-              context.read<ImpactGroupsCubit>().fetchImpactGroups();
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) => FamilyOverviewCubit(getIt())
-                      ..fetchFamilyProfiles(
-                        showAllowanceWarning: showAllowanceWarning,
-                      ),
-                  ),
-                  BlocProvider(
-                    create: (context) =>
-                        FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
-                  ),
-                ],
-                child: const FamilyOverviewPage(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.cachedChildrenOverview.path,
-            name: Pages.cachedChildrenOverview.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => CachedMembersCubit(
-                getIt(),
-                getIt(),
-                familyLeaderName:
-                    context.read<AuthCubit>().state.user.firstName,
-              )..loadFromCache(),
-              child: const CachedFamilyOverviewPage(),
-            ),
-          ),
-          GoRoute(
-            path: Pages.childDetails.path,
-            name: Pages.childDetails.name,
-            builder: (context, state) {
-              final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-              final childProfile = extras[1] as Profile;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: childrenOverviewCubit,
-                  ),
-                  BlocProvider(
-                    create: (_) => ChildDetailsCubit(
-                      getIt(),
-                      getIt(),
-                      childProfile,
-                    )..fetchChildDetails(),
-                  ),
-                ],
-                child: const ChildDetailsPage(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.editChild.path,
-            name: Pages.editChild.name,
-            builder: (context, state) {
-              final extras = state.extra! as List<dynamic>;
-              final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-              final childDetailsCubit = extras[1] as ChildDetailsCubit;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: childDetailsCubit,
-                  ),
-                  BlocProvider.value(
-                    value: childrenOverviewCubit,
-                  ),
-                  BlocProvider(
-                    create: (_) => EditChildCubit(
-                      getIt(),
-                      AppLocalizations.of(context),
-                      (childDetailsCubit.state as ChildDetailsFetchedState)
-                          .profileDetails,
-                    ),
-                  ),
-                ],
-                child: const EditChildPage(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.addMember.path,
-            name: Pages.addMember.name,
-            builder: (context, state) {
-              final familyAlreadyExists = state.extra as bool? ?? false;
-              return BlocProvider(
-                create: (_) => AddMemberCubit(getIt(), getIt()),
-                child: AddMemberMainScaffold(
-                  familyAlreadyExists: familyAlreadyExists,
-                ),
+                child: const PersonalInfoEditPage(),
               );
             },
           ),
@@ -487,35 +398,6 @@ class AppRouter {
             },
           ),
           GoRoute(
-            path: Pages.createFamilyGoal.path,
-            name: Pages.createFamilyGoal.name,
-            builder: (context, state) {
-              final user = context.read<AuthCubit>().state.user;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: state.extra! as FamilyOverviewCubit,
-                  ),
-                  BlocProvider(
-                    create: (_) => OrganisationBloc(
-                      getIt(),
-                      getIt(),
-                    )..add(
-                        OrganisationFetch(
-                          Country.fromCode(user.country),
-                          type: CollectGroupType.none.index,
-                        ),
-                      ),
-                  ),
-                  BlocProvider(
-                    create: (_) => CreateFamilyGoalCubit(getIt()),
-                  ),
-                ],
-                child: const CreateFamilyGoalFlowPage(),
-              );
-            },
-          ),
-          GoRoute(
             path: Pages.recurringDonations.path,
             name: Pages.recurringDonations.name,
             builder: (context, state) => BlocProvider(
@@ -535,22 +417,15 @@ class AppRouter {
               final createStripe = bool.parse(
                 state.uri.queryParameters['createStripe'] ?? 'false',
               );
+
+              if (createStripe) {
+                context
+                    .read<RegistrationBloc>()
+                    .add(const RegistrationStripeInit());
+              }
+
               return MultiBlocProvider(
                 providers: [
-                  BlocProvider(
-                    create: (_) {
-                      final registrationBloc = RegistrationBloc(
-                        authCubit: context.read<AuthCubit>(),
-                        authRepositoy: getIt(),
-                      );
-
-                      if (createStripe) {
-                        registrationBloc.add(const RegistrationStripeInit());
-                      }
-
-                      return registrationBloc;
-                    },
-                  ),
                   BlocProvider(
                     create: (_) => StripeCubit(
                       authRepositoy: getIt(),
@@ -571,70 +446,12 @@ class AppRouter {
                   child: const PersonalInfoPage(),
                 ),
               ),
-              GoRoute(
-                path: Pages.creditCardDetails.path,
-                name: Pages.creditCardDetails.name,
-                builder: (context, state) {
-                  return MultiBlocProvider(
-                    providers: [
-                      BlocProvider.value(
-                        value: state.extra! as RegistrationBloc,
-                      ),
-                      BlocProvider(
-                        create: (_) => StripeCubit(
-                          authRepositoy: getIt(),
-                        ),
-                      ),
-                    ],
-                    child: const CreditCardDetailsPage(),
-                  );
-                },
-              ),
             ],
-          ),
-          GoRoute(
-            path: Pages.permitBiometric.path,
-            name: Pages.permitBiometric.name,
-            builder: (context, state) {
-              final permitBiometricRequest =
-                  state.extra! as PermitBiometricRequest;
-              return BlocProvider(
-                create: (_) => PermitBiometricCubit(
-                  permitBiometricRequest: permitBiometricRequest,
-                )..checkBiometric(),
-                child: const PermitBiometricPage(),
-              );
-            },
           ),
           GoRoute(
             path: Pages.registrationSuccess.path,
             name: Pages.registrationSuccess.name,
             builder: (_, state) => const RegistrationCompletedPage(),
-          ),
-          GoRoute(
-            path: Pages.registrationSuccessUs.path,
-            name: Pages.registrationSuccessUs.name,
-            builder: (_, state) => const RegistrationSuccessUs(),
-          ),
-          GoRoute(
-            path: Pages.joinImpactGroupSuccess.path,
-            name: Pages.joinImpactGroupSuccess.name,
-            builder: (context, state) => const ImpactGroupJoinSuccessPage(),
-          ),
-          GoRoute(
-            path: Pages.impactGroupDetails.path,
-            name: Pages.impactGroupDetails.name,
-            builder: (context, state) => BlocProvider(
-              create: (_) => GiveBloc(
-                getIt(),
-                getIt(),
-                getIt(),
-                getIt(),
-              ),
-              child: ImpactGroupDetailsPage(
-                impactGroup: state.extra! as ImpactGroup,
-              ),
-            ),
           ),
           GoRoute(
             path: Pages.sepaMandateExplanation.path,
@@ -885,6 +702,16 @@ class AppRouter {
             ),
           ),
         ),
+        redirect: (context, state) {
+          final auth = context.read<AuthCubit>().state;
+          if (auth.status == AuthStatus.authenticated &&
+              auth.user.isUsUser &&
+              !auth.user.needRegistration) {
+            return FamilyPages.profileSelection.path;
+          } else {
+            return null;
+          }
+        },
       ),
       GoRoute(
         path: Pages.welcome.path,
@@ -897,7 +724,6 @@ class AppRouter {
           ),
         ),
       ),
-
       // Family features
       ...FamilyAppRoutes.routes,
     ],
@@ -994,13 +820,8 @@ class AppRouter {
 
     if (state.status == AuthStatus.authenticated) {
       if (state.hasNavigation) {
-        final navigate = state.navigate;
         context.read<AuthCubit>().clearNavigation();
-        await navigate(context);
-        return;
-      }
-
-      if (routerState.name == Pages.home.name) {
+        await state.navigate(context, isUSUser: state.user.isUsUser);
         return;
       }
 
@@ -1015,10 +836,15 @@ class AppRouter {
               'createStripe': createStripe.toString(),
             },
           );
-          return;
+        } else if (routerState.name == Pages.loading.name) {
+          context.goNamed(FamilyPages.profileSelection.name);
         }
 
-        context.goNamed(FamilyPages.profileSelection.name);
+        return;
+      }
+
+      //needs to be after isUsUser check
+      if (routerState.name == Pages.home.name) {
         return;
       }
 

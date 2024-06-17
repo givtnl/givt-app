@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/children/family_goal/pages/goal_active_widget.dart';
 import 'package:givt_app/features/children/family_goal/pages/goal_completed_widget.dart';
@@ -19,7 +20,7 @@ class FamilyGoalTracker extends StatelessWidget {
       onTap: () {
         if (context.read<ImpactGroupsCubit>().state.isFamilyGoalDismissed) {
           context.pushNamed(
-            Pages.createFamilyGoal.name,
+            FamilyPages.createFamilyGoal.name,
             extra: context.read<FamilyOverviewCubit>(),
           );
         }

@@ -129,3 +129,4 @@ app.*.map.json
 # Packages 
 ./pacakges/**/pubspec.lock
 ./pacakges/**/example/**/pubspec.lock
+ios/fastlane/Appfile

@@ -6,6 +6,7 @@ import 'package:givt_app/features/children/generosity_challenge/pages/generosity
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/mayor_chat_dialog.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallenge extends StatefulWidget {
@@ -53,7 +54,7 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
   Future<void> _onCompleteChallenge() async {
     await context.read<GenerosityChallengeCubit>().completeChallenge();
     if (mounted) {
-      context.goNamed(Pages.childrenOverview.name);
+      context.goNamed(FamilyPages.childrenOverview.name);
     }
   }
 

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/avatars/models/avatar.dart';
-import 'package:givt_app/features/children/avatars/repositories/avatars_repository.dart';
+import 'package:givt_app/features/family/features/avatars/models/avatar.dart';
+import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 
 part 'avatars_state.dart';
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/pages/add_member_form_page.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,7 +17,7 @@ class AddMemberMainScaffold extends StatelessWidget {
       appBar: AppBar(
         leading: BackButton(
           onPressed: () {
-            context.pushReplacementNamed(Pages.childrenOverview.name);
+            context.pushReplacementNamed(FamilyPages.childrenOverview.name);
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.backClicked,
             );

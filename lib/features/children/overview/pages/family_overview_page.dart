@@ -10,6 +10,7 @@ import 'package:givt_app/features/children/overview/widgets/children_loading_pag
 import 'package:givt_app/features/children/overview/widgets/download_givt_for_kids_app_widget.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -143,6 +144,6 @@ class FamilyOverviewPage extends StatelessWidget {
       eventName: AmplitudeEvents.addMemerClicked,
     );
     final familyExists = state.hasChildren || !state.isAdultSingle;
-    context.pushReplacementNamed(Pages.addMember.name, extra: familyExists);
+    context.pushReplacementNamed(FamilyPages.addMember.name, extra: familyExists);
   }
 }

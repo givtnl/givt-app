@@ -72,6 +72,12 @@ class ProfilesUpdatedState extends ProfilesState {
   });
 }
 
+class ProfilesNotSetupState extends ProfilesState {
+  /// This is the state that is emitted when profiles have not yet been setup
+  const ProfilesNotSetupState(
+      {required super.profiles, required super.activeProfileIndex});
+}
+
 class ProfilesExternalErrorState extends ProfilesState {
   const ProfilesExternalErrorState({
     required super.profiles,

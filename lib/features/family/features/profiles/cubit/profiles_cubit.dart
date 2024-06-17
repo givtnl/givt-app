@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -12,15 +13,28 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 
 class ProfilesCubit extends HydratedCubit<ProfilesState> {
-  ProfilesCubit(this._profilesRepositoy) : super(const ProfilesInitialState()) {
+  ProfilesCubit(this._profilesRepositoy, this._addMemberRepository)
+      : super(const ProfilesInitialState()) {
+    _init();
+  }
+
+  final ProfilesRepository _profilesRepositoy;
+  final AddMemberRepository _addMemberRepository;
+
+  StreamSubscription<void>? _memberAddedSubscription;
+
+  void _init() {
     hydrate();
     AnalyticsHelper.setUserProperties(
       userId: state.activeProfile.id,
       userProperties: {},
     );
+    _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
+      (_) {
+        fetchAllProfiles();
+      },
+    );
   }
-
-  final ProfilesRepository _profilesRepositoy;
 
   Future<void> fetchAllProfiles() async {
     emit(
@@ -55,6 +69,14 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           activeProfileIndex: state.activeProfileIndex,
         ),
       );
+      if (newProfiles.isEmpty) {
+        emit(
+          ProfilesNotSetupState(
+            profiles: newProfiles,
+            activeProfileIndex: state.activeProfileIndex,
+          ),
+        );
+      }
     } catch (error, stackTrace) {
       unawaited(
         LoggingInfo.instance.error(
@@ -150,5 +172,11 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
       'activeProfileIndex': state.activeProfileIndex,
     };
     return result;
+  }
+
+  @override
+  Future<void> close() {
+    _memberAddedSubscription?.cancel();
+    return super.close();
   }
 }

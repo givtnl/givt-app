@@ -15,6 +15,7 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -87,7 +88,7 @@ class _AppState extends State<App> {
             lazy: false,
           ),
           BlocProvider<ProfilesCubit>(
-            create: (BuildContext context) => ProfilesCubit(getIt()),
+            create: (BuildContext context) => ProfilesCubit(getIt(), getIt()),
           ),
           BlocProvider<OrganisationDetailsCubit>(
             create: (BuildContext context) => OrganisationDetailsCubit(getIt()),
@@ -101,6 +102,12 @@ class _AppState extends State<App> {
           ),
           BlocProvider(
             create: (context) => ScanNfcCubit(),
+          ),
+          BlocProvider(
+            create: (context) => RegistrationBloc(
+              authCubit: context.read<AuthCubit>(),
+              authRepositoy: getIt(),
+            ),
           ),
         ],
         child: const _AppView(),

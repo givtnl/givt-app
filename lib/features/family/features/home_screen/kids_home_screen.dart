@@ -6,22 +6,22 @@ import 'package:givt_app/features/family/features/history/history_cubit/history_
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/custom_navigation_bar.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/home_screen_app_bar.dart';
+import 'package:givt_app/features/family/features/home_screen/widgets/kids_home_screen_app_bar.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/goal_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_screen.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({
+class KidsHomeScreen extends StatelessWidget {
+  const KidsHomeScreen({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeScreenAppBar(),
+      appBar: const KidsHomeScreenAppBar(),
       bottomNavigationBar: CustomNavigationBar(
         index: context.watch<NavigationCubit>().state.activeDestination.index,
         onDestinationSelected: (int index) {
@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
         context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id);
         return const GoalScreen();
       case NavigationDestinationData.myGivts:
-        context.read<HistoryCubit>().fetchHistory(user.id);
+        context.read<HistoryCubit>().fetchHistory(user.id, fromBeginning: true);
         return const HistoryScreen();
     }
   }

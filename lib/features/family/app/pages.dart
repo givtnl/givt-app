@@ -3,12 +3,33 @@ enum FamilyPages {
   wallet(path: '/wallet', name: 'WALLET'),
   camera(path: '/camera', name: 'CAMERA'),
   success(path: '/success', name: 'SUCCESS'),
-  chooseAmountSlider(
-      path: '/kids-choose-amount-slider', name: 'KIDS_CHOOSE_AMOUNT_SLIDER'),
+  familyChooseAmountSlider(
+    path: '/family-choose-amount-slider',
+    name: 'FAMILY_CHOOSE_AMOUNT_SLIDER',
+  ),
+  familyPersonalInfoEdit(
+    path: 'family-personal-info-edit',
+    name: 'FAMILY-PERSONAL-INFO-EDIT',
+  ),
+  registrationSuccessUs(
+    path: 'registration-success-us',
+    name: 'REGISTRATION-SUCCESS-US',
+  ),
+  creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   test(path: '/test', name: 'TEST'),
   scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),
   history(path: '/history', name: 'HISTORY'),
   avatarSelection(path: '/avatar-selection', name: 'AVATAR_SELECTION'),
+  childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
+  addMember(path: 'add-member', name: 'ADD-MEMBER'),
+  childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
+  editChild(path: 'edit-child', name: 'EDIT-CHILD'),
+  createChild(path: 'create-child', name: 'CREATE-CHILD'),
+  createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
+  cachedChildrenOverview(
+    path: 'cached-children-overview',
+    name: 'CACHED-CHILDREN-OVERVIEW',
+  ),
 
   //recommendation flow
   recommendationStart(
@@ -32,7 +53,6 @@ enum FamilyPages {
 
   //design alignment
   designAlignment(path: '/design-alignment', name: 'DESIGN_ALIGNMENT'),
-
   chooseAmountSliderGoal(
       path: '/choose-amount-slider-goal', name: 'CHOOSE_AMOUNT_SLIDER_GOAL'),
 
@@ -41,7 +61,6 @@ enum FamilyPages {
   schoolEventInfo(path: '/school-event-info', name: 'SCHOOL_EVENT_INFO'),
   schoolEventOrganisations(
       path: '/school-event-organisations', name: 'SCHOOL_EVENT_ORGANISATIONS'),
-
   impactGroupDetails(
     path: '/impact-group-details',
     name: 'IMPACT_GROUP_DETAILS',

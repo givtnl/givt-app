@@ -68,15 +68,10 @@ enum Pages {
     path: 'registration-success',
     name: 'REGISTRATION-SUCCESS',
   ),
-  registrationSuccessUs(
-    path: 'registration-success-us',
-    name: 'REGISTRATION-SUCCESS-US',
-  ),
   overview(path: 'overview', name: 'OVERVIEW'),
   personalInfoEdit(path: 'personal-info-edit', name: 'PERSONAL-INFO-EDIT'),
   giveVPC(path: 'give-vpc', name: 'GIVE-VPC'),
   unregister(path: 'unregister', name: 'UNREGISTER'),
-  createChild(path: 'create-child', name: 'CREATE-CHILD'),
   personalSummary(path: 'personal-summary', name: 'PERSONAL-SUMMARY'),
   yearlyOverview(path: 'yearly-overview', name: 'YEARLY-OVERVIEW'),
   addExternalDonation(
@@ -84,29 +79,19 @@ enum Pages {
     name: 'ADD-EXTERNAL-DONATION',
   ),
   recurringDonations(path: 'recurring-donations', name: 'RECURRING-DONATIONS'),
-  childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
-  childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
-  editChild(path: 'edit-child', name: 'EDIT-CHILD'),
-  creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   editCreditCardDetails(
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
-  addMember(path: 'add-member', name: 'ADD-MEMBER'),
   avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
-  cachedChildrenOverview(
-    path: 'cached-children-overview',
-    name: 'CACHED-CHILDREN-OVERVIEW',
-  ),
-  createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
   joinImpactGroupSuccess(
-    path: 'join-impact-group-success',
+    path: '/join-impact-group-success',
     name: 'JOIN-IMPACT-GROUP-SUCCESS',
   ),
-  permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
+  permitBiometric(path: '/permit-biometric', name: 'PERMIT-BIOMETRIC'),
 
   impactGroupDetails(
-    path: 'impact-group-details',
+    path: '/impact-group-details',
     name: 'IMPACT-GROUP-DETAILS',
   ),
   ;

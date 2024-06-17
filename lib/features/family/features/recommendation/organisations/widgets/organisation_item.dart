@@ -21,18 +21,11 @@ class OrganisationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Image image = Image.network(
-      organisation.qrCodeURL,
-      fit: BoxFit.cover,
-    );
-
-    precacheImage(image.image, context);
-
     return ActionContainer(
       margin: const EdgeInsets.symmetric(vertical: 8),
       borderColor: Theme.of(context).colorScheme.primaryContainer,
       onTap: () {
-        String generatedMediumId =
+        final generatedMediumId =
             base64.encode(organisation.namespace.codeUnits);
         context
             .read<OrganisationDetailsCubit>()
