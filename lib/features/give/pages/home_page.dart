@@ -271,9 +271,7 @@ class _HomePageState extends State<HomePage> {
               ),
         ),
         content: Text(
-          isUS
-              ? context.l10n.registrationDialogG4K
-              : context.l10n.finalizeRegistrationPopupText,
+          context.l10n.finalizeRegistrationPopupText,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         actions: [

@@ -82,7 +82,7 @@ class CreditCardDetailsPage extends StatelessWidget {
       extra: PermitBiometricRequest.registration(
         redirect: (context) => context.pushReplacementNamed(
           hasBeenInvited
-              ? Pages.joinImpactGroupSuccess.name
+              ? FamilyPages.profileSelection.name
               : FamilyPages.registrationSuccessUs.name,
         ),
       ),

@@ -27,7 +27,6 @@ import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/give/pages/success_donation_page.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/pages/impact_group_details_page.dart';
-import 'package:givt_app/features/impact_groups/pages/impact_group_join_success_page.dart';
 import 'package:givt_app/features/overview/bloc/givt_bloc.dart';
 import 'package:givt_app/features/overview/pages/overview_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
@@ -105,11 +104,6 @@ class AppRouter {
             child: const PermitBiometricPage(),
           );
         },
-      ),
-      GoRoute(
-        path: Pages.joinImpactGroupSuccess.path,
-        name: Pages.joinImpactGroupSuccess.name,
-        builder: (context, state) => const ImpactGroupJoinSuccessPage(),
       ),
       GoRoute(
         path: Pages.impactGroupDetails.path,
