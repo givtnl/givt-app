@@ -122,7 +122,7 @@ class ProfileSelectionScreen extends StatelessWidget {
               : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
-                          context.read<ProfilesCubit>().fetchAllProfiles(),
+                          context.read<ProfilesCubit>().fetchAllProfiles(isRetry: true),
                     )
                   : SafeArea(
                       child: Padding(

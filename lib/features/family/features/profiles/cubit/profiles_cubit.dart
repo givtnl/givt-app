@@ -8,6 +8,7 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -38,7 +39,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     );
   }
 
-  Future<void> fetchAllProfiles() async {
+  Future<void> fetchAllProfiles({bool isRetry = false}) async {
     emit(
       ProfilesLoadingState(
         profiles: state.profiles,
@@ -65,9 +66,14 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
       }
-      final (userExt, session, amountPresets) =
-          await _authRepository.isAuthenticated() ?? (null, null, null);
-      if (userExt?.needRegistration ?? true) {
+      UserExt? userExternal;
+      if (isRetry) {
+        final (userExt, session, amountPresets) =
+            await _authRepository.isAuthenticated() ?? (null, null, null);
+        userExternal = userExt;
+      }
+
+      if (userExternal?.needRegistration ?? false) {
         emit(
           ProfilesNeedsRegistration(
             profiles: newProfiles,
