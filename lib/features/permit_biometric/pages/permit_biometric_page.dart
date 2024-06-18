@@ -11,7 +11,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class PermitBiometricPage extends StatelessWidget {
-  const PermitBiometricPage({super.key,});
+  const PermitBiometricPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class PermitBiometricPage extends StatelessWidget {
           if (state.permitBiometricRequest.isRedirect) {
             state.permitBiometricRequest.redirect(context);
           } else {
-            context.pop();
+            //context.pop();
           }
         }
       },

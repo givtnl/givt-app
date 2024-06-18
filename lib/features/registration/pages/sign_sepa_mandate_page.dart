@@ -32,7 +32,7 @@ class SignSepaMandatePage extends StatelessWidget {
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == RegistrationStatus.success) {
-              context.pushNamed(
+              context.goNamed(
                 Pages.permitBiometric.name,
                 extra: PermitBiometricRequest.registration(
                   redirect: (context) =>
