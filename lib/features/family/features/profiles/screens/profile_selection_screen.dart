@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -15,6 +16,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/shared/widgets/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -85,10 +87,24 @@ class ProfileSelectionScreen extends StatelessWidget {
           );
         } else if (state is ProfilesNotSetupState) {
           context.pushNamed(FamilyPages.childrenOverview.name);
+        } else if (state is ProfilesNeedsRegistration) {
+          if (context.read<RegistrationBloc>().state.status ==
+              RegistrationStatus.createStripeAccount) {
+            context.goNamed(
+              FamilyPages.creditCardDetails.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          } else {
+            context.pushNamed(FamilyPages.registrationUS.name);
+          }
         }
       },
-      listenWhen: (previous, current) => current is ProfilesNotSetupState,
-      buildWhen: (previous, current) => current is! ProfilesNotSetupState,
+      listenWhen: (previous, current) =>
+          current is ProfilesNotSetupState ||
+          current is ProfilesNeedsRegistration,
+      buildWhen: (previous, current) =>
+          current is! ProfilesNotSetupState &&
+          current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
@@ -114,8 +130,9 @@ class ProfileSelectionScreen extends StatelessWidget {
               ? const CustomCircularProgressIndicator()
               : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
-                      onRetry: () =>
-                          context.read<ProfilesCubit>().fetchAllProfiles(),
+                      onRetry: () => context
+                          .read<ProfilesCubit>()
+                          .fetchAllProfiles(isRetry: true),
                     )
                   : SafeArea(
                       child: Padding(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -78,7 +77,7 @@ class CreditCardDetailsPage extends StatelessWidget {
         context.read<ImpactGroupsCubit>().state.invitedGroup !=
             const ImpactGroup.empty();
     context.pushNamed(
-      Pages.permitBiometric.name,
+      FamilyPages.permitUSBiometric.name,
       extra: PermitBiometricRequest.registration(
         redirect: (context) => context.pushReplacementNamed(
           hasBeenInvited

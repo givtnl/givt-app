@@ -3,7 +3,6 @@ enum Pages {
   home(path: '/home', name: 'HOME'),
   loading(path: '/loading', name: 'LOADING'),
   welcome(path: '/welcome', name: 'WELCOME'),
-
   selectGivingWay(path: 'select-giving-way', name: 'GIVING-WAY'),
   give(path: 'give', name: 'GIVE'),
   giveSucess(path: 'give-offline', name: 'GIVE-OFFLINE'),
@@ -22,7 +21,6 @@ enum Pages {
   signSepaMandate(path: 'sign-sepa-mandate', name: 'SIGN-SEPA-MANDATE'),
   signBacsMandate(path: 'sign-bacs-mandate', name: 'SIGN-BACS-MANDATE'),
   giftAid(path: 'gift-aid', name: 'GIFT-AID'),
-  personalInfo(path: 'personal-info', name: 'PERSONAL-INFO'),
   sepaMandateExplanation(
     path: 'sepa-mandate-explanation',
     name: 'SEPA-MANDATE-EXPLANATION',
@@ -51,7 +49,7 @@ enum Pages {
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
-  permitBiometric(path: '/permit-biometric', name: 'PERMIT-BIOMETRIC'),
+  permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
 
   impactGroupDetails(
     path: '/impact-group-details',

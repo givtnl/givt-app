@@ -90,19 +90,6 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: Pages.permitBiometric.path,
-        name: Pages.permitBiometric.name,
-        builder: (context, state) {
-          final permitBiometricRequest = state.extra! as PermitBiometricRequest;
-          return BlocProvider(
-            create: (_) => PermitBiometricCubit(
-              permitBiometricRequest: permitBiometricRequest,
-            )..checkBiometric(),
-            child: const PermitBiometricPage(),
-          );
-        },
-      ),
-      GoRoute(
         path: Pages.impactGroupDetails.path,
         name: Pages.impactGroupDetails.name,
         builder: (context, state) => BlocProvider(
@@ -121,6 +108,20 @@ class AppRouter {
         path: Pages.home.path,
         name: Pages.home.name,
         routes: [
+          GoRoute(
+            path: Pages.permitBiometric.path,
+            name: Pages.permitBiometric.name,
+            builder: (context, state) {
+              final permitBiometricRequest =
+                  state.extra! as PermitBiometricRequest;
+              return BlocProvider(
+                create: (_) => PermitBiometricCubit(
+                  permitBiometricRequest: permitBiometricRequest,
+                )..checkBiometric(),
+                child: const PermitBiometricPage(),
+              );
+            },
+          ),
           GoRoute(
             path: Pages.personalSummary.path,
             name: Pages.personalSummary.name,
@@ -244,16 +245,6 @@ class AppRouter {
                 ),
               );
             },
-            routes: [
-              GoRoute(
-                path: Pages.personalInfo.path,
-                name: Pages.personalInfo.name,
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as RegistrationBloc,
-                  child: const PersonalInfoPage(),
-                ),
-              ),
-            ],
           ),
           GoRoute(
             path: Pages.registrationSuccess.path,
@@ -619,8 +610,10 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.biometricCheck) {
-      context.goNamed(
-        Pages.permitBiometric.name,
+      context.pushNamed(
+        state.user.isUsUser
+            ? FamilyPages.permitUSBiometric.name
+            : Pages.permitBiometric.name,
         extra: PermitBiometricRequest.login(),
       );
     }
@@ -639,7 +632,7 @@ class AppRouter {
         if (state.user.needRegistration) {
           final createStripe = state.user.personalInfoRegistered;
           context.goNamed(
-            Pages.registration.name,
+            FamilyPages.registrationUS.name,
             queryParameters: {
               'email': state.user.email,
               'createStripe': createStripe.toString(),
