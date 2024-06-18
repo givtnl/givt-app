@@ -64,7 +64,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       child: InkWell(
                         onTap: () {
                           SystemSound.play(SystemSoundType.click);
-                          context.pushNamed(FamilyPages.avatarSelection.name);
+                          context.pushNamed(FamilyPages.kidsAvatarSelection.name);
                           AnalyticsHelper.logEvent(
                             eventName:
                                 AmplitudeEvents.editProfilePictureClicked,
@@ -123,7 +123,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       ),
                       onPressed: () {
                         SystemSound.play(SystemSoundType.click);
-                        context.pushNamed(FamilyPages.avatarSelection.name);
+                        context.pushNamed(FamilyPages.kidsAvatarSelection.name);
                         AnalyticsHelper.logEvent(
                           eventName: AmplitudeEvents.editAvatarIconClicked,
                         );

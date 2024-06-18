@@ -51,7 +51,6 @@ enum Pages {
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
-  avatarSelection(path: 'avatar-selection', name: 'AVATAR-SELECTION'),
   permitBiometric(path: '/permit-biometric', name: 'PERMIT-BIOMETRIC'),
 
   impactGroupDetails(

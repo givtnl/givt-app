@@ -14,16 +14,16 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
-class AvatarSelectionScreen extends StatelessWidget {
-  const AvatarSelectionScreen({super.key,});
+class KidsAvatarSelectionScreen extends StatelessWidget {
+  const KidsAvatarSelectionScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EditProfileCubit, EditProfileState>(
-      listener: (BuildContext context, EditProfileState state) {
-        if (state.status == EditProfileStatus.error) {
+    return BlocConsumer<EditChildProfileCubit, EditChildProfileState>(
+      listener: (BuildContext context, EditChildProfileState state) {
+        if (state.status == EditChildProfileStatus.error) {
           SnackBarHelper.showMessage(context, text: state.error, isError: true);
-        } else if (state.status == EditProfileStatus.edited) {
+        } else if (state.status == EditChildProfileStatus.edited) {
           context.read<ProfilesCubit>().fetchActiveProfile();
           context.pop();
           if (state.isRewardAchieved) {
@@ -43,7 +43,7 @@ class AvatarSelectionScreen extends StatelessWidget {
           }
         }
       },
-      builder: (BuildContext context, EditProfileState editProfileState) =>
+      builder: (BuildContext context, EditChildProfileState editProfileState) =>
           BlocConsumer<AvatarsCubit, AvatarsState>(
         listener: (BuildContext context, AvatarsState state) {
           if (state.status == AvatarsStatus.error) {
@@ -62,7 +62,7 @@ class AvatarSelectionScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               automaticallyImplyLeading: false,
-              leading: editProfileState.status != EditProfileStatus.editing
+              leading: editProfileState.status != EditChildProfileStatus.editing
                   ? IconButton(
                       icon: const FaIcon(FontAwesomeIcons.arrowLeft),
                       onPressed: () {
@@ -89,10 +89,10 @@ class AvatarSelectionScreen extends StatelessWidget {
 Widget _getContent({
   required BuildContext context,
   required AvatarsState avatarsState,
-  required EditProfileState editProfileState,
+  required EditChildProfileState editProfileState,
 }) {
   if (avatarsState.status == AvatarsStatus.loading ||
-      editProfileState.status == EditProfileStatus.editing) {
+      editProfileState.status == EditChildProfileStatus.editing) {
     return const CustomCircularProgressIndicator();
   }
 
@@ -108,6 +108,11 @@ Widget _getContent({
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return AvatarItem(
+                  onSelectProfilePicture: (profilePicture) {
+                    context
+                        .read<EditChildProfileCubit>()
+                        .selectProfilePicture(profilePicture);
+                  },
                   filename: avatarsState.avatars[index].fileName,
                   url: avatarsState.avatars[index].pictureURL,
                   isSelected: avatarsState.avatars[index].fileName ==
@@ -135,7 +140,7 @@ Widget _getContent({
                   text: 'Save',
                   isDisabled: editProfileState.isSameProfilePicture,
                   onTap: () {
-                    context.read<EditProfileCubit>().editProfile();
+                    context.read<EditChildProfileCubit>().editProfile();
                     AnalyticsHelper.logEvent(
                       eventName: AmplitudeEvents.saveAvatarClicked,
                       eventProperties: {

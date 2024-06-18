@@ -9,12 +9,14 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
+import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
 import 'package:givt_app/features/children/edit_child/pages/edit_child_page.dart';
+import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
@@ -37,7 +39,7 @@ import 'package:givt_app/features/children/overview/pages/family_overview_page.d
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
-import 'package:givt_app/features/family/features/avatars/screens/avatar_selection_screen.dart';
+import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
 import 'package:givt_app/features/family/features/coin_flow/screens/search_for_coin_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/screens/success_coin_screen.dart';
@@ -668,8 +670,31 @@ class FamilyAppRoutes {
       },
     ),
     GoRoute(
-      path: FamilyPages.avatarSelection.path,
-      name: FamilyPages.avatarSelection.name,
+      path: FamilyPages.parentAvatarSelection.path,
+      name: FamilyPages.parentAvatarSelection.name,
+      builder: (context, state) {
+        final user = context.read<AuthCubit>().state.user;
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => AvatarsCubit(
+                getIt(),
+              )..fetchAvatars(),
+            ),
+            BlocProvider(
+              create: (context) => EditProfileCubit(
+                editProfileRepository: getIt(),
+                currentProfilePicture: user.profilePicture,
+              ),
+            ),
+          ],
+          child: const ParentAvatarSelectionScreen(),
+        );
+      },
+    ),
+    GoRoute(
+      path: FamilyPages.kidsAvatarSelection.path,
+      name: FamilyPages.kidsAvatarSelection.name,
       builder: (context, state) {
         final activeProfile = context.read<ProfilesCubit>().state.activeProfile;
         return MultiBlocProvider(
@@ -680,7 +705,7 @@ class FamilyAppRoutes {
               )..fetchAvatars(),
             ),
             BlocProvider(
-              create: (context) => EditProfileCubit(
+              create: (context) => EditChildProfileCubit(
                 childGUID: activeProfile.id,
                 editProfileRepository: getIt(),
                 currentProfilePicture: activeProfile.pictureURL,
@@ -689,7 +714,7 @@ class FamilyAppRoutes {
           ],
           child: Theme(
             data: const FamilyAppTheme().toThemeData(),
-            child: const AvatarSelectionScreen(),
+            child: const KidsAvatarSelectionScreen(),
           ),
         );
       },

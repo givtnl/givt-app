@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +33,7 @@ class ParentAvatar extends StatelessWidget {
                     eventName: AmplitudeEvents.editAvatarPictureClicked,
                   );
 
-                  context.pushNamed(Pages.avatarSelection.name);
+                  context.pushNamed(FamilyPages.parentAvatarSelection.name);
                 },
                 customBorder: const CircleBorder(),
                 splashColor: Theme.of(context).primaryColor,
@@ -56,7 +56,7 @@ class ParentAvatar extends StatelessWidget {
                     eventName: AmplitudeEvents.editAvatarIconClicked,
                   );
 
-                  context.pushNamed(Pages.avatarSelection.name);
+                  context.pushNamed(FamilyPages.parentAvatarSelection.name);
                 },
               ),
             ),

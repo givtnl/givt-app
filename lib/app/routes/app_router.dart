@@ -9,9 +9,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
-import 'package:givt_app/features/children/avatars/screens/avatar_selection_screen.dart';
-import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/app/routes.dart';
@@ -204,29 +201,6 @@ class AppRouter {
                   ),
                 ],
                 child: const PersonalInfoEditPage(),
-              );
-            },
-          ),
-          GoRoute(
-            path: Pages.avatarSelection.path,
-            name: Pages.avatarSelection.name,
-            builder: (context, state) {
-              final user = context.read<AuthCubit>().state.user;
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => AvatarsCubit(
-                      getIt(),
-                    )..fetchAvatars(),
-                  ),
-                  BlocProvider(
-                    create: (context) => EditProfileCubit(
-                      editProfileRepository: getIt(),
-                      currentProfilePicture: user.profilePicture,
-                    ),
-                  ),
-                ],
-                child: const AvatarSelectionScreen(),
               );
             },
           ),
