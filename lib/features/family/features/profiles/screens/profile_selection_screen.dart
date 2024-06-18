@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/shared/widgets/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -87,7 +88,15 @@ class ProfileSelectionScreen extends StatelessWidget {
         } else if (state is ProfilesNotSetupState) {
           context.pushNamed(FamilyPages.childrenOverview.name);
         } else if (state is ProfilesNeedsRegistration) {
-          context.pushNamed(FamilyPages.registrationUS.name);
+          if (context.read<RegistrationBloc>().state.status ==
+              RegistrationStatus.createStripeAccount) {
+            context.goNamed(
+              FamilyPages.creditCardDetails.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          } else {
+            context.pushNamed(FamilyPages.registrationUS.name);
+          }
         }
       },
       listenWhen: (previous, current) =>
@@ -121,8 +130,9 @@ class ProfileSelectionScreen extends StatelessWidget {
               ? const CustomCircularProgressIndicator()
               : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
-                      onRetry: () =>
-                          context.read<ProfilesCubit>().fetchAllProfiles(isRetry: true),
+                      onRetry: () => context
+                          .read<ProfilesCubit>()
+                          .fetchAllProfiles(isRetry: true),
                     )
                   : SafeArea(
                       child: Padding(
