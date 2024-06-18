@@ -25,7 +25,7 @@ class PermitBiometricPage extends StatelessWidget {
           if (state.permitBiometricRequest.isRedirect) {
             state.permitBiometricRequest.redirect(context);
           } else {
-            //context.pop();
+            context.pop();
           }
         }
       },

@@ -90,19 +90,6 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: Pages.permitBiometric.path,
-        name: Pages.permitBiometric.name,
-        builder: (context, state) {
-          final permitBiometricRequest = state.extra! as PermitBiometricRequest;
-          return BlocProvider(
-            create: (_) => PermitBiometricCubit(
-              permitBiometricRequest: permitBiometricRequest,
-            )..checkBiometric(),
-            child: const PermitBiometricPage(),
-          );
-        },
-      ),
-      GoRoute(
         path: Pages.impactGroupDetails.path,
         name: Pages.impactGroupDetails.name,
         builder: (context, state) => BlocProvider(
@@ -121,6 +108,19 @@ class AppRouter {
         path: Pages.home.path,
         name: Pages.home.name,
         routes: [
+          GoRoute(
+            path: Pages.permitBiometric.path,
+            name: Pages.permitBiometric.name,
+            builder: (context, state) {
+              final permitBiometricRequest = state.extra! as PermitBiometricRequest;
+              return BlocProvider(
+                create: (_) => PermitBiometricCubit(
+                  permitBiometricRequest: permitBiometricRequest,
+                )..checkBiometric(),
+                child: const PermitBiometricPage(),
+              );
+            },
+          ),
           GoRoute(
             path: Pages.personalSummary.path,
             name: Pages.personalSummary.name,
@@ -619,7 +619,7 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.biometricCheck) {
-      context.goNamed(
+      context.pushNamed(
         Pages.permitBiometric.name,
         extra: PermitBiometricRequest.login(),
       );

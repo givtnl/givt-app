@@ -77,7 +77,7 @@ class CreditCardDetailsPage extends StatelessWidget {
     final hasBeenInvited =
         context.read<ImpactGroupsCubit>().state.invitedGroup !=
             const ImpactGroup.empty();
-    context.goNamed(
+    context.pushNamed(
       Pages.permitBiometric.name,
       extra: PermitBiometricRequest.registration(
         redirect: (context) => context.pushReplacementNamed(

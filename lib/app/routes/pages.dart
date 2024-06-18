@@ -51,7 +51,7 @@ enum Pages {
     path: 'edit-credit-card-details',
     name: 'EDIT-CREDIT-CARD-DETAILS',
   ),
-  permitBiometric(path: '/permit-biometric', name: 'PERMIT-BIOMETRIC'),
+  permitBiometric(path: 'permit-biometric', name: 'PERMIT-BIOMETRIC'),
 
   impactGroupDetails(
     path: '/impact-group-details',
