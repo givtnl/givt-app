@@ -26,6 +26,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   @override
   Future<Profile> fetchChildDetails(String childGuid) async {
     final response = await _apiService.fetchChildDetails(childGuid);
+    response['type'] = 'Child';
     return Profile.fromMap(response);
   }
 }
