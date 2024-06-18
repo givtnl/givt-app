@@ -80,7 +80,9 @@ import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.d
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
+import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
+import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -418,6 +420,46 @@ class FamilyAppRoutes {
               child: const FamilyOverviewPage(),
             );
           },
+        ),
+        GoRoute(
+          path: FamilyPages.registrationUS.path,
+          name: FamilyPages.registrationUS.name,
+          builder: (context, state) {
+            final email = state.uri.queryParameters['email'] ?? '';
+
+            final createStripe = bool.parse(
+              state.uri.queryParameters['createStripe'] ?? 'false',
+            );
+
+            if (createStripe) {
+              context
+                  .read<RegistrationBloc>()
+                  .add(const RegistrationStripeInit());
+            }
+
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => StripeCubit(
+                    authRepositoy: getIt(),
+                  ),
+                ),
+              ],
+              child: SignUpPage(
+                email: email,
+              ),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: FamilyPages.personalInfo.path,
+              name: FamilyPages.personalInfo.name,
+              builder: (context, state) => BlocProvider.value(
+                value: state.extra! as RegistrationBloc,
+                child: const PersonalInfoPage(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: FamilyPages.permitUSBiometric.path,

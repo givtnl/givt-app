@@ -70,7 +70,9 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                         (user.country == Country.us.countryCode);
                     context
                       ..goNamed(
-                        Pages.registration.name,
+                        createStripe
+                            ? FamilyPages.registrationUS.name
+                            : Pages.registration.name,
                         queryParameters: {
                           'email': user.email,
                           'createStripe': createStripe.toString(),

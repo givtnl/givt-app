@@ -245,16 +245,6 @@ class AppRouter {
                 ),
               );
             },
-            routes: [
-              GoRoute(
-                path: Pages.personalInfo.path,
-                name: Pages.personalInfo.name,
-                builder: (context, state) => BlocProvider.value(
-                  value: state.extra! as RegistrationBloc,
-                  child: const PersonalInfoPage(),
-                ),
-              ),
-            ],
           ),
           GoRoute(
             path: Pages.registrationSuccess.path,
@@ -642,7 +632,7 @@ class AppRouter {
         if (state.user.needRegistration) {
           final createStripe = state.user.personalInfoRegistered;
           context.goNamed(
-            Pages.registration.name,
+            FamilyPages.registrationUS.name,
             queryParameters: {
               'email': state.user.email,
               'createStripe': createStripe.toString(),

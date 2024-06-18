@@ -63,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
         if (!(_selectedCountry == Country.us) &&
             state.status == RegistrationStatus.personalInfo) {
           context.goNamed(
-            Pages.personalInfo.name,
+            FamilyPages.personalInfo.name,
             extra: context.read<RegistrationBloc>(),
           );
         }

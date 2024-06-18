@@ -57,7 +57,9 @@ class CustomNavigationDrawer extends StatelessWidget {
                           (auth.user.country == Country.us.countryCode);
                       context
                         ..goNamed(
-                          Pages.registration.name,
+                          createStripe
+                              ? FamilyPages.registrationUS.name
+                              : Pages.registration.name,
                           queryParameters: {
                             'email': auth.user.email,
                             'createStripe': createStripe.toString(),
@@ -145,7 +147,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                     await AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async => context.goNamed(
+                        navigate: (context, {isUSUser}) async =>
+                            context.goNamed(
                           Pages.overview.name,
                         ),
                       ),
@@ -182,7 +185,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) => showModalBottomSheet<void>(
+                      navigate: (context, {isUSUser}) =>
+                          showModalBottomSheet<void>(
                         context: context,
                         isScrollControlled: true,
                         useSafeArea: true,
@@ -275,7 +279,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                       onTap: () async => AuthUtils.checkToken(
                         context,
                         checkAuthRequest: CheckAuthRequest(
-                          navigate: (context, {isUSUser}) => showModalBottomSheet<void>(
+                          navigate: (context, {isUSUser}) =>
+                              showModalBottomSheet<void>(
                             context: context,
                             isScrollControlled: true,
                             useSafeArea: true,
@@ -327,7 +332,8 @@ class CustomNavigationDrawer extends StatelessWidget {
                     await AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async => context.goNamed(
+                        navigate: (context, {isUSUser}) async =>
+                            context.goNamed(
                           Pages.unregister.name,
                         ),
                       ),
