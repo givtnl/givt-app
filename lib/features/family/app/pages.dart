@@ -102,8 +102,8 @@ enum FamilyPages {
   schoolEventOrganisations(
       path: '/school-event-organisations', name: 'SCHOOL_EVENT_ORGANISATIONS'),
   impactGroupDetails(
-    path: '/impact-group-details',
-    name: 'IMPACT_GROUP_DETAILS',
+    path: '/kids-impact-group-details',
+    name: 'KIDS_IMPACT_GROUP_DETAILS',
   ),
   ;
 
