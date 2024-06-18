@@ -84,6 +84,7 @@ import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -480,7 +481,18 @@ class FamilyAppRoutes {
       name: FamilyPages.profileSelection.name,
       builder: (context, state) => Theme(
         data: const FamilyAppTheme().toThemeData(),
-        child: const ProfileSelectionScreen(),
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              lazy: false,
+              create: (_) => RemoteDataSourceSyncBloc(
+                getIt(),
+                getIt(),
+              )..add(const RemoteDataSourceSyncRequested()),
+            ),
+          ],
+          child: const ProfileSelectionScreen(),
+        ),
       ),
     ),
     GoRoute(
