@@ -1,17 +1,17 @@
 part of 'edit_profile_cubit.dart';
 
-enum EditProfileStatus { selectingAvatar, editing, edited, error }
+enum EditChildProfileStatus { selectingAvatar, editing, edited, error }
 
-class EditProfileState extends Equatable {
-  const EditProfileState({
+class EditChildProfileState extends Equatable {
+  const EditChildProfileState({
     required this.currentProfilePicture,
     required this.selectedProfilePicture,
-    this.status = EditProfileStatus.selectingAvatar,
+    this.status = EditChildProfileStatus.selectingAvatar,
     this.error = '',
     this.isRewardAchieved = false,
   });
 
-  final EditProfileStatus status;
+  final EditChildProfileStatus status;
   final String currentProfilePicture;
   final String selectedProfilePicture;
   final String error;
@@ -30,14 +30,14 @@ class EditProfileState extends Equatable {
         isRewardAchieved,
       ];
 
-  EditProfileState copyWith({
-    EditProfileStatus? status,
+  EditChildProfileState copyWith({
+    EditChildProfileStatus? status,
     String? currentProfilePicture,
     String? selectedProfilePicture,
     String? error,
     bool? isRewardAchieved,
   }) {
-    return EditProfileState(
+    return EditChildProfileState(
       status: status ?? this.status,
       currentProfilePicture:
           currentProfilePicture ?? this.currentProfilePicture,

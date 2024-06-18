@@ -10,13 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'edit_profile_state.dart';
 
-class EditProfileCubit extends Cubit<EditProfileState> {
-  EditProfileCubit({
+class EditChildProfileCubit extends Cubit<EditChildProfileState> {
+  EditChildProfileCubit({
     required this.editProfileRepository,
     required this.childGUID,
     required String currentProfilePicture,
   }) : super(
-          EditProfileState(
+          EditChildProfileState(
             currentProfilePicture:
                 _extractFileNameFromPictureUrl(currentProfilePicture),
             selectedProfilePicture:
@@ -53,14 +53,14 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     emit(
       state.copyWith(
         selectedProfilePicture: profilePicture,
-        status: EditProfileStatus.selectingAvatar,
+        status: EditChildProfileStatus.selectingAvatar,
         error: '',
       ),
     );
   }
 
   Future<void> editProfile() async {
-    emit(state.copyWith(status: EditProfileStatus.editing));
+    emit(state.copyWith(status: EditChildProfileStatus.editing));
 
     try {
       final firstAvatarChange = !_isRewardAlreadyAchieved;
@@ -78,13 +78,13 @@ class EditProfileCubit extends Cubit<EditProfileState> {
 
       emit(
         state.copyWith(
-          status: EditProfileStatus.edited,
+          status: EditChildProfileStatus.edited,
           isRewardAchieved: firstAvatarChange,
         ),
       );
     } catch (e) {
       emit(
-        state.copyWith(status: EditProfileStatus.error, error: e.toString()),
+        state.copyWith(status: EditChildProfileStatus.error, error: e.toString()),
       );
     }
   }

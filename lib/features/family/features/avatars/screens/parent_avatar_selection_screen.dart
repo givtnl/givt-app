@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/avatars/cubit/avatars_cubit.dart';
-import 'package:givt_app/features/children/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
+import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class AvatarSelectionScreen extends StatelessWidget {
-  const AvatarSelectionScreen({super.key,});
+class ParentAvatarSelectionScreen extends StatelessWidget {
+  const ParentAvatarSelectionScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class AvatarSelectionScreen extends StatelessWidget {
         if (state.status == EditProfileStatus.error) {
           SnackBarHelper.showMessage(context, text: state.error, isError: true);
         } else if (state.status == EditProfileStatus.edited) {
+          context.read<ProfilesCubit>().fetchAllProfiles();
           context.read<AuthCubit>().refreshUser();
           context.pop();
         }
@@ -81,6 +83,11 @@ Widget _getContent({
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 return AvatarItem(
+                  onSelectProfilePicture: (profilePicture) {
+                    context
+                        .read<EditProfileCubit>()
+                        .selectProfilePicture(profilePicture);
+                  },
                   filename: avatarsState.avatars[index].fileName,
                   url: avatarsState.avatars[index].pictureURL,
                   isSelected: avatarsState.avatars[index].fileName ==

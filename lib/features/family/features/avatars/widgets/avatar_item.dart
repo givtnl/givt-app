@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/features/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AvatarItem extends StatelessWidget {
@@ -11,12 +9,14 @@ class AvatarItem extends StatelessWidget {
     required this.url,
     required this.filename,
     required this.isSelected,
+    this.onSelectProfilePicture,
     super.key,
   });
 
   final String url;
   final String filename;
   final bool isSelected;
+  final void Function(String profilePicture)? onSelectProfilePicture;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class AvatarItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           SystemSound.play(SystemSoundType.click);
-          context.read<EditProfileCubit>().selectProfilePicture(filename);
+          onSelectProfilePicture?.call(filename);
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.avatarImageSelected,
             eventProperties: {

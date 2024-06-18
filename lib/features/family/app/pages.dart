@@ -1,5 +1,9 @@
 enum FamilyPages {
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
+  kidsAvatarSelection(
+      path: '/kids-avatar-selection', name: 'KIDS-AVATAR-SELECTION'),
+  parentAvatarSelection(
+      path: '/parent-avatar-selection', name: 'PARENT-AVATAR-SELECTION'),
   wallet(path: '/wallet', name: 'WALLET'),
   camera(path: '/camera', name: 'CAMERA'),
   success(path: '/success', name: 'SUCCESS'),
@@ -19,7 +23,6 @@ enum FamilyPages {
   test(path: '/test', name: 'TEST'),
   scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),
   history(path: '/history', name: 'HISTORY'),
-  avatarSelection(path: '/avatar-selection', name: 'AVATAR_SELECTION'),
   childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
   addMember(path: 'add-member', name: 'ADD-MEMBER'),
   childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
