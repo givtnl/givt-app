@@ -91,7 +91,7 @@ class ProfilesExternalErrorState extends ProfilesState {
   List<Object> get props => [profiles, activeProfileIndex, errorMessage];
 }
 
-class ProfilesCountdownState extends ProfilesUpdatedState {
+class ProfilesCountdownState extends ProfilesState {
   const ProfilesCountdownState({
     required super.profiles,
     required super.activeProfileIndex,
