@@ -74,6 +74,9 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
+import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
+import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
@@ -180,14 +183,13 @@ class FamilyAppRoutes {
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(
-                  value:
-                  extra[GenerosityChallengeHelper.generosityChallengeKey]
-                  as GenerosityChallengeCubit,
+                  value: extra[GenerosityChallengeHelper.generosityChallengeKey]
+                      as GenerosityChallengeCubit,
                 ),
               ],
               child: DisplayOrganisations(
                 familyValues: extra[FamilyValuesCubit.familyValuesKey]
-                as List<FamilyValue>,
+                    as List<FamilyValue>,
               ),
             );
           },
@@ -414,6 +416,20 @@ class FamilyAppRoutes {
                 ),
               ],
               child: const FamilyOverviewPage(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.permitUSBiometric.path,
+          name: FamilyPages.permitUSBiometric.name,
+          builder: (context, state) {
+            final permitBiometricRequest =
+                state.extra! as PermitBiometricRequest;
+            return BlocProvider(
+              create: (_) => PermitBiometricCubit(
+                permitBiometricRequest: permitBiometricRequest,
+              )..checkBiometric(),
+              child: const PermitBiometricPage(),
             );
           },
         ),
