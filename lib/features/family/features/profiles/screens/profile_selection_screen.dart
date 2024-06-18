@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -85,10 +86,16 @@ class ProfileSelectionScreen extends StatelessWidget {
           );
         } else if (state is ProfilesNotSetupState) {
           context.pushNamed(FamilyPages.childrenOverview.name);
+        } else if (state is ProfilesNeedsRegistration) {
+          context.pushNamed(FamilyPages.registrationUS.name);
         }
       },
-      listenWhen: (previous, current) => current is ProfilesNotSetupState,
-      buildWhen: (previous, current) => current is! ProfilesNotSetupState,
+      listenWhen: (previous, current) =>
+          current is ProfilesNotSetupState ||
+          current is ProfilesNeedsRegistration,
+      buildWhen: (previous, current) =>
+          current is! ProfilesNotSetupState &&
+          current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),

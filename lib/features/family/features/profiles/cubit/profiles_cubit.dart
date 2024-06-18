@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -13,13 +14,15 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 
 class ProfilesCubit extends HydratedCubit<ProfilesState> {
-  ProfilesCubit(this._profilesRepositoy, this._addMemberRepository)
+  ProfilesCubit(
+      this._profilesRepositoy, this._addMemberRepository, this._authRepository)
       : super(const ProfilesInitialState()) {
     _init();
   }
 
   final ProfilesRepository _profilesRepositoy;
   final AddMemberRepository _addMemberRepository;
+  final AuthRepository _authRepository;
 
   StreamSubscription<void>? _memberAddedSubscription;
 
@@ -62,13 +65,16 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
       }
-      emit(
-        ProfilesUpdatedState(
-          profiles: newProfiles,
-          activeProfileIndex: state.activeProfileIndex,
-        ),
-      );
-      if (newProfiles.isEmpty) {
+      final (userExt, session, amountPresets) =
+          await _authRepository.isAuthenticated() ?? (null, null, null);
+      if (userExt?.needRegistration ?? true) {
+        emit(
+          ProfilesNeedsRegistration(
+            profiles: newProfiles,
+            activeProfileIndex: state.activeProfileIndex,
+          ),
+        );
+      } else if (newProfiles.isEmpty) {
         emit(
           ProfilesNotSetupState(
             profiles: newProfiles,
@@ -76,6 +82,12 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           ),
         );
       }
+      emit(
+        ProfilesUpdatedState(
+          profiles: newProfiles,
+          activeProfileIndex: state.activeProfileIndex,
+        ),
+      );
     } catch (error, stackTrace) {
       unawaited(
         LoggingInfo.instance.error(
