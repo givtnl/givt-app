@@ -139,7 +139,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                   ? ProfilesEmptyStateWidget(
                       onRetry: () => context
                           .read<ProfilesCubit>()
-                          .fetchAllProfiles(isRetry: true),
+                          .fetchAllProfiles(checkRegistrationAndSetup: true),
                     )
                   : SafeArea(
                       child: Padding(

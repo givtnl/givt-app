@@ -38,7 +38,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     );
   }
 
-  Future<void> fetchAllProfiles({bool isRetry = false}) async {
+  Future<void> fetchAllProfiles(
+      {bool checkRegistrationAndSetup = false}) async {
     emit(
       ProfilesLoadingState(
         profiles: state.profiles,
@@ -66,7 +67,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         }
       }
       UserExt? userExternal;
-      if (isRetry) {
+      if (checkRegistrationAndSetup) {
         final (userExt, session, amountPresets) =
             await _authRepository.isAuthenticated() ?? (null, null, null);
         userExternal = userExt;
@@ -79,7 +80,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
             activeProfileIndex: state.activeProfileIndex,
           ),
         );
-      } else if (newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
+      } else if (checkRegistrationAndSetup &&
+          newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
         emit(
           ProfilesNotSetupState(
             profiles: newProfiles,
