@@ -200,6 +200,8 @@ class AuthCubit extends Cubit<AuthState> {
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
 
+    AnalyticsHelper.setFamilyAppTracking(isOn: false);
+
     emit(
       state.copyWith(
         status: AuthStatus.unauthenticated,
