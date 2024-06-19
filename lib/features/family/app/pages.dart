@@ -15,13 +15,13 @@ enum FamilyPages {
     path: 'family-personal-info-edit',
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
-  personalInfo(path: 'personal-info', name: 'PERSONAL-INFO'),
   registrationUS(path: 'registration-us', name: 'REGISTRATION-US'),
   registrationSuccessUs(
     path: 'registration-success-us',
     name: 'REGISTRATION-SUCCESS-US',
   ),
-  permitUSBiometric(path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US'),
+  permitUSBiometric(
+      path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US'),
   creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   test(path: '/test', name: 'TEST'),
   scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),

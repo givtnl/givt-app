@@ -15,6 +15,7 @@ enum Pages {
     path: 'choose-category-enter-amount',
     name: 'CHOOSE-CATEGORY-ENTER-AMOUNT',
   ),
+  personalInfo(path: 'personal-info', name: 'PERSONAL-INFO'),
   giveByQrCode(path: 'give-by-qr-code', name: 'GIVE-BY-QR-CODE'),
   giveByLocation(path: 'give-by-location', name: 'GIVE-BY-LOCATION'),
   giveByBeacon(path: 'give-by-beacon', name: 'GIVE-BY-BEACON'),

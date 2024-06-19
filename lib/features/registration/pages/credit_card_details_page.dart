@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -53,6 +54,7 @@ class CreditCardDetailsPage extends StatelessWidget {
               onRegistrationFailed!.call();
             } else {
               context.pop();
+              context.read<ProfilesCubit>().fetchAllProfiles(checkRegistrationAndSetup: true);
             }
 
             /* Logged as info as stripe is giving exception
