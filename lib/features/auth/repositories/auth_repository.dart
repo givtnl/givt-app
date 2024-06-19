@@ -494,7 +494,7 @@ class AuthRepositoyImpl with AuthRepository {
   Future<void> setUserProperties(UserExt newUserExt) {
     FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
 
-    if (newUserExt.country == Country.us.countryCode) {
+    if (newUserExt.isUsUser) {
       AnalyticsHelper.setFamilyAppTracking();
     }
 
