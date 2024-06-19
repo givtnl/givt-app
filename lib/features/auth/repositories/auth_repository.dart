@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
@@ -493,11 +494,15 @@ class AuthRepositoyImpl with AuthRepository {
   Future<void> setUserProperties(UserExt newUserExt) {
     FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
 
+    if (newUserExt.country == Country.us.countryCode) {
+      AnalyticsHelper.setFamilyAppTracking();
+    }
+
     return AnalyticsHelper.setUserProperties(
       userId: newUserExt.guid,
       userProperties: {
         'email': newUserExt.email,
-        'country': newUserExt.country,
+        'profile_country': newUserExt.country,
       },
     );
   }

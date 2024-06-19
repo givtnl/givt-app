@@ -20,7 +20,7 @@ import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class ProfileSelectionScreen extends StatelessWidget {
+class ProfileSelectionScreen extends StatefulWidget {
   const ProfileSelectionScreen({
     super.key,
   });
@@ -28,13 +28,20 @@ class ProfileSelectionScreen extends StatelessWidget {
   static const int maxVivibleProfiles = 6;
 
   @override
+  State<ProfileSelectionScreen> createState() => _ProfileSelectionScreenState();
+}
+
+class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
+  @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
     context.read<ProfilesCubit>().fetchAllProfiles();
 
     List<Widget> createGridItems(List<Profile> profiles) {
       final gridItems = <Widget>[];
-      for (var i = 0; i < profiles.length && i < maxVivibleProfiles; i++) {
+      for (var i = 0;
+          i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
+          i++) {
         gridItems.add(
           GestureDetector(
             onTap: () {
@@ -175,5 +182,11 @@ class ProfileSelectionScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    AnalyticsHelper.setFamilyAppTracking();
   }
 }

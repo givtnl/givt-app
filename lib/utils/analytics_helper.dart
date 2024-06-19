@@ -17,8 +17,13 @@ class AnalyticsHelper {
   static const String cityKey = 'city';
   static const String dateEUKey = 'start_date_eu_format';
   static const String familyNameKey = 'family_name';
+  static const String isFamilyAppKey = 'is_family_app';
 
   static Amplitude? _amplitude;
+
+  static Map<String, dynamic> _globalEventProperties = {
+    isFamilyAppKey: false,
+  };
 
   static Future<void> init(String key) async {
     _amplitude = Amplitude.getInstance();
@@ -26,18 +31,23 @@ class AnalyticsHelper {
     await _amplitude!.trackingSessionEvents(true);
   }
 
+  static void setFamilyAppTracking({bool isOn = true}) =>
+      _globalEventProperties[isFamilyAppKey] = isOn;
+
   static Future<void> logChatScriptEvent({
     required String eventName,
     Map<String, dynamic>? eventProperties,
   }) =>
       _logEvent(eventName, eventProperties);
 
-  //KIDS-1055 TODO tamara property isFamily: true/false
   static Future<void> logEvent({
     required AmplitudeEvents eventName,
     Map<String, dynamic>? eventProperties,
-  }) =>
-      _logEvent(eventName.value, eventProperties);
+  }) {
+    eventProperties?.addAll(_globalEventProperties);
+    return _logEvent(
+        eventName.value, eventProperties ?? _globalEventProperties);
+  }
 
   static Future<void> _logEvent(
     String eventName,
@@ -53,9 +63,11 @@ class AnalyticsHelper {
 
   static Future<void> setUserProperties({
     required String userId,
-    required Map<String, dynamic> userProperties,
+    Map<String, dynamic>? userProperties,
   }) async {
     await _amplitude?.setUserId(userId);
-    await _amplitude?.setUserProperties(userProperties);
+    if (userProperties != null) {
+      await _amplitude?.setUserProperties(userProperties);
+    }
   }
 }
