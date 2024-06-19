@@ -640,14 +640,20 @@ class AppRouter {
           (!GenerosityChallengeHelper.isActivated ||
               GenerosityChallengeHelper.isCompleted)) {
         if (state.user.needRegistration) {
-          final createStripe = state.user.personalInfoRegistered;
-          context.goNamed(
-            FamilyPages.registrationUS.name,
-            queryParameters: {
-              'email': state.user.email,
-              'createStripe': createStripe.toString(),
-            },
-          );
+          if (state.user.personalInfoRegistered) {
+            context.goNamed(
+              FamilyPages.creditCardDetails.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          } else {
+            context.goNamed(
+              FamilyPages.registrationUS.name,
+              queryParameters: {
+                'email': state.user.email,
+                'createStripe': true.toString(),
+              },
+            );
+          }
         } else if (routerState.name == Pages.loading.name) {
           context.goNamed(FamilyPages.profileSelection.name);
         }

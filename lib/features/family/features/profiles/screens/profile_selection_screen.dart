@@ -94,24 +94,17 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           );
         } else if (state is ProfilesNotSetupState) {
           context.pushNamed(FamilyPages.childrenOverview.name);
-        } else if (state is ProfilesNeedsRegistration) {
-          if (context.read<RegistrationBloc>().state.status ==
-              RegistrationStatus.createStripeAccount) {
-            context.goNamed(
-              FamilyPages.creditCardDetails.name,
-              extra: context.read<RegistrationBloc>(),
-            );
-          } else {
-            context.pushNamed(FamilyPages.registrationUS.name);
-          }
+        } else if (state is ProfilesNeedsPersonalInfoRegistration) {
+          context.pushNamed(FamilyPages.registrationUS.name);
+        } else if (state is ProfilesNeedsCreditCardRegistration) {
+          context.goNamed(
+            FamilyPages.creditCardDetails.name,
+            extra: context.read<RegistrationBloc>(),
+          );
         }
       },
-      listenWhen: (previous, current) =>
-          current is ProfilesNotSetupState ||
-          current is ProfilesNeedsRegistration,
-      buildWhen: (previous, current) =>
-          current is! ProfilesNotSetupState &&
-          current is! ProfilesNeedsRegistration,
+      listenWhen: (previous, current) => _shouldOnlyListen(current),
+      buildWhen: (previous, current) => !_shouldOnlyListen(current),
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
@@ -182,6 +175,12 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         );
       },
     );
+  }
+
+  bool _shouldOnlyListen(ProfilesState current) {
+    return current is ProfilesNotSetupState ||
+        current is ProfilesNeedsPersonalInfoRegistration ||
+        current is ProfilesNeedsCreditCardRegistration;
   }
 
   @override

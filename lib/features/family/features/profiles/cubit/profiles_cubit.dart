@@ -73,12 +73,21 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
       }
 
       if (userExternal?.needRegistration ?? false) {
-        emit(
-          ProfilesNeedsRegistration(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-          ),
-        );
+        if (userExternal?.personalInfoRegistered ?? false) {
+          emit(
+            ProfilesNeedsCreditCardRegistration(
+              profiles: newProfiles,
+              activeProfileIndex: state.activeProfileIndex,
+            ),
+          );
+        } else {
+          emit(
+            ProfilesNeedsPersonalInfoRegistration(
+              profiles: newProfiles,
+              activeProfileIndex: state.activeProfileIndex,
+            ),
+          );
+        }
       } else if (newProfiles.isEmpty) {
         emit(
           ProfilesNotSetupState(
