@@ -128,7 +128,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           ),
           body: state is ProfilesLoadingState
               ? const CustomCircularProgressIndicator()
-              : state.children.isEmpty
+              : state.children.isEmpty && state.parents.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () => context
                           .read<ProfilesCubit>()
@@ -147,7 +147,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               SizedBox(
                                 height: MediaQuery.sizeOf(context).height * 0.1,
                               ),
-                            const Text(
+                           if(gridItems.isNotEmpty) const Text(
                               'Who would like to give?',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -157,7 +157,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               ),
                             ),
                             const SizedBox(height: 24),
-                            SingleChildScrollView(
+                            if(gridItems.isNotEmpty) SingleChildScrollView(
                               child: GridView.count(
                                 shrinkWrap: true,
                                 childAspectRatio: 0.74,
