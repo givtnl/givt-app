@@ -58,87 +58,91 @@ class _SignUpPageState extends State<SignUpPage> {
     final size = MediaQuery.sizeOf(context);
     final isUS = _selectedCountry == Country.us;
 
-    return BlocConsumer<RegistrationBloc, RegistrationState>(
-      listener: (context, state) {
-        if (!(_selectedCountry == Country.us) &&
-            state.status == RegistrationStatus.personalInfo) {
-          context.goNamed(
-            Pages.personalInfo.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
+    return PopScope(
+      canPop: !isUS,
+      child: BlocConsumer<RegistrationBloc, RegistrationState>(
+        listener: (context, state) {
+          if (!(_selectedCountry == Country.us) &&
+              state.status == RegistrationStatus.personalInfo) {
+            context.goNamed(
+              Pages.personalInfo.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          }
 
-        if (state.status == RegistrationStatus.sepaMandateExplanation) {
-          context.goNamed(
-            Pages.sepaMandateExplanation.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
+          if (state.status == RegistrationStatus.sepaMandateExplanation) {
+            context.goNamed(
+              Pages.sepaMandateExplanation.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          }
 
-        if (state.status ==
-            RegistrationStatus.bacsDirectDebitMandateExplanation) {
-          context.goNamed(
-            Pages.bacsMandateExplanation.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
-        if (state.status == RegistrationStatus.createStripeAccount) {
-          context.goNamed(
-            FamilyPages.creditCardDetails.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
-      },
-      builder: (context, state) {
-        return Scaffold(
-          appBar: RegistrationAppBar(
-            title: isUS
-                ? Text(
-                    locals.signUpPageTitle,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                        ),
-                  )
-                : null,
-            actions: [
-              IconButton(
-                onPressed: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  backgroundColor: AppTheme.givtBlue,
-                  builder: (_) => const FAQBottomSheet(),
-                ),
-                icon: const Icon(
-                  Icons.question_mark_outlined,
-                  size: 26,
-                ),
-              ),
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: isLoading
-                ? _buildLoadingState(isUS)
-                : CustomScrollView(
-                    slivers: <Widget>[
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Column(
-                          children: [
-                            _buildSignUpForm(locals, size, isUS),
-                            const Spacer(),
-                            _buildBottomWidgetGroup(locals, size, isUS),
-                          ],
-                        ),
-                      ),
-                    ],
+          if (state.status ==
+              RegistrationStatus.bacsDirectDebitMandateExplanation) {
+            context.goNamed(
+              Pages.bacsMandateExplanation.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          }
+          if (state.status == RegistrationStatus.createStripeAccount) {
+            context.goNamed(
+              FamilyPages.creditCardDetails.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: RegistrationAppBar(
+              isUS: isUS,
+              title: isUS
+                  ? Text(
+                      locals.signUpPageTitle,
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    )
+                  : null,
+              actions: [
+                IconButton(
+                  onPressed: () => showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    useSafeArea: true,
+                    backgroundColor: AppTheme.givtBlue,
+                    builder: (_) => const FAQBottomSheet(),
                   ),
-          ),
-        );
-      },
+                  icon: const Icon(
+                    Icons.question_mark_outlined,
+                    size: 26,
+                  ),
+                ),
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(16),
+              child: isLoading
+                  ? _buildLoadingState(isUS)
+                  : CustomScrollView(
+                      slivers: <Widget>[
+                        SliverFillRemaining(
+                          hasScrollBody: false,
+                          child: Column(
+                            children: [
+                              _buildSignUpForm(locals, size, isUS),
+                              const Spacer(),
+                              _buildBottomWidgetGroup(locals, size, isUS),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          );
+        },
+      ),
     );
   }
 

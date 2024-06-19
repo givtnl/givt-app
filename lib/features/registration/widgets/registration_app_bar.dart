@@ -7,17 +7,20 @@ class RegistrationAppBar extends StatelessWidget
     this.title,
     this.actions = const [],
     this.leading,
+    this.isUS = false,
   });
 
   final Widget? leading;
   final Text? title;
   final List<Widget>? actions;
+  final bool isUS;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return AppBar(
-      leading: leading,
+      automaticallyImplyLeading: !isUS,
+      leading: isUS ? null : leading,
       title: title ??
           Image.asset(
             'assets/images/logo.png',
