@@ -78,15 +78,9 @@ class ProfilesNotSetupState extends ProfilesState {
       {required super.profiles, required super.activeProfileIndex});
 }
 
-class ProfilesNeedsPersonalInfoRegistration extends ProfilesState {
+class ProfilesNeedsRegistration extends ProfilesState {
   /// This is the state that is emitted when the user still needs to register
-  const ProfilesNeedsPersonalInfoRegistration(
-      {required super.profiles, required super.activeProfileIndex});
-}
-
-class ProfilesNeedsCreditCardRegistration extends ProfilesState {
-  /// This is the state that is emitted when the user still needs to register
-  const ProfilesNeedsCreditCardRegistration(
+  const ProfilesNeedsRegistration(
       {required super.profiles, required super.activeProfileIndex});
 }
 

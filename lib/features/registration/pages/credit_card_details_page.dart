@@ -22,54 +22,51 @@ class CreditCardDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        body: BlocBuilder<StripeCubit, StripeState>(
-          builder: (_, state) {
-            if (state.stripeStatus == StripeObjectStatus.initial) {
-              context.read<StripeCubit>().fetchSetupIntent();
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.stripeStatus == StripeObjectStatus.loading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.stripeStatus == StripeObjectStatus.failure) {
-              return const Center(child: Text('Could not connect to Stripe'));
-            }
-
-            if (state.stripeStatus != StripeObjectStatus.display) {
-              return const Center(child: CircularProgressIndicator());
-            }
-
-            StripeHelper(context).showPaymentSheet().then((value) {
-              if (onRegistrationSuccess != null) {
-                context.pop();
-                onRegistrationSuccess!.call();
-              } else {
-                _handleStripeRegistrationSuccess(context);
-              }
-            }).onError((e, stackTrace) {
-              if (onRegistrationFailed != null) {
-                context.pop();
-                onRegistrationFailed!.call();
-              } else {
-                context.pop();
-              }
-
-              /* Logged as info as stripe is giving exception
-                 when for example people close the bottomsheet.
-                 So it's not a real error :)
-              */
-              LoggingInfo.instance.info(
-                e.toString(),
-                methodName: stackTrace.toString(),
-              );
-            });
-
+    return Scaffold(
+      body: BlocBuilder<StripeCubit, StripeState>(
+        builder: (_, state) {
+          if (state.stripeStatus == StripeObjectStatus.initial) {
+            context.read<StripeCubit>().fetchSetupIntent();
             return const Center(child: CircularProgressIndicator());
-          },
-        ),
+          }
+          if (state.stripeStatus == StripeObjectStatus.loading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (state.stripeStatus == StripeObjectStatus.failure) {
+            return const Center(child: Text('Could not connect to Stripe'));
+          }
+
+          if (state.stripeStatus != StripeObjectStatus.display) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          StripeHelper(context).showPaymentSheet().then((value) {
+            if (onRegistrationSuccess != null) {
+              context.pop();
+              onRegistrationSuccess!.call();
+            } else {
+              _handleStripeRegistrationSuccess(context);
+            }
+          }).onError((e, stackTrace) {
+            if (onRegistrationFailed != null) {
+              context.pop();
+              onRegistrationFailed!.call();
+            } else {
+              context.pop();
+            }
+
+            /* Logged as info as stripe is giving exception
+               when for example people close the bottomsheet. 
+               So it's not a real error :)
+            */
+            LoggingInfo.instance.info(
+              e.toString(),
+              methodName: stackTrace.toString(),
+            );
+          });
+
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
