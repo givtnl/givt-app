@@ -88,7 +88,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
             ),
           );
         }
-      } else if (newProfiles.isEmpty) {
+      } else if (newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
         emit(
           ProfilesNotSetupState(
             profiles: newProfiles,
