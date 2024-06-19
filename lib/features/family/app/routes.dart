@@ -451,16 +451,6 @@ class FamilyAppRoutes {
               ),
             );
           },
-          routes: [
-            GoRoute(
-              path: FamilyPages.personalInfo.path,
-              name: FamilyPages.personalInfo.name,
-              builder: (context, state) => BlocProvider.value(
-                value: state.extra! as RegistrationBloc,
-                child: const PersonalInfoPage(),
-              ),
-            ),
-          ],
         ),
         GoRoute(
           path: FamilyPages.permitUSBiometric.path,

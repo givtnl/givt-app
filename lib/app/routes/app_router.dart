@@ -245,6 +245,16 @@ class AppRouter {
                 ),
               );
             },
+            routes: [
+              GoRoute(
+                path: Pages.personalInfo.path,
+                name: Pages.personalInfo.name,
+                builder: (context, state) => BlocProvider.value(
+                  value: state.extra! as RegistrationBloc,
+                  child: const PersonalInfoPage(),
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: Pages.registrationSuccess.path,
