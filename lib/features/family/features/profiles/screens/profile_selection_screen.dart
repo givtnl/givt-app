@@ -121,7 +121,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             automaticallyImplyLeading: false,
             leading: (flow.flowType == FlowType.none &&
                     state is! ProfilesLoadingState)
-                ? null
+                ? const LogoutIconButton()
                 : const GivtBackButton(),
             title: Text(
               'My Family',
