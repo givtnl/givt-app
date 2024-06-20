@@ -14,7 +14,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/shared/widgets/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
-import 'package:givt_app/features/family/shared/widgets/kids_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';

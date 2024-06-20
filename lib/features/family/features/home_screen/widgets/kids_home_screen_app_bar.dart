@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/common_icons.dart';
-import 'package:givt_app/features/family/shared/widgets/kids_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
