@@ -5,7 +5,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 
 class GoalCompletedWidget extends StatelessWidget {
-  const GoalCompletedWidget({super.key,});
+  const GoalCompletedWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +42,13 @@ class GoalCompletedWidget extends StatelessWidget {
                 Text(
                   org.organisationName ?? 'Name Placeholder',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 17,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w800,
-                      ),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Family Goal completed. Great job!',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w400,
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),

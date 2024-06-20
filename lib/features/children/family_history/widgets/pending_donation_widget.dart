@@ -93,12 +93,10 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                   children: [
                     Text(
                       '\$${widget.donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${widget.donation.name}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
                             color: DonationState.getAmountColor(
                               widget.donation.state,
                             ),
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.w500,
                           ),
                     ),
                     SizedBox(
@@ -111,25 +109,20 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         softWrap: true,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  color: AppTheme.childHistoryPendingDark,
-                                  fontFamily: 'Raleway',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: AppTheme.childHistoryPendingDark,
+                            ),
                       ),
                     ),
                     Text(
                       '${widget.donation.date.formatDate(locals)} - ${locals.childHistoryToBeApproved}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color:
                                 widget.donation.state == DonationState.pending
                                     ? DonationState.getAmountColor(
                                         widget.donation.state,
                                       )
                                     : AppTheme.givtPurple,
-                            fontFamily: 'Raleway',
                           ),
                     ),
                   ],

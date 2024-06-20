@@ -28,6 +28,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
         statusBarBrightness: Brightness.light, // For iOS (dark icons)
       ),
       actions: actions,
+      scrolledUnderElevation: 0,
     );
   }
 
