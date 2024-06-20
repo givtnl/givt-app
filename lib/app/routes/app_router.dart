@@ -641,7 +641,7 @@ class AppRouter {
               GenerosityChallengeHelper.isCompleted)) {
         if (state.user.needRegistration) {
           final createStripe = state.user.personalInfoRegistered;
-          context.goNamed(
+          context.pushNamed(
             FamilyPages.registrationUS.name,
             queryParameters: {
               'email': state.user.email,

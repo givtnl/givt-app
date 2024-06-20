@@ -64,7 +64,8 @@ class _WalletWidgetState extends State<WalletWidget> {
                       child: InkWell(
                         onTap: () {
                           SystemSound.play(SystemSoundType.click);
-                          context.pushNamed(FamilyPages.kidsAvatarSelection.name);
+                          context
+                              .pushNamed(FamilyPages.kidsAvatarSelection.name);
                           AnalyticsHelper.logEvent(
                             eventName:
                                 AmplitudeEvents.editProfilePictureClicked,
@@ -115,43 +116,40 @@ class _WalletWidgetState extends State<WalletWidget> {
                         ),
                       ],
                     ),
-                  if (widget.hasDonations)
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        alignment: Alignment.topCenter,
-                      ),
-                      onPressed: () {
-                        SystemSound.play(SystemSoundType.click);
-                        context.pushNamed(FamilyPages.kidsAvatarSelection.name);
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.editAvatarIconClicked,
-                        );
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'My profile',
-                            style: Theme.of(context).textTheme.labelSmall,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      alignment: Alignment.topCenter,
+                    ),
+                    onPressed: () {
+                      SystemSound.play(SystemSoundType.click);
+                      context.pushNamed(FamilyPages.kidsAvatarSelection.name);
+                      AnalyticsHelper.logEvent(
+                        eventName: AmplitudeEvents.editAvatarIconClicked,
+                      );
+                    },
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'My profile',
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 4),
+                          child: Icon(
+                            FontAwesomeIcons.arrowRight,
+                            size: 20,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 4),
-                            child: Icon(
-                              FontAwesomeIcons.arrowRight,
-                              size: 20,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onPrimaryContainer,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  else
-                    const SizedBox(),
-                  SizedBox(height: widget.hasDonations ? 0 : 8),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                 ],
               );
             },
