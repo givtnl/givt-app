@@ -59,11 +59,6 @@ class FamilyOverviewPage extends StatelessWidget {
                 ),
             ],
           ),
-          // automaticallyImplyLeading: false,
-          // ),
-          // body: SafeArea(
-          //   child: buildFamilyOverviewBody(state, context),
-          // ),
           body: SafeArea(
             child: buildFamilyOverviewBody(state, context),
           ),
