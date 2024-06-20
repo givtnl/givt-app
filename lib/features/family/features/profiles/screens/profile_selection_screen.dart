@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/features/auth/pages/login_page.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -151,8 +153,28 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               ),
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
-                              onTap: () {
-                                context.pushNamed(
+                              onTap: () async {
+                                final success = await showModalBottomSheet<bool>(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  useSafeArea: true,
+                                  builder: (_) => LoginPage(
+                                    email: context
+                                        .read<AuthCubit>()
+                                        .state
+                                        .user
+                                        .email,
+                                    isEmailEditable: false,
+                                  ),
+                                );
+
+                                if (success == null ||
+                                    !success ||
+                                    !context.mounted) {
+                                  return;
+                                }
+
+                                await context.pushNamed(
                                   FamilyPages.childrenOverview.name,
                                 );
                               },
