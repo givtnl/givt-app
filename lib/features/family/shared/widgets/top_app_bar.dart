@@ -27,6 +27,12 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
         statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
         statusBarBrightness: Brightness.light, // For iOS (dark icons)
       ),
+      actionsIconTheme: const IconThemeData(
+        color: AppTheme.primary30,
+      ),
+      iconTheme: const IconThemeData(
+        color: AppTheme.primary30,
+      ),
       actions: actions,
       scrolledUnderElevation: 0,
     );
