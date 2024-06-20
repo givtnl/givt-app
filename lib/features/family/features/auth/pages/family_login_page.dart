@@ -9,8 +9,8 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({
+class FamilyLoginPage extends StatefulWidget {
+  const FamilyLoginPage({
     required this.email,
     required this.isEmailEditable,
     this.navigate,
@@ -22,10 +22,10 @@ class LoginPage extends StatefulWidget {
   final Future<void> Function(BuildContext context, {bool? isUSUser})? navigate;
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<FamilyLoginPage> createState() => _FamilyLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _FamilyLoginPageState extends State<FamilyLoginPage> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;
