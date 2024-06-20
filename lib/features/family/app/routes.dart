@@ -9,6 +9,7 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
+import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
@@ -282,7 +283,7 @@ class FamilyAppRoutes {
                   ),
                 ),
               ],
-              child: const PersonalInfoEditPage(
+              child: const USPersonalInfoEditPage(
                 navigatingFromFamily: true,
               ),
             );
