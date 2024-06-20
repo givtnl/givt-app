@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_asserts_with_message
 
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 
@@ -105,7 +104,8 @@ class GenerosityChallengeContentHelper {
     day8(),
   ];
 
-  static Task getTaskByIndex(int index, {bool isDebugQuickFlowEnabled = false}) {
+  static Task getTaskByIndex(int index,
+      {bool isDebugQuickFlowEnabled = false}) {
     return isDebugQuickFlowEnabled ? _quickFlowTasks[index] : _tasks[index];
   }
 }

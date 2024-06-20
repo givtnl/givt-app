@@ -9,7 +9,6 @@ import 'package:givt_app/features/account_details/pages/personal_info_edit_page.
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
-import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
@@ -21,6 +20,7 @@ import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
@@ -40,6 +40,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
+import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
 import 'package:givt_app/features/family/features/coin_flow/screens/search_for_coin_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/screens/success_coin_screen.dart';
@@ -80,15 +81,12 @@ import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.d
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
-import 'package:givt_app/features/registration/pages/personal_info_page.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
 
 class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
@@ -418,7 +416,10 @@ class FamilyAppRoutes {
                       FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
                 ),
               ],
-              child: const FamilyOverviewPage(),
+              child: Theme(
+                data: const FamilyAppTheme().toThemeData(),
+                child: const FamilyOverviewPage(),
+              ),
             );
           },
         ),

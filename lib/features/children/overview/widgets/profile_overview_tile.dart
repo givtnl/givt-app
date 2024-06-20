@@ -64,9 +64,7 @@ class ProfileOverviewTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.w700,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppTheme.givtBlue,
                   ),
             ),
@@ -78,7 +76,7 @@ class ProfileOverviewTile extends StatelessWidget {
                       ? context.l10n.vpcNoFundsWaiting
                       : '$currencySymbol${profile.wallet.balance.toStringAsFixed(0)}',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppTheme.givtBlue,
                       ),
                 ),
