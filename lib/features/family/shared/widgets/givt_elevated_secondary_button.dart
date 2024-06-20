@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
+import 'package:givt_app/utils/app_theme.dart';
 
 class GivtElevatedSecondaryButton extends StatefulWidget {
   const GivtElevatedSecondaryButton({
@@ -87,7 +88,7 @@ class _GivtElevatedSecondaryButtonState
               },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).colorScheme.primaryContainer,
@@ -138,7 +139,9 @@ class _GivtElevatedSecondaryButtonState
                     .textTheme
                     .labelMedium
                     ?.copyWith(color: Theme.of(context).colorScheme.outline)
-                : Theme.of(context).textTheme.labelMedium,
+                : Theme.of(context).textTheme.labelMedium!.copyWith(
+                      color: AppTheme.primary30,
+                    ),
           ),
         ],
       );
