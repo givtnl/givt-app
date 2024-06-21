@@ -23,6 +23,8 @@ mixin ILoggingInfo {
 
   Future<void> error(String message);
 
+  Future<void> logRequest(String method, String string, String correlationId);
+
   void logExceptionForDebug(Object e, {StackTrace? stacktrace});
 }
 
@@ -35,7 +37,12 @@ class LoggingInfo implements ILoggingInfo {
 
   static LoggingInfo get instance => _singleton;
 
-  Future<void> _log(String message, String methodName, Level level) async {
+  Future<void> _log(
+    String message,
+    String methodName,
+    Level level, {
+    String? correlationId,
+  }) async {
     dev.log(message);
     final info = await PackageInfo.fromPlatform();
     final isDebug = info.packageName.contains('test');
@@ -50,6 +57,7 @@ class LoggingInfo implements ILoggingInfo {
       lang: Platform.localeName,
       method: methodName,
       appVersion: '${info.version}.${info.buildNumber}',
+      correlationId: correlationId,
     );
 
     if (Platform.isAndroid) {
@@ -174,5 +182,19 @@ class LoggingInfo implements ILoggingInfo {
   @override
   void logExceptionForDebug(Object e, {StackTrace? stacktrace}) {
     unawaited(debug(e.toString(), methodName: stacktrace.toString()));
+  }
+
+  @override
+  Future<void> logRequest(
+    String method,
+    String url,
+    String correlationId,
+  ) async {
+    await _log(
+      '$method: $url',
+      'Request',
+      Level.INFO,
+      correlationId: correlationId,
+    );
   }
 }
