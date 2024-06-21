@@ -17,7 +17,9 @@ import 'package:givt_app/features/family/shared/widgets/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
 import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
+import 'package:givt_app/features/family/utils/app_theme.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,6 +35,9 @@ class ProfileSelectionScreen extends StatefulWidget {
 }
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
@@ -154,7 +159,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
-                                final success = await showModalBottomSheet<bool>(
+                                final success =
+                                    await showModalBottomSheet<bool>(
                                   context: context,
                                   isScrollControlled: true,
                                   useSafeArea: true,
@@ -197,5 +203,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   void initState() {
     super.initState();
     AnalyticsHelper.setFamilyAppTracking();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
+    });
   }
 }

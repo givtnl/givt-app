@@ -190,6 +190,9 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 height: 0,
               ),
               _buildInfoRow(
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppTheme.givtBlue,
+                    ),
                 icon: logoutIcon(),
                 value: 'Logout',
                 onTap: () => logout(context),
@@ -226,6 +229,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
   Widget _buildInfoRow({
     required Widget? icon,
     required String value,
+    TextStyle? style,
     VoidCallback? onTap,
     bool visible = true,
   }) =>
@@ -240,10 +244,11 @@ class USPersonalInfoEditPage extends StatelessWidget {
               leading: icon,
               title: Text(
                 value,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: onTap == null ? AppTheme.givtGraycece : null,
-                ),
+                style: style ??
+                    TextStyle(
+                      fontSize: 16,
+                      color: onTap == null ? AppTheme.givtGraycece : null,
+                    ),
               ),
               trailing: onTap != null
                   ? const Icon(

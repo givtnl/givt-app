@@ -18,6 +18,7 @@ import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class App extends StatefulWidget {
@@ -30,6 +31,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  GlobalKey<AppThemeSwitcherWidgetState> themeKey =
+      GlobalKey<AppThemeSwitcherWidgetState>();
+
   @override
   void initState() {
     super.initState();
@@ -111,7 +115,12 @@ class _AppState extends State<App> {
             ),
           ),
         ],
-        child: const _AppView(),
+        child: AppThemeSwitcherWidget(
+          key: themeKey,
+          builder: (BuildContext context, ThemeData themeData) {
+            return _AppView(themeData: themeData);
+          },
+        ),
       );
 
   Future<void> initializeStripe() async {
@@ -128,12 +137,14 @@ class _AppState extends State<App> {
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView();
+  const _AppView({required this.themeData, super.key});
+
+  final ThemeData themeData;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: AppTheme.lightTheme,
+      theme: themeData,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {

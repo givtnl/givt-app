@@ -85,6 +85,7 @@ import 'package:givt_app/features/registration/pages/registration_success_us.dar
 import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -237,6 +238,20 @@ class FamilyAppRoutes {
       ],
     ),
     GoRoute(
+      path: FamilyPages.profileSelection.path,
+      name: FamilyPages.profileSelection.name,
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            lazy: false,
+            create: (_) => RemoteDataSourceSyncBloc(
+              getIt(),
+              getIt(),
+            )..add(const RemoteDataSourceSyncRequested()),
+          ),
+        ],
+        child: const ProfileSelectionScreen(),
+      ),
       routes: [
         GoRoute(
           path: FamilyPages.creditCardDetails.path,
@@ -414,10 +429,7 @@ class FamilyAppRoutes {
                       FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
                 ),
               ],
-              child: Theme(
-                data: const FamilyAppTheme().toThemeData(),
-                child: const FamilyOverviewPage(),
-              ),
+              child: const FamilyOverviewPage(),
             );
           },
         ),
@@ -466,23 +478,6 @@ class FamilyAppRoutes {
           },
         ),
       ],
-      path: FamilyPages.profileSelection.path,
-      name: FamilyPages.profileSelection.name,
-      builder: (context, state) => Theme(
-        data: const FamilyAppTheme().toThemeData(),
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              lazy: false,
-              create: (_) => RemoteDataSourceSyncBloc(
-                getIt(),
-                getIt(),
-              )..add(const RemoteDataSourceSyncRequested()),
-            ),
-          ],
-          child: const ProfileSelectionScreen(),
-        ),
-      ),
     ),
     GoRoute(
       path: FamilyPages.wallet.path,
