@@ -283,9 +283,7 @@ class FamilyAppRoutes {
                   ),
                 ),
               ],
-              child: const USPersonalInfoEditPage(
-                navigatingFromFamily: true,
-              ),
+              child: const USPersonalInfoEditPage(),
             );
           },
         ),

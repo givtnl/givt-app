@@ -5,8 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/account_details/pages/change_address_bottom_sheet.dart';
-import 'package:givt_app/features/account_details/pages/change_bank_details_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -17,33 +15,26 @@ import 'package:givt_app/features/family/shared/widgets/common_icons.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/pages/gift_aid_page.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class USPersonalInfoEditPage extends StatelessWidget {
-  const USPersonalInfoEditPage({this.navigatingFromFamily = false, super.key,});
-  final bool navigatingFromFamily;
+  const USPersonalInfoEditPage({
+    super.key,
+  });
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
-    final isUkUser = Country.unitedKingdomCodes().contains(user.country);
-    final isUSUser = Country.us.countryCode == user.country;
 
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
-          onPressed: () {
-            if (navigatingFromFamily) {
-              context.goNamed(FamilyPages.childrenOverview.name);
-              return;
-            }
-            context.pop();
-          },
+          onPressed: () => context.goNamed(FamilyPages.childrenOverview.name),
         ),
         title: Text(locals.personalInfo),
       ),
@@ -106,41 +97,13 @@ class USPersonalInfoEditPage extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              if (!isUSUser)
-                Column(
-                  children: [
-                    Text(
-                      locals.personalPageHeader,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      locals.personalPageSubHeader,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: ParentAvatar(
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  pictureURL: user.profilePicture,
                 ),
-              if (isUSUser)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 20),
-                  child: ParentAvatar(
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    pictureURL: user.profilePicture,
-                  ),
-                ),
-              _buildInfoRow(
-                icon: const Icon(
-                  Icons.person,
-                ),
-                visible: !isUSUser,
-                value: '${user.firstName} ${user.lastName}',
               ),
               _buildInfoRow(
                 icon: const Text(
@@ -159,27 +122,6 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: !isUSUser,
-                icon: const Icon(
-                  FontAwesomeIcons.house,
-                  color: AppTheme.givtLightGreen,
-                ),
-                value:
-                    '${user.address}\n${user.postalCode} ${user.city}, ${Country.getCountry(
-                  user.country,
-                  locals,
-                )}',
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangeAddressBottomSheet(
-                    address: user.address,
-                    postalCode: user.postalCode,
-                    city: user.city,
-                    country: user.country,
-                  ),
-                ),
-              ),
-              _buildInfoRow(
                 icon: const Icon(
                   FontAwesomeIcons.phone,
                   color: AppTheme.givtRed,
@@ -194,28 +136,6 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
-                visible: !isUSUser,
-                icon: const Icon(
-                  FontAwesomeIcons.creditCard,
-                  color: AppTheme.givtOrange,
-                ),
-                value: isUkUser
-                    ? locals.bacsSortcodeAccountnumber(
-                        user.sortCode,
-                        user.accountNumber,
-                      )
-                    : user.iban,
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: ChangeBankDetailsBottomSheet(
-                    sortCode: user.sortCode,
-                    accountNumber: user.accountNumber,
-                    iban: user.iban,
-                  ),
-                ),
-              ),
-              _buildInfoRow(
-                visible: isUSUser,
                 icon: const Icon(
                   FontAwesomeIcons.creditCard,
                   color: AppTheme.givtOrange,
@@ -243,7 +163,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                     );
 
                     /* Logged as info as stripe is giving exception
-                       when for example people close the bottomsheet. 
+                       when for example people close the bottomsheet.
                        So it's not a real error :)
                     */
                     await LoggingInfo.instance.info(
@@ -252,25 +172,6 @@ class USPersonalInfoEditPage extends StatelessWidget {
                     );
                   }
                 },
-              ),
-              _buildInfoRow(
-                visible: isUkUser,
-                icon: Image.asset(
-                  'assets/images/gift_aid_yellow.png',
-                  height: size.height * 0.04,
-                ),
-                value: 'Gift Aid',
-                onTap: () => _showModalBottomSheet(
-                  context,
-                  bottomSheet: GiftAidPage(
-                    onGiftAidChanged: (useGiftAid) =>
-                        context.read<PersonalInfoEditBloc>().add(
-                              PersonalInfoEditGiftAid(
-                                isGiftAidEnabled: useGiftAid,
-                              ),
-                            ),
-                  ),
-                ),
               ),
               _buildInfoRow(
                 icon: const Icon(
@@ -293,15 +194,14 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 value: 'Logout',
                 onTap: () => logout(context),
               ),
-              if (isUSUser)
-                Padding(
-                  padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
-                  child: Text(
-                    locals.personalPageSubHeader,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    textAlign: TextAlign.center,
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
+                child: Text(
+                  'Would you like to change your name? Send an e-mail to support@givt.app',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
                 ),
+              ),
             ],
           ),
         ),
