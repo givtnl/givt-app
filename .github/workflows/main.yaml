@@ -9,6 +9,7 @@ on:
     branches:
       - main
       - develop
+      - github-action-cache
 
 jobs:
   linter:
