@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
@@ -9,10 +10,9 @@ import 'package:givt_app/features/children/overview/widgets/children_loading_pag
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/family/app/pages.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
   const FamilyOverviewPage({
@@ -46,61 +46,18 @@ class FamilyOverviewPage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            centerTitle: false,
-            title: state is FamilyOverviewUpdatedState &&
-                    !state.hasChildren &&
-                    state.isAdultSingle
-                ? const SizedBox()
-                : state is FamilyOverviewLoadingState
-                    ? const SizedBox()
-                    : Text(
-                        context.l10n.childrenMyFamily,
-                        style: GoogleFonts.mulish(
-                          textStyle: Theme.of(context)
-                              .appBarTheme
-                              .titleTextStyle
-                              ?.copyWith(
-                                fontWeight: FontWeight.w800,
-                              ),
-                        ),
-                      ),
-            leading: BackButton(
-              onPressed: () {
-                context.pop();
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.backClicked,
-                );
-              },
-            ),
+          appBar: TopAppBar(
+            title: 'Manage Family',
             actions: [
               if (state is FamilyOverviewUpdatedState &&
                   (state.hasChildren || !state.isAdultSingle))
-                Padding(
-                  padding: const EdgeInsets.only(right: 14),
-                  child: TextButton(
-                    child: Row(
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 2),
-                          child: Icon(Icons.add, size: 20),
-                        ),
-                        Text(
-                          context.l10n.addMember,
-                          textAlign: TextAlign.start,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppTheme.givtBlue,
-                                  ),
-                        ),
-                      ],
-                    ),
-                    onPressed: () => _addNewChild(context, state),
+                IconButton(
+                  icon: const Icon(
+                    FontAwesomeIcons.userPlus,
                   ),
+                  onPressed: () => _addNewChild(context, state),
                 ),
             ],
-            automaticallyImplyLeading: false,
           ),
           body: SafeArea(
             child: buildFamilyOverviewBody(state, context),
@@ -136,6 +93,9 @@ class FamilyOverviewPage extends StatelessWidget {
       eventName: AmplitudeEvents.addMemerClicked,
     );
     final familyExists = state.hasChildren || !state.isAdultSingle;
-    context.pushReplacementNamed(FamilyPages.addMember.name, extra: familyExists);
+    context.pushReplacementNamed(
+      FamilyPages.addMember.name,
+      extra: familyExists,
+    );
   }
 }
