@@ -6,21 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/login_page.dart';
+import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
 
-class CheckAuthRequest {
-  CheckAuthRequest({
-    required this.navigate,
-    this.email = '',
-    this.forceLogin = false,
-  });
-
-  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
-  final String email;
-  final bool forceLogin;
-}
-
-class AuthUtils {
+class FamilyAuthUtils {
   /// Checks if the user is authenticated.
   /// If the user is authenticated, the [navigate] callback is called.
   /// If the user is not authenticated, the login bottom sheet is displayed
@@ -65,8 +53,7 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await checkAuthRequest.navigate(context,
-          isUSUser: auth.state.user.isUsUser);
+      await checkAuthRequest.navigate(context);
     } on PlatformException catch (e) {
       await LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
@@ -103,13 +90,20 @@ class AuthUtils {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => LoginPage(
-        email: checkAuthRequest.email.isNotEmpty
-            ? checkAuthRequest.email
-            : context.read<AuthCubit>().state.user.email,
-        isEmailEditable: checkAuthRequest.email.isNotEmpty,
+      builder: (_) => FamilyLoginPage(
+        email: context.read<AuthCubit>().state.user.email,
         navigate: checkAuthRequest.navigate,
       ),
     );
   }
+}
+
+class CheckAuthRequest {
+  CheckAuthRequest({
+    required this.navigate,
+    this.forceLogin = false,
+  });
+
+  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
+  final bool forceLogin;
 }

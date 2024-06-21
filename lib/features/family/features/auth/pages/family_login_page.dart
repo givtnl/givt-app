@@ -12,13 +12,11 @@ import 'package:go_router/go_router.dart';
 class FamilyLoginPage extends StatefulWidget {
   const FamilyLoginPage({
     required this.email,
-    required this.isEmailEditable,
     this.navigate,
     super.key,
   });
 
   final String email;
-  final bool isEmailEditable;
   final Future<void> Function(BuildContext context, {bool? isUSUser})? navigate;
 
   @override
@@ -165,7 +163,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 autocorrect: false,
-                readOnly: !widget.isEmailEditable,
+                readOnly: true,
                 autofillHints: const [
                   AutofillHints.username,
                   AutofillHints.email,

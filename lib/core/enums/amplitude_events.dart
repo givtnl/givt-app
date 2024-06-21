@@ -166,6 +166,8 @@ enum AmplitudeEvents {
 
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
+
+  manageFamilyPressed('manage_family_pressed'),
   ;
 
   const AmplitudeEvents(this.value);

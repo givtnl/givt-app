@@ -3,11 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/pages.dart';
-import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -18,8 +15,11 @@ import 'package:givt_app/features/family/shared/widgets/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
 import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
+import 'package:givt_app/features/family/utils/auth_utils.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileSelectionScreen extends StatefulWidget {
@@ -155,46 +155,23 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
-                                // Force user to authenticate before proceeding
-                                // To be sure that the user is the owner of the account/device
+                                await AnalyticsHelper.logEvent(
+                                  eventName:
+                                      AmplitudeEvents.manageFamilyPressed,
+                                );
 
-                                bool? hasAuthenticated = false;
+                                if (!context.mounted) return;
 
-                                // Check if biometrics is available,
-                                if (await LocalAuthInfo
-                                    .instance.canCheckBiometrics) {
-                                  // Show fingerprint bottom sheet
-                                  hasAuthenticated = await LocalAuthInfo
-                                      .instance
-                                      .authenticate();
-                                } else {
-                                  // Show login page
-                                  hasAuthenticated =
-                                      await showModalBottomSheet<bool>(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    useSafeArea: true,
-                                    builder: (_) => FamilyLoginPage(
-                                      email: context
-                                          .read<AuthCubit>()
-                                          .state
-                                          .user
-                                          .email,
-                                      isEmailEditable: false,
-                                    ),
-                                  );
-                                }
-
-                                // If user has not authenticated, return
-                                if (hasAuthenticated == null ||
-                                    !hasAuthenticated ||
-                                    !context.mounted) {
-                                  return;
-                                }
-
-                                // Otherwise, navigate to the manage family page
-                                await context.pushNamed(
-                                  FamilyPages.childrenOverview.name,
+                                await FamilyAuthUtils.checkToken(
+                                  context,
+                                  checkAuthRequest: CheckAuthRequest(
+                                    forceLogin: true,
+                                    navigate: (context, {isUSUser}) async {
+                                      await context.pushNamed(
+                                        FamilyPages.childrenOverview.name,
+                                      );
+                                    },
+                                  ),
                                 );
                               },
                               text: 'Manage Family',
