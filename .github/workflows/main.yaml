@@ -1,7 +1,7 @@
 name: givt_app
 
 concurrency:
-  group: $-$
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 on:

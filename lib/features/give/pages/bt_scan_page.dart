@@ -15,7 +15,9 @@ import 'package:go_router/go_router.dart';
 import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
-  const BTScanPage({super.key,});
+  const BTScanPage({
+    super.key,
+  });
 
   @override
   State<BTScanPage> createState() => _BTScanPageState();
@@ -94,31 +96,24 @@ class _BTScanPageState extends State<BTScanPage> {
               },
             ),
           );
+        case BluetoothAdapterState.unavailable:
         case BluetoothAdapterState.off:
           await LoggingInfo.instance.info('Bluetooth adapter is off');
           if (Platform.isAndroid) {
             await LoggingInfo.instance.info('Trying to turn it on...');
-            await FlutterBluePlus.turnOn();
+            try {
+              await FlutterBluePlus.turnOn(timeout: 10);
+            } catch (_) {
+              // We can't turn on the bluetooth automatically, so show a dialog
+              await showTurnOnBluetoothDialog();
+            }
           }
           if (Platform.isIOS) {
             await LoggingInfo.instance.info('iOS User has Bluetooth off...');
             if (!context.mounted) {
               return;
             }
-            await showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: context.l10n.turnOnBluetooth,
-                content: context.l10n.bluetoothErrorMessage,
-                onConfirm: () async {
-                  await startBluetoothScan();
-                  if (!context.mounted) {
-                    return;
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            );
+            await showTurnOnBluetoothDialog();
           }
         // We don't want to handle other cases at the moment, so:
         // ignore: no_default_cases
@@ -135,6 +130,19 @@ class _BTScanPageState extends State<BTScanPage> {
         isVisible = true;
       });
     });
+  }
+
+  Future<void> showTurnOnBluetoothDialog() {
+    return showDialog<void>(
+      context: context,
+      builder: (_) => WarningDialog(
+        title: context.l10n.turnOnBluetooth,
+        content: context.l10n.bluetoothErrorMessage,
+        onConfirm: () async {
+          Navigator.of(context).pop();
+        },
+      ),
+    );
   }
 
   void _onPeripheralsDetectedData(List<ScanResult> results) {
