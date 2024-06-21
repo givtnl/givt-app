@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/pages.dart';
@@ -154,26 +155,44 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
-                                final success = await showModalBottomSheet<bool>(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  useSafeArea: true,
-                                  builder: (_) => FamilyLoginPage(
-                                    email: context
-                                        .read<AuthCubit>()
-                                        .state
-                                        .user
-                                        .email,
-                                    isEmailEditable: false,
-                                  ),
-                                );
+                                // Force user to authenticate before proceeding
+                                // To be sure that the user is the owner of the account/device
 
-                                if (success == null ||
-                                    !success ||
+                                bool? hasAuthenticated = false;
+
+                                // Check if biometrics is available,
+                                if (await LocalAuthInfo
+                                    .instance.canCheckBiometrics) {
+                                  // Show fingerprint bottom sheet
+                                  hasAuthenticated = await LocalAuthInfo
+                                      .instance
+                                      .authenticate();
+                                } else {
+                                  // Show login page
+                                  hasAuthenticated =
+                                      await showModalBottomSheet<bool>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    useSafeArea: true,
+                                    builder: (_) => FamilyLoginPage(
+                                      email: context
+                                          .read<AuthCubit>()
+                                          .state
+                                          .user
+                                          .email,
+                                      isEmailEditable: false,
+                                    ),
+                                  );
+                                }
+
+                                // If user has not authenticated, return
+                                if (hasAuthenticated == null ||
+                                    !hasAuthenticated ||
                                     !context.mounted) {
                                   return;
                                 }
 
+                                // Otherwise, navigate to the manage family page
                                 await context.pushNamed(
                                   FamilyPages.childrenOverview.name,
                                 );
