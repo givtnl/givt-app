@@ -6,3 +6,9 @@ Widget switchProfilesIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
+Widget logoutIcon({double? width = 36, double? height = 36}) => SvgPicture.asset(
+      'assets/family/images/logout.svg',
+      width: width,
+      height: height,
+    );
