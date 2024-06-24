@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
@@ -117,7 +120,11 @@ class _AppState extends State<App> {
         ],
         child: AppThemeSwitcherWidget(
           key: themeKey,
-          builder: (BuildContext context, ThemeData themeData) {
+          builder: (BuildContext context, ThemeData themeData,
+              {required bool isFamilyApp}) {
+            if (kDebugMode) {
+              log('Rebuilding app with theme, isFamilyApp: $isFamilyApp');
+            }
             return _AppView(themeData: themeData);
           },
         ),

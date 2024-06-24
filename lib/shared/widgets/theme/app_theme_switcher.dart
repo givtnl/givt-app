@@ -7,8 +7,9 @@ import 'package:givt_app/utils/app_theme.dart';
 
 typedef ThemedWidgetBuilder = Widget Function(
   BuildContext context,
-  ThemeData themeData,
-);
+  ThemeData themeData, {
+  required bool isFamilyApp,
+});
 
 class AppThemeSwitcherWidget extends StatefulWidget {
   const AppThemeSwitcherWidget({
@@ -61,6 +62,7 @@ class AppThemeSwitcherWidgetState extends State<AppThemeSwitcherWidget> {
       child: widget.builder(
         context,
         themeData,
+        isFamilyApp: isFamilyApp,
       ),
     );
   }

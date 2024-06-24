@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class CustomGreenElevatedButton extends StatelessWidget {
@@ -8,6 +11,8 @@ class CustomGreenElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
+    bool isFamilyApp = AppThemeSwitcher.of(context).isFamilyApp;
+    log('CustomGreenElevatedButton isFamilyApp: $isFamilyApp');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: ElevatedButton(
