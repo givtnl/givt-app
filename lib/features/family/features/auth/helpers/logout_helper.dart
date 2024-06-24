@@ -9,14 +9,28 @@ import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
-void logout(BuildContext context) {
-  AnalyticsHelper.logEvent(
-    eventName: AmplitudeEvents.logOutPressed,
-  );
-  context.read<AuthCubit>().logout();
-  context.read<ProfilesCubit>().clearProfiles();
-  context.read<FlowsCubit>().resetFlow();
-  AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
+void logout(BuildContext context,
+    {bool fromLogoutBtn = false, bool fromTerminateAccount = false}) {
+  if (fromTerminateAccount) {
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.terminateAccountSuccess,
+    );
+  }
+
+  if (fromLogoutBtn) {
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.logOutPressed,
+    );
+  }
+
+  try {
+    context.read<AuthCubit>().logout();
+    context.read<ProfilesCubit>().clearProfiles();
+    context.read<FlowsCubit>().resetFlow();
+    AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
+  } catch (e, s) {
+    // do nothing, even if logging out fails, from welcome page user can re-login
+  }
 
   context.goNamed(Pages.welcome.name);
 }

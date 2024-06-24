@@ -214,7 +214,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                     ),
                 icon: logoutIcon(),
                 value: 'Logout',
-                onTap: () => logout(context),
+                onTap: () => logout(context, fromLogoutBtn: true),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
