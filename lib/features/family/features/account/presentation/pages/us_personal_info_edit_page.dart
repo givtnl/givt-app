@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/shared/widgets/common_icons.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -203,6 +204,22 @@ class USPersonalInfoEditPage extends StatelessWidget {
                       FamilyPages.unregisterUS.name,
                     ),
                   ),
+                ),
+              ),
+              const Divider(
+                height: 0,
+              ),
+              _buildInfoRow(
+                icon: const Icon(
+                  FontAwesomeIcons.info,
+                  color: AppTheme.givtBlue,
+                ),
+                value: locals.titleAboutGivt,
+                onTap: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (_) => const AboutGivtBottomSheet(),
                 ),
               ),
               const Divider(
