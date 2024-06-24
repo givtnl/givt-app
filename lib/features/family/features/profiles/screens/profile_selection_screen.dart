@@ -16,13 +16,11 @@ import 'package:givt_app/features/family/shared/widgets/custom_progress_indicato
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
 import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/features/family/utils/app_theme.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
-import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfileSelectionScreen extends StatefulWidget {
@@ -37,9 +35,6 @@ class ProfileSelectionScreen extends StatefulWidget {
 }
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
-
-
-
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
