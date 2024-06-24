@@ -194,6 +194,28 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         elevation: 0,
         centerTitle: true,
       ),
+      elevatedButtonTheme: const ElevatedButtonThemeData(
+        style: ButtonStyle(
+          elevation: MaterialStatePropertyAll(0),
+          textStyle: MaterialStatePropertyAll(
+            TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
+          foregroundColor: MaterialStatePropertyAll(Colors.white),
+          minimumSize: MaterialStatePropertyAll(Size.fromHeight(45)),
+          shape: MaterialStatePropertyAll(
+            ContinuousRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+          ),
+        ),
+      ),
       extensions: [this],
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
