@@ -4,11 +4,14 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class UnregisterPage extends StatefulWidget {
-  const UnregisterPage({super.key,});
+  const UnregisterPage({
+    super.key,
+  });
 
   @override
   State<UnregisterPage> createState() => _UnregisterPageState();
@@ -16,6 +19,7 @@ class UnregisterPage extends StatefulWidget {
 
 class _UnregisterPageState extends State<UnregisterPage> {
   bool _acceptedTerms = false;
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -44,6 +48,7 @@ class _UnregisterPageState extends State<UnregisterPage> {
           );
         }
         if (state is UnregisterSuccess) {
+          AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
           context.read<AuthCubit>().logout();
         }
       },
