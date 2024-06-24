@@ -62,7 +62,9 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with: 
+          ruby-version: '3.0'
           bundler-cache: true
+          working-directory: 'ios'
 
       - name: Auth codesigning
         uses: webfactory/ssh-agent@v0.9.0
@@ -78,10 +80,11 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+          cache: true
           flutter-version: ${{ inputs.flutter-version }}
 
       - name: Run Fastlane
-        uses: maierj/fastlane-action@v2.3.0
+        uses: maierj/fastlane-action@v3.1.0
         with:
           lane: ios release
           subdirectory: ios
