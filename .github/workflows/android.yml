@@ -103,4 +103,10 @@ jobs:
           STRIPE_PK: ${{ env.STRIPE_PK }}
           STRIPE_MERCHANT_ID: ${{ env.STRIPE_MERCHANT_ID }}
           RUBYOPT: '-rostruct' # TODO: Remove when https://github.com/fastlane/fastlane/pull/21950 gets released
-        
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/bundle/productionRelease/app-production-release-signed.aab
+          retention-days: 5

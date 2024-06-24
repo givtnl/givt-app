@@ -54,7 +54,7 @@ platform :android do
                         package_name: package_name,
                         json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'], 
                         aab: signed_aab_path,
-                        release_status: "draft",
+                        release_status: "completed",
                         track: track)
   end
 end
