@@ -27,7 +27,7 @@ platform :android do
     amplitude_key = ENV['AMPLITUDE_KEY']
     stripe_pk = ENV['STRIPE_PK']
     stripe_merchant_id = ENV['STRIPE_MERCHANT_ID']
-    build_number = google_play_track_version_codes(package_name: package_name, track: track, json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 1
+    build_number = google_play_track_version_codes(package_name: package_name, track: 'production', json_key_data: ENV['GOOGLE_PLAY_JSON_KEY'])[0] + 1
 
     Dir.chdir "../.." do
         sh("flutter", "packages", "get")
