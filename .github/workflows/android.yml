@@ -31,7 +31,7 @@ jobs:
             echo "Running on the main branch, deploying to production."
             echo "PACKAGE_NAME=net.givtapp.droid2" >> $GITHUB_ENV
             echo "FLAVOR=production" >> $GITHUB_ENV
-            echo "TRACK=production" >> $GITHUB_ENV
+            echo "TRACK=internal" >> $GITHUB_ENV
             echo "AMPLITUDE_KEY=f4fa9ab88de04c56a346aaa36c172a9a" >> $GITHUB_ENV
             echo "API_URL_US=backend.givt.app" >> $GITHUB_ENV
             echo "API_URL_EU=backend.givtapp.net" >> $GITHUB_ENV
