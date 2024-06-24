@@ -7,10 +7,13 @@ import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class TokenInterceptor implements InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
+    final correlationId = const Uuid().v4();
+
     try {
       final prefs = await SharedPreferences.getInstance();
       final sessionString = prefs.getString(Session.tag);
@@ -18,7 +21,9 @@ class TokenInterceptor implements InterceptorContract {
       if (!request.headers.containsKey('Content-Type')) {
         request.headers['Content-Type'] = 'application/json';
       }
+
       request.headers['Accept'] = 'application/json';
+      request.headers['Correlation-Id'] = correlationId;
 
       if (sessionString == null) {
         return request;
@@ -37,8 +42,11 @@ class TokenInterceptor implements InterceptorContract {
         methodName: stackTrace.toString(),
       );
     }
-    await LoggingInfo.instance.info(
-      '${request.method}: ${request.url}',
+
+    await LoggingInfo.instance.logRequest(
+      request.method,
+      request.url.toString(),
+      correlationId,
     );
     return request;
   }
