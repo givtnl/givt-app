@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -32,6 +35,9 @@ class AppThemeSwitcherWidgetState extends State<AppThemeSwitcherWidget> {
   }
 
   void switchTheme({required bool isFamilyApp}) {
+    if (kDebugMode) {
+      log('Switching theme to ${isFamilyApp ? 'Family' : 'Givt'}');
+    }
     setState(() {
       if (this.isFamilyApp != isFamilyApp) {
         this.isFamilyApp = isFamilyApp;
