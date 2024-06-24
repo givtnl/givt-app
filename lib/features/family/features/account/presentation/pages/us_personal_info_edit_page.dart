@@ -13,6 +13,8 @@ import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/common_icons.dart';
+import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -34,11 +36,8 @@ class USPersonalInfoEditPage extends StatelessWidget {
     final user = context.watch<AuthCubit>().state.user;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => context.goNamed(FamilyPages.childrenOverview.name),
-        ),
-        title: Text(locals.personalInfo),
+      appBar: TopAppBar(
+        title: locals.personalInfo,
       ),
       body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(
         listener: (context, state) {
@@ -108,11 +107,11 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
+                context,
                 icon: const Text(
                   '@',
                   style: TextStyle(
                     fontSize: 25,
-                    color: AppTheme.givtLightBlue,
                   ),
                 ),
                 value: user.email,
@@ -124,9 +123,9 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
+                context,
                 icon: const Icon(
                   FontAwesomeIcons.phone,
-                  color: AppTheme.givtRed,
                 ),
                 value: user.phoneNumber,
                 onTap: () => _showModalBottomSheet(
@@ -138,9 +137,9 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
               ),
               _buildInfoRow(
+                context,
                 icon: const Icon(
                   FontAwesomeIcons.creditCard,
-                  color: AppTheme.givtOrange,
                 ),
                 value:
                     '${user.accountBrand.toUpperCase()} ${user.accountNumber}',
@@ -176,9 +175,9 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 },
               ),
               _buildInfoRow(
+                context,
                 icon: const Icon(
                   FontAwesomeIcons.lock,
-                  color: AppTheme.givtBlue,
                 ),
                 value: locals.changePassword,
                 onTap: () => _showModalBottomSheet(
@@ -192,9 +191,9 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 height: 0,
               ),
               _buildInfoRow(
+                context,
                 icon: const Icon(
                   FontAwesomeIcons.userXmark,
-                  color: AppTheme.givtBlue,
                 ),
                 value: locals.unregister,
                 onTap: () async => AuthUtils.checkToken(
@@ -210,9 +209,9 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 height: 0,
               ),
               _buildInfoRow(
+                context,
                 icon: const Icon(
-                  FontAwesomeIcons.info,
-                  color: AppTheme.givtBlue,
+                  FontAwesomeIcons.circleInfo,
                 ),
                 value: locals.titleAboutGivt,
                 onTap: () => showModalBottomSheet<void>(
@@ -226,10 +225,11 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 height: 0,
               ),
               _buildInfoRow(
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppTheme.givtBlue,
-                    ),
-                icon: logoutIcon(),
+                context,
+                style: Theme.of(context).textTheme.labelSmall,
+                icon: const Icon(
+                  FontAwesomeIcons.rightFromBracket,
+                ),
                 value: 'Logout',
                 onTap: () => logout(context, fromLogoutBtn: true),
               ),
@@ -237,7 +237,10 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
                 child: Text(
                   'Would you like to change your name? Send an e-mail to support@givt.app',
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: FamilyAppTheme.downloadAppBackground),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -262,7 +265,8 @@ class USPersonalInfoEditPage extends StatelessWidget {
         ),
       );
 
-  Widget _buildInfoRow({
+  Widget _buildInfoRow(
+    BuildContext context, {
     required Widget? icon,
     required String value,
     TextStyle? style,
@@ -280,11 +284,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
               leading: icon,
               title: Text(
                 value,
-                style: style ??
-                    TextStyle(
-                      fontSize: 16,
-                      color: onTap == null ? AppTheme.givtGraycece : null,
-                    ),
+                style: style ?? Theme.of(context).textTheme.labelSmall,
               ),
               trailing: onTap != null
                   ? const Icon(
