@@ -162,7 +162,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
 
                                 if (!context.mounted) return;
 
-                                await FamilyAuthUtils.checkToken(
+                                /*await FamilyAuthUtils.checkToken(
                                   context,
                                   checkAuthRequest: CheckAuthRequest(
                                     forceLogin: true,
@@ -172,6 +172,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                       );
                                     },
                                   ),
+                                );*/
+                                await context.pushNamed(
+                                  FamilyPages.childrenOverview.name,
                                 );
                               },
                               text: 'Manage Family',
