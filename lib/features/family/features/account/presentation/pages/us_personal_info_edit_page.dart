@@ -24,7 +24,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
-import 'package:givt_app/shared/widgets/buttons/back_button_app_bar.dart';
+import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
