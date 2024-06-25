@@ -163,19 +163,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
 
                                 if (!context.mounted) return;
 
-                                /*await FamilyAuthUtils.checkToken(
+                                await FamilyAuthUtils.authenticateUser(
                                   context,
                                   checkAuthRequest: CheckAuthRequest(
-                                    forceLogin: true,
                                     navigate: (context, {isUSUser}) async {
                                       await context.pushNamed(
                                         FamilyPages.childrenOverview.name,
                                       );
                                     },
                                   ),
-                                );*/
-                                await context.pushNamed(
-                                  FamilyPages.childrenOverview.name,
                                 );
                               },
                               text: 'Manage Family',
