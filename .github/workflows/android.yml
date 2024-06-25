@@ -103,4 +103,3 @@ jobs:
           STRIPE_PK: ${{ env.STRIPE_PK }}
           STRIPE_MERCHANT_ID: ${{ env.STRIPE_MERCHANT_ID }}
           RUBYOPT: '-rostruct' # TODO: Remove when https://github.com/fastlane/fastlane/pull/21950 gets released
-        
