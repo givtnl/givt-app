@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_
 import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -162,19 +163,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
 
                                 if (!context.mounted) return;
 
-                                /*await FamilyAuthUtils.checkToken(
+                                await FamilyAuthUtils.authenticateUser(
                                   context,
                                   checkAuthRequest: CheckAuthRequest(
-                                    forceLogin: true,
                                     navigate: (context, {isUSUser}) async {
                                       await context.pushNamed(
                                         FamilyPages.childrenOverview.name,
                                       );
                                     },
                                   ),
-                                );*/
-                                await context.pushNamed(
-                                  FamilyPages.childrenOverview.name,
                                 );
                               },
                               text: 'Manage Family',
@@ -196,5 +193,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   void initState() {
     super.initState();
     AnalyticsHelper.setFamilyAppTracking();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
+    });
   }
 }

@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 extension RouteExtensions on Widget {
   Route<dynamic> toRoute(BuildContext context) {
     return MaterialPageRoute(
-      builder: (context) =>
-          this,
+      builder: (context) => this,
     );
   }
 
