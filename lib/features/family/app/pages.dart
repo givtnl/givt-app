@@ -1,14 +1,15 @@
 enum FamilyPages {
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
   kidsAvatarSelection(
-      path: '/kids-avatar-selection', name: 'KIDS-AVATAR-SELECTION'),
+      path: 'kids-avatar-selection', name: 'KIDS-AVATAR-SELECTION'),
   parentAvatarSelection(
-      path: '/parent-avatar-selection', name: 'PARENT-AVATAR-SELECTION'),
-  wallet(path: '/wallet', name: 'WALLET'),
-  camera(path: '/camera', name: 'CAMERA'),
-  success(path: '/success', name: 'SUCCESS'),
+      path: 'parent-avatar-selection', name: 'PARENT-AVATAR-SELECTION'),
+  wallet(path: 'wallet', name: 'WALLET'),
+  camera(path: 'camera', name: 'CAMERA'),
+  success(path: 'success', name: 'SUCCESS'),
+  unregisterUS(path: 'unregister-us', name: 'UNREGISTER-US'),
   familyChooseAmountSlider(
-    path: '/family-choose-amount-slider',
+    path: 'family-choose-amount-slider',
     name: 'FAMILY_CHOOSE_AMOUNT_SLIDER',
   ),
   familyPersonalInfoEdit(
@@ -23,9 +24,9 @@ enum FamilyPages {
   permitUSBiometric(
       path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US'),
   creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
-  test(path: '/test', name: 'TEST'),
-  scanNFC(path: '/scan-nfc', name: 'SCAN_NFC'),
-  history(path: '/history', name: 'HISTORY'),
+  test(path: 'test', name: 'TEST'),
+  scanNFC(path: 'scan-nfc', name: 'SCAN_NFC'),
+  history(path: 'history', name: 'HISTORY'),
   childrenOverview(path: 'children-overview', name: 'CHILDREN-OVERVIEW'),
   addMember(path: 'add-member', name: 'ADD-MEMBER'),
   childDetails(path: 'child-details', name: 'CHILD-DETAILS'),
@@ -39,28 +40,28 @@ enum FamilyPages {
 
   //recommendation flow
   recommendationStart(
-      path: '/recommendation-start', name: 'RECOMMENDATION_START'),
-  locationSelection(path: '/location-selection', name: 'LOCATION_SELECTION'),
-  interestsSelection(path: '/interests-selection', name: 'INTERESTS_SELECTION'),
-  recommendedOrganisations(path: '/organisations', name: 'ORGANISATIONS'),
+      path: 'recommendation-start', name: 'RECOMMENDATION_START'),
+  locationSelection(path: 'location-selection', name: 'LOCATION_SELECTION'),
+  interestsSelection(path: 'interests-selection', name: 'INTERESTS_SELECTION'),
+  recommendedOrganisations(path: 'organisations', name: 'ORGANISATIONS'),
 
   //coin flow
-  searchForCoin(path: '/search-for-coin', name: 'SEARCH_FOR_COIN'),
-  outAppCoinFlow(path: '/out-app-coin-flow', name: 'OUT_APP_COIN_FLOW'),
-  successCoin(path: '/success-coin', name: 'SUCCESS_COIN'),
-  redirectPopPage(path: '/redirect-pop-page', name: 'REDIRECT_POP_PAGE'),
+  searchForCoin(path: 'search-for-coin', name: 'SEARCH_FOR_COIN'),
+  outAppCoinFlow(path: 'out-app-coin-flow', name: 'OUT_APP_COIN_FLOW'),
+  successCoin(path: 'success-coin', name: 'SUCCESS_COIN'),
+  redirectPopPage(path: 'redirect-pop-page', name: 'REDIRECT_POP_PAGE'),
 
   //exhibition flow
-  voucherCode(path: '/voucher-code', name: 'VOUCHER_CODE'),
+  voucherCode(path: 'voucher-code', name: 'VOUCHER_CODE'),
   exhibitionOrganisations(
-      path: '/exhibition-organisations', name: 'EXHIBITION_ORGANISATIONS'),
+      path: 'exhibition-organisations', name: 'EXHIBITION_ORGANISATIONS'),
   successExhibitionCoin(
-      path: '/success-exhibition-coin', name: 'SUCCESS_EXHIBITION_COIN'),
+      path: 'success-exhibition-coin', name: 'SUCCESS_EXHIBITION_COIN'),
 
   //design alignment
-  designAlignment(path: '/design-alignment', name: 'DESIGN_ALIGNMENT'),
+  designAlignment(path: 'design-alignment', name: 'DESIGN_ALIGNMENT'),
   chooseAmountSliderGoal(
-      path: '/choose-amount-slider-goal', name: 'CHOOSE_AMOUNT_SLIDER_GOAL'),
+      path: 'choose-amount-slider-goal', name: 'CHOOSE_AMOUNT_SLIDER_GOAL'),
 
   //generosity challenge
   generosityChallenge(
@@ -97,12 +98,12 @@ enum FamilyPages {
   ),
 
   //school event mode
-  familyNameLogin(path: '/family-name-login', name: 'FAMILY_NAME_LOGIN'),
-  schoolEventInfo(path: '/school-event-info', name: 'SCHOOL_EVENT_INFO'),
+  familyNameLogin(path: 'family-name-login', name: 'FAMILY_NAME_LOGIN'),
+  schoolEventInfo(path: 'school-event-info', name: 'SCHOOL_EVENT_INFO'),
   schoolEventOrganisations(
-      path: '/school-event-organisations', name: 'SCHOOL_EVENT_ORGANISATIONS'),
+      path: 'school-event-organisations', name: 'SCHOOL_EVENT_ORGANISATIONS'),
   impactGroupDetails(
-    path: '/kids-impact-group-details',
+    path: 'kids-impact-group-details',
     name: 'KIDS_IMPACT_GROUP_DETAILS',
   ),
   ;

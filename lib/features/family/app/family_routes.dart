@@ -71,7 +71,6 @@ import 'package:givt_app/features/family/features/recommendation/start_recommend
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
@@ -83,6 +82,8 @@ import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
+import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -237,7 +238,288 @@ class FamilyAppRoutes {
       ],
     ),
     GoRoute(
+      path: FamilyPages.profileSelection.path,
+      name: FamilyPages.profileSelection.name,
+      builder: (context, state) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            lazy: false,
+            create: (_) => RemoteDataSourceSyncBloc(
+              getIt(),
+              getIt(),
+            )..add(const RemoteDataSourceSyncRequested()),
+          ),
+        ],
+        child: const ProfileSelectionScreen(),
+      ),
       routes: [
+        GoRoute(
+          path: FamilyPages.wallet.path,
+          name: FamilyPages.wallet.name,
+          builder: (context, state) {
+            context.read<ProfilesCubit>().fetchActiveProfile();
+            final user = context.read<ProfilesCubit>().state.activeProfile;
+            context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => NavigationCubit(),
+                ),
+                BlocProvider(
+                  create: (context) => HistoryCubit(getIt())..fetchHistory(user.id),
+                ),
+              ],
+              child: const KidsHomeScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.camera.path,
+          name: FamilyPages.camera.name,
+          builder: (context, state) => BlocProvider(
+            create: (context) => CameraCubit()..checkPermission(),
+            child: const CameraScreen(),
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.familyChooseAmountSlider.path,
+          name: FamilyPages.familyChooseAmountSlider.name,
+          builder: (context, state) => BlocProvider(
+            create: (BuildContext context) =>
+                CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+            child: const ChooseAmountSliderScreen(),
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.chooseAmountSliderGoal.path,
+          name: FamilyPages.chooseAmountSliderGoal.name,
+          builder: (context, state) {
+            final extra = state.extra ?? const Goal.empty();
+            final group = extra as ImpactGroup;
+            return BlocProvider(
+              create: (BuildContext context) =>
+                  CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+              child: ChooseAmountSliderGoalScreen(
+                group: group,
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.success.path,
+          name: FamilyPages.success.name,
+          builder: (context, state) => const SuccessScreen(),
+        ),
+        GoRoute(
+          path: FamilyPages.history.path,
+          name: FamilyPages.history.name,
+          pageBuilder: (context, state) => CustomTransitionPage<void>(
+            key: state.pageKey,
+            child: BlocProvider(
+              create: (context) => HistoryCubit(getIt())
+                ..fetchHistory(
+                  context.read<ProfilesCubit>().state.activeProfile.id,
+                ),
+              child: const HistoryScreen(),
+            ),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+                SlideTransition(
+                  position: animation.drive(
+                    Tween<Offset>(
+                      begin: const Offset(2, 0),
+                      end: Offset.zero,
+                    ).chain(CurveTween(curve: Curves.ease)),
+                  ),
+                  child: child,
+                ),
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.recommendationStart.path,
+          name: FamilyPages.recommendationStart.name,
+          builder: (context, state) => const StartRecommendationScreen(),
+        ),
+        GoRoute(
+          path: FamilyPages.locationSelection.path,
+          name: FamilyPages.locationSelection.name,
+          builder: (context, state) => BlocProvider(
+            create: (context) => TagsCubit(
+              getIt(),
+            )..fetchTags(),
+            child: const LocationSelectionScreen(),
+          ),
+        ),
+        GoRoute(
+          path: FamilyPages.interestsSelection.path,
+          name: FamilyPages.interestsSelection.name,
+          builder: (context, state) {
+            final extra = state.extra ?? TagsStateFetched.empty();
+            final tagsState = extra as TagsStateFetched;
+            return BlocProvider(
+              create: (context) => InterestsCubit(
+                location: tagsState.selectedLocation,
+                cityName: tagsState.selectedCity,
+                interests: tagsState.interests,
+              ),
+              child: const InterestsSelectionScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.recommendedOrganisations.path,
+          name: FamilyPages.recommendedOrganisations.name,
+          builder: (context, state) {
+            final extra = state.extra ?? InterestsState.empty();
+            final interestsState = extra as InterestsState;
+            return BlocProvider(
+              create: (context) => OrganisationsCubit(
+                getIt(),
+              )..getRecommendedOrganisations(
+                location: interestsState.location,
+                cityName: interestsState.cityName,
+                interests: interestsState.selectedInterests,
+                fakeComputingExtraDelay: const Duration(seconds: 1),
+              ),
+              child: const OrganisationsScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.searchForCoin.path,
+          name: FamilyPages.searchForCoin.name,
+          redirect: (context, state) => getIt<SharedPreferences>()
+              .getBool('isInAppCoinFlow') ==
+              true
+              ? null
+              : "${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}",
+          builder: (context, state) {
+            final String mediumID = state.uri.queryParameters['code'] == null ||
+                state.uri.queryParameters['code']!.contains('null')
+                ? OrganisationDetailsCubit.defaultMediumId
+                : state.uri.queryParameters['code']!;
+            // THE USECASE FOR THIS BUILDER IS
+            // When the user opens the app from in-app coin flow
+            // on andrioid accidentally scanning the coin twice
+
+            // So the flow we need to show is in-app coin flow
+
+            // Because the deeplink opens a whole new app context we need to
+            // re-fetch the organisation details
+            // & emit the in-app coin flow
+
+            context
+                .read<OrganisationDetailsCubit>()
+                .getOrganisationDetails(mediumID);
+
+            context.read<FlowsCubit>().startInAppCoinFlow();
+
+            return BlocProvider(
+              create: (BuildContext context) =>
+                  CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+              child: const ChooseAmountSliderScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.outAppCoinFlow.path,
+          name: FamilyPages.outAppCoinFlow.name,
+          builder: (context, state) {
+            final mediumID = state.uri.queryParameters['code']!.contains('null')
+                ? OrganisationDetailsCubit.defaultMediumId
+                : state.uri.queryParameters['code']!;
+
+            context
+                .read<OrganisationDetailsCubit>()
+                .getOrganisationDetails(mediumID);
+            return BlocProvider<SearchCoinCubit>(
+              lazy: false,
+              create: (context) => SearchCoinCubit()..startAnimation(mediumID),
+              child: const SearchForCoinScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.scanNFC.path,
+          name: FamilyPages.scanNFC.name,
+          builder: (context, state) {
+            return const NFCScanPage();
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.successCoin.path,
+          name: FamilyPages.successCoin.name,
+          builder: (context, state) {
+            final extra = state.extra ?? false;
+            final isGoal = extra as bool;
+            log('isGoal: $isGoal');
+            return SuccessCoinScreen(isGoal: isGoal);
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.parentAvatarSelection.path,
+          name: FamilyPages.parentAvatarSelection.name,
+          builder: (context, state) {
+            final user = context.read<AuthCubit>().state.user;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => AvatarsCubit(
+                    getIt(),
+                  )..fetchAvatars(),
+                ),
+                BlocProvider(
+                  create: (context) => EditProfileCubit(
+                    editProfileRepository: getIt(),
+                    currentProfilePicture: user.profilePicture,
+                  ),
+                ),
+              ],
+              child: const ParentAvatarSelectionScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.kidsAvatarSelection.path,
+          name: FamilyPages.kidsAvatarSelection.name,
+          builder: (context, state) {
+            final activeProfile = context.read<ProfilesCubit>().state.activeProfile;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (context) => AvatarsCubit(
+                    getIt(),
+                  )..fetchAvatars(),
+                ),
+                BlocProvider(
+                  create: (context) => EditChildProfileCubit(
+                    childGUID: activeProfile.id,
+                    editProfileRepository: getIt(),
+                    currentProfilePicture: activeProfile.pictureURL,
+                  ),
+                ),
+              ],
+              child: const KidsAvatarSelectionScreen(),
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.impactGroupDetails.path,
+          name: FamilyPages.impactGroupDetails.name,
+          builder: (context, state) {
+            final impactGroup = state.extra! as ImpactGroup;
+            return ImpactGroupDetailsPage(impactGroup: impactGroup);
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.unregisterUS.path,
+          name: FamilyPages.unregisterUS.name,
+          builder: (_, state) => BlocProvider(
+            create: (_) => UnregisterCubit(
+              getIt(),
+            ),
+            child: const UnregisterPage(),
+          ),
+        ),
         GoRoute(
           path: FamilyPages.creditCardDetails.path,
           name: FamilyPages.creditCardDetails.name,
@@ -414,10 +696,7 @@ class FamilyAppRoutes {
                       FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
                 ),
               ],
-              child: Theme(
-                data: const FamilyAppTheme().toThemeData(),
-                child: const FamilyOverviewPage(),
-              ),
+              child: const FamilyOverviewPage(),
             );
           },
         ),
@@ -466,328 +745,6 @@ class FamilyAppRoutes {
           },
         ),
       ],
-      path: FamilyPages.profileSelection.path,
-      name: FamilyPages.profileSelection.name,
-      builder: (context, state) => Theme(
-        data: const FamilyAppTheme().toThemeData(),
-        child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              lazy: false,
-              create: (_) => RemoteDataSourceSyncBloc(
-                getIt(),
-                getIt(),
-              )..add(const RemoteDataSourceSyncRequested()),
-            ),
-          ],
-          child: const ProfileSelectionScreen(),
-        ),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.wallet.path,
-      name: FamilyPages.wallet.name,
-      builder: (context, state) {
-        context.read<ProfilesCubit>().fetchActiveProfile();
-        final user = context.read<ProfilesCubit>().state.activeProfile;
-        context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => NavigationCubit(),
-            ),
-            BlocProvider(
-              create: (context) => HistoryCubit(getIt())..fetchHistory(user.id),
-            ),
-          ],
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const KidsHomeScreen(),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.camera.path,
-      name: FamilyPages.camera.name,
-      builder: (context, state) => BlocProvider(
-        create: (context) => CameraCubit()..checkPermission(),
-        child: Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: const CameraScreen(),
-        ),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.familyChooseAmountSlider.path,
-      name: FamilyPages.familyChooseAmountSlider.name,
-      builder: (context, state) => BlocProvider(
-        create: (BuildContext context) =>
-            CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-        child: Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: const ChooseAmountSliderScreen(),
-        ),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.chooseAmountSliderGoal.path,
-      name: FamilyPages.chooseAmountSliderGoal.name,
-      builder: (context, state) {
-        final extra = state.extra ?? const Goal.empty();
-        final group = extra as ImpactGroup;
-        return BlocProvider(
-          create: (BuildContext context) =>
-              CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: ChooseAmountSliderGoalScreen(
-              group: group,
-            ),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.success.path,
-      name: FamilyPages.success.name,
-      builder: (context, state) => Theme(
-        data: const FamilyAppTheme().toThemeData(),
-        child: const SuccessScreen(),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.history.path,
-      name: FamilyPages.history.name,
-      pageBuilder: (context, state) => CustomTransitionPage<void>(
-        key: state.pageKey,
-        child: BlocProvider(
-          create: (context) => HistoryCubit(getIt())
-            ..fetchHistory(
-              context.read<ProfilesCubit>().state.activeProfile.id,
-            ),
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const HistoryScreen(),
-          ),
-        ),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            SlideTransition(
-          position: animation.drive(
-            Tween<Offset>(
-              begin: const Offset(2, 0),
-              end: Offset.zero,
-            ).chain(CurveTween(curve: Curves.ease)),
-          ),
-          child: child,
-        ),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.recommendationStart.path,
-      name: FamilyPages.recommendationStart.name,
-      builder: (context, state) => Theme(
-        data: const FamilyAppTheme().toThemeData(),
-        child: const StartRecommendationScreen(),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.locationSelection.path,
-      name: FamilyPages.locationSelection.name,
-      builder: (context, state) => BlocProvider(
-        create: (context) => TagsCubit(
-          getIt(),
-        )..fetchTags(),
-        child: Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: const LocationSelectionScreen(),
-        ),
-      ),
-    ),
-    GoRoute(
-      path: FamilyPages.interestsSelection.path,
-      name: FamilyPages.interestsSelection.name,
-      builder: (context, state) {
-        final extra = state.extra ?? TagsStateFetched.empty();
-        final tagsState = extra as TagsStateFetched;
-        return BlocProvider(
-          create: (context) => InterestsCubit(
-            location: tagsState.selectedLocation,
-            cityName: tagsState.selectedCity,
-            interests: tagsState.interests,
-          ),
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const InterestsSelectionScreen(),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.recommendedOrganisations.path,
-      name: FamilyPages.recommendedOrganisations.name,
-      builder: (context, state) {
-        final extra = state.extra ?? InterestsState.empty();
-        final interestsState = extra as InterestsState;
-        return BlocProvider(
-          create: (context) => OrganisationsCubit(
-            getIt(),
-          )..getRecommendedOrganisations(
-              location: interestsState.location,
-              cityName: interestsState.cityName,
-              interests: interestsState.selectedInterests,
-              fakeComputingExtraDelay: const Duration(seconds: 1),
-            ),
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const OrganisationsScreen(),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.searchForCoin.path,
-      name: FamilyPages.searchForCoin.name,
-      redirect: (context, state) => getIt<SharedPreferences>()
-                  .getBool('isInAppCoinFlow') ==
-              true
-          ? null
-          : "${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}",
-      builder: (context, state) {
-        final String mediumID = state.uri.queryParameters['code'] == null ||
-                state.uri.queryParameters['code']!.contains('null')
-            ? OrganisationDetailsCubit.defaultMediumId
-            : state.uri.queryParameters['code']!;
-        // THE USECASE FOR THIS BUILDER IS
-        // When the user opens the app from in-app coin flow
-        // on andrioid accidentally scanning the coin twice
-
-        // So the flow we need to show is in-app coin flow
-
-        // Because the deeplink opens a whole new app context we need to
-        // re-fetch the organisation details
-        // & emit the in-app coin flow
-
-        context
-            .read<OrganisationDetailsCubit>()
-            .getOrganisationDetails(mediumID);
-
-        context.read<FlowsCubit>().startInAppCoinFlow();
-
-        return BlocProvider(
-          create: (BuildContext context) =>
-              CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const ChooseAmountSliderScreen(),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.outAppCoinFlow.path,
-      name: FamilyPages.outAppCoinFlow.name,
-      builder: (context, state) {
-        final mediumID = state.uri.queryParameters['code']!.contains('null')
-            ? OrganisationDetailsCubit.defaultMediumId
-            : state.uri.queryParameters['code']!;
-
-        context
-            .read<OrganisationDetailsCubit>()
-            .getOrganisationDetails(mediumID);
-        return BlocProvider<SearchCoinCubit>(
-          lazy: false,
-          create: (context) => SearchCoinCubit()..startAnimation(mediumID),
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const SearchForCoinScreen(),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.scanNFC.path,
-      name: FamilyPages.scanNFC.name,
-      builder: (context, state) {
-        return Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: const NFCScanPage(),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.successCoin.path,
-      name: FamilyPages.successCoin.name,
-      builder: (context, state) {
-        final extra = state.extra ?? false;
-        final isGoal = extra as bool;
-        log('isGoal: $isGoal');
-        return Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: SuccessCoinScreen(isGoal: isGoal),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.parentAvatarSelection.path,
-      name: FamilyPages.parentAvatarSelection.name,
-      builder: (context, state) {
-        final user = context.read<AuthCubit>().state.user;
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => AvatarsCubit(
-                getIt(),
-              )..fetchAvatars(),
-            ),
-            BlocProvider(
-              create: (context) => EditProfileCubit(
-                editProfileRepository: getIt(),
-                currentProfilePicture: user.profilePicture,
-              ),
-            ),
-          ],
-          child: const ParentAvatarSelectionScreen(),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.kidsAvatarSelection.path,
-      name: FamilyPages.kidsAvatarSelection.name,
-      builder: (context, state) {
-        final activeProfile = context.read<ProfilesCubit>().state.activeProfile;
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => AvatarsCubit(
-                getIt(),
-              )..fetchAvatars(),
-            ),
-            BlocProvider(
-              create: (context) => EditChildProfileCubit(
-                childGUID: activeProfile.id,
-                editProfileRepository: getIt(),
-                currentProfilePicture: activeProfile.pictureURL,
-              ),
-            ),
-          ],
-          child: Theme(
-            data: const FamilyAppTheme().toThemeData(),
-            child: const KidsAvatarSelectionScreen(),
-          ),
-        );
-      },
-    ),
-    GoRoute(
-      path: FamilyPages.impactGroupDetails.path,
-      name: FamilyPages.impactGroupDetails.name,
-      builder: (context, state) {
-        final impactGroup = state.extra! as ImpactGroup;
-        return Theme(
-          data: const FamilyAppTheme().toThemeData(),
-          child: ImpactGroupDetailsPage(impactGroup: impactGroup),
-        );
-      },
     ),
   ];
 }

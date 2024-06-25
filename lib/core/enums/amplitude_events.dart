@@ -125,6 +125,7 @@ enum AmplitudeEvents {
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),
   logOutPressed('log_out_pressed'),
+  terminateAccountSuccess('terminate_account_success'),
   profilePressed('profile_pressed'),
   profileSwitchPressed('profile_switch_pressed'),
   assignCoinPressed('assign_coin_pressed'),
