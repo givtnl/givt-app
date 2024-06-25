@@ -1,13 +1,12 @@
-import 'dart:developer';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class CustomGreenElevatedButton extends StatelessWidget {
-  const CustomGreenElevatedButton(
-      {required this.title, required this.onPressed, super.key,});
+  const CustomGreenElevatedButton({
+    required this.title,
+    required this.onPressed,
+    super.key,
+  });
   final String title;
   final VoidCallback? onPressed;
   @override
@@ -23,10 +22,8 @@ class CustomGreenElevatedButton extends StatelessWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          style: Theme.of(context).textTheme.titleSmall!.copyWith(
                 color: Colors.white,
-                fontWeight: FontWeight.w900,
-                //  fontFamily: 'Avenir',
               ),
         ),
       ),

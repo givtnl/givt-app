@@ -72,12 +72,12 @@ class ChildGivingAllowanceCard extends StatelessWidget {
                   const SizedBox(width: 10),
                   Flexible(
                     child: Text(
+                      textAlign: TextAlign.center,
                       context.l10n.createChildGivingAllowanceTitle,
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: AppTheme.inputFieldBorderSelected,
                             fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w800,
-                        height: 1.2,
+                            height: 1.2,
                           ),
                     ),
                   ),

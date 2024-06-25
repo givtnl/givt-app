@@ -60,9 +60,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                         calendarClockIcon(),
                         const SizedBox(height: 16),
                         Text(
+                          textAlign: TextAlign.center,
                           context.l10n.createChildGivingAllowanceTitle,
                           style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: AppTheme.inputFieldBorderSelected,
                                     fontFamily: 'Raleway',
                                     fontWeight: FontWeight.w800,
@@ -75,11 +76,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                           "$child's wallet each month?",
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: AppTheme.childGivingAllowanceHint,
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    color: AppTheme.givtBlue,
                                     fontFamily: 'Raleway',
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16,
                                     height: 1.2,
                                   ),
                         ),
@@ -93,11 +93,14 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                         ),
                         const SizedBox(height: 12),
                         Text(
+                          textAlign: TextAlign.center,
                           'Choose an amount between ${widget.currency}1 and '
                           '${widget.currency}999.',
                           style:
-                              Theme.of(context).textTheme.titleSmall!.copyWith(
-                                    color: AppTheme.childGivingAllowanceHint,
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: AppTheme.givtBlue,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
                                   ),
                         ),
                       ],
@@ -129,9 +132,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                         child: Text(
                           'Cancel Recurring Giving Allowance',
                           style:
-                              Theme.of(context).textTheme.titleSmall!.copyWith(
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
                                     color: AppTheme.error50,
                                     decoration: TextDecoration.underline,
+                                    decorationColor: AppTheme.error50,
                                   ),
                         ),
                       ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class AllowanceCounter extends StatefulWidget {
   const AllowanceCounter({
@@ -128,9 +129,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             child: Icon(
               FontAwesomeIcons.circleMinus,
               size: 32,
-              color: (_allowance < 2)
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.primary,
+              color: (_allowance < 2) ? Colors.grey : AppTheme.givtBlue,
             ),
           ),
         ),
@@ -177,9 +176,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             child: Icon(
               FontAwesomeIcons.circlePlus,
               size: 32,
-              color: (_allowance > 998)
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.primary,
+              color: (_allowance > 998) ? Colors.grey : AppTheme.givtBlue,
             ),
           ),
         ),

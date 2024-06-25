@@ -47,8 +47,10 @@ class ChildDetailsItem extends StatelessWidget {
           Text(
             '${currency.currencySymbol}${profileDetails.profile.wallet.balance.toStringAsFixed(0)}${context.l10n.childInWalletPostfix}',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppTheme.inputFieldBorderSelected,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
                 ),
           ),
         ],

@@ -99,7 +99,10 @@ class ChildDetailsPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
                   child: TextButton.icon(
-                    icon: const Icon(Icons.edit),
+                    icon: const Icon(
+                      Icons.edit,
+                      color: AppTheme.inputFieldBorderSelected,
+                    ),
                     label: Text(
                       context.l10n.budgetExternalGiftsEdit,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
