@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
@@ -18,6 +22,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/pages/fingerprint_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/about_givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/parent_avatar.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
@@ -186,6 +191,68 @@ class USPersonalInfoEditPage extends StatelessWidget {
                     email: user.email,
                   ),
                 ),
+              ),
+              FutureBuilder(
+                initialData: false,
+                future: Future.wait<bool>([
+                  LocalAuthInfo.instance.checkFingerprint(),
+                  LocalAuthInfo.instance.checkFaceId(),
+                ]),
+                builder: (_, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return const SizedBox.shrink();
+                  }
+                  if (!snapshot.hasData) {
+                    return const SizedBox.shrink();
+                  }
+                  if (snapshot.data == null) {
+                    return const SizedBox.shrink();
+                  }
+
+                  final data = snapshot.data! as List<bool>;
+                  final isFingerprintAvailable = data[0];
+                  final isFaceIdAvailable = data[1];
+                  final shouldShow =
+                      isFingerprintAvailable || isFaceIdAvailable;
+
+                  return Column(
+                    children: [
+                      if (shouldShow)
+                        _buildInfoRow(
+                          context,
+                          value: isFingerprintAvailable
+                              ? Platform.isAndroid
+                                  ? locals.fingerprintTitle
+                                  : locals.touchId
+                              : locals.faceId,
+                          icon: Platform.isIOS && isFaceIdAvailable
+                              ? SvgPicture.asset(
+                                  'assets/images/face_id_image.svg',
+                                  width: 24,
+                                )
+                              : const Icon(Icons.fingerprint),
+                          onTap: () async => AuthUtils.checkToken(
+                            context,
+                            checkAuthRequest: CheckAuthRequest(
+                              navigate: (context, {isUSUser}) =>
+                                  showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => FingerprintBottomSheet(
+                                  isFingerprint: isFingerprintAvailable,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      if (shouldShow)
+                        const Divider(
+                          height: 0,
+                        ),
+                    ],
+                  );
+                },
               ),
               const Divider(
                 height: 0,
