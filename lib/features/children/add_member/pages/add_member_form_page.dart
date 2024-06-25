@@ -157,7 +157,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
         if (state.status == AddMemberStateStatus.success ||
             state.status == AddMemberStateStatus.successCached ||
             state.status == AddMemberStateStatus.successNoAllowances) {
-          context.goNamed(FamilyPages.profileSelection.name);
+          context.goNamed(FamilyPages.childrenOverview.name);
         }
       },
       builder: (context, state) {
