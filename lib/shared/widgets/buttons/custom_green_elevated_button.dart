@@ -12,10 +12,6 @@ class CustomGreenElevatedButton extends StatelessWidget {
   final VoidCallback? onPressed;
   @override
   Widget build(BuildContext context) {
-    if(kDebugMode) {
-      final isFamilyApp = AppThemeSwitcher.of(context).isFamilyApp;
-      log('CustomGreenElevatedButton isFamilyApp: $isFamilyApp');
-    }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: ElevatedButton(

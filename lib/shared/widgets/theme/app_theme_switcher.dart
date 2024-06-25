@@ -36,9 +36,6 @@ class AppThemeSwitcherWidgetState extends State<AppThemeSwitcherWidget> {
   }
 
   void switchTheme({required bool isFamilyApp}) {
-    if (kDebugMode) {
-      log('Switching theme to ${isFamilyApp ? 'Family' : 'Givt'}');
-    }
     setState(() {
       if (this.isFamilyApp != isFamilyApp) {
         this.isFamilyApp = isFamilyApp;
