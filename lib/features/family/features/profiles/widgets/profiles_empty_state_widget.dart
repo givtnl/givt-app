@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -25,9 +26,11 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('There are no profiles attached to the current user.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium),
+            Text(
+              'There are no profiles attached to the current user.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             const SizedBox(
               height: 24,
             ),
@@ -35,14 +38,7 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: GivtElevatedSecondaryButton(
-                    onTap: () {
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.logOutPressed,
-                      );
-
-                      context.read<AuthCubit>().logout();
-                      context.goNamed(Pages.welcome.name);
-                    },
+                    onTap: () => logout(context, fromLogoutBtn: true),
                     text: 'Logout',
                     leftIcon: SvgPicture.asset(
                       'assets/family/images/logout.svg',
