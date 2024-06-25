@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowancePage extends StatefulWidget {
@@ -105,11 +106,36 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: CustomGreenElevatedButton(
-                    title: context.l10n.confirm,
-                    onPressed: () {
-                      Navigator.of(context).pop(_allowance);
-                    },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomGreenElevatedButton(
+                        title: context.l10n.confirm,
+                        onPressed: () {
+                          Navigator.of(context).pop(_allowance);
+                        },
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) => const CancelAllowanceDialog(),
+                          );
+                        },
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          alignment: Alignment.topCenter,
+                        ),
+                        child: Text(
+                          'Cancel Recurring Giving Allowance',
+                          style:
+                              Theme.of(context).textTheme.titleSmall!.copyWith(
+                                    color: AppTheme.error50,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
