@@ -59,7 +59,7 @@ class FamilyOverviewPage extends StatelessWidget {
                   onPressed: () => _addNewChild(context, state),
                 ),
             ],
-            leading: const BackButtonAppBar(),
+            leading: const LeadingBackButton(),
           ),
           body: SafeArea(
             child: buildFamilyOverviewBody(state, context),

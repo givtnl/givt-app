@@ -44,7 +44,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
     return Scaffold(
       appBar: TopAppBar(
         title: locals.personalInfo,
-        leading: const BackButtonAppBar(),
+        leading: const LeadingBackButton(),
       ),
       body: BlocListener<PersonalInfoEditBloc, PersonalInfoEditState>(
         listener: (context, state) {
