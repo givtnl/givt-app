@@ -227,7 +227,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                               : locals.faceId,
                           icon: Platform.isIOS && isFaceIdAvailable
                               ? SvgPicture.asset(
-                                  'assets/images/face_id.svg',
+                                  'assets/images/face_id_image.svg',
                                   width: 24,
                                 )
                               : const Icon(Icons.fingerprint),
