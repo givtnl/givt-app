@@ -9,28 +9,13 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
 
 class FamilyAuthUtils {
-  /// Checks if the user is authenticated.
-  /// If the user is authenticated, the [navigate] callback is called.
-  /// If the user is not authenticated, the login bottom sheet is displayed
-  /// or the biometrics are checked.
-  static Future<void> checkToken(
+  // A method to authenticate the user with biometrics or email/pass
+  // This method is for example used in the ProfileSelectionScreen
+  // to authenticate the user before navigating to the Manage Family section
+  static Future<void> authenticateUser(
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
   }) async {
-    if (checkAuthRequest.forceLogin) {
-      await _displayLoginBottomSheet(
-        context,
-        checkAuthRequest: checkAuthRequest,
-      );
-      return;
-    }
-
-    final auth = context.read<AuthCubit>();
-    final isExpired = auth.state.session.isExpired;
-    if (!isExpired) {
-      await checkAuthRequest.navigate(context);
-      return;
-    }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
         return;
@@ -41,6 +26,7 @@ class FamilyAuthUtils {
       );
       return;
     }
+
     try {
       final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
       if (!hasAuthenticated) {
@@ -86,7 +72,7 @@ class FamilyAuthUtils {
     BuildContext context, {
     required CheckAuthRequest checkAuthRequest,
   }) async {
-    await showModalBottomSheet<bool>(
+    final loggedIn = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
@@ -95,6 +81,12 @@ class FamilyAuthUtils {
         navigate: checkAuthRequest.navigate,
       ),
     );
+
+    if (!context.mounted) return;
+
+    if (loggedIn != null && loggedIn) {
+      await checkAuthRequest.navigate(context);
+    }
   }
 }
 
