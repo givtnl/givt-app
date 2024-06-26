@@ -11,21 +11,24 @@ class AddMemberMainScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () {
-            context.pushReplacementNamed(FamilyPages.childrenOverview.name);
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.backClicked,
-            );
-          },
+    return Theme(
+      data: AppTheme.lightTheme,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () {
+              context.pushReplacementNamed(FamilyPages.childrenOverview.name);
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.backClicked,
+              );
+            },
+          ),
         ),
-      ),
-      body: SafeArea(
-        child: CreateMemberPage(
-          familyAlreadyExists: familyAlreadyExists,
+        body: SafeArea(
+          child: CreateMemberPage(
+            familyAlreadyExists: familyAlreadyExists,
+          ),
         ),
       ),
     );

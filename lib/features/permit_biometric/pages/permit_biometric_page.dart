@@ -30,8 +30,11 @@ class PermitBiometricPage extends StatelessWidget {
         }
       },
       builder: (BuildContext context, PermitBiometricState state) {
-        return Scaffold(
-          body: _buildContent(context, state),
+        return Theme(
+          data: AppTheme.lightTheme,
+          child: Scaffold(
+            body: _buildContent(context, state),
+          ),
         );
       },
     );

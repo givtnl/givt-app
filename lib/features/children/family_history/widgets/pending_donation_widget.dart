@@ -63,8 +63,11 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                 value: impactGroupsCubit,
               ),
             ],
-            child: ParentalApprovalDialog(
-              donation: widget.donation,
+            child: Theme(
+              data: AppTheme.lightTheme,
+              child: ParentalApprovalDialog(
+                donation: widget.donation,
+              ),
             ),
           ),
         );
