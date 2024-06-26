@@ -141,8 +141,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         ),
                                         backgroundColor: Colors.white,
                                         builder: (context) => GiveBottomSheet(
-                                          familyGoal:
-                                              goalCubit.state.familyGoal,
                                           isiPad: isiPad,
                                         ),
                                       );
