@@ -21,6 +21,7 @@ class KidsHomeScreenAppBar extends StatelessWidget
     final profiles = context.watch<ProfilesCubit>();
     final navigation = context.watch<NavigationCubit>();
     return TopAppBar(
+      automaticallyImplyLeading: false,
       title: navigation.state.activeDestination.appBarTitle.isEmpty
           ? profiles.state.activeProfile.firstName
           : navigation.state.activeDestination.appBarTitle,
