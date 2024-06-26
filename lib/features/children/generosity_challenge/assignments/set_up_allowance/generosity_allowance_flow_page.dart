@@ -8,16 +8,17 @@ import 'package:givt_app/features/children/overview/pages/edit_allowance_page.da
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
-import 'package:go_router/go_router.dart';
 
 class GenerosityAllowanceFlowPage extends StatelessWidget {
-  const GenerosityAllowanceFlowPage({super.key});
+  const GenerosityAllowanceFlowPage({super.key,});
 
   @override
   Widget build(BuildContext context) {
-    return WalletIntroPage(onContinue: () {
-      _navigateToEditAllowanceScreen(context);
-    });
+    return WalletIntroPage(
+      onContinue: () {
+        _navigateToEditAllowanceScreen(context);
+      },
+    );
   }
 
   Future<void> _navigateToEditAllowanceScreen(
@@ -49,8 +50,8 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
                   amountWithCurrencySymbol: '\$$result',
                   onClickButton: () {
                     Navigator.of(context).push(
-                        const GenerosityChallengeVpcSetupPage()
-                            .toRoute(context));
+                      const GenerosityChallengeVpcSetupPage().toRoute(context),
+                    );
                   },
                 ),
               ).toRoute(context),
@@ -70,7 +71,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'Foster your children\'s spirit of giving.',
+          "Foster your children's spirit of giving.",
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium,
         ),

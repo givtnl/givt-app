@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class ChatScriptPage extends StatefulWidget {
-  const ChatScriptPage({super.key});
+  const ChatScriptPage({super.key,});
 
   @override
   State<ChatScriptPage> createState() => _ChatScriptPageState();

@@ -38,7 +38,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> login({
     required String email,
     required String password,
-    Future<void> Function(BuildContext context)? navigate,
+    Future<void> Function(BuildContext context, {bool? isUSUser})? navigate,
   }) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
@@ -199,6 +199,8 @@ class AuthCubit extends Cubit<AuthState> {
 
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
+
+    AnalyticsHelper.setFamilyAppTracking(isOn: false);
 
     emit(
       state.copyWith(

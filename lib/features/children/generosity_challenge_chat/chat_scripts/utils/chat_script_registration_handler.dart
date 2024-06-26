@@ -1,14 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/generosity_challenge/domain/models/generosity_registration_result.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
-import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
-import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScriptRegistrationHandler {

@@ -29,12 +29,10 @@ class TopupItemWidget extends StatelessWidget {
             children: [
               Text(
                 '+\$${topup.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${topup.name}',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: topup.isNotSuccessful
                           ? AppTheme.childHistoryDeclined
                           : AppTheme.childHistoryAllowance,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w600,
                     ),
               ),
               SizedBox(
@@ -46,21 +44,14 @@ class TopupItemWidget extends StatelessWidget {
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                  style: Theme.of(context).textTheme.titleSmall
                 ),
               ),
               Text(
                 topup.isNotSuccessful
                     ? 'Please try again later.'
                     : topup.date.formatDate(locals),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(context).textTheme.bodySmall
               ),
             ],
           ),

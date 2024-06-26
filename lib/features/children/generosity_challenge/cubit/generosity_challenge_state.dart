@@ -15,6 +15,7 @@ class GenerosityChallengeState extends Equatable {
   const GenerosityChallengeState({
     required this.status,
     required this.unlockDayTimeDifference,
+    required this.isDebugQuickFlowEnabled,
     required this.activeDayIndex,
     required this.detailedDayIndex,
     required this.days,
@@ -28,6 +29,7 @@ class GenerosityChallengeState extends Equatable {
   const GenerosityChallengeState.initial({
     this.status = GenerosityChallengeStatus.initial,
     this.unlockDayTimeDifference = UnlockDayTimeDifference.days,
+    this.isDebugQuickFlowEnabled = false,
     this.assignmentDynamicDescription,
     this.activeDayIndex = -1,
     this.detailedDayIndex = -1,
@@ -42,6 +44,7 @@ class GenerosityChallengeState extends Equatable {
   final int activeDayIndex;
   final int detailedDayIndex;
   final UnlockDayTimeDifference unlockDayTimeDifference;
+  final bool isDebugQuickFlowEnabled;
   final GenerosityChallengeStatus status;
   final String? assignmentDynamicDescription;
   final List<ChatScriptItem> chatScripts;
@@ -84,6 +87,7 @@ class GenerosityChallengeState extends Equatable {
     int? detailedDayIndex,
     GenerosityChallengeStatus? status,
     UnlockDayTimeDifference? unlockDayTimeDifference,
+    bool? isDebugQuickFlowEnabled,
     String? assignmentDynamicDescription,
     List<ChatScriptItem>? chatScripts,
     ChatActorsSettings? chatActorsSettings,
@@ -97,6 +101,8 @@ class GenerosityChallengeState extends Equatable {
       status: status ?? this.status,
       unlockDayTimeDifference:
           unlockDayTimeDifference ?? this.unlockDayTimeDifference,
+      isDebugQuickFlowEnabled:
+          isDebugQuickFlowEnabled ?? this.isDebugQuickFlowEnabled,
       assignmentDynamicDescription:
           assignmentDynamicDescription ?? this.assignmentDynamicDescription,
       chatScripts: chatScripts ?? this.chatScripts,

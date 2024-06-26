@@ -15,7 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({required this.prefs, super.key});
+  const WelcomePage({required this.prefs, super.key,});
   final SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class WelcomePage extends StatelessWidget {
 }
 
 class WelcomePageView extends StatefulWidget {
-  const WelcomePageView({required this.prefs, super.key});
+  const WelcomePageView({required this.prefs, super.key,});
   final SharedPreferences prefs;
   @override
   State<WelcomePageView> createState() => _WelcomePageViewState();

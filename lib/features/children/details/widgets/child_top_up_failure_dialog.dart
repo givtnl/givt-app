@@ -6,7 +6,7 @@ import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 class TopUpFailureDialog extends StatelessWidget {
-  const TopUpFailureDialog({super.key});
+  const TopUpFailureDialog({super.key,});
 
   @override
   Widget build(BuildContext context) {

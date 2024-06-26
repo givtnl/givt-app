@@ -13,6 +13,7 @@ import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -21,7 +22,9 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailSignupPage extends StatefulWidget {
-  const EmailSignupPage({super.key});
+  const EmailSignupPage({
+    super.key,
+  });
 
   static CupertinoPageRoute<dynamic> route() {
     return CupertinoPageRoute(
@@ -119,7 +122,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               AuthUtils.checkToken(
                 context,
                 checkAuthRequest: CheckAuthRequest(
-                  navigate: (context) async => context.goNamed(Pages.home.name),
+                  navigate: (context, {isUSUser}) async => context.goNamed(
+                    true == isUSUser
+                        ? FamilyPages.profileSelection.name
+                        : Pages.home.name,
+                  ),
                   email: state.email.trim(),
                   forceLogin: true,
                 ),

@@ -7,7 +7,7 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowanceWidget extends StatelessWidget {
   const EditAllowanceWidget(
-      {required this.uiModel, this.onAllowanceChanged, super.key});
+      {required this.uiModel, this.onAllowanceChanged, super.key,});
 
   final EditAllowanceUIModel uiModel;
   final void Function(int allowance)? onAllowanceChanged;

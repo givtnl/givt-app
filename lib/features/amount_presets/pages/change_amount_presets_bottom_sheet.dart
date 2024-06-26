@@ -8,7 +8,7 @@ import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class ChangeAmountPresetsBottomSheet extends StatefulWidget {
-  const ChangeAmountPresetsBottomSheet({super.key});
+  const ChangeAmountPresetsBottomSheet({super.key,});
 
   @override
   State<ChangeAmountPresetsBottomSheet> createState() =>

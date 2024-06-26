@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
@@ -8,9 +11,17 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart'
+    as FamilyImpactGroupsCubit;
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class App extends StatefulWidget {
@@ -23,6 +34,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  GlobalKey<AppThemeSwitcherWidgetState> themeKey =
+      GlobalKey<AppThemeSwitcherWidgetState>();
+
   @override
   void initState() {
     super.initState();
@@ -80,8 +94,40 @@ class _AppState extends State<App> {
             ),
             lazy: false,
           ),
+          BlocProvider<ProfilesCubit>(
+            create: (BuildContext context) =>
+                ProfilesCubit(getIt(), getIt(), getIt()),
+          ),
+          BlocProvider<OrganisationDetailsCubit>(
+            create: (BuildContext context) => OrganisationDetailsCubit(getIt()),
+          ),
+          BlocProvider<FlowsCubit>(
+            create: (BuildContext context) => FlowsCubit(),
+          ),
+          BlocProvider<FamilyImpactGroupsCubit.ImpactGroupsCubit>(
+            create: (BuildContext context) =>
+                FamilyImpactGroupsCubit.ImpactGroupsCubit(getIt()),
+          ),
+          BlocProvider(
+            create: (context) => ScanNfcCubit(),
+          ),
+          BlocProvider(
+            create: (context) => RegistrationBloc(
+              authCubit: context.read<AuthCubit>(),
+              authRepositoy: getIt(),
+            ),
+          ),
         ],
-        child: const _AppView(),
+        child: AppThemeSwitcherWidget(
+          key: themeKey,
+          builder: (BuildContext context, ThemeData themeData,
+              {required bool isFamilyApp}) {
+            if (kDebugMode) {
+              log('Rebuilding app with theme, isFamilyApp: $isFamilyApp');
+            }
+            return _AppView(themeData: themeData);
+          },
+        ),
       );
 
   Future<void> initializeStripe() async {
@@ -98,12 +144,14 @@ class _AppState extends State<App> {
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView();
+  const _AppView({required this.themeData, super.key});
+
+  final ThemeData themeData;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: AppTheme.lightTheme,
+      theme: themeData,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       localeResolutionCallback: (locale, supportedLocales) {

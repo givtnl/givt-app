@@ -14,7 +14,7 @@ import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalInfoPage extends StatefulWidget {
-  const PersonalInfoPage({super.key});
+  const PersonalInfoPage({super.key,});
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();

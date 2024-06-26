@@ -10,8 +10,11 @@ import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationContainer extends StatelessWidget {
-  const OrganisationContainer(
-      {required this.familyValue, required this.image, super.key});
+  const OrganisationContainer({
+    required this.familyValue,
+    required this.image,
+    super.key,
+  });
 
   final FamilyValue familyValue;
   final Image image;

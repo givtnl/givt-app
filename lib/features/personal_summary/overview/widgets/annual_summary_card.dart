@@ -10,7 +10,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AnnualSummaryCard extends StatelessWidget {
-  const AnnualSummaryCard({super.key});
+  const AnnualSummaryCard({super.key,});
 
   @override
   Widget build(BuildContext context) {

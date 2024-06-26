@@ -15,8 +15,10 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class RecurringDonationsDetailPage extends StatelessWidget {
-  const RecurringDonationsDetailPage(
-      {required this.recurringDonation, super.key});
+  const RecurringDonationsDetailPage({
+    required this.recurringDonation,
+    super.key,
+  });
   final RecurringDonation recurringDonation;
 
   @override

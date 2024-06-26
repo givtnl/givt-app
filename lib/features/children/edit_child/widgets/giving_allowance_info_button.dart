@@ -6,7 +6,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GivingAllowanceInfoButton extends StatelessWidget {
-  const GivingAllowanceInfoButton({super.key});
+  const GivingAllowanceInfoButton({super.key,});
 
   @override
   Widget build(BuildContext context) {

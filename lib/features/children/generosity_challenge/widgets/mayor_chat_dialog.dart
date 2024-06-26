@@ -5,11 +5,12 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class MayorChatDialog extends StatelessWidget {
-  const MayorChatDialog(
-      {required this.onDismiss,
-      required this.onGoToChat,
-      this.isFirstDay = false,
-      super.key});
+  const MayorChatDialog({
+    required this.onDismiss,
+    required this.onGoToChat,
+    this.isFirstDay = false,
+    super.key,
+  });
   final bool isFirstDay;
   final VoidCallback onDismiss;
   final VoidCallback onGoToChat;
@@ -37,7 +38,9 @@ class MayorChatDialog extends StatelessWidget {
                   : 'The Mayor Sent  a\nmessage',
               textAlign: TextAlign.center,
               style: chatCompletedTextStyle.copyWith(
-                  fontSize: 24, fontWeight: FontWeight.w700),
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+              ),
             ),
             SizedBox(height: isFirstDay ? 8 : 0),
             if (isFirstDay) _buildRedDotExplanation(),
@@ -46,7 +49,7 @@ class MayorChatDialog extends StatelessWidget {
               onTap: onGoToChat,
               text: 'Go to Chat',
               rightIcon: FontAwesomeIcons.solidComments,
-            )
+            ),
           ],
         ),
       ),
@@ -94,8 +97,9 @@ class MayorChatDialog extends StatelessWidget {
       TextSpan(
         children: [
           TextSpan(
-              text: 'Whenever I have a message for you a ',
-              style: chatCompletedTextStyle),
+            text: 'Whenever I have a message for you a ',
+            style: chatCompletedTextStyle,
+          ),
           TextSpan(
             text: 'red dot',
             style: chatCompletedTextStyle.copyWith(
@@ -103,8 +107,9 @@ class MayorChatDialog extends StatelessWidget {
             ),
           ),
           TextSpan(
-              text: ' will appear in the top right corner',
-              style: chatCompletedTextStyle),
+            text: ' will appear in the top right corner',
+            style: chatCompletedTextStyle,
+          ),
         ],
       ),
       textAlign: TextAlign.center,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
@@ -12,6 +11,7 @@ import 'package:givt_app/features/account_details/pages/change_email_address_bot
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -22,7 +22,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalInfoEditPage extends StatelessWidget {
-  const PersonalInfoEditPage({this.navigatingFromFamily = false, super.key});
+  const PersonalInfoEditPage({this.navigatingFromFamily = false, super.key,});
   final bool navigatingFromFamily;
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class PersonalInfoEditPage extends StatelessWidget {
         leading: BackButton(
           onPressed: () {
             if (navigatingFromFamily) {
-              context.goNamed(Pages.childrenOverview.name);
+              context.goNamed(FamilyPages.childrenOverview.name);
               return;
             }
             context.pop();

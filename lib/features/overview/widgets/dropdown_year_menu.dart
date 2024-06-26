@@ -8,7 +8,7 @@ class YearOfDonationsDropdown extends StatelessWidget {
       {required this.donationYears,
       required this.selectedYear,
       required this.onYearChanged,
-      super.key});
+      super.key,});
   final List<String> donationYears;
   final String selectedYear;
   final OnYearChanged onYearChanged;

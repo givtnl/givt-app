@@ -181,7 +181,8 @@ class PersonalInfoEditBloc
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
       await LoggingInfo.instance.info(
-          'Changing bank details to ${event.iban} ${event.accountNumber} ${event.sortCode}');
+        'Changing bank details to ${event.iban} ${event.accountNumber} ${event.sortCode}',
+      );
       final stateUser = state.loggedInUserExt.copyWith(
         iban: event.iban,
         accountNumber: event.accountNumber,

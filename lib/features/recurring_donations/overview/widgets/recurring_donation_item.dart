@@ -47,7 +47,9 @@ class _RecurringDonationItemState extends State<RecurringDonationItem> {
         name: Util.getCurrencyName(country: countryCode),
       );
       final amount = Util.formatNumberComma(
-          widget.recurringDonation.amountPerTurn.toDouble(), countryCode);
+        widget.recurringDonation.amountPerTurn.toDouble(),
+        countryCode,
+      );
 
       final result = '''
 ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequency]} ${locals.recurringDonationYouGive} ${currency.currencySymbol} $amount''';
@@ -58,7 +60,8 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
     String endsOnText() {
       final dateFormat = DateFormat('dd-MM-yyyy');
       final endsOn = locals.recurringDonationStops(
-          dateFormat.format(widget.recurringDonation.endDate));
+        dateFormat.format(widget.recurringDonation.endDate),
+      );
       return endsOn;
     }
 

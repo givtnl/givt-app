@@ -5,7 +5,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class NoFundsErrorDialog extends StatelessWidget {
-  const NoFundsErrorDialog({this.onClickContinue, super.key});
+  const NoFundsErrorDialog({this.onClickContinue, super.key,});
 
   final void Function()? onClickContinue;
 

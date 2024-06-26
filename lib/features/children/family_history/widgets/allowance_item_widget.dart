@@ -7,8 +7,13 @@ import 'package:givt_app/utils/string_datetime_extension.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AllowanceItemWidget extends StatelessWidget {
-  const AllowanceItemWidget({required this.allowance, super.key});
+  const AllowanceItemWidget({
+    required this.allowance,
+    super.key,
+  });
+
   final Allowance allowance;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -30,12 +35,10 @@ class AllowanceItemWidget extends StatelessWidget {
             children: [
               Text(
                 '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: allowance.isNotSuccessful
                           ? AppTheme.childHistoryPendingDark
                           : AppTheme.childHistoryAllowance,
-                      fontFamily: 'Roboto',
-                      fontWeight: FontWeight.w600,
                     ),
               ),
               SizedBox(
@@ -47,11 +50,7 @@ class AllowanceItemWidget extends StatelessWidget {
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontFamily: 'Raleway',
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               Text(
@@ -60,10 +59,7 @@ class AllowanceItemWidget extends StatelessWidget {
                         ? locals.weWillTryAgainNxtMonth
                         : locals.weWillTryAgainTmr
                     : allowance.date.formatDate(locals),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),

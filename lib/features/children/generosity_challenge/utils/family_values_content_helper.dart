@@ -119,7 +119,7 @@ class FamilyValuesContentHelper {
       interestList: [
         Interest.findAHome,
         Interest.getFood,
-        Interest.thatAreHomeless
+        Interest.thatAreHomeless,
       ],
       area: Area.basic,
       collectGroupId: 'B347C7B4-D846-417C-9ACC-82F7964FD602',

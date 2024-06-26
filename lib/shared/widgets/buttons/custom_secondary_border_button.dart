@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class CustomSecondaryBorderButton extends StatelessWidget {
-  const CustomSecondaryBorderButton(
-      {required this.title, required this.onPressed, super.key});
+  const CustomSecondaryBorderButton({
+    required this.title,
+    required this.onPressed,
+    super.key,
+  });
   final String title;
   final VoidCallback onPressed;
   @override

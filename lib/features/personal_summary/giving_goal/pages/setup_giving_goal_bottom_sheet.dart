@@ -12,7 +12,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class SetupGivingGoalBottomSheet extends StatefulWidget {
-  const SetupGivingGoalBottomSheet({super.key});
+  const SetupGivingGoalBottomSheet({
+    super.key,
+  });
 
   @override
   State<SetupGivingGoalBottomSheet> createState() =>
@@ -207,11 +209,12 @@ class _SetupGivingGoalBottomSheetState
         );
 
     AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.givingGoalSaved,
-        eventProperties: {
-          'amount': amountController.text,
-          'periodicity': frequency,
-        });
+      eventName: AmplitudeEvents.givingGoalSaved,
+      eventProperties: {
+        'amount': amountController.text,
+        'periodicity': frequency,
+      },
+    );
   }
 
   Widget _buildFieldTitle(

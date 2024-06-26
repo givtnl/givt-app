@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 
 class OrganisationHeader extends StatelessWidget {
-  const OrganisationHeader({required this.value, super.key});
+  const OrganisationHeader({required this.value, super.key,});
   final FamilyValue value;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,11 @@ class OrganisationHeader extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            top: 4, bottom: 4, left: 16, right: 8),
+                          top: 4,
+                          bottom: 4,
+                          left: 16,
+                          right: 8,
+                        ),
                         child: Text(
                           tag.displayText,
                           style:

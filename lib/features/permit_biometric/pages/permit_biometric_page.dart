@@ -11,7 +11,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class PermitBiometricPage extends StatelessWidget {
-  const PermitBiometricPage({super.key});
+  const PermitBiometricPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,11 @@ class PermitBiometricPage extends StatelessWidget {
         }
       },
       builder: (BuildContext context, PermitBiometricState state) {
-        return Scaffold(
-          body: _buildContent(context, state),
+        return Theme(
+          data: AppTheme.lightTheme,
+          child: Scaffold(
+            body: _buildContent(context, state),
+          ),
         );
       },
     );

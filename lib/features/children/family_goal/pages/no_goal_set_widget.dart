@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NoGoalSetWidget extends StatelessWidget {
-  const NoGoalSetWidget({super.key});
+  const NoGoalSetWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +37,12 @@ class NoGoalSetWidget extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'Create a Family Goal',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontSize: 17,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w800,
-                      ),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'Give together',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w400,
-                      ),
+                  style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
             ),

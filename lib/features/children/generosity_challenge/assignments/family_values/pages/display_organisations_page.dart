@@ -6,7 +6,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/utils/app_theme.dart';
 
 class DisplayOrganisations extends StatelessWidget {
-  const DisplayOrganisations({required this.familyValues, super.key});
+  const DisplayOrganisations({required this.familyValues, super.key,});
   final List<FamilyValue> familyValues;
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,9 @@ class DisplayOrganisations extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                 sliver: SliverToBoxAdapter(
                   child: OrganisationContainer(
-                      familyValue: e, image: image[familyValues.indexOf(e)]),
+                    familyValue: e,
+                    image: image[familyValues.indexOf(e)],
+                  ),
                 ),
               ),
             ),

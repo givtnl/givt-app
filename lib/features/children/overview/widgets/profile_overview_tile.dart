@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +17,7 @@ class ProfileOverviewTile extends StatelessWidget {
   });
 
   final Profile profile;
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
@@ -36,11 +37,12 @@ class ProfileOverviewTile extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           side: BorderSide(
-              width: 2,
-              color: _getBorderColor(
-                context,
-                isGivtAccount,
-              )),
+            width: 2,
+            color: _getBorderColor(
+              context,
+              isGivtAccount,
+            ),
+          ),
           backgroundColor: _getBackgroundColor(context),
         ),
         onPressed: () => _onTap(context, isGivtAccount),
@@ -62,9 +64,7 @@ class ProfileOverviewTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.w700,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppTheme.givtBlue,
                   ),
             ),
@@ -76,7 +76,7 @@ class ProfileOverviewTile extends StatelessWidget {
                       ? context.l10n.vpcNoFundsWaiting
                       : '$currencySymbol${profile.wallet.balance.toStringAsFixed(0)}',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppTheme.givtBlue,
                       ),
                 ),
@@ -96,8 +96,8 @@ class ProfileOverviewTile extends StatelessWidget {
         },
       );
       if (isGivtAccount) {
-        context.goNamed(
-          Pages.personalInfoEdit.name,
+        context.pushNamed(
+          FamilyPages.familyPersonalInfoEdit.name,
           extra: true,
         );
       }
@@ -111,7 +111,7 @@ class ProfileOverviewTile extends StatelessWidget {
     );
 
     context.pushNamed(
-      Pages.childDetails.name,
+      FamilyPages.childDetails.name,
       extra: [
         context.read<FamilyOverviewCubit>(),
         profile,

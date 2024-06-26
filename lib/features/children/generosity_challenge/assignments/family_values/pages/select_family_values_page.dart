@@ -15,7 +15,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectFamilyValues extends StatelessWidget {
-  const SelectFamilyValues({super.key});
+  const SelectFamilyValues({super.key,});
 
   @override
   Widget build(BuildContext context) {
