@@ -9,12 +9,15 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_icon_button.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeOverview extends StatefulWidget {
-  const GenerosityChallengeOverview({super.key});
+  const GenerosityChallengeOverview({
+    super.key,
+  });
 
   @override
   State<GenerosityChallengeOverview> createState() =>
@@ -24,6 +27,7 @@ class GenerosityChallengeOverview extends StatefulWidget {
 class _GenerosityChallengeOverviewState
     extends State<GenerosityChallengeOverview> {
   bool isDebug = false;
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +50,8 @@ class _GenerosityChallengeOverviewState
         return AlertDialog(
           title: const Text('Undo Challenge Progress'),
           content: Text(
-              'Are you sure you want to undo generosity challenge progress including Day ${dayIndax + 1}?'),
+            'Are you sure you want to undo generosity challenge progress including Day ${dayIndax + 1}?',
+          ),
           actions: [
             TextButton(
               onPressed: () => context.pop(true),
@@ -75,7 +80,8 @@ class _GenerosityChallengeOverviewState
             return AlertDialog(
               title: const Text('Complete Generosity Challenge?'),
               content: const Text(
-                  'Are you sure you want to complete the generosity challenge and go to the Givt app?'),
+                'Are you sure you want to complete the generosity challenge and go to the Givt app?',
+              ),
               actions: [
                 TextButton(
                   onPressed: () => context.pop(true),
@@ -163,7 +169,7 @@ class _GenerosityChallengeOverviewState
                                   challenge.state.availableChatDayIndex ==
                                       index) {
                                 context.goNamed(
-                                  Pages.generosityChallengeChat.name,
+                                  FamilyPages.generosityChallengeChat.name,
                                   extra:
                                       context.read<GenerosityChallengeCubit>(),
                                 );

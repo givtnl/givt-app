@@ -11,6 +11,7 @@ import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -117,7 +118,7 @@ class NotificationService implements INotificationService {
     switch (message.data['Type']) {
       case 'DonationApproval':
         await LoggingInfo.instance.info('Navigating to family overview screen');
-        AppRouter.router.goNamed(Pages.childrenOverview.name);
+        AppRouter.router.goNamed(FamilyPages.childrenOverview.name);
     }
   }
 

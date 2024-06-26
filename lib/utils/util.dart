@@ -31,9 +31,11 @@ class Util {
   static const String countryIso = 'countryIso';
 
   static final ukPostCodeRegEx = RegExp(
-      r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$');
+    r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$',
+  );
   static final ukPhoneNumberRegEx = RegExp(
-      r'^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$');
+    r'^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$',
+  );
   static final usPhoneNumberRegEx =
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
@@ -45,7 +47,8 @@ class Util {
       RegExp('\\(?\\+\\(?$prefix\\)?[()]?([-()]?\\d[-()]?){9,10}');
 
   static RegExp phoneNumberRegExWithPrefix() => RegExp(
-      r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}');
+        r'\(?\+\(?31|32|49|33|39|352|30|34|358|43|357|372|371|370|356|386|421|353\)?[()]?([-()]?\d[-()]?){9,10}',
+      );
   static final certificatesPublicKey = RSAPublicKey('''
 -----BEGIN PUBLIC KEY-----
 MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQBZ7fQsGvR+889VBFQZvb+L
@@ -68,35 +71,7 @@ AgMBAAE=
 
     return icon;
   }
-
-  static Future<bool> checkIfGivt4KidsAppInstalled() async {
-    try {
-      final String appUrl;
-      if (Platform.isIOS) {
-        appUrl = 'appscheme://net.givtapp.kids';
-      } else if (Platform.isAndroid) {
-        final currentAppInfo = await PackageInfo.fromPlatform();
-        if (currentAppInfo.packageName.contains('.test')) {
-          appUrl = 'net.givtapp.kids.test';
-        } else {
-          appUrl = 'net.givtapp.kids';
-        }
-      } else {
-        return false;
-      }
-
-      final kidsApp = await AppCheck.checkAvailability(appUrl);
-      if (kidsApp != null) {
-        log('${kidsApp.packageName} is installed on the device.');
-        return true;
-      }
-    } on PlatformException {
-      log('Givt4Kids app is not installed on the device.');
-      return false;
-    }
-    return false;
-  }
-
+  
   // todo remove this
   static String getCurrencyName({required Country country}) {
     return country == Country.us

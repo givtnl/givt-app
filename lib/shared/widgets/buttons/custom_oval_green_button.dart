@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class CustomOvalGreenButton extends StatelessWidget {
-  const CustomOvalGreenButton(
-      {required this.title, required this.onPressed, super.key});
+  const CustomOvalGreenButton({
+    required this.title,
+    required this.onPressed,
+    super.key,
+  });
   final String title;
   final void Function() onPressed;
   @override
@@ -20,10 +23,12 @@ class CustomOvalGreenButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(50),
           ),
         ),
-        child: Text(title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                )),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+        ),
       ),
     );
   }

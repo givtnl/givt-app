@@ -19,7 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatefulWidget {
-  const GivingPage({super.key});
+  const GivingPage({super.key,});
 
   @override
   State<GivingPage> createState() => _GivingPageState();

@@ -65,8 +65,8 @@ class _AddMemberFormState extends State<AddMemberForm> {
     final user = context.read<AuthCubit>().state.user;
 
     final currency = NumberFormat.simpleCurrency(
-            name: Country.fromCode(user.country).currency)
-        .currencySymbol;
+      name: Country.fromCode(user.country).currency,
+    ).currencySymbol;
 
     return BlocConsumer<AddMemberCubit, AddMemberState>(
       listener: (context, state) {

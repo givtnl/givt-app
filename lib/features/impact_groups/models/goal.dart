@@ -55,7 +55,7 @@ class Goal extends Equatable {
         mediumId,
         status,
         dateCreated,
-        collectGroupId
+        collectGroupId,
       ];
 }
 

@@ -15,7 +15,7 @@ class GivtElevatedButton extends StatelessWidget {
     this.widthMultiplier = .9,
   });
 
-  final void Function() onTap;
+  final void Function()? onTap;
   final bool isDisabled;
   final String text;
   final bool isLoading;
@@ -27,7 +27,7 @@ class GivtElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      onTap: onTap,
+      onTap: onTap ?? () {},
       borderColor: AppTheme.givtGreen40,
       isDisabled: isDisabled,
       borderSize: 0.01,

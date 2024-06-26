@@ -1,0 +1,24 @@
+<svg width="224" height="224" viewBox="0 0 224 224" fill="none" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="112" cy="112" rx="112" ry="112" fill="#DFDED2"/>
+<mask id="mask0_6530_23539" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="224" height="224">
+<ellipse cx="112" cy="112" rx="112" ry="112" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_6530_23539)">
+<path d="M159.665 180.16C159.665 180.16 188.739 184.714 195.234 216.34C201.728 247.965 182.473 267.457 182.473 267.457" stroke="#2E2957" stroke-width="10.2269" stroke-linecap="round"/>
+<path d="M96.6816 181.754C96.6816 181.754 65.8899 193.896 42.3713 166.618C18.8526 139.339 38.7065 104.286 38.7065 104.286" stroke="#2E2957" stroke-width="10.2269" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M74.1963 33.3313H103.416C142.146 33.3313 173.543 64.7283 173.543 103.459V132.678H74.1963V33.3313Z" fill="#2E2957"/>
+<path d="M167.7 280.238H170.622V277.316V101.998C170.622 76.1775 149.691 55.2461 123.871 55.2461C98.0504 55.2461 77.119 76.1774 77.119 101.998V277.316V280.238H80.041H167.7Z" fill="white" stroke="#2E2957" stroke-width="5.84394"/>
+<mask id="mask1_6530_23539" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="74" y="52" width="100" height="232">
+<path d="M167.7 280.238H170.622V277.316V101.998C170.622 76.1775 149.691 55.2461 123.871 55.2461C98.0504 55.2461 77.119 76.1774 77.119 101.998V277.316V280.238H80.041H167.7Z" fill="white" stroke="white" stroke-width="5.84394"/>
+</mask>
+<g mask="url(#mask1_6530_23539)">
+<ellipse cx="93.1898" cy="128.295" rx="10.2269" ry="10.2269" fill="#E26952" fill-opacity="0.5"/>
+<ellipse cx="156.013" cy="128.295" rx="10.2269" ry="10.2269" fill="#E26952" fill-opacity="0.5"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M82.9629 151.671L126.792 180.486L167.7 161.898V242.252H82.9629V151.671Z" fill="#41C98E"/>
+<ellipse cx="106.34" cy="109.303" rx="5.84393" ry="5.84394" fill="#2E2957"/>
+<ellipse cx="141.404" cy="109.303" rx="5.84393" ry="5.84394" fill="#2E2957"/>
+<path d="M80.7725 164.09L122.345 190.839C123.302 191.455 124.529 191.459 125.49 190.849L167.701 164.09" stroke="#2E2957" stroke-width="5.84394" stroke-linecap="square"/>
+<path d="M112.218 144.124C112.218 144.124 129.203 147.046 133.242 137.581" stroke="#2E2957" stroke-width="5.84394" stroke-linecap="round"/>
+</g>
+</g>
+</svg>

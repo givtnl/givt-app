@@ -6,7 +6,7 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class AcceptPolicyRow extends StatelessWidget {
   const AcceptPolicyRow(
-      {required this.onTap, required this.checkBoxValue, super.key});
+      {required this.onTap, required this.checkBoxValue, super.key,});
   final void Function(bool?)? onTap;
   final bool checkBoxValue;
   @override

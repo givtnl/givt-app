@@ -14,6 +14,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -193,6 +194,7 @@ class _HomePageState extends State<HomePage> {
                 if (!auth.user.needRegistration ||
                     auth.user.mandateSigned ||
                     auth.user.isInvitedUser ||
+                    auth.user.isUsUser || // Don't show to US users
                     impactGroupsState.status ==
                         ImpactGroupCubitStatus.invited) {
                   return;
@@ -270,9 +272,7 @@ class _HomePageState extends State<HomePage> {
               ),
         ),
         content: Text(
-          isUS
-              ? context.l10n.registrationDialogG4K
-              : context.l10n.finalizeRegistrationPopupText,
+          context.l10n.finalizeRegistrationPopupText,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         actions: [
@@ -291,7 +291,9 @@ class _HomePageState extends State<HomePage> {
                     user.country == Country.us.countryCode;
                 context
                   ..goNamed(
-                    Pages.registration.name,
+                    createStripe
+                        ? FamilyPages.registrationUS.name
+                        : Pages.registration.name,
                     queryParameters: {
                       'email': user.email,
                       'createStripe': createStripe.toString(),

@@ -9,7 +9,7 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CachedMembersPage extends StatelessWidget {
-  const CachedMembersPage({super.key});
+  const CachedMembersPage({super.key,});
 
   @override
   Widget build(BuildContext context) {

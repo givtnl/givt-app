@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class OverviewPage extends StatefulWidget {
-  const OverviewPage({super.key});
+  const OverviewPage({super.key,});
 
   @override
   State<OverviewPage> createState() => _OverviewPageState();
@@ -178,6 +178,7 @@ class _OverviewPageState extends State<OverviewPage> {
         itemCount: _getSectionCount(state),
         itemBuilder: (_, int index) {
           return StickyHeader(
+            
             key: Key(monthSections[index].timeStamp!.toString()),
             header: Column(
               children: [
@@ -186,14 +187,12 @@ class _OverviewPageState extends State<OverviewPage> {
                   child: _buildHeader(
                     context: context,
                     amount:
-                        state.givtAided[monthSections[index].timeStamp!.year] ??
+                        state.givtAided[monthSections[index].taxYear] ??
                             0,
                     country: user.country,
                     color: AppTheme.givtYellow,
                     giftAidTitle: locals.giftOverviewGiftAidBanner(
-                      "'${DateFormat('yy').format(
-                        monthSections[index].timeStamp!,
-                      )}",
+                      "'${monthSections[index].taxYear.toString().substring(2)}",
                     ),
                   ),
                 ),

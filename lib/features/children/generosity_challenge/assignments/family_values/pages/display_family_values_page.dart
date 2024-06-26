@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_value_container.dart';
@@ -9,12 +8,13 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class DisplayFamilyValues extends StatelessWidget {
-  const DisplayFamilyValues({super.key});
+  const DisplayFamilyValues({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +71,7 @@ class DisplayFamilyValues extends StatelessWidget {
                     AmplitudeEvents.daySevenFamilyValuesSeenContinueClicked,
               );
               context.pushNamed(
-                Pages.displayValuesOrganisations.name,
+                FamilyPages.displayValuesOrganisations.name,
                 extra: {
                   FamilyValuesCubit.familyValuesKey: state.selectedValues,
                   GenerosityChallengeHelper.generosityChallengeKey:

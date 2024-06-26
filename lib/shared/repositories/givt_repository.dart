@@ -173,8 +173,9 @@ class GivtRepositoryImpl with GivtRepository {
       apiClient.deleteGivts(body: ids);
 
   @override
-  Future<bool> downloadYearlyOverview(
-      {required Map<String, dynamic> body}) async {
+  Future<bool> downloadYearlyOverview({
+    required Map<String, dynamic> body,
+  }) async {
     return apiClient.downloadYearlyOverview(body);
   }
 

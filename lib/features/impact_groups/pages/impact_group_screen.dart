@@ -6,7 +6,7 @@ import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class ImpactGroupScreen extends StatelessWidget {
-  const ImpactGroupScreen({super.key});
+  const ImpactGroupScreen({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +55,7 @@ class ImpactGroupScreen extends StatelessWidget {
 }
 
 class NoGoalsWidget extends StatelessWidget {
-  const NoGoalsWidget({super.key});
+  const NoGoalsWidget({super.key,});
 
   @override
   Widget build(BuildContext context) {

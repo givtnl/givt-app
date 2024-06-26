@@ -29,7 +29,8 @@ enum AmplitudeEvents {
   childTopUpSubmitted('child_top_up_submitted'),
   childEditSaveClicked('child_edit_save_clicked'),
   childEditMonthlyAllowanceSaveClicked(
-      'child_edit_monthly_allowance_save_clicked'),
+    'child_edit_monthly_allowance_save_clicked',
+  ),
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),
@@ -43,7 +44,8 @@ enum AmplitudeEvents {
   personalSummaryYearLoaded('personal_summary_year_loaded'),
   downloadAnnualOverviewClicked('download_annual_overview_clicked'),
   annualOverviewReceiveViaMailClicked(
-      'annual_overview_receive_via_mail_clicked'),
+    'annual_overview_receive_via_mail_clicked',
+  ),
   setGivingGoalClicked('set_giving_goal_clicked'),
   editGivingGoalClicked('edit_giving_goal_clicked'),
   givingGoalSaved('giving_goal_saved'),
@@ -52,7 +54,6 @@ enum AmplitudeEvents {
   recurringDonationsClicked('recurring_donations_clicked'),
 
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
-  editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarSelected('avatar_selected'),
   avatarSaved('avatar_saved'),
 
@@ -83,9 +84,9 @@ enum AmplitudeEvents {
   activateBiometricWhenLoggedIn('activate_biometric_when_logged_in'),
 
   invitedToImpactGroupBottomSheetShown(
-      'invited_to_impact_group_bottom_sheet_shown'),
+    'invited_to_impact_group_bottom_sheet_shown',
+  ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
-  iWillDonloadG4KLater('i_will_download_g4k_later'),
 
   generosityChallengeDayClicked('generosity_challenge_day_clicked'),
   generosityChallengeDayCompleted('generosity_challenge_day_completed'),
@@ -107,10 +108,67 @@ enum AmplitudeEvents {
   chooseAmountDonateClicked('choose_amount_donate_clicked'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
   generosityChallengeRegistrationSucceeded(
-      'generosity_challenge_registration_succeeded'),
+    'generosity_challenge_registration_succeeded',
+  ),
+
+  // Family
+
+  amountPressed('amount_pressed'),
+  backButtonPressed('back_button_pressed'),
+  returnToHomePressed('return_to_home_pressed'),
+  giveToThisGoalPressed('give_to_this_goal_pressed'),
+  iWantToGivePressed('i_want_to_give_pressed'),
+  choseGiveWithCoin('chose_give_with_coin'),
+  choseGiveWithQRCode('chose_give_with_qr_code'),
+  cancelGive('cancel_give'),
+  helpMeFindCharityPressed('help_me_find_charity_pressed'),
+  askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
+  loginPressed('login_pressed'),
+  logOutPressed('log_out_pressed'),
+  terminateAccountSuccess('terminate_account_success'),
+  profilePressed('profile_pressed'),
+  profileSwitchPressed('profile_switch_pressed'),
+  assignCoinPressed('assign_coin_pressed'),
+  qrCodeScanned('qr_code_scanned'),
+  seeDonationHistoryPressed('see_donation_history_pressed'),
+  locationSelected('location_selected'),
+  citySelected('city_selected'),
+  interestSelected('interest_selected'),
+  showCharitiesPressed('show_charities_pressed'),
+  charitiesShown('charities_shown'),
+  donateToRecommendedCharityPressed('donate_to_recommended_charity_pressed'),
+  charityCardPressed('charity_card_pressed'),
+  accountLocked('account_locked_for_wrong_password'),
+  walletTracker('wallet_tracker'),
+  startScanningCoin('in_app_start_scanning_coin'),
+  inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
+  coinScannedError('in_app_coin_scanned_error'),
+  deeplinkCoinScanned('deeplink_coin_scanned'),
+  organisationSelected('organisation_is_set'),
+  editAvatarIconClicked('edit_avatar_icon_clicked'),
+  avatarImageSelected('avatar_image_selected'),
+  editProfilePictureClicked('edit_profile_picture_clicked'),
+  saveAvatarClicked('save_avatar_clicked'),
+  rewardAchieved('reward_achieved'),
+  goalTrackerTapped('goal_tracker_tapped'),
+  goalDismissed('goal_dismissed'),
+  donateToThisFamilyGoalPressed('donate_to_this_family_goal_pressed'),
+  choseGiveToFamilyGoal('chose_give_to_family_goal'),
+  schoolEventFlowStartButtonClicked('school_event_flow_start_button_clicked'),
+  schoolEventFlowLoginButtonClicked('school_event_flow_login_button_clicked'),
+  schoolEventFlowConfirmButtonClicked(
+    'school_event_flow_confirm_button_clicked',
+  ),
+  schoolEventLogOutTriggered('school_event_log_out_triggered'),
+  openAppPermissionsSettings('open_app_permissions_settings'),
+  openCameraPermissionDialog('open_camera_permission_dialog'),
+  closePermissionsDialog('close_permissions_dialog'),
+  navigationBarPressed('navigation_bar_pressed'),
 
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
+
+  manageFamilyPressed('manage_family_pressed'),
   ;
 
   const AmplitudeEvents(this.value);

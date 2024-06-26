@@ -7,7 +7,7 @@ import 'package:givt_app/features/children/cached_members/widgets/cached_members
 import 'package:givt_app/features/children/cached_members/widgets/cached_members_dialog_success_page.dart';
 
 class CachedMembersDialogContent extends StatelessWidget {
-  const CachedMembersDialogContent({super.key});
+  const CachedMembersDialogContent({super.key,});
 
   @override
   Widget build(BuildContext context) {

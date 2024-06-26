@@ -5,7 +5,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class StripeInfoSheet extends StatelessWidget {
-  const StripeInfoSheet({super.key});
+  const StripeInfoSheet({super.key,});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 class ChooseCategory extends StatelessWidget {
-  const ChooseCategory({super.key});
+  const ChooseCategory({super.key,});
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationWidget extends StatelessWidget {
-  const OrganisationWidget(this.organisation, {super.key});
+  const OrganisationWidget(this.organisation, {super.key,});
 
   final Organisation organisation;
 

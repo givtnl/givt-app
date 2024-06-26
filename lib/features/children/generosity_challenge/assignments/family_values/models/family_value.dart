@@ -20,8 +20,10 @@ class FamilyValue {
     return FamilyValue(
       displayText: json['displayText'] as String,
       imagePath: json['imagePath'] as String,
-      interestList: List<Interest>.from((json['interestKeys'] as List)
-          .map((e) => Interest.fromString(e as String))),
+      interestList: List<Interest>.from(
+        (json['interestKeys'] as List)
+            .map((e) => Interest.fromString(e as String)),
+      ),
       colorCombo: ColorCombo.values[json['colorCombo'] as int],
       area: Area.fromString(json['area'] as String),
       organisation:

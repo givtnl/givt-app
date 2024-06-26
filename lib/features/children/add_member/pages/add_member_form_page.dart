@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/widgets/add_member_form.dart';
-import 'package:givt_app/features/children/add_member/widgets/success_add_member_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
@@ -15,8 +14,13 @@ import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
 class CreateMemberPage extends StatefulWidget {
-  const CreateMemberPage({required this.familyAlreadyExists, super.key});
+  const CreateMemberPage({
+    required this.familyAlreadyExists,
+    super.key,
+  });
+
   final bool familyAlreadyExists;
+
   @override
   State<CreateMemberPage> createState() => _CreateMemberPageState();
 }
@@ -111,7 +115,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
             text: state.error,
             isError: true,
           );
-          context.goNamed(Pages.childrenOverview.name);
+          context.goNamed(FamilyPages.childrenOverview.name);
         }
         if (state.status == AddMemberStateStatus.vpc) {
           LoggingInfo.instance.info(
@@ -151,19 +155,23 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           context.read<AddMemberCubit>().allFormsFilled();
           return;
         }
+
+        if (state.status == AddMemberStateStatus.successCached) {
+          context.pushReplacementNamed(
+            FamilyPages.cachedChildrenOverview.name,
+          );
+        }
+        if (state.status == AddMemberStateStatus.success ||
+            state.status == AddMemberStateStatus.successNoAllowances) {
+          context.pushReplacementNamed(
+            FamilyPages.childrenOverview.name,
+            extra: state.status == AddMemberStateStatus.successNoAllowances,
+          );
+        }
       },
       builder: (context, state) {
         if (state.status == AddMemberStateStatus.loading) {
           return const SettingUpFamilySpaceLoadingWidget();
-        }
-        if (state.status == AddMemberStateStatus.success ||
-            state.status == AddMemberStateStatus.successCached ||
-            state.status == AddMemberStateStatus.successNoAllowances) {
-          return AddMemeberSuccessPage(
-            familyAlreadyExists: widget.familyAlreadyExists,
-            showAllowanceWarning:
-                state.status == AddMemberStateStatus.successNoAllowances,
-          );
         }
 
         return Container(
@@ -206,7 +214,7 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
                               title: context.l10n.continueKey,
                               onPressed:
                                   context.read<AddMemberCubit>().validateForms,
-                            )
+                            ),
                           ],
                         ),
                       ),

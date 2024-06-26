@@ -67,7 +67,8 @@ class VPCPage extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.directNoticeClicked);
+                        eventName: AmplitudeEvents.directNoticeClicked,
+                      );
                       showModalBottomSheet<void>(
                         context: context,
                         backgroundColor: AppTheme.givtPurple,
@@ -81,18 +82,20 @@ class VPCPage extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Icon(Icons.info_rounded,
-                              color: Theme.of(context).colorScheme.primary,
-                              size: 18),
+                          child: Icon(
+                            Icons.info_rounded,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 18,
+                          ),
                         ),
-                        Text(context.l10n.seeDirectNoticeButtonText,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  fontSize: 16,
-                                )),
-                        const Spacer()
+                        Text(
+                          context.l10n.seeDirectNoticeButtonText,
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontSize: 16,
+                                  ),
+                        ),
+                        const Spacer(),
                       ],
                     ),
                   ),
@@ -118,7 +121,7 @@ class VPCPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),

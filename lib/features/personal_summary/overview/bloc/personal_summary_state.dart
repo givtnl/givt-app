@@ -40,7 +40,9 @@ class PersonalSummaryState extends Equatable {
 
   double get maxInPastTwelveMonths {
     final maxPastTwelveMonthsCalc = pastTwelveMonths.fold<double>(
-        0, (max, item) => max < item.amount ? item.amount : max);
+      0,
+      (max, item) => max < item.amount ? item.amount : max,
+    );
     if (givingGoal.amount > 0) {
       return maxPastTwelveMonthsCalc > givingGoal.yearlyGivingGoal / 12
           ? maxPastTwelveMonthsCalc

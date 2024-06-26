@@ -46,7 +46,8 @@ class CollectGroup extends Equatable {
         }
         if (!code.instance.contains('.')) {
           code = code.copyWith(
-              instance: '${json['NS'] as String}.${code.instance}');
+            instance: '${json['NS'] as String}.${code.instance}',
+          );
         }
 
         qrCodes.add(code);

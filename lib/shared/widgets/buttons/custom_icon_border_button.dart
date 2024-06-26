@@ -4,7 +4,7 @@ import 'package:givt_app/shared/widgets/action_container.dart';
 
 class CustomIconBorderButton extends StatelessWidget {
   const CustomIconBorderButton(
-      {required this.onTap, required this.child, super.key});
+      {required this.onTap, required this.child, super.key,});
   final VoidCallback onTap;
   final Widget child;
 

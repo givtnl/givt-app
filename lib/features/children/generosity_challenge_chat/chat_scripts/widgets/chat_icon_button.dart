@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ChatIconButton extends StatelessWidget {
-  const ChatIconButton({super.key});
+  const ChatIconButton({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ChatIconButton extends StatelessWidget {
             IconButton(
               onPressed: () async {
                 context.goNamed(
-                  Pages.generosityChallengeChat.name,
+                  FamilyPages.generosityChallengeChat.name,
                   extra: context.read<GenerosityChallengeCubit>(),
                 );
               },

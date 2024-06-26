@@ -134,7 +134,9 @@ enum Country {
   }
 
   static String getCountryIncludingEmoji(
-      String countryCode, AppLocalizations locals) {
+    String countryCode,
+    AppLocalizations locals,
+  ) {
     return '${CountryEmoji.getEmoji(countryCode)} ${getCountry(countryCode, locals)}';
   }
 }

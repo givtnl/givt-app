@@ -7,6 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -16,9 +17,13 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImpactGroupRecieveInviteSheet extends StatelessWidget {
-  const ImpactGroupRecieveInviteSheet(
-      {required this.invitdImpactGroup, super.key});
+  const ImpactGroupRecieveInviteSheet({
+    required this.invitdImpactGroup,
+    super.key,
+  });
+
   final ImpactGroup invitdImpactGroup;
+
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
@@ -41,7 +46,8 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
             builder: (context, state) {
               final groupId = state.impactGroups
                   .firstWhere(
-                      (element) => element.status == ImpactGroupStatus.invited)
+                    (element) => element.status == ImpactGroupStatus.invited,
+                  )
                   .id;
               return CustomGreenElevatedButton(
                 title: context.l10n.acceptInviteKey,
@@ -64,7 +70,9 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                         (user.country == Country.us.countryCode);
                     context
                       ..goNamed(
-                        Pages.registration.name,
+                        createStripe
+                            ? FamilyPages.registrationUS.name
+                            : Pages.registration.name,
                         queryParameters: {
                           'email': user.email,
                           'createStripe': createStripe.toString(),
@@ -72,9 +80,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       )
                       ..pop();
                   } else {
-                    context
-                      ..goNamed(Pages.joinImpactGroupSuccess.name)
-                      ..pop();
+                    context.goNamed(FamilyPages.profileSelection.name);
                   }
                 },
               );

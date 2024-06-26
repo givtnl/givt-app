@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -52,7 +53,8 @@ class CreditCardDetailsPage extends StatelessWidget {
               context.pop();
               onRegistrationFailed!.call();
             } else {
-              context.goNamed(Pages.home.name);
+              context.pop();
+              context.read<ProfilesCubit>().fetchAllProfiles(checkRegistrationAndSetup: true);
             }
 
             /* Logged as info as stripe is giving exception
@@ -76,13 +78,13 @@ class CreditCardDetailsPage extends StatelessWidget {
     final hasBeenInvited =
         context.read<ImpactGroupsCubit>().state.invitedGroup !=
             const ImpactGroup.empty();
-    context.goNamed(
-      Pages.permitBiometric.name,
+    context.pushNamed(
+      FamilyPages.permitUSBiometric.name,
       extra: PermitBiometricRequest.registration(
-        redirect: (context) => context.goNamed(
+        redirect: (context) => context.pushReplacementNamed(
           hasBeenInvited
-              ? Pages.joinImpactGroupSuccess.name
-              : Pages.registrationSuccessUs.name,
+              ? FamilyPages.profileSelection.name
+              : FamilyPages.registrationSuccessUs.name,
         ),
       ),
     );

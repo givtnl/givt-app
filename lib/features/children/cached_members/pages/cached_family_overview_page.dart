@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CachedFamilyOverviewPage extends StatelessWidget {
-  const CachedFamilyOverviewPage({super.key});
+  const CachedFamilyOverviewPage({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -30,57 +30,60 @@ class CachedFamilyOverviewPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            centerTitle: false,
-            title: Text(
-              context.l10n.childrenMyFamily,
-              style: GoogleFonts.mulish(
-                textStyle:
-                    Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-              ),
-            ),
-            leading: BackButton(
-              onPressed: () {
-                context.pop();
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.backClicked,
-                );
-              },
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 14),
-                child: TextButton(
-                  onPressed: null,
-                  child: Row(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 2),
-                        child: Icon(Icons.add, size: 20),
-                      ),
-                      Text(
-                        context.l10n.addMember,
-                        textAlign: TextAlign.start,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: AppTheme.givtBlue.withOpacity(.25),
-                                ),
-                      ),
-                    ],
-                  ),
+        return Theme(
+          data: AppTheme.lightTheme,
+          child: Scaffold(
+            appBar: AppBar(
+              centerTitle: false,
+              title: Text(
+                context.l10n.childrenMyFamily,
+                style: GoogleFonts.mulish(
+                  textStyle:
+                      Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
+                            fontWeight: FontWeight.w800,
+                          ),
                 ),
               ),
-            ],
-            automaticallyImplyLeading: false,
-          ),
-          body: SafeArea(
-            child: state.status == CachedMembersStateStatus.loading
-                ? const Center(child: CircularProgressIndicator())
-                : const CachedMembersPage(),
+              leading: BackButton(
+                onPressed: () {
+                  context.pop();
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.backClicked,
+                  );
+                },
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 14),
+                  child: TextButton(
+                    onPressed: null,
+                    child: Row(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(bottom: 2),
+                          child: Icon(Icons.add, size: 20),
+                        ),
+                        Text(
+                          context.l10n.addMember,
+                          textAlign: TextAlign.start,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.givtBlue.withOpacity(.25),
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+              automaticallyImplyLeading: false,
+            ),
+            body: SafeArea(
+              child: state.status == CachedMembersStateStatus.loading
+                  ? const Center(child: CircularProgressIndicator())
+                  : const CachedMembersPage(),
+            ),
           ),
         );
       },

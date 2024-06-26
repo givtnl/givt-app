@@ -12,7 +12,7 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SignSepaMandatePage extends StatelessWidget {
-  const SignSepaMandatePage({super.key});
+  const SignSepaMandatePage({super.key,});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class SignSepaMandatePage extends StatelessWidget {
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == RegistrationStatus.success) {
-              context.goNamed(
+              context.pushNamed(
                 Pages.permitBiometric.name,
                 extra: PermitBiometricRequest.registration(
                   redirect: (context) =>

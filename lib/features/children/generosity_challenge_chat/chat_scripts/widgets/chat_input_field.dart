@@ -113,7 +113,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   });
                   if (errorMessage.isNotEmpty) {
                     if (_isValidInput(
-                        inputText, widget.chatItem.inputAnswerType)) {
+                      inputText,
+                      widget.chatItem.inputAnswerType,
+                    )) {
                       setState(() {
                         errorMessage = '';
                       });
