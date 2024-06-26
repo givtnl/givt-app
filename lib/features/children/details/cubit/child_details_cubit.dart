@@ -116,14 +116,17 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         await fetchChildDetails();
       } else {
         emit(
-          const ChildCancelAllowanceErrorState(
-            errorMessage:
-                'Oh no! we failed to to cancel the allowance. Please try again later or contact us at support@givtapp.net',
+          const ChildDetailsErrorState(
+            errorMessage: 'Failed to fetch details',
           ),
         );
       }
-    } catch (e, s) {
-      await _handleTopUpApiError(e, s);
+    } catch (e) {
+      emit(
+        ChildCancelAllowanceErrorState(
+          errorMessage: e.toString(),
+        ),
+      );
       _emitData();
     }
   }

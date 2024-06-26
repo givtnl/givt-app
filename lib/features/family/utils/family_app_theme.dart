@@ -132,24 +132,28 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         fontSize: 26,
         fontWeight: FontWeight.w700,
         letterSpacing: 0,
+        height: 1.2,
       ),
       titleMedium: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
         fontSize: 22,
         fontWeight: FontWeight.w700,
         letterSpacing: 0,
+        height: 1.2,
       ),
       titleSmall: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
         fontSize: 18,
         fontWeight: FontWeight.w700,
         letterSpacing: 0,
+        height: 1.2,
       ),
       headlineMedium: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
         fontSize: 30,
         fontWeight: FontWeight.w700,
         letterSpacing: 0,
+        height: 1.2,
       ),
       labelSmall: TextStyle(
         color: FamilyAppTheme.defaultTextColor,

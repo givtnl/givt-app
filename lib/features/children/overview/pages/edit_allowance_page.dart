@@ -33,7 +33,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
   @override
   void initState() {
     super.initState();
-    _allowance = widget.initialAllowance ?? 15;
+    _allowance =
+        (widget.initialAllowance == null || widget.initialAllowance == 0)
+            ? 15
+            : widget.initialAllowance!;
   }
 
   @override

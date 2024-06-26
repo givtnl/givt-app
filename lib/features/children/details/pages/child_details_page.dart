@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
+import 'package:givt_app/features/children/details/widgets/child_cancel_rga_failed_dialog.dart';
+import 'package:givt_app/features/children/details/widgets/child_cancel_rga_success_dialog.dart';
 import 'package:givt_app/features/children/details/widgets/child_details_item.dart';
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
@@ -41,6 +43,8 @@ class ChildDetailsPage extends StatelessWidget {
         return current is ChildDetailsErrorState ||
             current is ChildEditGivingAllowanceSuccessState ||
             current is ChildTopUpFundsErrorState ||
+            current is ChildCancelAllowanceErrorState ||
+            current is ChildCancelAllowanceSuccessState ||
             current is ChildTopUpSuccessState;
       },
       buildWhen: (previous, current) {
@@ -79,6 +83,16 @@ class ChildDetailsPage extends StatelessWidget {
                 amountWithCurrencySymbol: '\$${state.amount}',
               ),
             ).toRoute(context),
+          );
+        } else if (state is ChildCancelAllowanceSuccessState) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => const ChildCancelRGASuccessDialog(),
+          );
+        } else if (state is ChildCancelAllowanceErrorState) {
+          showDialog<void>(
+            context: context,
+            builder: (_) => const ChildCancelRGAFailedDialog(),
           );
         }
       },
