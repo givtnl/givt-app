@@ -46,26 +46,23 @@ class FamilyOverviewPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Theme(
-          data: AppTheme.lightTheme,
-          child: Scaffold(
-            appBar: TopAppBar(
-              title: 'Manage Family',
-              actions: [
-                if (state is FamilyOverviewUpdatedState &&
-                    (state.hasChildren || !state.isAdultSingle))
-                  IconButton(
-                    icon: const Icon(
-                      FontAwesomeIcons.userPlus,
-                    ),
-                    onPressed: () => _addNewChild(context, state),
+        return Scaffold(
+          appBar: TopAppBar(
+            title: 'Manage Family',
+            actions: [
+              if (state is FamilyOverviewUpdatedState &&
+                  (state.hasChildren || !state.isAdultSingle))
+                IconButton(
+                  icon: const Icon(
+                    FontAwesomeIcons.userPlus,
                   ),
-              ],
-              leading: const LeadingBackButton(),
-            ),
-            body: SafeArea(
-              child: buildFamilyOverviewBody(state, context),
-            ),
+                  onPressed: () => _addNewChild(context, state),
+                ),
+            ],
+            leading: const LeadingBackButton(),
+          ),
+          body: SafeArea(
+            child: buildFamilyOverviewBody(state, context),
           ),
         );
       },
