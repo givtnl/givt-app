@@ -8,7 +8,6 @@ class Member extends Equatable {
     this.age,
     this.dateOfBirth,
     this.allowance,
-    this.topUp,
     this.key,
     this.type,
     this.email,
@@ -20,7 +19,6 @@ class Member extends Equatable {
         age = null,
         dateOfBirth = null,
         allowance = null,
-        topUp = null,
         key = null,
         type = null,
         email = null;
@@ -31,7 +29,6 @@ class Member extends Equatable {
         age: (json['age'] ?? 0) as int,
         dateOfBirth: DateTime.tryParse((json['dateOfBirth'] ?? '') as String),
         allowance: (json['givingAllowance'] ?? 0) as int,
-        topUp: (json['topUp'] ?? 0) as int,
         type: ProfileType.getByTypeName((json['type'] ?? '') as String),
         email: (json['email'] ?? '').toString(),
       );
@@ -41,7 +38,6 @@ class Member extends Equatable {
   final int? age;
   final DateTime? dateOfBirth;
   final int? allowance;
-  final int? topUp;
   final String? key;
   final ProfileType? type;
   final String? email;
@@ -53,7 +49,6 @@ class Member extends Equatable {
       'age': age,
       'dateOfBirth': dateOfBirth?.toIso8601String(),
       'givingAllowance': allowance,
-      'topUp': topUp,
       'type': type?.name,
       'email': email,
     };
@@ -64,5 +59,5 @@ class Member extends Equatable {
 
   @override
   List<Object?> get props =>
-      [firstName, lastName, age, dateOfBirth, allowance, topUp, type, email];
+      [firstName, lastName, age, dateOfBirth, allowance, type, email];
 }
