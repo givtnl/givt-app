@@ -29,12 +29,20 @@ class FamilyAuthUtils {
 
     try {
       final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
-      if (!hasAuthenticated) {
-        return;
-      }
       if (!context.mounted) {
         return;
       }
+      
+      if (!hasAuthenticated) {
+        await _displayLoginBottomSheet(
+          context,
+          checkAuthRequest: checkAuthRequest,
+        );
+        if (!context.mounted) {
+          return;
+        }
+      }
+
       await context.read<AuthCubit>().refreshSession();
       if (!context.mounted) {
         return;
