@@ -9,6 +9,7 @@ class GivtGroup extends Equatable {
     this.organisationName = '',
     this.givts = const [],
     this.amount = 0,
+    this.taxYear = 0,
   });
 
   const GivtGroup.empty()
@@ -17,7 +18,8 @@ class GivtGroup extends Equatable {
         organisationName = '',
         status = 0,
         amount = 0,
-        isGiftAidEnabled = false;
+        isGiftAidEnabled = false,
+        taxYear = 0;
 
   final List<Givt> givts;
   final DateTime? timeStamp;
@@ -25,6 +27,7 @@ class GivtGroup extends Equatable {
   final int status;
   final double amount;
   final bool isGiftAidEnabled;
+  final int taxYear;
 
   GivtGroup copyWith({
     List<Givt>? givts,
@@ -33,6 +36,7 @@ class GivtGroup extends Equatable {
     int? status,
     double? amount,
     bool? isGiftAidEnabled,
+    int? taxYear,
   }) {
     return GivtGroup(
       givts: givts ?? this.givts,
@@ -41,6 +45,7 @@ class GivtGroup extends Equatable {
       status: status ?? this.status,
       amount: amount ?? this.amount,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,
+      taxYear: taxYear ?? this.taxYear,
     );
   }
 
@@ -52,5 +57,6 @@ class GivtGroup extends Equatable {
         status,
         amount,
         isGiftAidEnabled,
+        taxYear,
       ];
 }

@@ -141,6 +141,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     // Set the first month
     lastMonth = lastMonth.copyWith(
       timeStamp: sortedGivts[0].timeStamp,
+      taxYear: sortedGivts[0].taxYear,
     );
 
     // Check all sorted givts;
@@ -152,6 +153,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
           organisationName: givt.organisationName,
           status: givt.status,
           isGiftAidEnabled: givt.isGiftAidEnabled,
+          taxYear: givt.taxYear,
         );
       }
 
@@ -168,6 +170,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
           organisationName: givt.organisationName,
           status: givt.status,
           isGiftAidEnabled: givt.isGiftAidEnabled,
+          taxYear: givt.taxYear,
         );
       }
 
@@ -185,6 +188,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
         givtGroups.add(lastMonth);
         lastMonth = GivtGroup(
           timeStamp: givt.timeStamp,
+          taxYear: givt.taxYear,
         );
       }
 
