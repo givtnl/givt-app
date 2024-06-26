@@ -22,6 +22,7 @@ class AddMemberRepositoryImpl with AddMemberRepository {
     final profilesJsonList = members.map((member) => member.toJson()).toList();
     final body = {
       'profiles': profilesJsonList,
+      'allowanceType': 1,
     };
 
     await apiService.addMember(body);
