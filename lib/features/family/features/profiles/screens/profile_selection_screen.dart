@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -87,7 +88,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     }
 
     return BlocConsumer<ProfilesCubit, ProfilesState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
@@ -96,7 +97,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          context.pushNamed(FamilyPages.childrenOverview.name);
+          if (CachedFamilyUtils
+              .isFamilyCacheExist()) {
+            await context.pushNamed(
+                FamilyPages.cachedChildrenOverview.name);
+          } else {
+            await context.pushNamed(FamilyPages.childrenOverview.name);
+          }
         } else if (state is ProfilesNeedsRegistration) {
           if (context.read<RegistrationBloc>().state.status ==
               RegistrationStatus.createStripeAccount) {
@@ -167,9 +174,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   context,
                                   checkAuthRequest: CheckAuthRequest(
                                     navigate: (context, {isUSUser}) async {
-                                      await context.pushNamed(
-                                        FamilyPages.childrenOverview.name,
-                                      );
+                                      if (CachedFamilyUtils
+                                          .isFamilyCacheExist()) {
+                                        await context.pushNamed(
+                                            FamilyPages.cachedChildrenOverview.name);
+                                      } else {
+                                        await context.pushNamed(
+                                          FamilyPages.childrenOverview.name,
+                                        );
+                                      }
                                     },
                                   ),
                                 );

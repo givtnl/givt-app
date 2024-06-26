@@ -18,7 +18,9 @@ class CreateMemberPage extends StatefulWidget {
     required this.familyAlreadyExists,
     super.key,
   });
+
   final bool familyAlreadyExists;
+
   @override
   State<CreateMemberPage> createState() => _CreateMemberPageState();
 }
@@ -154,10 +156,17 @@ class _CreateMemberPageState extends State<CreateMemberPage> {
           return;
         }
 
+        if (state.status == AddMemberStateStatus.successCached) {
+          context.pushReplacementNamed(
+            FamilyPages.cachedChildrenOverview.name,
+          );
+        }
         if (state.status == AddMemberStateStatus.success ||
-            state.status == AddMemberStateStatus.successCached ||
             state.status == AddMemberStateStatus.successNoAllowances) {
-          context.goNamed(FamilyPages.childrenOverview.name);
+          context.pushReplacementNamed(
+            FamilyPages.childrenOverview.name,
+            extra: state.status == AddMemberStateStatus.successNoAllowances,
+          );
         }
       },
       builder: (context, state) {
