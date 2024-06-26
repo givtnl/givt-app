@@ -6,18 +6,17 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TopAppBar({
     required this.title,
     this.actions = const [],
-    this.automaticallyImplyLeading,
+    this.leading,
     super.key,
   });
 
   final String title;
   final List<Widget> actions;
-  final bool? automaticallyImplyLeading;
+  final Widget? leading;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: automaticallyImplyLeading ?? true,
       title: Text(
         title,
         style: Theme.of(context).textTheme.titleLarge!.copyWith(
@@ -38,6 +37,8 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: actions,
       scrolledUnderElevation: 0,
+      automaticallyImplyLeading: false,
+      leading: leading,
     );
   }
 

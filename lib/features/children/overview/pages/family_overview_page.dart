@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/overview/widgets/family_available_pag
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/family/app/pages.dart';
 import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
+import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,6 +59,7 @@ class FamilyOverviewPage extends StatelessWidget {
                   onPressed: () => _addNewChild(context, state),
                 ),
             ],
+            leading: const LeadingBackButton(),
           ),
           body: SafeArea(
             child: buildFamilyOverviewBody(state, context),
