@@ -128,7 +128,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           ),
           body: state is ProfilesLoadingState
               ? const CustomCircularProgressIndicator()
-              : state.children.isEmpty && state.parents.isEmpty
+              : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () => context
                           .read<ProfilesCubit>()
