@@ -242,6 +242,7 @@ class ChildDetailsPage extends StatelessWidget {
       EditAllowancePage(
         currency: r'$',
         initialAllowance: currentAllowance,
+        onCancel: () => context.read<ChildDetailsCubit>().cancelAllowance(),
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {

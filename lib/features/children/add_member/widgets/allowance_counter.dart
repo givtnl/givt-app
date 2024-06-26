@@ -144,6 +144,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontFamily: 'Raleway',
+                    color: AppTheme.givtBlue,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -153,6 +154,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
                     fontSize: 24,
                     fontFamily: 'Raleway',
                     fontWeight: FontWeight.w700,
+                    color: AppTheme.givtBlue,
                     fontFeatures: <FontFeature>[FontFeature.liningFigures()],
                   ),
                 ),

@@ -114,7 +114,9 @@ class AppTheme {
   static const neutralVariant90 = Color(0xFFE4E3DB);
   static const neutralVariant95 = Color(0xFFEEF2E4);
 
+  static const error30 = Color(0xFF920700);
   static const error50 = Color(0xFFDC3A26);
+  static const error80 = Color(0xFFFFB4A7);
 
   static const familyGoalStepperGray = Color(0xFF9694AB);
 
@@ -132,7 +134,6 @@ class AppTheme {
   static const recommendationItemText = Color(0xFF405A66);
   // static const interestsTallyText = Color(0xFFFBFCFF);
   // static const interestCardRadio = Color(0xFF7AAA35);
-
 
   static const info40 = Color(0xFF914C00);
   static const info20 = Color(0xFF4E2600);

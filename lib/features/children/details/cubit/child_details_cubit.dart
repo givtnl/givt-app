@@ -105,6 +105,29 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     }
   }
 
+  Future<void> cancelAllowance() async {
+    try {
+      _emitLoading();
+      final isSuccess = await _editChildRepository.cancelAllowance(_profile.id);
+      if (isSuccess) {
+        _emitData();
+        emit(const ChildCancelAllowanceSuccessState());
+        //has to be awaited in order for the ui to update properly
+        await fetchChildDetails();
+      } else {
+        emit(
+          const ChildCancelAllowanceErrorState(
+            errorMessage:
+                'Oh no! we failed to to cancel the allowance. Please try again later or contact us at support@givtapp.net',
+          ),
+        );
+      }
+    } catch (e, s) {
+      await _handleTopUpApiError(e, s);
+      _emitData();
+    }
+  }
+
   Future<void> _handleEditAllowanceApiError(Object e, StackTrace s) async {
     await LoggingInfo.instance.error(e.toString(), methodName: s.toString());
     emit(
