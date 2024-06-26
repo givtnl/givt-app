@@ -31,6 +31,8 @@ enum AmplitudeEvents {
   childEditMonthlyAllowanceSaveClicked(
     'child_edit_monthly_allowance_save_clicked',
   ),
+  cancelRGA('cancel_reccuring_giving_allowance'),
+  failedToCancelRGA('failed_to_cancel_allowance'),
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),

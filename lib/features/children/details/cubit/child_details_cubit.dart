@@ -106,6 +106,15 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   }
 
   Future<void> cancelAllowance() async {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.cancelRGA,
+        eventProperties: {
+          'child_name': _profile.firstName,
+        },
+      ),
+    );
+
     try {
       _emitLoading();
       final isSuccess = await _editChildRepository.cancelAllowance(_profile.id);
@@ -122,6 +131,14 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         );
       }
     } catch (e) {
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.failedToCancelRGA,
+          eventProperties: {
+            'child_name': _profile.firstName,
+          },
+        ),
+      );
       emit(
         ChildCancelAllowanceErrorState(
           errorMessage: e.toString(),
