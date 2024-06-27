@@ -34,6 +34,8 @@ class SwitchProfileSuccessButton extends StatelessWidget {
       onTap: () async {
         if (flowsCubit.state.flowType == FlowType.deepLinkCoin) {
           flowsCubit.startInAppCoinFlow();
+        } else {
+          flowsCubit.resetFlow();
         }
 
         context.goNamed(FamilyPages.profileSelection.name);
