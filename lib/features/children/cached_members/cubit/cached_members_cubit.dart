@@ -50,7 +50,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
     emit(state.copyWith(status: CachedMembersStateStatus.noFundsRetrying));
     try {
       final members = state.members;
-      await _addMemberRepository.addMembers(members);
+      await _addMemberRepository.addMembers(members, isRGA: false);
 
       emit(state.copyWith(status: CachedMembersStateStatus.noFundsSuccess));
 

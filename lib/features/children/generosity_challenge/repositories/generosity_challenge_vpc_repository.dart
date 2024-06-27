@@ -47,7 +47,7 @@ class GenerosityChallengeVpcRepository {
       );
     }
     if (true == session?.isLoggedIn) {
-      await _addMemberRepository.addMembers(list);
+      await _addMemberRepository.addMembers(list, isRGA: true);
     } else {
       throw const NotLoggedInException();
     }

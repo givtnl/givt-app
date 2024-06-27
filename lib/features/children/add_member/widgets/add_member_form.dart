@@ -11,7 +11,6 @@ import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/utils/member_utils.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
-import 'package:givt_app/features/children/edit_child/widgets/giving_allowance_info_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -328,10 +327,19 @@ class _AddMemberFormState extends State<AddMemberForm> {
             focusNode: widget.ageFocusNode,
           ),
           const SizedBox(height: 10),
-          const GivingAllowanceInfoButton(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24),
+            child: Text(
+              "Start your child's giving journey by adding funds to their Wallet",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontSize: 16,
+                  ),
+            ),
+          ),
           AllowanceCounter(
             currency: currency,
-            initialAllowance: _allowance,
+            initialAllowance: 5,
             onAllowanceChanged: (allowance) => _allowance = allowance,
           ),
         ],

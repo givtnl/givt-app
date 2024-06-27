@@ -162,7 +162,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
     emit(state.copyWith(status: AddMemberStateStatus.loading));
     try {
-      await _addMemberRepository.addMembers(members);
+      await _addMemberRepository.addMembers(members, isRGA: false);
 
       emit(state.copyWith(status: AddMemberStateStatus.success));
       unawaited(
