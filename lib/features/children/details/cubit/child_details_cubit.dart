@@ -105,6 +105,50 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     }
   }
 
+  Future<void> cancelAllowance() async {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.cancelRGA,
+        eventProperties: {
+          'child_name': _profile.firstName,
+        },
+      ),
+    );
+
+    try {
+      _emitLoading();
+      final isSuccess = await _editChildRepository.cancelAllowance(_profile.id);
+      if (isSuccess) {
+        _emitData();
+        emit(const ChildCancelAllowanceSuccessState());
+        //has to be awaited in order for the ui to update properly
+        await fetchChildDetails();
+      } else {
+        _emitData();
+        emit(
+          const ChildDetailsErrorState(
+            errorMessage: 'Failed to fetch details',
+          ),
+        );
+      }
+    } catch (e) {
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.failedToCancelRGA,
+          eventProperties: {
+            'child_name': _profile.firstName,
+          },
+        ),
+      );
+      emit(
+        ChildCancelAllowanceErrorState(
+          errorMessage: e.toString(),
+        ),
+      );
+      _emitData();
+    }
+  }
+
   Future<void> _handleEditAllowanceApiError(Object e, StackTrace s) async {
     await LoggingInfo.instance.error(e.toString(), methodName: s.toString());
     emit(

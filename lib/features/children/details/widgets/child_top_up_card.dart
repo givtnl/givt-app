@@ -39,10 +39,9 @@ class ChildTopUpCard extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 context.l10n.topUp,
-                style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
                       color: AppTheme.inputFieldBorderSelected,
                       fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w800,
                       height: 1.2,
                     ),
               ),
