@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/wallet.dart';
 
 class CharityFinderAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const CharityFinderAppBar({this.showWallet = false, super.key,});
+  const CharityFinderAppBar({
+    this.showWallet = false,
+    this.onPressedExt,
+    super.key,
+  });
+
   final bool showWallet;
+  final void Function()? onPressedExt;
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: GivtBackButtonFlat(
+        onPressedExt:
+            onPressedExt ?? () => context.read<FlowsCubit>().resetFlow(),
         color: Theme.of(context).colorScheme.onPrimaryContainer,
       ),
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
