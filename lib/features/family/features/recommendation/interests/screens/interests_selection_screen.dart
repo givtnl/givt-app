@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interests_tally.dart';
