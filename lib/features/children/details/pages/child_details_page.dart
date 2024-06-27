@@ -13,7 +13,7 @@ import 'package:givt_app/features/children/overview/pages/edit_allowance_success
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
 import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';

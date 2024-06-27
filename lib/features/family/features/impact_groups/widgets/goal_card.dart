@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/utils/utils.dart';

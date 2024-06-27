@@ -8,7 +8,7 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';

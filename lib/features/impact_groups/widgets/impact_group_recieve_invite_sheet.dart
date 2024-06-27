@@ -7,7 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';

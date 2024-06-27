@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:go_router/go_router.dart';
 
 class TestNFCButton extends StatelessWidget {

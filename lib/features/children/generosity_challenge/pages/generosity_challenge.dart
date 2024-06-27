@@ -5,7 +5,7 @@ import 'package:givt_app/features/children/generosity_challenge/pages/generosity
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/mayor_chat_dialog.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallenge extends StatefulWidget {
