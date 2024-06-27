@@ -124,6 +124,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         //has to be awaited in order for the ui to update properly
         await fetchChildDetails();
       } else {
+        _emitData();
         emit(
           const ChildDetailsErrorState(
             errorMessage: 'Failed to fetch details',
