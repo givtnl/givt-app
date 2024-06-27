@@ -31,3 +31,24 @@ Widget registeredCheckBackground({double? width, double? height}) =>
       width: width,
       height: height,
     );
+
+Widget declinedIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/donation_states_declined.svg',
+      width: width,
+      height: height,
+    );
+Widget approvedIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/donation_states_approved.svg',
+      width: width,
+      height: height,
+    );
+Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/donation_states_pending.svg',
+      width: width,
+      height: height,
+    );
+Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/donation_states_error.svg',
+      width: width,
+      height: height,
+    );

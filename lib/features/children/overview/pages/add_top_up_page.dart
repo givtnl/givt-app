@@ -51,8 +51,9 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                         const SizedBox(height: 16),
                         Text(
                           context.l10n.topUp,
+                          textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
                                     color: AppTheme.inputFieldBorderSelected,
                                     fontFamily: 'Raleway',
                                     fontWeight: FontWeight.w800,
@@ -64,8 +65,8 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                           context.l10n.topUpScreenInfo,
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.titleMedium!.copyWith(
-                                    color: AppTheme.childGivingAllowanceHint,
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    color: AppTheme.givtBlue,
                                     fontFamily: 'Raleway',
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
@@ -82,11 +83,14 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                         ),
                         const SizedBox(height: 12),
                         Text(
+                          textAlign: TextAlign.center,
                           'Choose an amount between ${widget.currency}1 and '
                           '${widget.currency}999.',
                           style:
-                              Theme.of(context).textTheme.titleSmall!.copyWith(
-                                    color: AppTheme.childGivingAllowanceHint,
+                              Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: AppTheme.givtBlue,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w400,
                                   ),
                         ),
                       ],

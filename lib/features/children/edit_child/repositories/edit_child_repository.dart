@@ -10,6 +10,8 @@ mixin EditChildRepository {
 
   Future<bool> topUpChild(String childGUID, int amount);
 
+  Future<bool> cancelAllowance(String childGUID);
+
   Stream<String> walletChangedStream();
 }
 
@@ -38,6 +40,12 @@ class EditChildRepositoryImpl with EditChildRepository {
   Future<bool> topUpChild(String childGUID, int amount) async {
     final response = await apiService.topUpChild(childGUID, amount);
     _childGUIDController.add(childGUID);
+    return response;
+  }
+
+  @override
+  Future<bool> cancelAllowance(String childGUID) async {
+    final response = await apiService.cancelAllowance(childGUID);
     return response;
   }
 
