@@ -10,12 +10,14 @@ class AllowanceCounter extends StatefulWidget {
     required this.currency,
     this.initialAllowance,
     this.onAllowanceChanged,
+    this.isAmountNullable = false,
     super.key,
   });
 
   final String? currency;
   final int? initialAllowance;
   final void Function(int allowance)? onAllowanceChanged;
+  final bool isAmountNullable;
 
   @override
   State<AllowanceCounter> createState() => _AllowanceCounterState();
@@ -26,7 +28,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;
   static const int maxAllowance = 999;
-  static const int minAllowance = 1;
+  static late int minAllowance;
   static const int allowanceIncrement = 5;
   static const int allowanceIncrement2 = 10;
 
@@ -37,6 +39,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
   @override
   void initState() {
     super.initState();
+    minAllowance = widget.isAmountNullable ? 0 : 1;
     _allowance = widget.initialAllowance ?? 15;
   }
 
@@ -122,7 +125,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             _stopTimer();
           },
           onTapCancel: _stopTimer,
-          onTap: (_allowance < 2) ? null : _decrementCounter,
+          onTap: (_allowance < minAllowance + 1) ? null : _decrementCounter,
           child: SizedBox(
             width: 32,
             height: 32,
