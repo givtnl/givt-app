@@ -38,7 +38,6 @@ class ProfileSelectionScreen extends StatefulWidget {
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
   Widget build(BuildContext context) {
-    final flow = context.read<FlowsCubit>().state;
     context.read<ProfilesCubit>().fetchAllProfiles();
 
     List<Widget> createGridItems(List<Profile> profiles) {
@@ -49,6 +48,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         gridItems.add(
           GestureDetector(
             onTap: () {
+              final flow = context.read<FlowsCubit>().state;
               context.read<ProfilesCubit>().fetchProfile(profiles[i].id, true);
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.profilePressed,
@@ -126,6 +126,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
         );
+        final flow = context.read<FlowsCubit>().state;
         return Scaffold(
           appBar: TopAppBar(
             title: 'Who would like to give?',
