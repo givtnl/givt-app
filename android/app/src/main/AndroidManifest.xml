@@ -60,7 +60,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="*givtapp.net"/>
+                <data android:host="*.givtapp.net"/>
                 <data android:path="/download" />
                 <data android:path="/*/download" />
                 <data android:scheme="https"/>
@@ -74,7 +74,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:host="*givt.app"/>
+                <data android:host="*.givt.app"/>
                 <data android:path="/download" />
                 <data android:path="/*/download" />
                 <data android:scheme="https"/>
@@ -87,7 +87,7 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:host="*givtapp.net"/>
+                <data android:host="*.givtapp.net"/>
                 <data android:path="/download" />
                 <data android:path="/*/download" />
                 <data android:scheme="https"/>
@@ -100,7 +100,7 @@
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:host="*givt.app"/>
+                <data android:host="*.givt.app"/>
                 <data android:path="/download" />
                 <data android:path="/*/download" />
                 <data android:scheme="https"/>
