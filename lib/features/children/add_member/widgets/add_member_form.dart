@@ -340,7 +340,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
           AllowanceCounter(
             currency: currency,
             initialAllowance: 5,
-            isAmountNullable: true,
+            canAmountBeZero: true,
             onAllowanceChanged: (allowance) => _allowance = allowance,
           ),
         ],
