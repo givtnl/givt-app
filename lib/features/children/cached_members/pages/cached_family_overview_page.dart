@@ -10,7 +10,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CachedFamilyOverviewPage extends StatelessWidget {
-  const CachedFamilyOverviewPage({super.key,});
+  const CachedFamilyOverviewPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +40,8 @@ class CachedFamilyOverviewPage extends StatelessWidget {
               title: Text(
                 context.l10n.childrenMyFamily,
                 style: GoogleFonts.mulish(
-                  textStyle:
-                      Theme.of(context).appBarTheme.titleTextStyle?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
+                  textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800, color: AppTheme.givtBlue),
                 ),
               ),
               leading: BackButton(
@@ -59,15 +59,16 @@ class CachedFamilyOverviewPage extends StatelessWidget {
                     onPressed: null,
                     child: Row(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(bottom: 2),
-                          child: Icon(Icons.add, size: 20),
+                        Icon(
+                          Icons.add,
+                          size: 16,
+                          color: AppTheme.givtBlue.withOpacity(.25),
                         ),
                         Text(
                           context.l10n.addMember,
                           textAlign: TextAlign.start,
                           style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                              Theme.of(context).textTheme.labelSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.givtBlue.withOpacity(.25),
                                   ),
