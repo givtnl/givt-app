@@ -9,7 +9,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CachedMembersPage extends StatelessWidget {
-  const CachedMembersPage({super.key,});
+  const CachedMembersPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,34 +43,7 @@ class CachedMembersPage extends StatelessWidget {
                 child: SvgPicture.asset('assets/images/error_info_icon.svg'),
               ),
               const SizedBox(width: 10),
-              Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    style: GoogleFonts.poppins(
-                      textStyle:
-                          Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: AppTheme.givtBlue,
-                              ),
-                    ),
-                    children: [
-                      TextSpan(text: context.l10n.vpcNoFundsInfo1),
-                      TextSpan(
-                        text: context.l10n.vpcNoFundsInfo2,
-                        style: const TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      TextSpan(text: context.l10n.vpcNoFundsInfo3),
-                      TextSpan(
-                        text: '\$$totalAllowance',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      TextSpan(text: context.l10n.vpcNoFundsInfo4),
-                    ],
-                  ),
-                ),
-              ),
+              Expanded(child: getText(context, totalAllowance)),
             ],
           ),
         ),
@@ -86,6 +61,57 @@ class CachedMembersPage extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget getText(BuildContext context, int allowance) {
+    if (allowance < 0) {
+      return Text.rich(
+        TextSpan(
+          style: GoogleFonts.poppins(
+            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: AppTheme.givtBlue,
+                ),
+          ),
+          children: [
+            TextSpan(text: context.l10n.vpcNoFundsInfo1),
+            TextSpan(
+              text: context.l10n.vpcNoFundsInfo2,
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+            TextSpan(text: context.l10n.vpcNoFundsInfo3),
+            TextSpan(
+              text: '\$$allowance',
+              style: const TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const TextSpan(
+                text:
+                    " for your child's Wallet. Please check your payment details."),
+          ],
+        ),
+      );
+    }
+    return Text.rich(
+      TextSpan(
+        style: GoogleFonts.poppins(
+          textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: AppTheme.givtBlue,
+              ),
+        ),
+        children: [
+          TextSpan(text: context.l10n.vpcNoFundsInfo1),
+          TextSpan(
+            text: context.l10n.vpcNoFundsInfo2,
+            style: const TextStyle(fontWeight: FontWeight.w700),
+          ),
+          const TextSpan(
+              text: " for verification. Please check your payment details."),
+        ],
+      ),
     );
   }
 }

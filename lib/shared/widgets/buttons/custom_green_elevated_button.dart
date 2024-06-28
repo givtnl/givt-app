@@ -22,8 +22,9 @@ class CustomGreenElevatedButton extends StatelessWidget {
         child: Text(
           title,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleSmall!.copyWith(
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 color: Colors.white,
+                fontWeight: FontWeight.w900,
               ),
         ),
       ),
