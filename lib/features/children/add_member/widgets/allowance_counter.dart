@@ -3,18 +3,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class AllowanceCounter extends StatefulWidget {
   const AllowanceCounter({
     required this.currency,
     this.initialAllowance,
     this.onAllowanceChanged,
+    this.canAmountBeZero = false,
     super.key,
   });
 
   final String? currency;
   final int? initialAllowance;
   final void Function(int allowance)? onAllowanceChanged;
+  final bool canAmountBeZero;
 
   @override
   State<AllowanceCounter> createState() => _AllowanceCounterState();
@@ -25,7 +28,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;
   static const int maxAllowance = 999;
-  static const int minAllowance = 1;
+  static late int minAllowance;
   static const int allowanceIncrement = 5;
   static const int allowanceIncrement2 = 10;
 
@@ -36,6 +39,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
   @override
   void initState() {
     super.initState();
+    minAllowance = widget.canAmountBeZero ? 0 : 1;
     _allowance = widget.initialAllowance ?? 15;
   }
 
@@ -121,16 +125,14 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             _stopTimer();
           },
           onTapCancel: _stopTimer,
-          onTap: (_allowance < 2) ? null : _decrementCounter,
+          onTap: (_allowance <= minAllowance) ? null : _decrementCounter,
           child: SizedBox(
             width: 32,
             height: 32,
             child: Icon(
               FontAwesomeIcons.circleMinus,
               size: 32,
-              color: (_allowance < 2)
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.primary,
+              color: (_allowance < 2) ? Colors.grey : AppTheme.givtBlue,
             ),
           ),
         ),
@@ -145,6 +147,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
                   style: const TextStyle(
                     fontSize: 16,
                     fontFamily: 'Raleway',
+                    color: AppTheme.givtBlue,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -154,6 +157,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
                     fontSize: 24,
                     fontFamily: 'Raleway',
                     fontWeight: FontWeight.w700,
+                    color: AppTheme.givtBlue,
                     fontFeatures: <FontFeature>[FontFeature.liningFigures()],
                   ),
                 ),
@@ -177,9 +181,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             child: Icon(
               FontAwesomeIcons.circlePlus,
               size: 32,
-              color: (_allowance > 998)
-                  ? Colors.grey
-                  : Theme.of(context).colorScheme.primary,
+              color: (_allowance > 998) ? Colors.grey : AppTheme.givtBlue,
             ),
           ),
         ),

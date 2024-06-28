@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/add_member/widgets/giving_allowance_info_bottom_sheet.dart';
-import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GivingAllowanceInfoButton extends StatelessWidget {
-  const GivingAllowanceInfoButton({super.key,});
+  const GivingAllowanceInfoButton({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class GivingAllowanceInfoButton extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           Text(
-            context.l10n.createChildGivingAllowanceTitle,
+            "Start your child's giving journey by addingfunds to their Wallet",
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
                   fontSize: 16,
                 ),

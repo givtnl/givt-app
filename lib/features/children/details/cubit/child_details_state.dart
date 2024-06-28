@@ -19,6 +19,21 @@ final class ChildTopUpFundsErrorState extends ChildDetailsState {
   const ChildTopUpFundsErrorState();
 }
 
+final class ChildCancelAllowanceSuccessState extends ChildDetailsState {
+  const ChildCancelAllowanceSuccessState();
+}
+
+final class ChildCancelAllowanceErrorState extends ChildDetailsState {
+  const ChildCancelAllowanceErrorState({
+    required this.errorMessage,
+  });
+
+  final String errorMessage;
+
+  @override
+  List<Object> get props => [errorMessage];
+}
+
 final class ChildDetailsErrorState extends ChildDetailsState {
   const ChildDetailsErrorState({
     required this.errorMessage,

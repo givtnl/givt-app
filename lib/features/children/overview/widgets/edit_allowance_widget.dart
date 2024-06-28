@@ -6,8 +6,11 @@ import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dar
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowanceWidget extends StatelessWidget {
-  const EditAllowanceWidget(
-      {required this.uiModel, this.onAllowanceChanged, super.key,});
+  const EditAllowanceWidget({
+    required this.uiModel,
+    this.onAllowanceChanged,
+    super.key,
+  });
 
   final EditAllowanceUIModel uiModel;
   final void Function(int allowance)? onAllowanceChanged;
@@ -24,6 +27,7 @@ class EditAllowanceWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
+                  textAlign: TextAlign.center,
                   context.l10n.createChildGivingAllowanceTitle,
                   style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: AppTheme.inputFieldBorderSelected,

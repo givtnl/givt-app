@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_asserts_with_message
 
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
-import 'package:givt_app/features/family/app/pages.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 
 class GenerosityChallengeContentHelper {
   static final List<Task> _tasks = [
