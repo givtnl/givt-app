@@ -71,6 +71,12 @@ class AppRouter {
         name: 'download',
         redirect: _redirectFromExternalLink,
       ),
+      // TEMP FIX FOR EXTERNAL KIDS LINKS
+      GoRoute(
+        path:'/search-for-coin',
+        name: 'search-for-coin',
+        redirect: _redirectFromExternalLink,
+      ),
       GoRoute(
         path: Pages.splash.path,
         name: Pages.splash.name,
