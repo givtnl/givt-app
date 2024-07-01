@@ -14,8 +14,18 @@ import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CertificateHelper {
-  CertificateHelper();
+/*
+Handles:
+- Certificate checking
+- Creating clients for EU and US
+- Updating the base urls
+*/
+class RequestHelper {
+  RequestHelper({
+    required String apiURL,
+    required String apiURLAWS,
+  })  : _apiURL = apiURL,
+        _apiURLAWS = apiURLAWS;
 
   late SecureHttpClient _secureEuClient;
   late SecureHttpClient _secureUsClient;
@@ -29,6 +39,18 @@ class CertificateHelper {
   late String country;
 
   Client get client => country == Country.us.countryCode ? usClient : euClient;
+
+  String _apiURL;
+  String _apiURLAWS;
+
+  String get apiURL => _apiURL;
+
+  String get apiURLAWS => _apiURLAWS;
+
+  void updateApiUrl(String url, String awsurl) {
+    _apiURL = url;
+    _apiURLAWS = awsurl;
+  }
 
   Future<void> init() async {
     euBaseUrl = const String.fromEnvironment('API_URL_EU');

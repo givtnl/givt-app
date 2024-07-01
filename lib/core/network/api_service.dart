@@ -2,34 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:givt_app/core/failures/failures.dart';
-import 'package:givt_app/core/network/certificate_helper.dart';
-import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/shared/models/certificate_response.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 class APIService {
-  APIService({
-    required String apiURL,
-    required String apiURLAWS,
-    required this.certificateHelper,
-  })  : _apiURL = apiURL,
-        _apiURLAWS = apiURLAWS;
+  APIService(
+    this._requestHelper,
+  );
 
-  final CertificateHelper certificateHelper;
+  final RequestHelper _requestHelper;
 
-  Client get client => certificateHelper.client;
+  Client get client => _requestHelper.client;
 
-  String _apiURL;
-  String _apiURLAWS;
+  String get _apiURL => _requestHelper.apiURL;
 
-  String get apiURL => _apiURL;
-
-  String get apiURLAWS => _apiURLAWS;
-
-  void updateApiUrl(String url, String awsurl) {
-    _apiURL = url;
-    _apiURLAWS = awsurl;
-  }
+  String get _apiURLAWS => _requestHelper.apiURLAWS;
 
   Future<Map<String, dynamic>> login(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/oauth2/token');
@@ -93,7 +80,7 @@ class APIService {
   }
 
   Future<String> registerUser(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/api/v2/users');
+    final url = Uri.https(_apiURL, '/api/v2/users');
 
     final response = await client.post(
       url,
@@ -112,7 +99,7 @@ class APIService {
   Future<Map<String, dynamic>> registerGenerosityChallengeUser(
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(apiURL, '/givtservice/v1/generositychallenge/user');
+    final url = Uri.https(_apiURL, '/givtservice/v1/generositychallenge/user');
 
     final response = await client.post(
       url,
@@ -218,7 +205,7 @@ class APIService {
     String guid,
     String appLanguage,
   ) async {
-    final url = Uri.https(apiURL, '/api/v2/users/$guid/mandate');
+    final url = Uri.https(_apiURL, '/api/v2/users/$guid/mandate');
     final response = await client.post(url);
 
     if (response.statusCode >= 400) {
@@ -232,7 +219,7 @@ class APIService {
 
   Future<Map<String, dynamic>> fetchStripeSetupIntent() async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/givtservice/v1/paymentprovider/mandate/stripe',
     );
 
@@ -257,7 +244,7 @@ class APIService {
   Future<bool> unregisterUser(
     Map<String, dynamic> params,
   ) async {
-    final url = Uri.https(apiURL, '/api/users/unregister', params);
+    final url = Uri.https(_apiURL, '/api/users/unregister', params);
     final response = await client.post(url);
 
     if (response.statusCode >= 400) {
@@ -270,7 +257,7 @@ class APIService {
   }
 
   Future<bool> changeGiftAid(String guid, Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/api/v2/users/$guid/giftaidauthorisations');
+    final url = Uri.https(_apiURL, '/api/v2/users/$guid/giftaidauthorisations');
     final response = await client.post(
       url,
       body: jsonEncode(body),
@@ -286,7 +273,7 @@ class APIService {
   }
 
   Future<bool> resetPassword(Map<String, dynamic> params) async {
-    final url = Uri.https(apiURL, '/api/v2/users/forgotpassword', params);
+    final url = Uri.https(_apiURL, '/api/v2/users/forgotpassword', params);
     final response = await client.post(
       url,
       headers: {
@@ -301,7 +288,7 @@ class APIService {
   }
 
   Future<bool> contactSupport(Map<String, String> body) async {
-    final url = Uri.https(apiURL, '/api/sendsupport');
+    final url = Uri.https(_apiURL, '/api/sendsupport');
     final response = await client.post(
       url,
       body: jsonEncode(body),
@@ -317,7 +304,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> checkAppUpdate(Map<String, String> body) async {
-    final url = Uri.https(apiURL, '/api/checkforupdate');
+    final url = Uri.https(_apiURL, '/api/checkforupdate');
     final response = await client.post(
       url,
       body: jsonEncode(body),
@@ -341,7 +328,7 @@ class APIService {
   }
 
   Future<List<dynamic>> fetchGivts({Map<String, dynamic>? params}) async {
-    final url = Uri.https(apiURL, '/api/v2/givts', params);
+    final url = Uri.https(_apiURL, '/api/v2/givts', params);
 
     final response = await client.get(url);
 
@@ -355,7 +342,7 @@ class APIService {
   }
 
   Future<bool> deleteGivts({List<dynamic>? body}) async {
-    final url = Uri.https(apiURL, '/api/v2/Givts/multiple');
+    final url = Uri.https(_apiURL, '/api/v2/Givts/multiple');
 
     final response = await client.delete(
       url,
@@ -375,7 +362,7 @@ class APIService {
   }
 
   Future<bool> updateUserExt(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/api/v2/usersExtension');
+    final url = Uri.https(_apiURL, '/api/v2/usersExtension');
 
     final response = await client.put(
       url,
@@ -397,7 +384,7 @@ class APIService {
   }
 
   Future<bool> updateUser(String guid, Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/api/v2/Users/$guid');
+    final url = Uri.https(_apiURL, '/api/v2/Users/$guid');
 
     final response = await client.post(
       url,
@@ -417,7 +404,7 @@ class APIService {
   }
 
   Future<bool> downloadYearlyOverview(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURLAWS, '/donations/download');
+    final url = Uri.https(_apiURLAWS, '/donations/download');
     final response = await client.post(
       url,
       body: jsonEncode(body),
@@ -439,7 +426,7 @@ class APIService {
     String guid,
   ) async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/givtservice/v1/PaymentProvider/checkoutsession/$guid/parent-control-validation',
     );
 
@@ -457,7 +444,7 @@ class APIService {
   }
 
   Future<bool> addMember(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/givtservice/v1/profiles');
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles');
 
     final response = await client.post(
       url,
@@ -487,7 +474,7 @@ class APIService {
 
   Future<bool> createChild(Map<String, dynamic> body) async {
     final url =
-        Uri.https(apiURL, 'givtservice/v1/childprofile/setup-child-profile');
+        Uri.https(_apiURL, 'givtservice/v1/childprofile/setup-child-profile');
 
     final response = await client.post(
       url,
@@ -507,7 +494,7 @@ class APIService {
   }
 
   Future<bool> editChild(String childGUID, Map<String, dynamic> body) async {
-    final url = Uri.https(apiURL, '/givtservice/v1/ChildProfile/$childGUID');
+    final url = Uri.https(_apiURL, '/givtservice/v1/ChildProfile/$childGUID');
 
     final response = await client.put(
       url,
@@ -528,7 +515,7 @@ class APIService {
 
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
     final url =
-        Uri.https(apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
+        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
 
     final response = await client.put(
       url,
@@ -549,7 +536,7 @@ class APIService {
 
   Future<List<dynamic>> fetchProfiles() async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/givtservice/v1/profiles',
     );
 
@@ -571,7 +558,7 @@ class APIService {
 
   Future<Map<String, dynamic>> fetchChildDetails(String childGuid) async {
     final url = Uri.https(
-      apiURL,
+      _apiURL,
       '/givtservice/v1/ChildProfile/$childGuid',
     );
 
@@ -621,7 +608,7 @@ class APIService {
   Future<List<dynamic>> fetchRecurringDonations({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(apiURLAWS, '/recurringdonations');
+    final url = Uri.https(_apiURLAWS, '/recurringdonations');
 
     final response =
         await client.get(url, headers: {'Content-Type': 'application/json'});
@@ -640,7 +627,7 @@ class APIService {
     required String recurringDonationId,
   }) async {
     final url = Uri.https(
-      apiURLAWS,
+      _apiURLAWS,
       'recurringdonations/${recurringDonationId.toLowerCase()}/cancel',
     );
 
@@ -658,7 +645,7 @@ class APIService {
     String donationId,
   ) async {
     final url =
-        Uri.https(apiURLAWS, 'recurringdonations/$donationId/donations');
+        Uri.https(_apiURLAWS, 'recurringdonations/$donationId/donations');
 
     final response = await client.get(
       url,
@@ -677,7 +664,7 @@ class APIService {
   }
 
   Future<bool> createRecurringDonation(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURLAWS, '/recurringdonations');
+    final url = Uri.https(_apiURLAWS, '/recurringdonations');
 
     final response = await client.post(
       url,
@@ -698,7 +685,7 @@ class APIService {
   Future<List<dynamic>> fetchExternalDonations({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(apiURLAWS, '/external-donations', params);
+    final url = Uri.https(_apiURLAWS, '/external-donations', params);
 
     final response = await client.get(url);
 
@@ -717,7 +704,7 @@ class APIService {
   Future<List<dynamic>> fetchExternalDonationsSummary({
     required Map<String, dynamic> params,
   }) async {
-    final url = Uri.https(apiURLAWS, '/external-donations/summary', params);
+    final url = Uri.https(_apiURLAWS, '/external-donations/summary', params);
 
     final response = await client.get(url);
 
@@ -733,7 +720,7 @@ class APIService {
   }
 
   Future<bool> deleteExternalDonation(String id) async {
-    final url = Uri.https(apiURLAWS, '/external-donations/$id');
+    final url = Uri.https(_apiURLAWS, '/external-donations/$id');
 
     final response = await client.delete(
       url,
@@ -754,7 +741,7 @@ class APIService {
   }
 
   Future<bool> addExternalDonation(Map<String, dynamic> body) async {
-    final url = Uri.https(apiURLAWS, '/external-donations');
+    final url = Uri.https(_apiURLAWS, '/external-donations');
 
     final response = await client.post(
       url,
@@ -779,7 +766,7 @@ class APIService {
     String id,
     Map<String, dynamic> body,
   ) async {
-    final url = Uri.https(apiURLAWS, '/external-donations/$id');
+    final url = Uri.https(_apiURLAWS, '/external-donations/$id');
 
     final response = await client.patch(
       url,
@@ -805,7 +792,7 @@ class APIService {
     required String guid,
     required Map<String, dynamic> body,
   }) async {
-    final url = Uri.https(apiURL, '/api/v2/users/$guid/pushnotificationid');
+    final url = Uri.https(_apiURL, '/api/v2/users/$guid/pushnotificationid');
 
     final response = await client.post(
       url,
@@ -831,7 +818,7 @@ class APIService {
     String guid,
     Map<String, String> params,
   ) async {
-    final url = Uri.https(apiURL, '/api/v2/users/$guid/summary', params);
+    final url = Uri.https(_apiURL, '/api/v2/users/$guid/summary', params);
 
     final response = await client.get(url);
     if (response.statusCode >= 400) {
@@ -844,7 +831,7 @@ class APIService {
   }
 
   Future<Map<String, dynamic>> fetchGivingGoal() async {
-    final url = Uri.https(apiURLAWS, '/giving-goal');
+    final url = Uri.https(_apiURLAWS, '/giving-goal');
 
     final response = await client.get(
       url,
@@ -869,7 +856,7 @@ class APIService {
     required Map<String, dynamic> body,
   }) async {
     final url = Uri.https(
-      apiURLAWS,
+      _apiURLAWS,
       '/giving-goal',
     );
 
@@ -894,7 +881,7 @@ class APIService {
   }
 
   Future<bool> removeGivingGoal() {
-    final url = Uri.https(apiURLAWS, '/giving-goal');
+    final url = Uri.https(_apiURLAWS, '/giving-goal');
 
     return client.delete(
       url,

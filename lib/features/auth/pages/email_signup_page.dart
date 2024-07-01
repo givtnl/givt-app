@@ -10,7 +10,7 @@ import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
-import 'package:givt_app/core/network/certificate_helper.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
@@ -308,8 +308,8 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     }
 
     log('Using API URL: $baseUrl');
-    get_it.getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
-    get_it.getIt<CertificateHelper>().country = selectedCountry.countryCode;
+    get_it.getIt<RequestHelper>().updateApiUrl(baseUrl, baseUrlAWS);
+    get_it.getIt<RequestHelper>().country = selectedCountry.countryCode;
 
     // update country iso in shared preferences
     final prefs = get_it.getIt<SharedPreferences>();

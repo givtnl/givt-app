@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/core/network/certificate_helper.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
@@ -59,11 +57,12 @@ Future<void> initAPIService() async {
     baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
+  final certificateHelper =
+  RequestHelper(apiURL: baseUrl, apiURLAWS: baseUrlAWS);
+  await certificateHelper.init();
   getIt.registerLazySingleton<APIService>(
     () => APIService(
-      apiURL: baseUrl,
-      apiURLAWS: baseUrlAWS,
-      certificateHelper: getIt(),
+      getIt(),
     ),
   );
 }
@@ -87,8 +86,6 @@ Future<String> _checkCountry() async {
 }
 
 Future<void> _initCoreDependencies() async {
-  final certificateHelper = CertificateHelper();
-  await certificateHelper.init();
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt
     ..registerLazySingleton(InternetConnection.new)
@@ -97,7 +94,6 @@ Future<void> _initCoreDependencies() async {
     ..registerLazySingleton<CountryIsoInfo>(
       CountryIsoInfoImpl.new,
     )
-    ..registerSingleton(certificateHelper)
     ..registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(
         getIt(),

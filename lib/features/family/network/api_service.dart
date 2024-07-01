@@ -1,23 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:givt_app/app/injection/injection.dart' as main_get_it;
 import 'package:givt_app/core/failures/failures.dart';
-import 'package:givt_app/core/network/certificate_helper.dart';
-import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:http/http.dart';
-import 'package:http_interceptor/http/intercepted_client.dart';
 
 class FamilyAPIService {
+  FamilyAPIService(this._requestHelper);
 
-  FamilyAPIService(this._certificateHelper);
+  final RequestHelper _requestHelper;
 
-  final CertificateHelper _certificateHelper;
+  Client get client => _requestHelper.client;
 
-  Client get client => _certificateHelper.client;
-
-  String get _apiURL => main_get_it.getIt<APIService>().apiURL;
+  String get _apiURL => _requestHelper.apiURL;
 
   Future<List<dynamic>> fetchAllProfiles() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/profiles');
