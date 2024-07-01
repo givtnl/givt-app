@@ -18,13 +18,9 @@ class CertificateHelper {
   CertificateHelper();
 
   late SecureHttpClient _secureEuClient;
-  late SecureHttpClient _secureEuAwsClient;
   late SecureHttpClient _secureUsClient;
-  late SecureHttpClient _secureUsAwsClient;
   late Client euClient;
-  late Client euAwsClient;
   late Client usClient;
-  late Client usAwsClient;
 
   late String euBaseUrl;
   late String usBaseUrl;
@@ -33,9 +29,6 @@ class CertificateHelper {
   late String country;
 
   Client get client => country == Country.us.countryCode ? usClient : euClient;
-
-  Client get awsClient =>
-      country == Country.us.countryCode ? usAwsClient : euAwsClient;
 
   Future<void> init() async {
     euBaseUrl = const String.fromEnvironment('API_URL_EU');
@@ -53,14 +46,10 @@ class CertificateHelper {
     final usFuture = _getAllowedFingerprints(usBaseUrl, usBaseUrlAWS);
     final allowedEUFingerprints = await euFuture;
     final allowedUSFingerprints = await usFuture;
-    _secureEuClient = _getSecureClient([allowedEUFingerprints.first]);
-    _secureUsClient = _getSecureClient([allowedUSFingerprints.first]);
-    _secureEuAwsClient = _getSecureClient([allowedEUFingerprints.last]);
-    _secureUsAwsClient = _getSecureClient([allowedUSFingerprints.last]);
+    _secureEuClient = _getSecureClient(allowedEUFingerprints);
+    _secureUsClient = _getSecureClient(allowedUSFingerprints);
     euClient = createClient(_secureEuClient);
     usClient = createClient(_secureUsClient);
-    euAwsClient = createClient(_secureEuAwsClient);
-    usAwsClient = createClient(_secureUsAwsClient);
   }
 
   Future<void> _checkForAndroidTrustedCertificate() async {
