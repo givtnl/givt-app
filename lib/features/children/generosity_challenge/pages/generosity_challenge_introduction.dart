@@ -154,7 +154,7 @@ class _GenerosityChallengeIntruductionState
             GivtElevatedButton(
               isDisabled: !_acceptPolicy,
               onTap: () {
-                GenerosityChallengeHelper.activate();
+                GenerosityChallengeHelper.activate(isDebug: isDebug);
                 context.pop();
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.acceptedGenerosityChallenge,

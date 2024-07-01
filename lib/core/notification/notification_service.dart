@@ -14,7 +14,6 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:timezone/timezone.dart' as tz;
 
 /// Navigate to the screen based on the notification payload
@@ -59,6 +58,12 @@ mixin INotificationService {
   Future<void> scheduleMonthlySummaryNotification({
     required String body,
     required String title,
+  });
+
+  Future<void> scheduleGenerosityNotification({
+    required String body,
+    required String title,
+    required tz.TZDateTime scheduleDate,
   });
 
   Future<void> scheduleYearlySummaryNotification({
@@ -173,11 +178,6 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> _handleNotification(Map<String, dynamic> customData) async {
-    //do not handle notification while generosity challenge is active
-    if (GenerosityChallengeHelper.isActivated) {
-      return;
-    }
-
     await LoggingInfo.instance.info('Handling push notification');
     if (customData['Type'] == null && customData['body'] != null) {
       await _showNotification(
@@ -233,6 +233,14 @@ class NotificationService implements INotificationService {
           title: customData['title'] as String,
           payload: {'Type': 'ShowYearlySummary'},
         );
+      case 'GenerosityChallenge':
+        await LoggingInfo.instance.info('GenerosityChallenge received');
+        print('tz are we getting here?');
+        await _showNotification(
+          message: customData['body'] as String,
+          title: customData['title'] as String,
+          payload: {'Type': 'GenerosityChallenge'},
+        );
       // case 'DonationApproval':
       //   await LoggingInfo.instance.info('DonationApproval received');
       //   await _showNotification(
@@ -258,11 +266,6 @@ class NotificationService implements INotificationService {
     Map<String, dynamic> payload = const {},
     String? title,
   }) async {
-    //do not show notification while generosity challenge is active
-    if (GenerosityChallengeHelper.isActivated) {
-      return;
-    }
-
     /// Notification id
     final id = Random().nextInt(9999 - 1000) + 1000;
     await flutterLocalNotificationsPlugin.show(
@@ -281,8 +284,13 @@ class NotificationService implements INotificationService {
     required tz.TZDateTime scheduledDate,
     int? id,
   }) async {
-    //do not schedule notification while generosity challenge is active
-    if (GenerosityChallengeHelper.isActivated) {
+    bool isSummaryNotification() =>
+        payload != null &&
+        (payload.containsValue('ShowMonthlySummary') ||
+            payload.containsValue('ShowYearlySummary'));
+
+    // //do not schedule summary notifications while generosity challenge is active
+    if (GenerosityChallengeHelper.isActivated && isSummaryNotification()) {
       return;
     }
 
@@ -317,6 +325,20 @@ class NotificationService implements INotificationService {
     } catch (e) {
       await LoggingInfo.instance.error('Error scheduling notification: $e');
     }
+  }
+
+  @override
+  Future<void> scheduleGenerosityNotification({
+    required String body,
+    required String title,
+    required tz.TZDateTime scheduleDate,
+  }) async {
+    await _scheduleNotifications(
+      body: body,
+      title: title,
+      payload: {'Type': 'GenerosityChallenge'},
+      scheduledDate: scheduleDate,
+    );
   }
 
   @override
