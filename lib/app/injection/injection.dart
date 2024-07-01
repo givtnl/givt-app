@@ -40,6 +40,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 Future<void> init() async {
+  await _initRequestHelper();
   await _initCoreDependencies();
   await initAPIService();
 
@@ -49,6 +50,14 @@ Future<void> init() async {
 
 Future<void> initAPIService() async {
   getIt.allowReassignment = true;
+  getIt.registerLazySingleton<APIService>(
+    () => APIService(
+      getIt<RequestHelper>(),
+    ),
+  );
+}
+
+Future<RequestHelper> _initRequestHelper() async {
   var baseUrl = const String.fromEnvironment('API_URL_EU');
   var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   final country = await _checkCountry();
@@ -57,14 +66,10 @@ Future<void> initAPIService() async {
     baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
-  final certificateHelper =
-  RequestHelper(apiURL: baseUrl, apiURLAWS: baseUrlAWS);
-  await certificateHelper.init();
-  getIt.registerLazySingleton<APIService>(
-    () => APIService(
-      getIt(),
-    ),
-  );
+  final requestHelper = RequestHelper(apiURL: baseUrl, apiURLAWS: baseUrlAWS);
+  await requestHelper.init();
+  getIt.registerSingleton<RequestHelper>(requestHelper);
+  return requestHelper;
 }
 
 /// Check if there is a user extension set in the shared preferences.

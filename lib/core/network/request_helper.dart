@@ -173,7 +173,6 @@ class RequestHelper {
   }
 
   SecureHttpClient _getSecureClient(List<String> allowedSHAFingerprints) {
-    final secureClient = SecureHttpClient.build(allowedSHAFingerprints);
-    return secureClient;
+    return SecureHttpClient.build(allowedSHAFingerprints);
   }
 }
