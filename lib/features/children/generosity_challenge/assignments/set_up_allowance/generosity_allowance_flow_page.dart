@@ -10,7 +10,9 @@ import 'package:givt_app/features/children/overview/pages/models/edit_allowance_
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 
 class GenerosityAllowanceFlowPage extends StatelessWidget {
-  const GenerosityAllowanceFlowPage({super.key,});
+  const GenerosityAllowanceFlowPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,6 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
       EditAllowancePage(
         extraHeader: _allowancesHeader(context),
         currency: r'$',
-        initialAllowance: 15,
         isMultipleChildren: nrOfChildren > 1,
       ).toRoute(context),
     );
