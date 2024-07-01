@@ -51,7 +51,6 @@ Future<void> init() async {
 
 Future<void> initAPIService() async {
   getIt.allowReassignment = true;
-  getIt.registerSingleton(CertificateHelper());
   var baseUrl = const String.fromEnvironment('API_URL_EU');
   var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   final country = await _checkCountry();
@@ -88,6 +87,8 @@ Future<String> _checkCountry() async {
 }
 
 Future<void> _initCoreDependencies() async {
+  final certificateHelper = CertificateHelper();
+  await certificateHelper.init();
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt
     ..registerLazySingleton(InternetConnection.new)
@@ -96,6 +97,7 @@ Future<void> _initCoreDependencies() async {
     ..registerLazySingleton<CountryIsoInfo>(
       CountryIsoInfoImpl.new,
     )
+    ..registerSingleton(certificateHelper)
     ..registerLazySingleton<NetworkInfo>(
       () => NetworkInfoImpl(
         getIt(),
