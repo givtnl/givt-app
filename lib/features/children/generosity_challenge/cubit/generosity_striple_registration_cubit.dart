@@ -16,16 +16,6 @@ class GenerosityStripeRegistrationCubit
 
   Future<StripeResponse> setupStripeRegistration() async {
     try {
-      await _authRepository.updateFingerprintCertificate();
-    } catch (e, s) {
-      unawaited(
-        LoggingInfo.instance.info(
-          e.toString(),
-          methodName: s.toString(),
-        ),
-      );
-    }
-    try {
       await _authRepository.refreshToken(refreshUserExt: true);
     } catch (e, s) {
       unawaited(

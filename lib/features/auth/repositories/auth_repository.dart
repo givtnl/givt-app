@@ -81,8 +81,6 @@ mixin AuthRepository {
     required String notificationId,
   });
 
-  Future<void> updateFingerprintCertificate();
-
   Stream<bool> hasSessionStream();
 }
 
@@ -507,42 +505,12 @@ class AuthRepositoyImpl with AuthRepository {
   }
 
   @override
-  Future<void> updateFingerprintCertificate() async {
-    try {
-      final response = await _apiService.updateFingerprintCertificate();
-
-      final publicKey =
-          await rootBundle.loadString('assets/ca/certificatekey.txt');
-      final jwtVerified = JWT.verify(response.token, RSAPublicKey(publicKey));
-
-      await _prefs.setString(
-        response.apiURL,
-        jwtVerified.payload[response.apiURL].toString(),
-      );
-      await _prefs.setString(
-        response.apiURLAWS,
-        jwtVerified.payload[response.apiURLAWS].toString(),
-      );
-    } on Exception catch (e) {
-      throw CertificatesException(message: e.toString());
-    }
-  }
-
-  @override
   Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
     required String firstname,
     required String lastname,
     required String email,
     required String password,
   }) async {
-    try {
-      await updateFingerprintCertificate();
-    } catch (e, s) {
-      await LoggingInfo.instance.error(
-        e.toString(),
-        methodName: s.toString(),
-      );
-    }
     Map<String, dynamic>? response;
     try {
       response = await _apiService.registerGenerosityChallengeUser(

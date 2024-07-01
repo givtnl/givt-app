@@ -3,20 +3,19 @@ import 'dart:developer';
 
 import 'package:givt_app/app/injection/injection.dart' as main_get_it;
 import 'package:givt_app/core/failures/failures.dart';
+import 'package:givt_app/core/network/certificate_helper.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:http/http.dart';
 import 'package:http_interceptor/http/intercepted_client.dart';
 
 class FamilyAPIService {
-  Client client = InterceptedClient.build(
-    requestTimeout: const Duration(seconds: 30),
-    interceptors: [
-      CertificateCheckInterceptor(),
-      TokenInterceptor(),
-    ],
-    retryPolicy: ExpiredTokenRetryPolicy(),
-  );
+
+  FamilyAPIService(this._certificateHelper);
+
+  final CertificateHelper _certificateHelper;
+
+  Client get client => _certificateHelper.client;
 
   String get _apiURL => main_get_it.getIt<APIService>().apiURL;
 
