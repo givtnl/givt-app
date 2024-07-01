@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/core/network/certificate_helper.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,6 +43,7 @@ class GenerosityChallengeHelper {
     const baseUrlAWS = String.fromEnvironment('API_URL_AWS_US');
 
     getIt<APIService>().updateApiUrl(baseUrl, baseUrlAWS);
+    getIt<CertificateHelper>().country = Country.us.countryCode;
 
     unawaited(
       getIt<SharedPreferences>().setString(
