@@ -1,14 +1,24 @@
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 mixin NetworkInfo {
-  Future<bool> get isConnected;
+  bool get isConnected;
 }
 
 class NetworkInfoImpl implements NetworkInfo {
-  NetworkInfoImpl(this.connectionChecker);
+  NetworkInfoImpl(this.connectionChecker) {
+    // First check if there is an internet connection
+    connectionChecker.hasInternetAccess.then((value) {
+      isConnected = value;
+    });
 
-  final InternetConnection connectionChecker;
+    // Listen for changes in the internet connection status
+    connectionChecker.onStatusChange.listen((status) {
+      isConnected = status == InternetStatus.connected;
+    });
+  }
 
   @override
-  Future<bool> get isConnected => connectionChecker.hasInternetAccess;
+  bool isConnected = true;
+
+  final InternetConnection connectionChecker;
 }
