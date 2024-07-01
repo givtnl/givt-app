@@ -12,9 +12,10 @@ class CertificateCheckInterceptor extends InterceptorContract {
   @override
   Future<BaseRequest> interceptRequest({required BaseRequest request}) async {
     /// Don't check for certificate if there is no internet connection
-    if (await getIt<NetworkInfo>().isConnected == false) {
+    if (getIt<NetworkInfo>().isConnected == false) {
       return request;
     }
+
     final apiURL = request.url.host;
     // do not check certificate for the certs endpoint
     if (apiURL.contains('certs')) {
@@ -30,7 +31,6 @@ class CertificateCheckInterceptor extends InterceptorContract {
       allowedSHAFingerprints: [storedSHAFigerprint],
       timeout: 50,
     );
-
     if (!secure.contains('CONNECTION_SECURE')) {
       await LoggingInfo.instance.error(
         request.url.toString(),
