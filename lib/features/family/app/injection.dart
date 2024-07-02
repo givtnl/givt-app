@@ -1,10 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
@@ -16,12 +11,11 @@ import 'package:givt_app/features/family/features/recommendation/organisations/r
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
-import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> init() async {
+  getIt.allowReassignment = true;
   await initAPIService();
 
   /// Init repositories
@@ -29,46 +23,12 @@ Future<void> init() async {
 }
 
 Future<void> initAPIService() async {
-  getIt.allowReassignment = true;
-  var baseUrl = const String.fromEnvironment('API_URL_EU');
-  final country = await _checkCountry();
-  if (country == Country.us.countryCode) {
-    baseUrl = const String.fromEnvironment('API_URL_US');
-  }
-  log('Using API URL: $baseUrl');
-  if (Platform.isAndroid) {
-    final data = await PlatformAssetBundle().load('assets/ca/isrgrootx1.pem');
-    SecurityContext.defaultContext.setTrustedCertificatesBytes(
-      data.buffer.asUint8List(),
-    );
-  }
-
   getIt.registerLazySingleton<FamilyAPIService>(
-    FamilyAPIService.new,
+    () => FamilyAPIService(getIt<RequestHelper>()),
   );
 }
 
-/// Check if there is a user extension set in the shared preferences.
-/// If there is, return the country of the user extension.
-/// If there is not, return a default country (NL).
-Future<String> _checkCountry() async {
-  final prefs = await SharedPreferences.getInstance();
-
-  if (prefs.containsKey(UserExt.tag)) {
-    final userExtString = prefs.getString(UserExt.tag);
-    if (userExtString != null) {
-      final user =
-          UserExt.fromJson(jsonDecode(userExtString) as Map<String, dynamic>);
-      return user.country;
-    }
-  }
-
-  return Country.nl.countryCode;
-}
-
 void initRepositories() {
-  getIt.allowReassignment = true;
-
   getIt
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(

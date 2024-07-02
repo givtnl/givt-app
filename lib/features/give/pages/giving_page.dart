@@ -8,6 +8,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
@@ -102,7 +103,7 @@ class _GivingPageState extends State<GivingPage> {
     }
     return WebViewInput(
       currency: format.currencySymbol,
-      apiUrl: Uri.https(getIt<APIService>().apiURL).toString(),
+      apiUrl: Uri.https(getIt<RequestHelper>().apiURL).toString(),
       guid: user.guid,
       organisation: orgName,
       givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
@@ -139,7 +140,7 @@ class _GivingPageState extends State<GivingPage> {
           _customInAppBrowser.openUrlRequest(
             urlRequest: URLRequest(
               url: Uri.https(
-                getIt<APIService>().apiURL,
+                getIt<RequestHelper>().apiURL,
                 'confirm.html',
                 {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
               ),

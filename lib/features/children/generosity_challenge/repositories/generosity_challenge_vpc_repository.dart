@@ -25,16 +25,6 @@ class GenerosityChallengeVpcRepository {
   final GenerosityChallengeRepository _generosityChallengeRepository;
 
   Future<void> addMembers(List<Member> list) async {
-    try {
-      await _authRepository.updateFingerprintCertificate();
-    } catch (e, s) {
-      unawaited(
-        LoggingInfo.instance.info(
-          e.toString(),
-          methodName: s.toString(),
-        ),
-      );
-    }
     Session? session;
     try {
       session = await _authRepository.refreshToken(refreshUserExt: true);
