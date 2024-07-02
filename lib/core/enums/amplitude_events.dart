@@ -90,6 +90,9 @@ enum AmplitudeEvents {
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
 
+  openedGenerosityChallengeNotification(
+    'opened_generosity_challenge_notification',
+  ),
   generosityChallengeDayClicked('generosity_challenge_day_clicked'),
   generosityChallengeDayCompleted('generosity_challenge_day_completed'),
   generosityChallengeDayUndoCompleting(

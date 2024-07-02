@@ -9,10 +9,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -45,6 +47,16 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
     case 'ShowYearlySummary':
       await LoggingInfo.instance.info('Navigating to yearly summary screen');
       AppRouter.router.goNamed(Pages.personalSummary.name);
+    case 'GenerosityChallenge':
+      await LoggingInfo.instance
+          .info('Navigating to generosity challenge screen');
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.openedGenerosityChallengeNotification,
+        eventProperties: {
+          'notification id': details.id,
+        },
+      );
+      AppRouter.router.goNamed(FamilyPages.generosityChallenge.name);
   }
 }
 
