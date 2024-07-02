@@ -34,12 +34,12 @@ class GenerosityChallengeHelper {
       getIt<SharedPreferences>()
           .setBool(_generosityChallengeActivatedKey, true),
     );
-    _setupNotificationChain(isDebug);
+    _setupNotificationChain(isDebug: isDebug);
   }
 
   static final notificationBodies = <String>[
-    '“Hi [name] family! I have a new assignment for you.”',
-    "Let's continue making a difference in [city]. Your assignment is waiting for you.",
+    'Hi [name] family! I have a new assignment for you.',
+    "Let's continue making a difference in your city. Your assignment is waiting for you.",
     'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
     "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
   ];
@@ -51,13 +51,20 @@ class GenerosityChallengeHelper {
     }
   }
 
-  static void _setupNotificationChain(bool isDebug) {
+  static void _setupNotificationChain({
+    bool isDebug = false,
+    String? name,
+  }) {
     final now = tz.TZDateTime.now(
       tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'),
     );
 
     final regularDays = <int>[1, 2, 4, 7];
     final debugMinutes = <int>[2, 4, 6, 8];
+
+    notificationBodies
+        .elementAt(0)
+        .replaceAll('[name] ', name != null ? '$name ' : '');
 
     // ignore: avoid_positional_boolean_parameters
     List<tz.TZDateTime> generateSchedule(List<int> intervals, bool isDebug) {
@@ -98,9 +105,12 @@ class GenerosityChallengeHelper {
   }
 
   // ignore: avoid_positional_boolean_parameters
-  static void rescheduleNotificationChain(bool isDebug) {
+  static void rescheduleNotificationChain({
+    bool isDebug = false,
+    String? name,
+  }) {
     cancelNotifications();
-    _setupNotificationChain(isDebug);
+    _setupNotificationChain(isDebug: isDebug, name: name);
   }
 
   static Future<void> complete() async {

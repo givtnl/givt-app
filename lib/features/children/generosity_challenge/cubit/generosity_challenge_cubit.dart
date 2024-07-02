@@ -123,8 +123,13 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         showMayor: true,
       ),
     );
+    final userData = loadUserData();
+    final name = userData.isNotEmpty ? userData['lastName'].toString() : null;
 
-    GenerosityChallengeHelper.rescheduleNotificationChain(isDebug);
+    GenerosityChallengeHelper.rescheduleNotificationChain(
+      isDebug: isDebug,
+      name: name,
+    );
 
     state.days[state.activeDayIndex] = state.days[state.activeDayIndex]
         .copyWith(dateCompleted: DateTime.now().toIso8601String());
