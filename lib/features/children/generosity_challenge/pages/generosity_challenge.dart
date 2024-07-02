@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -40,8 +42,8 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
       final info = await PackageInfo.fromPlatform();
       return info.packageName.contains('test');
     } catch (e) {
-      await LoggingInfo.instance
-          .info('Cannot determine package name on generosity page');
+      unawaited(LoggingInfo.instance
+          .info('Cannot determine package name on generosity page'));
       return false;
     }
   }

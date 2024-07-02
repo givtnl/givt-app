@@ -21,28 +21,13 @@ class GenerosityChallengeHelper {
 
   static const int generosityChallengeDays = 8;
 
-  static bool get isActivated =>
-      getIt<SharedPreferences>().getBool(_generosityChallengeActivatedKey) ??
-      false;
-
-  static bool get isCompleted =>
-      getIt<SharedPreferences>().getBool(_generosityChallengeCompletedKey) ??
-      false;
-
-  static Future<void> activate({required bool isDebug}) async {
-    unawaited(
-      getIt<SharedPreferences>()
-          .setBool(_generosityChallengeActivatedKey, true),
-    );
-    _setupNotificationChain(isDebug: isDebug);
-  }
-
   static final notificationBodies = <String>[
     'Hi [name] family! I have a new assignment for you.',
     "Let's continue making a difference in your city. Your assignment is waiting for you.",
     'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
     "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
   ];
+
   static List<tz.TZDateTime> generateSchedule(
     List<int> intervals,
     bool isDebug,
@@ -71,11 +56,20 @@ class GenerosityChallengeHelper {
     }).toList();
   }
 
-  static Future<void> cancelNotifications() async {
-    final notificationService = getIt<NotificationService>();
-    for (var i = 7000; i < 7000 + notificationBodies.length; i++) {
-      unawaited(notificationService.cancelNotification(i));
-    }
+  static bool get isActivated =>
+      getIt<SharedPreferences>().getBool(_generosityChallengeActivatedKey) ??
+      false;
+
+  static bool get isCompleted =>
+      getIt<SharedPreferences>().getBool(_generosityChallengeCompletedKey) ??
+      false;
+
+  static Future<void> activate({required bool isDebug}) async {
+    unawaited(
+      getIt<SharedPreferences>()
+          .setBool(_generosityChallengeActivatedKey, true),
+    );
+    _setupNotificationChain(isDebug: isDebug);
   }
 
   static void _setupNotificationChain({
@@ -106,6 +100,13 @@ class GenerosityChallengeHelper {
           scheduleDate: item,
         ),
       );
+    }
+  }
+
+  static Future<void> cancelNotifications() async {
+    final notificationService = getIt<NotificationService>();
+    for (var i = 7000; i < 7000 + notificationBodies.length; i++) {
+      unawaited(notificationService.cancelNotification(i));
     }
   }
 
