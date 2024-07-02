@@ -129,6 +129,9 @@ enum AmplitudeEvents {
   newUserClosedStripeSheetIncomplete(
     'new_user_closed_stripe_sheet_imcomplete',
   ),
+  clickedSetUpFamilyFromRegistrationSuccess(
+    'clicked_set_up_family_from_registration_success',
+  ),
 
   // Family
 
