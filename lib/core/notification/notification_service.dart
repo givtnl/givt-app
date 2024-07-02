@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -30,8 +31,8 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
   final type = decodedPayload['Type'];
   switch (type) {
     case 'RecurringDonation':
-      await LoggingInfo.instance
-          .info('Navigating to recurring donation screen');
+      unawaited(
+          LoggingInfo.instance.info('Navigating to recurring donation screen'));
       AppRouter.router.goNamed(
         Pages.recurringDonations.name,
         queryParameters: {
@@ -40,16 +41,19 @@ Future<void> _navigateToScreen(NotificationResponse details) async {
         },
       );
     case 'ShowFeatureUpdate':
-      await LoggingInfo.instance.info('Navigating to feature update screen');
+      unawaited(
+          LoggingInfo.instance.info('Navigating to feature update screen'));
     case 'ShowMonthlySummary':
-      await LoggingInfo.instance.info('Navigating to monthly summary screen');
+      unawaited(
+          LoggingInfo.instance.info('Navigating to monthly summary screen'));
       AppRouter.router.goNamed(Pages.personalSummary.name);
     case 'ShowYearlySummary':
-      await LoggingInfo.instance.info('Navigating to yearly summary screen');
+      unawaited(
+          LoggingInfo.instance.info('Navigating to yearly summary screen'));
       AppRouter.router.goNamed(Pages.personalSummary.name);
     case 'GenerosityChallenge':
-      await LoggingInfo.instance
-          .info('Navigating to generosity challenge screen');
+      unawaited(LoggingInfo.instance
+          .info('Navigating to generosity challenge screen'));
       await AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.openedGenerosityChallengeNotification,
         eventProperties: {
@@ -130,12 +134,13 @@ class NotificationService implements INotificationService {
   }
 
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
-    await LoggingInfo.instance.info('Firebase notification received');
+    unawaited(LoggingInfo.instance.info('Firebase notification received'));
     print("Firebase notification received");
 
     switch (message.data['Type']) {
       case 'DonationApproval':
-        await LoggingInfo.instance.info('Navigating to family overview screen');
+        unawaited(
+            LoggingInfo.instance.info('Navigating to family overview screen'));
         AppRouter.router.goNamed(FamilyPages.childrenOverview.name);
     }
   }
@@ -186,12 +191,12 @@ class NotificationService implements INotificationService {
 
   @override
   Future<void> silentNotification(Map<String, dynamic> customData) async {
-    await LoggingInfo.instance.info('Received push notification');
+    unawaited(LoggingInfo.instance.info('Received push notification'));
     await _handleNotification(customData);
   }
 
   Future<void> _handleNotification(Map<String, dynamic> customData) async {
-    await LoggingInfo.instance.info('Handling push notification');
+    unawaited(LoggingInfo.instance.info('Handling push notification'));
     if (customData['Type'] == null && customData['body'] != null) {
       await _showNotification(
         message: customData['body'] as String,
@@ -202,20 +207,20 @@ class NotificationService implements INotificationService {
 
     switch (customData['Type']) {
       case 'CelebrationActivated':
-        await LoggingInfo.instance
-            .info('CelebrationActivated Push received, starting process');
+        unawaited(LoggingInfo.instance
+            .info('CelebrationActivated Push received, starting process'));
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
         );
       case 'ProcessCachedGivts':
-        await LoggingInfo.instance
-            .info('ProcessCachedGivts Push received, starting process');
+        unawaited(LoggingInfo.instance
+            .info('ProcessCachedGivts Push received, starting process'));
         await getIt<GivtRepository>().syncOfflineGivts();
       case 'RecurringDonationAboutToExpire':
       case 'RecurringDonationTurnCreated':
-        await LoggingInfo.instance
-            .info('Recurring Donation Turn Created Push received');
+        unawaited(LoggingInfo.instance
+            .info('Recurring Donation Turn Created Push received'));
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
@@ -226,47 +231,33 @@ class NotificationService implements INotificationService {
           },
         );
       case 'ShowFeatureUpdate':
-        await LoggingInfo.instance.info('ShowFeatureUpdate received');
+        unawaited(LoggingInfo.instance.info('ShowFeatureUpdate received'));
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
           payload: {'Type': 'ShowFeatureUpdate'},
         );
       case 'ShowMonthlySummary':
-        await LoggingInfo.instance.info('ShowMonthlySummary received');
+        unawaited(LoggingInfo.instance.info('ShowMonthlySummary received'));
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
           payload: {'Type': 'ShowMonthlySummary'},
         );
       case 'ShowYearlySummary':
-        await LoggingInfo.instance.info('ShowYearlySummary received');
+        unawaited(LoggingInfo.instance.info('ShowYearlySummary received'));
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
           payload: {'Type': 'ShowYearlySummary'},
         );
       case 'GenerosityChallenge':
-        await LoggingInfo.instance.info('GenerosityChallenge received');
+        unawaited(LoggingInfo.instance.info('GenerosityChallenge received'));
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,
           payload: {'Type': 'GenerosityChallenge'},
         );
-      // case 'DonationApproval':
-      //   await LoggingInfo.instance.info('DonationApproval received');
-      //   await _showNotification(
-      //     message: customData['body'] as String,
-      //     title: customData['title'] as String,
-      //     payload: {'Type': 'DonationApproval'},
-      //   );
-
-      // default:
-      //   if (customData['body'] != null) {
-      //     await _showNotification(
-      //       message: customData['body'] as String,
-      //     );
-      //   }
     }
   }
 
@@ -318,7 +309,8 @@ class NotificationService implements INotificationService {
         // So we will not schedule notifications for Android 7 and below
         if (androidInfo.version.sdkInt <= 25) return;
       } catch (e) {
-        await LoggingInfo.instance.error('Error getting Android version: $e');
+        unawaited(
+            LoggingInfo.instance.error('Error getting Android version: $e'));
         return;
       }
     }
@@ -336,7 +328,8 @@ class NotificationService implements INotificationService {
         payload: jsonEncode(payload),
       );
     } catch (e) {
-      await LoggingInfo.instance.error('Error scheduling notification: $e');
+      unawaited(
+          LoggingInfo.instance.error('Error scheduling notification: $e'));
     }
   }
 
@@ -345,7 +338,8 @@ class NotificationService implements INotificationService {
       await flutterLocalNotificationsPlugin.cancel(id);
       return true;
     } catch (e) {
-      await LoggingInfo.instance.error('Error cancelling notification: $e');
+      unawaited(
+          LoggingInfo.instance.error('Error cancelling notification: $e'));
       return false;
     }
   }
@@ -377,8 +371,8 @@ class NotificationService implements INotificationService {
       proposedScheduleDate: scheduledDate,
       prefKey: monthlySummaryNotificationKey,
     )) {
-      await LoggingInfo.instance
-          .info('Monthly summary notification already scheduled');
+      unawaited(LoggingInfo.instance
+          .info('Monthly summary notification already scheduled'));
       return;
     }
 
@@ -402,8 +396,8 @@ class NotificationService implements INotificationService {
       proposedScheduleDate: scheduledDate,
       prefKey: yearlySummaryNotificationKey,
     )) {
-      await LoggingInfo.instance
-          .info('Yearly summary notification already scheduled');
+      unawaited(LoggingInfo.instance
+          .info('Yearly summary notification already scheduled'));
       return;
     }
 
