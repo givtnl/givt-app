@@ -115,6 +115,20 @@ enum AmplitudeEvents {
   generosityChallengeRegistrationSucceeded(
     'generosity_challenge_registration_succeeded',
   ),
+  // Registration flow
+  newUserContinuedOnEmailSignUpPage(
+    'new_user_continued_on_email_sign_up_page',
+  ),
+  tempUserContinuedOnEmailSignUpPage(
+    'temp_user_continued_on_email_sign_up_page',
+  ),
+  newUserFilledInPersonalInfo('new_user_filled_in_personal_info'),
+  newUserFilledStripeDetailsSuccessfully(
+    'new_user_filled_stripe_details_successfully',
+  ),
+  newUserClosedStripeSheetIncomplete(
+    'new_user_closed_stripe_sheet_imcomplete',
+  ),
 
   // Family
 
