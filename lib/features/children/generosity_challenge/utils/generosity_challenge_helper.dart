@@ -37,115 +37,84 @@ class GenerosityChallengeHelper {
     _setupNotificationChain(isDebug);
   }
 
+  static final notificationBodies = <String>[
+    '“Hi [name] family! I have a new assignment for you.”',
+    "Let's continue making a difference in [city]. Your assignment is waiting for you.",
+    'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
+    "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
+  ];
+
+  static Future<void> cancelNotifications() async {
+    final notificationService = getIt<NotificationService>();
+    for (var i = 7000; i < 7000 + notificationBodies.length; i++) {
+      unawaited(notificationService.cancelNotification(i));
+    }
+  }
+
   static void _setupNotificationChain(bool isDebug) {
     final now = tz.TZDateTime.now(
-        tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'));
-    final scheduledDay1 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day + 1,
-      16,
-    );
-    final scheduledDay2 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day + 2,
-      16,
-    );
-    final scheduledDay4 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day + 4,
-      16,
-    );
-    final scheduledDay7 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day + 7,
-      16,
+      tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'),
     );
 
-    final debugScheduledDay1 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute + 2,
-    );
+    final regularDays = <int>[1, 2, 4, 7];
+    final debugMinutes = <int>[2, 4, 6, 8];
 
-    final debugScheduledDay2 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute + 5,
-    );
+    // ignore: avoid_positional_boolean_parameters
+    List<tz.TZDateTime> generateSchedule(List<int> intervals, bool isDebug) {
+      return intervals.map((interval) {
+        return isDebug
+            ? tz.TZDateTime(
+                now.location,
+                now.year,
+                now.month,
+                now.day,
+                now.hour,
+                now.minute + interval,
+              )
+            : tz.TZDateTime(
+                now.location,
+                now.year,
+                now.month,
+                now.day + interval,
+                16,
+              );
+      }).toList();
+    }
 
-    final debugScheduledDay4 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute + 10,
-    );
+    final regularSchedule = generateSchedule(regularDays, false);
+    final debugSchedule = generateSchedule(debugMinutes, true);
 
-    final debugScheduledDay7 = tz.TZDateTime(
-      now.location,
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute + 15,
-    );
+    for (var i = 0; i < notificationBodies.length; i++) {
+      final item = isDebug ? debugSchedule[i] : regularSchedule[i];
+      unawaited(
+        getIt<NotificationService>().scheduleGenerosityNotification(
+          id: 7000 + i,
+          body: notificationBodies[i],
+          title: notificationTitle,
+          scheduleDate: item,
+        ),
+      );
+    }
+  }
 
-    unawaited(
-      getIt<NotificationService>().scheduleGenerosityNotification(
-        body: '“Hi [name] family! I have a new assignment for you.”',
-        title: notificationTitle,
-        scheduleDate: isDebug ? debugScheduledDay1 : scheduledDay1,
-      ),
-    );
-    unawaited(
-      getIt<NotificationService>().scheduleGenerosityNotification(
-        body:
-            "Let's continue making a difference in [city]. Your assignment is waiting for you.",
-        title: notificationTitle,
-        scheduleDate: isDebug ? debugScheduledDay2 : scheduledDay2,
-      ),
-    );
-    unawaited(
-      getIt<NotificationService>().scheduleGenerosityNotification(
-        body:
-            'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
-        title: notificationTitle,
-        scheduleDate: isDebug ? debugScheduledDay4 : scheduledDay4,
-      ),
-    );
-    unawaited(
-      getIt<NotificationService>().scheduleGenerosityNotification(
-        body:
-            "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
-        title: notificationTitle,
-        scheduleDate: isDebug ? debugScheduledDay7 : scheduledDay7,
-      ),
-    );
+  // ignore: avoid_positional_boolean_parameters
+  static void rescheduleNotificationChain(bool isDebug) {
+    cancelNotifications();
+    _setupNotificationChain(isDebug);
   }
 
   static Future<void> complete() async {
     final sp = getIt<SharedPreferences>();
     await sp.setBool(_generosityChallengeActivatedKey, false);
     await sp.setBool(_generosityChallengeCompletedKey, true);
+    unawaited(cancelNotifications());
   }
 
-  static Future<void> deactivate() async => getIt<SharedPreferences>()
-      .setBool(_generosityChallengeActivatedKey, false);
+  static Future<void> deactivate() async {
+    await getIt<SharedPreferences>()
+        .setBool(_generosityChallengeActivatedKey, false);
+    unawaited(cancelNotifications());
+  }
 
   static void updateUrlsAndCountry() {
     const baseUrl = String.fromEnvironment('API_URL_US');

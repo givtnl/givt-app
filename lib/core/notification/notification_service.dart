@@ -61,6 +61,7 @@ mixin INotificationService {
   });
 
   Future<void> scheduleGenerosityNotification({
+    required int id,
     required String body,
     required String title,
     required tz.TZDateTime scheduleDate,
@@ -327,13 +328,25 @@ class NotificationService implements INotificationService {
     }
   }
 
+  Future<bool> cancelNotification(int id) async {
+    try {
+      await flutterLocalNotificationsPlugin.cancel(id);
+      return true;
+    } catch (e) {
+      await LoggingInfo.instance.error('Error cancelling notification: $e');
+      return false;
+    }
+  }
+
   @override
   Future<void> scheduleGenerosityNotification({
+    required int id,
     required String body,
     required String title,
     required tz.TZDateTime scheduleDate,
   }) async {
     await _scheduleNotifications(
+      id: id,
       body: body,
       title: title,
       payload: {'Type': 'GenerosityChallenge'},

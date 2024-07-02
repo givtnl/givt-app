@@ -116,13 +116,15 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         ),
       );
 
-  Future<void> completeActiveDay() async {
+  Future<void> completeActiveDay(bool isDebug) async {
     emit(
       state.copyWith(
         status: GenerosityChallengeStatus.loading,
         showMayor: true,
       ),
     );
+
+    GenerosityChallengeHelper.rescheduleNotificationChain(isDebug);
 
     state.days[state.activeDayIndex] = state.days[state.activeDayIndex]
         .copyWith(dateCompleted: DateTime.now().toIso8601String());

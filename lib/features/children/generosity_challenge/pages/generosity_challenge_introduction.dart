@@ -139,8 +139,14 @@ class _GenerosityChallengeIntruductionState
                   });
                 },
                 children: const [
-                  Text('Enable quick flow'),
-                  Text('Disable quick flow'),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text('Enable quick flow'),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Text('Disable quick flow'),
+                  ),
                 ],
               ),
             AcceptPolicyRow(
