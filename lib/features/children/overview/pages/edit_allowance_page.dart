@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -43,6 +43,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
   Widget build(BuildContext context) {
     final child =
         widget.isMultipleChildren ? 'each of your children' : 'your child';
+    final theme = FamilyAppTheme().toThemeData();
     return Scaffold(
       appBar: AppBar(),
       body: Center(
@@ -68,26 +69,24 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                         Text(
                           textAlign: TextAlign.center,
                           context.l10n.createChildGivingAllowanceTitle,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: AppTheme.inputFieldBorderSelected,
-                                    fontFamily: 'Raleway',
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.2,
-                                  ),
+                          style: theme.textTheme.bodyMedium!.copyWith(
+                            color: AppTheme.inputFieldBorderSelected,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w800,
+                            height: 1.2,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Which amount should be added to\n'
                           "$child's wallet each month?",
                           textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    color: AppTheme.givtBlue,
-                                    fontFamily: 'Raleway',
-                                    fontWeight: FontWeight.w500,
-                                    height: 1.2,
-                                  ),
+                          style: theme.textTheme.labelSmall!.copyWith(
+                            color: AppTheme.givtBlue,
+                            fontFamily: 'Raleway',
+                            fontWeight: FontWeight.w500,
+                            height: 1.2,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         AllowanceCounter(
@@ -102,12 +101,11 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                           textAlign: TextAlign.center,
                           'Choose an amount between ${widget.currency}1 and '
                           '${widget.currency}999.',
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    color: AppTheme.givtBlue,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                          style: theme.textTheme.bodySmall!.copyWith(
+                            color: AppTheme.givtBlue,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     ),
@@ -142,12 +140,11 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                           ),
                           child: Text(
                             'Cancel Recurring Giving Allowance',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      color: AppTheme.error50,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: AppTheme.error50,
-                                    ),
+                            style: theme.textTheme.bodySmall!.copyWith(
+                              color: AppTheme.error50,
+                              decoration: TextDecoration.underline,
+                              decorationColor: AppTheme.error50,
+                            ),
                           ),
                         ),
                       ),
