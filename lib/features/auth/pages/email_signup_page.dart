@@ -11,7 +11,6 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/core/network/request_helper.dart';
-import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
