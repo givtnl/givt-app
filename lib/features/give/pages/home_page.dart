@@ -12,6 +12,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
@@ -149,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                 prefs.getKeys().forEach((element) {
                   prefsStrings += '$element: ${prefs.get(element)}\n';
                 });
-                final apiUrl = getIt<APIService>().apiURL;
+                final apiUrl = getIt<RequestHelper>().apiURL;
                 await showDialog<void>(
                   context: context,
                   builder: (_) => WarningDialog(
