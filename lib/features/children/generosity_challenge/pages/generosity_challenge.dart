@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_day_details.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_overview.dart';
@@ -35,8 +36,14 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
   }
 
   Future<bool> _isDebug() async {
-    final info = await PackageInfo.fromPlatform();
-    return info.packageName.contains('test');
+    try {
+      final info = await PackageInfo.fromPlatform();
+      return info.packageName.contains('test');
+    } catch (e) {
+      await LoggingInfo.instance
+          .info('Cannot determine package name on generosity page');
+      return false;
+    }
   }
 
   void _checkAndLaunchIntro() {

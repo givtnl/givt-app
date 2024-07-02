@@ -248,7 +248,6 @@ class NotificationService implements INotificationService {
         );
       case 'GenerosityChallenge':
         await LoggingInfo.instance.info('GenerosityChallenge received');
-        print('tz are we getting here?');
         await _showNotification(
           message: customData['body'] as String,
           title: customData['title'] as String,

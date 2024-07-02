@@ -43,6 +43,33 @@ class GenerosityChallengeHelper {
     'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
     "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
   ];
+  static List<tz.TZDateTime> generateSchedule(
+    List<int> intervals,
+    bool isDebug,
+  ) {
+    final now = tz.TZDateTime.now(
+      tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'),
+    );
+
+    return intervals.map((interval) {
+      return isDebug
+          ? tz.TZDateTime(
+              now.location,
+              now.year,
+              now.month,
+              now.day,
+              now.hour,
+              now.minute + interval,
+            )
+          : tz.TZDateTime(
+              now.location,
+              now.year,
+              now.month,
+              now.day + interval,
+              16,
+            );
+    }).toList();
+  }
 
   static Future<void> cancelNotifications() async {
     final notificationService = getIt<NotificationService>();
@@ -55,13 +82,6 @@ class GenerosityChallengeHelper {
     bool isDebug = false,
     String? name,
   }) {
-    final now = tz.TZDateTime.now(
-      tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'),
-    );
-
-    final regularDays = <int>[1, 2, 4, 7];
-    final debugMinutes = <int>[2, 4, 6, 8];
-
     final updatedNotificationBodies = notificationBodies.map((body) {
       return body.replaceAll('[name]', name ?? '');
     }).toList();
@@ -70,27 +90,8 @@ class GenerosityChallengeHelper {
       ..clear()
       ..addAll(updatedNotificationBodies);
 
-    // ignore: avoid_positional_boolean_parameters
-    List<tz.TZDateTime> generateSchedule(List<int> intervals, bool isDebug) {
-      return intervals.map((interval) {
-        return isDebug
-            ? tz.TZDateTime(
-                now.location,
-                now.year,
-                now.month,
-                now.day,
-                now.hour,
-                now.minute + interval,
-              )
-            : tz.TZDateTime(
-                now.location,
-                now.year,
-                now.month,
-                now.day + interval,
-                16,
-              );
-      }).toList();
-    }
+    final regularDays = <int>[1, 2, 4, 7];
+    final debugMinutes = <int>[2, 4, 6, 8];
 
     final regularSchedule = generateSchedule(regularDays, false);
     final debugSchedule = generateSchedule(debugMinutes, true);
