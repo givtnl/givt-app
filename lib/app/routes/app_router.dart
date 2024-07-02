@@ -73,7 +73,7 @@ class AppRouter {
       ),
       // TEMP FIX FOR EXTERNAL KIDS LINKS
       GoRoute(
-        path:'/search-for-coin',
+        path: '/search-for-coin',
         name: 'search-for-coin',
         redirect: _redirectFromExternalLink,
       ),

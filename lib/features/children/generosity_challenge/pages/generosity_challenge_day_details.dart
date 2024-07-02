@@ -14,7 +14,11 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeDayDetails extends StatelessWidget {
-  const GenerosityChallengeDayDetails({super.key,});
+  const GenerosityChallengeDayDetails({
+    required this.isDebug,
+    super.key,
+  });
+  final bool isDebug;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,6 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
 
     return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
-        // final assignment = context.read<DailyAssignmentCubit>();
         return Scaffold(
           appBar: GenerosityAppBar(
             title: 'Day ${challenge.state.detailedDayIndex + 1}',
@@ -104,7 +107,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                         'day': challenge.state.detailedDayIndex + 1,
                       },
                     );
-                    await challenge.completeActiveDay();
+                    await challenge.completeActiveDay(isDebug);
                   },
                   text: 'Complete',
                   isDisabled: day.isCompleted,
