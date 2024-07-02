@@ -62,9 +62,13 @@ class GenerosityChallengeHelper {
     final regularDays = <int>[1, 2, 4, 7];
     final debugMinutes = <int>[2, 4, 6, 8];
 
+    final updatedNotificationBodies = notificationBodies.map((body) {
+      return body.replaceAll('[name]', name ?? '');
+    }).toList();
+
     notificationBodies
-        .elementAt(0)
-        .replaceAll('[name] ', name != null ? '$name ' : '');
+      ..clear()
+      ..addAll(updatedNotificationBodies);
 
     // ignore: avoid_positional_boolean_parameters
     List<tz.TZDateTime> generateSchedule(List<int> intervals, bool isDebug) {
