@@ -126,13 +126,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
         );
-        final flow = context.read<FlowsCubit>().state;
         return Scaffold(
-          appBar: TopAppBar(
+          appBar: const TopAppBar(
             title: 'Who would like to give?',
-            actions: [
-              if (flow.isCoin) const CoinWidget(),
-            ],
           ),
           body: state is ProfilesLoadingState
               ? const CustomCircularProgressIndicator()

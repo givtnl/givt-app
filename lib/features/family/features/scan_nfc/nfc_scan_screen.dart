@@ -6,7 +6,9 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
+import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_found_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_not_available_sheet.dart';
@@ -116,14 +118,11 @@ class _NFCScanPageState extends State<NFCScanPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: GivtBackButton(
-              onPressedExt: () {
-                context.read<ScanNfcCubit>().cancelScanning();
-              },
-            ),
+          appBar: CharityFinderAppBar(
+            onPressedExt: () {
+              context.read<FlowsCubit>().resetFlow();
+              context.read<ScanNfcCubit>().cancelScanning();
+            },
           ),
           body: SafeArea(
             child: Center(
