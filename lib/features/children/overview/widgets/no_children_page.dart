@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';

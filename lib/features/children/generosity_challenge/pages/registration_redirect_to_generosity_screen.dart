@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class RegistrationRedirectToGenerosityScreen extends StatefulWidget {
@@ -61,13 +63,23 @@ class _RegistrationRedirectToGenerosityScreenState
   Widget _buildButtons(BuildContext context) => Column(
         children: [
           GivtElevatedButton(
-            onTap: () => context.goNamed(FamilyPages.generosityChallenge.name),
+            onTap: () {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.goToChallengeFromRegistrationClicked,
+              );
+              context.goNamed(FamilyPages.generosityChallenge.name);
+            },
             leftIcon: FontAwesomeIcons.trophy,
             text: 'Go to Challenge',
           ),
           const SizedBox(height: 8),
           GivtElevatedSecondaryButton(
-            onTap: () => context.pop(),
+            onTap: () {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.registerWithoutChallengeClicked,
+              );
+              context.pop();
+            },
             text: 'Register without Challenge',
           ),
           const SizedBox(height: 8),
