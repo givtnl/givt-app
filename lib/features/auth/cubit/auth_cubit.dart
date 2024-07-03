@@ -222,6 +222,14 @@ class AuthCubit extends Cubit<AuthState> {
       // When this is a temp user, we skip the login page
       if (result.contains('temp')) {
         await login(email: email, password: TempUser.defaultPassword);
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
+            eventProperties: {
+              'country': country.countryCode,
+            },
+          ),
+        );
         return;
       }
 
@@ -244,7 +252,15 @@ class AuthCubit extends Cubit<AuthState> {
         tempUser: tempUser,
         isTempUser: true,
       );
-
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
+          eventProperties: {
+            'id': unRegisteredUserExt.guid,
+            'country': country.countryCode,
+          },
+        ),
+      );
       final newNotificationId = await _updateNotificationId(
         guid: unRegisteredUserExt.guid,
         currentNotificationId: unRegisteredUserExt.notificationId,

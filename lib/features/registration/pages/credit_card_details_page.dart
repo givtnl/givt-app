@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -8,6 +12,7 @@ import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,7 +59,21 @@ class CreditCardDetailsPage extends StatelessWidget {
               onRegistrationFailed!.call();
             } else {
               context.pop();
-              context.read<ProfilesCubit>().fetchAllProfiles(checkRegistrationAndSetup: true);
+              final user = context.read<AuthCubit>().state.user;
+
+              unawaited(
+                AnalyticsHelper.logEvent(
+                  eventName:
+                      AmplitudeEvents.registrationStripeSheetIncompleteClosed,
+                  eventProperties: {
+                    'id': user.guid,
+                    'country': user.country,
+                  },
+                ),
+              );
+              context
+                  .read<ProfilesCubit>()
+                  .fetchAllProfiles(checkRegistrationAndSetup: true);
             }
 
             /* Logged as info as stripe is giving exception
@@ -74,6 +93,17 @@ class CreditCardDetailsPage extends StatelessWidget {
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
+    final user = context.read<AuthCubit>().state.user;
+
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.registrationStripeSheetFilled,
+        eventProperties: {
+          'id': user.guid,
+          'country': user.country,
+        },
+      ),
+    );
     context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
     final hasBeenInvited =
         context.read<ImpactGroupsCubit>().state.invitedGroup !=
