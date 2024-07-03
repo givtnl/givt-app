@@ -272,14 +272,16 @@ class FamilyAppRoutes {
               child: const KidsHomeScreen(),
             );
           },
-        ),
-        GoRoute(
-          path: FamilyPages.camera.path,
-          name: FamilyPages.camera.name,
-          builder: (context, state) => BlocProvider(
-            create: (context) => CameraCubit()..checkPermission(),
-            child: const CameraScreen(),
-          ),
+          routes: [
+            GoRoute(
+              path: FamilyPages.camera.path,
+              name: FamilyPages.camera.name,
+              builder: (context, state) => BlocProvider(
+                create: (context) => CameraCubit()..checkPermission(),
+                child: const CameraScreen(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: FamilyPages.familyChooseAmountSlider.path,
@@ -436,13 +438,6 @@ class FamilyAppRoutes {
               create: (context) => SearchCoinCubit()..startAnimation(mediumID),
               child: const SearchForCoinScreen(),
             );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.scanNFC.path,
-          name: FamilyPages.scanNFC.name,
-          builder: (context, state) {
-            return const NFCScanPage();
           },
         ),
         GoRoute(
