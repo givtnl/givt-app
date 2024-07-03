@@ -44,7 +44,7 @@ class RegistrationSuccessUs extends StatelessWidget {
                   CustomGreenElevatedButton(
                     title: context.l10n.setUpFamily,
                     onPressed: () => context
-                      ..pushReplacementNamed(FamilyPages.addMember.name)
+                      ..pushReplacementNamed(FamilyPages.profileSelection.name)
                       ..pushNamed(FamilyPages.addMember.name),
                   ),
                   const SizedBox(height: 10),
