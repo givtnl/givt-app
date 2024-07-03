@@ -321,7 +321,7 @@ class NotificationService implements INotificationService {
         title,
         body,
         scheduledDate,
-        androidScheduleMode: AndroidScheduleMode.inexact,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         notificationDetailsAndroid,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
