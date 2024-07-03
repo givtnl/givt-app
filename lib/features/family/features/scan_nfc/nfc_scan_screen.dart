@@ -2,24 +2,25 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
-import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_found_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_not_available_sheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_scanning_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/start_scan_nfc_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class NFCScanPage extends StatefulWidget {
-  const NFCScanPage({super.key,});
+  const NFCScanPage({
+    super.key,
+  });
 
   @override
   State<NFCScanPage> createState() => _NFCScanPageState();
@@ -104,8 +105,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
           // Android needs the delay to show the success bottom sheet animation
           // iOS needs this delay to allow for the bottomsheet to close
           Future.delayed(ScanNfcCubit.animationDuration, () {
-
-            context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
+            context.pushReplacementNamed(
+                FamilyPages.familyChooseAmountSlider.name);
 
             AnalyticsHelper.logEvent(
               eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
@@ -118,11 +119,14 @@ class _NFCScanPageState extends State<NFCScanPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: CharityFinderAppBar(
-            onPressedExt: () {
-              context.read<FlowsCubit>().resetFlow();
-              context.read<ScanNfcCubit>().cancelScanning();
-            },
+          appBar: TopAppBar(
+            leading: GivtBackButton(
+              onPressedExt: () {
+                context.read<FlowsCubit>().resetFlow();
+                context.read<ScanNfcCubit>().cancelScanning();
+              },
+            ),
+            title: '',
           ),
           body: SafeArea(
             child: Center(
