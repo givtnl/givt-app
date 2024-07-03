@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/shared/widgets/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -23,12 +26,19 @@ class _RegistrationRedirectToGenerosityScreenState
   @override
   Widget build(BuildContext context) {
     final theme = const FamilyAppTheme().toThemeData();
+    final user = context.read<AuthCubit>().state.user;
     return Theme(
       data: theme,
       child: Scaffold(
         appBar: AppBar(
-          leading: GivtBackButtonFlat(
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
+          leading: GivtBackButton(
+            onPressedForced: () => context.pushNamed(
+              FamilyPages.registrationUS.name,
+              queryParameters: {
+                'email': user.email,
+                'createStripe': user.personalInfoRegistered.toString(),
+              },
+            ),
           ),
         ),
         body: SafeArea(
@@ -51,7 +61,7 @@ class _RegistrationRedirectToGenerosityScreenState
                     style: theme.textTheme.titleSmall,
                   ),
                 ),
-                _buildButtons(context),
+                _buildButtons(context, user),
               ],
             ),
           ),
@@ -60,7 +70,7 @@ class _RegistrationRedirectToGenerosityScreenState
     );
   }
 
-  Widget _buildButtons(BuildContext context) => Column(
+  Widget _buildButtons(BuildContext context, UserExt user) => Column(
         children: [
           GivtElevatedButton(
             onTap: () {
@@ -78,7 +88,13 @@ class _RegistrationRedirectToGenerosityScreenState
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.registerWithoutChallengeClicked,
               );
-              context.pop();
+              context.pushNamed(
+                FamilyPages.registrationUS.name,
+                queryParameters: {
+                  'email': user.email,
+                  'createStripe': user.personalInfoRegistered.toString(),
+                },
+              );
             },
             text: 'Register without Challenge',
           ),

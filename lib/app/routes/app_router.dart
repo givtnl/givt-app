@@ -646,15 +646,9 @@ class AppRouter {
           (!GenerosityChallengeHelper.isActivated ||
               GenerosityChallengeHelper.isCompleted)) {
         if (state.user.needRegistration) {
-          final createStripe = state.user.personalInfoRegistered;
-          context
-            ..pushNamed(FamilyPages.registrationUS.name, queryParameters: {
-              'email': state.user.email,
-              'createStripe': createStripe.toString(),
-            })
-            ..pushNamed(
-              FamilyPages.generosityChallengeRedirect.name,
-            );
+          context.pushNamed(
+            FamilyPages.generosityChallengeRedirect.name,
+          );
         } else if (routerState.name == Pages.loading.name) {
           context.goNamed(FamilyPages.profileSelection.name);
         }
