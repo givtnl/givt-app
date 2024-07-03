@@ -95,12 +95,6 @@ class FamilyAppRoutes {
 
   static final List<RouteBase> _routes = [
     GoRoute(
-      path: FamilyPages.generosityChallengeRedirect.path,
-      name: FamilyPages.generosityChallengeRedirect.name,
-      builder: (context, state) =>
-          const RegistrationRedirectToGenerosityScreen(),
-    ),
-    GoRoute(
       path: FamilyPages.generosityChallenge.path,
       name: FamilyPages.generosityChallenge.name,
       builder: (context, state) {
@@ -273,7 +267,8 @@ class FamilyAppRoutes {
                   create: (context) => NavigationCubit(),
                 ),
                 BlocProvider(
-                  create: (context) => HistoryCubit(getIt())..fetchHistory(user.id),
+                  create: (context) =>
+                      HistoryCubit(getIt())..fetchHistory(user.id),
                 ),
               ],
               child: const KidsHomeScreen(),
@@ -304,8 +299,8 @@ class FamilyAppRoutes {
             final extra = state.extra ?? const Goal.empty();
             final group = extra as ImpactGroup;
             return BlocProvider(
-              create: (BuildContext context) =>
-                  CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+              create: (BuildContext context) => CreateTransactionCubit(
+                  context.read<ProfilesCubit>(), getIt()),
               child: ChooseAmountSliderGoalScreen(
                 group: group,
               ),
@@ -329,16 +324,17 @@ class FamilyAppRoutes {
                 ),
               child: const HistoryScreen(),
             ),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-                SlideTransition(
-                  position: animation.drive(
-                    Tween<Offset>(
-                      begin: const Offset(2, 0),
-                      end: Offset.zero,
-                    ).chain(CurveTween(curve: Curves.ease)),
-                  ),
-                  child: child,
-                ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    SlideTransition(
+              position: animation.drive(
+                Tween<Offset>(
+                  begin: const Offset(2, 0),
+                  end: Offset.zero,
+                ).chain(CurveTween(curve: Curves.ease)),
+              ),
+              child: child,
+            ),
           ),
         ),
         GoRoute(
@@ -382,11 +378,11 @@ class FamilyAppRoutes {
               create: (context) => OrganisationsCubit(
                 getIt(),
               )..getRecommendedOrganisations(
-                location: interestsState.location,
-                cityName: interestsState.cityName,
-                interests: interestsState.selectedInterests,
-                fakeComputingExtraDelay: const Duration(seconds: 1),
-              ),
+                  location: interestsState.location,
+                  cityName: interestsState.cityName,
+                  interests: interestsState.selectedInterests,
+                  fakeComputingExtraDelay: const Duration(seconds: 1),
+                ),
               child: const OrganisationsScreen(),
             );
           },
@@ -395,13 +391,13 @@ class FamilyAppRoutes {
           path: FamilyPages.searchForCoin.path,
           name: FamilyPages.searchForCoin.name,
           redirect: (context, state) => getIt<SharedPreferences>()
-              .getBool('isInAppCoinFlow') ==
-              true
+                      .getBool('isInAppCoinFlow') ==
+                  true
               ? null
               : "${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}",
           builder: (context, state) {
             final String mediumID = state.uri.queryParameters['code'] == null ||
-                state.uri.queryParameters['code']!.contains('null')
+                    state.uri.queryParameters['code']!.contains('null')
                 ? OrganisationDetailsCubit.defaultMediumId
                 : state.uri.queryParameters['code']!;
             // THE USECASE FOR THIS BUILDER IS
@@ -421,8 +417,8 @@ class FamilyAppRoutes {
             context.read<FlowsCubit>().startInAppCoinFlow();
 
             return BlocProvider(
-              create: (BuildContext context) =>
-                  CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+              create: (BuildContext context) => CreateTransactionCubit(
+                  context.read<ProfilesCubit>(), getIt()),
               child: const ChooseAmountSliderScreen(),
             );
           },
@@ -489,7 +485,8 @@ class FamilyAppRoutes {
           path: FamilyPages.kidsAvatarSelection.path,
           name: FamilyPages.kidsAvatarSelection.name,
           builder: (context, state) {
-            final activeProfile = context.read<ProfilesCubit>().state.activeProfile;
+            final activeProfile =
+                context.read<ProfilesCubit>().state.activeProfile;
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
@@ -550,6 +547,12 @@ class FamilyAppRoutes {
           path: FamilyPages.registrationSuccessUs.path,
           name: FamilyPages.registrationSuccessUs.name,
           builder: (_, state) => const RegistrationSuccessUs(),
+        ),
+        GoRoute(
+          path: FamilyPages.generosityChallengeRedirect.path,
+          name: FamilyPages.generosityChallengeRedirect.name,
+          builder: (context, state) =>
+              const RegistrationRedirectToGenerosityScreen(),
         ),
         GoRoute(
           path: FamilyPages.familyPersonalInfoEdit.path,

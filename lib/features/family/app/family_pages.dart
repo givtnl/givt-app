@@ -65,7 +65,7 @@ enum FamilyPages {
 
   //generosity challenge
   generosityChallengeRedirect(
-    path: '/generosity-challenge-redirect',
+    path: 'generosity-challenge-redirect',
     name: 'GENEROSITY-CHALLENGE-REDIRECT',
   ),
   generosityChallenge(
