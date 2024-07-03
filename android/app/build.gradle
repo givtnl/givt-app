@@ -81,6 +81,7 @@ android {
             minifyEnabled false
         }
     }
+    namespace 'net.givtapp.droid'
 }
 
 flutter {
