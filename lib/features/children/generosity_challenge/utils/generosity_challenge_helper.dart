@@ -33,7 +33,7 @@ class GenerosityChallengeHelper {
     bool isDebug,
   ) {
     final now = tz.TZDateTime.now(
-      tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'),
+      tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Chicago'),
     );
 
     return intervals.map((interval) {
