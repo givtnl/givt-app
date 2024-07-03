@@ -61,7 +61,10 @@ class RegistrationSuccessUs extends StatelessWidget {
                             },
                           ),
                         );
-                        context.pushNamed(FamilyPages.addMember.name);
+                        context
+                          ..pushReplacementNamed(
+                              FamilyPages.profileSelection.name)
+                          ..pushNamed(FamilyPages.addMember.name);
                       }),
                   const SizedBox(height: 10),
                 ],
