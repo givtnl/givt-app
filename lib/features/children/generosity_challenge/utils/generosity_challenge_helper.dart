@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -28,13 +29,12 @@ class GenerosityChallengeHelper {
     "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
   ];
 
-  static List<tz.TZDateTime> generateSchedule(
+  static Future<List<tz.TZDateTime>> generateSchedule(
     List<int> intervals,
     bool isDebug,
-  ) {
-    final now = tz.TZDateTime.now(
-      tz.getLocation(isDebug ? 'Europe/Amsterdam' : 'America/Tulsa'),
-    );
+  ) async {
+    final timezone = await FlutterTimezone.getLocalTimezone();
+    final now = tz.TZDateTime.now(tz.getLocation(timezone));
 
     return intervals.map((interval) {
       return isDebug
@@ -69,13 +69,13 @@ class GenerosityChallengeHelper {
       getIt<SharedPreferences>()
           .setBool(_generosityChallengeActivatedKey, true),
     );
-    _setupNotificationChain(isDebug: isDebug);
+    unawaited(_setupNotificationChain(isDebug: isDebug));
   }
 
-  static void _setupNotificationChain({
+  static Future<void> _setupNotificationChain({
     bool isDebug = false,
     String? name,
-  }) {
+  }) async {
     final updatedNotificationBodies = notificationBodies.map((body) {
       return body.replaceAll('[name]', name ?? '');
     }).toList();
@@ -87,8 +87,8 @@ class GenerosityChallengeHelper {
     final regularDays = <int>[1, 2, 4, 7];
     final debugMinutes = <int>[2, 4, 6, 8];
 
-    final regularSchedule = generateSchedule(regularDays, false);
-    final debugSchedule = generateSchedule(debugMinutes, true);
+    final regularSchedule = await generateSchedule(regularDays, false);
+    final debugSchedule = await generateSchedule(debugMinutes, true);
 
     for (var i = 0; i < notificationBodies.length; i++) {
       final item = isDebug ? debugSchedule[i] : regularSchedule[i];
