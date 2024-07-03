@@ -549,12 +549,6 @@ class FamilyAppRoutes {
           builder: (_, state) => const RegistrationSuccessUs(),
         ),
         GoRoute(
-          path: FamilyPages.generosityChallengeRedirect.path,
-          name: FamilyPages.generosityChallengeRedirect.name,
-          builder: (context, state) =>
-              const RegistrationRedirectToGenerosityScreen(),
-        ),
-        GoRoute(
           path: FamilyPages.familyPersonalInfoEdit.path,
           name: FamilyPages.familyPersonalInfoEdit.name,
           builder: (context, state) {
@@ -709,6 +703,12 @@ class FamilyAppRoutes {
               child: const FamilyOverviewPage(),
             );
           },
+        ),
+        GoRoute(
+          path: FamilyPages.generosityChallengeRedirect.path,
+          name: FamilyPages.generosityChallengeRedirect.name,
+          builder: (context, state) =>
+              const RegistrationRedirectToGenerosityScreen(),
         ),
         GoRoute(
           path: FamilyPages.registrationUS.path,
