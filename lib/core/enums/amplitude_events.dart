@@ -116,21 +116,23 @@ enum AmplitudeEvents {
     'generosity_challenge_registration_succeeded',
   ),
   // Registration flow
-  newUserContinuedOnEmailSignUpPage(
-    'new_user_continued_on_email_sign_up_page',
+  continueByEmailSignUpNewUserCliked(
+    'continue_by_email_sign_up_new_user_clicked',
   ),
-  tempUserContinuedOnEmailSignUpPage(
-    'temp_user_continued_on_email_sign_up_page',
+  continueByEmailSignUpTempUserClicked(
+    'continue_by_email_sign_up_temp_user_clicked',
   ),
-  newUserFilledInPersonalInfo('new_user_filled_in_personal_info'),
-  newUserFilledStripeDetailsSuccessfully(
-    'new_user_filled_stripe_details_successfully',
+  registrationFilledInPersonalInfoSheetFilled(
+    'registration_filled_in_personal_info_sheet_filled',
   ),
-  newUserClosedStripeSheetIncomplete(
-    'new_user_closed_stripe_sheet_imcomplete',
+  registrationStripeSheetFilled(
+    'registration_stripe_sheet_filled',
   ),
-  clickedSetUpFamilyFromRegistrationSuccess(
-    'clicked_set_up_family_from_registration_success',
+  registrationStripeSheetIncompleteClosed(
+    'registration_stripe_sheet_incomplete_closed',
+  ),
+  registrationSuccesButtonClicked(
+    'registration_success_button_clicked',
   ),
 
   // Family

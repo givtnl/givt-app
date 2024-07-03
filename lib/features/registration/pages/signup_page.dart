@@ -157,7 +157,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.newUserFilledInPersonalInfo,
+        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
         eventProperties: {
           'id': context.read<AuthCubit>().state.user.guid,
           'country': _selectedCountry.countryCode,

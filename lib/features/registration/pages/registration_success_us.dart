@@ -54,8 +54,8 @@ class RegistrationSuccessUs extends StatelessWidget {
 
                         unawaited(
                           AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents
-                                .clickedSetUpFamilyFromRegistrationSuccess,
+                            eventName:
+                                AmplitudeEvents.registrationSuccesButtonClicked,
                             eventProperties: {
                               'id': user.guid,
                             },

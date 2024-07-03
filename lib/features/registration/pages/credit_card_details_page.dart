@@ -63,7 +63,8 @@ class CreditCardDetailsPage extends StatelessWidget {
 
               unawaited(
                 AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.newUserClosedStripeSheetIncomplete,
+                  eventName:
+                      AmplitudeEvents.registrationStripeSheetIncompleteClosed,
                   eventProperties: {
                     'id': user.guid,
                     'country': user.country,
@@ -96,7 +97,7 @@ class CreditCardDetailsPage extends StatelessWidget {
 
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.newUserFilledStripeDetailsSuccessfully,
+        eventName: AmplitudeEvents.registrationStripeSheetFilled,
         eventProperties: {
           'id': user.guid,
           'country': user.country,

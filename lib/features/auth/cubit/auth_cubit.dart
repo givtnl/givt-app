@@ -224,7 +224,7 @@ class AuthCubit extends Cubit<AuthState> {
         await login(email: email, password: TempUser.defaultPassword);
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.tempUserContinuedOnEmailSignUpPage,
+            eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
             eventProperties: {
               'country': country.countryCode,
             },
@@ -254,7 +254,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.newUserContinuedOnEmailSignUpPage,
+          eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
           eventProperties: {
             'id': unRegisteredUserExt.guid,
             'country': country.countryCode,
