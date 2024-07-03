@@ -29,6 +29,7 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/set_
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_introduction.dart';
+import 'package:givt_app/features/children/generosity_challenge/pages/registration_redirect_to_generosity_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
@@ -93,6 +94,12 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
+    GoRoute(
+      path: FamilyPages.generosityChallengeRedirect.path,
+      name: FamilyPages.generosityChallengeRedirect.name,
+      builder: (context, state) =>
+          const RegistrationRedirectToGenerosityScreen(),
+    ),
     GoRoute(
       path: FamilyPages.generosityChallenge.path,
       name: FamilyPages.generosityChallenge.name,
