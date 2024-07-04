@@ -67,7 +67,7 @@ class CreditCardDetailsPage extends StatelessWidget {
                       AmplitudeEvents.registrationStripeSheetIncompleteClosed,
                   eventProperties: {
                     'id': user.guid,
-                    'country': user.country,
+                    'profile_country': user.country,
                   },
                 ),
               );
@@ -100,7 +100,7 @@ class CreditCardDetailsPage extends StatelessWidget {
         eventName: AmplitudeEvents.registrationStripeSheetFilled,
         eventProperties: {
           'id': user.guid,
-          'country': user.country,
+          'profile_country': user.country,
         },
       ),
     );

@@ -160,7 +160,7 @@ class _SignUpPageState extends State<SignUpPage> {
         eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
         eventProperties: {
           'id': context.read<AuthCubit>().state.user.guid,
-          'country': _selectedCountry.countryCode,
+          'profile_country': _selectedCountry.countryCode,
         },
       ),
     );

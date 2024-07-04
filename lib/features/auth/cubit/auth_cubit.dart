@@ -54,6 +54,17 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       var userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
+      if (password == TempUser.defaultPassword) {
+        await AnalyticsHelper.setUserProperties(userId: userExt.guid);
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
+            eventProperties: {
+              'profile_country': userExt.countryCode,
+            },
+          ),
+        );
+      }
 
       await LoggingInfo.instance.info('User logged in with $userExt');
 
@@ -222,14 +233,6 @@ class AuthCubit extends Cubit<AuthState> {
       // When this is a temp user, we skip the login page
       if (result.contains('temp')) {
         await login(email: email, password: TempUser.defaultPassword);
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
-            eventProperties: {
-              'country': country.countryCode,
-            },
-          ),
-        );
         return;
       }
 
@@ -252,15 +255,19 @@ class AuthCubit extends Cubit<AuthState> {
         tempUser: tempUser,
         isTempUser: true,
       );
+
+      await AnalyticsHelper.setUserProperties(userId: unRegisteredUserExt.guid);
+
       unawaited(
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
           eventProperties: {
             'id': unRegisteredUserExt.guid,
-            'country': country.countryCode,
+            'profile_country': country.countryCode,
           },
         ),
       );
+
       final newNotificationId = await _updateNotificationId(
         guid: unRegisteredUserExt.guid,
         currentNotificationId: unRegisteredUserExt.notificationId,
