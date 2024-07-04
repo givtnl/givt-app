@@ -646,13 +646,10 @@ class AppRouter {
           (!GenerosityChallengeHelper.isActivated ||
               GenerosityChallengeHelper.isCompleted)) {
         if (state.user.needRegistration) {
-          context.pushNamed(
-            FamilyPages.generosityChallengeRedirect.name,
-          );
+          context.goNamed(FamilyPages.generosityChallengeRedirect.name);
         } else if (routerState.name == Pages.loading.name) {
           context.goNamed(FamilyPages.profileSelection.name);
         }
-
         return;
       }
 

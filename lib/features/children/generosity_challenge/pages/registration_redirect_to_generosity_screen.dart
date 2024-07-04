@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_button.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_elevated_secondary_button.dart';
@@ -28,7 +29,7 @@ class _RegistrationRedirectToGenerosityScreenState
       eventName: AmplitudeEvents.registerWithoutChallengeClicked,
     );
 
-    context.pushReplacementNamed(
+    context.pushNamed(
       FamilyPages.registrationUS.name,
       queryParameters: {
         'email': user.email,
@@ -47,7 +48,9 @@ class _RegistrationRedirectToGenerosityScreenState
       child: Scaffold(
         appBar: AppBar(
           leading: GivtBackButton(
-            onPressedForced: () => _navigate(context, user),
+            onPressedForced: () {
+              logout(context);
+            },
           ),
         ),
         body: SafeArea(

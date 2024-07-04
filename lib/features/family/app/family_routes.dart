@@ -95,6 +95,12 @@ class FamilyAppRoutes {
 
   static final List<RouteBase> _routes = [
     GoRoute(
+      path: FamilyPages.generosityChallengeRedirect.path,
+      name: FamilyPages.generosityChallengeRedirect.name,
+      builder: (context, state) =>
+          const RegistrationRedirectToGenerosityScreen(),
+    ),
+    GoRoute(
       path: FamilyPages.generosityChallenge.path,
       name: FamilyPages.generosityChallenge.name,
       builder: (context, state) {
@@ -703,12 +709,6 @@ class FamilyAppRoutes {
               child: const FamilyOverviewPage(),
             );
           },
-        ),
-        GoRoute(
-          path: FamilyPages.generosityChallengeRedirect.path,
-          name: FamilyPages.generosityChallengeRedirect.name,
-          builder: (context, state) =>
-              const RegistrationRedirectToGenerosityScreen(),
         ),
         GoRoute(
           path: FamilyPages.registrationUS.path,
