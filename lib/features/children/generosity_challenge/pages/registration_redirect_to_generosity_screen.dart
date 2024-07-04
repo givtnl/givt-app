@@ -23,22 +23,31 @@ class RegistrationRedirectToGenerosityScreen extends StatefulWidget {
 
 class _RegistrationRedirectToGenerosityScreenState
     extends State<RegistrationRedirectToGenerosityScreen> {
+  void _navigate(BuildContext context, UserExt user) {
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.registerWithoutChallengeClicked,
+    );
+
+    context.pushReplacementNamed(
+      FamilyPages.registrationUS.name,
+      queryParameters: {
+        'email': user.email,
+        'createStripe': user.personalInfoRegistered.toString(),
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = const FamilyAppTheme().toThemeData();
     final user = context.read<AuthCubit>().state.user;
+
     return Theme(
       data: theme,
       child: Scaffold(
         appBar: AppBar(
           leading: GivtBackButton(
-            onPressedForced: () => context.pushNamed(
-              FamilyPages.registrationUS.name,
-              queryParameters: {
-                'email': user.email,
-                'createStripe': user.personalInfoRegistered.toString(),
-              },
-            ),
+            onPressedForced: () => _navigate(context, user),
           ),
         ),
         body: SafeArea(
@@ -84,18 +93,7 @@ class _RegistrationRedirectToGenerosityScreenState
           ),
           const SizedBox(height: 8),
           GivtElevatedSecondaryButton(
-            onTap: () {
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.registerWithoutChallengeClicked,
-              );
-              context.pushNamed(
-                FamilyPages.registrationUS.name,
-                queryParameters: {
-                  'email': user.email,
-                  'createStripe': user.personalInfoRegistered.toString(),
-                },
-              );
-            },
+            onTap: () => _navigate(context, user),
             text: 'Register without Challenge',
           ),
           const SizedBox(height: 8),
