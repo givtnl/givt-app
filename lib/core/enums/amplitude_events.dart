@@ -193,6 +193,11 @@ enum AmplitudeEvents {
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
 
   manageFamilyPressed('manage_family_pressed'),
+
+  registerWithoutChallengeClicked('register_without_challenge_clicked'),
+  goToChallengeFromRegistrationClicked(
+    'go_to_challenge_from_registration_clicked',
+  ),
   ;
 
   const AmplitudeEvents(this.value);

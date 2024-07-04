@@ -49,6 +49,10 @@ Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
     );
 Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_error.svg',
+    );
+Widget familySuperheroesIcon({double? width, double? height}) =>
+    SvgPicture.asset(
+      'assets/images/family_superheroes.svg',
       width: width,
       height: height,
     );
