@@ -59,11 +59,11 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               );
 
               if (flow.isQRCode) {
-                context.pushNamed(FamilyPages.camera.name);
+                context.goNamed(FamilyPages.camera.name);
                 return;
               }
               if (flow.isRecommendation) {
-                context.pushNamed(FamilyPages.recommendationStart.name);
+                context.goNamed(FamilyPages.recommendationStart.name);
                 return;
               }
               if (flow.flowType == FlowType.deepLinkCoin) {
@@ -71,7 +71,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                 return;
               }
               if (flow.isCoin) {
-                context.pushNamed(FamilyPages.scanNFC.name);
+                context.goNamed(FamilyPages.scanNFC.name);
                 return;
               }
 
