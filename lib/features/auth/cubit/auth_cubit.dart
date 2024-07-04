@@ -60,7 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
             eventProperties: {
-              'country': userExt.countryCode,
+              'profile_country': userExt.countryCode,
             },
           ),
         );
@@ -263,7 +263,7 @@ class AuthCubit extends Cubit<AuthState> {
           eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
           eventProperties: {
             'id': unRegisteredUserExt.guid,
-            'country': country.countryCode,
+            'profile_country': country.countryCode,
           },
         ),
       );
