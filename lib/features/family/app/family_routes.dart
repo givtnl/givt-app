@@ -276,6 +276,18 @@ class FamilyAppRoutes {
           },
           routes: [
             GoRoute(
+              path: FamilyPages.scanNFC.path,
+              name: FamilyPages.scanNFC.name,
+              builder: (context, state) {
+                return const NFCScanPage();
+              },
+            ),
+            GoRoute(
+              path: FamilyPages.recommendationStart.path,
+              name: FamilyPages.recommendationStart.name,
+              builder: (context, state) => const StartRecommendationScreen(),
+            ),
+            GoRoute(
               path: FamilyPages.camera.path,
               name: FamilyPages.camera.name,
               builder: (context, state) => BlocProvider(
@@ -338,11 +350,6 @@ class FamilyAppRoutes {
               child: child,
             ),
           ),
-        ),
-        GoRoute(
-          path: FamilyPages.recommendationStart.path,
-          name: FamilyPages.recommendationStart.name,
-          builder: (context, state) => const StartRecommendationScreen(),
         ),
         GoRoute(
           path: FamilyPages.locationSelection.path,
