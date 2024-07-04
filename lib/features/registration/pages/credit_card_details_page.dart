@@ -52,6 +52,19 @@ class CreditCardDetailsPage extends StatelessWidget {
               onRegistrationSuccess!.call();
             } else {
               _handleStripeRegistrationSuccess(context);
+              final user = context.read<AuthCubit>().state.user;
+              AnalyticsHelper.setUserProperties(
+                userId: user.guid,
+              );
+              unawaited(
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.registrationStripeSheetFilled,
+                  eventProperties: {
+                    'id': user.guid,
+                    'profile_country': user.country,
+                  },
+                ),
+              );
             }
           }).onError((e, stackTrace) {
             if (onRegistrationFailed != null) {
@@ -93,17 +106,6 @@ class CreditCardDetailsPage extends StatelessWidget {
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
-    final user = context.read<AuthCubit>().state.user;
-
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.registrationStripeSheetFilled,
-        eventProperties: {
-          'id': user.guid,
-          'profile_country': user.country,
-        },
-      ),
-    );
     context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
     final hasBeenInvited =
         context.read<ImpactGroupsCubit>().state.invitedGroup !=
