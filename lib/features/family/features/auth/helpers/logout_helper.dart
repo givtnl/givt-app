@@ -9,8 +9,11 @@ import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
-void logout(BuildContext context,
-    {bool fromLogoutBtn = false, bool fromTerminateAccount = false}) {
+void logout(
+  BuildContext context, {
+  bool fromLogoutBtn = false,
+  bool fromTerminateAccount = false,
+}) {
   if (fromTerminateAccount) {
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.terminateAccountSuccess,
