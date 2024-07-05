@@ -81,6 +81,7 @@ class _GiftAidPageState extends State<GiftAidPage> {
                   locals.giftAidSetting,
                 ),
                 Switch.adaptive(
+                  activeColor: AppTheme.givtLightGreen,
                   onChanged: (bool value) => setState(() {
                     useGiftAid = value;
                   }),

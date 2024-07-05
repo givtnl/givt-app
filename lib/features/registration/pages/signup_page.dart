@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
@@ -152,6 +155,15 @@ class _SignUpPageState extends State<SignUpPage> {
         isLoading = false;
       });
     }
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
+        eventProperties: {
+          'id': context.read<AuthCubit>().state.user.guid,
+          'profile_country': _selectedCountry.countryCode,
+        },
+      ),
+    );
     context.read<RegistrationBloc>().add(
           RegistrationPasswordSubmitted(
             email: _emailController.text,

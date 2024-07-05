@@ -54,6 +54,17 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
       var userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
+      if (password == TempUser.defaultPassword) {
+        await AnalyticsHelper.setUserProperties(userId: userExt.guid);
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
+            eventProperties: {
+              'profile_country': userExt.countryCode,
+            },
+          ),
+        );
+      }
 
       await LoggingInfo.instance.info('User logged in with $userExt');
 
@@ -155,17 +166,6 @@ class AuthCubit extends Cubit<AuthState> {
         return;
       }
 
-      // fetch certificate fingerprints
-      try {
-        await LoggingInfo.instance.info('Update fingerprint certificate');
-        await _authRepositoy.updateFingerprintCertificate();
-      } catch (e, stackTrace) {
-        await LoggingInfo.instance.error(
-          e.toString(),
-          methodName: stackTrace.toString(),
-        );
-      }
-
       // Update notification id if needed
       final newNotificationId = await _updateNotificationId(
         guid: userExt.guid,
@@ -222,10 +222,6 @@ class AuthCubit extends Cubit<AuthState> {
       /// if so delete the current user and login with the new one
       await _authRepositoy.checkUserExt(email: email);
 
-      // fetch certificate fingerprints
-      await LoggingInfo.instance.info('Update fingerprint certificate');
-      await _authRepositoy.updateFingerprintCertificate();
-
       if (!await _authRepositoy.checkTld(email)) {
         emit(state.copyWith(status: AuthStatus.failure));
         return;
@@ -258,6 +254,18 @@ class AuthCubit extends Cubit<AuthState> {
       var unRegisteredUserExt = await _authRepositoy.registerUser(
         tempUser: tempUser,
         isTempUser: true,
+      );
+
+      await AnalyticsHelper.setUserProperties(userId: unRegisteredUserExt.guid);
+
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
+          eventProperties: {
+            'id': unRegisteredUserExt.guid,
+            'profile_country': country.countryCode,
+          },
+        ),
       );
 
       final newNotificationId = await _updateNotificationId(
@@ -329,9 +337,6 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
-      await LoggingInfo.instance.info('Update fingerprint certificate');
-      await _authRepositoy.updateFingerprintCertificate();
-
       final session = await _authRepositoy.refreshToken();
 
       final (userExt, _, amountPresets) =

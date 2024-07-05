@@ -12,13 +12,13 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeOverview extends StatefulWidget {
   const GenerosityChallengeOverview({
+    required this.isDebug,
     super.key,
   });
-
+  final bool isDebug;
   @override
   State<GenerosityChallengeOverview> createState() =>
       _GenerosityChallengeOverviewState();
@@ -26,20 +26,8 @@ class GenerosityChallengeOverview extends StatefulWidget {
 
 class _GenerosityChallengeOverviewState
     extends State<GenerosityChallengeOverview> {
-  bool isDebug = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isDebug().then(
-      (value) => setState(() {
-        isDebug = value;
-      }),
-    );
-  }
-
   Future<void> _undoProgress(int dayIndax) async {
-    if (!isDebug) {
+    if (!widget.isDebug) {
       return;
     }
 
@@ -119,7 +107,7 @@ class _GenerosityChallengeOverviewState
     return Scaffold(
       appBar: GenerosityAppBar(
         title: 'Generosity Challenge',
-        leading: isDebug ? _deactivateButton() : null,
+        leading: widget.isDebug ? _deactivateButton() : null,
         actions: const [ChatIconButton()],
       ),
       body: SafeArea(
@@ -149,7 +137,7 @@ class _GenerosityChallengeOverviewState
                     final day = challenge.state.days[index];
                     return DayButton(
                       onLongPressed:
-                          isDebug ? () => _undoProgress(index) : null,
+                          widget.isDebug ? () => _undoProgress(index) : null,
                       isCompleted: day.isCompleted,
                       isActive: challenge.state.activeDayIndex == index,
                       dayIndex: index,
@@ -182,7 +170,7 @@ class _GenerosityChallengeOverviewState
                   },
                 ),
                 const Spacer(),
-                if (isDebug)
+                if (widget.isDebug)
                   ToggleButtons(
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                     selectedBorderColor: Colors.blue[700],
@@ -211,11 +199,6 @@ class _GenerosityChallengeOverviewState
         ),
       ),
     );
-  }
-
-  Future<bool> _isDebug() async {
-    final info = await PackageInfo.fromPlatform();
-    return info.packageName.contains('test');
   }
 
   Widget _buildGenerosityHeader(String name) => Column(

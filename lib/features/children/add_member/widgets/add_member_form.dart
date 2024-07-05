@@ -39,7 +39,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final _emailParentController = TextEditingController();
   final _ageController = TextEditingController();
   bool isChildSelected = true;
-  int _allowance = 15;
+  int _allowance = 5;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
   late final FocusNode _childNameFocusNode;
@@ -339,7 +339,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
           ),
           AllowanceCounter(
             currency: currency,
-            initialAllowance: 5,
+            initialAllowance: _allowance,
             canAmountBeZero: true,
             onAllowanceChanged: (allowance) => _allowance = allowance,
           ),

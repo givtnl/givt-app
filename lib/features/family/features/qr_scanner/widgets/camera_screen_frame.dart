@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/givt_back_button_flat.dart';
 
 class CameraScreenFrame extends StatelessWidget {
@@ -26,7 +28,11 @@ class CameraScreenFrame extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         automaticallyImplyLeading: false,
-        leading: const GivtBackButtonFlat(),
+        leading: GivtBackButtonFlat(
+          onPressedExt: () {
+            context.read<FlowsCubit>().resetFlow();
+          },
+        ),
       ),
       body: SafeArea(
         child: Column(

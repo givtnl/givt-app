@@ -90,6 +90,9 @@ enum AmplitudeEvents {
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
 
+  openedGenerosityChallengeNotification(
+    'opened_generosity_challenge_notification',
+  ),
   generosityChallengeDayClicked('generosity_challenge_day_clicked'),
   generosityChallengeDayCompleted('generosity_challenge_day_completed'),
   generosityChallengeDayUndoCompleting(
@@ -111,6 +114,25 @@ enum AmplitudeEvents {
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
   generosityChallengeRegistrationSucceeded(
     'generosity_challenge_registration_succeeded',
+  ),
+  // Registration flow
+  continueByEmailSignUpNewUserCliked(
+    'continue_by_email_sign_up_new_user_clicked',
+  ),
+  continueByEmailSignUpTempUserClicked(
+    'continue_by_email_sign_up_temp_user_clicked',
+  ),
+  registrationFilledInPersonalInfoSheetFilled(
+    'registration_filled_in_personal_info_sheet_filled',
+  ),
+  registrationStripeSheetFilled(
+    'registration_stripe_sheet_filled',
+  ),
+  registrationStripeSheetIncompleteClosed(
+    'registration_stripe_sheet_incomplete_closed',
+  ),
+  registrationSuccesButtonClicked(
+    'registration_success_button_clicked',
   ),
 
   // Family
@@ -171,6 +193,11 @@ enum AmplitudeEvents {
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
 
   manageFamilyPressed('manage_family_pressed'),
+
+  registerWithoutChallengeClicked('register_without_challenge_clicked'),
+  goToChallengeFromRegistrationClicked(
+    'go_to_challenge_from_registration_clicked',
+  ),
   ;
 
   const AmplitudeEvents(this.value);

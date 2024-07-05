@@ -73,7 +73,7 @@ class AppRouter {
       ),
       // TEMP FIX FOR EXTERNAL KIDS LINKS
       GoRoute(
-        path:'/search-for-coin',
+        path: '/search-for-coin',
         name: 'search-for-coin',
         redirect: _redirectFromExternalLink,
       ),
@@ -646,18 +646,10 @@ class AppRouter {
           (!GenerosityChallengeHelper.isActivated ||
               GenerosityChallengeHelper.isCompleted)) {
         if (state.user.needRegistration) {
-          final createStripe = state.user.personalInfoRegistered;
-          context.pushNamed(
-            FamilyPages.registrationUS.name,
-            queryParameters: {
-              'email': state.user.email,
-              'createStripe': createStripe.toString(),
-            },
-          );
+          context.goNamed(FamilyPages.generosityChallengeRedirect.name);
         } else if (routerState.name == Pages.loading.name) {
           context.goNamed(FamilyPages.profileSelection.name);
         }
-
         return;
       }
 

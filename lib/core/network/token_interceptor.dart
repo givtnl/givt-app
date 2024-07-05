@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -37,17 +38,22 @@ class TokenInterceptor implements InterceptorContract {
         request.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
-        e.toString(),
-        methodName: stackTrace.toString(),
+      unawaited(
+        LoggingInfo.instance.error(
+          e.toString(),
+          methodName: stackTrace.toString(),
+        ),
       );
     }
 
-    await LoggingInfo.instance.logRequest(
-      request.method,
-      request.url.toString(),
-      correlationId,
+    unawaited(
+      LoggingInfo.instance.logRequest(
+        "API - " + request.method,
+        request.url.toString(),
+        correlationId,
+      ),
     );
+
     return request;
   }
 

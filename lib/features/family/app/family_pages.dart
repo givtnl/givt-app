@@ -64,6 +64,10 @@ enum FamilyPages {
       path: 'choose-amount-slider-goal', name: 'CHOOSE_AMOUNT_SLIDER_GOAL'),
 
   //generosity challenge
+  generosityChallengeRedirect(
+    path: '/generosity-challenge-redirect',
+    name: 'GENEROSITY-CHALLENGE-REDIRECT',
+  ),
   generosityChallenge(
     path: '/generosity-challenge',
     name: 'GENEROSITY-CHALLENGE',

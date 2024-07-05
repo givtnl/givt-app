@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
+import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
@@ -41,6 +40,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 Future<void> init() async {
+  await _initRequestHelper();
   await _initCoreDependencies();
   await initAPIService();
 
@@ -50,6 +50,14 @@ Future<void> init() async {
 
 Future<void> initAPIService() async {
   getIt.allowReassignment = true;
+  getIt.registerLazySingleton<APIService>(
+    () => APIService(
+      getIt<RequestHelper>(),
+    ),
+  );
+}
+
+Future<RequestHelper> _initRequestHelper() async {
   var baseUrl = const String.fromEnvironment('API_URL_EU');
   var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
   final country = await _checkCountry();
@@ -58,18 +66,10 @@ Future<void> initAPIService() async {
     baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
-  if (Platform.isAndroid) {
-    final data = await PlatformAssetBundle().load('assets/ca/isrgrootx1.pem');
-    SecurityContext.defaultContext.setTrustedCertificatesBytes(
-      data.buffer.asUint8List(),
-    );
-  }
-  getIt.registerLazySingleton<APIService>(
-    () => APIService(
-      apiURL: baseUrl,
-      apiURLAWS: baseUrlAWS,
-    ),
-  );
+  final requestHelper = RequestHelper(apiURL: baseUrl, apiURLAWS: baseUrlAWS);
+  await requestHelper.init();
+  getIt.registerSingleton<RequestHelper>(requestHelper);
+  return requestHelper;
 }
 
 /// Check if there is a user extension set in the shared preferences.
