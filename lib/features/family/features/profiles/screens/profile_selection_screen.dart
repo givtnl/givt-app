@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
@@ -38,55 +39,6 @@ class ProfileSelectionScreen extends StatefulWidget {
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
   Widget build(BuildContext context) {
-    context.read<ProfilesCubit>().fetchAllProfiles();
-
-    List<Widget> createGridItems(List<Profile> profiles) {
-      final gridItems = <Widget>[];
-      for (var i = 0;
-          i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
-          i++) {
-        gridItems.add(
-          GestureDetector(
-            onTap: () {
-              final flow = context.read<FlowsCubit>().state;
-              context.read<ProfilesCubit>().fetchProfile(profiles[i].id, true);
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profilePressed,
-                eventProperties: {
-                  'profile_name':
-                      '${profiles[i].firstName} ${profiles[i].lastName}',
-                },
-              );
-
-              if (flow.isQRCode) {
-                context.goNamed(FamilyPages.camera.name);
-                return;
-              }
-              if (flow.isRecommendation) {
-                context.goNamed(FamilyPages.recommendationStart.name);
-                return;
-              }
-              if (flow.flowType == FlowType.deepLinkCoin) {
-                context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
-                return;
-              }
-              if (flow.isCoin) {
-                context.goNamed(FamilyPages.scanNFC.name);
-                return;
-              }
-
-              context.pushReplacementNamed(FamilyPages.wallet.name);
-            },
-            child: ProfileItem(
-              name: profiles[i].firstName,
-              imageUrl: profiles[i].pictureURL,
-            ),
-          ),
-        );
-      }
-      return gridItems;
-    }
-
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesExternalErrorState) {
@@ -97,10 +49,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (CachedFamilyUtils
-              .isFamilyCacheExist()) {
-            await context.pushNamed(
-                FamilyPages.cachedChildrenOverview.name);
+          if (CachedFamilyUtils.isFamilyCacheExist()) {
+            await context.pushNamed(FamilyPages.cachedChildrenOverview.name);
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
           }
@@ -173,8 +123,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                     navigate: (context, {isUSUser}) async {
                                       if (CachedFamilyUtils
                                           .isFamilyCacheExist()) {
-                                        await context.pushNamed(
-                                            FamilyPages.cachedChildrenOverview.name);
+                                        await context.pushNamed(FamilyPages
+                                            .cachedChildrenOverview.name);
                                       } else {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
@@ -199,10 +149,64 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    AnalyticsHelper.setFamilyAppTracking();
+  List<Widget> createGridItems(List<Profile> profiles) {
+    final gridItems = <Widget>[];
+    for (var i = 0;
+        i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
+        i++) {
+      gridItems.add(
+        GestureDetector(
+          onTap: () {
+            final flow = context.read<FlowsCubit>().state;
+            var selectedProfile = profiles[i];
+            context
+                .read<ProfilesCubit>()
+                .fetchProfile(selectedProfile.id, true);
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.profilePressed,
+              eventProperties: {
+                'profile_name':
+                    '${selectedProfile.firstName} ${selectedProfile.lastName}',
+              },
+            );
+
+            final user = context.read<AuthCubit>().state.user;
+            AnalyticsHelper.setUserProperties(
+              userId: selectedProfile.id,
+              userProperties: {
+                if (selectedProfile.id == user.guid) 'email': user.email,
+                'profile_country': Country.us.countryCode,
+                AnalyticsHelper.isFamilyAppKey: true,
+              },
+            );
+
+            if (flow.isQRCode) {
+              context.goNamed(FamilyPages.camera.name);
+              return;
+            }
+            if (flow.isRecommendation) {
+              context.goNamed(FamilyPages.recommendationStart.name);
+              return;
+            }
+            if (flow.flowType == FlowType.deepLinkCoin) {
+              context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
+              return;
+            }
+            if (flow.isCoin) {
+              context.goNamed(FamilyPages.scanNFC.name);
+              return;
+            }
+
+            context.pushReplacementNamed(FamilyPages.wallet.name);
+          },
+          child: ProfileItem(
+            name: profiles[i].firstName,
+            imageUrl: profiles[i].pictureURL,
+          ),
+        ),
+      );
+    }
+    return gridItems;
   }
 
   @override

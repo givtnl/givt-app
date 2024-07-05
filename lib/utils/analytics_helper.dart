@@ -21,18 +21,11 @@ class AnalyticsHelper {
 
   static Amplitude? _amplitude;
 
-  static Map<String, dynamic> _globalEventProperties = {
-    isFamilyAppKey: false,
-  };
-
   static Future<void> init(String key) async {
     _amplitude = Amplitude.getInstance();
     await _amplitude!.init(key);
     await _amplitude!.trackingSessionEvents(true);
   }
-
-  static void setFamilyAppTracking({bool isOn = true}) =>
-      _globalEventProperties[isFamilyAppKey] = isOn;
 
   static Future<void> logChatScriptEvent({
     required String eventName,
@@ -44,9 +37,8 @@ class AnalyticsHelper {
     required AmplitudeEvents eventName,
     Map<String, dynamic>? eventProperties,
   }) {
-    eventProperties?.addAll(_globalEventProperties);
     return _logEvent(
-        eventName.value, eventProperties ?? _globalEventProperties);
+        eventName.value, eventProperties,);
   }
 
   static Future<void> _logEvent(

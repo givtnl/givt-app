@@ -28,9 +28,6 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   StreamSubscription<void>? _memberAddedSubscription;
 
   void _init() {
-    AnalyticsHelper.setUserProperties(
-      userId: state.activeProfile.id,
-    );
     _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
       (_) {
         fetchAllProfiles();

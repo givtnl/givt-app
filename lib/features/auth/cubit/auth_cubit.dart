@@ -55,7 +55,8 @@ class AuthCubit extends Cubit<AuthState> {
 
       var userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
       if (password == TempUser.defaultPassword) {
-        await AnalyticsHelper.setUserProperties(userId: userExt.guid);
+        await AnalyticsHelper.
+        setUserProperties(userId: userExt.guid);
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
@@ -199,8 +200,6 @@ class AuthCubit extends Cubit<AuthState> {
 
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
-
-    AnalyticsHelper.setFamilyAppTracking(isOn: false);
 
     emit(
       state.copyWith(
