@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
@@ -12,8 +13,9 @@ import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_f
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_not_available_sheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_scanning_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/start_scan_nfc_button.dart';
-import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
-import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/something_went_wrong_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -102,6 +104,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
           context
               .read<OrganisationDetailsCubit>()
               .getOrganisationDetails(state.mediumId);
+
           // Android needs the delay to show the success bottom sheet animation
           // iOS needs this delay to allow for the bottomsheet to close
           Future.delayed(ScanNfcCubit.animationDuration, () {
@@ -169,6 +172,41 @@ class _NFCScanPageState extends State<NFCScanPage> {
               FloatingActionButtonLocation.centerFloat,
         );
       },
+    );
+  }
+
+  void _showNotAGivtCoinDialog(BuildContext context) {
+    SomethingWentWrongDialog.show(
+      context,
+      onClickPrimaryBtn: () {
+        context.pop();
+        context.pop();
+        context.read<ScanNfcCubit>().readTag();
+      },
+      onClickSecondaryBtn: () {
+        context.goNamed(FamilyPages.wallet.name);
+      },
+      icon: FontAwesomeIcons.question,
+      secondaryBtnText: 'Go back home',
+      primaryBtnText: 'Try again',
+      description: 'Uh-oh! We don’t think that was a Givt coin',
+      primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+    );
+  }
+
+  void _showGenericErrorDialog(BuildContext context) {
+    SomethingWentWrongDialog.show(
+      context,
+      onClickPrimaryBtn: () {
+        context.pop();
+        //TODO
+      },
+      onClickSecondaryBtn: () {
+        context.goNamed(FamilyPages.wallet.name);
+      },
+      secondaryBtnText: 'Go back home',
+      primaryBtnText: 'Try again',
+      primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
     );
   }
 }
