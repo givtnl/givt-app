@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -92,7 +93,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
     }
 
     try {
-      NfcManager.instance.startSession(
+      unawaited(NfcManager.instance.startSession(
         alertMessage: 'Tap your coin to the top\nof the iPhone',
         onError: (error) async {
           log('coin read error: ${error.message}');
@@ -133,30 +134,39 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
                 await NfcManager.instance.stopSession(alertMessage: ' ');
               }
 
-              emit(
-                state.copyWith(
-                  mediumId: mediumId,
-                  readData: readData,
-                  scanNFCStatus: ScanNFCStatus.scanned,
-                ),
-              );
+              if (mediumId.isEmpty) {
+                _handleException(
+                    Exception('NFC coin decoded errorm, medium ID is empty'));
+              } else {
+                emit(
+                  state.copyWith(
+                    mediumId: mediumId,
+                    readData: readData,
+                    scanNFCStatus: ScanNFCStatus.scanned,
+                  ),
+                );
+              }
             }
           }
         },
-      );
+      ));
     } catch (e, stackTrace) {
-      LoggingInfo.instance.error(
-        'Error while scanning coin: $e',
-        methodName: stackTrace.toString(),
-      );
-
-      emit(
-        state.copyWith(
-          scanNFCStatus: ScanNFCStatus.error,
-        ),
-      );
-      NfcManager.instance.stopSession();
-      AnalyticsHelper.logEvent(eventName: AmplitudeEvents.coinScannedError);
+      _handleException(e, stackTrace: stackTrace);
     }
+  }
+
+  void _handleException(Object e, {StackTrace? stackTrace}) {
+    LoggingInfo.instance.error(
+      'Error while scanning coin: $e',
+      methodName: stackTrace.toString(),
+    );
+
+    emit(
+      state.copyWith(
+        scanNFCStatus: ScanNFCStatus.error,
+      ),
+    );
+    NfcManager.instance.stopSession();
+    AnalyticsHelper.logEvent(eventName: AmplitudeEvents.coinScannedError);
   }
 }

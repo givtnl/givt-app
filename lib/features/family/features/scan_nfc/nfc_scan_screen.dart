@@ -44,7 +44,9 @@ class _NFCScanPageState extends State<NFCScanPage> {
     return BlocConsumer<ScanNfcCubit, ScanNfcState>(
       listener: (context, state) async {
         final scanNfcCubit = context.read<ScanNfcCubit>();
-        if (state.scanNFCStatus == ScanNFCStatus.scanning &&
+        if (state.scanNFCStatus == ScanNFCStatus.error) {
+          _showNotAGivtCoinDialog(context);
+        } else if (state.scanNFCStatus == ScanNFCStatus.scanning &&
             Platform.isAndroid) {
           showModalBottomSheet<void>(
             context: context,
