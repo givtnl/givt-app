@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/impact_groups/model/impact_gro
 import 'package:givt_app/features/family/features/impact_groups/widgets/impact_group_details_bottom_panel.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/impact_group_details_expandable_description.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/impact_group_details_header.dart';
-import 'package:givt_app/features/family/shared/widgets/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 
 class ImpactGroupDetailsPage extends StatelessWidget {
   const ImpactGroupDetailsPage({

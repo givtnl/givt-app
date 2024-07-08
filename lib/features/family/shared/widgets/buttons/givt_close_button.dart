@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:givt_app/features/family/shared/widgets/action_container.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:go_router/go_router.dart';
 
 class GivtCloseButton extends StatelessWidget {

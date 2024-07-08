@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/goal_card.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/no_goals_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GoalScreen extends StatelessWidget {

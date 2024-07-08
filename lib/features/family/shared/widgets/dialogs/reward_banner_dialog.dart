@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/widgets/givt_banner.dart';
+import 'package:givt_app/features/family/shared/widgets/content/givt_banner.dart';
 import 'package:go_router/go_router.dart';
 
 class RewardBannerDialog extends StatefulWidget {

@@ -7,9 +7,9 @@ import 'package:givt_app/features/family/features/history/models/history_item.da
 import 'package:givt_app/features/family/features/history/models/income.dart';
 import 'package:givt_app/features/family/features/history/models/income_item_uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/widgets/donation_item_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/income_item_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/content/donation_item_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/content/income_item_widget.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
