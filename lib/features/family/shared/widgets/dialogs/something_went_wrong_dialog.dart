@@ -5,7 +5,7 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
-class SomethingWentWrongDialog extends StatelessWidget {
+class SomethingWentWrongDialog extends StatefulWidget {
   const SomethingWentWrongDialog({
     required this.primaryBtnText,
     required this.onClickPrimaryBtn,
@@ -15,6 +15,7 @@ class SomethingWentWrongDialog extends StatelessWidget {
     this.icon,
     this.iconColor,
     this.circleColor,
+    this.showLoading,
     this.primaryBtnLeftIcon,
     this.primaryBtnRightIcon,
     this.primaryBtnLeadingImage,
@@ -30,12 +31,13 @@ class SomethingWentWrongDialog extends StatelessWidget {
   final IconData? primaryBtnLeftIcon;
   final IconData? primaryBtnRightIcon;
   final Widget? primaryBtnLeadingImage;
-  final void Function() onClickPrimaryBtn;
+  final bool? showLoading;
+  final Future<void> Function() onClickPrimaryBtn;
   final void Function()? onClickSecondaryBtn;
 
   static void show(BuildContext context,
       {required String primaryBtnText,
-      required void Function() onClickPrimaryBtn,
+      required Future<void> Function() onClickPrimaryBtn,
       String? secondaryBtnText = 'Close',
       String? description = 'Oops, something went wrong',
       IconData? icon,
@@ -44,6 +46,7 @@ class SomethingWentWrongDialog extends StatelessWidget {
       IconData? primaryLeftIcon,
       IconData? primaryRightIcon,
       Widget? primaryLeadingImage,
+      bool? showLoading = false,
       void Function()? onClickSecondaryBtn}) {
     showDialog<void>(
       context: context,
@@ -59,9 +62,18 @@ class SomethingWentWrongDialog extends StatelessWidget {
         icon: icon,
         iconColor: iconColor,
         circleColor: circleColor,
+        showLoading: showLoading,
       ),
     );
   }
+
+  @override
+  State<SomethingWentWrongDialog> createState() =>
+      _SomethingWentWrongDialogState();
+}
+
+class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,14 +84,14 @@ class SomethingWentWrongDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon == null)
+            if (widget.icon == null)
               warningIcon()
             else
-              primaryCircleWithIcon(iconData: icon),
+              primaryCircleWithIcon(iconData: widget.icon),
             const SizedBox(height: 24),
-            if (description != null)
+            if (widget.description != null)
               Text(
-                description!,
+                widget.description!,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontFamily: 'Raleway',
@@ -89,16 +101,27 @@ class SomethingWentWrongDialog extends StatelessWidget {
               ),
             const SizedBox(height: 16),
             GivtElevatedButton(
-              text: primaryBtnText,
-              onTap: onClickPrimaryBtn,
-              leftIcon: primaryBtnLeftIcon,
-              rightIcon: primaryBtnRightIcon,
-              leadingImage: primaryBtnLeadingImage,
+              text: widget.primaryBtnText,
+              onTap: () async {
+                if (true == widget.showLoading) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                }
+                await widget.onClickPrimaryBtn.call();
+                setState(() {
+                  _isLoading = false;
+                });
+              },
+              leftIcon: widget.primaryBtnLeftIcon,
+              rightIcon: widget.primaryBtnRightIcon,
+              leadingImage: widget.primaryBtnLeadingImage,
+              isLoading: _isLoading,
             ),
             const SizedBox(height: 16),
             GivtElevatedSecondaryButton(
-              text: secondaryBtnText!,
-              onTap: onClickSecondaryBtn ?? () => context.pop(),
+              text: widget.secondaryBtnText!,
+              onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
             ),
           ],
         ),

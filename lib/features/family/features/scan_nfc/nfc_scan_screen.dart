@@ -162,7 +162,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
     );
   }
 
-  Future<void> _handleScanned(BuildContext context, ScanNfcState state) async {
+  Future<bool> _handleScanned(BuildContext context, ScanNfcState state) async {
     final success = await context
         .read<OrganisationDetailsCubit>()
         .getOrganisationDetails(state.mediumId);
@@ -172,6 +172,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
     } else {
       _showGenericErrorDialog(context);
     }
+    return success;
   }
 
   void _handleScanSuccess(BuildContext context, ScanNfcState state) {
@@ -192,7 +193,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
   void _showNotAGivtCoinDialog(BuildContext context) {
     SomethingWentWrongDialog.show(
       context,
-      onClickPrimaryBtn: () {
+      onClickPrimaryBtn: () async {
         if (Platform.isAndroid) {
           //pop bottom sheet
           context.pop();
@@ -224,9 +225,16 @@ class _NFCScanPageState extends State<NFCScanPage> {
   void _showGenericErrorDialog(BuildContext context) {
     SomethingWentWrongDialog.show(
       context,
-      onClickPrimaryBtn: () {
-        context.pop();
-        _handleScanned(context, context.read<ScanNfcCubit>().state);
+      showLoading: true,
+      onClickPrimaryBtn: () async {
+        final state = context.read<ScanNfcCubit>().state;
+        final success = await context
+            .read<OrganisationDetailsCubit>()
+            .getOrganisationDetails(state.mediumId);
+
+        if (success) {
+          _handleScanSuccess(context, state);
+        }
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.coinMediumIdNotRecognizedTryAgainClicked,
