@@ -136,7 +136,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
 
               if (mediumId.isEmpty) {
                 _handleException(
-                    Exception('NFC coin decoded errorm, medium ID is empty'));
+                    Exception('NFC coin decoded error, medium ID is empty'));
               } else {
                 emit(
                   state.copyWith(
