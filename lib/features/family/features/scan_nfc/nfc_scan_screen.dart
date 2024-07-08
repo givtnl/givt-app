@@ -192,7 +192,11 @@ class _NFCScanPageState extends State<NFCScanPage> {
     SomethingWentWrongDialog.show(
       context,
       onClickPrimaryBtn: () {
-        context.pop();
+        if(Platform.isAndroid) {
+          //pop bottom sheet
+          context.pop();
+        }
+        // pop this dialog
         context.pop();
         context.read<ScanNfcCubit>().readTag();
       },

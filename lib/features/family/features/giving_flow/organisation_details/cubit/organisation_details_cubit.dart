@@ -21,7 +21,6 @@ class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
   // emits true for success, false for failure
   Future<bool> getOrganisationDetails(String mediumId) async {
     emit(const OrganisationDetailsLoadingState());
-    mediumId = mediumId.isEmpty ? defaultMediumId : mediumId;
 
     try {
       final response =
