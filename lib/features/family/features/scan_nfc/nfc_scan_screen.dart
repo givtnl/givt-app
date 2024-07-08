@@ -194,16 +194,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
     SomethingWentWrongDialog.show(
       context,
       onClickPrimaryBtn: () async {
-        if (Platform.isAndroid) {
-          //pop bottom sheet
-          context.pop();
-        }
-        // pop this dialog
-        context.pop();
-        context.read<ScanNfcCubit>().readTag();
-        unawaited(AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.notAGivtCoinNFCErrorTryAgainClicked,
-        ));
+        _handleNotAGivtCoinTryAgainClicked(context);
       },
       onClickSecondaryBtn: () {
         context.goNamed(FamilyPages.wallet.name);
@@ -222,24 +213,27 @@ class _NFCScanPageState extends State<NFCScanPage> {
     ));
   }
 
+  void _handleNotAGivtCoinTryAgainClicked(BuildContext context) {
+    if (Platform.isAndroid) {
+      //pop bottom sheet
+      context.pop();
+    }
+    // pop this dialog
+    context.pop();
+    context.read<ScanNfcCubit>().readTag();
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.notAGivtCoinNFCErrorTryAgainClicked,
+      ),
+    );
+  }
+
   void _showGenericErrorDialog(BuildContext context) {
     SomethingWentWrongDialog.show(
       context,
-      showLoading: true,
+      showLoadingState: true,
       onClickPrimaryBtn: () async {
-        final state = context.read<ScanNfcCubit>().state;
-        final success = await context
-            .read<OrganisationDetailsCubit>()
-            .getOrganisationDetails(state.mediumId);
-
-        if (success) {
-          _handleScanSuccess(context, state);
-        }
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.coinMediumIdNotRecognizedTryAgainClicked,
-          ),
-        );
+        await _handleGenericErrorTryAgainClicked(context);
       },
       onClickSecondaryBtn: () {
         unawaited(
@@ -257,6 +251,22 @@ class _NFCScanPageState extends State<NFCScanPage> {
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.coinMediumIdNotRecognized,
+      ),
+    );
+  }
+
+  Future<void> _handleGenericErrorTryAgainClicked(BuildContext context) async {
+    final state = context.read<ScanNfcCubit>().state;
+    final success = await context
+        .read<OrganisationDetailsCubit>()
+        .getOrganisationDetails(state.mediumId);
+
+    if (success) {
+      _handleScanSuccess(context, state);
+    }
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.coinMediumIdNotRecognizedTryAgainClicked,
       ),
     );
   }

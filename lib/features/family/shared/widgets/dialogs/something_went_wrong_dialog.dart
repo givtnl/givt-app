@@ -46,7 +46,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
       IconData? primaryLeftIcon,
       IconData? primaryRightIcon,
       Widget? primaryLeadingImage,
-      bool? showLoading = false,
+      bool? showLoadingState = false,
       void Function()? onClickSecondaryBtn}) {
     showDialog<void>(
       context: context,
@@ -62,7 +62,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
         icon: icon,
         iconColor: iconColor,
         circleColor: circleColor,
-        showLoading: showLoading,
+        showLoading: showLoadingState,
       ),
     );
   }
