@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -192,16 +193,22 @@ class _NFCScanPageState extends State<NFCScanPage> {
     SomethingWentWrongDialog.show(
       context,
       onClickPrimaryBtn: () {
-        if(Platform.isAndroid) {
+        if (Platform.isAndroid) {
           //pop bottom sheet
           context.pop();
         }
         // pop this dialog
         context.pop();
         context.read<ScanNfcCubit>().readTag();
+        unawaited(AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.notAGivtCoinNFCErrorTryAgainClicked,
+        ));
       },
       onClickSecondaryBtn: () {
         context.goNamed(FamilyPages.wallet.name);
+        unawaited(AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
+        ));
       },
       icon: FontAwesomeIcons.question,
       secondaryBtnText: 'Go back home',
@@ -209,6 +216,9 @@ class _NFCScanPageState extends State<NFCScanPage> {
       description: 'Uh-oh! We don’t think that was a Givt coin',
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
     );
+    unawaited(AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.notAGivtCoinNFCError,
+    ));
   }
 
   void _showGenericErrorDialog(BuildContext context) {
@@ -217,13 +227,29 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () {
         context.pop();
         _handleScanned(context, context.read<ScanNfcCubit>().state);
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.coinMediumIdNotRecognizedTryAgainClicked,
+          ),
+        );
       },
       onClickSecondaryBtn: () {
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName:
+                AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
+          ),
+        );
         context.goNamed(FamilyPages.wallet.name);
       },
       secondaryBtnText: 'Go back home',
       primaryBtnText: 'Try again',
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+    );
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.coinMediumIdNotRecognized,
+      ),
     );
   }
 }
