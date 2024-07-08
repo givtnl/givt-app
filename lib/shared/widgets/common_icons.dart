@@ -72,7 +72,7 @@ Widget switchProfilesIcon({double? width, double? height}) => SvgPicture.asset(
 Widget primaryCircleWithIcon({
   IconData? iconData,
   double? circleSize = 90,
-  double? iconSize,
+  double? iconSize = 40,
   Color? circleColor,
   Color? iconColor,
 }) =>

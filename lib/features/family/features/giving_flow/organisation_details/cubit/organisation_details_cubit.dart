@@ -18,7 +18,8 @@ class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
   static const String defaultMediumId =
       'NjFmN2VkMDE1NTUzMDEyMmMwMDAuZmMwMDAwMDAwMDAx';
 
-  Future<void> getOrganisationDetails(String mediumId) async {
+  // emits true for success, false for failure
+  Future<bool> getOrganisationDetails(String mediumId) async {
     emit(const OrganisationDetailsLoadingState());
     mediumId = mediumId.isEmpty ? defaultMediumId : mediumId;
 
@@ -41,6 +42,7 @@ class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
           },
         ),
       );
+      return true;
     } catch (error, stackTrace) {
       unawaited(
         LoggingInfo.instance.error(
@@ -49,6 +51,7 @@ class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
         ),
       );
       emit(OrganisationDetailsErrorState(mediumId: mediumId));
+      return false;
     }
   }
 }

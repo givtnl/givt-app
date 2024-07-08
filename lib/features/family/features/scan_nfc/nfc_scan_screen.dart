@@ -42,7 +42,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ScanNfcCubit, ScanNfcState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         final scanNfcCubit = context.read<ScanNfcCubit>();
         if (state.scanNFCStatus == ScanNFCStatus.scanning &&
             Platform.isAndroid) {
@@ -101,23 +101,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
           );
         }
         if (state.scanNFCStatus == ScanNFCStatus.scanned) {
-          context
-              .read<OrganisationDetailsCubit>()
-              .getOrganisationDetails(state.mediumId);
-
-          // Android needs the delay to show the success bottom sheet animation
-          // iOS needs this delay to allow for the bottomsheet to close
-          Future.delayed(ScanNfcCubit.animationDuration, () {
-            context.pushReplacementNamed(
-                FamilyPages.familyChooseAmountSlider.name);
-
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
-              eventProperties: {
-                AnalyticsHelper.mediumIdKey: state.mediumId,
-              },
-            );
-          });
+          await _handleScanned(context, state);
         }
       },
       builder: (context, state) {
@@ -175,6 +159,33 @@ class _NFCScanPageState extends State<NFCScanPage> {
     );
   }
 
+  Future<void> _handleScanned(BuildContext context, ScanNfcState state) async {
+    final success = await context
+        .read<OrganisationDetailsCubit>()
+        .getOrganisationDetails(state.mediumId);
+
+    if (success) {
+      _handleScanSuccess(context, state);
+    } else {
+      _showGenericErrorDialog(context);
+    }
+  }
+
+  void _handleScanSuccess(BuildContext context, ScanNfcState state) {
+    // Android needs the delay to show the success bottom sheet animation
+    // iOS needs this delay to allow for the bottomsheet to close
+    Future.delayed(ScanNfcCubit.animationDuration, () {
+      context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
+
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
+        eventProperties: {
+          AnalyticsHelper.mediumIdKey: state.mediumId,
+        },
+      );
+    });
+  }
+
   void _showNotAGivtCoinDialog(BuildContext context) {
     SomethingWentWrongDialog.show(
       context,
@@ -199,7 +210,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
       context,
       onClickPrimaryBtn: () {
         context.pop();
-        //TODO
+        _handleScanned(context, context.read<ScanNfcCubit>().state);
       },
       onClickSecondaryBtn: () {
         context.goNamed(FamilyPages.wallet.name);
