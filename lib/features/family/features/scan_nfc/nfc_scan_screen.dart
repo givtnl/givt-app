@@ -193,9 +193,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
   void _showNotAGivtCoinDialog(BuildContext context) {
     SomethingWentWrongDialog.show(
       context,
-      onClickPrimaryBtn: () async {
-        _handleNotAGivtCoinTryAgainClicked(context);
-      },
+      onClickPrimaryBtn: () async =>
+          _handleNotAGivtCoinTryAgainClicked(context),
       onClickSecondaryBtn: () {
         context.goNamed(FamilyPages.wallet.name);
         unawaited(AnalyticsHelper.logEvent(
@@ -232,9 +231,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
     SomethingWentWrongDialog.show(
       context,
       showLoadingState: true,
-      onClickPrimaryBtn: () async {
-        await _handleGenericErrorTryAgainClicked(context);
-      },
+      onClickPrimaryBtn: () async =>
+          _handleGenericErrorTryAgainClicked(context),
       onClickSecondaryBtn: () {
         unawaited(
           AnalyticsHelper.logEvent(
