@@ -5,8 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
-import 'package:givt_app/features/family/shared/widgets/back_home_button.dart';
-import 'package:givt_app/features/family/shared/widgets/switch_profile_success_button.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 import 'package:lottie/lottie.dart';

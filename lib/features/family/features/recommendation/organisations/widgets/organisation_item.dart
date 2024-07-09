@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_detail_bottomsheet.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/action_container.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationItem extends StatelessWidget {
