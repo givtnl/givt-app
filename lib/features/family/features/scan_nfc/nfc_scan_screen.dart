@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
@@ -12,8 +14,9 @@ import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_f
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_not_available_sheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_scanning_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/start_scan_nfc_button.dart';
-import 'package:givt_app/features/family/shared/widgets/givt_back_button.dart';
-import 'package:givt_app/features/family/shared/widgets/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/dialogs/something_went_wrong_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,9 +43,11 @@ class _NFCScanPageState extends State<NFCScanPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ScanNfcCubit, ScanNfcState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         final scanNfcCubit = context.read<ScanNfcCubit>();
-        if (state.scanNFCStatus == ScanNFCStatus.scanning &&
+        if (state.scanNFCStatus == ScanNFCStatus.error) {
+          _showNotAGivtCoinDialog(context);
+        } else if (state.scanNFCStatus == ScanNFCStatus.scanning &&
             Platform.isAndroid) {
           showModalBottomSheet<void>(
             context: context,
@@ -99,22 +104,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
           );
         }
         if (state.scanNFCStatus == ScanNFCStatus.scanned) {
-          context
-              .read<OrganisationDetailsCubit>()
-              .getOrganisationDetails(state.mediumId);
-          // Android needs the delay to show the success bottom sheet animation
-          // iOS needs this delay to allow for the bottomsheet to close
-          Future.delayed(ScanNfcCubit.animationDuration, () {
-            context.pushReplacementNamed(
-                FamilyPages.familyChooseAmountSlider.name);
-
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
-              eventProperties: {
-                AnalyticsHelper.mediumIdKey: state.mediumId,
-              },
-            );
-          });
+          await _handleScanned(context, state);
         }
       },
       builder: (context, state) {
@@ -169,6 +159,113 @@ class _NFCScanPageState extends State<NFCScanPage> {
               FloatingActionButtonLocation.centerFloat,
         );
       },
+    );
+  }
+
+  Future<bool> _handleScanned(BuildContext context, ScanNfcState state) async {
+    final success = await context
+        .read<OrganisationDetailsCubit>()
+        .getOrganisationDetails(state.mediumId);
+
+    if (success) {
+      _handleScanSuccess(context, state);
+    } else {
+      _showGenericErrorDialog(context);
+    }
+    return success;
+  }
+
+  void _handleScanSuccess(BuildContext context, ScanNfcState state) {
+    // Android needs the delay to show the success bottom sheet animation
+    // iOS needs this delay to allow for the bottomsheet to close
+    Future.delayed(ScanNfcCubit.animationDuration, () {
+      context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
+
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.inAppCoinScannedSuccessfully,
+        eventProperties: {
+          AnalyticsHelper.mediumIdKey: state.mediumId,
+        },
+      );
+    });
+  }
+
+  void _showNotAGivtCoinDialog(BuildContext context) {
+    SomethingWentWrongDialog.show(
+      context,
+      onClickPrimaryBtn: () async =>
+          _handleNotAGivtCoinTryAgainClicked(context),
+      onClickSecondaryBtn: () {
+        context.goNamed(FamilyPages.wallet.name);
+        unawaited(AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
+        ));
+      },
+      icon: FontAwesomeIcons.question,
+      secondaryBtnText: 'Go back home',
+      primaryBtnText: 'Try again',
+      description: 'Uh-oh! We don’t think that was a Givt coin',
+      primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+    );
+    unawaited(AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.notAGivtCoinNFCError,
+    ));
+  }
+
+  void _handleNotAGivtCoinTryAgainClicked(BuildContext context) {
+    if (Platform.isAndroid) {
+      //pop bottom sheet
+      context.pop();
+    }
+    // pop this dialog
+    context.pop();
+    context.read<ScanNfcCubit>().readTag();
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.notAGivtCoinNFCErrorTryAgainClicked,
+      ),
+    );
+  }
+
+  void _showGenericErrorDialog(BuildContext context) {
+    SomethingWentWrongDialog.show(
+      context,
+      showLoadingState: true,
+      onClickPrimaryBtn: () async =>
+          _handleGenericErrorTryAgainClicked(context),
+      onClickSecondaryBtn: () {
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName:
+                AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
+          ),
+        );
+        context.goNamed(FamilyPages.wallet.name);
+      },
+      secondaryBtnText: 'Go back home',
+      primaryBtnText: 'Try again',
+      primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+    );
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.coinMediumIdNotRecognized,
+      ),
+    );
+  }
+
+  Future<void> _handleGenericErrorTryAgainClicked(BuildContext context) async {
+    final state = context.read<ScanNfcCubit>().state;
+    final success = await context
+        .read<OrganisationDetailsCubit>()
+        .getOrganisationDetails(state.mediumId);
+
+    if (success) {
+      _handleScanSuccess(context, state);
+    }
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.coinMediumIdNotRecognizedTryAgainClicked,
+      ),
     );
   }
 }

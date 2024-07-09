@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';

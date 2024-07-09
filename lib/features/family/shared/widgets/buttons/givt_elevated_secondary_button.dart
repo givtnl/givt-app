@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class GivtElevatedSecondaryButton extends StatefulWidget {

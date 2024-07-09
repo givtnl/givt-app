@@ -12,7 +12,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/give_bottomsheet.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 

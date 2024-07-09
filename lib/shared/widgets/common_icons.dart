@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 Widget walletIcon({double? width, double? height}) =>
@@ -11,6 +12,7 @@ Widget calendarClockIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
 Widget plusIcon({double? size}) => FaIcon(
       FontAwesomeIcons.plus,
       color: AppTheme.givtLightGreen,
@@ -37,22 +39,55 @@ Widget declinedIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
 Widget approvedIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_approved.svg',
       width: width,
       height: height,
     );
+
 Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_pending.svg',
       width: width,
       height: height,
     );
+
 Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_error.svg',
     );
+
 Widget familySuperheroesIcon({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/family_superheroes.svg',
       width: width,
       height: height,
+    );
+
+Widget switchProfilesIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/switch_profiles.svg',
+      width: width,
+      height: height,
+    );
+
+Widget primaryCircleWithIcon({
+  IconData? iconData,
+  double? circleSize = 90,
+  double? iconSize = 40,
+  Color? circleColor,
+  Color? iconColor,
+}) =>
+    Container(
+      width: circleSize,
+      height: circleSize,
+      decoration: BoxDecoration(
+        color: circleColor ?? FamilyAppTheme.primary95,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Icon(
+          iconData,
+          color: iconColor ?? FamilyAppTheme.primary20,
+          size: iconSize,
+        ),
+      ),
     );
