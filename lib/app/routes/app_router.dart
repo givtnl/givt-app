@@ -613,7 +613,10 @@ class AppRouter {
     }
 
     if (auth.status == AuthStatus.authenticated) {
-      return '${Pages.home.path}?$query';
+      final isFamilyPage = FamilyPages.values
+          .where((familyPage) => familyPage.path == navigatingPage)
+          .isNotEmpty;
+      return '${isFamilyPage ? FamilyPages.profileSelection.path : Pages.home.path}?$query';
     }
 
     return '${Pages.welcome.path}?$query';
