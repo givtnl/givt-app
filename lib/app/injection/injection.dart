@@ -40,8 +40,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 Future<void> init() async {
-  await _initRequestHelper();
   await _initCoreDependencies();
+  await _initRequestHelper();
   await initAPIService();
 
   /// Init repositories
@@ -66,7 +66,8 @@ Future<RequestHelper> _initRequestHelper() async {
     baseUrlAWS = const String.fromEnvironment('API_URL_AWS_US');
   }
   log('Using API URL: $baseUrl');
-  final requestHelper = RequestHelper(apiURL: baseUrl, apiURLAWS: baseUrlAWS);
+  final requestHelper =
+      RequestHelper(getIt(), getIt(), apiURL: baseUrl, apiURLAWS: baseUrlAWS);
   await requestHelper.init();
   getIt.registerSingleton<RequestHelper>(requestHelper);
   return requestHelper;
