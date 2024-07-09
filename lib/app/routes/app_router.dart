@@ -76,7 +76,9 @@ class AppRouter {
       GoRoute(
         path: '/search-for-coin',
         name: 'search-for-coin',
-        redirect: _redirectFromExternalLink,
+        redirect: (context, state) {
+          return '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${state.uri.query}';
+        },
       ),
       GoRoute(
         path: Pages.splash.path,
@@ -615,7 +617,9 @@ class AppRouter {
 
     if (auth.status == AuthStatus.authenticated) {
       if (auth.user.isUsUser) {
-        return navigatingPage.isNotNullAndNotEmpty() ? '${FamilyPages.profileSelection.path}?$query' : '${FamilyPages.profileSelection.path}${state.uri}';
+        return navigatingPage.isNotNullAndNotEmpty()
+            ? '${FamilyPages.profileSelection.path}?$query'
+            : '${FamilyPages.profileSelection.path}${state.uri}';
       } else {
         return '${Pages.home.path}?$query';
       }
@@ -671,6 +675,7 @@ class AppRouter {
         queryParameters: routerState.uri.queryParameters,
       );
     }
+
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {
       context.goNamed(Pages.welcome.name);
