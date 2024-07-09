@@ -36,8 +36,8 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
-import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
@@ -405,11 +405,11 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.searchForCoin.path,
           name: FamilyPages.searchForCoin.name,
-          redirect: (context, state) => getIt<SharedPreferences>()
-                      .getBool('isInAppCoinFlow') ==
-                  true
-              ? null
-              : "${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}",
+          redirect: (context, state) {
+            return getIt<SharedPreferences>().getBool('isInAppCoinFlow') == true
+                ? null
+                : "${FamilyPages.profileSelection.path}/${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}";
+          },
           builder: (context, state) {
             final String mediumID = state.uri.queryParameters['code'] == null ||
                     state.uri.queryParameters['code']!.contains('null')
@@ -757,6 +757,14 @@ class FamilyAppRoutes {
           },
         ),
       ],
+      redirect: (context, state) {
+        final page = state.uri.queryParameters['page'];
+        if (true == page?.isNotEmpty) {
+          return '${FamilyPages.profileSelection.path}/$page';
+        } else {
+          return null;
+        }
+      },
     ),
   ];
 }
