@@ -18,9 +18,16 @@ class GenerosityChallengeContentHelper {
       image: 'assets/images/generosity_challenge_day_4.svg',
       title: 'Time to help',
       buttonText: 'Start the timer',
+      redirect: FamilyPages.day4Timer.path,
       description:
           "Look around and quickly do as many helpful tasks as you can—like feeding the dog, washing dishes, or tidying up toys. When time's up, see how many tasks you've completed.\n\nReady, set, go!",
       onTap: () {},
+      partnerCard: Task.card(
+        image: 'assets/images/generosity_challenge_day_4.svg',
+        title: 'Time to help',
+        description: "TODO tasks done. That's a nice number!",
+        onTap: () {},
+      ),
     ),
     Task.card(
       image: 'assets/images/generosity_challenge_day_5.svg',
