@@ -17,8 +17,9 @@ class GenerosityChallengeContentHelper {
     Task.card(
       image: 'assets/images/generosity_challenge_day_4.svg',
       title: 'Time to help',
+      buttonText: 'Start the timer',
       description:
-          'Set a timer for 5 minutes and quickly do as many helpful tasks as you can like feeding the dog or washing dishes. When time\'s up, see how many tasks you\'ve completed. \n\nReady, set, go!',
+          "Look around and quickly do as many helpful tasks as you can—like feeding the dog, washing dishes, or tidying up toys. When time's up, see how many tasks you've completed.\n\nReady, set, go!",
       onTap: () {},
     ),
     Task.card(
