@@ -14,14 +14,15 @@ class PictureAttachmentButtons extends StatelessWidget {
     final cubit = context.read<GenerosityChallengeCubit>();
     return Column(
       children: [
-        const SizedBox(height: 8),
-        GivtElevatedButton(
-          onTap: () => cubit.submitDay5Picture(
-            takenWithCamera: true,
-          ),
-          leftIcon: FontAwesomeIcons.camera,
-          text: 'Take Picture',
-        ),
+        // WIP: Bug: pops context for some reason when using camera
+        // const SizedBox(height: 8),
+        // GivtElevatedButton(
+        //   onTap: () => cubit.submitDay5Picture(
+        //     takenWithCamera: true,
+        //   ),
+        //   leftIcon: FontAwesomeIcons.camera,
+        //   text: 'Take Picture',
+        // ),
         const SizedBox(height: 8),
         GivtElevatedSecondaryButton(
           onTap: () => cubit.submitDay5Picture(
