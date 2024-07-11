@@ -16,16 +16,16 @@ class PictureAttachmentButtons extends StatelessWidget {
       children: [
         const SizedBox(height: 8),
         GivtElevatedButton(
-          onTap: () => cubit.saveDay5Picture(
-            takePhotoWithCamera: true,
+          onTap: () => cubit.submitDay5Picture(
+            takenWithCamera: true,
           ),
           leftIcon: FontAwesomeIcons.camera,
           text: 'Take Picture',
         ),
         const SizedBox(height: 8),
         GivtElevatedSecondaryButton(
-          onTap: () => cubit.saveDay5Picture(
-            takePhotoWithCamera: false,
+          onTap: () => cubit.submitDay5Picture(
+            takenWithCamera: false,
           ),
           leftIcon: const Icon(
             FontAwesomeIcons.image,

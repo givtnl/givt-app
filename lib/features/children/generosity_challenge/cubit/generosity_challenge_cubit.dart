@@ -11,8 +11,6 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/repositories/chat_history_repository.dart';
-import 'package:givt_app/utils/media_picker_service.dart';
-import 'package:image_picker/image_picker.dart';
 
 part 'generosity_challenge_state.dart';
 
@@ -203,13 +201,10 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     }
   }
 
-  Future<void> saveDay5Picture({required bool takePhotoWithCamera}) async {
-    final service = MediaPickerService(ImagePicker());
-    final file = takePhotoWithCamera
-        ? await service.takePhoto()
-        : await service.uploadPhoto();
-    final path = await service.savePhoto(file);
-
+  Future<void> submitDay5Picture({required bool takenWithCamera}) async {
+    final path = await _generosityChallengeRepository.submitDay5Picture(
+      takenWithCamera: takenWithCamera,
+    );
     await saveUserDataByKey(
       ChatScriptSaveKey.day5Picture,
       path,
