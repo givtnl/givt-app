@@ -82,29 +82,29 @@ class GenerosityDailyCard extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                    if (task.buttonText.isNotEmpty) const SizedBox(height: 16),
-                    if (task.buttonText.isNotEmpty)
+                    if (task.buttonText.isNotEmpty && redirect)
+                      const SizedBox(height: 16),
+                    if (task.buttonText.isNotEmpty && redirect)
                       GivtElevatedButton(
-                        onTap: redirect
-                            ? () {
-                                context.push(
-                                  '${FamilyPages.generosityChallenge.path}/${task.redirect}',
-                                  extra:
-                                      context.read<GenerosityChallengeCubit>(),
-                                );
-                                AnalyticsHelper.logEvent(
-                                  eventName: AmplitudeEvents
-                                      .startAssignmentFromGenerosityChallenge,
-                                  eventProperties: {
-                                    'title': task.title,
-                                  },
-                                );
-                              }
-                            : task.onTap,
+                        onTap: () {
+                          context.push(
+                            '${FamilyPages.generosityChallenge.path}/${task.redirect}',
+                            extra: context.read<GenerosityChallengeCubit>(),
+                          );
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents
+                                .startAssignmentFromGenerosityChallenge,
+                            eventProperties: {
+                              'title': task.title,
+                            },
+                          );
+                        },
                         isDisabled: isCompleted,
                         text: task.buttonText,
                         rightIcon: FontAwesomeIcons.arrowRight,
                       ),
+                    if (task.customBottomWidget != null)
+                      task.customBottomWidget!,
                     if (isLastDay)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),
