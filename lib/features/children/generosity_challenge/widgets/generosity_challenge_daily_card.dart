@@ -83,25 +83,26 @@ class GenerosityDailyCard extends StatelessWidget {
                         ),
                       ),
                     if (task.buttonText.isNotEmpty && redirect)
-                      const SizedBox(height: 16),
-                    if (task.buttonText.isNotEmpty && redirect)
-                      GivtElevatedButton(
-                        onTap: () {
-                          context.push(
-                            '${FamilyPages.generosityChallenge.path}/${task.redirect}',
-                            extra: context.read<GenerosityChallengeCubit>(),
-                          );
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents
-                                .startAssignmentFromGenerosityChallenge,
-                            eventProperties: {
-                              'title': task.title,
-                            },
-                          );
-                        },
-                        isDisabled: isCompleted,
-                        text: task.buttonText,
-                        rightIcon: FontAwesomeIcons.arrowRight,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: GivtElevatedButton(
+                          onTap: () {
+                            context.push(
+                              '${FamilyPages.generosityChallenge.path}/${task.redirect}',
+                              extra: context.read<GenerosityChallengeCubit>(),
+                            );
+                            AnalyticsHelper.logEvent(
+                              eventName: AmplitudeEvents
+                                  .startAssignmentFromGenerosityChallenge,
+                              eventProperties: {
+                                'title': task.title,
+                              },
+                            );
+                          },
+                          isDisabled: isCompleted,
+                          text: task.buttonText,
+                          rightIcon: FontAwesomeIcons.arrowRight,
+                        ),
                       ),
                     if (task.customBottomWidget != null)
                       task.customBottomWidget!,
