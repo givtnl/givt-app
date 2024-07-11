@@ -38,18 +38,18 @@ class MediaPickerService {
     }
   }
 
-  Future<String> savePhoto(XFile file) async {
+  Future<String> savePhoto(XFile file, String? customfilename) async {
     try {
       final rootPath = await getRootPath();
-      final filename = basename(file.path);
+      final filename = customfilename ?? basename(file.path);
       final path = '$rootPath/$filename';
       await file.saveTo(path);
       return path;
     } catch (error) {
-      Exception('Failed to save day 5 photo locally');
+      Exception('Failed to save photo locally');
       unawaited(
         LoggingInfo.instance.error(
-          'Failed to save day 5 photo locally',
+          'Failed to save photo locally',
         ),
       );
       rethrow;

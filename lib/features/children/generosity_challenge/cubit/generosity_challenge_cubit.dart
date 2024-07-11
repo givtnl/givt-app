@@ -202,12 +202,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   }
 
   Future<void> submitDay5Picture({required bool takenWithCamera}) async {
-    final path = await _generosityChallengeRepository.submitDay5Picture(
+    await _generosityChallengeRepository.submitDay5Picture(
       takenWithCamera: takenWithCamera,
-    );
-    await saveUserDataByKey(
-      ChatScriptSaveKey.day5Picture,
-      path,
     );
     confirmAssignment(
       "Nice! Let's send this to the Mayor.",
@@ -215,8 +211,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   }
 
   Future<String> getDay5PicturePath() async {
-    final path = await _generosityChallengeRepository
-        .loadFromKey(ChatScriptSaveKey.day5Picture.value);
+    final path = await _generosityChallengeRepository.getDay5PicturePath();
     return path;
   }
 

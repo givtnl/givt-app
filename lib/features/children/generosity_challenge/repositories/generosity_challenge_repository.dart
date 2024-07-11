@@ -27,6 +27,8 @@ mixin GenerosityChallengeRepository {
   Future<void> setAlreadyRegistered({required bool isAlreadyRegistered});
 
   Future<String> submitDay5Picture({required bool takenWithCamera});
+
+  Future<String> getDay5PicturePath();
 }
 
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
@@ -158,7 +160,15 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
     final file = takenWithCamera
         ? await service.takePhoto()
         : await service.uploadPhoto();
-    final path = await service.savePhoto(file);
+    final path =
+        await service.savePhoto(file, GenerosityChallengeHelper.day5PictureKey);
     return path;
+  }
+
+  @override
+  Future<String> getDay5PicturePath() async {
+    final service = MediaPickerService(ImagePicker());
+    final rootPath = await service.getRootPath();
+    return '$rootPath/${GenerosityChallengeHelper.day5PictureKey}';
   }
 }

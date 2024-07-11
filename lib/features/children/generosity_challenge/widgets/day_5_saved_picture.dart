@@ -25,6 +25,7 @@ class _Day5SavedPictureState extends State<Day5SavedPicture> {
   }
 
   Future<void> _initializeImagePath() async {
+    imageCache.clear();
     final savedPath =
         await context.read<GenerosityChallengeCubit>().getDay5PicturePath();
 
