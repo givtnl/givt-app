@@ -104,6 +104,9 @@ enum AmplitudeEvents {
   generosityChallengeRegistrationSucceeded(
     'generosity_challenge_registration_succeeded',
   ),
+  generosityChallengeUploadPictureClicked(
+    'generosity_challenge_upload_picture_clicked',
+  ),
   // Registration flow
   continueByEmailSignUpNewUserCliked(
     'continue_by_email_sign_up_new_user_clicked',
@@ -169,7 +172,6 @@ enum AmplitudeEvents {
       'coin_medium_id_not_recognized_go_back_home_clicked'),
   coinMediumIdNotRecognizedTryAgainClicked(
       'coin_medium_id_not_recognized_try_again_clicked'),
-
 
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
