@@ -25,11 +25,12 @@ class TimerWidget extends StatelessWidget {
           '$minutes:$seconds',
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: showRedVersion ? AppTheme.error50 : AppTheme.givtGreen40,
-              fontSize: 57,
-              fontFamily: 'Rouna',
-              fontWeight: FontWeight.w700,
-              fontFeatures: const [FontFeature.tabularFigures()]),
+            color: showRedVersion ? AppTheme.error50 : AppTheme.givtGreen40,
+            fontSize: 57,
+            fontFamily: 'Rouna',
+            fontWeight: FontWeight.w700,
+            fontFeatures: const [FontFeature.tabularFigures()],
+          ),
         ),
       ],
     );

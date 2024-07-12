@@ -8,8 +8,10 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/day4
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 
 class Day4TimerScreen extends StatefulWidget {
   const Day4TimerScreen({super.key});
@@ -132,7 +134,15 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
                     color: AppTheme.generosityChallangeCardBackground,
                   ),
                   child: _showHowManyTasksQuestion
-                      ? const HowManyTasksWidget()
+                      ? HowManyTasksWidget(
+                          onSubmitNrOfTasks: (tasks) {
+                            challenge.confirmAssignment(
+                              "$tasks tasks done. That's a nice number!",
+                            );
+                            context
+                                .goNamed(FamilyPages.generosityChallenge.name);
+                          },
+                        )
                       : TimerWidget(
                           seconds: _displaySeconds(),
                           minutes: _displayMinutes(),
