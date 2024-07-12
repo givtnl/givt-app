@@ -52,6 +52,7 @@ dependencies:
   http_interceptor: 2.0.0-beta.7
   hydrated_bloc: ^9.1.1
   iban: ^1.0.1
+  image_picker: ^1.1.2
   internet_connection_checker_plus: ^2.3.0
   intl: ^0.18.1
   ios_utsname_ext: ^2.2.0
@@ -64,6 +65,7 @@ dependencies:
   mobile_scanner: ^3.5.7
   nfc_manager: ^3.3.0
   package_info_plus: ^4.0.2
+  path: ^1.9.0
   path_provider: ^2.1.2
   permission_handler: ^11.3.0
   share_plus: ^7.0.2

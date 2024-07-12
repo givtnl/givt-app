@@ -25,6 +25,8 @@ enum ChatScriptSaveKey {
   organisation(value: 'organisation'),
 
   allowanceAmount(value: 'allowanceAmount'),
+
+  day5Picture(value: 'day5Picture'),
   ;
 
   const ChatScriptSaveKey({required this.value});

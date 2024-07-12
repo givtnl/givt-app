@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class GivtElevatedSecondaryButton extends StatefulWidget {
@@ -57,7 +60,7 @@ class _GivtElevatedSecondaryButtonState
         onTap: widget.isDisabled == true
             ? null
             : () async {
-                await Future.delayed(const Duration(milliseconds: 50));
+                await Future<void>.delayed(const Duration(milliseconds: 50));
                 widget.onTap?.call();
               },
         onTapDown: widget.isDisabled == true
@@ -71,8 +74,8 @@ class _GivtElevatedSecondaryButtonState
         onTapCancel: widget.isDisabled == true
             ? null
             : () async {
-                await Future.delayed(const Duration(milliseconds: 50));
-                HapticFeedback.lightImpact();
+                await Future<void>.delayed(const Duration(milliseconds: 50));
+                unawaited(HapticFeedback.lightImpact());
                 setState(() {
                   isPressed = false;
                 });
@@ -80,20 +83,18 @@ class _GivtElevatedSecondaryButtonState
         onTapUp: widget.isDisabled == true
             ? null
             : (details) async {
-                await Future.delayed(const Duration(milliseconds: 50));
-                HapticFeedback.lightImpact();
+                await Future<void>.delayed(const Duration(milliseconds: 50));
+                unawaited(HapticFeedback.lightImpact());
                 setState(() {
                   isPressed = false;
                 });
               },
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: const [
               BoxShadow(
-                color: Theme.of(context).colorScheme.primaryContainer,
-                blurRadius: 0,
-                offset: const Offset(0, 0),
+                color: FamilyAppTheme.primary80,
               ),
             ],
           ),
@@ -107,7 +108,7 @@ class _GivtElevatedSecondaryButtonState
             width: MediaQuery.sizeOf(context).width * widget.widthMultiplier,
             height: 58,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
               color: widget.isDisabled == true
                   ? Theme.of(context).colorScheme.surfaceVariant
                   : Colors.white,
@@ -135,12 +136,15 @@ class _GivtElevatedSecondaryButtonState
           Text(
             widget.text,
             style: widget.isDisabled == true
-                ? Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Theme.of(context).colorScheme.outline)
-                : Theme.of(context).textTheme.labelMedium!.copyWith(
+                ? Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    )
+                : Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: AppTheme.primary30,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
                     ),
           ),
         ],
@@ -154,11 +158,16 @@ class _GivtElevatedSecondaryButtonState
           Text(
             widget.text,
             style: widget.isDisabled == true
-                ? Theme.of(context)
-                    .textTheme
-                    .labelMedium
-                    ?.copyWith(color: Theme.of(context).colorScheme.outline)
-                : Theme.of(context).textTheme.labelMedium,
+                ? Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.outline,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    )
+                : Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: AppTheme.primary30,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8),
@@ -178,11 +187,16 @@ class _GivtElevatedSecondaryButtonState
             Text(
               widget.text,
               style: widget.isDisabled == true
-                  ? Theme.of(context)
-                      .textTheme
-                      .labelMedium
-                      ?.copyWith(color: Theme.of(context).colorScheme.outline)
-                  : Theme.of(context).textTheme.labelMedium,
+                  ? Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.outline,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Rouna',
+                      )
+                  : Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: AppTheme.primary30,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Rouna',
+                      ),
             ),
             // all leading images must be 32 pixels wide
             // this centers the text
@@ -195,11 +209,16 @@ class _GivtElevatedSecondaryButtonState
       child: Text(
         widget.text,
         style: widget.isDisabled == true
-            ? Theme.of(context)
-                .textTheme
-                .labelMedium
-                ?.copyWith(color: Theme.of(context).colorScheme.outline)
-            : Theme.of(context).textTheme.labelMedium,
+            ? Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rouna',
+                )
+            : Theme.of(context).textTheme.titleLarge?.copyWith(
+                  color: AppTheme.primary30,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rouna',
+                ),
       ),
     );
   }
