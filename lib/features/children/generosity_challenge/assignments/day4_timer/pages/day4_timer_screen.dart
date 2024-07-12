@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/how_many_tasks_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/timer_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,7 +23,7 @@ class Day4TimerScreen extends StatefulWidget {
 }
 
 class _Day4TimerScreenState extends State<Day4TimerScreen> {
-  _Day4TimerScreenState({int startSeconds = 20 ?? 5 * 60})
+  _Day4TimerScreenState({int startSeconds = 5 * 60})
       : _remainingSeconds = startSeconds;
 
   final _player = AudioPlayer();
@@ -50,6 +52,7 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_remainingSeconds <= 0) {
         timer.cancel();
+        _logTimerEnded();
       } else {
         _handleEffects();
         setState(() {
@@ -57,6 +60,7 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
         });
       }
     });
+    _logTimerStarted();
   }
 
   void _handleEffects() {
@@ -89,6 +93,22 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
       _remainingSeconds.isEven
           ? AssetSource('sounds/tick.wav')
           : AssetSource('sounds/tock.wav'),
+    );
+  }
+
+  void _logTimerStarted() {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.generosityChallengeDay4TimerStarted,
+      ),
+    );
+  }
+
+  void _logTimerEnded() {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.generosityChallengeDay4TimerEnded,
+      ),
     );
   }
 
