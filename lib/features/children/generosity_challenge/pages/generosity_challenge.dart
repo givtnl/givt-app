@@ -63,7 +63,11 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<GenerosityChallengeCubit>().loadFromCache();
+      final cubit = context.read<GenerosityChallengeCubit>();
+      if (cubit.state.blockAppLifeCycleRefresh) {
+        return;
+      }
+      cubit.loadFromCache();
     }
   }
 

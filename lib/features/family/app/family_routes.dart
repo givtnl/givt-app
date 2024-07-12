@@ -20,6 +20,7 @@ import 'package:givt_app/features/children/family_goal/pages/create_family_goal_
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/pages/day4_timer_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
@@ -36,8 +37,8 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
-import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
@@ -114,6 +115,17 @@ class FamilyAppRoutes {
         );
       },
       routes: [
+        GoRoute(
+          path: FamilyPages.day4Timer.path,
+          name: FamilyPages.day4Timer.name,
+          builder: (context, state) {
+            final challengeCubit = state.extra! as GenerosityChallengeCubit;
+            return BlocProvider.value(
+              value: challengeCubit,
+              child: const Day4TimerScreen(),
+            );
+          },
+        ),
         GoRoute(
           path: FamilyPages.generosityChallengeIntroduction.path,
           name: FamilyPages.generosityChallengeIntroduction.name,
@@ -405,11 +417,11 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.searchForCoin.path,
           name: FamilyPages.searchForCoin.name,
-          redirect: (context, state) => getIt<SharedPreferences>()
-                      .getBool('isInAppCoinFlow') ==
-                  true
-              ? null
-              : "${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}",
+          redirect: (context, state) {
+            return getIt<SharedPreferences>().getBool('isInAppCoinFlow') == true
+                ? null
+                : "${FamilyPages.profileSelection.path}/${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}";
+          },
           builder: (context, state) {
             final String mediumID = state.uri.queryParameters['code'] == null ||
                     state.uri.queryParameters['code']!.contains('null')
@@ -757,6 +769,14 @@ class FamilyAppRoutes {
           },
         ),
       ],
+      redirect: (context, state) {
+        final page = state.uri.queryParameters['page'];
+        if (true == page?.isNotEmpty) {
+          return '${FamilyPages.profileSelection.path}/$page';
+        } else {
+          return null;
+        }
+      },
     ),
   ];
 }

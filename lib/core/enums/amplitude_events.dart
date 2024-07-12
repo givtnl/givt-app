@@ -40,7 +40,6 @@ enum AmplitudeEvents {
   pendingDonationApproved('pending_donation_approved'),
   pendingDonationDeclined('pending_donation_declined'),
   pendingDonationCloseClicked('pending_donation_close_clicked'),
-
   personalSummaryClicked('personal_summary_clicked'),
   personalSummaryYearClicked('personal_summary_year_clicked'),
   personalSummaryYearLoaded('personal_summary_year_loaded'),
@@ -52,22 +51,17 @@ enum AmplitudeEvents {
   editGivingGoalClicked('edit_giving_goal_clicked'),
   givingGoalSaved('giving_goal_saved'),
   removeGivingGoalClicked('remove_giving_goal_clicked'),
-
   recurringDonationsClicked('recurring_donations_clicked'),
-
   editAvatarPictureClicked('edit_avatar_picture_clicked'),
   avatarSelected('avatar_selected'),
   avatarSaved('avatar_saved'),
-
   cacheMembersDueToNoFunds('cache_members_due_to_no_funds'),
   failedToCreateMembersFromCache('failed_to_create_members_from_cache'),
-
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),
   familyGoalAmountSet('family_goal_amount_set'),
   familyGoalLaunchClicked('family_goal_launch_clicked'),
   familyGoalLaunchedCloseClicked('family_goal_launched_close_clicked'),
-
   editPaymentDetailsClicked('edit_payment_details_clicked'),
   editPaymentDetailsCanceled('edit_payment_details_canceled'),
   editPaymentDetailsSuccess('edit_payment_details_success'),
@@ -75,21 +69,17 @@ enum AmplitudeEvents {
   editPaymentDetailsConfirmationDialogClosed(
     'edit_payment_details_confirmation_dialog_closed',
   ),
-
   utm('utm'),
-
   giveToFamilyGoalDirectly('give_to_family_goal_directly'),
-
   skipBiometricWhenRegistered('skip_biometric_when_registered'),
   activateBiometricWhenRegistered('activate_biometric_when_registered'),
   skipBiometricWhenLoggedIn('skip_biometric_when_logged_in'),
   activateBiometricWhenLoggedIn('activate_biometric_when_logged_in'),
-
   invitedToImpactGroupBottomSheetShown(
     'invited_to_impact_group_bottom_sheet_shown',
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
-
+  // generosity challenge
   openedGenerosityChallengeNotification(
     'opened_generosity_challenge_notification',
   ),
@@ -115,6 +105,12 @@ enum AmplitudeEvents {
   generosityChallengeRegistrationSucceeded(
     'generosity_challenge_registration_succeeded',
   ),
+  generosityChallengeUploadPictureClicked(
+    'generosity_challenge_upload_picture_clicked',
+  ),
+  generosityChallengeDay4TimerStarted('generosity_challenge_day_4_timer_started'),
+  generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
+  generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
   // Registration flow
   continueByEmailSignUpNewUserCliked(
     'continue_by_email_sign_up_new_user_clicked',
@@ -164,10 +160,23 @@ enum AmplitudeEvents {
   charityCardPressed('charity_card_pressed'),
   accountLocked('account_locked_for_wrong_password'),
   walletTracker('wallet_tracker'),
+
+  // coin scan
   startScanningCoin('in_app_start_scanning_coin'),
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
   coinScannedError('in_app_coin_scanned_error'),
   deeplinkCoinScanned('deeplink_coin_scanned'),
+  notAGivtCoinNFCError('not_a_givt_coin_nfc_error'),
+  coinMediumIdNotRecognized('coin_medium_id_not_recognized'),
+  notAGivtCoinNFCErrorGoBackHomeClicked(
+      'not_a_givt_coin_nfc_error_go_back_home_clicked'),
+  notAGivtCoinNFCErrorTryAgainClicked(
+      'not_a_givt_coin_nfc_error_try_again_clicked'),
+  coinMediumIdNotRecognizedGoBackHomeClicked(
+      'coin_medium_id_not_recognized_go_back_home_clicked'),
+  coinMediumIdNotRecognizedTryAgainClicked(
+      'coin_medium_id_not_recognized_try_again_clicked'),
+
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarImageSelected('avatar_image_selected'),
@@ -188,12 +197,9 @@ enum AmplitudeEvents {
   openCameraPermissionDialog('open_camera_permission_dialog'),
   closePermissionsDialog('close_permissions_dialog'),
   navigationBarPressed('navigation_bar_pressed'),
-
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),
   impactGroupDetailsGiveClicked('impact_group_details_give_clicked'),
-
   manageFamilyPressed('manage_family_pressed'),
-
   registerWithoutChallengeClicked('register_without_challenge_clicked'),
   goToChallengeFromRegistrationClicked(
     'go_to_challenge_from_registration_clicked',
@@ -201,5 +207,6 @@ enum AmplitudeEvents {
   ;
 
   const AmplitudeEvents(this.value);
+
   final String value;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/features/family/shared/widgets/action_container.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ActionTile extends StatefulWidget {

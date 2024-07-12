@@ -100,6 +100,11 @@ enum FamilyPages {
     path: 'allowance-flow',
     name: 'ALLOWANCE-FLOW',
   ),
+  day4Timer(
+    path: 'day-4-timer',
+    name: 'DAY-4-TIMER',
+  ),
+
 
   //school event mode
   familyNameLogin(path: 'family-name-login', name: 'FAMILY_NAME_LOGIN'),

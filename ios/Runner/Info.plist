@@ -83,7 +83,7 @@
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Needed to scan the Givt-beacons.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>We need your camera to scan a QR code</string>
+	<string>We need your camera to scan a QR codes or upload pictures</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>We use FaceID to secure your data</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -92,6 +92,8 @@
 	<string>We need your location for event based giving</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location for event based giving</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need to access the gallery if you want to upload pictures </string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
