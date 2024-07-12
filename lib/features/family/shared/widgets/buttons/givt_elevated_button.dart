@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -55,7 +57,7 @@ class _GivtElevatedButtonState extends State<GivtElevatedButton> {
         onTap: widget.isDisabled == true
             ? null
             : () async {
-                await Future.delayed(const Duration(milliseconds: 50));
+                await Future<void>.delayed(const Duration(milliseconds: 50));
                 widget.onTap?.call();
               },
         onTapDown: widget.isDisabled == true
@@ -69,8 +71,8 @@ class _GivtElevatedButtonState extends State<GivtElevatedButton> {
         onTapCancel: widget.isDisabled == true
             ? null
             : () async {
-                await Future.delayed(const Duration(milliseconds: 50));
-                HapticFeedback.lightImpact();
+                await Future<void>.delayed(const Duration(milliseconds: 50));
+                unawaited(HapticFeedback.lightImpact());
                 setState(() {
                   isPressed = false;
                 });
@@ -78,8 +80,8 @@ class _GivtElevatedButtonState extends State<GivtElevatedButton> {
         onTapUp: widget.isDisabled == true
             ? null
             : (details) async {
-                await Future.delayed(const Duration(milliseconds: 50));
-                HapticFeedback.lightImpact();
+                await Future<void>.delayed(const Duration(milliseconds: 50));
+                unawaited(HapticFeedback.lightImpact());
                 setState(() {
                   isPressed = false;
                 });

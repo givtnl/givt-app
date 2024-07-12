@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:format/format.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/chat_actors_settings.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/enums/day_chat_status.dart';
@@ -198,6 +201,29 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       return format(source, userData);
     } catch (e) {
       return source;
+    }
+  }
+
+  Future<void> submitDay5Picture({required bool takenWithCamera}) async {
+    try {
+      await _generosityChallengeRepository.submitDay5Picture(
+        takenWithCamera: takenWithCamera,
+      );
+      confirmAssignment(
+        "Nice! Let's send this to the Mayor.",
+      );
+    } on Exception catch (e) {
+      unawaited(LoggingInfo.instance.error(e.toString()));
+    }
+  }
+
+  Future<String> getDay5PicturePath() async {
+    try {
+      final path = await _generosityChallengeRepository.getDay5PicturePath();
+      return path;
+    } on Exception catch (e) {
+      unawaited(LoggingInfo.instance.error(e.toString()));
+      rethrow;
     }
   }
 

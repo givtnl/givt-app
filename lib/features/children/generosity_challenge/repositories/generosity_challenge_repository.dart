@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
+import 'package:givt_app/utils/media_picker_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GenerosityChallengeRepository {
@@ -23,6 +25,10 @@ mixin GenerosityChallengeRepository {
   Future<bool> isAlreadyRegistered();
 
   Future<void> setAlreadyRegistered({required bool isAlreadyRegistered});
+
+  Future<String> submitDay5Picture({required bool takenWithCamera});
+
+  Future<String> getDay5PicturePath();
 }
 
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
@@ -146,5 +152,23 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
       _generosityChallengeIsAlreadyRegisteredKey,
       isAlreadyRegistered,
     );
+  }
+
+  @override
+  Future<String> submitDay5Picture({required bool takenWithCamera}) async {
+    final service = MediaPickerService(ImagePicker());
+    final file = takenWithCamera
+        ? await service.takePhoto()
+        : await service.uploadPhoto();
+    final path =
+        await service.savePhoto(file, GenerosityChallengeHelper.day5PictureKey);
+    return path;
+  }
+
+  @override
+  Future<String> getDay5PicturePath() async {
+    final service = MediaPickerService(ImagePicker());
+    final rootPath = await service.getRootPath();
+    return '$rootPath/${GenerosityChallengeHelper.day5PictureKey}';
   }
 }
