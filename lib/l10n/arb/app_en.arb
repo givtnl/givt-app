@@ -1550,5 +1550,6 @@
     "topUpCardInfo": "Add a one-time amount to your\nchild's Wallet",
     "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
     "topUpFundsFailureText": "We are having trouble getting the\nfunds from your card.\nPlease try again.",
-    "topUpSuccessText": "{value0} has been added to\nyour child’s Wallet"
+    "topUpSuccessText": "{value0} has been added to\nyour child’s Wallet",
+    "plusAddMembers": "+ Add members"
 }
