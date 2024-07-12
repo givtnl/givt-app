@@ -157,7 +157,7 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
                       ? HowManyTasksWidget(
                           onSubmitNrOfTasks: (tasks) {
                             challenge.confirmAssignment(
-                              "$tasks tasks done. That's a nice number!",
+                              "$tasks ${tasks == 1 ? "task" : "tasks"} done. That's a nice number!",
                             );
                             context
                                 .goNamed(FamilyPages.generosityChallenge.name);
