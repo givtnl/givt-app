@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -123,13 +124,16 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                     navigate: (context, {isUSUser}) async {
                                       if (CachedFamilyUtils
                                           .isFamilyCacheExist()) {
-                                        await context.pushNamed(FamilyPages
-                                            .cachedChildrenOverview.name);
+                                        await context.pushNamed(
+                                          FamilyPages
+                                              .cachedChildrenOverview.name,
+                                        );
                                       } else {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
                                         );
                                       }
+                                      _logUser(context);
                                     },
                                   ),
                                 );
@@ -147,6 +151,18 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         );
       },
     );
+  }
+
+  void _logUser(BuildContext context) {
+    final user = context.read<AuthCubit>().state.user;
+    unawaited(AnalyticsHelper.setUserProperties(
+      userId: user.guid,
+      userProperties: {
+        'email': user.email,
+        'profile_country': Country.us.countryCode,
+        AnalyticsHelper.isFamilyAppKey: true,
+      },
+    ));
   }
 
   List<Widget> createGridItems(List<Profile> profiles) {
