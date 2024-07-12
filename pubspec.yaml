@@ -74,6 +74,7 @@ dependencies:
   url_launcher: ^6.1.12
   uuid: ^4.4.0
   vibration: ^1.8.4
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   bloc_test: ^9.1.1
@@ -144,3 +145,4 @@ flutter:
     - assets/ca/
     - assets/family/images/
     - assets/family/lotties/
+    - assets/sounds/

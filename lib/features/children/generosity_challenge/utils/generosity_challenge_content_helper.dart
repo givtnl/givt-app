@@ -15,7 +15,7 @@ class GenerosityChallengeContentHelper {
       onTap: () {},
     ),
     Task.card(
-      image: 'assets/images/generosity_challenge_day_4.svg',
+      image: 'assets/images/generosity_challenge_day_4_green.svg',
       title: 'Time to help',
       buttonText: 'Start the timer',
       redirect: FamilyPages.day4Timer.path,
