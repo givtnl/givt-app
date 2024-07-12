@@ -116,6 +116,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         state.copyWith(
           status: GenerosityChallengeStatus.dailyAssigmentConfirm,
           assignmentDynamicDescription: description,
+          blockAppLifeCycleRefresh: true,
         ),
       );
 
