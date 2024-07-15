@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/how_many_tasks_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/timer_widget.dart';
@@ -28,12 +30,12 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
   _Day4TimerScreenState({int startSeconds = 5 * 60})
       : _remainingSeconds = startSeconds;
 
+  final AppConfig _appConfig = getIt();
   final _player = AudioPlayer();
   Timer? _timer;
 
   int _remainingSeconds;
   bool _showHowManyTasksQuestion = false;
-  bool _isDebug = false;
 
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
 
@@ -115,11 +117,6 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
     );
   }
 
-  Future<bool> _isDebugApp() async {
-    final info = await PackageInfo.fromPlatform();
-    return info.packageName.contains('test');
-  }
-
   @override
   void dispose() {
     _player.dispose();
@@ -134,15 +131,6 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
       ..setPlayerMode(PlayerMode.lowLatency)
       ..setReleaseMode(ReleaseMode.stop);
     _startCountdown();
-    _isDebugApp().then(
-      (value) {
-        if (value) {
-          setState(() {
-            _isDebug = value;
-          });
-        }
-      },
-    );
   }
 
   @override
@@ -194,7 +182,7 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
                               showRedVersion:
                                   _isLastTenSeconds() || _isLastSecond(),
                             ),
-                            if (_isDebug)
+                            if (_appConfig.isTestApp)
                               CustomGreenElevatedButton(
                                 onPressed: () {
                                   setState(() {

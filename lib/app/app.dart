@@ -82,7 +82,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider(
             create: (_) => InfraCubit(
-              getIt(),
+              getIt(), getIt(),
             ),
             lazy: false,
           ),

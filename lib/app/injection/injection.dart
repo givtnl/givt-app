@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get_it/get_it.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -94,6 +95,7 @@ Future<String> _checkCountry() async {
 Future<void> _initCoreDependencies() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt
+    ..registerSingleton(AppConfig())
     ..registerLazySingleton(InternetConnection.new)
     ..registerLazySingleton(NotificationService.new)
     ..registerLazySingleton(() => sharedPreferences)
