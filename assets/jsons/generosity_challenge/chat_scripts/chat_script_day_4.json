@@ -38,9 +38,10 @@
     }
   },
   "postChat": {
-    "type": "textMessage",
+    "type": "imageMessage",
     "side": "user",
-    "text": "We each chose an item to give away.",
+    "path": "day5Picture",
+    "mediaSourceType": "storedFile",
     "next": {
       "type": "textMessage",
       "side": "interlocutor",
