@@ -4,18 +4,15 @@ import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:givt_app/app/app.dart';
-import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/logging/log_message.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:ios_utsname_ext/extension.dart' as extensionIOS;
 import 'package:logging/logging.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
-import 'package:ios_utsname_ext/extension.dart' as extensionIOS;
 
 mixin ILoggingInfo {
   Future<void> debug(String message);

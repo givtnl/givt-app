@@ -68,6 +68,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
       }
       UserExt? userExternal;
       if (checkRegistrationAndSetup) {
+        // ignore: unused_local_variable
         final (userExt, session, amountPresets) =
             await _authRepository.isAuthenticated() ?? (null, null, null);
         userExternal = userExt;

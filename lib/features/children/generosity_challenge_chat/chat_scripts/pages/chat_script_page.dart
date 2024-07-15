@@ -10,17 +10,18 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_history.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class ChatScriptPage extends StatefulWidget {
-  const ChatScriptPage({super.key,});
+  const ChatScriptPage({
+    super.key,
+  });
 
   @override
   State<ChatScriptPage> createState() => _ChatScriptPageState();
 }
 
 class _ChatScriptPageState extends State<ChatScriptPage> {
- final AppConfig _appConfig = getIt();
+  final AppConfig _appConfig = getIt();
 
   @override
   Widget build(BuildContext context) {

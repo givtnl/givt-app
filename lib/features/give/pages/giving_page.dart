@@ -7,7 +7,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -20,7 +19,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 
 class GivingPage extends StatefulWidget {
-  const GivingPage({super.key,});
+  const GivingPage({
+    super.key,
+  });
 
   @override
   State<GivingPage> createState() => _GivingPageState();

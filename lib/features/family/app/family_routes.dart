@@ -309,7 +309,7 @@ class FamilyAppRoutes {
               path: FamilyPages.camera.path,
               name: FamilyPages.camera.name,
               builder: (context, state) => BlocProvider(
-                create: (context) => CameraCubit()..checkPermission(),
+                create: (context) => CameraCubit()..checkCameraPermission(),
                 child: const CameraScreen(),
               ),
             ),

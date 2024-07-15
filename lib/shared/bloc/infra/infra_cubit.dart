@@ -8,7 +8,6 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/infra_repository.dart';
 import 'package:ios_utsname_ext/extension.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 part 'infra_state.dart';
 
