@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ChatStoredPictureWidget extends StatefulWidget {
   const ChatStoredPictureWidget(
@@ -26,7 +26,7 @@ class _ChatStoredPictureWidgetState extends State<ChatStoredPictureWidget> {
   @override
   void initState() {
     super.initState();
-    service = MediaPickerService(ImagePicker());
+    service = getIt<MediaPickerService>();
     _initializeImagePath();
   }
 

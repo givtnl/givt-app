@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
-import 'package:image_picker/image_picker.dart';
 
 class Day5SavedPicture extends StatefulWidget {
   const Day5SavedPicture({super.key});
@@ -20,7 +20,7 @@ class _Day5SavedPictureState extends State<Day5SavedPicture> {
   @override
   void initState() {
     super.initState();
-    service = MediaPickerService(ImagePicker());
+    service = getIt<MediaPickerService>();
     _initializeImagePath();
   }
 
