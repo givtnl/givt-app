@@ -157,11 +157,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     final user = context.read<AuthCubit>().state.user;
     unawaited(AnalyticsHelper.setUserProperties(
       userId: user.guid,
-      userProperties: {
-        'email': user.email,
-        'profile_country': Country.us.countryCode,
-        AnalyticsHelper.isFamilyAppKey: true,
-      },
+      userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
     ));
   }
 
@@ -191,7 +187,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               userId: selectedProfile.id,
               userProperties: {
                 if (selectedProfile.id == user.guid) 'email': user.email,
-                'profile_country': Country.us.countryCode,
+                'profile_country': user.country,
+                'first_name': selectedProfile.firstName,
                 AnalyticsHelper.isFamilyAppKey: true,
               },
             );
