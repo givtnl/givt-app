@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/network.dart';
@@ -29,7 +30,6 @@ import 'package:givt_app/shared/models/app_update.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -55,6 +55,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
+  final AppConfig _appConfig = getIt();
 
   @override
   void initState() {
@@ -339,8 +340,7 @@ class _HomePageState extends State<HomePage> {
           TextButton(
             onPressed: () async {
               try {
-                final packageName =
-                    (await PackageInfo.fromPlatform()).packageName;
+                final packageName = _appConfig.packageInfo.packageName;
                 final url = Platform.isAndroid
                     ? 'market://details?id=$packageName'
                     : 'https://apps.apple.com/app/id$packageName';

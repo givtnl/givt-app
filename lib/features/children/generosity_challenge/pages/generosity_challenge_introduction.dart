@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
@@ -10,7 +12,6 @@ import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeIntruduction extends StatefulWidget {
   const GenerosityChallengeIntruduction({
@@ -25,23 +26,8 @@ class GenerosityChallengeIntruduction extends StatefulWidget {
 class _GenerosityChallengeIntruductionState
     extends State<GenerosityChallengeIntruduction> {
   bool _acceptPolicy = false;
-  bool isDebug = false;
   bool isDebugQuickFlowEnabled = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _isDebug().then(
-      (value) => setState(() {
-        isDebug = value;
-      }),
-    );
-  }
-
-  Future<bool> _isDebug() async {
-    final info = await PackageInfo.fromPlatform();
-    return info.packageName.contains('test');
-  }
+  final AppConfig _appConfig = getIt();
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +103,7 @@ class _GenerosityChallengeIntruductionState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isDebug)
+            if (_appConfig.isTestApp)
               ToggleButtons(
                 borderRadius: const BorderRadius.all(Radius.circular(8)),
                 selectedBorderColor: Colors.blue[700],
@@ -160,7 +146,9 @@ class _GenerosityChallengeIntruductionState
             GivtElevatedButton(
               isDisabled: !_acceptPolicy,
               onTap: () {
-                GenerosityChallengeHelper.activate(isDebug: isDebug);
+                GenerosityChallengeHelper.activate(
+                  isDebug: _appConfig.isTestApp,
+                );
                 context.pop();
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.acceptedGenerosityChallenge,

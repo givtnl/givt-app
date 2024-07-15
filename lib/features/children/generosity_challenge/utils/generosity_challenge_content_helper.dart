@@ -2,7 +2,7 @@
 
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_5_saved_picture.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/picture_attachment_buttons.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/day5_picture_attachment_buttons.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 
 class GenerosityChallengeContentHelper {
@@ -33,7 +33,7 @@ class GenerosityChallengeContentHelper {
       title: 'Sharing is caring',
       description:
           "Today's assignment is for each family member to choose 1 item to give away and donate.\n\nGather all your items and take a picture of them together to show the Mayor.",
-      customBottomWidget: PictureAttachmentButtons(),
+      customBottomWidget: Day5PictureAttachmentButtons(),
       partnerCard: Task.card(
         image: 'assets/images/generosity_challenge_day_5.svg',
         title: 'Sharing is caring',

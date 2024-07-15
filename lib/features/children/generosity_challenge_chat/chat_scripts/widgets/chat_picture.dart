@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_stored_picture_widget.dart';
 
 class ChatPicture extends StatelessWidget {
   const ChatPicture({
@@ -7,6 +8,7 @@ class ChatPicture extends StatelessWidget {
     required this.height,
     required this.path,
     required this.isAsset,
+    required this.isStoredFile,
     super.key,
   });
 
@@ -14,6 +16,7 @@ class ChatPicture extends StatelessWidget {
   final double height;
   final String path;
   final bool isAsset;
+  final bool isStoredFile;
 
   bool get isSvg {
     // the simpliest solution for now (w/o additional script params)
@@ -24,11 +27,17 @@ class ChatPicture extends StatelessWidget {
   Widget _createImage() {
     return isAsset
         ? Image.asset(path, width: width, height: height)
-        : Image.network(
-            path,
-            width: width,
-            height: height,
-          );
+        : isStoredFile
+            ? ChatStoredPictureWidget(
+                width: width,
+                height: height,
+                path: path,
+              )
+            : Image.network(
+                path,
+                width: width,
+                height: height,
+              );
   }
 
   Widget _createSvg() {

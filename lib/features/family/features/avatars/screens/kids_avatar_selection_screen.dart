@@ -8,14 +8,16 @@ import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.da
 import 'package:givt_app/features/family/features/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class KidsAvatarSelectionScreen extends StatelessWidget {
-  const KidsAvatarSelectionScreen({super.key,});
+  const KidsAvatarSelectionScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class KidsAvatarSelectionScreen extends StatelessWidget {
                 AnalyticsHelper.rewardKey: 'Avatar updated',
               },
             );
-            showDialog(
+            showDialog<void>(
               context: context,
               barrierDismissible: false,
               barrierColor:
