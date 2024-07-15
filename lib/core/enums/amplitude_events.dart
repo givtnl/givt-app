@@ -108,7 +108,11 @@ enum AmplitudeEvents {
   generosityChallengeUploadPictureClicked(
     'generosity_challenge_upload_picture_clicked',
   ),
-  generosityChallengeDay4TimerStarted('generosity_challenge_day_4_timer_started'),
+  generosityChallengeTakePictureClicked(
+    'generosity_challenge_take_picture_clicked',
+  ),
+  generosityChallengeDay4TimerStarted(
+      'generosity_challenge_day_4_timer_started'),
   generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
   generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
   // Registration flow
@@ -194,7 +198,7 @@ enum AmplitudeEvents {
   ),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
   openAppPermissionsSettings('open_app_permissions_settings'),
-  openCameraPermissionDialog('open_camera_permission_dialog'),
+  nextPermissionsDialogClicked('next_permissions_dialog_clicked'),
   closePermissionsDialog('close_permissions_dialog'),
   navigationBarPressed('navigation_bar_pressed'),
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),

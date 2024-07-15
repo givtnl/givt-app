@@ -10,7 +10,6 @@ import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class GenerosityChallengeIntruduction extends StatefulWidget {
   const GenerosityChallengeIntruduction({

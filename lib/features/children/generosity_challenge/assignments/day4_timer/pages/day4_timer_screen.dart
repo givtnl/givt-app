@@ -15,7 +15,6 @@ import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dar
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class Day4TimerScreen extends StatefulWidget {
   const Day4TimerScreen({super.key});
