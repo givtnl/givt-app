@@ -31,7 +31,6 @@ class _ChatStoredPictureWidgetState extends State<ChatStoredPictureWidget> {
   }
 
   Future<void> _initializeImagePath() async {
-    imageCache.clear();
     final rootPath = await service.getRootPath();
     final savedPath = '$rootPath/${widget.path}';
     setState(() {
