@@ -31,7 +31,7 @@ void logout(
     context.read<ProfilesCubit>().clearProfiles();
     context.read<FlowsCubit>().resetFlow();
     AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
-  } catch (e, s) {
+  } catch (e) {
     // do nothing, even if logging out fails, from welcome page user can re-login
   }
 

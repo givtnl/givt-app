@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class PictureAttachmentButtons extends StatelessWidget {
@@ -15,7 +15,6 @@ class PictureAttachmentButtons extends StatelessWidget {
     final cubit = context.read<GenerosityChallengeCubit>();
     return Column(
       children: [
-        // WIP: Bug: pops context for some reason when using camera
         const SizedBox(height: 8),
         GivtElevatedButton(
           onTap: () => cubit.submitDay5Picture(

@@ -2,12 +2,15 @@ import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:go_router/go_router.dart';
 
 class NfcNotAvailableSheet extends StatelessWidget {
-  const NfcNotAvailableSheet({required this.scanNfcCubit, super.key,});
+  const NfcNotAvailableSheet({
+    required this.scanNfcCubit,
+    super.key,
+  });
   final ScanNfcCubit scanNfcCubit;
   @override
   Widget build(BuildContext context) {

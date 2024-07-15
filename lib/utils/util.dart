@@ -1,15 +1,8 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:appcheck/appcheck.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/utils/app_theme.dart';
 import 'package:intl/intl.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-
-import 'app_theme.dart';
 
 class Util {
   /// Features overlay keys
@@ -71,7 +64,7 @@ AgMBAAE=
 
     return icon;
   }
-  
+
   // todo remove this
   static String getCurrencyName({required Country country}) {
     return country == Country.us

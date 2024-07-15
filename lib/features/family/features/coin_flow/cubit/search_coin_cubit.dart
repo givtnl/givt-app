@@ -38,7 +38,7 @@ class SearchCoinCubit extends Cubit<SearchCoinState> {
     // checking if the request took less than the animation duration
     if (state.stopwatch.elapsedMilliseconds <
         SearchCoinCubit.searchDuration.inMilliseconds) {
-      await Future.delayed(
+      await Future<void>.delayed(
         SearchCoinCubit.searchDuration -
             Duration(
               milliseconds: state.stopwatch.elapsedMilliseconds,

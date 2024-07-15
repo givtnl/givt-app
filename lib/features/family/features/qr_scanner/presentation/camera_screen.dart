@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
@@ -19,7 +18,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key,});
+  const CameraScreen({
+    super.key,
+  });
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -47,7 +48,7 @@ class _CameraScreenState extends State<CameraScreen> {
               .getOrganisationDetails(state.qrValue);
         }
         if (state.status == CameraStatus.permissionPermanentlyDeclined) {
-          showDialog(
+          showDialog<void>(
             context: context,
             builder: (_) {
               return _buildPermissionDialog(isSettings: true);
@@ -55,7 +56,7 @@ class _CameraScreenState extends State<CameraScreen> {
           );
         }
         if (state.status == CameraStatus.requestPermission) {
-          showDialog(
+          showDialog<void>(
             context: context,
             builder: (_) {
               return _buildPermissionDialog();
@@ -75,7 +76,8 @@ class _CameraScreenState extends State<CameraScreen> {
                   'goal_name': orgState.organisation.name,
                 },
               );
-              context.pushReplacementNamed(FamilyPages.familyChooseAmountSlider.name);
+              context.pushReplacementNamed(
+                  FamilyPages.familyChooseAmountSlider.name);
             }
           },
           builder: (context, orgState) {
