@@ -69,12 +69,12 @@ Future<void> bootstrap(
     storageDirectory: await getApplicationDocumentsDirectory(),
   );
 
-  await LoggingInfo.instance.info('App started');
-
   // Initialize the dependency injection
   await get_it_injection.init();
   await get_it_injection_family.init();
   await get_it_injection.getIt.allReady();
+
+  await LoggingInfo.instance.info('App started');
 
   await FirebaseMessaging.instance.requestPermission();
 
