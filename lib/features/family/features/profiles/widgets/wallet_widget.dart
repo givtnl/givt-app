@@ -4,13 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class WalletWidget extends StatefulWidget {
   const WalletWidget({
@@ -31,8 +32,10 @@ class WalletWidget extends StatefulWidget {
 }
 
 class _WalletWidgetState extends State<WalletWidget> {
+  final AppConfig _appConfig = getIt();
+
   Future<String> _getAppIDAndVersion() async {
-    final packageInfo = await PackageInfo.fromPlatform();
+    final packageInfo = _appConfig.packageInfo;
     final result =
         '${packageInfo.packageName} v${packageInfo.version}(${packageInfo.buildNumber})';
     return result;

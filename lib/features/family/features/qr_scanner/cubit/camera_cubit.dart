@@ -31,7 +31,7 @@ class CameraCubit extends Cubit<CameraState> {
     emit(state.copyWith(status: CameraStatus.initial));
     final status = await Permission.camera.status;
     //delay is from design
-    await Future.delayed(_permissionDialogDelay);
+    await Future<void>.delayed(_permissionDialogDelay);
 
     if (status.isDenied) {
       emit(state.copyWith(status: CameraStatus.requestPermission));

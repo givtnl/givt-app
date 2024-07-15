@@ -4,7 +4,6 @@ import 'package:givt_app/features/children/generosity_challenge/models/day.dart'
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin GenerosityChallengeRepository {
@@ -34,6 +33,7 @@ mixin GenerosityChallengeRepository {
 class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   GenerosityChallengeRepositoryImpl(
     this.sharedPreferences,
+    this.mediaPickerService,
   );
 
   static const String _generosityChallengeDaysKey = 'generosityChallengeDays';
@@ -43,6 +43,7 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
       'generosityChallengeIsAlreadyRegisteredKey';
 
   final SharedPreferences sharedPreferences;
+  final MediaPickerService mediaPickerService;
 
   @override
   Future<void> saveToCache(List<Day> days) async {
@@ -156,19 +157,17 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
 
   @override
   Future<String> submitDay5Picture({required bool takenWithCamera}) async {
-    final service = MediaPickerService(ImagePicker());
     final file = takenWithCamera
-        ? await service.takePhoto()
-        : await service.uploadPhoto();
-    final path =
-        await service.savePhoto(file, GenerosityChallengeHelper.day5PictureKey);
+        ? await mediaPickerService.takePhoto()
+        : await mediaPickerService.uploadPhoto();
+    final path = await mediaPickerService.savePhoto(
+        file, GenerosityChallengeHelper.day5PictureKey);
     return path;
   }
 
   @override
   Future<String> getDay5PicturePath() async {
-    final service = MediaPickerService(ImagePicker());
-    final rootPath = await service.getRootPath();
+    final rootPath = await mediaPickerService.getRootPath();
     return '$rootPath/${GenerosityChallengeHelper.day5PictureKey}';
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 
 class ProfilesEmptyStateWidget extends StatelessWidget {
   const ProfilesEmptyStateWidget({

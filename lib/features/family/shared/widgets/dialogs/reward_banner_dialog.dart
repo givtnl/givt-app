@@ -35,9 +35,9 @@ class _RewardBannerDialogState extends State<RewardBannerDialog>
   );
 
   Future<void> _animateBanner() async {
-    await Future.delayed(_showingBannerInitialDelay);
+    await Future<void>.delayed(_showingBannerInitialDelay);
     await _controller.forward();
-    await Future.delayed(_showingBannerDuration);
+    await Future<void>.delayed(_showingBannerDuration);
     await _controller.reverse();
     if (mounted) {
       context.pop();

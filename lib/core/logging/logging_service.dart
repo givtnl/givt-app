@@ -4,6 +4,9 @@ import 'dart:developer' as dev;
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:givt_app/app/app.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/logging/log_message.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:http/http.dart' as http;

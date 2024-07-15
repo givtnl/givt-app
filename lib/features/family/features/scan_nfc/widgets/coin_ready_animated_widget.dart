@@ -27,12 +27,12 @@ class _CoinReadyAnimatedWidgetState extends State<CoinReadyAnimatedWidget>
     animation = Tween<double>(begin: 1, end: 25).animate(controller)
       ..addStatusListener((status) async {
         if (status == AnimationStatus.completed) {
-          await Future.delayed(
+          await Future<void>.delayed(
             const Duration(milliseconds: 200),
           );
           controller.reverse();
         } else if (status == AnimationStatus.dismissed) {
-          await Future.delayed(
+          await Future<void>.delayed(
             const Duration(milliseconds: 100),
           );
           controller.forward();

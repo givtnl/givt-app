@@ -16,6 +16,7 @@ class ChatBubble extends StatelessWidget {
     required this.isUser,
     required this.backgroundColor,
     required this.isAssetMedia,
+    required this.isStoredFile,
     required this.isAssetAvatar,
     required this.isSameSide,
     required this.isNextSideOpposite,
@@ -39,6 +40,7 @@ class ChatBubble extends StatelessWidget {
         mediaType = ChatBubbleMediaType.none,
         isAssetMedia = false,
         isAssetAvatar = true,
+        isStoredFile = false,
         mediaWidth = null,
         mediaHeight = null;
 
@@ -58,6 +60,7 @@ class ChatBubble extends StatelessWidget {
         mediaHeight = 50,
         isAssetMedia = true,
         isAssetAvatar = true,
+        isStoredFile = false,
         showAvatar = true;
 
   const ChatBubble.image({
@@ -68,6 +71,7 @@ class ChatBubble extends StatelessWidget {
     required this.isNextSideOpposite,
     required this.mediaPath,
     required this.isAssetMedia,
+    required this.isStoredFile,
     required this.showAvatar,
     super.key,
     this.contentPadding = const EdgeInsets.all(16),
@@ -95,6 +99,7 @@ class ChatBubble extends StatelessWidget {
   final Color backgroundColor;
   final bool isAssetMedia;
   final bool isAssetAvatar;
+  final bool isStoredFile;
   final bool isSameSide;
   final bool isNextSideOpposite;
   final EdgeInsets contentPadding;
@@ -217,6 +222,7 @@ class ChatBubble extends StatelessWidget {
           height: height,
           path: mediaPath,
           isAsset: isAssetMedia,
+          isStoredFile: isStoredFile,
         );
       case ChatBubbleMediaType.lottie:
         child = isAssetMedia
@@ -226,7 +232,19 @@ class ChatBubble extends StatelessWidget {
         child = const SizedBox.shrink();
     }
     return ClipRRect(
-      borderRadius: const BorderRadius.all(Radius.circular(_cornerRadius)),
+      // - 10 == padding on each side of the bubble
+      // serves to make concentric border radiuses
+      // see https://graphicdesign.stackexchange.com/questions/8919/how-to-compute-the-radii-radiuses-of-corners-for-concentric-rounded-rects
+      borderRadius: BorderRadius.only(
+        topLeft: const Radius.circular(_cornerRadius - 10),
+        topRight: const Radius.circular(_cornerRadius - 10),
+        bottomLeft: Radius.circular(
+          isUser ? _cornerRadius - 10 : 0,
+        ),
+        bottomRight: Radius.circular(
+          isUser ? 0 : _cornerRadius - 10,
+        ),
+      ),
       child: child,
     );
   }

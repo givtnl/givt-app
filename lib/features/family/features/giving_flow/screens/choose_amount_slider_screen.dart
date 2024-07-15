@@ -11,10 +11,10 @@ import 'package:givt_app/features/family/features/giving_flow/organisation_detai
 import 'package:givt_app/features/family/features/giving_flow/widgets/organisation_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/content/wallet.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,7 +42,9 @@ class ChooseAmountSliderScreen extends StatelessWidget {
           );
         } else if (state is CreateTransactionSuccessState) {
           context.pushReplacementNamed(
-            flow.isCoin ? FamilyPages.successCoin.name : FamilyPages.success.name,
+            flow.isCoin
+                ? FamilyPages.successCoin.name
+                : FamilyPages.success.name,
           );
         }
       },

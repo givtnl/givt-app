@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -9,6 +10,7 @@ class GivtElevatedButton extends StatelessWidget {
     super.key,
     this.isDisabled = false,
     this.isLoading = false,
+    this.isTertiary = false,
     this.leftIcon,
     this.rightIcon,
     this.leadingImage,
@@ -19,6 +21,7 @@ class GivtElevatedButton extends StatelessWidget {
   final bool isDisabled;
   final String text;
   final bool isLoading;
+  final bool isTertiary;
   final IconData? leftIcon;
   final IconData? rightIcon;
   final Widget? leadingImage;
@@ -26,9 +29,11 @@ class GivtElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: onTap ?? () {},
-      borderColor: AppTheme.givtGreen40,
+      borderColor:
+          isTertiary == true ? AppTheme.secondary80 : AppTheme.givtGreen40,
       isDisabled: isDisabled,
       borderSize: 0.01,
       baseBorderSize: 4,
@@ -36,14 +41,18 @@ class GivtElevatedButton extends StatelessWidget {
         height: 58,
         width: MediaQuery.sizeOf(context).width * widthMultiplier,
         decoration: BoxDecoration(
-          color: isDisabled ? AppTheme.givtGraycece : AppTheme.primary80,
+          color: isDisabled
+              ? AppTheme.givtGraycece
+              : isTertiary == true
+                  ? Colors.white
+                  : AppTheme.primary80,
         ),
-        child: getChild(context),
+        child: getChild(context, themeData),
       ),
     );
   }
 
-  Widget getChild(BuildContext context) {
+  Widget getChild(BuildContext context, ThemeData themeData) {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -58,7 +67,7 @@ class GivtElevatedButton extends StatelessWidget {
               leftIcon,
               size: 24,
               color: isDisabled
-                  ? Theme.of(context).colorScheme.outline
+                  ? themeData.colorScheme.outline
                   : AppTheme.givtGreen40,
             ),
           ),
@@ -66,16 +75,16 @@ class GivtElevatedButton extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             style: isDisabled == true
-                ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    )
-                : Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.givtGreen40,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
+                ? themeData.textTheme.labelMedium?.copyWith(
+                    color: themeData.colorScheme.outline,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  )
+                : themeData.textTheme.labelMedium?.copyWith(
+                    color: AppTheme.givtGreen40,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  ),
           ),
         ],
       );
@@ -89,16 +98,16 @@ class GivtElevatedButton extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             style: isDisabled == true
-                ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    )
-                : Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.givtGreen40,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
+                ? themeData.textTheme.labelMedium?.copyWith(
+                    color: themeData.colorScheme.outline,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  )
+                : themeData.textTheme.labelMedium?.copyWith(
+                    color: AppTheme.givtGreen40,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12),
@@ -106,7 +115,7 @@ class GivtElevatedButton extends StatelessWidget {
               rightIcon,
               size: 24,
               color: isDisabled
-                  ? Theme.of(context).colorScheme.outline
+                  ? themeData.colorScheme.outline
                   : AppTheme.givtGreen40,
             ),
           ),
@@ -125,16 +134,16 @@ class GivtElevatedButton extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               style: isDisabled == true
-                  ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Rouna',
-                      )
-                  : Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.givtGreen40,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Rouna',
-                      ),
+                  ? themeData.textTheme.labelMedium?.copyWith(
+                      color: themeData.colorScheme.outline,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    )
+                  : themeData.textTheme.labelMedium?.copyWith(
+                      color: AppTheme.givtGreen40,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    ),
             ),
             // all leading images must be 32 pixels wide
             // this centers the text
@@ -148,16 +157,16 @@ class GivtElevatedButton extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: isDisabled == true
-            ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.outline,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                )
-            : Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppTheme.givtGreen40,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                ),
+            ? themeData.textTheme.labelMedium?.copyWith(
+                color: themeData.colorScheme.outline,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Rouna',
+              )
+            : themeData.textTheme.labelMedium?.copyWith(
+                color: AppTheme.givtGreen40,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Rouna',
+              ),
       ),
     );
   }

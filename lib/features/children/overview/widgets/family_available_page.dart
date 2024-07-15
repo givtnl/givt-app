@@ -6,7 +6,6 @@ import 'package:givt_app/features/children/family_history/family_history.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/profiles_overview_widget.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 class FamilyAvailablePage extends StatefulWidget {
   const FamilyAvailablePage({
@@ -18,19 +17,6 @@ class FamilyAvailablePage extends StatefulWidget {
 }
 
 class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
-  PackageInfo? info;
-  @override
-  void initState() {
-    super.initState();
-    getInfo();
-  }
-
-  Future<void> getInfo() async {
-    final updatedInfo = await PackageInfo.fromPlatform();
-    setState(() {
-      info = updatedInfo;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

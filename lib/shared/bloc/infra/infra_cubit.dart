@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/repositories/infra_repository.dart';
@@ -11,9 +12,11 @@ import 'package:ios_utsname_ext/extension.dart';
 part 'infra_state.dart';
 
 class InfraCubit extends Cubit<InfraState> {
-  InfraCubit(this.infraRepository) : super(const InfraInitial());
+  InfraCubit(this.infraRepository, this.appConfig)
+      : super(const InfraInitial());
 
   final InfraRepository infraRepository;
+  final AppConfig appConfig;
 
   Future<void> contactSupport({
     required String guid,
@@ -25,7 +28,7 @@ class InfraCubit extends Cubit<InfraState> {
     try {
       message = message.replaceAll('\n', '<br>');
       final applang = 'App Language : $appLanguage';
-      final info = await PackageInfo.fromPlatform();
+      final info = appConfig.packageInfo;
 
       late String os;
       late String device;
@@ -72,7 +75,7 @@ class InfraCubit extends Cubit<InfraState> {
   Future<void> checkForUpdate() async {
     emit(const InfraLoading());
     try {
-      final info = await PackageInfo.fromPlatform();
+      final info = appConfig.packageInfo;
       final buildNumber = info.buildNumber;
       final update = await infraRepository.checkAppUpdate(
         buildNumber: buildNumber,

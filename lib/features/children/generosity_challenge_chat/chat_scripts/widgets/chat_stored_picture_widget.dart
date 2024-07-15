@@ -1,19 +1,25 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
 
-class Day5SavedPicture extends StatefulWidget {
-  const Day5SavedPicture({super.key});
+class ChatStoredPictureWidget extends StatefulWidget {
+  const ChatStoredPictureWidget(
+      {required this.width,
+      required this.height,
+      required this.path,
+      super.key});
+  final double width;
+  final double height;
+  final String path;
 
   @override
-  State<Day5SavedPicture> createState() => _Day5SavedPictureState();
+  State<ChatStoredPictureWidget> createState() =>
+      _ChatStoredPictureWidgetState();
 }
 
-class _Day5SavedPictureState extends State<Day5SavedPicture> {
+class _ChatStoredPictureWidgetState extends State<ChatStoredPictureWidget> {
   late final MediaPickerService service;
   String? imagePath;
 
@@ -25,10 +31,8 @@ class _Day5SavedPictureState extends State<Day5SavedPicture> {
   }
 
   Future<void> _initializeImagePath() async {
-    imageCache.clear();
-    final savedPath =
-        await context.read<GenerosityChallengeCubit>().getDay5PicturePath();
-
+    final rootPath = await service.getRootPath();
+    final savedPath = '$rootPath/${widget.path}';
     setState(() {
       imagePath = savedPath;
     });
@@ -37,9 +41,9 @@ class _Day5SavedPictureState extends State<Day5SavedPicture> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 16),
-      height: MediaQuery.sizeOf(context).width * .4,
-      width: MediaQuery.sizeOf(context).width * .5,
+      width: widget.width,
+      height: widget.height,
+      // margin: EdgeInsets.only(bottom: 30),
       decoration: BoxDecoration(
         image: imagePath != null
             ? DecorationImage(
@@ -47,7 +51,6 @@ class _Day5SavedPictureState extends State<Day5SavedPicture> {
                 fit: BoxFit.cover,
               )
             : null,
-        borderRadius: BorderRadius.circular(20),
       ),
       child: imagePath == null
           ? const Center(child: CircularProgressIndicator())

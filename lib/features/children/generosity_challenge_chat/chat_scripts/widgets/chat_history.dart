@@ -9,7 +9,9 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_delimiter.dart';
 
 class ChatHistory extends StatefulWidget {
-  const ChatHistory({super.key,});
+  const ChatHistory({
+    super.key,
+  });
 
   @override
   State<ChatHistory> createState() => _ChatHistoryState();
@@ -140,6 +142,8 @@ class _ChatHistoryState extends State<ChatHistory> {
             isSameSide: isSameSide,
             isNextSideOpposite: isNextSideOpposite,
             mediaPath: item.path,
+            isStoredFile: item.mediaSourceType ==
+                ChatScriptItemMediaSourceType.storedFile,
             isAssetMedia:
                 item.mediaSourceType == ChatScriptItemMediaSourceType.asset,
           ),

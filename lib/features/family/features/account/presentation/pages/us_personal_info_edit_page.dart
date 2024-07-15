@@ -35,7 +35,6 @@ class USPersonalInfoEditPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     final locals = context.l10n;
     final user = context.watch<AuthCubit>().state.user;
 
