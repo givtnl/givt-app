@@ -25,10 +25,11 @@ class CameraPermissionsDialog extends StatelessWidget {
         isSettings: isSettings,
         onNextTap: () {
           AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.nextPermissionsDialogClicked,
-              eventProperties: {
-                'permission': 'camera',
-              });
+            eventName: AmplitudeEvents.nextPermissionsDialogClicked,
+            eventProperties: {
+              'permission': 'camera',
+            },
+          );
           context.read<CameraCubit>().grantAccess();
           context.pop();
         },
