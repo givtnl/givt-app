@@ -493,11 +493,7 @@ class AuthRepositoyImpl with AuthRepository {
 
     return AnalyticsHelper.setUserProperties(
       userId: newUserExt.guid,
-      userProperties: {
-        'email': newUserExt.email,
-        'profile_country': newUserExt.country,
-        AnalyticsHelper.isFamilyAppKey: newUserExt.isUsUser,
-      },
+      userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
     );
   }
 

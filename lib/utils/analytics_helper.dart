@@ -39,7 +39,9 @@ class AnalyticsHelper {
     Map<String, dynamic>? eventProperties,
   }) {
     return _logEvent(
-        eventName.value, eventProperties,);
+      eventName.value,
+      eventProperties,
+    );
   }
 
   static Future<void> _logEvent(
@@ -52,6 +54,10 @@ class AnalyticsHelper {
     );
 
     log('$eventName pressed with event properties: $eventProperties');
+  }
+
+  static Future<void> clearUserProperties() async {
+    await _amplitude?.clearUserProperties();
   }
 
   static Future<void> setUserProperties({

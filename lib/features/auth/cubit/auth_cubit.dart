@@ -55,8 +55,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       var userExt = await _authRepositoy.fetchUserExtension(session.userGUID);
       if (password == TempUser.defaultPassword) {
-        await AnalyticsHelper.
-        setUserProperties(userId: userExt.guid);
+        await AnalyticsHelper.setUserProperties(userId: userExt.guid);
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.continueByEmailSignUpTempUserClicked,
@@ -207,6 +206,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: state.user.email,
       ),
     );
+    unawaited(AnalyticsHelper.clearUserProperties());
   }
 
   Future<void> register({
