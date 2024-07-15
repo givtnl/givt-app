@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/give_bottomsheet.dart';
@@ -80,7 +79,6 @@ class _ProfileScreenState extends State<ProfileScreen>
       builder: (context, state) {
         final isGiveButtonActive = state.activeProfile.wallet.balance > 0;
         final hasDonations = state.activeProfile.hasDonations;
-        final goalCubit = context.watch<ImpactGroupsCubit>();
 
         var countdownAmount = 0.0;
         if (state is ProfilesCountdownState) {

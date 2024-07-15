@@ -33,7 +33,7 @@ class _ActionContainerState extends State<ActionContainer> {
   Color? borderColor;
 
   Future<void> _actionDelay() async {
-    await Future.delayed(const Duration(milliseconds: 30));
+    await Future<void>.delayed(const Duration(milliseconds: 30));
   }
 
   bool _isManualPressed = false;

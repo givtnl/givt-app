@@ -9,20 +9,20 @@ import 'package:givt_app/utils/app_theme.dart';
 class GivtElevatedSecondaryButton extends StatefulWidget {
   const GivtElevatedSecondaryButton({
     super.key,
-    this.isDisabled,
     required this.onTap,
     required this.text,
-    this.isLoading,
     this.leftIcon,
     this.rightIcon,
     this.leadingImage,
+    this.isLoading = false,
+    this.isDisabled = false,
     this.widthMultiplier = .9,
   });
 
   final VoidCallback? onTap;
-  final bool? isDisabled;
+  final bool isDisabled;
   final String text;
-  final bool? isLoading;
+  final bool isLoading;
   final Widget? leftIcon;
   final Widget? rightIcon;
   final Widget? leadingImage;
@@ -46,24 +46,24 @@ class _GivtElevatedSecondaryButtonState
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isDisabled == true || isPressed == true) {
+    if (widget.isDisabled || isPressed) {
       dropShadowHeight = 2;
       paddingtop = 4;
     } else {
       dropShadowHeight = 4;
       paddingtop = 2;
     }
-
+    final theme = FamilyAppTheme().toThemeData();
     return Padding(
-      padding: EdgeInsets.only(top: widget.isDisabled == true ? 4 : paddingtop),
+      padding: EdgeInsets.only(top: widget.isDisabled ? 4 : paddingtop),
       child: GestureDetector(
-        onTap: widget.isDisabled == true
+        onTap: widget.isDisabled
             ? null
             : () async {
                 await Future<void>.delayed(const Duration(milliseconds: 50));
                 widget.onTap?.call();
               },
-        onTapDown: widget.isDisabled == true
+        onTapDown: widget.isDisabled
             ? null
             : (details) {
                 SystemSound.play(SystemSoundType.click);
@@ -71,7 +71,7 @@ class _GivtElevatedSecondaryButtonState
                   isPressed = true;
                 });
               },
-        onTapCancel: widget.isDisabled == true
+        onTapCancel: widget.isDisabled
             ? null
             : () async {
                 await Future<void>.delayed(const Duration(milliseconds: 50));
@@ -80,7 +80,7 @@ class _GivtElevatedSecondaryButtonState
                   isPressed = false;
                 });
               },
-        onTapUp: widget.isDisabled == true
+        onTapUp: widget.isDisabled
             ? null
             : (details) async {
                 await Future<void>.delayed(const Duration(milliseconds: 50));
@@ -99,7 +99,7 @@ class _GivtElevatedSecondaryButtonState
             ],
           ),
           padding: EdgeInsets.only(
-            bottom: widget.isDisabled == true ? 0 : dropShadowHeight,
+            bottom: widget.isDisabled ? 0 : dropShadowHeight,
             right: 2,
             left: 2,
             top: 2,
@@ -109,19 +109,19 @@ class _GivtElevatedSecondaryButtonState
             height: 58,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: widget.isDisabled == true
-                  ? Theme.of(context).colorScheme.surfaceVariant
+              color: widget.isDisabled
+                  ? theme.colorScheme.surfaceVariant
                   : Colors.white,
             ),
-            child: getChild(),
+            child: getChild(theme),
           ),
         ),
       ),
     );
   }
 
-  Widget getChild() {
-    if (widget.isLoading == true) {
+  Widget getChild(ThemeData theme) {
+    if (widget.isLoading) {
       return const CustomCircularProgressIndicator();
     }
     if (widget.leftIcon != null) {
@@ -135,17 +135,17 @@ class _GivtElevatedSecondaryButtonState
           ),
           Text(
             widget.text,
-            style: widget.isDisabled == true
-                ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    )
-                : Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.primary30,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
+            style: widget.isDisabled
+                ? theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.outline,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  )
+                : theme.textTheme.labelMedium?.copyWith(
+                    color: AppTheme.primary30,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  ),
           ),
         ],
       );
@@ -157,17 +157,17 @@ class _GivtElevatedSecondaryButtonState
         children: [
           Text(
             widget.text,
-            style: widget.isDisabled == true
-                ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    )
-                : Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.primary30,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
+            style: widget.isDisabled
+                ? theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.outline,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  )
+                : theme.textTheme.labelMedium?.copyWith(
+                    color: AppTheme.primary30,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  ),
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8),
@@ -186,17 +186,17 @@ class _GivtElevatedSecondaryButtonState
             widget.leadingImage!,
             Text(
               widget.text,
-              style: widget.isDisabled == true
-                  ? Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Rouna',
-                      )
-                  : Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.primary30,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Rouna',
-                      ),
+              style: widget.isDisabled
+                  ? theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.outline,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    )
+                  : theme.textTheme.labelMedium?.copyWith(
+                      color: AppTheme.primary30,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Rouna',
+                    ),
             ),
             // all leading images must be 32 pixels wide
             // this centers the text
@@ -208,17 +208,17 @@ class _GivtElevatedSecondaryButtonState
     return Center(
       child: Text(
         widget.text,
-        style: widget.isDisabled == true
-            ? Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.outline,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                )
-            : Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: AppTheme.primary30,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                ),
+        style: widget.isDisabled
+            ? theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.outline,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Rouna',
+              )
+            : theme.textTheme.labelMedium?.copyWith(
+                color: AppTheme.primary30,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Rouna',
+              ),
       ),
     );
   }
