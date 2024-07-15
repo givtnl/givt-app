@@ -1,6 +1,7 @@
 enum ChatScriptItemMediaSourceType {
   none,
   asset,
+  storedFile,
   network;
 
   static ChatScriptItemMediaSourceType fromString(String value) {

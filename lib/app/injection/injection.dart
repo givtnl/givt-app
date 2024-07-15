@@ -35,6 +35,8 @@ import 'package:givt_app/features/recurring_donations/detail/repository/detail_r
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
+import 'package:givt_app/utils/media_picker_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -118,6 +120,10 @@ void initRepositories() {
         getIt(),
         getIt(),
       ),
+    )
+    ..registerLazySingleton<ImagePicker>(ImagePicker.new)
+    ..registerLazySingleton<MediaPickerService>(
+      () => MediaPickerService(getIt()),
     )
     ..registerLazySingleton<CampaignRepository>(
       () => CampaignRepositoryImpl(
@@ -231,6 +237,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<GenerosityChallengeRepository>(
       () => GenerosityChallengeRepositoryImpl(
+        getIt(),
         getIt(),
       ),
     )
