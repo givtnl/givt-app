@@ -40,8 +40,6 @@ class LoggingInfo implements ILoggingInfo {
 
   static LoggingInfo get instance => _singleton;
 
-  final AppConfig _appConfig = getIt<AppConfig>();
-
   Future<void> _log(
     String message,
     String methodName,
@@ -50,7 +48,7 @@ class LoggingInfo implements ILoggingInfo {
   }) async {
     dev.log(message);
     final info = await PackageInfo.fromPlatform();
-    final isDebug = _appConfig.isTestApp;
+    final isDebug = info.packageName.contains('test');
     final guid = await _getGuid();
     var lm = LogMessage(
       guid: guid,
