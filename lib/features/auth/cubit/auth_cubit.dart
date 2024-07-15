@@ -389,6 +389,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
     } on SocketException {
       log('No internet connection');
+      emit(state.copyWith(status: AuthStatus.noInternet));
     } catch (e, stackTrace) {
       await LoggingInfo.instance.error(
         e.toString(),

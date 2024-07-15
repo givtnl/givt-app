@@ -15,11 +15,18 @@ class GenerosityChallengeContentHelper {
       description:
           'Take turns to share something you have done today or yesterday and practice giving your attention to each other.',
     ),
-    const Task.card(
-      image: 'assets/images/generosity_challenge_day_4.svg',
+    Task.card(
+      image: 'assets/images/generosity_challenge_day_4_green.svg',
       title: 'Time to help',
+      buttonText: 'Start the timer',
+      redirect: FamilyPages.day4Timer.path,
       description:
-          "Set a timer for 5 minutes and quickly do as many helpful tasks as you can like feeding the dog or washing dishes. When time's up, see how many tasks you've completed. \n\nReady, set, go!",
+          "Look around and quickly do as many helpful tasks as you can—like feeding the dog, washing dishes, or tidying up toys. When time's up, see how many tasks you've completed.\n\nReady, set, go!",
+      partnerCard: const Task.card(
+        image: 'assets/images/generosity_challenge_day_4_green.svg',
+        title: 'Time to help',
+        description: "So many tasks done. That's a nice number!",
+      ),
     ),
     const Task.card(
       image: 'assets/images/generosity_challenge_day_5.svg',

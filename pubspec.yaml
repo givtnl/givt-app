@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.3.3
+version: 4.3.5
 publish_to: none
 
 environment:
@@ -76,6 +76,7 @@ dependencies:
   url_launcher: ^6.1.12
   uuid: ^4.4.0
   vibration: ^1.8.4
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   bloc_test: ^9.1.1
@@ -146,3 +147,4 @@ flutter:
     - assets/ca/
     - assets/family/images/
     - assets/family/lotties/
+    - assets/sounds/

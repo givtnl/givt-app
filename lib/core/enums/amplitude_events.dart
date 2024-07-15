@@ -79,6 +79,7 @@ enum AmplitudeEvents {
     'invited_to_impact_group_bottom_sheet_shown',
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
+  // generosity challenge
   openedGenerosityChallengeNotification(
     'opened_generosity_challenge_notification',
   ),
@@ -107,6 +108,9 @@ enum AmplitudeEvents {
   generosityChallengeUploadPictureClicked(
     'generosity_challenge_upload_picture_clicked',
   ),
+  generosityChallengeDay4TimerStarted('generosity_challenge_day_4_timer_started'),
+  generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
+  generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
   // Registration flow
   continueByEmailSignUpNewUserCliked(
     'continue_by_email_sign_up_new_user_clicked',

@@ -44,6 +44,7 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -75,7 +76,9 @@ class AppRouter {
       GoRoute(
         path: '/search-for-coin',
         name: 'search-for-coin',
-        redirect: _redirectFromExternalLink,
+        redirect: (context, state) {
+          return '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${state.uri.query}';
+        },
       ),
       GoRoute(
         path: Pages.splash.path,
@@ -613,7 +616,13 @@ class AppRouter {
     }
 
     if (auth.status == AuthStatus.authenticated) {
-      return '${Pages.home.path}?$query';
+      if (auth.user.isUsUser) {
+        return navigatingPage.isNotNullAndNotEmpty()
+            ? '${FamilyPages.profileSelection.path}?$query'
+            : '${FamilyPages.profileSelection.path}${state.uri}';
+      } else {
+        return '${Pages.home.path}?$query';
+      }
     }
 
     return '${Pages.welcome.path}?$query';
@@ -648,7 +657,10 @@ class AppRouter {
         if (state.user.needRegistration) {
           context.goNamed(FamilyPages.generosityChallengeRedirect.name);
         } else if (routerState.name == Pages.loading.name) {
-          context.goNamed(FamilyPages.profileSelection.name);
+          context.goNamed(
+            FamilyPages.profileSelection.name,
+            queryParameters: routerState.uri.queryParameters,
+          );
         }
         return;
       }
@@ -663,6 +675,7 @@ class AppRouter {
         queryParameters: routerState.uri.queryParameters,
       );
     }
+
     if (state.status == AuthStatus.unauthenticated ||
         state.status == AuthStatus.unknown) {
       context.goNamed(Pages.welcome.name);

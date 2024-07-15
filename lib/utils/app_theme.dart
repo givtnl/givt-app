@@ -117,6 +117,7 @@ class AppTheme {
   static const error30 = Color(0xFF920700);
   static const error50 = Color(0xFFDC3A26);
   static const error80 = Color(0xFFFFB4A7);
+  static const error95 = Color.fromRGBO(255, 237, 234, 1);
 
   static const familyGoalStepperGray = Color(0xFF9694AB);
 

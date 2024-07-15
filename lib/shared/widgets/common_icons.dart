@@ -69,6 +69,20 @@ Widget switchProfilesIcon({double? width, double? height}) => SvgPicture.asset(
       height: height,
     );
 
+Widget day4TimerIconGreen({double? width, double? height}) =>
+    SvgPicture.asset(
+      'assets/images/generosity_challenge_day_4_green.svg',
+      width: width,
+      height: height,
+    );
+
+Widget day4TimerIconRed({double? width, double? height}) =>
+    SvgPicture.asset(
+      'assets/images/generosity_challenge_day_4_red.svg',
+      width: width,
+      height: height,
+    );
+
 Widget primaryCircleWithIcon({
   IconData? iconData,
   double? circleSize = 90,

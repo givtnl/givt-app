@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -6,6 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/failures/certificate_exception.dart';
 import 'package:givt_app/core/failures/failure.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
+import 'package:givt_app/core/network/certificate_check_interceptor.dart';
+import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/token_interceptor.dart';
 import 'package:givt_app/shared/models/certificate_response.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -21,11 +25,17 @@ Handles:
 - Updating the base urls
 */
 class RequestHelper {
-  RequestHelper({
+  RequestHelper(
+    this._networkInfo,
+    this._sharedPreferences, {
     required String apiURL,
     required String apiURLAWS,
   })  : _apiURL = apiURL,
         _apiURLAWS = apiURLAWS;
+
+  final NetworkInfo _networkInfo;
+  final SharedPreferences _sharedPreferences;
+  StreamSubscription<bool>? _internetSubscription;
 
   late SecureHttpClient _secureEuClient;
   late SecureHttpClient _secureUsClient;
@@ -64,14 +74,36 @@ class RequestHelper {
   Future<void> _createClients() async {
     await _checkForAndroidTrustedCertificate();
 
-    final euFuture = _getAllowedFingerprints(euBaseUrl, euBaseUrlAWS);
-    final usFuture = _getAllowedFingerprints(usBaseUrl, usBaseUrlAWS);
-    final allowedEUFingerprints = await euFuture;
-    final allowedUSFingerprints = await usFuture;
-    _secureEuClient = _getSecureClient(allowedEUFingerprints);
-    _secureUsClient = _getSecureClient(allowedUSFingerprints);
-    euClient = createClient(_secureEuClient);
-    usClient = createClient(_secureUsClient);
+    try {
+      final euFuture = _getAllowedFingerprints(euBaseUrl, euBaseUrlAWS);
+      final usFuture = _getAllowedFingerprints(usBaseUrl, usBaseUrlAWS);
+      final allowedEUFingerprints = await euFuture;
+      final allowedUSFingerprints = await usFuture;
+      _secureEuClient = _getSecureClient(allowedEUFingerprints);
+      _secureUsClient = _getSecureClient(allowedUSFingerprints);
+      euClient = createClient(client: _secureEuClient);
+      usClient = createClient(client: _secureUsClient);
+    } catch (e, s) {
+      if (_networkInfo.isConnected) {
+        await LoggingInfo.instance.info(
+          '''
+Error while setting up secure http clients (while having an internet connection): $e\n$s''',
+        );
+        await _createClients();
+      } else {
+        euClient = createClient();
+        usClient = createClient();
+        _internetSubscription =
+            _networkInfo.hasInternetConnectionStream().listen(
+          (hasConnection) async {
+            if (hasConnection) {
+              await _createClients();
+              _internetSubscription?.cancel();
+            }
+          },
+        );
+      }
+    }
   }
 
   Future<void> _checkForAndroidTrustedCertificate() async {
@@ -83,7 +115,11 @@ class RequestHelper {
           data.buffer.asUint8List(),
         );
       }
-    } catch (_) {}
+    } catch (e, s) {
+      await LoggingInfo.instance.info(
+        'Android specific check for trusted certificate failed: $e\n$s',
+      );
+    }
   }
 
   /// Check if there is a user extension set in the shared preferences.
@@ -104,11 +140,12 @@ class RequestHelper {
     return Country.nl.countryCode;
   }
 
-  Client createClient(Client client) {
+  Client createClient({Client? client}) {
     return InterceptedClient.build(
       client: client,
       requestTimeout: const Duration(seconds: 30),
       interceptors: [
+        if (client == null) CertificateCheckInterceptor(),
         TokenInterceptor(),
       ],
       retryPolicy: ExpiredTokenRetryPolicy(),
@@ -130,6 +167,15 @@ class RequestHelper {
         jwtVerified.payload[apiUrl].toString(),
         jwtVerified.payload[apiUrlAws].toString(),
       ];
+
+      await _sharedPreferences.setString(
+        response.apiURL,
+        allowedFingerprints[0],
+      );
+      await _sharedPreferences.setString(
+        response.apiURLAWS,
+        allowedFingerprints[1],
+      );
 
       return allowedFingerprints;
     } on Exception catch (e) {
