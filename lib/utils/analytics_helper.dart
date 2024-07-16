@@ -56,9 +56,7 @@ class AnalyticsHelper {
     log('$eventName pressed with event properties: $eventProperties');
   }
 
-  static Future<void> clearUserProperties() async {
-    await _amplitude?.clearUserProperties();
-  }
+  static void clearUserProperties() => _amplitude?.clearUserProperties();
 
   static Future<void> setUserProperties({
     required String userId,

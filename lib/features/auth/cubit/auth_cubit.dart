@@ -206,7 +206,7 @@ class AuthCubit extends Cubit<AuthState> {
         email: state.user.email,
       ),
     );
-    unawaited(AnalyticsHelper.clearUserProperties());
+    AnalyticsHelper.clearUserProperties();
   }
 
   Future<void> register({
