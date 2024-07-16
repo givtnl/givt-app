@@ -59,10 +59,9 @@ class CreditCardDetailsPage extends StatelessWidget {
               unawaited(
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.registrationStripeSheetFilled,
-                  eventProperties: {
-                    'id': user.guid,
-                    'profile_country': user.country,
-                  },
+                  eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
+                    user,
+                  ),
                 ),
               );
             }

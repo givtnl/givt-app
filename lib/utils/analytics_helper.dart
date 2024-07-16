@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:amplitude_flutter/amplitude.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/shared/models/models.dart';
 
 class AnalyticsHelper {
   static const String amountKey = 'amount';
@@ -21,18 +22,11 @@ class AnalyticsHelper {
 
   static Amplitude? _amplitude;
 
-  static Map<String, dynamic> _globalEventProperties = {
-    isFamilyAppKey: false,
-  };
-
   static Future<void> init(String key) async {
     _amplitude = Amplitude.getInstance();
     await _amplitude!.init(key);
     await _amplitude!.trackingSessionEvents(true);
   }
-
-  static void setFamilyAppTracking({bool isOn = true}) =>
-      _globalEventProperties[isFamilyAppKey] = isOn;
 
   static Future<void> logChatScriptEvent({
     required String eventName,
@@ -44,9 +38,10 @@ class AnalyticsHelper {
     required AmplitudeEvents eventName,
     Map<String, dynamic>? eventProperties,
   }) {
-    eventProperties?.addAll(_globalEventProperties);
     return _logEvent(
-        eventName.value, eventProperties ?? _globalEventProperties);
+      eventName.value,
+      eventProperties,
+    );
   }
 
   static Future<void> _logEvent(
@@ -58,16 +53,28 @@ class AnalyticsHelper {
       eventProperties: eventProperties,
     );
 
-    log('$eventName pressed with properties: $eventProperties');
+    log('$eventName pressed with event properties: $eventProperties');
   }
+
+  static void clearUserProperties() => _amplitude?.clearUserProperties();
 
   static Future<void> setUserProperties({
     required String userId,
     Map<String, dynamic>? userProperties,
   }) async {
+    log('Amplitude, userId: $userId, setting user properties: $userProperties');
     await _amplitude?.setUserId(userId);
     if (userProperties != null) {
       await _amplitude?.setUserProperties(userProperties);
     }
+  }
+
+  static Map<String, dynamic> getUserPropertiesFromExt(UserExt user) {
+    return {
+      'email': user.email,
+      'profile_country': user.country,
+      'first_name': user.firstName,
+      AnalyticsHelper.isFamilyAppKey: user.isUsUser,
+    };
   }
 }

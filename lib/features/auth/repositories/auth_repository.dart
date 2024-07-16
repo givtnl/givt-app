@@ -488,16 +488,9 @@ class AuthRepositoyImpl with AuthRepository {
   Future<void> setUserProperties(UserExt newUserExt) {
     FirebaseCrashlytics.instance.setUserIdentifier(newUserExt.guid);
 
-    if (newUserExt.isUsUser) {
-      AnalyticsHelper.setFamilyAppTracking();
-    }
-
     return AnalyticsHelper.setUserProperties(
       userId: newUserExt.guid,
-      userProperties: {
-        'email': newUserExt.email,
-        'profile_country': newUserExt.country,
-      },
+      userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
     );
   }
 
