@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
-import 'package:lottie/lottie.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class CommonSuccessPage extends StatelessWidget {
   const CommonSuccessPage({
     required this.buttonText,
     this.title,
     this.text,
+    this.appBarTitle = 'Success',
     this.onClickButton,
     super.key,
   });
@@ -14,54 +17,66 @@ class CommonSuccessPage extends StatelessWidget {
   final String buttonText;
   final String? title;
   final String? text;
+  final String appBarTitle;
+
   final void Function()? onClickButton;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (title != null)
-                    Flexible(
-                      child: Text(
-                        title!,
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                        textAlign: TextAlign.center,
+    final theme = FamilyAppTheme().toThemeData();
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        appBar: TopAppBar(
+          title: appBarTitle,
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      registeredCheckAvatar(),
+                      if (title != null)
+                        Text(
+                          title!,
+                          style: theme.textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                          textAlign: TextAlign.center,
+                        ),
+                      const SizedBox(height: 8),
+                      if (text != null)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            text!,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              color: FamilyAppTheme.primary20,
+                              fontFamily: 'Rouna',
+                              fontWeight: FontWeight.w400,
+                              height: 1.2,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.1,
                       ),
-                    ),
-                  const SizedBox(height: 4),
-                  if (text != null)
-                    Flexible(
-                      child: Text(
-                        text!,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                ],
-              ),
-              LottieBuilder.asset(
-                'assets/lotties/check.json',
-                repeat: false,
-              ),
-              CustomGreenElevatedButton(
-                title: buttonText,
-                onPressed: onClickButton ?? () => Navigator.of(context).pop(),
-              ),
-            ],
+                    ],
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GivtElevatedButton(
+                    text: buttonText,
+                    onTap: onClickButton ?? () => Navigator.of(context).pop(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

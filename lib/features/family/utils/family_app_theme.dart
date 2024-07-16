@@ -171,13 +171,13 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       ),
       bodySmall: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: FontWeight.w500,
         letterSpacing: 0,
       ),
       bodyMedium: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.w500,
         letterSpacing: 0,
       ),

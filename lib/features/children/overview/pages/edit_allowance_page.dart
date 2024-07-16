@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -14,10 +17,12 @@ class EditAllowancePage extends StatefulWidget {
     this.initialAllowance,
     this.extraHeader,
     this.isMultipleChildren = false,
+    this.fee = 0.65,
     super.key,
   });
 
   final String currency;
+  final double fee;
   final int? initialAllowance;
   final Widget? extraHeader;
   final bool isMultipleChildren;
@@ -43,9 +48,13 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
   Widget build(BuildContext context) {
     final child =
         widget.isMultipleChildren ? 'each of your children' : 'your child';
+    final perchild = widget.isMultipleChildren ? ' per child' : '';
     final theme = FamilyAppTheme().toThemeData();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const TopAppBar(
+        title: 'Recurring Amount',
+        leading: GenerosityBackButton(),
+      ),
       body: Center(
         child: SafeArea(
           child: Padding(
@@ -64,31 +73,8 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        calendarClockIcon(),
+                        calendarClockAvatarIcon(),
                         const SizedBox(height: 16),
-                        Text(
-                          textAlign: TextAlign.center,
-                          context.l10n.createChildGivingAllowanceTitle,
-                          style: theme.textTheme.bodyMedium!.copyWith(
-                            color: AppTheme.inputFieldBorderSelected,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w800,
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Which amount should be added to\n'
-                          "$child's wallet each month?",
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.labelSmall!.copyWith(
-                            color: AppTheme.givtBlue,
-                            fontFamily: 'Raleway',
-                            fontWeight: FontWeight.w500,
-                            height: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 12),
                         AllowanceCounter(
                           currency: widget.currency,
                           initialAllowance: _allowance,
@@ -97,14 +83,17 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                           }),
                         ),
                         const SizedBox(height: 12),
-                        Text(
-                          textAlign: TextAlign.center,
-                          'Choose an amount between ${widget.currency}1 and '
-                          '${widget.currency}999.',
-                          style: theme.textTheme.bodySmall!.copyWith(
-                            color: AppTheme.givtBlue,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w400,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            "What monthly amount should be added to $child's wallet?",
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium!.copyWith(
+                              color: AppTheme.primary20,
+                              fontFamily: 'Rouna',
+                              fontWeight: FontWeight.w400,
+                              height: 1.2,
+                            ),
                           ),
                         ),
                       ],
@@ -116,16 +105,23 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CustomGreenElevatedButton(
-                        title: context.l10n.confirm,
-                        onPressed: () {
+                      Text(
+                        'Admin fee of ${widget.fee.toStringAsFixed(2)} applies$perchild monthly',
+                        style: theme.textTheme.bodySmall!
+                            .copyWith(fontWeight: FontWeight.w700),
+                      ),
+                      const SizedBox(height: 4),
+                      GivtElevatedButton(
+                        text: context.l10n.confirm,
+                        onTap: () {
                           Navigator.of(context).pop(_allowance);
                         },
                       ),
+                      const SizedBox(height: 8),
                       Visibility(
                         visible: widget.initialAllowance != null &&
                             widget.initialAllowance! > 0,
-                        child: TextButton(
+                        child: TextButton.icon(
                           onPressed: () {
                             showDialog<void>(
                               context: context,
@@ -134,17 +130,23 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                               ),
                             );
                           },
-                          style: TextButton.styleFrom(
+                          style: IconButton.styleFrom(
                             padding: EdgeInsets.zero,
                             alignment: Alignment.topCenter,
                           ),
-                          child: Text(
-                            'Cancel Recurring Giving Allowance',
-                            style: theme.textTheme.bodySmall!.copyWith(
-                              color: AppTheme.error50,
-                              decoration: TextDecoration.underline,
-                              decorationColor: AppTheme.error50,
+                          icon: const Padding(
+                            padding: EdgeInsets.only(top: 2),
+                            child: FaIcon(
+                              FontAwesomeIcons.xmark,
+                              size: 16,
+                              color: AppTheme.error30,
                             ),
+                          ),
+                          label: Text(
+                            'Cancel Recurring Amount',
+                            style: theme.textTheme.bodySmall!.copyWith(
+                                color: AppTheme.error30,
+                                fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),
