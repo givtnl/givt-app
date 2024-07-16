@@ -77,16 +77,23 @@ class AppRouter {
       GoRoute(
         path: '/search-for-coin',
         name: 'search-for-coin',
-        redirect: (context, state) {
-          final auth = context.read<AuthCubit>().state;
-          final shouldRedirectToBrowser =
-              _isInChallengeOrNotAuthenticated(auth);
-          if (shouldRedirectToBrowser) {
-            return '${Pages.redirectToBrowser.path}?uri=${state.uri}';
-          } else {
-            return '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${state.uri.query}';
-          }
-        },
+        builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state.status == AuthStatus.loading) {
+              // do nothing
+            }
+            if (state.status == AuthStatus.authenticated && !_isInChallenge()) {
+              context.go(
+                '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
+              );
+            } else {
+              context.go(
+                '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
+              );
+            }
+          },
+          child: const LoadingPage(),
+        ),
       ),
       GoRoute(
         path: Pages.redirectToBrowser.path,
@@ -564,10 +571,9 @@ class AppRouter {
     ],
   );
 
-  static bool _isInChallengeOrNotAuthenticated(AuthState auth) {
-    return (GenerosityChallengeHelper.isActivated &&
-            !GenerosityChallengeHelper.isCompleted) ||
-        auth.status != AuthStatus.authenticated;
+  static bool _isInChallenge() {
+    return GenerosityChallengeHelper.isActivated &&
+        !GenerosityChallengeHelper.isCompleted;
   }
 
   /// This method is used to redirect the user to the correct page after
