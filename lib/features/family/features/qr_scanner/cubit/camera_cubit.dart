@@ -9,12 +9,7 @@ class CameraCubit extends Cubit<CameraState> {
 
   static const Duration _permissionDialogDelay = Duration(milliseconds: 300);
   Future<void> checkGalleryPermission() async {
-    emit(
-      state.copyWith(
-        galleryStatus: GalleryStatus.initial,
-        status: CameraStatus.initial,
-      ),
-    );
+    resetPermssionStatuses();
     final status = await Permission.photos.status;
     //delay is from design
     await Future<void>.delayed(_permissionDialogDelay);
@@ -36,12 +31,7 @@ class CameraCubit extends Cubit<CameraState> {
   }
 
   Future<void> checkCameraPermission() async {
-    emit(
-      state.copyWith(
-        status: CameraStatus.initial,
-        galleryStatus: GalleryStatus.initial,
-      ),
-    );
+    resetPermssionStatuses();
     final status = await Permission.camera.status;
     //delay is from design
     await Future<void>.delayed(_permissionDialogDelay);
@@ -91,6 +81,15 @@ class CameraCubit extends Cubit<CameraState> {
     }
     emit(
       state.copyWith(status: CameraStatus.error, feedback: 'Invalid QR Code'),
+    );
+  }
+
+  void resetPermssionStatuses() {
+    emit(
+      state.copyWith(
+        status: CameraStatus.initial,
+        galleryStatus: GalleryStatus.initial,
+      ),
     );
   }
 }
