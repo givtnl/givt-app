@@ -9,7 +9,7 @@ class CameraCubit extends Cubit<CameraState> {
 
   static const Duration _permissionDialogDelay = Duration(milliseconds: 300);
   Future<void> checkGalleryPermission() async {
-    resetPermssionStatuses();
+    resetPermissionStatuses();
     final status = await Permission.photos.status;
     //delay is from design
     await Future<void>.delayed(_permissionDialogDelay);
@@ -31,7 +31,7 @@ class CameraCubit extends Cubit<CameraState> {
   }
 
   Future<void> checkCameraPermission() async {
-    resetPermssionStatuses();
+    resetPermissionStatuses();
     final status = await Permission.camera.status;
     //delay is from design
     await Future<void>.delayed(_permissionDialogDelay);
@@ -84,7 +84,7 @@ class CameraCubit extends Cubit<CameraState> {
     );
   }
 
-  void resetPermssionStatuses() {
+  void resetPermissionStatuses() {
     emit(
       state.copyWith(
         status: CameraStatus.initial,
