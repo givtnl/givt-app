@@ -18,6 +18,7 @@ class CancelRGASuccessPage extends StatelessWidget {
       data: AppTheme.lightTheme,
       child: CommonSuccessPage(
         buttonText: context.l10n.ready,
+        appBarTitle: 'Recurring Amount',
         title: 'The Recurring Amount has been canceled.',
         text: 'You can set it up again at any time.',
         onClickButton: onClickButton,
