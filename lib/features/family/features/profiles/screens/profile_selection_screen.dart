@@ -38,6 +38,12 @@ class ProfileSelectionScreen extends StatefulWidget {
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
+  void initState() {
+    super.initState();
+    context.read<ProfilesCubit>().fetchAllProfiles();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
