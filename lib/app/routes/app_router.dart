@@ -44,6 +44,7 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -77,7 +78,24 @@ class AppRouter {
         path: '/search-for-coin',
         name: 'search-for-coin',
         redirect: (context, state) {
-          return '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${state.uri.query}';
+          final auth = context.read<AuthCubit>().state;
+          final shouldRedirectToBrowser =
+              _isInChallengeOrNotAuthenticated(auth);
+          if (shouldRedirectToBrowser) {
+            return '${Pages.redirectToBrowser.path}?uri=${state.uri}';
+          } else {
+            return '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${state.uri.query}';
+          }
+        },
+      ),
+      GoRoute(
+        path: Pages.redirectToBrowser.path,
+        name: Pages.redirectToBrowser.name,
+        builder: (context, state) {
+          final uri = state.uri.queryParameters['uri'];
+          return RedirectToBrowserPage(
+              uri:
+                  uri ?? 'https://givt.app/search-for-coin?${state.uri.query}');
         },
       ),
       GoRoute(
@@ -545,6 +563,12 @@ class AppRouter {
       ...FamilyAppRoutes.routes,
     ],
   );
+
+  static bool _isInChallengeOrNotAuthenticated(AuthState auth) {
+    return (GenerosityChallengeHelper.isActivated &&
+            !GenerosityChallengeHelper.isCompleted) ||
+        auth.status != AuthStatus.authenticated;
+  }
 
   /// This method is used to redirect the user to the correct page after
   /// clicking on a link in an email
