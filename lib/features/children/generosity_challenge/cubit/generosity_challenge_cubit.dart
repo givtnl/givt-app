@@ -205,7 +205,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     }
   }
 
-  Future<void> submitDay5Picture({required bool takenWithCamera}) async {
+  Future<bool> submitDay5Picture({required bool takenWithCamera}) async {
     try {
       await _generosityChallengeRepository.submitDay5Picture(
         takenWithCamera: takenWithCamera,
@@ -213,9 +213,11 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       confirmAssignment(
         "Nice! Let's send this to the Mayor.",
       );
+      return true;
     } on Exception catch (e) {
       unawaited(LoggingInfo.instance.error(e.toString()));
     }
+    return false;
   }
 
   Future<String> getDay5PicturePath() async {

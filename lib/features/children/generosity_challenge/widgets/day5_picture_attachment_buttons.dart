@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -44,30 +46,37 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
           children: [
             const SizedBox(height: 8),
             GivtElevatedButton(
-              onTap: () {
-                context.read<CameraCubit>().checkCameraPermission();
-
-                cubit.submitDay5Picture(
+              onTap: () async {
+                final success = await cubit.submitDay5Picture(
                   takenWithCamera: true,
                 );
-                AnalyticsHelper.logEvent(
+                if (context.mounted && !success) {
+                  unawaited(
+                      context.read<CameraCubit>().checkCameraPermission());
+                }
+                unawaited(AnalyticsHelper.logEvent(
                   eventName:
                       AmplitudeEvents.generosityChallengeTakePictureClicked,
-                );
+                ));
               },
               leftIcon: FontAwesomeIcons.camera,
               text: 'Take Picture',
             ),
             const SizedBox(height: 8),
             GivtElevatedSecondaryButton(
-              onTap: () {
-                context.read<CameraCubit>().checkGalleryPermission();
-                AnalyticsHelper.logEvent(
-                  eventName:
-                      AmplitudeEvents.generosityChallengeUploadPictureClicked,
-                );
-                cubit.submitDay5Picture(
+              onTap: () async {
+                final success = await cubit.submitDay5Picture(
                   takenWithCamera: false,
+                );
+                if (context.mounted && !success) {
+                  unawaited(
+                      context.read<CameraCubit>().checkGalleryPermission());
+                }
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName:
+                        AmplitudeEvents.generosityChallengeUploadPictureClicked,
+                  ),
                 );
               },
               leftIcon: const Icon(
