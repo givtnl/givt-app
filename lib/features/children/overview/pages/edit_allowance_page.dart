@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
@@ -105,10 +106,13 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'Admin fee of ${widget.fee.toStringAsFixed(2)} applies$perchild monthly',
-                        style: theme.textTheme.bodySmall!
-                            .copyWith(fontWeight: FontWeight.w700),
+                      Visibility(
+                        visible: false,
+                        child: Text(
+                          'Admin fee of ${widget.fee.toStringAsFixed(2)} applies$perchild monthly',
+                          style: theme.textTheme.bodySmall!
+                              .copyWith(fontWeight: FontWeight.w700),
+                        ),
                       ),
                       const SizedBox(height: 4),
                       GivtElevatedButton(
