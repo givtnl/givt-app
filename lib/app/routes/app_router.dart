@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
@@ -87,9 +88,17 @@ class AppRouter {
                 '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
               );
             } else {
-              context.go(
-                '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
-              );
+              final isTestApp = getIt<AppConfig>().isTestApp;
+              final code = routerState.uri.queryParameters['code'];
+              if (isTestApp && code != null) {
+                context.go(
+                  '${Pages.redirectToBrowser.path}?uri=https://dev-coin.givt.app/?mediumId=$code',
+                );
+              } else {
+                context.go(
+                  '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
+                );
+              }
             }
           },
           child: const LoadingPage(),
