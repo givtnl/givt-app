@@ -101,6 +101,7 @@ enum AmplitudeEvents {
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
   chooseAmountDonateClicked('choose_amount_donate_clicked'),
+  redirectCoinToNoAppFlow('redirect_coin_to_noapp_flow'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
   generosityChallengeRegistrationSucceeded(
     'generosity_challenge_registration_succeeded',

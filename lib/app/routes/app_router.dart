@@ -99,6 +99,12 @@ class AppRouter {
                   '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
                 );
               }
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.redirectCoinToNoAppFlow,
+                eventProperties: {
+                  'url': routerState.uri.toString(),
+                },
+              );
             }
           },
           child: const LoadingPage(),
