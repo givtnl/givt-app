@@ -15,6 +15,8 @@ class GivtElevatedButton extends StatelessWidget {
     this.rightIcon,
     this.leadingImage,
     this.widthMultiplier = .9,
+    this.backgroundColor = AppTheme.primary80,
+    this.borderColor = AppTheme.givtGreen40,
   });
 
   final void Function()? onTap;
@@ -26,14 +28,15 @@ class GivtElevatedButton extends StatelessWidget {
   final IconData? rightIcon;
   final Widget? leadingImage;
   final double widthMultiplier;
+  final Color backgroundColor;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
     final themeData = FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: onTap ?? () {},
-      borderColor:
-          isTertiary == true ? AppTheme.secondary80 : AppTheme.givtGreen40,
+      borderColor: isTertiary == true ? AppTheme.secondary80 : borderColor,
       isDisabled: isDisabled,
       borderSize: 0.01,
       baseBorderSize: 4,
@@ -45,7 +48,7 @@ class GivtElevatedButton extends StatelessWidget {
               ? AppTheme.givtGraycece
               : isTertiary == true
                   ? Colors.white
-                  : AppTheme.primary80,
+                  : backgroundColor,
         ),
         child: getChild(context, themeData),
       ),
@@ -66,9 +69,7 @@ class GivtElevatedButton extends StatelessWidget {
             child: Icon(
               leftIcon,
               size: 24,
-              color: isDisabled
-                  ? themeData.colorScheme.outline
-                  : AppTheme.givtGreen40,
+              color: isDisabled ? themeData.colorScheme.outline : borderColor,
             ),
           ),
           Text(
@@ -81,7 +82,7 @@ class GivtElevatedButton extends StatelessWidget {
                     fontFamily: 'Rouna',
                   )
                 : themeData.textTheme.labelMedium?.copyWith(
-                    color: AppTheme.givtGreen40,
+                    color: borderColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
                   ),
@@ -104,7 +105,7 @@ class GivtElevatedButton extends StatelessWidget {
                     fontFamily: 'Rouna',
                   )
                 : themeData.textTheme.labelMedium?.copyWith(
-                    color: AppTheme.givtGreen40,
+                    color: borderColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
                   ),
@@ -114,9 +115,7 @@ class GivtElevatedButton extends StatelessWidget {
             child: Icon(
               rightIcon,
               size: 24,
-              color: isDisabled
-                  ? themeData.colorScheme.outline
-                  : AppTheme.givtGreen40,
+              color: isDisabled ? themeData.colorScheme.outline : borderColor,
             ),
           ),
         ],
@@ -140,7 +139,7 @@ class GivtElevatedButton extends StatelessWidget {
                       fontFamily: 'Rouna',
                     )
                   : themeData.textTheme.labelMedium?.copyWith(
-                      color: AppTheme.givtGreen40,
+                      color: borderColor,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Rouna',
                     ),
@@ -163,7 +162,7 @@ class GivtElevatedButton extends StatelessWidget {
                 fontFamily: 'Rouna',
               )
             : themeData.textTheme.labelMedium?.copyWith(
-                color: AppTheme.givtGreen40,
+                color: borderColor,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Rouna',
               ),

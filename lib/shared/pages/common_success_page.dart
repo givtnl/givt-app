@@ -11,12 +11,14 @@ class CommonSuccessPage extends StatelessWidget {
     this.text,
     this.appBarTitle = 'Success',
     this.onClickButton,
+    this.image,
     super.key,
   });
 
   final String buttonText;
   final String? title;
   final String? text;
+  final Widget? image;
   final String appBarTitle;
 
   final void Function()? onClickButton;
@@ -39,18 +41,21 @@ class CommonSuccessPage extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      registeredCheckAvatar(),
+                      image ?? registeredCheckAvatar(),
                       if (title != null)
-                        Text(
-                          title!,
-                          style: theme.textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(
+                            title!,
+                            style: theme.textTheme.titleMedium
+                                ?.copyWith(fontWeight: FontWeight.w700),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       const SizedBox(height: 8),
                       if (text != null)
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: Text(
                             text!,
                             style: theme.textTheme.bodyMedium!.copyWith(

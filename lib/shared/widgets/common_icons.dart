@@ -66,6 +66,11 @@ Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
 Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_error.svg',
     );
+Widget trashAvatarIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/trash_avatar.svg',
+      width: width,
+      height: height,
+    );
 
 Widget familySuperheroesIcon({double? width, double? height}) =>
     SvgPicture.asset(
