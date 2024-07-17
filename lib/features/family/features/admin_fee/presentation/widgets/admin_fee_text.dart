@@ -31,8 +31,8 @@ class _AdminFeeTextState extends State<AdminFeeText> {
     final perchild = widget.isMultipleChildren ? ' per child' : '';
     final fee =
         _adminFeeRepository.getTotalFee(widget.amount).toStringAsFixed(2);
-    final nonMonthlyText = 'Admin fee of $fee applies$perchild monthly';
-    final monthlyText = 'An admin fee of $fee will be added';
+    final nonMonthlyText = 'Admin fee of \$$fee applies$perchild monthly';
+    final monthlyText = 'An admin fee of \$$fee will be added';
     return Text(
       widget.isMonthly ? monthlyText : nonMonthlyText,
       style: widget.textStyle ??

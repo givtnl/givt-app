@@ -106,8 +106,6 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     children: [
                       AdminFeeText(
                         amount: _allowance.toDouble(),
-                        textStyle: theme.textTheme.bodySmall!
-                            .copyWith(fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(height: 4),
                       GivtElevatedButton(
