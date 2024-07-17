@@ -116,11 +116,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
-                                await AnalyticsHelper.logEvent(
-                                  eventName:
-                                      AmplitudeEvents.manageFamilyPressed,
-                                );
-
                                 if (!context.mounted) return;
 
                                 await FamilyAuthUtils.authenticateUser(
@@ -140,6 +135,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                     },
                                   ),
                                 );
+                                unawaited(AnalyticsHelper.logEvent(
+                                  eventName:
+                                  AmplitudeEvents.manageFamilyPressed,
+                                ));
                               },
                               text: 'Manage Family',
                               leftIcon: const FaIcon(
@@ -177,13 +176,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             context
                 .read<ProfilesCubit>()
                 .fetchProfile(selectedProfile.id, true);
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.profilePressed,
-              eventProperties: {
-                'profile_name':
-                    '${selectedProfile.firstName} ${selectedProfile.lastName}',
-              },
-            );
 
             final user = context.read<AuthCubit>().state.user;
             AnalyticsHelper.setUserProperties(
@@ -193,6 +185,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                 'profile_country': user.country,
                 'first_name': selectedProfile.firstName,
                 AnalyticsHelper.isFamilyAppKey: true,
+              },
+            );
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.profilePressed,
+              eventProperties: {
+                'profile_name':
+                '${selectedProfile.firstName} ${selectedProfile.lastName}',
               },
             );
 
