@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class ChildCancelRGAFailedDialog extends StatelessWidget {
@@ -20,38 +20,19 @@ class ChildCancelRGAFailedDialog extends StatelessWidget {
             Text(
               'Oops something went wrong',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontFamily: 'Raleway',
-                    color: AppTheme.givtBlue,
-                    letterSpacing: 0.25,
-                  ),
+              style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
             Text(
               'Please try again later or contact support@givt.app',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppTheme.givtBlue,
-                    fontFamily: 'Raleway',
-                  ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 24),
-            OutlinedButton(
-              onPressed: () => context.pop(),
-              style: OutlinedButton.styleFrom(
-                backgroundColor: AppTheme.error80,
-                side: const BorderSide(
-                  width: 0,
-                  color: Colors.transparent,
-                ),
-              ),
-              child: Text(
-                'OK',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppTheme.error30,
-                    ),
-              ),
-            )
+            GivtElevatedButton(
+              onTap: () => context.pop(),
+              text: 'OK',
+            ),
           ],
         ),
       ),

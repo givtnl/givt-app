@@ -5,22 +5,24 @@ import 'package:givt_app/shared/pages/common_success_page.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowanceSuccessPage extends StatelessWidget {
-  const EditAllowanceSuccessPage({required this.uiModel, super.key,});
+  const EditAllowanceSuccessPage({
+    required this.uiModel,
+    super.key,
+  });
 
   final EditAllowanceSuccessUIModel uiModel;
 
   @override
   Widget build(BuildContext context) {
+    final child = uiModel.isMultipleChildren ? 'children' : 'child';
     return Theme(
       data: AppTheme.lightTheme,
       child: CommonSuccessPage(
         buttonText: context.l10n.ready,
         title: context.l10n.genericSuccessTitle,
-        text: uiModel.isMultipleChildren
-            ? 'Your children will receive ${uiModel.amountWithCurrencySymbol} each month. You can edit this amount any time.'
-            : context.l10n.monthlyAllowanceEditSuccessDescription(
-                uiModel.amountWithCurrencySymbol ?? '',
-              ),
+        appBarTitle: 'Recurring Amount',
+        text:
+            'Your $child will receive ${uiModel.amountWithCurrencySymbol} each month.',
         onClickButton: uiModel.onClickButton,
       ),
     );
