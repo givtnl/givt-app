@@ -21,7 +21,9 @@ class GenerosityChallengeOverview extends StatefulWidget {
     required this.isDebug,
     super.key,
   });
+
   final bool isDebug;
+
   @override
   State<GenerosityChallengeOverview> createState() =>
       _GenerosityChallengeOverviewState();
@@ -202,7 +204,12 @@ class _GenerosityChallengeOverviewState
                 GivtElevatedButton(
                   onTap: () {
                     context.read<FlowsCubit>().startInGenerosityCoinFlow();
-                    context.pushNamed(FamilyPages.scanNFC.name);
+                    context.pushNamed(
+                      FamilyPages.scanNFC.name,
+                      extra: {
+                        'isGenerosityChallenge': true,
+                      },
+                    );
                     AnalyticsHelper.logEvent(
                       eventName: AmplitudeEvents.giveWithCoinInChallengeClicked,
                     );
