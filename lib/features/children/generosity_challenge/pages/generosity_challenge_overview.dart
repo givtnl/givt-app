@@ -199,22 +199,21 @@ class _GenerosityChallengeOverviewState
                     ),
                   ),
                 const Spacer(),
+                GivtElevatedButton(
+                  onTap: () {
+                    context.read<FlowsCubit>().startInGenerosityCoinFlow();
+                    context.pushNamed(FamilyPages.scanNFC.name);
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.giveWithCoinInChallengeClicked,
+                    );
+                  },
+                  leadingImage: coin(width: 32, height: 32),
+                  text: 'Give with a coin',
+                ),
               ],
             ),
           ],
         ),
-      ),
-      floatingActionButton: GivtElevatedButton(
-        onTap: () {
-          context.read<FlowsCubit>().startInGenerosityCoinFlow();
-          context.pushNamed(FamilyPages.scanNFC.name);
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.giveWithCoinInChallengeClicked,
-          );
-          //navigate to nfc reader
-        },
-        leadingImage: coin(width: 32, height: 32),
-        text: 'Give with a coin',
       ),
     );
   }
