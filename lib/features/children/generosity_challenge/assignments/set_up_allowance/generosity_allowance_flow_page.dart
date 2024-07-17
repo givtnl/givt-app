@@ -31,6 +31,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
     final dynamic result = await Navigator.push(
       context,
       EditAllowancePage(
+        fee: 0.65,
         extraHeader: _allowancesHeader(context),
         currency: r'$',
         isMultipleChildren: nrOfChildren > 1,

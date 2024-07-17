@@ -24,6 +24,7 @@ class GenerosityChallengeState extends Equatable {
     required this.availableChatDayIndex,
     this.assignmentDynamicDescription,
     this.showMayor = false,
+    this.blockAppLifeCycleRefresh = false,
   });
 
   const GenerosityChallengeState.initial({
@@ -38,6 +39,7 @@ class GenerosityChallengeState extends Equatable {
     this.chatActorsSettings = const ChatActorsSettings.empty(),
     this.availableChatDayIndex = -1,
     this.showMayor = false,
+    this.blockAppLifeCycleRefresh = false,
   });
 
   final List<Day> days;
@@ -51,6 +53,7 @@ class GenerosityChallengeState extends Equatable {
   final ChatActorsSettings chatActorsSettings;
   final int availableChatDayIndex;
   final bool showMayor;
+  final bool blockAppLifeCycleRefresh;
 
   bool get hasActiveDay => activeDayIndex != -1;
 
@@ -93,6 +96,7 @@ class GenerosityChallengeState extends Equatable {
     ChatActorsSettings? chatActorsSettings,
     int? availableChatDayIndex,
     bool? showMayor,
+    bool? blockAppLifeCycleRefresh,
   }) {
     return GenerosityChallengeState(
       days: days ?? this.days,
@@ -110,6 +114,8 @@ class GenerosityChallengeState extends Equatable {
       availableChatDayIndex:
           availableChatDayIndex ?? this.availableChatDayIndex,
       showMayor: showMayor ?? this.showMayor,
+      blockAppLifeCycleRefresh:
+          blockAppLifeCycleRefresh ?? this.blockAppLifeCycleRefresh,
     );
   }
 
@@ -126,5 +132,6 @@ class GenerosityChallengeState extends Equatable {
         availableChatDayIndex,
         availableChat,
         showMayor,
+        blockAppLifeCycleRefresh,
       ];
 }

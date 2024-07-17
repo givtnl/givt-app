@@ -9,7 +9,6 @@ import 'package:givt_app/features/children/add_member/repository/add_member_repo
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'profiles_state.dart';
@@ -28,9 +27,6 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   StreamSubscription<void>? _memberAddedSubscription;
 
   void _init() {
-    AnalyticsHelper.setUserProperties(
-      userId: state.activeProfile.id,
-    );
     _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
       (_) {
         fetchAllProfiles();
@@ -68,6 +64,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
       }
       UserExt? userExternal;
       if (checkRegistrationAndSetup) {
+        // ignore: unused_local_variable
         final (userExt, session, amountPresets) =
             await _authRepository.isAuthenticated() ?? (null, null, null);
         userExternal = userExt;

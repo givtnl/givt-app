@@ -79,9 +79,11 @@ enum AmplitudeEvents {
     'invited_to_impact_group_bottom_sheet_shown',
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
+  // generosity challenge
   openedGenerosityChallengeNotification(
     'opened_generosity_challenge_notification',
   ),
+  giveWithCoinInChallengeClicked('give_with_coin_in_challenge_clicked'),
   generosityChallengeDayClicked('generosity_challenge_day_clicked'),
   generosityChallengeDayCompleted('generosity_challenge_day_completed'),
   generosityChallengeDayUndoCompleting(
@@ -100,10 +102,21 @@ enum AmplitudeEvents {
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
   chooseAmountDonateClicked('choose_amount_donate_clicked'),
+  redirectCoinToNoAppFlow('redirect_coin_to_noapp_flow'),
   generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
   generosityChallengeRegistrationSucceeded(
     'generosity_challenge_registration_succeeded',
   ),
+  generosityChallengeUploadPictureClicked(
+    'generosity_challenge_upload_picture_clicked',
+  ),
+  generosityChallengeTakePictureClicked(
+    'generosity_challenge_take_picture_clicked',
+  ),
+  generosityChallengeDay4TimerStarted(
+      'generosity_challenge_day_4_timer_started'),
+  generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
+  generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
   // Registration flow
   continueByEmailSignUpNewUserCliked(
     'continue_by_email_sign_up_new_user_clicked',
@@ -170,7 +183,6 @@ enum AmplitudeEvents {
   coinMediumIdNotRecognizedTryAgainClicked(
       'coin_medium_id_not_recognized_try_again_clicked'),
 
-
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
   avatarImageSelected('avatar_image_selected'),
@@ -188,7 +200,7 @@ enum AmplitudeEvents {
   ),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
   openAppPermissionsSettings('open_app_permissions_settings'),
-  openCameraPermissionDialog('open_camera_permission_dialog'),
+  nextPermissionsDialogClicked('next_permissions_dialog_clicked'),
   closePermissionsDialog('close_permissions_dialog'),
   navigationBarPressed('navigation_bar_pressed'),
   impactGroupDetailsReadMoreClicked('impact_group_details_read_more_clicked'),

@@ -82,29 +82,30 @@ class GenerosityDailyCard extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                    if (task.buttonText.isNotEmpty) const SizedBox(height: 16),
-                    if (task.buttonText.isNotEmpty)
-                      GivtElevatedButton(
-                        onTap: redirect
-                            ? () {
-                                context.push(
-                                  '${FamilyPages.generosityChallenge.path}/${task.redirect}',
-                                  extra:
-                                      context.read<GenerosityChallengeCubit>(),
-                                );
-                                AnalyticsHelper.logEvent(
-                                  eventName: AmplitudeEvents
-                                      .startAssignmentFromGenerosityChallenge,
-                                  eventProperties: {
-                                    'title': task.title,
-                                  },
-                                );
-                              }
-                            : task.onTap,
-                        isDisabled: isCompleted,
-                        text: task.buttonText,
-                        rightIcon: FontAwesomeIcons.arrowRight,
+                    if (task.buttonText.isNotEmpty && redirect)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                        child: GivtElevatedButton(
+                          onTap: () {
+                            context.push(
+                              '${FamilyPages.generosityChallenge.path}/${task.redirect}',
+                              extra: context.read<GenerosityChallengeCubit>(),
+                            );
+                            AnalyticsHelper.logEvent(
+                              eventName: AmplitudeEvents
+                                  .startAssignmentFromGenerosityChallenge,
+                              eventProperties: {
+                                'title': task.title,
+                              },
+                            );
+                          },
+                          isDisabled: isCompleted,
+                          text: task.buttonText,
+                          rightIcon: FontAwesomeIcons.arrowRight,
+                        ),
                       ),
+                    if (task.customBottomWidget != null)
+                      task.customBottomWidget!,
                     if (isLastDay)
                       Padding(
                         padding: const EdgeInsets.only(top: 8),

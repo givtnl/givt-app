@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
@@ -12,12 +14,11 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -37,56 +38,13 @@ class ProfileSelectionScreen extends StatefulWidget {
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     context.read<ProfilesCubit>().fetchAllProfiles();
+  }
 
-    List<Widget> createGridItems(List<Profile> profiles) {
-      final gridItems = <Widget>[];
-      for (var i = 0;
-          i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
-          i++) {
-        gridItems.add(
-          GestureDetector(
-            onTap: () {
-              final flow = context.read<FlowsCubit>().state;
-              context.read<ProfilesCubit>().fetchProfile(profiles[i].id, true);
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.profilePressed,
-                eventProperties: {
-                  'profile_name':
-                      '${profiles[i].firstName} ${profiles[i].lastName}',
-                },
-              );
-
-              if (flow.isQRCode) {
-                context.goNamed(FamilyPages.camera.name);
-                return;
-              }
-              if (flow.isRecommendation) {
-                context.goNamed(FamilyPages.recommendationStart.name);
-                return;
-              }
-              if (flow.flowType == FlowType.deepLinkCoin) {
-                context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
-                return;
-              }
-              if (flow.isCoin) {
-                context.goNamed(FamilyPages.scanNFC.name);
-                return;
-              }
-
-              context.pushReplacementNamed(FamilyPages.wallet.name);
-            },
-            child: ProfileItem(
-              name: profiles[i].firstName,
-              imageUrl: profiles[i].pictureURL,
-            ),
-          ),
-        );
-      }
-      return gridItems;
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesExternalErrorState) {
@@ -97,10 +55,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (CachedFamilyUtils
-              .isFamilyCacheExist()) {
-            await context.pushNamed(
-                FamilyPages.cachedChildrenOverview.name);
+          if (CachedFamilyUtils.isFamilyCacheExist()) {
+            await context.pushNamed(FamilyPages.cachedChildrenOverview.name);
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
           }
@@ -160,11 +116,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
-                                await AnalyticsHelper.logEvent(
-                                  eventName:
-                                      AmplitudeEvents.manageFamilyPressed,
-                                );
-
                                 if (!context.mounted) return;
 
                                 await FamilyAuthUtils.authenticateUser(
@@ -173,16 +124,21 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                     navigate: (context, {isUSUser}) async {
                                       if (CachedFamilyUtils
                                           .isFamilyCacheExist()) {
-                                        await context.pushNamed(
-                                            FamilyPages.cachedChildrenOverview.name);
+                                        await context.pushNamed(FamilyPages
+                                            .cachedChildrenOverview.name);
                                       } else {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
                                         );
                                       }
+                                      _logUser(context);
                                     },
                                   ),
                                 );
+                                unawaited(AnalyticsHelper.logEvent(
+                                  eventName:
+                                  AmplitudeEvents.manageFamilyPressed,
+                                ));
                               },
                               text: 'Manage Family',
                               leftIcon: const FaIcon(
@@ -199,10 +155,73 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    AnalyticsHelper.setFamilyAppTracking();
+  void _logUser(BuildContext context) {
+    final user = context.read<AuthCubit>().state.user;
+    unawaited(AnalyticsHelper.setUserProperties(
+      userId: user.guid,
+      userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
+    ));
+  }
+
+  List<Widget> createGridItems(List<Profile> profiles) {
+    final gridItems = <Widget>[];
+    for (var i = 0;
+        i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
+        i++) {
+      gridItems.add(
+        GestureDetector(
+          onTap: () {
+            final flow = context.read<FlowsCubit>().state;
+            var selectedProfile = profiles[i];
+            context
+                .read<ProfilesCubit>()
+                .fetchProfile(selectedProfile.id, true);
+
+            final user = context.read<AuthCubit>().state.user;
+            AnalyticsHelper.setUserProperties(
+              userId: selectedProfile.id,
+              userProperties: {
+                if (selectedProfile.id == user.guid) 'email': user.email,
+                'profile_country': user.country,
+                'first_name': selectedProfile.firstName,
+                AnalyticsHelper.isFamilyAppKey: true,
+              },
+            );
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.profilePressed,
+              eventProperties: {
+                'profile_name':
+                '${selectedProfile.firstName} ${selectedProfile.lastName}',
+              },
+            );
+
+            if (flow.isQRCode) {
+              context.goNamed(FamilyPages.camera.name);
+              return;
+            }
+            if (flow.isRecommendation) {
+              context.goNamed(FamilyPages.recommendationStart.name);
+              return;
+            }
+            if (flow.flowType == FlowType.deepLinkCoin) {
+              context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
+              return;
+            }
+            if (flow.isCoin) {
+              context.goNamed(FamilyPages.scanNFC.name);
+              return;
+            }
+
+            context.pushReplacementNamed(FamilyPages.wallet.name);
+          },
+          child: ProfileItem(
+            name: profiles[i].firstName,
+            imageUrl: profiles[i].pictureURL,
+          ),
+        ),
+      );
+    }
+    return gridItems;
   }
 
   @override

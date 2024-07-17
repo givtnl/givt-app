@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
@@ -44,6 +45,7 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/pages.dart';
+import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -76,8 +78,52 @@ class AppRouter {
       GoRoute(
         path: '/search-for-coin',
         name: 'search-for-coin',
-        redirect: (context, state) {
-          return '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${state.uri.query}';
+        builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state.status == AuthStatus.loading) {
+              // do nothing
+              return;
+            }
+            if (state.status == AuthStatus.authenticated && !_isInChallenge()) {
+              context.go(
+                '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
+              );
+            } else {
+              final isTestApp = getIt<AppConfig>().isTestApp;
+              final code = routerState.uri.queryParameters['code'];
+              if (isTestApp && code != null) {
+                context.go(
+                  '${Pages.redirectToBrowser.path}?uri=https://dev-coin.givt.app/?mediumId=$code',
+                );
+              } else {
+                context.go(
+                  '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
+                );
+              }
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.redirectCoinToNoAppFlow,
+                eventProperties: {
+                  'url': routerState.uri.toString(),
+                },
+              );
+            }
+          },
+          child: Builder(
+            builder: (context) {
+              context.read<AuthCubit>().checkAuth();
+              return const LoadingPage();
+            },
+          ),
+        ),
+      ),
+      GoRoute(
+        path: Pages.redirectToBrowser.path,
+        name: Pages.redirectToBrowser.name,
+        builder: (context, state) {
+          final uri = state.uri.queryParameters['uri'];
+          return RedirectToBrowserPage(
+              uri:
+                  uri ?? 'https://givt.app/search-for-coin?${state.uri.query}');
         },
       ),
       GoRoute(
@@ -545,6 +591,11 @@ class AppRouter {
       ...FamilyAppRoutes.routes,
     ],
   );
+
+  static bool _isInChallenge() {
+    return GenerosityChallengeHelper.isActivated &&
+        !GenerosityChallengeHelper.isCompleted;
+  }
 
   /// This method is used to redirect the user to the correct page after
   /// clicking on a link in an email

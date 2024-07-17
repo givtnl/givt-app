@@ -104,7 +104,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                             ),
                       ),
                       const SizedBox(height: 20),
-                      const AppVersion(),
+                      AppVersion(),
                       SizedBox(
                         height: size.height * 0.1,
                       ),

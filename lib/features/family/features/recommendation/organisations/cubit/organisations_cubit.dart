@@ -65,7 +65,7 @@ class OrganisationsCubit extends Cubit<OrganisationsState> {
   }) async {
     emit(const OrganisationsFetchingState());
 
-    await Future.delayed(fakeComputingExtraDelay);
+    await Future<void>.delayed(fakeComputingExtraDelay);
 
     try {
       await AnalyticsHelper.logEvent(

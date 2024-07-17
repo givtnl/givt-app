@@ -132,38 +132,23 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             child: Icon(
               FontAwesomeIcons.circleMinus,
               size: 32,
-              color: (_allowance < 2) ? Colors.grey : AppTheme.givtBlue,
+              color: (_allowance < 2) ? Colors.grey : AppTheme.primary20,
             ),
           ),
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           width: _allowance < 100 ? 80 : 100,
-          child: Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: widget.currency,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontFamily: 'Raleway',
-                    color: AppTheme.givtBlue,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextSpan(
-                  text: '$_allowance',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.givtBlue,
-                    fontFeatures: <FontFeature>[FontFeature.liningFigures()],
-                  ),
-                ),
-              ],
-            ),
+          child: Text(
+            '${widget.currency}$_allowance',
             textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 24,
+              fontFamily: 'Rouna',
+              fontWeight: FontWeight.w700,
+              color: AppTheme.primary20,
+              fontFeatures: <FontFeature>[FontFeature.liningFigures()],
+            ),
           ),
         ),
         GestureDetector(
@@ -181,7 +166,7 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             child: Icon(
               FontAwesomeIcons.circlePlus,
               size: 32,
-              color: (_allowance > 998) ? Colors.grey : AppTheme.givtBlue,
+              color: (_allowance > 998) ? Colors.grey : AppTheme.primary20,
             ),
           ),
         ),

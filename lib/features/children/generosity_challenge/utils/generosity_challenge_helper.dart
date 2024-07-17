@@ -22,6 +22,8 @@ class GenerosityChallengeHelper {
 
   static const int generosityChallengeDays = 8;
 
+  static const String day5PictureKey = 'day5Picture';
+
   static final notificationBodies = <String>[
     'Hi [name] family! I have a new assignment for you.',
     "Let's continue making a difference in your city. Your assignment is waiting for you.",

@@ -7,12 +7,23 @@ import 'package:givt_app/utils/utils.dart';
 Widget walletIcon({double? width, double? height}) =>
     SvgPicture.asset('assets/images/wallet.svg');
 
+Widget coin({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/coin.svg',
+      width: width,
+      height: height,
+    );
+
 Widget calendarClockIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/calendar_clock.svg',
       width: width,
       height: height,
     );
-
+Widget calendarClockAvatarIcon({double? width, double? height}) =>
+    SvgPicture.asset(
+      'assets/images/calendar_clock_avatar.svg',
+      width: width,
+      height: height,
+    );
 Widget plusIcon({double? size}) => FaIcon(
       FontAwesomeIcons.plus,
       color: AppTheme.givtLightGreen,
@@ -30,6 +41,12 @@ Widget registeredCheck({double? width, double? height, Clip? clipBehavior}) =>
 Widget registeredCheckBackground({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/registered_check_background.svg',
+      width: width,
+      height: height,
+    );
+Widget registeredCheckAvatar({double? width, double? height}) =>
+    SvgPicture.asset(
+      'assets/images/registered_check_avatar.svg',
       width: width,
       height: height,
     );
@@ -55,6 +72,11 @@ Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
 Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_error.svg',
     );
+Widget trashAvatarIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/trash_avatar.svg',
+      width: width,
+      height: height,
+    );
 
 Widget familySuperheroesIcon({double? width, double? height}) =>
     SvgPicture.asset(
@@ -65,6 +87,18 @@ Widget familySuperheroesIcon({double? width, double? height}) =>
 
 Widget switchProfilesIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/family/images/switch_profiles.svg',
+      width: width,
+      height: height,
+    );
+
+Widget day4TimerIconGreen({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/generosity_challenge_day_4_green.svg',
+      width: width,
+      height: height,
+    );
+
+Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/generosity_challenge_day_4_red.svg',
       width: width,
       height: height,
     );

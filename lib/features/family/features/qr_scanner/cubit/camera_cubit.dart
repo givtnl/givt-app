@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -8,11 +10,36 @@ class CameraCubit extends Cubit<CameraState> {
   CameraCubit() : super(CameraState.empty());
 
   static const Duration _permissionDialogDelay = Duration(milliseconds: 300);
+  Future<void> checkGalleryPermission() async {
+    resetPermissionStatuses();
+    if (Platform.isAndroid) {
+      return;
+    }
+    final status = await Permission.photos.status;
+    //delay is from design
+    await Future<void>.delayed(_permissionDialogDelay);
 
-  void checkPermission() async {
+    if (status.isDenied) {
+      emit(state.copyWith(galleryStatus: GalleryStatus.requestPermission));
+      return;
+    }
+
+    if (status.isPermanentlyDenied) {
+      emit(
+        state.copyWith(
+          galleryStatus: GalleryStatus.permissionPermanentlyDeclined,
+        ),
+      );
+      return;
+    }
+    emit(state.copyWith(galleryStatus: GalleryStatus.permissionGranted));
+  }
+
+  Future<void> checkCameraPermission() async {
+    resetPermissionStatuses();
     final status = await Permission.camera.status;
     //delay is from design
-    await Future.delayed(_permissionDialogDelay);
+    await Future<void>.delayed(_permissionDialogDelay);
 
     if (status.isDenied) {
       emit(state.copyWith(status: CameraStatus.requestPermission));
@@ -26,7 +53,7 @@ class CameraCubit extends Cubit<CameraState> {
     emit(state.copyWith(status: CameraStatus.permissionGranted));
   }
 
-  void grantAccess() async {
+  Future<void> grantAccess() async {
     emit(state.copyWith(status: CameraStatus.permissionGranted));
   }
 
@@ -59,6 +86,15 @@ class CameraCubit extends Cubit<CameraState> {
     }
     emit(
       state.copyWith(status: CameraStatus.error, feedback: 'Invalid QR Code'),
+    );
+  }
+
+  void resetPermissionStatuses() {
+    emit(
+      state.copyWith(
+        status: CameraStatus.initial,
+        galleryStatus: GalleryStatus.initial,
+      ),
     );
   }
 }

@@ -20,6 +20,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const primary50 = Color(0xFF008954);
   static const primary60 = Color(0xFF15A569);
   static const primary70 = Color(0xFF40C181);
+  static const primary80 = Color(0xFF60DD9B);
   static const primary95 = Color(0xFFC0FFD6);
   static const primary90 = Color(0xFF6BFCAB);
   static const primary98 = Color(0xFFE9FFED);
@@ -170,13 +171,13 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       ),
       bodySmall: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: FontWeight.w500,
         letterSpacing: 0,
       ),
       bodyMedium: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: FontWeight.w500,
         letterSpacing: 0,
       ),
