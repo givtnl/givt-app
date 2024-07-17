@@ -77,11 +77,21 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GivtElevatedButton(
-                    text: context.l10n.confirm,
-                    onTap: () {
-                      Navigator.of(context).pop(_amount);
-                    },
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // TODO: Uncomment when #902 is merged
+                      // AdminFeeText(
+                      //   amount: _allowance.toDouble(),
+                      // ),
+                      const SizedBox(height: 4),
+                      GivtElevatedButton(
+                        text: context.l10n.confirm,
+                        onTap: () {
+                          Navigator.of(context).pop(_amount);
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],
