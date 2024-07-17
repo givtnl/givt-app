@@ -15,7 +15,6 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
-import 'dart:io' show Platform;
 
 class GenerosityChallengeOverview extends StatefulWidget {
   const GenerosityChallengeOverview({
@@ -117,6 +116,7 @@ class _GenerosityChallengeOverviewState
         actions: const [ChatIconButton()],
       ),
       body: SafeArea(
+        minimum: const EdgeInsets.only(bottom: 16),
         child: Stack(
           children: [
             if (arePersonalDetailsAvailable)
@@ -218,10 +218,6 @@ class _GenerosityChallengeOverviewState
                   leadingImage: coin(width: 32, height: 32),
                   text: 'Give with a coin',
                 ),
-                if (Platform.isAndroid)
-                  const SizedBox(
-                    height: 16,
-                  ),
               ],
             ),
           ],
