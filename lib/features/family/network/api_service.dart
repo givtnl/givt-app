@@ -31,6 +31,21 @@ class FamilyAPIService {
     }
   }
 
+  Future<Map<String, dynamic>> fetchAdminFee() async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/config/adminfee');
+    final response = await client.get(url);
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    } else {
+      final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+      return decodedBody['item'] as Map<String, dynamic>;
+    }
+  }
+
   Future<Map<String, dynamic>> fetchChildDetails(String childGuid) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/profiles/$childGuid');
 
