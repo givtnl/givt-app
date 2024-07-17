@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class AddTopUpPage extends StatefulWidget {
@@ -31,7 +34,10 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const TopAppBar(
+        title: 'Top Up',
+        leading: GenerosityBackButton(),
+      ),
       body: Center(
         child: SafeArea(
           child: Padding(
@@ -45,35 +51,8 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        plusIcon(
-                          size: 40,
-                        ),
+                        primaryCircleWithIcon(iconData: FontAwesomeIcons.plus),
                         const SizedBox(height: 16),
-                        Text(
-                          context.l10n.topUp,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: AppTheme.inputFieldBorderSelected,
-                                    fontFamily: 'Raleway',
-                                    fontWeight: FontWeight.w800,
-                                    height: 1.2,
-                                  ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          context.l10n.topUpScreenInfo,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.labelSmall!.copyWith(
-                                    color: AppTheme.givtBlue,
-                                    fontFamily: 'Raleway',
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
-                                    height: 1.2,
-                                  ),
-                        ),
-                        const SizedBox(height: 12),
                         AllowanceCounter(
                           currency: widget.currency,
                           initialAllowance: _amount,
@@ -83,13 +62,12 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                         ),
                         const SizedBox(height: 12),
                         Text(
+                          context.l10n.topUpScreenInfo,
                           textAlign: TextAlign.center,
-                          'Choose an amount between ${widget.currency}1 and '
-                          '${widget.currency}999.',
                           style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(
-                                    color: AppTheme.givtBlue,
-                                    fontFamily: 'Poppins',
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: AppTheme.primary20,
+                                    fontFamily: 'Rouna',
                                     fontWeight: FontWeight.w400,
                                   ),
                         ),
@@ -99,9 +77,9 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: CustomGreenElevatedButton(
-                    title: context.l10n.confirm,
-                    onPressed: () {
+                  child: GivtElevatedButton(
+                    text: context.l10n.confirm,
+                    onTap: () {
                       Navigator.of(context).pop(_amount);
                     },
                   ),
