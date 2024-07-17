@@ -28,10 +28,10 @@ import 'package:go_router/go_router.dart';
 class NFCScanPage extends StatefulWidget {
   const NFCScanPage({
     super.key,
-    this.shouldErrorPopBack = false,
+    this.isFromGenerosityChallenge = false,
   });
 
-  final bool shouldErrorPopBack;
+  final bool isFromGenerosityChallenge;
 
   @override
   State<NFCScanPage> createState() => _NFCScanPageState();
@@ -228,8 +228,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () async =>
           _handleNotAGivtCoinTryAgainClicked(context),
       onClickSecondaryBtn: () {
-        if (widget.shouldErrorPopBack) {
-          context.pop();
+        if (widget.isFromGenerosityChallenge) {
+          context.goNamed(FamilyPages.generosityChallenge.name);
         } else {
           context.goNamed(FamilyPages.wallet.name);
         }
@@ -272,8 +272,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () async =>
           _handleGenericErrorTryAgainClicked(context),
       onClickSecondaryBtn: () {
-        if (widget.shouldErrorPopBack) {
-          context.pop();
+        if (widget.isFromGenerosityChallenge) {
+          context.goNamed(FamilyPages.generosityChallenge.name);
         } else {
           context.goNamed(FamilyPages.wallet.name);
         }

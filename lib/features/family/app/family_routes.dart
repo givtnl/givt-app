@@ -298,10 +298,10 @@ class FamilyAppRoutes {
               name: FamilyPages.scanNFC.name,
               builder: (context, state) {
                 final extra = state.extra as Map<String, dynamic>?;
-                final shouldErrorPopBack =
+                final isFromGenerosityChallenge =
                     extra?['isGenerosityChallenge'] as bool? ?? false;
                 return NFCScanPage(
-                  shouldErrorPopBack: shouldErrorPopBack,
+                  isFromGenerosityChallenge: isFromGenerosityChallenge,
                 );
               },
             ),
