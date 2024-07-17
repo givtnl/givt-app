@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
@@ -502,6 +504,37 @@ class AuthRepositoyImpl with AuthRepository {
     required String password,
   }) async {
     Map<String, dynamic>? response;
+    try {
+      final userStatus = await _apiService.checkEmail(email);
+      if (userStatus.contains('temp')) {
+        final tempUser = TempUser(
+          email: email,
+          country: Country.us.countryCode,
+          appLanguage: 'en',
+          timeZoneId: await FlutterTimezone.getLocalTimezone(),
+          address: Util.defaultAdress,
+          city: Util.defaultCity,
+          postalCode: Util.defaultPostCode,
+          phoneNumber: Util.defaultUSPhoneNumber,
+          iban: Util.defaultIban,
+          sortCode: Util.empty,
+          accountNumber: Util.empty,
+          amountLimit: 4999,
+          firstName: firstname,
+          lastName: lastname,
+          password: password,
+        );
+        // updates the user extension with the temp user
+        // and updates the session
+        await registerUser(tempUser: tempUser, isTempUser: true);
+        return GenerosityRegistrationResult.success();
+      }
+      if (userStatus.contains('true')) {
+        return GenerosityRegistrationResult.alreadyRegistered();
+      }
+    } catch (e) {
+      return GenerosityRegistrationResult.failure();
+    }
     try {
       response = await _apiService.registerGenerosityChallengeUser(
         {
