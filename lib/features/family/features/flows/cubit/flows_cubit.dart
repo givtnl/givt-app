@@ -19,6 +19,10 @@ class FlowsCubit extends Cubit<FlowsState> {
     getIt<SharedPreferences>().setBool('isInAppCoinFlow', true);
   }
 
+  void startInGenerosityCoinFlow() {
+    emit(const FlowsState(flowType: FlowType.inAppGenerosityCoin));
+  }
+
   void startInAppQRCodeFlow() {
     emit(const FlowsState(flowType: FlowType.inAppQRCode));
   }

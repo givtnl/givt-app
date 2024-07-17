@@ -7,6 +7,12 @@ import 'package:givt_app/utils/utils.dart';
 Widget walletIcon({double? width, double? height}) =>
     SvgPicture.asset('assets/images/wallet.svg');
 
+Widget coin({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/coin.svg',
+      width: width,
+      height: height,
+    );
+
 Widget calendarClockIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/calendar_clock.svg',
       width: width,
