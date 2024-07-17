@@ -7,6 +7,7 @@ enum Pages {
   give(path: 'give', name: 'GIVE'),
   giveSucess(path: 'give-offline', name: 'GIVE-OFFLINE'),
   giveByList(path: 'give-by-list', name: 'GIVE-BY-LIST'),
+  redirectToBrowser(path: '/redirect-to-browser', name: 'REDIRECT-TO-BROWSER'),
   chooseCategoryList(
     path: 'choose-category-list',
     name: 'CHOOSE-CATEGORY-LIST',
