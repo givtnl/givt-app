@@ -228,11 +228,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () async =>
           _handleNotAGivtCoinTryAgainClicked(context),
       onClickSecondaryBtn: () {
-        if (widget.isFromGenerosityChallenge) {
-          context.goNamed(FamilyPages.generosityChallenge.name);
-        } else {
-          context.goNamed(FamilyPages.wallet.name);
-        }
+        _navigateToHome(context);
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
@@ -248,6 +244,14 @@ class _NFCScanPageState extends State<NFCScanPage> {
     unawaited(AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.notAGivtCoinNFCError,
     ));
+  }
+
+  void _navigateToHome(BuildContext context) {
+    if (widget.isFromGenerosityChallenge) {
+      context.goNamed(FamilyPages.generosityChallenge.name);
+    } else {
+      context.goNamed(FamilyPages.wallet.name);
+    }
   }
 
   void _handleNotAGivtCoinTryAgainClicked(BuildContext context) {
@@ -272,11 +276,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () async =>
           _handleGenericErrorTryAgainClicked(context),
       onClickSecondaryBtn: () {
-        if (widget.isFromGenerosityChallenge) {
-          context.goNamed(FamilyPages.generosityChallenge.name);
-        } else {
-          context.goNamed(FamilyPages.wallet.name);
-        }
+        _navigateToHome(context);
         unawaited(
           AnalyticsHelper.logEvent(
             eventName:
