@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -10,6 +12,9 @@ class CameraCubit extends Cubit<CameraState> {
   static const Duration _permissionDialogDelay = Duration(milliseconds: 300);
   Future<void> checkGalleryPermission() async {
     resetPermissionStatuses();
+    if (Platform.isAndroid) {
+      return;
+    }
     final status = await Permission.photos.status;
     //delay is from design
     await Future<void>.delayed(_permissionDialogDelay);
