@@ -14,15 +14,6 @@ class RedirectToBrowserPage extends StatelessWidget {
     launchUrl(Uri.parse(uri)).then((value) {
       context.goNamed(Pages.splash.name);
     });
-    return Column(
-      children: [
-        Container(
-          height: 500,
-          width: 500,
-          color: Colors.red,
-        ),
-        const LoadingPage(),
-      ],
-    );
+    return const LoadingPage();
   }
 }
