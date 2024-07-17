@@ -28,7 +28,10 @@ import 'package:go_router/go_router.dart';
 class NFCScanPage extends StatefulWidget {
   const NFCScanPage({
     super.key,
+    this.isFromGenerosityChallenge = false,
   });
+
+  final bool isFromGenerosityChallenge;
 
   @override
   State<NFCScanPage> createState() => _NFCScanPageState();
@@ -225,10 +228,12 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () async =>
           _handleNotAGivtCoinTryAgainClicked(context),
       onClickSecondaryBtn: () {
-        context.goNamed(FamilyPages.wallet.name);
-        unawaited(AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
-        ));
+        _navigateToHome(context);
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
+          ),
+        );
       },
       icon: FontAwesomeIcons.question,
       secondaryBtnText: 'Go back home',
@@ -239,6 +244,14 @@ class _NFCScanPageState extends State<NFCScanPage> {
     unawaited(AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.notAGivtCoinNFCError,
     ));
+  }
+
+  void _navigateToHome(BuildContext context) {
+    if (widget.isFromGenerosityChallenge) {
+      context.goNamed(FamilyPages.generosityChallenge.name);
+    } else {
+      context.goNamed(FamilyPages.wallet.name);
+    }
   }
 
   void _handleNotAGivtCoinTryAgainClicked(BuildContext context) {
@@ -263,13 +276,13 @@ class _NFCScanPageState extends State<NFCScanPage> {
       onClickPrimaryBtn: () async =>
           _handleGenericErrorTryAgainClicked(context),
       onClickSecondaryBtn: () {
+        _navigateToHome(context);
         unawaited(
           AnalyticsHelper.logEvent(
             eventName:
                 AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
           ),
         );
-        context.goNamed(FamilyPages.wallet.name);
       },
       secondaryBtnText: 'Go back home',
       primaryBtnText: 'Try again',
