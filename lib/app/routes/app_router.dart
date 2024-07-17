@@ -78,6 +78,7 @@ class AppRouter {
       GoRoute(
         path: '/search-for-coin',
         name: 'search-for-coin',
+        redirect: (context, state) => FamilyPages.generosityChallengeRedirect.path,
         builder: (context, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.loading) {
