@@ -106,6 +106,8 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     children: [
                       AdminFeeText(
                         amount: _allowance.toDouble(),
+                        isMonthly: true,
+                        isMultipleChildren: widget.isMultipleChildren,
                       ),
                       const SizedBox(height: 4),
                       GivtElevatedButton(
