@@ -82,8 +82,11 @@ class AppRouter {
           listener: (context, state) {
             if (state.status == AuthStatus.loading) {
               // do nothing
+              print("HELLO LOADING");
             }
             if (state.status == AuthStatus.authenticated && !_isInChallenge()) {
+              print("HELLO AUTHENTICATED AND NOT IN CHALLENGE");
+
               context.go(
                 '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
               );
@@ -91,10 +94,12 @@ class AppRouter {
               final isTestApp = getIt<AppConfig>().isTestApp;
               final code = routerState.uri.queryParameters['code'];
               if (isTestApp && code != null) {
+              print("HELLO NOT LOGGED IN AND TEST APP");
                 context.go(
                   '${Pages.redirectToBrowser.path}?uri=https://dev-coin.givt.app/?mediumId=$code',
                 );
               } else {
+                print("HELLO NOT LOGGED IN AND NOT APP");
                 context.go(
                   '${Pages.redirectToBrowser.path}?uri=${routerState.uri}',
                 );
