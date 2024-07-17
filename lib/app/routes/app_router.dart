@@ -82,6 +82,7 @@ class AppRouter {
           listener: (context, state) {
             if (state.status == AuthStatus.loading) {
               // do nothing
+              return;
             }
             if (state.status == AuthStatus.authenticated && !_isInChallenge()) {
               context.go(
@@ -107,7 +108,12 @@ class AppRouter {
               );
             }
           },
-          child: const LoadingPage(),
+          child: Builder(
+            builder: (context) {
+              context.read<AuthCubit>().checkAuth();
+              return const LoadingPage();
+            },
+          ),
         ),
       ),
       GoRoute(
