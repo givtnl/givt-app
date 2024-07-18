@@ -12,6 +12,7 @@ import 'package:givt_app/features/children/add_member/utils/member_utils.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
+import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -341,7 +342,17 @@ class _AddMemberFormState extends State<AddMemberForm> {
             currency: currency,
             initialAllowance: _allowance,
             canAmountBeZero: true,
-            onAllowanceChanged: (allowance) => _allowance = allowance,
+            onAllowanceChanged: (allowance) => setState(() {
+              _allowance = allowance;
+            }),
+          ),
+          const SizedBox(height: 16),
+          AdminFeeText(
+            amount: _allowance.toDouble(),
+            textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+            ),
           ),
         ],
       ),
