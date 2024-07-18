@@ -156,6 +156,13 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         letterSpacing: 0,
         height: 1.2,
       ),
+      headlineLarge: TextStyle(
+        color: FamilyAppTheme.defaultTextColor,
+        fontSize: 45,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0,
+        height: 1.2,
+      ),
       labelSmall: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
         fontSize: 16,
@@ -171,8 +178,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       ),
       bodySmall: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
-        fontSize: 16,
-        fontWeight: FontWeight.w500,
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
         letterSpacing: 0,
       ),
       bodyMedium: TextStyle(

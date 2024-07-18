@@ -102,6 +102,30 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+Widget primaryCircleWithText({
+  String? text = '',
+  double? circleSize = 90,
+  Color? circleColor,
+  Color? iconColor,
+}) =>
+    Container(
+      width: circleSize,
+      height: circleSize,
+      decoration: BoxDecoration(
+        color: circleColor ?? FamilyAppTheme.primary95,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          text!,
+          style: TextStyle(
+            color: iconColor ?? FamilyAppTheme.primary20,
+            fontSize: text.length < 3 ? 40 : 35,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
 
 Widget primaryCircleWithIcon({
   IconData? iconData,
