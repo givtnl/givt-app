@@ -1,37 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_oval_green_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
 import 'package:go_router/go_router.dart';
 
 class TopUpFailureDialog extends StatelessWidget {
-  const TopUpFailureDialog({super.key,});
+  const TopUpFailureDialog({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return CardDialog(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          walletIcon(),
-          Column(
-            children: [
-              Text(
-                context.l10n.somethingWentWrong,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                context.l10n.topUpFundsFailureText,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          CustomOvalGreenButton(title: 'OK', onPressed: () => context.pop()),
-        ],
+    return Dialog(
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            warningIcon(),
+            const SizedBox(height: 24),
+            Text(
+              'Oops, something went wrong',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'We are having trouble getting the funds from your card. Please try again.',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            GivtElevatedButton(text: 'OK', onTap: () => context.pop()),
+          ],
+        ),
       ),
     );
   }
