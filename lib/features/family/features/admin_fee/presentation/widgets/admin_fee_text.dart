@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/features/admin_fee/application/admin_fe
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text_layout.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
-class AdminFeeText extends StatefulWidget {
+class AdminFeeText extends StatelessWidget {
   const AdminFeeText({
     required this.amount,
     super.key,
@@ -21,30 +21,17 @@ class AdminFeeText extends StatefulWidget {
   final bool isMultipleChildren;
 
   @override
-  State<AdminFeeText> createState() => _AdminFeeTextState();
-}
-
-class _AdminFeeTextState extends State<AdminFeeText> {
-  final AdminFeeCubit _adminFeeCubit = getIt<AdminFeeCubit>();
-
-  @override
-  void initState() {
-    super.initState();
-    _adminFeeCubit.init(widget.amount);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BaseStateConsumer(
-      cubit: _adminFeeCubit,
+      cubit: getIt<AdminFeeCubit>()..setAmount(amount),
       onInitial: (context) => const SizedBox.shrink(),
       onData: (context, uiModel) {
-        return widget.amount > 0
+        return amount > 0
             ? AdminFeeTextLayout(
                 uiModel: uiModel,
-                isMonthly: widget.isMonthly,
-                isMultipleChildren: widget.isMultipleChildren,
-                textStyle: widget.textStyle,
+                isMonthly: isMonthly,
+                isMultipleChildren: isMultipleChildren,
+                textStyle: textStyle,
               )
             : const SizedBox.shrink();
       },

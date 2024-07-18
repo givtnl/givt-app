@@ -32,7 +32,7 @@ Future<void> initAPIService() async {
 }
 
 void initCubits() {
-  getIt.registerLazySingleton(() => AdminFeeCubit(getIt()));
+  getIt.registerFactory(() => AdminFeeCubit(getIt()));
 }
 
 void initRepositories() {

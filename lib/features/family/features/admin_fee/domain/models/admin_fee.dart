@@ -24,6 +24,7 @@ class AdminFee {
   }
 
   double getTotalFee(double amount) {
+    if (amount <= 0) return 0;
     final extraAmount = amount > 1 ? (amount - 1) * amountPerExtraDollar : 0;
     final total = extraAmount + startAmount;
     return total > maxAmount ? maxAmount : total;

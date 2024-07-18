@@ -21,10 +21,12 @@ class AdminFeeCubit extends CommonCubit<AdminFeeUIModel, dynamic> {
     await super.close();
   }
 
-  void init(double amount) {
-    _amount = amount;
-    final fee = _repository.adminFee;
-    emitState(fee);
+  void setAmount(double amount) {
+    if(_amount != amount) {
+      _amount = amount;
+      final fee = _repository.adminFee;
+      emitState(fee);
+    }
   }
 
   void emitState(AdminFee fee) {
