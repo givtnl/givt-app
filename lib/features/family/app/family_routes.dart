@@ -297,7 +297,12 @@ class FamilyAppRoutes {
               path: FamilyPages.scanNFC.path,
               name: FamilyPages.scanNFC.name,
               builder: (context, state) {
-                return const NFCScanPage();
+                final extra = state.extra as Map<String, dynamic>?;
+                final isFromGenerosityChallenge =
+                    extra?['isGenerosityChallenge'] as bool? ?? false;
+                return NFCScanPage(
+                  isFromGenerosityChallenge: isFromGenerosityChallenge,
+                );
               },
             ),
             GoRoute(

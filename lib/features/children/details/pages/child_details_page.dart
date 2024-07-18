@@ -254,7 +254,6 @@ class ChildDetailsPage extends StatelessWidget {
     final dynamic result = await Navigator.push(
       context,
       EditAllowancePage(
-        fee: 0.65,
         currency: r'$',
         initialAllowance: currentAllowance,
         onCancel: () => context.read<ChildDetailsCubit>().cancelAllowance(),

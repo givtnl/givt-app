@@ -83,6 +83,7 @@ enum AmplitudeEvents {
   openedGenerosityChallengeNotification(
     'opened_generosity_challenge_notification',
   ),
+  giveWithCoinInChallengeClicked('give_with_coin_in_challenge_clicked'),
   generosityChallengeDayClicked('generosity_challenge_day_clicked'),
   generosityChallengeDayCompleted('generosity_challenge_day_completed'),
   generosityChallengeDayUndoCompleting(

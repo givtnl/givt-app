@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
+import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -18,12 +19,10 @@ class EditAllowancePage extends StatefulWidget {
     this.initialAllowance,
     this.extraHeader,
     this.isMultipleChildren = false,
-    this.fee = 0.65,
     super.key,
   });
 
   final String currency;
-  final double fee;
   final int? initialAllowance;
   final Widget? extraHeader;
   final bool isMultipleChildren;
@@ -49,7 +48,6 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
   Widget build(BuildContext context) {
     final child =
         widget.isMultipleChildren ? 'each of your children' : 'your child';
-    final perchild = widget.isMultipleChildren ? ' per child' : '';
     final theme = FamilyAppTheme().toThemeData();
     return Scaffold(
       appBar: const TopAppBar(
@@ -106,13 +104,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Visibility(
-                        visible: false,
-                        child: Text(
-                          'Admin fee of ${widget.fee.toStringAsFixed(2)} applies$perchild monthly',
-                          style: theme.textTheme.bodySmall!
-                              .copyWith(fontWeight: FontWeight.w700),
-                        ),
+                      AdminFeeText(
+                        amount: _allowance.toDouble(),
+                        isMonthly: true,
+                        isMultipleChildren: widget.isMultipleChildren,
                       ),
                       const SizedBox(height: 4),
                       GivtElevatedButton(
