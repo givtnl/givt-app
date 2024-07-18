@@ -88,7 +88,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Build a Habbit of Generosity',
+          'Build a habit of generosity',
           textAlign: TextAlign.center,
           style: theme?.textTheme.bodySmall,
         ),
