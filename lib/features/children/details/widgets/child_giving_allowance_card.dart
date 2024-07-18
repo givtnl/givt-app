@@ -21,6 +21,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
     final nextTopUpDate =
         DateTime.parse(profileDetails.givingAllowance.nextGivingAllowanceDate);
     final theme = FamilyAppTheme().toThemeData();
+    final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
       width: double.infinity,
@@ -42,21 +43,26 @@ class ChildGivingAllowanceCard extends StatelessWidget {
             hasAllowance: profileDetails.givingAllowance.amount > 0,
             nextTopUpDate: nextTopUpDate,
             theme: theme,
+            size: size,
           ),
         ),
       ),
     );
   }
 
-  Widget getLayout(BuildContext context,
-      {required bool hasAllowance,
-      required DateTime nextTopUpDate,
-      ThemeData? theme}) {
+  Widget getLayout(
+    BuildContext context, {
+    required bool hasAllowance,
+    required DateTime nextTopUpDate,
+    required Size size,
+    ThemeData? theme,
+  }) {
     if (hasAllowance) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           primaryCircleWithText(
+            circleSize: size.width * 0.35,
             text:
                 '\$${profileDetails.givingAllowance.amount.toStringAsFixed(0)}',
           ),
@@ -70,7 +76,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
           Text(
             (profileDetails.pendingAllowance)
                 ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
-                : '${context.l10n.childNextTopUpPrefix}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
+                : 'Next due: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
             style: theme?.textTheme.bodySmall,
           ),
         ],
@@ -79,7 +85,10 @@ class ChildGivingAllowanceCard extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        calendarClockAvatarIcon(width: 115),
+        calendarClockAvatarIcon(
+          width: size.width * 0.35,
+          height: size.width * 0.35,
+        ),
         const SizedBox(height: 16),
         Text(
           textAlign: TextAlign.center,

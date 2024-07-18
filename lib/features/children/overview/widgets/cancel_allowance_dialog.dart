@@ -26,10 +26,13 @@ class CancelAllowanceDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              trashAvatarIcon(width: 140, height: 140),
+              trashAvatarIcon(
+                width: MediaQuery.of(context).size.width * 0.35,
+                height: MediaQuery.of(context).size.width * 0.35,
+              ),
               const SizedBox(height: 16),
               Text(
-                'Are you sure you want to cancel the Recurring Giving Allowance?',
+                'Are you sure you want to cancel the Recurring Amount?',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium,
               ),

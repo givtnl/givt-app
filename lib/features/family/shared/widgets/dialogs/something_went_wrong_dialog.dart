@@ -85,7 +85,10 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.icon == null)
-              warningIcon()
+              warningIcon(
+                width: MediaQuery.of(context).size.width * 0.35,
+                height: MediaQuery.of(context).size.width * 0.35,
+              )
             else
               primaryCircleWithIcon(iconData: widget.icon),
             const SizedBox(height: 24),

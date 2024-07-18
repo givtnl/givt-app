@@ -29,8 +29,8 @@ class ChildDetailsItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
             child: SvgPicture.network(
               profileDetails.profile.pictureURL,
-              width: size.width * 0.20,
-              height: size.width * 0.20,
+              width: size.width * 0.25,
+              height: size.width * 0.25,
             ),
           ),
           const SizedBox(height: 5),

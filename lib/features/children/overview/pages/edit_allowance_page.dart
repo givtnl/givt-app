@@ -72,7 +72,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        calendarClockAvatarIcon(),
+                        calendarClockAvatarIcon(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.width * 0.35,
+                        ),
                         const SizedBox(height: 16),
                         AllowanceCounter(
                           currency: widget.currency,

@@ -15,7 +15,10 @@ class ChildCancelRGAFailedDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            warningIcon(),
+            warningIcon(
+              width: MediaQuery.of(context).size.width * 0.35,
+              height: MediaQuery.of(context).size.width * 0.35,
+            ),
             const SizedBox(height: 16),
             Text(
               'Oops something went wrong',

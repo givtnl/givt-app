@@ -18,7 +18,10 @@ class TopUpFailureDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            warningIcon(),
+            warningIcon(
+              width: MediaQuery.of(context).size.width * 0.35,
+              height: MediaQuery.of(context).size.width * 0.35,
+            ),
             const SizedBox(height: 24),
             Text(
               'Oops, something went wrong',

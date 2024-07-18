@@ -141,7 +141,7 @@ class ChildDetailsPage extends StatelessWidget {
                   ? Column(
                       children: [
                         Expanded(
-                          flex: 2,
+                          flex: 3,
                           child: Container(
                             alignment: Alignment.center,
                             width: double.maxFinite,
@@ -152,7 +152,7 @@ class ChildDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 5,
                           child: ChildGivingAllowanceCard(
                             profileDetails: state.profileDetails,
                             onPressed: () {
@@ -175,7 +175,7 @@ class ChildDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          flex: 3,
+                          flex: 5,
                           child: ChildTopUpCard(
                             onPressed: () {
                               AnalyticsHelper.logEvent(

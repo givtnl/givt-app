@@ -15,6 +15,7 @@ class ChildTopUpCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = FamilyAppTheme().toThemeData();
+    final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
       width: double.infinity,
@@ -38,6 +39,7 @@ class ChildTopUpCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               primaryCircleWithIcon(
+                circleSize: size.width * 0.35,
                 iconData: FontAwesomeIcons.plus,
               ),
               const SizedBox(height: 16),
