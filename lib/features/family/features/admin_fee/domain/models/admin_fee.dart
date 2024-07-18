@@ -1,3 +1,5 @@
+import 'package:givt_app/features/family/features/admin_fee/presentation/models/admin_fee_uimodel.dart';
+
 class AdminFee {
   const AdminFee({
     required this.startAmount,
@@ -19,6 +21,16 @@ class AdminFee {
       amountPerExtraDollar: 0.08,
       maxAmount: 1,
     );
+  }
+
+  double getTotalFee(double amount) {
+    final extraAmount = amount > 1 ? (amount - 1) * amountPerExtraDollar : 0;
+    final total = extraAmount + startAmount;
+    return total > maxAmount ? maxAmount : total;
+  }
+
+  AdminFeeUIModel toUIModel(double amount) {
+    return AdminFeeUIModel(fee: getTotalFee(amount));
   }
 
   final double startAmount;

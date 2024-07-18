@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/network/request_helper.dart';
-import 'package:givt_app/features/family/features/admin_fee/repositories/admin_fee_repository.dart';
+import 'package:givt_app/features/family/features/admin_fee/application/admin_fee_cubit.dart';
+import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
@@ -21,12 +22,17 @@ Future<void> init() async {
 
   /// Init repositories
   initRepositories();
+  initCubits();
 }
 
 Future<void> initAPIService() async {
   getIt.registerLazySingleton<FamilyAPIService>(
     () => FamilyAPIService(getIt<RequestHelper>()),
   );
+}
+
+void initCubits() {
+  getIt.registerLazySingleton(() => AdminFeeCubit(getIt()));
 }
 
 void initRepositories() {
