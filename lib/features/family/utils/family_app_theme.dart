@@ -196,6 +196,12 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       fontFamily: 'Rouna',
       textTheme: textTheme,
       primaryColor: colorScheme.primary,
+      bottomSheetTheme: BottomSheetThemeData(
+        modalBarrierColor: primaryColor.withOpacity(0.5),
+      ),
+      dialogTheme: DialogTheme(
+        //barierColor: primaryColor.withOpacity(0.5), //TODO required flutter update to 3.22.0
+      ),
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.white,
