@@ -84,6 +84,19 @@ class ProfilesNeedsRegistration extends ProfilesState {
       {required super.profiles, required super.activeProfileIndex});
 }
 
+class ProfilesInvitedToGroup extends ProfilesState {
+  /// This is the state that is emitted when the user still needs to register
+  const ProfilesInvitedToGroup(
+      {required super.profiles,
+      required super.activeProfileIndex,
+      required this.impactGroup});
+
+  final ImpactGroup impactGroup;
+
+  @override
+  List<Object> get props => [profiles, activeProfileIndex, impactGroup];
+}
+
 class ProfilesExternalErrorState extends ProfilesState {
   const ProfilesExternalErrorState({
     required super.profiles,
