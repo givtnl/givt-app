@@ -48,7 +48,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
-        if(state is ProfilesInvitedToGroup) {
+        if (state is ProfilesInvitedToGroup) {
           unawaited(showModalBottomSheet<void>(
             isScrollControlled: true,
             context: context,
@@ -88,6 +88,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       },
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
+          current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
@@ -100,7 +101,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           appBar: const TopAppBar(
             title: 'Who would like to give?',
           ),
-          body: state is ProfilesLoadingState
+          body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
               : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
@@ -151,7 +152,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 );
                                 unawaited(AnalyticsHelper.logEvent(
                                   eventName:
-                                  AmplitudeEvents.manageFamilyPressed,
+                                      AmplitudeEvents.manageFamilyPressed,
                                 ));
                               },
                               text: 'Manage Family',
@@ -205,7 +206,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               eventName: AmplitudeEvents.profilePressed,
               eventProperties: {
                 'profile_name':
-                '${selectedProfile.firstName} ${selectedProfile.lastName}',
+                    '${selectedProfile.firstName} ${selectedProfile.lastName}',
               },
             );
 

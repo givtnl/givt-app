@@ -16,9 +16,12 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 
 class ProfilesCubit extends HydratedCubit<ProfilesState> {
-  ProfilesCubit(this._profilesRepositoy, this._addMemberRepository,
-      this._authRepository, this._impactGroupsRepository)
-      : super(const ProfilesInitialState()) {
+  ProfilesCubit(
+    this._profilesRepositoy,
+    this._addMemberRepository,
+    this._authRepository,
+    this._impactGroupsRepository,
+  ) : super(const ProfilesInitialState()) {
     _init();
   }
 
@@ -40,35 +43,64 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     _groupInviteAcceptedSubscription =
         _impactGroupsRepository.groupInviteAcceptedStream().listen(
       (_) {
+        _invitedToGroup = null;
         fetchAllProfiles();
       },
     );
   }
 
   Future<void> doInitialChecks() async {
-    await fetchAllProfiles(checkRegistrationAndSetup: true);
+    _emitLoadingState();
+    await checkIfInvitedToGroup();
+    if (_isInvitedToGroup()) {
+      _showInviteSheet();
+    } else {
+      await fetchAllProfiles(checkRegistrationAndSetup: true);
+    }
+  }
+
+  bool _isInvitedToGroup() => _invitedToGroup != null;
+
+  void _showInviteSheet() {
+    emit(
+      ProfilesInvitedToGroup(
+        profiles: state.profiles,
+        activeProfileIndex: state.activeProfileIndex,
+        impactGroup: _invitedToGroup!,
+      ),
+    );
   }
 
   Future<void> checkIfInvitedToGroup() async {
-    final impactGroups = await _impactGroupsRepository.fetchImpactGroups();
-    for (final impactGroup in impactGroups) {
-      if (impactGroup.status == ImpactGroupStatus.invited) {
-        _invitedToGroup = impactGroup;
-        break;
+    try {
+      final impactGroups = await _impactGroupsRepository.fetchImpactGroups();
+      for (final impactGroup in impactGroups) {
+        if (impactGroup.status == ImpactGroupStatus.invited) {
+          _invitedToGroup = impactGroup;
+          break;
+        }
       }
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
+      );
     }
   }
 
   Future<void> fetchAllProfiles(
       {bool checkRegistrationAndSetup = false}) async {
-    emit(
-      ProfilesLoadingState(
-        profiles: state.profiles,
-        activeProfileIndex: state.activeProfileIndex,
-      ),
-    );
+    _emitLoadingState();
 
     try {
+      if (checkRegistrationAndSetup) {
+        await checkIfInvitedToGroup();
+      }
+      if (_isInvitedToGroup()) {
+        _showInviteSheet();
+        return;
+      }
+
       final newProfiles = <Profile>[];
       final response = await _profilesRepositoy.fetchAllProfiles();
       newProfiles.addAll(response);
@@ -93,7 +125,6 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         final (userExt, session, amountPresets) =
             await _authRepository.isAuthenticated() ?? (null, null, null);
         userExternal = userExt;
-        await checkIfInvitedToGroup();
       }
 
       if (userExternal?.needRegistration ?? false) {
@@ -103,15 +134,6 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
             activeProfileIndex: state.activeProfileIndex,
           ),
         );
-      } else if (_invitedToGroup != null) {
-        emit(
-          ProfilesInvitedToGroup(
-            profiles: state.profiles,
-            activeProfileIndex: state.activeProfileIndex,
-            impactGroup: _invitedToGroup!,
-          ),
-        );
-        _invitedToGroup = null;
       } else if (checkRegistrationAndSetup &&
           newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
         emit(
@@ -142,6 +164,15 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         ),
       );
     }
+  }
+
+  void _emitLoadingState() {
+    emit(
+      ProfilesLoadingState(
+        profiles: state.profiles,
+        activeProfileIndex: state.activeProfileIndex,
+      ),
+    );
   }
 
   Future<void> fetchActiveProfile([bool forceLoading = false]) async {

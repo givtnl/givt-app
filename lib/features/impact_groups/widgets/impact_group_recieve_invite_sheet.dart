@@ -80,6 +80,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
                       )
                       ..pop();
                   } else {
+                    context.pop();
                     context.goNamed(FamilyPages.profileSelection.name);
                   }
                 },
