@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
+import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -14,8 +15,8 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 
 class ProfilesCubit extends HydratedCubit<ProfilesState> {
-  ProfilesCubit(
-      this._profilesRepositoy, this._addMemberRepository, this._authRepository)
+  ProfilesCubit(this._profilesRepositoy, this._addMemberRepository,
+      this._authRepository, this._editChildRepository)
       : super(const ProfilesInitialState()) {
     _init();
   }
@@ -23,13 +24,21 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   final ProfilesRepository _profilesRepositoy;
   final AddMemberRepository _addMemberRepository;
   final AuthRepository _authRepository;
+  final EditChildRepository _editChildRepository;
 
   StreamSubscription<void>? _memberAddedSubscription;
+  StreamSubscription<String>? _walletChangedSubscription;
 
   void _init() {
     _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
       (_) {
         fetchAllProfiles();
+      },
+    );
+    _walletChangedSubscription =
+        _editChildRepository.walletChangedStream().listen(
+      (childGuid) {
+        fetchProfile(childGuid);
       },
     );
   }
@@ -192,6 +201,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   @override
   Future<void> close() {
     _memberAddedSubscription?.cancel();
+    _walletChangedSubscription?.cancel();
     return super.close();
   }
 }
