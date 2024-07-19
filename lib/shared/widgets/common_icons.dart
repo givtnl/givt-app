@@ -104,7 +104,7 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
     );
 Widget primaryCircleWithText({
   String? text = '',
-  double circleSize = 90,
+  double circleSize = 62,
   Color? circleColor,
   Color? iconColor,
 }) =>
@@ -112,8 +112,8 @@ Widget primaryCircleWithText({
       // 14 is what the design has when exporting svgs
       padding: const EdgeInsets.all(14),
       child: Container(
-        width: circleSize - 28,
-        height: circleSize - 28,
+        width: circleSize,
+        height: circleSize,
         decoration: BoxDecoration(
           color: circleColor ?? FamilyAppTheme.primary95,
           shape: BoxShape.circle,
@@ -133,7 +133,7 @@ Widget primaryCircleWithText({
 
 Widget primaryCircleWithIcon({
   IconData? iconData,
-  double circleSize = 90,
+  double circleSize = 62,
   double iconSize = 40,
   Color? circleColor,
   Color? iconColor,
@@ -142,8 +142,8 @@ Widget primaryCircleWithIcon({
       // 14 is what the design has when exporting svgs
       padding: const EdgeInsets.all(14),
       child: Container(
-        width: circleSize - 28,
-        height: circleSize - 28,
+        width: circleSize,
+        height: circleSize,
         decoration: BoxDecoration(
           color: circleColor ?? FamilyAppTheme.primary95,
           shape: BoxShape.circle,
