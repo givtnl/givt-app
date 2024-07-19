@@ -52,7 +52,10 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        primaryCircleWithIcon(iconData: FontAwesomeIcons.plus),
+                        primaryCircleWithIcon(
+                          iconData: FontAwesomeIcons.plus,
+                          circleSize: MediaQuery.of(context).size.width * 0.35,
+                        ),
                         const SizedBox(height: 16),
                         AllowanceCounter(
                           currency: widget.currency,

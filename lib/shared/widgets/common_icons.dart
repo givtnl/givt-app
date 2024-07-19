@@ -104,24 +104,28 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
     );
 Widget primaryCircleWithText({
   String? text = '',
-  double? circleSize = 90,
+  double circleSize = 62,
   Color? circleColor,
   Color? iconColor,
 }) =>
-    Container(
-      width: circleSize,
-      height: circleSize,
-      decoration: BoxDecoration(
-        color: circleColor ?? FamilyAppTheme.primary95,
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Text(
-          text!,
-          style: TextStyle(
-            color: iconColor ?? FamilyAppTheme.primary20,
-            fontSize: text.length < 3 ? 40 : 35,
-            fontWeight: FontWeight.bold,
+    Padding(
+      // 14 is what the design has when exporting svgs
+      padding: const EdgeInsets.all(14),
+      child: Container(
+        width: circleSize,
+        height: circleSize,
+        decoration: BoxDecoration(
+          color: circleColor ?? FamilyAppTheme.primary95,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Text(
+            text!,
+            style: TextStyle(
+              color: iconColor ?? FamilyAppTheme.primary20,
+              fontSize: text.length < 3 ? 40 : 35,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -129,23 +133,27 @@ Widget primaryCircleWithText({
 
 Widget primaryCircleWithIcon({
   IconData? iconData,
-  double? circleSize = 90,
-  double? iconSize = 40,
+  double circleSize = 62,
+  double iconSize = 40,
   Color? circleColor,
   Color? iconColor,
 }) =>
-    Container(
-      width: circleSize,
-      height: circleSize,
-      decoration: BoxDecoration(
-        color: circleColor ?? FamilyAppTheme.primary95,
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Icon(
-          iconData,
-          color: iconColor ?? FamilyAppTheme.primary20,
-          size: iconSize,
+    Padding(
+      // 14 is what the design has when exporting svgs
+      padding: const EdgeInsets.all(14),
+      child: Container(
+        width: circleSize,
+        height: circleSize,
+        decoration: BoxDecoration(
+          color: circleColor ?? FamilyAppTheme.primary95,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Icon(
+            iconData,
+            color: iconColor ?? FamilyAppTheme.primary20,
+            size: iconSize,
+          ),
         ),
       ),
     );

@@ -22,7 +22,10 @@ class CancelRGASuccessPage extends StatelessWidget {
         title: 'The Recurring Amount has been canceled.',
         text: 'You can set it up again at any time.',
         onClickButton: onClickButton,
-        image: trashAvatarIcon(),
+        image: trashAvatarIcon(
+          width: MediaQuery.of(context).size.width * 0.35,
+          height: MediaQuery.of(context).size.width * 0.35,
+        ),
       ),
     );
   }
