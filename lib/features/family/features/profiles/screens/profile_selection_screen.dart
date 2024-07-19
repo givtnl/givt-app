@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
@@ -40,14 +41,27 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfilesCubit>().fetchAllProfiles();
+    context.read<ProfilesCubit>().doInitialChecks();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
-        if (state is ProfilesExternalErrorState) {
+        if(state is ProfilesInvitedToGroup) {
+          unawaited(showModalBottomSheet<void>(
+            isScrollControlled: true,
+            context: context,
+            useSafeArea: true,
+            isDismissible: false,
+            enableDrag: false,
+            builder: (_) {
+              return ImpactGroupRecieveInviteSheet(
+                invitdImpactGroup: state.impactGroup,
+              );
+            },
+          ));
+        } else if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
             context,

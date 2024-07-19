@@ -8,14 +8,16 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'profiles_state.dart';
 
 class ProfilesCubit extends HydratedCubit<ProfilesState> {
-  ProfilesCubit(
-      this._profilesRepositoy, this._addMemberRepository, this._authRepository)
+  ProfilesCubit(this._profilesRepositoy, this._addMemberRepository,
+      this._authRepository, this._impactGroupsRepository)
       : super(const ProfilesInitialState()) {
     _init();
   }
@@ -23,8 +25,11 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   final ProfilesRepository _profilesRepositoy;
   final AddMemberRepository _addMemberRepository;
   final AuthRepository _authRepository;
+  final ImpactGroupsRepository _impactGroupsRepository;
 
   StreamSubscription<void>? _memberAddedSubscription;
+  StreamSubscription<void>? _groupInviteAcceptedSubscription;
+  ImpactGroup? _invitedToGroup;
 
   void _init() {
     _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
@@ -32,6 +37,26 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         fetchAllProfiles();
       },
     );
+    _groupInviteAcceptedSubscription =
+        _impactGroupsRepository.groupInviteAcceptedStream().listen(
+      (_) {
+        fetchAllProfiles();
+      },
+    );
+  }
+
+  Future<void> doInitialChecks() async {
+    await fetchAllProfiles(checkRegistrationAndSetup: true);
+  }
+
+  Future<void> checkIfInvitedToGroup() async {
+    final impactGroups = await _impactGroupsRepository.fetchImpactGroups();
+    for (final impactGroup in impactGroups) {
+      if (impactGroup.status == ImpactGroupStatus.invited) {
+        _invitedToGroup = impactGroup;
+        break;
+      }
+    }
   }
 
   Future<void> fetchAllProfiles(
@@ -68,6 +93,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         final (userExt, session, amountPresets) =
             await _authRepository.isAuthenticated() ?? (null, null, null);
         userExternal = userExt;
+        await checkIfInvitedToGroup();
       }
 
       if (userExternal?.needRegistration ?? false) {
@@ -77,6 +103,15 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
             activeProfileIndex: state.activeProfileIndex,
           ),
         );
+      } else if (_invitedToGroup != null) {
+        emit(
+          ProfilesInvitedToGroup(
+            profiles: state.profiles,
+            activeProfileIndex: state.activeProfileIndex,
+            impactGroup: _invitedToGroup!,
+          ),
+        );
+        _invitedToGroup = null;
       } else if (checkRegistrationAndSetup &&
           newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
         emit(
@@ -192,6 +227,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   @override
   Future<void> close() {
     _memberAddedSubscription?.cancel();
+    _groupInviteAcceptedSubscription?.cancel();
     return super.close();
   }
 }
