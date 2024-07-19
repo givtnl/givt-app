@@ -38,5 +38,6 @@ class Topup extends HistoryItem {
   final HistoryItemStatus status;
 
   bool get isNotSuccessful =>
-      status != HistoryItemStatus.proccessed && attemptNr > 0;
+      (status != HistoryItemStatus.proccessed && attemptNr > 0) ||
+      status == HistoryItemStatus.cancelled;
 }
