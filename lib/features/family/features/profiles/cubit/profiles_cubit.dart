@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
+import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
@@ -20,6 +21,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     this._profilesRepositoy,
     this._addMemberRepository,
     this._authRepository,
+    this._editChildRepository,
     this._impactGroupsRepository,
   ) : super(const ProfilesInitialState()) {
     _init();
@@ -28,9 +30,11 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   final ProfilesRepository _profilesRepositoy;
   final AddMemberRepository _addMemberRepository;
   final AuthRepository _authRepository;
+  final EditChildRepository _editChildRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
   StreamSubscription<void>? _memberAddedSubscription;
+  StreamSubscription<String>? _walletChangedSubscription;
   StreamSubscription<void>? _groupInviteAcceptedSubscription;
   ImpactGroup? _invitedToGroup;
 
@@ -38,6 +42,12 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
       (_) {
         fetchAllProfiles();
+      },
+    );
+    _walletChangedSubscription =
+        _editChildRepository.walletChangedStream().listen(
+      (childGuid) {
+        fetchProfile(childGuid);
       },
     );
     _groupInviteAcceptedSubscription =
@@ -258,6 +268,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   @override
   Future<void> close() {
     _memberAddedSubscription?.cancel();
+    _walletChangedSubscription?.cancel();
     _groupInviteAcceptedSubscription?.cancel();
     return super.close();
   }

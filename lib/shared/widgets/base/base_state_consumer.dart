@@ -6,23 +6,27 @@ import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class BaseStateConsumer<E, K> extends StatelessWidget {
   const BaseStateConsumer({
-    required this.onData,
     required this.cubit,
     super.key,
+    this.onData,
     this.onInitial,
     this.onCustom,
     this.onLoading,
   });
 
   final Cubit<BaseState<E, K>> cubit;
+
   // for displaying the widget in an initial state
   // not every widget has an initial state so this is optional
   // but if you call it without defining it it will display an error
   final Widget Function(BuildContext context)? onInitial;
+
   // for displaying the widget in a loading state
   final Widget Function(BuildContext context)? onLoading;
+
   // for building UI
-  final Widget Function(BuildContext context, E uiModel) onData;
+  final Widget Function(BuildContext context, E uiModel)? onData;
+
   // for (one-off) methods only, not for building UI!
   // so for example showing a dialog, a bottom sheet, etc.
   final void Function(BuildContext context, K custom)? onCustom;
@@ -59,7 +63,8 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
         } else if (state is LoadingState) {
           return onLoading?.call(context) ?? const CircularProgressIndicator();
         } else if (state is DataState<E, K>) {
-          return onData(context, state.data);
+          return onData?.call(context, state.data) ??
+              const UnrecoverableError();
         } else {
           return const UnrecoverableError();
         }
