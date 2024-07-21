@@ -97,7 +97,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider<ProfilesCubit>(
             create: (BuildContext context) =>
-                ProfilesCubit(getIt(), getIt(), getIt(), getIt()),
+                ProfilesCubit(getIt(), getIt(), getIt(), getIt(), getIt()),
           ),
           BlocProvider<OrganisationDetailsCubit>(
             create: (BuildContext context) => OrganisationDetailsCubit(getIt()),
