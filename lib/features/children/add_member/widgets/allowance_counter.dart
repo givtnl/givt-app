@@ -132,7 +132,11 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             child: Icon(
               FontAwesomeIcons.circleMinus,
               size: 32,
-              color: (_allowance < 2) ? Colors.grey : AppTheme.primary20,
+              color: (_allowance < 2)
+                  ? widget.canAmountBeZero
+                      ? AppTheme.primary20
+                      : Colors.grey
+                  : AppTheme.primary20,
             ),
           ),
         ),
