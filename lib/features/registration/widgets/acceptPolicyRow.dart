@@ -5,8 +5,11 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class AcceptPolicyRow extends StatelessWidget {
-  const AcceptPolicyRow(
-      {required this.onTap, required this.checkBoxValue, super.key,});
+  const AcceptPolicyRow({
+    required this.onTap,
+    required this.checkBoxValue,
+    super.key,
+  });
   final void Function(bool?)? onTap;
   final bool checkBoxValue;
   @override
@@ -36,7 +39,7 @@ class AcceptPolicyRow extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       locals.acceptPolicy,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
                     ),

@@ -686,12 +686,12 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.biometricCheck) {
-      context.pushNamed(
+      unawaited(context.pushNamed(
         state.user.isUsUser
             ? FamilyPages.permitUSBiometric.name
             : Pages.permitBiometric.name,
         extra: PermitBiometricRequest.login(),
-      );
+      ));
     }
 
     if (state.status == AuthStatus.authenticated) {
@@ -705,14 +705,11 @@ class AppRouter {
       if (state.user.isUsUser &&
           (!GenerosityChallengeHelper.isActivated ||
               GenerosityChallengeHelper.isCompleted)) {
-        if (state.user.needRegistration) {
-          context.goNamed(FamilyPages.generosityChallengeRedirect.name);
-        } else if (routerState.name == Pages.loading.name) {
-          context.goNamed(
-            FamilyPages.profileSelection.name,
-            queryParameters: routerState.uri.queryParameters,
-          );
-        }
+        context.goNamed(
+          FamilyPages.profileSelection.name,
+          queryParameters: routerState.uri.queryParameters,
+        );
+
         return;
       }
 
