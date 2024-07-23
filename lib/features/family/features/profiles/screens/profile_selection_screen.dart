@@ -82,7 +82,12 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               extra: context.read<RegistrationBloc>(),
             );
           } else {
-            context.pushNamed(FamilyPages.registrationUS.name);
+            if (state.hasFamily) {
+              context.pushReplacementNamed(FamilyPages.registrationUS.name);
+            } else {
+              await context
+                  .pushNamed(FamilyPages.generosityChallengeRedirect.name);
+            }
           }
         }
       },

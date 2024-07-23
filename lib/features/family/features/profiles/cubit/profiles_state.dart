@@ -80,8 +80,12 @@ class ProfilesNotSetupState extends ProfilesState {
 
 class ProfilesNeedsRegistration extends ProfilesState {
   /// This is the state that is emitted when the user still needs to register
-  const ProfilesNeedsRegistration(
-      {required super.profiles, required super.activeProfileIndex});
+  const ProfilesNeedsRegistration({
+    required super.profiles,
+    required super.activeProfileIndex,
+    this.hasFamily = false,
+  });
+  final bool hasFamily;
 }
 
 class ProfilesInvitedToGroup extends ProfilesState {

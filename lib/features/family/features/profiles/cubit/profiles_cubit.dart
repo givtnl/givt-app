@@ -98,8 +98,9 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     }
   }
 
-  Future<void> fetchAllProfiles(
-      {bool checkRegistrationAndSetup = false}) async {
+  Future<void> fetchAllProfiles({
+    bool checkRegistrationAndSetup = false,
+  }) async {
     _emitLoadingState();
 
     try {
@@ -142,6 +143,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           ProfilesNeedsRegistration(
             profiles: newProfiles,
             activeProfileIndex: state.activeProfileIndex,
+            hasFamily:
+                newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
           ),
         );
       } else if (checkRegistrationAndSetup &&
