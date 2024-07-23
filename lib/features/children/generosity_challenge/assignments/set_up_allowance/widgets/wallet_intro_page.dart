@@ -1,45 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class WalletIntroPage extends StatelessWidget {
-  const WalletIntroPage({required this.onContinue, super.key,});
+  const WalletIntroPage({
+    required this.onContinue,
+    super.key,
+  });
   final VoidCallback onContinue;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(
-                'The Wallet',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
+    final theme = FamilyAppTheme().toThemeData();
+    return Theme(
+      data: theme,
+      child: Scaffold(
+        appBar: const GenerosityAppBar(
+          title: 'Gift from the Mayor',
+          leading: GenerosityBackButton(),
+        ),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                const Spacer(),
+                Stack(
+                  children: [
+                    const Align(
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: FamilyAppTheme.primary95,
+                        ),
+                      ),
                     ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'The Mayor has gifted each child their own Wallet.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'They can use the money to discover different ways to spread generosity.',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              Expanded(
-                child: SvgPicture.asset('assets/images/generosity_wallet.svg'),
-              ),
-              CustomGreenElevatedButton(
-                onPressed: onContinue,
-                title: 'Continue',
-              ),
-            ],
+                    Align(
+                      child: walletIcon(width: 140, height: 140),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'The Wallet',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Text(
+                    'The Mayor has given each child a wallet. Parents can add money to it so the children can learn and practice generosity.',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w400),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                const Spacer(),
+                GivtElevatedButton(
+                  onTap: onContinue,
+                  text: 'Continue',
+                ),
+              ],
+            ),
           ),
         ),
       ),

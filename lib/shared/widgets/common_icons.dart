@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 Widget walletIcon({double? width, double? height}) =>
-    SvgPicture.asset('assets/images/wallet.svg');
+    SvgPicture.asset('assets/images/wallet.svg', width: width, height: height);
 
 Widget coin({double? width, double? height}) => SvgPicture.asset(
       'assets/images/coin.svg',
