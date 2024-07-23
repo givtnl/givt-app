@@ -686,12 +686,13 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.biometricCheck) {
-      unawaited(context.pushNamed(
+      await context.pushNamed(
         state.user.isUsUser
             ? FamilyPages.permitUSBiometric.name
             : Pages.permitBiometric.name,
         extra: PermitBiometricRequest.login(),
-      ));
+      );
+      return;
     }
 
     if (state.status == AuthStatus.authenticated) {
