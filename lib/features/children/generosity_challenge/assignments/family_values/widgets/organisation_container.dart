@@ -6,6 +6,7 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -64,10 +65,12 @@ class OrganisationContainer extends StatelessWidget {
               child: Text(
                 familyValue.organisation.organisationName!,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: FamilyAppTheme()
+                    .toThemeData()
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(
                       color: ColorCombo.primary.textColor,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
                     ),
               ),
             ),

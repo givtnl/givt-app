@@ -4,13 +4,17 @@ import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallengeVpcSetupPage extends StatefulWidget {
-  const GenerosityChallengeVpcSetupPage({super.key,});
+  const GenerosityChallengeVpcSetupPage({
+    super.key,
+  });
 
   @override
   State<GenerosityChallengeVpcSetupPage> createState() =>
@@ -38,9 +42,15 @@ class _GenerosityChallengeVpcSetupPageState
     );
   }
 
-  VPCPage _vpc(BuildContext context) {
-    return VPCPage(
-      onReadyClicked: _cubit.onClickReadyForVPC,
+  Scaffold _vpc(BuildContext context) {
+    return Scaffold(
+      appBar: const GenerosityAppBar(
+        title: 'Parental Permission',
+        leading: GenerosityBackButton(),
+      ),
+      body: VPCPage(
+        onReadyClicked: _cubit.onClickReadyForVPC,
+      ),
     );
   }
 
@@ -51,7 +61,7 @@ class _GenerosityChallengeVpcSetupPageState
     switch (custom) {
       case NavigateToFamilyOverview():
         context
-          ..pushReplacementNamed(Pages.home.name)
+          ..pushReplacementNamed(FamilyPages.profileSelection.name)
           ..pushNamed(FamilyPages.childrenOverview.name);
       case NavigateToLogin():
         context.goNamed(Pages.welcome.name);

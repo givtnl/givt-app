@@ -228,10 +228,18 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
           ),
         ),
       ),
+      dialogBackgroundColor: Colors.white,
+      dialogTheme: const DialogTheme(
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.white,
+      ),
       extensions: [this],
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
-      cardTheme: CardTheme(color: colorScheme.background),
+      cardTheme: CardTheme(
+        color: colorScheme.background,
+        surfaceTintColor: Colors.transparent,
+      ),
     );
   }
 

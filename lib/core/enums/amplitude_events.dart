@@ -98,6 +98,9 @@ enum AmplitudeEvents {
   generosityChallengeDonationSuccess('generosity_challenge_donation_success'),
   familyValuesSelected('family_values_selected'),
   acceptedGenerosityChallenge('accepted_generosity_challenge'),
+  generosityChallengeDay8MaybeLaterClicked(
+    'generosity_challenge_day_8_maybe_later_clicked',
+  ),
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),

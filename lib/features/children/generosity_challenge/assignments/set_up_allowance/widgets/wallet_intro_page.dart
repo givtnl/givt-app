@@ -60,8 +60,7 @@ class WalletIntroPage extends StatelessWidget {
                         ?.copyWith(fontWeight: FontWeight.w400),
                   ),
                 ),
-                const SizedBox(height: 24),
-                const Spacer(),
+                const Spacer(flex: 2),
                 GivtElevatedButton(
                   onTap: onContinue,
                   text: 'Continue',

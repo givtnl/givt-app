@@ -78,6 +78,11 @@ Widget trashAvatarIcon({double? width, double? height}) => SvgPicture.asset(
       height: height,
     );
 
+Widget secureCardsIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/vpc_secure.svg',
+      width: width,
+      height: height,
+    );
 Widget familySuperheroesIcon({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/family_superheroes.svg',

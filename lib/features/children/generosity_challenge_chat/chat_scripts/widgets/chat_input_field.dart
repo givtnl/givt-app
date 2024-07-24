@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_input_answer_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/givt_icon_button.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -173,11 +174,12 @@ class _ChatInputFieldState extends State<ChatInputField> {
     );
   }
 
-  TextStyle? get textStyle => Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontFamily: 'Rouna',
-        fontWeight: FontWeight.w700,
-        color: AppTheme.primary20,
-      );
+  TextStyle? get textStyle =>
+      FamilyAppTheme().toThemeData().textTheme.titleSmall?.copyWith(
+            fontFamily: 'Rouna',
+            fontWeight: FontWeight.w700,
+            color: AppTheme.primary20,
+          );
 
   BorderSide get borderSide => const BorderSide(
         color: AppTheme.inputFieldBorderSelected,
