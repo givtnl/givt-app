@@ -49,7 +49,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesInvitedToGroup) {
-          unawaited(showModalBottomSheet<void>(
+          await showModalBottomSheet<void>(
             isScrollControlled: true,
             context: context,
             useSafeArea: true,
@@ -60,7 +60,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                 invitdImpactGroup: state.impactGroup,
               );
             },
-          ));
+          );
         } else if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
