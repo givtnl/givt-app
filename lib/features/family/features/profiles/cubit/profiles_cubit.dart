@@ -69,6 +69,10 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     }
   }
 
+  void clearInvite() {
+    _invitedToGroup = null;
+  }
+
   bool _isInvitedToGroup() => _invitedToGroup != null;
 
   void _showInviteSheet() {

@@ -53,9 +53,9 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
               context
                   .read<ImpactGroupsCubit>()
                   .acceptGroupInvite(groupId: invitdImpactGroup.id);
-              context
-                  .read<ProfilesCubit>()
-                  .fetchAllProfiles(checkRegistrationAndSetup: true);
+              context.read<ProfilesCubit>()
+                ..clearInvite()
+                ..fetchAllProfiles(checkRegistrationAndSetup: true);
               context.pop();
             },
           ),
