@@ -110,9 +110,11 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               ? const CustomCircularProgressIndicator()
               : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
-                      onRetry: () => context
-                          .read<ProfilesCubit>()
-                          .fetchAllProfiles(checkRegistrationAndSetup: true),
+                      onRetry: () =>
+                          context.read<ProfilesCubit>().fetchAllProfiles(
+                                checkRegistrationAndSetup: true,
+                                checkInvite: true,
+                              ),
                     )
                   : SafeArea(
                       minimum: const EdgeInsets.only(bottom: 40),

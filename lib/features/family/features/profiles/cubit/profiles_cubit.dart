@@ -100,11 +100,12 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
 
   Future<void> fetchAllProfiles({
     bool checkRegistrationAndSetup = false,
+    bool checkInvite = false,
   }) async {
     _emitLoadingState();
 
     try {
-      if (checkRegistrationAndSetup) {
+      if (checkInvite) {
         await checkIfInvitedToGroup();
       }
       if (_isInvitedToGroup()) {
