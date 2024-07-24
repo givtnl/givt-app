@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -16,41 +17,44 @@ class MayorChatDialog extends StatelessWidget {
   final VoidCallback onGoToChat;
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Stack(
-              children: [
-                _buildMayorAvatarWithRedDot(),
-                if (!isFirstDay) _buildCloseButton(),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              isFirstDay
-                  ? 'Well done! A message\nfrom the Mayor'
-                  : 'The Mayor Sent  a\nmessage',
-              textAlign: TextAlign.center,
-              style: chatCompletedTextStyle.copyWith(
-                fontSize: 24,
-                fontWeight: FontWeight.w700,
+    return Theme(
+      data: FamilyAppTheme().toThemeData(),
+      child: Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
+                children: [
+                  _buildMayorAvatarWithRedDot(),
+                  if (!isFirstDay) _buildCloseButton(),
+                ],
               ),
-            ),
-            SizedBox(height: isFirstDay ? 8 : 0),
-            if (isFirstDay) _buildRedDotExplanation(),
-            const SizedBox(height: 16),
-            GivtElevatedButton(
-              onTap: onGoToChat,
-              text: 'Go to Chat',
-              rightIcon: FontAwesomeIcons.solidComments,
-            ),
-          ],
+              const SizedBox(height: 16),
+              Text(
+                isFirstDay
+                    ? 'Well done! A message\nfrom the Mayor'
+                    : 'The Mayor Sent  a\nmessage',
+                textAlign: TextAlign.center,
+                style: chatCompletedTextStyle.copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: isFirstDay ? 8 : 0),
+              if (isFirstDay) _buildRedDotExplanation(),
+              const SizedBox(height: 16),
+              GivtElevatedButton(
+                onTap: onGoToChat,
+                text: 'Go to Chat',
+                rightIcon: FontAwesomeIcons.solidComments,
+              ),
+            ],
+          ),
         ),
       ),
     );

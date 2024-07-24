@@ -3,6 +3,7 @@
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_5_saved_picture.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day5_picture_attachment_buttons.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/day_8_extra_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 
 class GenerosityChallengeContentHelper {
@@ -98,8 +99,9 @@ class GenerosityChallengeContentHelper {
       title: 'Keep the generosity alive',
       buttonText: 'Yeah sure!',
       description:
-          "Let's setup a recurring giving allowance to encourage a lifelong habit of generosity.\n\nAre you ready to help them become generous individuals?",
+          'Add a recurring amount each month to their wallet as an easy way to build a lifelong habit of kindness.\n\nReady to help them become generous?',
       redirect: FamilyPages.allowanceFlow.path,
+      customBottomWidget: const Day8ExtraButton(),
     );
   }
 

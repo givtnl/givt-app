@@ -28,6 +28,7 @@ class AdminFeeText extends StatelessWidget {
       onData: (context, uiModel) {
         return amount > 0
             ? AdminFeeTextLayout(
+                themeData: theme,
                 uiModel: uiModel,
                 isMonthly: isMonthly,
                 isMultipleChildren: isMultipleChildren,

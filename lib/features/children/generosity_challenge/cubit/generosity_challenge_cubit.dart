@@ -338,4 +338,10 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
     }
     return nrOfChildren;
   }
+
+  Future<String> getChildName(int i) async {
+    final userdata =
+        await _generosityChallengeRepository.loadFromKey('child${i}FirstName');
+    return userdata;
+  }
 }

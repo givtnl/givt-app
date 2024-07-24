@@ -61,9 +61,6 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
 
   Future<void> _onCompleteChallenge() async {
     await context.read<GenerosityChallengeCubit>().completeChallenge();
-    if (mounted) {
-      context.goNamed(FamilyPages.childrenOverview.name);
-    }
   }
 
   @override
