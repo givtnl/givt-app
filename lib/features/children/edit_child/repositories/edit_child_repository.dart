@@ -39,7 +39,9 @@ class EditChildRepositoryImpl with EditChildRepository {
   @override
   Future<bool> topUpChild(String childGUID, int amount) async {
     final response = await apiService.topUpChild(childGUID, amount);
-    _childGUIDController.add(childGUID);
+    Future.delayed(const Duration(seconds: 1), () {
+      _childGUIDController.add(childGUID);
+    });
     return response;
   }
 

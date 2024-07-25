@@ -5,10 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_vpc_setup_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -106,38 +104,6 @@ class GenerosityDailyCard extends StatelessWidget {
                       ),
                     if (task.customBottomWidget != null)
                       task.customBottomWidget!,
-                    if (isLastDay)
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: TextButton(
-                          onPressed: () => Navigator.of(context).push(
-                            const GenerosityChallengeVpcSetupPage().toRoute(
-                              context,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Skip',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.copyWith(
-                                      color: AppTheme.givtGreen40,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: 'Rouna',
-                                    ),
-                              ),
-                              const SizedBox(width: 8),
-                              const FaIcon(
-                                FontAwesomeIcons.arrowRight,
-                                color: AppTheme.givtGreen40,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                   ],
                 ),
               ),

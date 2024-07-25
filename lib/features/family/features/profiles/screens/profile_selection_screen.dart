@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
@@ -40,14 +41,27 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfilesCubit>().fetchAllProfiles();
+    context.read<ProfilesCubit>().doInitialChecks();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
-        if (state is ProfilesExternalErrorState) {
+        if (state is ProfilesInvitedToGroup) {
+          await showModalBottomSheet<void>(
+            isScrollControlled: true,
+            context: context,
+            useSafeArea: true,
+            isDismissible: false,
+            enableDrag: false,
+            builder: (_) {
+              return ImpactGroupRecieveInviteSheet(
+                invitdImpactGroup: state.impactGroup,
+              );
+            },
+          );
+        } else if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
             context,
@@ -68,12 +82,25 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               extra: context.read<RegistrationBloc>(),
             );
           } else {
-            context.pushNamed(FamilyPages.registrationUS.name);
+            if (state.hasFamily) {
+              final user = context.read<AuthCubit>().state.user;
+              context.pushReplacementNamed(
+                FamilyPages.registrationUS.name,
+                queryParameters: {
+                  'email': user.email,
+                  'createStripe': user.personalInfoRegistered.toString(),
+                },
+              );
+            } else {
+              await context
+                  .pushNamed(FamilyPages.generosityChallengeRedirect.name);
+            }
           }
         }
       },
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
+          current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
@@ -86,13 +113,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           appBar: const TopAppBar(
             title: 'Who would like to give?',
           ),
-          body: state is ProfilesLoadingState
+          body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
               : state.children.isEmpty
                   ? ProfilesEmptyStateWidget(
-                      onRetry: () => context
-                          .read<ProfilesCubit>()
-                          .fetchAllProfiles(checkRegistrationAndSetup: true),
+                      onRetry: () =>
+                          context.read<ProfilesCubit>().fetchAllProfiles(
+                                checkRegistrationAndSetup: true,
+                                checkInvite: true,
+                              ),
                     )
                   : SafeArea(
                       minimum: const EdgeInsets.only(bottom: 40),
@@ -137,7 +166,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 );
                                 unawaited(AnalyticsHelper.logEvent(
                                   eventName:
-                                  AmplitudeEvents.manageFamilyPressed,
+                                      AmplitudeEvents.manageFamilyPressed,
                                 ));
                               },
                               text: 'Manage Family',
@@ -191,7 +220,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               eventName: AmplitudeEvents.profilePressed,
               eventProperties: {
                 'profile_name':
-                '${selectedProfile.firstName} ${selectedProfile.lastName}',
+                    '${selectedProfile.firstName} ${selectedProfile.lastName}',
               },
             );
 

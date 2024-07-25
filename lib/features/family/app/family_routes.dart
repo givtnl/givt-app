@@ -652,6 +652,7 @@ class FamilyAppRoutes {
                   create: (_) => ChildDetailsCubit(
                     getIt(),
                     getIt(),
+                    getIt(),
                     childProfile,
                   )..fetchChildDetails(),
                 ),

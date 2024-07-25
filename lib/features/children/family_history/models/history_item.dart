@@ -37,7 +37,8 @@ enum HistoryTypes {
 enum HistoryItemStatus {
   entered('Entered'),
   proccessed('Processed'),
-  rejected('Rejected');
+  rejected('Rejected'),
+  cancelled('Cancelled');
 
   const HistoryItemStatus(this.value);
 

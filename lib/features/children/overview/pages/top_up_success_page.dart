@@ -19,6 +19,7 @@ class TopUpSuccessPage extends StatelessWidget {
     return Theme(
       data: AppTheme.lightTheme,
       child: CommonSuccessPage(
+        appBarTitle: 'Top Up',
         buttonText: context.l10n.ready,
         title: context.l10n.genericSuccessTitle,
         text: context.l10n.topUpSuccessText(

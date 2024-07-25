@@ -9,6 +9,7 @@ import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 part 'child_details_state.dart';
@@ -17,17 +18,39 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   ChildDetailsCubit(
     this._childDetailsRepository,
     this._editChildRepository,
+    this._profilesRepository,
     this._profile,
-  ) : super(const ChildDetailsInitialState());
+  ) : super(const ChildDetailsInitialState()) {
+    _walletChangedSubscription =
+        _editChildRepository.walletChangedStream().listen(
+      (childGUID) {
+        if (childGUID == _profile.id) {
+          fetchChildDetails();
+        }
+      },
+    );
+  }
 
   final ChildDetailsRepository _childDetailsRepository;
   final EditChildRepository _editChildRepository;
-  final Profile _profile;
+  final ProfilesRepository _profilesRepository;
+  Profile _profile;
   ProfileExt? _profileExt;
+
+  StreamSubscription<String>? _walletChangedSubscription;
+
+  @override
+  Future<void> close() async {
+    await _walletChangedSubscription?.cancel();
+    await super.close();
+  }
 
   Future<void> fetchChildDetails() async {
     _emitLoading();
     try {
+      var updatedProfile =
+          await _profilesRepository.fetchChildDetails(_profile.id);
+      _profile = _profile.copyWith(wallet: updatedProfile.wallet);
       _profileExt = await _childDetailsRepository.fetchChildDetails(
         _profile,
       );

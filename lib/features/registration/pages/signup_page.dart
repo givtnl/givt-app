@@ -7,11 +7,13 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
@@ -95,6 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
       builder: (context, state) {
         return Scaffold(
           appBar: RegistrationAppBar(
+            leading: isUS ? const LeadingBackButton() : null,
             title: isUS
                 ? Text(
                     locals.signUpPageTitle,
@@ -208,7 +211,8 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           if (isUS) Text(context.l10n.holdOnRegistration),
           if (isUS) const SizedBox(height: 16),
-          const CircularProgressIndicator(),
+          if (isUS) const CustomCircularProgressIndicator(),
+          if (!isUS) const CircularProgressIndicator(),
         ],
       ),
     );

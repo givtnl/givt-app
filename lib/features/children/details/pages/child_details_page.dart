@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/widgets/child_cancel_rga_failed_dialog.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/features/children/details/widgets/child_details_item.da
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_failure_dialog.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/pages/add_top_up_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
@@ -16,7 +18,7 @@ import 'package:givt_app/features/children/overview/pages/models/edit_allowance_
 import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
 import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -98,31 +100,19 @@ class ChildDetailsPage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(
+          appBar: TopAppBar(
+            title: (state is ChildDetailsFetchedState)
+                ? state.profileDetails.firstName
+                : '',
+            leading: const GenerosityBackButton(),
             actions: [
-              BackButton(
-                onPressed: () {
-                  context.pop();
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.backClicked,
-                  );
-                },
-              ),
-              const Spacer(),
               if (state is ChildDetailsFetchedState)
                 Padding(
                   padding: const EdgeInsets.only(right: 14),
-                  child: TextButton.icon(
+                  child: IconButton(
                     icon: const Icon(
-                      Icons.edit,
-                      color: AppTheme.inputFieldBorderSelected,
-                    ),
-                    label: Text(
-                      context.l10n.budgetExternalGiftsEdit,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.inputFieldBorderSelected,
-                          ),
+                      FontAwesomeIcons.pen,
+                      color: AppTheme.primary20,
                     ),
                     onPressed: () {
                       AnalyticsHelper.logEvent(
@@ -140,10 +130,6 @@ class ChildDetailsPage extends StatelessWidget {
                   ),
                 ),
             ],
-            automaticallyImplyLeading: false,
-            backgroundColor: state is ChildDetailsFetchedState
-                ? AppTheme.givtLightBackgroundGreen
-                : null,
           ),
           body: state is ChildDetailsFetchingState
               ? const Center(
@@ -155,6 +141,7 @@ class ChildDetailsPage extends StatelessWidget {
                   ? Column(
                       children: [
                         Expanded(
+                          flex: 3,
                           child: Container(
                             alignment: Alignment.center,
                             width: double.maxFinite,
@@ -165,6 +152,7 @@ class ChildDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Expanded(
+                          flex: 5,
                           child: ChildGivingAllowanceCard(
                             profileDetails: state.profileDetails,
                             onPressed: () {
@@ -187,6 +175,7 @@ class ChildDetailsPage extends StatelessWidget {
                           ),
                         ),
                         Expanded(
+                          flex: 5,
                           child: ChildTopUpCard(
                             onPressed: () {
                               AnalyticsHelper.logEvent(
@@ -254,7 +243,6 @@ class ChildDetailsPage extends StatelessWidget {
     final dynamic result = await Navigator.push(
       context,
       EditAllowancePage(
-        fee: 0.65,
         currency: r'$',
         initialAllowance: currentAllowance,
         onCancel: () => context.read<ChildDetailsCubit>().cancelAllowance(),

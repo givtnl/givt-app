@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 Widget walletIcon({double? width, double? height}) =>
-    SvgPicture.asset('assets/images/wallet.svg');
+    SvgPicture.asset('assets/images/wallet.svg', width: width, height: height);
 
 Widget coin({double? width, double? height}) => SvgPicture.asset(
       'assets/images/coin.svg',
@@ -78,6 +78,11 @@ Widget trashAvatarIcon({double? width, double? height}) => SvgPicture.asset(
       height: height,
     );
 
+Widget secureCardsIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/vpc_secure.svg',
+      width: width,
+      height: height,
+    );
 Widget familySuperheroesIcon({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/family_superheroes.svg',
@@ -102,26 +107,58 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
-
-Widget primaryCircleWithIcon({
-  IconData? iconData,
-  double? circleSize = 90,
-  double? iconSize = 40,
+Widget primaryCircleWithText({
+  String? text = '',
+  double circleSize = 62,
   Color? circleColor,
   Color? iconColor,
 }) =>
-    Container(
-      width: circleSize,
-      height: circleSize,
-      decoration: BoxDecoration(
-        color: circleColor ?? FamilyAppTheme.primary95,
-        shape: BoxShape.circle,
+    Padding(
+      // 14 is what the design has when exporting svgs
+      padding: const EdgeInsets.all(14),
+      child: Container(
+        width: circleSize,
+        height: circleSize,
+        decoration: BoxDecoration(
+          color: circleColor ?? FamilyAppTheme.primary95,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Text(
+            text!,
+            style: TextStyle(
+              color: iconColor ?? FamilyAppTheme.primary20,
+              fontSize: text.length < 3 ? 40 : 35,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
-      child: Center(
-        child: Icon(
-          iconData,
-          color: iconColor ?? FamilyAppTheme.primary20,
-          size: iconSize,
+    );
+
+Widget primaryCircleWithIcon({
+  IconData? iconData,
+  double circleSize = 62,
+  double iconSize = 40,
+  Color? circleColor,
+  Color? iconColor,
+}) =>
+    Padding(
+      // 14 is what the design has when exporting svgs
+      padding: const EdgeInsets.all(14),
+      child: Container(
+        width: circleSize,
+        height: circleSize,
+        decoration: BoxDecoration(
+          color: circleColor ?? FamilyAppTheme.primary95,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Icon(
+            iconData,
+            color: iconColor ?? FamilyAppTheme.primary20,
+            size: iconSize,
+          ),
         ),
       ),
     );

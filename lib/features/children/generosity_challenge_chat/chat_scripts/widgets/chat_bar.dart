@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_input_field.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/utils/utils.dart';
 
 class ChatBar extends StatelessWidget {
   const ChatBar({
@@ -75,11 +75,7 @@ class ChatBar extends StatelessWidget {
               child: Text(
                 state.currentConditionalItem.options[0].text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.givtGreen40,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
+                style: FamilyAppTheme().toThemeData().textTheme.labelMedium,
               ),
             ),
           ),

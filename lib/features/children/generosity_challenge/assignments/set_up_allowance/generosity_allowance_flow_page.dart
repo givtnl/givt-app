@@ -28,13 +28,16 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
   ) async {
     final cubit = context.read<GenerosityChallengeCubit>();
     final nrOfChildren = cubit.getNrOfChildren();
+    var childName = '';
+    if (nrOfChildren == 1) {
+      childName = await cubit.getChildName(1);
+    }
     final dynamic result = await Navigator.push(
       context,
       EditAllowancePage(
-        fee: 0.65,
-        extraHeader: _allowancesHeader(context),
         currency: r'$',
         isMultipleChildren: nrOfChildren > 1,
+        childName: childName,
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
@@ -49,6 +52,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
               context,
               EditAllowanceSuccessPage(
                 uiModel: EditAllowanceSuccessUIModel(
+                  isMultipleChildren: nrOfChildren > 1,
                   amountWithCurrencySymbol: '\$$result',
                   onClickButton: () {
                     Navigator.of(context).push(
@@ -60,24 +64,5 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
             ),
           );
     }
-  }
-
-  Widget _allowancesHeader(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Add an amount',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          "Foster your children's spirit of giving.",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-      ],
-    );
   }
 }

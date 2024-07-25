@@ -35,23 +35,12 @@ class ChildDetailsItem extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            profileDetails.firstName,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.inputFieldBorderSelected,
-                ),
-          ),
-          Text(
             '${currency.currencySymbol}${profileDetails.profile.wallet.balance.toStringAsFixed(0)}${context.l10n.childInWalletPostfix}',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppTheme.inputFieldBorderSelected,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                ),
+            style: Theme.of(context)
+                .textTheme
+                .labelMedium
+                ?.copyWith(color: AppTheme.primary30),
           ),
         ],
       ),

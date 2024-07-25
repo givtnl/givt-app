@@ -82,7 +82,8 @@ class _AppState extends State<App> {
           ),
           BlocProvider(
             create: (_) => InfraCubit(
-              getIt(), getIt(),
+              getIt(),
+              getIt(),
             ),
             lazy: false,
           ),
@@ -96,7 +97,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider<ProfilesCubit>(
             create: (BuildContext context) =>
-                ProfilesCubit(getIt(), getIt(), getIt()),
+                ProfilesCubit(getIt(), getIt(), getIt(), getIt(), getIt()),
           ),
           BlocProvider<OrganisationDetailsCubit>(
             create: (BuildContext context) => OrganisationDetailsCubit(getIt()),

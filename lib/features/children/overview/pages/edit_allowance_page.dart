@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
@@ -18,12 +18,12 @@ class EditAllowancePage extends StatefulWidget {
     this.initialAllowance,
     this.extraHeader,
     this.isMultipleChildren = false,
-    this.fee = 0.65,
+    this.childName = 'your child',
     super.key,
   });
 
   final String currency;
-  final double fee;
+  final String childName;
   final int? initialAllowance;
   final Widget? extraHeader;
   final bool isMultipleChildren;
@@ -48,11 +48,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
   @override
   Widget build(BuildContext context) {
     final child =
-        widget.isMultipleChildren ? 'each of your children' : 'your child';
-    final perchild = widget.isMultipleChildren ? ' per child' : '';
+        widget.isMultipleChildren ? 'each of your children' : widget.childName;
     final theme = FamilyAppTheme().toThemeData();
     return Scaffold(
-      appBar: const TopAppBar(
+      appBar: const GenerosityAppBar(
         title: 'Recurring Amount',
         leading: GenerosityBackButton(),
       ),
@@ -74,7 +73,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        calendarClockAvatarIcon(),
+                        calendarClockAvatarIcon(
+                          width: MediaQuery.of(context).size.width * 0.35,
+                          height: MediaQuery.of(context).size.width * 0.35,
+                        ),
                         const SizedBox(height: 16),
                         AllowanceCounter(
                           currency: widget.currency,
@@ -106,13 +108,11 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Visibility(
-                        visible: false,
-                        child: Text(
-                          'Admin fee of ${widget.fee.toStringAsFixed(2)} applies$perchild monthly',
-                          style: theme.textTheme.bodySmall!
-                              .copyWith(fontWeight: FontWeight.w700),
-                        ),
+                      AdminFeeText(
+                        theme: theme,
+                        amount: _allowance.toDouble(),
+                        isMonthly: true,
+                        isMultipleChildren: widget.isMultipleChildren,
                       ),
                       const SizedBox(height: 4),
                       GivtElevatedButton(

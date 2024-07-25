@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -19,6 +20,7 @@ class FamilyValueContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = FamilyAppTheme().toThemeData();
     return ActionContainer(
       borderColor: familyValue.colorCombo.borderColor,
       isSelected: isSelected,
@@ -44,11 +46,9 @@ class FamilyValueContainer extends StatelessWidget {
                 Text(
                   familyValue.displayText,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: familyValue.colorCombo.textColor,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: 'Rouna',
-                      ),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: familyValue.colorCombo.textColor,
+                  ),
                 ),
               ],
             ),
@@ -68,7 +68,7 @@ class FamilyValueContainer extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.check,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  color: theme.colorScheme.onPrimaryContainer,
                   size: 20,
                 ),
               ),

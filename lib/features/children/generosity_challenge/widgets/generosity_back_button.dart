@@ -17,7 +17,7 @@ class GenerosityBackButton extends StatelessWidget {
       onPressed: onPressed ?? context.pop,
       icon: const Icon(FontAwesomeIcons.arrowLeft),
       iconSize: 24,
-      color: AppTheme.secondary20,
+      color: AppTheme.primary30,
     );
   }
 }

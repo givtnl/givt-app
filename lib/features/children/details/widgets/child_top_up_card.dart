@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -13,6 +14,8 @@ class ChildTopUpCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = FamilyAppTheme().toThemeData();
+    final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
       width: double.infinity,
@@ -35,26 +38,20 @@ class ChildTopUpCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              plusIcon(size: 40),
-              const SizedBox(height: 10),
-              Text(
-                context.l10n.topUp,
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                      color: AppTheme.inputFieldBorderSelected,
-                      fontFamily: 'Raleway',
-                      height: 1.2,
-                    ),
+              primaryCircleWithIcon(
+                circleSize: size.width * 0.35,
+                iconData: FontAwesomeIcons.plus,
               ),
+              const SizedBox(height: 16),
               Text(
-                context.l10n.topUpCardInfo,
+                'One-time Top Up',
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Add to your child's Wallet",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      color: AppTheme.childGivingAllowanceHint,
-                      fontFamily: 'Raleway',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      height: 1.2,
-                    ),
+                style: theme.textTheme.bodySmall,
               ),
             ],
           ),
