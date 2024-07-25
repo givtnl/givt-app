@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 
 class SettingUpFamilySpaceLoadingWidget extends StatelessWidget {
   const SettingUpFamilySpaceLoadingWidget({
@@ -9,16 +8,16 @@ class SettingUpFamilySpaceLoadingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          CustomCircularProgressIndicator(),
+          SizedBox(height: 16),
           Text(
-            context.l10n.holdOnSetUpFamily,
+            'Nearly there...',
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
-          const CircularProgressIndicator.adaptive(),
         ],
       ),
     );

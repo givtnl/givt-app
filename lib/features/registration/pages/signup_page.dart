@@ -7,6 +7,7 @@ import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
@@ -210,7 +211,8 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           if (isUS) Text(context.l10n.holdOnRegistration),
           if (isUS) const SizedBox(height: 16),
-          const CircularProgressIndicator(),
+          if (isUS) const CustomCircularProgressIndicator(),
+          if (!isUS) const CircularProgressIndicator(),
         ],
       ),
     );

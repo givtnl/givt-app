@@ -52,6 +52,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
               context,
               EditAllowanceSuccessPage(
                 uiModel: EditAllowanceSuccessUIModel(
+                  isMultipleChildren: nrOfChildren > 1,
                   amountWithCurrencySymbol: '\$$result',
                   onClickButton: () {
                     Navigator.of(context).push(
