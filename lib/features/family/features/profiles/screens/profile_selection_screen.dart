@@ -83,7 +83,14 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             );
           } else {
             if (state.hasFamily) {
-              context.pushReplacementNamed(FamilyPages.registrationUS.name);
+              final user = context.read<AuthCubit>().state.user;
+              context.pushReplacementNamed(
+                FamilyPages.registrationUS.name,
+                queryParameters: {
+                  'email': user.email,
+                  'createStripe': user.personalInfoRegistered.toString(),
+                },
+              );
             } else {
               await context
                   .pushNamed(FamilyPages.generosityChallengeRedirect.name);
