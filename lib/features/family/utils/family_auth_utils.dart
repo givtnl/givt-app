@@ -32,15 +32,13 @@ class FamilyAuthUtils {
       if (!context.mounted) {
         return;
       }
-      
+
       if (!hasAuthenticated) {
         await _displayLoginBottomSheet(
           context,
           checkAuthRequest: checkAuthRequest,
         );
-        if (!context.mounted) {
-          return;
-        }
+        return;
       }
 
       await context.read<AuthCubit>().refreshSession();
