@@ -50,6 +50,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
       void Function()? onClickSecondaryBtn}) {
     showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (context) => SomethingWentWrongDialog(
         primaryBtnText: primaryBtnText,
         onClickPrimaryBtn: onClickPrimaryBtn,
