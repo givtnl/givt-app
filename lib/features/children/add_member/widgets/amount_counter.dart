@@ -5,42 +5,42 @@ import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class AllowanceCounter extends StatefulWidget {
-  const AllowanceCounter({
+class AmountCounter extends StatefulWidget {
+  const AmountCounter({
     required this.currency,
-    this.initialAllowance,
-    this.onAllowanceChanged,
+    this.initialAmount,
+    this.onAmountChanged,
     this.canAmountBeZero = false,
     super.key,
   });
 
   final String? currency;
-  final int? initialAllowance;
-  final void Function(int allowance)? onAllowanceChanged;
+  final int? initialAmount;
+  final void Function(int amount)? onAmountChanged;
   final bool canAmountBeZero;
 
   @override
-  State<AllowanceCounter> createState() => _AllowanceCounterState();
+  State<AmountCounter> createState() => _AmountCounterState();
 }
 
-class _AllowanceCounterState extends State<AllowanceCounter> {
+class _AmountCounterState extends State<AmountCounter> {
   static const int tapTime = 240;
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;
-  static const int maxAllowance = 999;
-  static late int minAllowance;
-  static const int allowanceIncrement = 5;
-  static const int allowanceIncrement2 = 10;
+  static const int maxAmount = 999;
+  static late int minAmount;
+  static const int amountIncrement = 5;
+  static const int amountIncrement2 = 10;
 
-  late int _allowance;
+  late int _currentAmount;
   Timer? _timer;
   Duration _heldDuration = Duration.zero;
 
   @override
   void initState() {
     super.initState();
-    minAllowance = widget.canAmountBeZero ? 0 : 1;
-    _allowance = widget.initialAllowance ?? 15;
+    minAmount = widget.canAmountBeZero ? 0 : 1;
+    _currentAmount = widget.initialAmount ?? 15;
   }
 
   @override
@@ -64,12 +64,12 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
   void _incrementCounter() {
     final isHeldDurationShortEnoughForIncrement1 =
         (_heldDuration.inMilliseconds > holdDownDuration) &&
-            _allowance >= maxAllowance - allowanceIncrement;
+            _currentAmount >= maxAmount - amountIncrement;
     final isHeldDurationShortEnoughForIncrement2 =
         (_heldDuration.inMilliseconds > holdDownDuration2) &&
-            _allowance >= maxAllowance - allowanceIncrement2;
+            _currentAmount >= maxAmount - amountIncrement2;
 
-    if (_allowance >= maxAllowance ||
+    if (_currentAmount >= maxAmount ||
         isHeldDurationShortEnoughForIncrement1 ||
         isHeldDurationShortEnoughForIncrement2) {
       return;
@@ -77,24 +77,24 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
     setState(() {
       HapticFeedback.lightImpact();
       SystemSound.play(SystemSoundType.click);
-      _allowance += (_heldDuration.inMilliseconds < holdDownDuration)
+      _currentAmount += (_heldDuration.inMilliseconds < holdDownDuration)
           ? 1
           : (_heldDuration.inMilliseconds < holdDownDuration2)
-              ? allowanceIncrement
-              : allowanceIncrement2;
+              ? amountIncrement
+              : amountIncrement2;
     });
-    widget.onAllowanceChanged?.call(_allowance);
+    widget.onAmountChanged?.call(_currentAmount);
   }
 
   void _decrementCounter() {
     final isHeldDurationLongEnoughForNegative1 =
         (_heldDuration.inMilliseconds > holdDownDuration) &&
-            _allowance <= minAllowance + allowanceIncrement;
+            _currentAmount <= minAmount + amountIncrement;
     final isHeldDurationLongEnoughForNegative2 =
         (_heldDuration.inMilliseconds > holdDownDuration2) &&
-            _allowance <= minAllowance + allowanceIncrement2;
+            _currentAmount <= minAmount + amountIncrement2;
 
-    if (_allowance <= minAllowance ||
+    if (_currentAmount <= minAmount ||
         isHeldDurationLongEnoughForNegative1 ||
         isHeldDurationLongEnoughForNegative2) {
       return;
@@ -102,13 +102,13 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
     setState(() {
       HapticFeedback.lightImpact();
       SystemSound.play(SystemSoundType.click);
-      _allowance -= (_heldDuration.inMilliseconds < holdDownDuration)
+      _currentAmount -= (_heldDuration.inMilliseconds < holdDownDuration)
           ? 1
           : (_heldDuration.inMilliseconds < holdDownDuration2)
-              ? allowanceIncrement
-              : allowanceIncrement2;
+              ? amountIncrement
+              : amountIncrement2;
     });
-    widget.onAllowanceChanged?.call(_allowance);
+    widget.onAmountChanged?.call(_currentAmount);
   }
 
   @override
@@ -125,15 +125,15 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             _stopTimer();
           },
           onTapCancel: _stopTimer,
-          onTap: (_allowance <= minAllowance) ? null : _decrementCounter,
+          onTap: (_currentAmount <= minAmount) ? null : _decrementCounter,
           child: SizedBox(
             width: 32,
             height: 32,
             child: Icon(
               FontAwesomeIcons.circleMinus,
               size: 32,
-              color: (_allowance < 2)
-                  ? widget.canAmountBeZero && _allowance > 0
+              color: (_currentAmount < 2)
+                  ? widget.canAmountBeZero && _currentAmount > 0
                       ? AppTheme.primary20
                       : Colors.grey
                   : AppTheme.primary20,
@@ -142,9 +142,9 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 15),
-          width: _allowance < 100 ? 80 : 100,
+          width: _currentAmount < 100 ? 80 : 100,
           child: Text(
-            '${widget.currency}$_allowance',
+            '${widget.currency}$_currentAmount',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 24,
@@ -163,14 +163,14 @@ class _AllowanceCounterState extends State<AllowanceCounter> {
             _stopTimer();
           },
           onTapCancel: _stopTimer,
-          onTap: (_allowance > 998) ? null : _incrementCounter,
+          onTap: (_currentAmount > 998) ? null : _incrementCounter,
           child: SizedBox(
             width: 32,
             height: 32,
             child: Icon(
               FontAwesomeIcons.circlePlus,
               size: 32,
-              color: (_allowance > 998) ? Colors.grey : AppTheme.primary20,
+              color: (_currentAmount > 998) ? Colors.grey : AppTheme.primary20,
             ),
           ),
         ),
