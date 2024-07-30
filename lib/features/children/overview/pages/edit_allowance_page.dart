@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/add_member/widgets/amount_counter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
@@ -78,10 +78,10 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                           height: MediaQuery.of(context).size.width * 0.35,
                         ),
                         const SizedBox(height: 16),
-                        AllowanceCounter(
+                        AmountCounter(
                           currency: widget.currency,
-                          initialAllowance: _allowance,
-                          onAllowanceChanged: (allowance) => setState(() {
+                          initialAmount: _allowance,
+                          onAmountChanged: (allowance) => setState(() {
                             _allowance = allowance;
                           }),
                         ),

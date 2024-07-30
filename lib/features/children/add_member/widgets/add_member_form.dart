@@ -9,7 +9,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/utils/member_utils.dart';
-import 'package:givt_app/features/children/add_member/widgets/allowance_counter.dart';
+import 'package:givt_app/features/children/add_member/widgets/amount_counter.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_text_form_field.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
@@ -40,7 +40,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
   final _emailParentController = TextEditingController();
   final _ageController = TextEditingController();
   bool isChildSelected = true;
-  int _allowance = 5;
+  int topupAmount = 5;
   final formKeyChild = GlobalKey<FormState>();
   final formKeyParent = GlobalKey<FormState>();
   late final FocusNode _childNameFocusNode;
@@ -91,7 +91,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               firstName: name,
               dateOfBirth: dateOfBirth,
               age: age,
-              allowance: _allowance,
+              allowance: topupAmount,
               key: formKeyChild.toString(),
               type: ProfileType.Child,
             );
@@ -105,7 +105,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
               eventProperties: {
                 'name': name,
                 'age': age,
-                'allowance': _allowance,
+                'topup_amount': topupAmount,
               },
             );
           } else {
@@ -338,17 +338,17 @@ class _AddMemberFormState extends State<AddMemberForm> {
                   ),
             ),
           ),
-          AllowanceCounter(
+          AmountCounter(
             currency: currency,
-            initialAllowance: _allowance,
+            initialAmount: topupAmount,
             canAmountBeZero: true,
-            onAllowanceChanged: (allowance) => setState(() {
-              _allowance = allowance;
+            onAmountChanged: (amount) => setState(() {
+              topupAmount = amount;
             }),
           ),
           const SizedBox(height: 16),
           AdminFeeText(
-            amount: _allowance.toDouble(),
+            amount: topupAmount.toDouble(),
             textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w700,
               fontSize: 15,
