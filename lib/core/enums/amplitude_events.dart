@@ -175,7 +175,7 @@ enum AmplitudeEvents {
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
   coinScannedError('in_app_coin_scanned_error'),
   deeplinkCoinScanned('deeplink_coin_scanned'),
-  notAGivtCoinNFCError('not_a_givt_coin_nfc_error'),
+  notAGivtCoinNFCErrorShown('not_a_givt_coin_nfc_error_shown'),
   coinMediumIdNotRecognized('coin_medium_id_not_recognized'),
   notAGivtCoinNFCErrorGoBackHomeClicked(
       'not_a_givt_coin_nfc_error_go_back_home_clicked'),
