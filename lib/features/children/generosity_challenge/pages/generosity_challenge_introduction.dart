@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
@@ -34,9 +35,13 @@ class _GenerosityChallengeIntruductionState
     final challenge = context.read<GenerosityChallengeCubit>();
     const pictureHeight = 150.0;
     return Scaffold(
-      appBar: const GenerosityAppBar(
+      appBar: GenerosityAppBar(
         title: 'Generosity Challenge',
-        leading: null,
+        leading: GenerosityBackButton(
+          onPressed: () => context.goNamed(
+            FamilyPages.profileSelection.name,
+          ),
+        ),
       ),
       backgroundColor: AppTheme.givtLightBackgroundGreen,
       body: SafeArea(

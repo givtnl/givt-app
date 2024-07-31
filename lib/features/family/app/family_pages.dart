@@ -77,7 +77,7 @@ enum FamilyPages {
     name: 'GENEROSITY-CHALLENGE-CHAT',
   ),
   generosityChallengeIntroduction(
-    path: 'generosity-challenge-introduction',
+    path: '/generosity-challenge-introduction',
     name: 'GENEROSITY-CHALLENGE-INTRODUCTION',
   ),
   selectValues(
@@ -104,7 +104,6 @@ enum FamilyPages {
     path: 'day-4-timer',
     name: 'DAY-4-TIMER',
   ),
-
 
   //school event mode
   familyNameLogin(path: 'family-name-login', name: 'FAMILY_NAME_LOGIN'),

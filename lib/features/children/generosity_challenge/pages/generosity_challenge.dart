@@ -34,7 +34,7 @@ class _GenerosityChallengeState extends State<GenerosityChallenge>
     if (!GenerosityChallengeHelper.isActivated) {
       Future.delayed(
         Duration.zero,
-        () => context.pushNamed(
+        () => context.pushReplacementNamed(
           FamilyPages.generosityChallengeIntroduction.name,
           extra: context.read<GenerosityChallengeCubit>(),
         ),

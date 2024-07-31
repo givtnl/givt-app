@@ -102,6 +102,17 @@ class FamilyAppRoutes {
           const RegistrationRedirectToGenerosityScreen(),
     ),
     GoRoute(
+      path: FamilyPages.generosityChallengeIntroduction.path,
+      name: FamilyPages.generosityChallengeIntroduction.name,
+      builder: (context, state) {
+        final challengeCubit = state.extra! as GenerosityChallengeCubit;
+        return BlocProvider.value(
+          value: challengeCubit,
+          child: const GenerosityChallengeIntruduction(),
+        );
+      },
+    ),
+    GoRoute(
       path: FamilyPages.generosityChallenge.path,
       name: FamilyPages.generosityChallenge.name,
       builder: (context, state) {
@@ -123,17 +134,6 @@ class FamilyAppRoutes {
             return BlocProvider.value(
               value: challengeCubit,
               child: const Day4TimerScreen(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.generosityChallengeIntroduction.path,
-          name: FamilyPages.generosityChallengeIntroduction.name,
-          builder: (context, state) {
-            final challengeCubit = state.extra! as GenerosityChallengeCubit;
-            return BlocProvider.value(
-              value: challengeCubit,
-              child: const GenerosityChallengeIntruduction(),
             );
           },
         ),
