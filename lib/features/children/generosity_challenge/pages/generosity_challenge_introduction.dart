@@ -15,18 +15,18 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
-class GenerosityChallengeIntruduction extends StatefulWidget {
-  const GenerosityChallengeIntruduction({
+class GenerosityChallengeIntroduction extends StatefulWidget {
+  const GenerosityChallengeIntroduction({
     super.key,
   });
 
   @override
-  State<GenerosityChallengeIntruduction> createState() =>
-      _GenerosityChallengeIntruductionState();
+  State<GenerosityChallengeIntroduction> createState() =>
+      _GenerosityChallengeIntroductionState();
 }
 
-class _GenerosityChallengeIntruductionState
-    extends State<GenerosityChallengeIntruduction> {
+class _GenerosityChallengeIntroductionState
+    extends State<GenerosityChallengeIntroduction> {
   bool _acceptPolicy = false;
   bool isDebugQuickFlowEnabled = false;
   final AppConfig _appConfig = getIt();
