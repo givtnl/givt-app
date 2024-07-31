@@ -58,7 +58,7 @@ class GenerosityChallengeVpcSetupCubit
   }
 
   void _skipVPC() {
-    _navigateToLogin();
+    _navigateToWelcome();
   }
 
   Future<void> _handleVPC() async {
@@ -68,7 +68,7 @@ class GenerosityChallengeVpcSetupCubit
       await _vpcRepository.addMembers(children);
       _navigateToFamilyOverview();
     } on NotLoggedInException {
-      _navigateToLogin();
+      _navigateToWelcome();
     } catch (e, s) {
       _handleError(e, s);
     }
@@ -84,9 +84,9 @@ class GenerosityChallengeVpcSetupCubit
     );
   }
 
-  void _navigateToLogin() {
+  void _navigateToWelcome() {
     _vpcRepository.completeChallenge();
-    emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToLogin());
+    emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToWelcome());
   }
 
   void _navigateToFamilyOverview() {

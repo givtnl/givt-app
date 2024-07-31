@@ -57,7 +57,7 @@ class _GenerosityChallengeVpcSetupPageState
           _cubit.onClickReadyForVPC();
           unawaited(
             AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.generosityChallengeAcceptedVPC,
+              eventName: AmplitudeEvents.generosityChallengeVPCAccepted,
             ),
           );
         },
@@ -80,11 +80,11 @@ class _GenerosityChallengeVpcSetupPageState
                 AmplitudeEvents.generosityChallengeNavigatedToFamilyOverview,
           ),
         );
-      case NavigateToLogin():
+      case NavigateToWelcome():
         context.goNamed(Pages.welcome.name);
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.generosityChallengeNavigatedToLogin,
+            eventName: AmplitudeEvents.generosityChallengeNavigatedToWelcome,
           ),
         );
     }

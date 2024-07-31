@@ -47,7 +47,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
     if (result != null && result is int && context.mounted) {
       unawaited(
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.generosityChallengeSetAllowance,
+          eventName: AmplitudeEvents.generosityChallengeAllowanceSet,
           eventProperties: {'amount': result},
         ),
       );

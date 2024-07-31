@@ -101,13 +101,13 @@ enum AmplitudeEvents {
   generosityChallengeDay8MaybeLaterClicked(
     'generosity_challenge_day_8_maybe_later_clicked',
   ),
-  generosityChallengeAcceptedVPC('generosity_challenge_accepted_vpc'),
-  generosityChallengeSetAllowance('generosity_challenge_set_allowance'),
+  generosityChallengeVPCAccepted('generosity_challenge_vpc_accepted'),
+  generosityChallengeAllowanceSet('generosity_challenge_allowance_set'),
   generosityChallengeNavigatedToFamilyOverview(
     'generosity_challenge_navigated_to_family_overview',
   ),
-  generosityChallengeNavigatedToLogin(
-    'generosity_challenge_navigated_to_login',
+  generosityChallengeNavigatedToWelcome(
+    'generosity_challenge_navigated_to_welcome',
   ),
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
