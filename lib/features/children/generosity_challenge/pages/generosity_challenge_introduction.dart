@@ -4,9 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
@@ -33,10 +35,17 @@ class _GenerosityChallengeIntruductionState
   Widget build(BuildContext context) {
     final challenge = context.read<GenerosityChallengeCubit>();
     const pictureHeight = 150.0;
+    final isAuthenticatedUser =
+        context.read<AuthCubit>().state.status == AuthStatus.authenticated;
     return Scaffold(
-      appBar: const GenerosityAppBar(
+      appBar: GenerosityAppBar(
         title: 'Generosity Challenge',
-        leading: null,
+        leading: isAuthenticatedUser
+            ? GenerosityBackButton(
+                onPressed: () =>
+                    context.goNamed(FamilyPages.profileSelection.name),
+              )
+            : null,
       ),
       backgroundColor: AppTheme.givtLightBackgroundGreen,
       body: SafeArea(
