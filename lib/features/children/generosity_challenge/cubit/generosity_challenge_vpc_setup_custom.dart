@@ -4,14 +4,14 @@ sealed class GenerosityChallengeVpcSetupCustom {
   const factory GenerosityChallengeVpcSetupCustom.navigateToFamilyOverview() =
       NavigateToFamilyOverview;
 
-  const factory GenerosityChallengeVpcSetupCustom.navigateToLogin() =
-      NavigateToLogin;
+  const factory GenerosityChallengeVpcSetupCustom.navigateToWelcome() =
+      NavigateToWelcome;
 }
 
 class NavigateToFamilyOverview extends GenerosityChallengeVpcSetupCustom {
   const NavigateToFamilyOverview();
 }
 
-class NavigateToLogin extends GenerosityChallengeVpcSetupCustom {
-  const NavigateToLogin();
+class NavigateToWelcome extends GenerosityChallengeVpcSetupCustom {
+  const NavigateToWelcome();
 }
