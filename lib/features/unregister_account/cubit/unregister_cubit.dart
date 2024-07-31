@@ -26,7 +26,7 @@ class UnregisterCubit extends Cubit<UnregisterState> {
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -57,7 +57,7 @@ class UnregisterCubit extends Cubit<UnregisterState> {
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -65,7 +65,7 @@ class UnregisterCubit extends Cubit<UnregisterState> {
         const UnregisterNoInternet(),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

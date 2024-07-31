@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                   mode: LaunchMode.externalApplication,
                 );
               } catch (e) {
-                await LoggingInfo.instance.error(e.toString());
+                LoggingInfo.instance.error(e.toString());
               }
             },
             child: Text(

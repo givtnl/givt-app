@@ -62,7 +62,7 @@ class BiometricsHelper {
       await LocalAuthInfo.instance.setCanCheckBiometrics(value: true);
       return true;
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

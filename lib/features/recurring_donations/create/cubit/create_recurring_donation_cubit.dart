@@ -167,7 +167,7 @@ class CreateRecurringDonationCubit extends Cubit<CreateRecurringDonationState> {
           return;
         }
       }
-      await LoggingInfo.instance.warning(
+      LoggingInfo.instance.warning(
         'Error while creating recurring donation, $e',
         methodName: stackTrace.toString(),
       );

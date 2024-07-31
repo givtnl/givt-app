@@ -19,7 +19,7 @@ class MediaPickerService {
       return file;
     } catch (error) {
       Exception('Failed to take photo');
-      unawaited(LoggingInfo.instance.error('Failed to take photo'));
+      LoggingInfo.instance.error('Failed to take photo');
       rethrow;
     }
   }
@@ -33,7 +33,7 @@ class MediaPickerService {
       return file;
     } catch (error) {
       Exception('Failed to upload photo');
-      unawaited(LoggingInfo.instance.error('Failed to upload photo'));
+      LoggingInfo.instance.error('Failed to upload photo');
       rethrow;
     }
   }
@@ -47,10 +47,8 @@ class MediaPickerService {
       return path;
     } catch (error) {
       Exception('Failed to save photo locally');
-      unawaited(
-        LoggingInfo.instance.error(
-          'Failed to save photo locally',
-        ),
+      LoggingInfo.instance.error(
+        'Failed to save photo locally',
       );
       rethrow;
     }

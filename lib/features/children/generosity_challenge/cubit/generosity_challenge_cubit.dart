@@ -215,7 +215,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       );
       return true;
     } on Exception catch (e) {
-      unawaited(LoggingInfo.instance.error(e.toString()));
+      LoggingInfo.instance.error(e.toString());
     }
     return false;
   }
@@ -225,7 +225,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       final path = await _generosityChallengeRepository.getDay5PicturePath();
       return path;
     } on Exception catch (e) {
-      unawaited(LoggingInfo.instance.error(e.toString()));
+      LoggingInfo.instance.error(e.toString());
       rethrow;
     }
   }

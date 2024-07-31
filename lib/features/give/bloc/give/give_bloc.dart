@@ -86,7 +86,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -158,7 +158,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
       emit(state.copyWith(status: GiveStatus.processed));
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -198,7 +198,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -261,7 +261,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         );
       }
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -289,7 +289,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       organisation,
     );
     try {
-      await LoggingInfo.instance.info('Submitting Givts');
+      LoggingInfo.instance.info('Submitting Givts');
       await _givtRepository.submitGivts(
         guid: userGUID,
         body: {'donations': GivtTransaction.toJsonList(transactionList)},
@@ -307,7 +307,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
-      await LoggingInfo.instance.warning(
+      LoggingInfo.instance.warning(
         body.toString(),
         methodName: stackTrace.toString(),
       );
@@ -343,7 +343,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     if (batteryVoltage == null) {
       return;
     }
-    await LoggingInfo.instance.info(msg);
+    LoggingInfo.instance.info(msg);
     // check for low battery voltage
     if (batteryVoltage > 2450) {
       return;
@@ -365,7 +365,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   ) async {
     emit(state.copyWith(status: GiveStatus.loading));
     try {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .info('QR Code scanned out of app ${event.encodedMediumId}');
       final mediumId = utf8.decode(base64.decode(event.encodedMediumId));
 
@@ -390,7 +390,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -416,7 +416,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       emit(state.copyWith(status: GiveStatus.readyToGive));
     } on SocketException catch (e, stackTrace) {
       log(e.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -459,7 +459,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
           event.longitude,
         );
         if (distance < location.radius) {
-          await LoggingInfo.instance.info(
+          LoggingInfo.instance.info(
             'Location ${location.name} found in radius at $distance meters',
           );
 
@@ -481,7 +481,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
 
           /// if closer update nearest location
           if (distanceBetweenPreviousLocation > distance) {
-            await LoggingInfo.instance.info(
+            LoggingInfo.instance.info(
               'Location ${location.name} is closer at $distance meters',
             );
             emit(
@@ -508,7 +508,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit(state.copyWith(status: GiveStatus.success));
       }
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -528,7 +528,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         emit: emit,
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

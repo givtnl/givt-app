@@ -147,7 +147,7 @@ class GivtRepositoryImpl with GivtRepository {
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         body.toString(),
         methodName: stackTrace.toString(),
       );

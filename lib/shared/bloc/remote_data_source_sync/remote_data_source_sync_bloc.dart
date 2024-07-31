@@ -31,7 +31,7 @@ class RemoteDataSourceSyncBloc
       await _givtRepository.syncOfflineGivts();
       emit(RemoteDataSourceSyncSuccess());
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

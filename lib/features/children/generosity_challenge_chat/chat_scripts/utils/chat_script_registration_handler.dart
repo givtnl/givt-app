@@ -21,7 +21,7 @@ class ChatScriptRegistrationHandler {
     try {
       return await _registerUser();
     } catch (e, s) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: s.toString(),
       );
