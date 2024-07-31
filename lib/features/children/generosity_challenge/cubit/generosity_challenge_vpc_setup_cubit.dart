@@ -29,7 +29,7 @@ class GenerosityChallengeVpcSetupCubit
     if (isAlreadyRegistered) {
       _skipVPC();
     } else {
-      unawaited(_handleVPC());
+      await _handleVPC();
     }
   }
 

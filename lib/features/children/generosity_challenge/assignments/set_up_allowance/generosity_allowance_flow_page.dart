@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/widgets/wallet_intro_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_vpc_setup_page.dart';
@@ -8,6 +11,7 @@ import 'package:givt_app/features/children/overview/pages/edit_allowance_page.da
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class GenerosityAllowanceFlowPage extends StatelessWidget {
   const GenerosityAllowanceFlowPage({
@@ -41,6 +45,12 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.generosityChallengeSetAllowance,
+          eventProperties: {'amount': result},
+        ),
+      );
       await context
           .read<GenerosityChallengeCubit>()
           .saveUserDataByKey(
