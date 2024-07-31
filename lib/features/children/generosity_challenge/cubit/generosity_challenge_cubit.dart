@@ -257,22 +257,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       final nextActiveDayIndex = lastCompletedDayIndex + 1;
       if (nextActiveDayIndex <
           GenerosityChallengeHelper.generosityChallengeDays) {
-        if (state.unlockDayTimeDifference == UnlockDayTimeDifference.minutes) {
-          // the intention of this mode is just to unlock the next day fast
-          // for development/testing purposes, no need to do an actual time-check
-          return nextActiveDayIndex;
-        } else {
-          final lastCompletedDateTime = DateTime.parse(
-            days[lastCompletedDayIndex].dateCompleted,
-          );
-          final nowDateTime = DateTime.now();
-          if (lastCompletedDateTime.day != nowDateTime.day) {
-            return nextActiveDayIndex;
-          } else {
-            //no active day yet
-            return -1;
-          }
-        }
+        return nextActiveDayIndex;
       } else {
         //the challenge is completed, no active day
         return -1;
@@ -311,16 +296,6 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         isDebugQuickFlowEnabled: _isDebugQuickFlowEnabled,
       ),
     );
-  }
-
-  Future<void> toggleTimeDifference(int index) async {
-    final newTimeDifference = index == 0
-        ? UnlockDayTimeDifference.days
-        : UnlockDayTimeDifference.minutes;
-
-    emit(state.copyWith(unlockDayTimeDifference: newTimeDifference));
-    final days = await _generosityChallengeRepository.loadFromCache();
-    _refreshState(days: days);
   }
 
   void dismissMayorPopup() {
