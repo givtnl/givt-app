@@ -107,7 +107,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
     } catch (e, stackTrace) {
       log(e.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -150,7 +150,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         body.toString(),
         methodName: stackTrace.toString(),
       );
@@ -180,7 +180,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationInit event,
     Emitter<RegistrationState> emit,
   ) async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Registration Init',
       methodName: StackTrace.current.toString(),
     );
@@ -262,7 +262,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
     } catch (e, stackTrace) {
       log(e.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

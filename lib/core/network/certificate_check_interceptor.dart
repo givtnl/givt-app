@@ -32,7 +32,7 @@ class CertificateCheckInterceptor extends InterceptorContract {
       timeout: 50,
     );
     if (!secure.contains('CONNECTION_SECURE')) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         request.url.toString(),
         methodName: StackTrace.current.toString(),
       );

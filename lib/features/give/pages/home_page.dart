@@ -91,17 +91,7 @@ class _HomePageState extends State<HomePage> {
         context.goNamed(routeName.name);
       });
     }
-
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
-      // @TODO - This is a workaround to navigate to the correct page when
-      // the app is opened from a notification and the user is authenticated,
-      // but it should be refactored to use the GoRouter (or another solution)
-
-      if (message != null && auth.status == AuthStatus.authenticated) {
-        NotificationService.instance.navigateFirebaseNotification(message);
-      }
-    });
-
+    
     return Scaffold(
       key: _key,
       appBar: AppBar(
@@ -350,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                   mode: LaunchMode.externalApplication,
                 );
               } catch (e) {
-                await LoggingInfo.instance.error(e.toString());
+                LoggingInfo.instance.error(e.toString());
               }
             },
             child: Text(

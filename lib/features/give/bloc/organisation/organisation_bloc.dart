@@ -93,7 +93,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         body.toString(),
         methodName: stackTrace.toString(),
       );
@@ -125,13 +125,13 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log('StatusCode:$statusCode Body:$body');
-      await LoggingInfo.instance.warning(
+      LoggingInfo.instance.warning(
         body.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: OrganisationStatus.error));
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -185,7 +185,7 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

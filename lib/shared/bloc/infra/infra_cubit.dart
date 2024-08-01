@@ -64,7 +64,7 @@ class InfraCubit extends Cubit<InfraState> {
       );
       emit(const InfraSuccess());
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -91,7 +91,7 @@ class InfraCubit extends Cubit<InfraState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

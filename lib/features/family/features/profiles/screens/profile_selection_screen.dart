@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
@@ -46,6 +48,17 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      // @TODO - This is a workaround to navigate to the correct page when
+      // the app is opened from a notification and the user is authenticated,
+      // but it should be refactored to use the GoRouter (or another solution)
+      // In the EU this workaround is in the file home_page.dart
+
+      if (message != null) {
+        NotificationService.instance.navigateFirebaseNotification(message);
+      }
+    });
+    
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesInvitedToGroup) {

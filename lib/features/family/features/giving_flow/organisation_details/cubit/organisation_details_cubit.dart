@@ -43,11 +43,9 @@ class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
       );
       return true;
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching organisation details: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching organisation details: $error',
+        methodName: stackTrace.toString(),
       );
       emit(OrganisationDetailsErrorState(mediumId: mediumId));
       return false;

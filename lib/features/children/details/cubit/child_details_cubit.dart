@@ -56,7 +56,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
       );
       _emitData();
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
       emit(ChildDetailsErrorState(errorMessage: error.toString()));
     }
@@ -173,14 +173,14 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   }
 
   Future<void> _handleEditAllowanceApiError(Object e, StackTrace s) async {
-    await LoggingInfo.instance.error(e.toString(), methodName: s.toString());
+    LoggingInfo.instance.error(e.toString(), methodName: s.toString());
     emit(
       ChildDetailsErrorState(errorMessage: e.toString()),
     );
   }
 
   Future<void> _handleTopUpApiError(Object e, StackTrace s) async {
-    await LoggingInfo.instance.error(e.toString(), methodName: s.toString());
+    LoggingInfo.instance.error(e.toString(), methodName: s.toString());
     if (e is GivtServerFailure && e.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
       unawaited(
         AnalyticsHelper.logEvent(

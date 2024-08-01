@@ -52,11 +52,9 @@ class CreateTransactionCubit extends Cubit<CreateTransactionState> {
         ),
       );
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while creating transaction: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while creating transaction: $error',
+        methodName: stackTrace.toString(),
       );
       emit(
         CreateTransactionErrorState(

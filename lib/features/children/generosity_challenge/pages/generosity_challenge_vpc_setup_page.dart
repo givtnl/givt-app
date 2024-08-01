@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
@@ -9,6 +12,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class GenerosityChallengeVpcSetupPage extends StatefulWidget {
@@ -49,7 +53,14 @@ class _GenerosityChallengeVpcSetupPageState
         leading: GenerosityBackButton(),
       ),
       body: VPCPage(
-        onReadyClicked: _cubit.onClickReadyForVPC,
+        onReadyClicked: () {
+          _cubit.onClickReadyForVPC();
+          unawaited(
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.generosityChallengeVPCAccepted,
+            ),
+          );
+        },
       ),
     );
   }
@@ -63,8 +74,19 @@ class _GenerosityChallengeVpcSetupPageState
         context
           ..pushReplacementNamed(FamilyPages.profileSelection.name)
           ..pushNamed(FamilyPages.childrenOverview.name);
-      case NavigateToLogin():
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName:
+                AmplitudeEvents.generosityChallengeNavigatedToFamilyOverview,
+          ),
+        );
+      case NavigateToWelcome():
         context.goNamed(Pages.welcome.name);
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.generosityChallengeNavigatedToWelcome,
+          ),
+        );
     }
   }
 }

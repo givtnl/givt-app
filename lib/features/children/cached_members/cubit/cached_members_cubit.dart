@@ -65,7 +65,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
         ),
       );
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
       unawaited(
         AnalyticsHelper.logEvent(

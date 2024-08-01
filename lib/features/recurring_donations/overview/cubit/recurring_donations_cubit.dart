@@ -47,7 +47,7 @@ class RecurringDonationsCubit extends Cubit<RecurringDonationsState> {
 
       emit(RecurringDonationsFetchedState(recurringDonations: response));
     } catch (error, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         error.toString(),
         methodName: stackTrace.toString(),
       );

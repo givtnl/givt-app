@@ -83,7 +83,7 @@ class EditChildCubit extends Cubit<EditChildState>
         );
       }
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
 
       emit(
