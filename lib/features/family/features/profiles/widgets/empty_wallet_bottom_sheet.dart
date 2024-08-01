@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/topup_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/topup_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -22,8 +27,28 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       primaryButton: GivtElevatedButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
-        onTap: () {
-          context.pop();
+        onTap: () async {
+          await FamilyAuthUtils.authenticateUser(
+            context,
+            checkAuthRequest: CheckAuthRequest(
+              navigate: (context, {isUSUser}) async {
+                context.pop();
+
+                final user = context.read<ProfilesCubit>().state;
+                context.read<TopupCubit>().setUser(user.activeProfile.id);
+
+                await showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor: Colors.white,
+                  builder: (context) => const TopupWalletBottomSheet(),
+                );
+              },
+            ),
+          );
         },
       ),
       secondaryButton: GivtElevatedSecondaryButton(

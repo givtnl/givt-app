@@ -95,10 +95,10 @@ class GivtBottomSheet extends StatelessWidget {
   }
 
   Widget showHeadlineContent() {
-    if (headlineContent == null) return const SizedBox(height: 16);
+    if (headlineContent == null) return const SizedBox(height: 24);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: 24),
       child: headlineContent,
     );
   }
@@ -107,7 +107,7 @@ class GivtBottomSheet extends StatelessWidget {
     if (primaryButton == null) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: 8),
       child: primaryButton,
     );
   }
