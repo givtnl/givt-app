@@ -107,6 +107,13 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
+Widget walletEmptyIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/wallet_empty.svg',
+      width: width,
+      height: height,
+    );
+
 Widget primaryCircleWithText({
   String? text = '',
   double circleSize = 62,
