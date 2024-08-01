@@ -41,64 +41,61 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
       ),
       body: Center(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Stack(
-              children: [
-                Align(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        primaryCircleWithIcon(
-                          iconData: FontAwesomeIcons.plus,
-                          circleSize: MediaQuery.of(context).size.width * 0.35,
-                        ),
-                        const SizedBox(height: 16),
-                        AmountCounter(
-                          currency: widget.currency,
-                          initialAmount: _amount,
-                          onAmountChanged: (amount) => setState(() {
-                            _amount = amount;
-                          }),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          context.l10n.topUpScreenInfo,
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: AppTheme.primary20,
-                                    fontFamily: 'Rouna',
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
+          minimum: const EdgeInsets.fromLTRB(24, 24, 24, 40),
+          child: Stack(
+            children: [
+              Align(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 80),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AdminFeeText(
-                        amount: _amount.toDouble(),
+                      primaryCircleWithIcon(
+                          iconData: FontAwesomeIcons.plus,
+                          circleSize: 140 - 28,
+                          iconSize: 48),
+                      const SizedBox(height: 16),
+                      AmountCounter(
+                        currency: widget.currency,
+                        initialAmount: _amount,
+                        onAmountChanged: (amount) => setState(() {
+                          _amount = amount;
+                        }),
                       ),
-                      const SizedBox(height: 4),
-                      GivtElevatedButton(
-                        text: context.l10n.confirm,
-                        onTap: () {
-                          Navigator.of(context).pop(_amount);
-                        },
+                      const SizedBox(height: 12),
+                      Text(
+                        context.l10n.topUpScreenInfo,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: AppTheme.primary20,
+                              fontWeight: FontWeight.w400,
+                              height: 1.2,
+                            ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AdminFeeText(
+                      amount: _amount.toDouble(),
+                    ),
+                    const SizedBox(height: 4),
+                    GivtElevatedButton(
+                      text: context.l10n.confirm,
+                      onTap: () {
+                        Navigator.of(context).pop(_amount);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

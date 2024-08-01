@@ -57,108 +57,103 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
       ),
       body: Center(
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Stack(
-              children: [
-                if (widget.extraHeader != null)
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: widget.extraHeader,
-                  ),
+          minimum: const EdgeInsets.fromLTRB(24, 24, 24, 40),
+          child: Stack(
+            children: [
+              if (widget.extraHeader != null)
                 Align(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 80),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        calendarClockAvatarIcon(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          height: MediaQuery.of(context).size.width * 0.35,
-                        ),
-                        const SizedBox(height: 16),
-                        AmountCounter(
-                          currency: widget.currency,
-                          initialAmount: _allowance,
-                          onAmountChanged: (allowance) => setState(() {
-                            _allowance = allowance;
-                          }),
-                        ),
-                        const SizedBox(height: 12),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "What monthly amount should be added to $child's wallet?",
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyMedium!.copyWith(
-                              color: AppTheme.primary20,
-                              fontFamily: 'Rouna',
-                              fontWeight: FontWeight.w400,
-                              height: 1.2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  alignment: Alignment.topCenter,
+                  child: widget.extraHeader,
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
+              Align(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 80),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      AdminFeeText(
-                        theme: theme,
-                        amount: _allowance.toDouble(),
-                        isMonthly: true,
-                        isMultipleChildren: widget.isMultipleChildren,
+                      calendarClockAvatarIcon(
+                        width: 140,
+                        height: 140,
                       ),
-                      const SizedBox(height: 4),
-                      GivtElevatedButton(
-                        text: context.l10n.confirm,
-                        onTap: () {
-                          Navigator.of(context).pop(_allowance);
-                        },
+                      const SizedBox(height: 16),
+                      AmountCounter(
+                        currency: widget.currency,
+                        initialAmount: _allowance,
+                        onAmountChanged: (allowance) => setState(() {
+                          _allowance = allowance;
+                        }),
                       ),
-                      const SizedBox(height: 8),
-                      Visibility(
-                        visible: widget.initialAllowance != null &&
-                            widget.initialAllowance! > 0,
-                        child: TextButton.icon(
-                          onPressed: () {
-                            showDialog<void>(
-                              context: context,
-                              builder: (_) => CancelAllowanceDialog(
-                                onCancel: () => {widget.onCancel?.call()},
-                              ),
-                            );
-                          },
-                          style: IconButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            alignment: Alignment.topCenter,
-                          ),
-                          icon: const Padding(
-                            padding: EdgeInsets.only(top: 2),
-                            child: FaIcon(
-                              FontAwesomeIcons.xmark,
-                              size: 16,
-                              color: AppTheme.error30,
-                            ),
-                          ),
-                          label: Text(
-                            'Cancel Recurring Amount',
-                            style: theme.textTheme.bodySmall!.copyWith(
-                                color: AppTheme.error30,
-                                fontWeight: FontWeight.w700),
-                          ),
+                      const SizedBox(height: 12),
+                      Text(
+                        "What monthly amount should be added to $child's wallet?",
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyMedium!.copyWith(
+                          color: AppTheme.primary20,
+                          fontWeight: FontWeight.w400,
+                          height: 1.2,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
-            ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AdminFeeText(
+                      theme: theme,
+                      amount: _allowance.toDouble(),
+                      isMonthly: true,
+                      isMultipleChildren: widget.isMultipleChildren,
+                    ),
+                    const SizedBox(height: 4),
+                    GivtElevatedButton(
+                      text: context.l10n.confirm,
+                      onTap: () {
+                        Navigator.of(context).pop(_allowance);
+                      },
+                    ),
+                    const SizedBox(height: 8),
+                    Visibility(
+                      visible: widget.initialAllowance != null &&
+                          widget.initialAllowance! > 0,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) => CancelAllowanceDialog(
+                              onCancel: () => {widget.onCancel?.call()},
+                            ),
+                          );
+                        },
+                        style: IconButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          alignment: Alignment.topCenter,
+                        ),
+                        icon: const Padding(
+                          padding: EdgeInsets.only(top: 2),
+                          child: FaIcon(
+                            FontAwesomeIcons.xmark,
+                            size: 16,
+                            color: AppTheme.error30,
+                          ),
+                        ),
+                        label: Text(
+                          'Cancel Recurring Amount',
+                          style: theme.textTheme.bodySmall!.copyWith(
+                            color: AppTheme.error30,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
