@@ -8,9 +8,12 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path/path.dart';
 
 class GiveBottomSheet extends StatelessWidget {
   const GiveBottomSheet({
@@ -23,6 +26,8 @@ class GiveBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final profile = context.read<ProfilesCubit>().state.activeProfile;
+
     return BlocBuilder<ImpactGroupsCubit, ImpactGroupsState>(
       builder: (context, state) {
         return Padding(
@@ -37,7 +42,6 @@ class GiveBottomSheet extends StatelessWidget {
                   children: [
                     Expanded(
                       child: ActionTile(
-                        isDisabled: false,
                         titleBig: 'Family Goal',
                         subtitle: state.familyGoal.orgName,
                         iconPath: 'assets/family/images/goal_tile.svg',
@@ -46,21 +50,26 @@ class GiveBottomSheet extends StatelessWidget {
                         backgroundColor: AppTheme.primary98,
                         textColor: Theme.of(context).colorScheme.inversePrimary,
                         onTap: () {
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.choseGiveToFamilyGoal,
+                          );
+
+                          if (profile.wallet.balance == 0) {
+                            showEmptyWalletBottomSheet(context);
+                            return;
+                          }
+
                           context.pop();
                           context.read<FlowsCubit>().startFamilyGoalFlow();
-                          final generatedMediumId =
-                              base64.encode(state.familyGoal.mediumId.codeUnits);
+                          final generatedMediumId = base64
+                              .encode(state.familyGoal.mediumId.codeUnits);
                           context
                               .read<OrganisationDetailsCubit>()
                               .getOrganisationDetails(generatedMediumId);
-                          final group = state
-                              .getGoalGroup(state.familyGoal);
+                          final group = state.getGoalGroup(state.familyGoal);
                           context.pushNamed(
                             FamilyPages.chooseAmountSliderGoal.name,
                             extra: group,
-                          );
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.choseGiveToFamilyGoal,
                           );
                         },
                       ),
@@ -79,27 +88,31 @@ class GiveBottomSheet extends StatelessWidget {
                   else
                     Expanded(
                       child: ActionTile(
-                        isDisabled: false,
                         titleBig: 'Coin',
                         iconPath: 'assets/family/images/give_with_coin.svg',
                         backgroundColor: AppTheme.highlight98,
                         borderColor: AppTheme.highlight80,
                         textColor: AppTheme.highlight40,
                         onTap: () {
+                          AnalyticsHelper.logEvent(
+                            eventName: AmplitudeEvents.choseGiveWithCoin,
+                          );
+
+                          if (profile.wallet.balance == 0) {
+                            showEmptyWalletBottomSheet(context);
+                            return;
+                          }
+
                           context
                             ..pop()
                             ..pushNamed(FamilyPages.scanNFC.name);
                           context.read<FlowsCubit>().startInAppCoinFlow();
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.choseGiveWithCoin,
-                          );
                         },
                       ),
                     ),
                   if (isiPad) const SizedBox() else const SizedBox(width: 16),
                   Expanded(
                     child: ActionTile(
-                      isDisabled: false,
                       titleBig: 'QR Code',
                       iconPath: 'assets/family/images/give_with_qr.svg',
                       borderColor:
@@ -110,6 +123,12 @@ class GiveBottomSheet extends StatelessWidget {
                         AnalyticsHelper.logEvent(
                           eventName: AmplitudeEvents.choseGiveWithQRCode,
                         );
+
+                        if (profile.wallet.balance == 0) {
+                          showEmptyWalletBottomSheet(context);
+                          return;
+                        }
+
                         context.pushNamed(FamilyPages.camera.name);
                         context.read<FlowsCubit>().startInAppQRCodeFlow();
                       },
@@ -150,6 +169,20 @@ class GiveBottomSheet extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  void showEmptyWalletBottomSheet(BuildContext context) {
+    context.pop();
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => const EmptyWalletBottomSheet(),
     );
   }
 }
