@@ -98,7 +98,7 @@ class GivtBottomSheet extends StatelessWidget {
     if (headlineContent == null) return const SizedBox(height: 24);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 24),
+      padding: const EdgeInsets.only(top: 36),
       child: headlineContent,
     );
   }

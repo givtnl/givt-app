@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/family/features/profiles/repository/topup_repository.dart';
+import 'package:givt_app/features/family/features/topup/repository/topup_repository.dart';
 
 part 'topup_state.dart';
 
@@ -16,7 +16,7 @@ class TopupCubit extends Cubit<TopupState> {
       await topupRepository.topupChild(state.userGuid, amount);
       emit(state.copyWith(status: TopupStatus.done));
     } catch (e) {
-      // emit(state.copyWith(status: TopupStatus.error, error: e.toString()));
+      emit(state.copyWith(status: TopupStatus.error, error: e.toString()));
     }
   }
 
