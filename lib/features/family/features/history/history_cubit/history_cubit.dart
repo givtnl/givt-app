@@ -65,11 +65,9 @@ class HistoryCubit extends Cubit<HistoryState> {
         ),
       );
     } catch (e, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching history: $e',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching history: $e',
+        methodName: stackTrace.toString(),
       );
 
       emit(state.copyWith(status: HistoryStatus.error, error: e.toString()));

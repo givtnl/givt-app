@@ -41,7 +41,7 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
         );
       }
     } on Exception catch (e) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: 'remember family values',
       );
@@ -62,7 +62,7 @@ class FamilyValuesCubit extends Cubit<FamilyValuesState> {
       }
       emit(state.copyWith(selectedValues: savedValues));
     } on Exception catch (e) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: 'get saved family values',
       );

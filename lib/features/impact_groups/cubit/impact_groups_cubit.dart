@@ -57,11 +57,9 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
           error: e.toString(),
         ),
       );
-      unawaited(
-        LoggingInfo.instance.error(
-          'Fetching impact groups failed: $e',
-          methodName: 'fetchImpactGroups',
-        ),
+      LoggingInfo.instance.error(
+        'Fetching impact groups failed: $e',
+        methodName: 'fetchImpactGroups',
       );
     }
   }
@@ -91,11 +89,9 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
           error: e.toString(),
         ),
       );
-      unawaited(
-        LoggingInfo.instance.error(
-          'Adding organisation to impact group failed: $e',
-          methodName: 'fetchImpactGroups',
-        ),
+      LoggingInfo.instance.error(
+        'Adding organisation to impact group failed: $e',
+        methodName: 'fetchImpactGroups',
       );
     }
   }
@@ -130,11 +126,9 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
           error: e.toString(),
         ),
       );
-      unawaited(
-        LoggingInfo.instance.error(
-          'Accept impact group invite failed $e',
-          methodName: 'acceptGroupInvite',
-        ),
+      LoggingInfo.instance.error(
+        'Accept impact group invite failed $e',
+        methodName: 'acceptGroupInvite',
       );
     }
   }

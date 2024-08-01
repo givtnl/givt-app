@@ -28,7 +28,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
     Emitter<GivtState> emit,
   ) async {
     try {
-      await LoggingInfo.instance.info('Cancelling transaction(s)');
+      LoggingInfo.instance.info('Cancelling transaction(s)');
       final givtGroup = state.givtGroups.firstWhere(
         (element) => element.timeStamp! == event.timestamp,
       );
@@ -43,16 +43,16 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
         }
       });
     } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.info(e.body.toString());
-      await LoggingInfo.instance.error(e.body.toString());
+      LoggingInfo.instance.info(e.body.toString());
+      LoggingInfo.instance.error(e.body.toString());
       emit(GivtError(e.body.toString()));
     } on SocketException catch (e) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error('No internet connection to cancel transactions');
       log(e.toString());
       emit(const GivtNoInternet());
     } catch (e) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(e.toString(), methodName: StackTrace.current.toString());
       log(e.toString());
     }
@@ -76,7 +76,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
       log(e.toString());
       emit(const GivtNoInternet());
     } catch (e, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(e.toString(), methodName: stackTrace.toString());
       emit(const GivtUnknown());
     }
@@ -256,7 +256,7 @@ class GivtBloc extends Bloc<GivtEvent, GivtState> {
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.body.toString(),
         methodName: stackTrace.toString(),
       );

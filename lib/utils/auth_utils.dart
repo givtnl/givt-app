@@ -68,7 +68,7 @@ class AuthUtils {
       await checkAuthRequest.navigate(context,
           isUSUser: auth.state.user.isUsUser);
     } on PlatformException catch (e) {
-      await LoggingInfo.instance.info(
+      LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
       );
       if (!context.mounted) {
@@ -79,7 +79,7 @@ class AuthUtils {
         checkAuthRequest: checkAuthRequest,
       );
     } catch (e) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         'Error while authenticating with biometrics: $e',
       );
       if (!context.mounted) {

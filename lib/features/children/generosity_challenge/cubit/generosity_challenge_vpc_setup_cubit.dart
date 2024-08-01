@@ -76,11 +76,9 @@ class GenerosityChallengeVpcSetupCubit
 
   void _handleError(Object e, StackTrace s) {
     _showInitialScreenWithError();
-    unawaited(
-      LoggingInfo.instance.error(
-        'GenerosityChallengeVPCSetupCubit: onClickReadyForVPC\n\n$e',
-        methodName: s.toString(),
-      ),
+    LoggingInfo.instance.error(
+      'GenerosityChallengeVPCSetupCubit: onClickReadyForVPC\n\n$e',
+      methodName: s.toString(),
     );
   }
 

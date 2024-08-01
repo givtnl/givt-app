@@ -89,11 +89,9 @@ class TagsCubit extends Cubit<TagsState> {
 
       emit(TagsStateFetched(tags: response));
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching tags: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching tags: $error',
+        methodName: stackTrace.toString(),
       );
       emit(TagsStateError(errorMessage: error.toString()));
     }

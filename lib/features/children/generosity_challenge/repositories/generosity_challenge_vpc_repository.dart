@@ -29,11 +29,9 @@ class GenerosityChallengeVpcRepository {
     try {
       session = await _authRepository.refreshToken(refreshUserExt: true);
     } catch (e, s) {
-      unawaited(
         LoggingInfo.instance.info(
           e.toString(),
           methodName: s.toString(),
-        ),
       );
     }
     if (true == session?.isLoggedIn) {

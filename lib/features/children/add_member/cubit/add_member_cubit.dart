@@ -151,11 +151,9 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   }
 
   Future<void> createMember() async {
-    unawaited(
-      LoggingInfo.instance.info(
-        'Create member',
-        methodName: 'createMember',
-      ),
+    LoggingInfo.instance.info(
+      'Create member',
+      methodName: 'createMember',
     );
     final members = state.members;
     final memberNames = members.map((member) => member.firstName).toList();
@@ -181,7 +179,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
         ),
       );
     } catch (error) {
-      await LoggingInfo.instance.error(error.toString());
+      LoggingInfo.instance.error(error.toString());
 
       if (error is GivtServerFailure &&
           error.type == FailureType.VPC_NOT_SUCCESSFUL) {

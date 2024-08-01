@@ -168,11 +168,9 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         ),
       );
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching profiles: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching profiles: $error',
+        methodName: stackTrace.toString(),
       );
       emit(
         ProfilesExternalErrorState(
@@ -228,11 +226,9 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
         ),
       );
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching profiles: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching profiles: $error',
+        methodName: stackTrace.toString(),
       );
 
       emit(

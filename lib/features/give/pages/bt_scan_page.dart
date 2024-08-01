@@ -46,10 +46,10 @@ class _BTScanPageState extends State<BTScanPage> {
   }
 
   Future<void> initBluetooth() async {
-    await LoggingInfo.instance.info('initBluetooth');
+    LoggingInfo.instance.info('initBluetooth');
 
     if (await FlutterBluePlus.isSupported == false) {
-      await LoggingInfo.instance.info('Bluetooth not supported on this device');
+      LoggingInfo.instance.info('Bluetooth not supported on this device');
       return;
     }
 
@@ -63,7 +63,7 @@ class _BTScanPageState extends State<BTScanPage> {
 
     FlutterBluePlus.isScanning.listen((event) async {
       if (event == false && !FlutterBluePlus.isScanningNow && isSearching) {
-        await LoggingInfo.instance.info('Restart Scan');
+        LoggingInfo.instance.info('Restart Scan');
         await startBluetoothScan();
       }
     });
@@ -73,11 +73,11 @@ class _BTScanPageState extends State<BTScanPage> {
       switch (state) {
         case BluetoothAdapterState.on:
           if (!FlutterBluePlus.isScanningNow) {
-            await LoggingInfo.instance.info('Start Scan');
+            LoggingInfo.instance.info('Start Scan');
             await startBluetoothScan();
           }
         case BluetoothAdapterState.unauthorized:
-          await LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
+          LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
           if (!context.mounted) {
             return;
           }
@@ -98,9 +98,9 @@ class _BTScanPageState extends State<BTScanPage> {
           );
         case BluetoothAdapterState.unavailable:
         case BluetoothAdapterState.off:
-          await LoggingInfo.instance.info('Bluetooth adapter is off');
+          LoggingInfo.instance.info('Bluetooth adapter is off');
           if (Platform.isAndroid) {
-            await LoggingInfo.instance.info('Trying to turn it on...');
+            LoggingInfo.instance.info('Trying to turn it on...');
             try {
               await FlutterBluePlus.turnOn(timeout: 10);
             } catch (_) {
@@ -109,7 +109,7 @@ class _BTScanPageState extends State<BTScanPage> {
             }
           }
           if (Platform.isIOS) {
-            await LoggingInfo.instance.info('iOS User has Bluetooth off...');
+            LoggingInfo.instance.info('iOS User has Bluetooth off...');
             if (!context.mounted) {
               return;
             }
@@ -237,7 +237,7 @@ class _BTScanPageState extends State<BTScanPage> {
             if (state.status == GiveStatus.loading &&
                 !FlutterBluePlus.isScanningNow &&
                 isSearching) {
-              await LoggingInfo.instance.info('Restart Scan');
+              LoggingInfo.instance.info('Restart Scan');
               await startBluetoothScan();
             }
           },

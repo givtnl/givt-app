@@ -25,7 +25,7 @@ class DetailedRecurringDonationsCubit
       response.sort((a, b) => b.timestamp.compareTo(a.timestamp));
       emit(DetailedInstancesFetched(instances: response));
     } catch (error) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         error.toString(),
         methodName: StackTrace.current.toString(),
       );

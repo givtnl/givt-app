@@ -38,11 +38,9 @@ class TokenInterceptor implements InterceptorContract {
         request.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
     } catch (e, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          e.toString(),
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
       );
     }
 
