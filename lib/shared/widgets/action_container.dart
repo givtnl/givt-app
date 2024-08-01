@@ -15,9 +15,15 @@ class ActionContainer extends StatefulWidget {
     this.margin,
     this.borderSize = 2,
     this.baseBorderSize = 6,
+    this.onTapCancel,
+    this.onTapDown,
+    this.onTapUp,
     super.key,
   });
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
+  final VoidCallback? onTapCancel;
+  final VoidCallback? onTapUp;
+  final VoidCallback? onTapDown;
   final bool isDisabled;
   final bool isSelected;
   final bool isPressedDown;
@@ -63,17 +69,24 @@ class _ActionContainerState extends State<ActionContainer> {
         ? _buildContainer(widget.child)
         : GestureDetector(
             onTap: () async {
+              widget.onTap?.call();
               await _actionDelay();
-              widget.onTap();
             },
             onTapDown: (details) {
+              widget.onTapDown?.call();
               if (!widget.isMuted) {
                 SystemSound.play(SystemSoundType.click);
               }
               _setManualPressed(true);
             },
-            onTapCancel: _unpress,
-            onTapUp: (details) => _unpress(),
+            onTapCancel: () {
+              widget.onTapCancel?.call();
+              _unpress();
+            },
+            onTapUp: (details) {
+              widget.onTapUp?.call();
+              _unpress();
+            },
             child: _buildContainer(widget.child),
           );
   }

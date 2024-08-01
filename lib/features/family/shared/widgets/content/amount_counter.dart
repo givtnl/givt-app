@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class AmountCounter extends StatefulWidget {
@@ -117,61 +119,59 @@ class _AmountCounterState extends State<AmountCounter> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTapDown: (_) {
+        CustomIconBorderButton(
+          onTapDown: () {
             _startTimer(_decrementCounter);
           },
-          onTapUp: (_) {
-            _stopTimer();
-          },
+          onTapUp: _stopTimer,
           onTapCancel: _stopTimer,
           onTap: (_currentAmount <= minAmount) ? null : _decrementCounter,
-          child: SizedBox(
-            width: 32,
-            height: 32,
-            child: Icon(
-              FontAwesomeIcons.circleMinus,
-              size: 32,
-              color: (_currentAmount < 2)
-                  ? widget.canAmountBeZero && _currentAmount > 0
-                      ? AppTheme.primary20
-                      : Colors.grey
-                  : AppTheme.primary20,
-            ),
+          isMuted: true,
+          child: FaIcon(
+            FontAwesomeIcons.minus,
+            size: 25,
+            color: (_currentAmount < 2)
+                ? widget.canAmountBeZero && _currentAmount > 0
+                    ? AppTheme.primary20
+                    : Colors.grey
+                : AppTheme.primary20,
           ),
         ),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          width: _currentAmount < 100 ? 80 : 100,
+          padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Text(
             '${widget.currency}$_currentAmount',
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 24,
-              fontFamily: 'Rouna',
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppTheme.primary20,
-              fontFeatures: <FontFeature>[FontFeature.liningFigures()],
+              color: AppTheme.secondary30,
+              fontFeatures: <FontFeature>[
+                const FontFeature.liningFigures(),
+                const FontFeature.tabularFigures(),
+              ],
             ),
+
+            // const TextStyle(
+            //   fontSize: 24,
+            //   fontFamily: 'Rouna',
+            //   fontWeight: FontWeight.w700,
+            //   color: AppTheme.primary20,
+            //   fontFeatures: <FontFeature>[FontFeature.liningFigures()],
+            // ),
           ),
         ),
-        GestureDetector(
-          onTapDown: (_) {
+        CustomIconBorderButton(
+          onTapDown: () {
             _startTimer(_incrementCounter);
           },
-          onTapUp: (_) {
-            _stopTimer();
-          },
+          onTapUp: _stopTimer,
           onTapCancel: _stopTimer,
           onTap: (_currentAmount > 998) ? null : _incrementCounter,
-          child: SizedBox(
-            width: 32,
-            height: 32,
-            child: Icon(
-              FontAwesomeIcons.circlePlus,
-              size: 32,
-              color: (_currentAmount > 998) ? Colors.grey : AppTheme.primary20,
-            ),
+          isMuted: true,
+          child: FaIcon(
+            FontAwesomeIcons.plus,
+            size: 25,
+            color: (_currentAmount > 998) ? Colors.grey : AppTheme.primary20,
           ),
         ),
       ],
