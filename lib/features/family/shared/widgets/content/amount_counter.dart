@@ -150,14 +150,6 @@ class _AmountCounterState extends State<AmountCounter> {
                 const FontFeature.tabularFigures(),
               ],
             ),
-
-            // const TextStyle(
-            //   fontSize: 24,
-            //   fontFamily: 'Rouna',
-            //   fontWeight: FontWeight.w700,
-            //   color: AppTheme.primary20,
-            //   fontFeatures: <FontFeature>[FontFeature.liningFigures()],
-            // ),
           ),
         ),
         CustomIconBorderButton(
