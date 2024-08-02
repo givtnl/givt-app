@@ -26,7 +26,6 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     final challenge = context.watch<GenerosityChallengeCubit>();
     final task = GenerosityChallengeContentHelper.getTaskByIndex(
       challenge.state.detailedDayIndex,
-      isDebugQuickFlowEnabled: challenge.state.isDebugQuickFlowEnabled,
     );
     final day = challenge.state.days[challenge.state.detailedDayIndex];
     final isSingleCard = task.partnerCard == null;

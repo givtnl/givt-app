@@ -28,12 +28,10 @@ class GenerosityChallengeIntroduction extends StatefulWidget {
 class _GenerosityChallengeIntroductionState
     extends State<GenerosityChallengeIntroduction> {
   bool _acceptPolicy = false;
-  bool isDebugQuickFlowEnabled = false;
   final AppConfig _appConfig = getIt();
 
   @override
   Widget build(BuildContext context) {
-    final challenge = context.read<GenerosityChallengeCubit>();
     const pictureHeight = 150.0;
     final isAuthenticatedUser =
         context.read<AuthCubit>().state.status == AuthStatus.authenticated;
@@ -112,38 +110,6 @@ class _GenerosityChallengeIntroductionState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_appConfig.isTestApp)
-              ToggleButtons(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                selectedBorderColor: Colors.blue[700],
-                selectedColor: Colors.white,
-                fillColor: Colors.blue[200],
-                color: Colors.blue[400],
-                constraints: const BoxConstraints(
-                  minHeight: 40,
-                  minWidth: 80,
-                ),
-                isSelected: [
-                  isDebugQuickFlowEnabled == true,
-                  isDebugQuickFlowEnabled == false,
-                ],
-                onPressed: (index) {
-                  challenge.setDebugQuickFlow(enabled: index == 0);
-                  setState(() {
-                    isDebugQuickFlowEnabled = index == 0;
-                  });
-                },
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('Enable quick flow'),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('Disable quick flow'),
-                  ),
-                ],
-              ),
             AcceptPolicyRow(
               onTap: (value) {
                 setState(() {

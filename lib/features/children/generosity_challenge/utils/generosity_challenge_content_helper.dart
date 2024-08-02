@@ -105,15 +105,7 @@ class GenerosityChallengeContentHelper {
     );
   }
 
-  static final List<Task> _quickFlowTasks = [
-    _day1(),
-    _day2(),
-    _day7(),
-    day8(),
-  ];
-
-  static Task getTaskByIndex(int index,
-      {bool isDebugQuickFlowEnabled = false}) {
-    return isDebugQuickFlowEnabled ? _quickFlowTasks[index] : _tasks[index];
+  static Task getTaskByIndex(int index) {
+    return _tasks[index];
   }
 }
