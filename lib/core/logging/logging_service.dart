@@ -15,13 +15,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 mixin ILoggingInfo {
-  Future<void> debug(String message);
+  void debug(String message);
 
-  Future<void> info(String message);
+  void info(String message);
 
-  Future<void> warning(String message);
+  void warning(String message);
 
-  Future<void> error(String message);
+  void error(String message);
 
   Future<void> logRequest(String method, String string, String correlationId);
 
@@ -129,35 +129,35 @@ class LoggingInfo implements ILoggingInfo {
   }
 
   @override
-  Future<void> debug(
+  void debug(
     String message, {
     String methodName = '',
-  }) async {
-    await _log(message, methodName, Level.FINE);
+  }) {
+    unawaited(_log(message, methodName, Level.FINE));
   }
 
   @override
-  Future<void> error(
+  void error(
     String message, {
     String methodName = '',
-  }) async {
-    await _log(message, methodName, Level.SEVERE);
+  }) {
+    unawaited(_log(message, methodName, Level.SEVERE));
   }
 
   @override
-  Future<void> info(
+  void info(
     String message, {
     String methodName = '',
-  }) async {
-    await _log(message, methodName, Level.INFO);
+  }) {
+    unawaited(_log(message, methodName, Level.INFO));
   }
 
   @override
-  Future<void> warning(
+  void warning(
     String message, {
     String methodName = '',
-  }) async {
-    await _log(message, methodName, Level.WARNING);
+  }) {
+    unawaited(_log(message, methodName, Level.WARNING));
   }
 
   /// Get the device guid from shared preferences.
@@ -181,7 +181,7 @@ class LoggingInfo implements ILoggingInfo {
 
   @override
   void logExceptionForDebug(Object e, {StackTrace? stacktrace}) {
-    unawaited(debug(e.toString(), methodName: stacktrace.toString()));
+    debug(e.toString(), methodName: stacktrace.toString());
   }
 
   @override

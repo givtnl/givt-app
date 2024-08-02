@@ -129,7 +129,7 @@ class AuthRepositoyImpl with AuthRepository {
       try {
         await fetchUserExtension(newSession.userGUID);
       } catch (e, s) {
-        await LoggingInfo.instance.error(
+        LoggingInfo.instance.error(
           e.toString(),
           methodName: s.toString(),
         );
@@ -159,7 +159,7 @@ class AuthRepositoyImpl with AuthRepository {
 
       await setUserProperties(newUserExt);
     } catch (e, stacktrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stacktrace.toString(),
       );

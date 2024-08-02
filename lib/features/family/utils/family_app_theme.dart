@@ -49,6 +49,9 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const highlight98 = Color(0xFFFFF9EB);
   static const highlight99 = Color(0xFFFFFDF7);
 
+  static const error30 = Color(0xFF920700);
+  static const error80 = Color(0xFFFFB4A7);
+
   static const neutralVariant95 = Color(0xFFEEF2E4);
   static const neutralVariant60 = Color(0xFF8E9286);
 
@@ -239,6 +242,18 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       cardTheme: CardTheme(
         color: colorScheme.background,
         surfaceTintColor: Colors.transparent,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return primary80;
+            }
+
+            return Colors.white;
+          },
+        ),
+        checkColor: MaterialStateProperty.all(primary20),
       ),
     );
   }

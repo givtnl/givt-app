@@ -21,7 +21,7 @@ class ChatScriptRegistrationHandler {
     try {
       return await _registerUser();
     } catch (e, s) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: s.toString(),
       );
@@ -37,7 +37,7 @@ class ChatScriptRegistrationHandler {
     } catch (e) {
       email = userData[ChatScriptSaveKey.email.value] as String;
       if (email.isEmpty) {
-        await LoggingInfo.instance.error(
+        LoggingInfo.instance.error(
           'Failed to get sign up email: $e',
           methodName: '_registerUser',
         );

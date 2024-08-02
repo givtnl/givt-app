@@ -32,15 +32,13 @@ class FamilyAuthUtils {
       if (!context.mounted) {
         return;
       }
-      
+
       if (!hasAuthenticated) {
         await _displayLoginBottomSheet(
           context,
           checkAuthRequest: checkAuthRequest,
         );
-        if (!context.mounted) {
-          return;
-        }
+        return;
       }
 
       await context.read<AuthCubit>().refreshSession();
@@ -49,7 +47,7 @@ class FamilyAuthUtils {
       }
       await checkAuthRequest.navigate(context);
     } on PlatformException catch (e) {
-      await LoggingInfo.instance.info(
+      LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
       );
       if (!context.mounted) {
@@ -60,7 +58,7 @@ class FamilyAuthUtils {
         checkAuthRequest: checkAuthRequest,
       );
     } catch (e) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         'Error while authenticating with biometrics: $e',
       );
       if (!context.mounted) {

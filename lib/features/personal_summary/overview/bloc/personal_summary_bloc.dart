@@ -79,7 +79,7 @@ class PersonalSummaryBloc
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -142,7 +142,7 @@ class PersonalSummaryBloc
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -308,7 +308,7 @@ class PersonalSummaryBloc
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -346,7 +346,7 @@ class PersonalSummaryBloc
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

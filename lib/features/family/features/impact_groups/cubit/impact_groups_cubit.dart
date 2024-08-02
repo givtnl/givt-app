@@ -43,11 +43,9 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
         ),
       );
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching impact groups: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching impact groups: $error',
+        methodName: stackTrace.toString(),
       );
       emit(
         state.copyWith(

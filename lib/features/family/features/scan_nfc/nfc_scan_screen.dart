@@ -242,7 +242,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
     );
     unawaited(AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.notAGivtCoinNFCError,
+      eventName: AmplitudeEvents.notAGivtCoinNFCErrorShown,
     ));
   }
 

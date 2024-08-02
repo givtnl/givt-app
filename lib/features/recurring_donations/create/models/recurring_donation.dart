@@ -46,7 +46,7 @@ class RecurringDonation extends Equatable {
       case 3: // 6 monthly
         return '0 0 ${startDate.day} ${_getHalfYearlyCronFirstPart(startDate.month)}/6 *';
       case 4: // yearly
-        return '0 0 ${startDate.day} ${startDate.month + 1} *';
+        return '0 0 ${startDate.day} ${startDate.month} *';
       default:
         return '';
     }

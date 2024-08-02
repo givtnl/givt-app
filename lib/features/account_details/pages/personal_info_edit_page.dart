@@ -244,7 +244,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                        when for example people close the bottomsheet. 
                        So it's not a real error :)
                     */
-                    await LoggingInfo.instance.info(
+                    LoggingInfo.instance.info(
                       e.toString(),
                       methodName: stackTrace.toString(),
                     );

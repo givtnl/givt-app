@@ -48,7 +48,7 @@ class CreateFamilyGoalCubit extends Cubit<CreateFamilyGoalState> {
 
       emit(state.copyWith(status: FamilyGoalCreationStatus.confirmed));
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
       emit(
         state.copyWith(

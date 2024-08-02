@@ -11,25 +11,15 @@ class ChatScriptsAssetRepositoryImpl with ChatScriptsRepository {
       'assets/jsons/generosity_challenge/chat_actors_settings.json';
 
   @override
-  Future<List<ChatScriptItem>> loadChatScripts({
-    bool isDebugQuickFlowEnabled = false,
-  }) async {
+  Future<List<ChatScriptItem>> loadChatScripts() async {
     final chatScripts = <ChatScriptItem>[];
-    if (isDebugQuickFlowEnabled) {
-      chatScripts
-        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(0)))
-        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(1)))
-        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(6)))
-        ..add(ChatScriptItem.fromBranchesMap(await _getChatScriptForDay(7)));
-      return chatScripts;
-    } else {
-      for (var dayIndex = 0;
-          dayIndex < GenerosityChallengeHelper.generosityChallengeDays;
-          dayIndex++) {
-        final chatScriptBranchesMap = await _getChatScriptForDay(dayIndex);
 
-        chatScripts.add(ChatScriptItem.fromBranchesMap(chatScriptBranchesMap));
-      }
+    for (var dayIndex = 0;
+        dayIndex < GenerosityChallengeHelper.generosityChallengeDays;
+        dayIndex++) {
+      final chatScriptBranchesMap = await _getChatScriptForDay(dayIndex);
+
+      chatScripts.add(ChatScriptItem.fromBranchesMap(chatScriptBranchesMap));
     }
 
     return chatScripts;

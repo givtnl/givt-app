@@ -147,7 +147,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     final encodedMediumId = isGivtQRCode(barcodeCapture.barcodes);
 
     if (encodedMediumId == null) {
-      await LoggingInfo.instance.info('QR-Code does not contain a medium id');
+      LoggingInfo.instance.info('QR-Code does not contain a medium id');
       await displayErrorDialog();
       return;
     }

@@ -101,6 +101,14 @@ enum AmplitudeEvents {
   generosityChallengeDay8MaybeLaterClicked(
     'generosity_challenge_day_8_maybe_later_clicked',
   ),
+  generosityChallengeVPCAccepted('generosity_challenge_vpc_accepted'),
+  generosityChallengeAllowanceSet('generosity_challenge_allowance_set'),
+  generosityChallengeNavigatedToFamilyOverview(
+    'generosity_challenge_navigated_to_family_overview',
+  ),
+  generosityChallengeNavigatedToWelcome(
+    'generosity_challenge_navigated_to_welcome',
+  ),
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
@@ -175,7 +183,7 @@ enum AmplitudeEvents {
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
   coinScannedError('in_app_coin_scanned_error'),
   deeplinkCoinScanned('deeplink_coin_scanned'),
-  notAGivtCoinNFCError('not_a_givt_coin_nfc_error'),
+  notAGivtCoinNFCErrorShown('not_a_givt_coin_nfc_error_shown'),
   coinMediumIdNotRecognized('coin_medium_id_not_recognized'),
   notAGivtCoinNFCErrorGoBackHomeClicked(
       'not_a_givt_coin_nfc_error_go_back_home_clicked'),
@@ -213,6 +221,15 @@ enum AmplitudeEvents {
   goToChallengeFromRegistrationClicked(
     'go_to_challenge_from_registration_clicked',
   ),
+
+  bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
+
+  topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
+  topupGoBackButtonClicked('topup_go_back_button_clicked'),
+  topupStartButtonClicked('topup_start_button_clicked'),
+  topupConfirmButtonClicked('topup_confirm_button_clicked'),
+  topupRecurringCheckboxChanged('topup_recurring_checkbox_changed'),
+  topupDoneButtonClicked('topup_done_button_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

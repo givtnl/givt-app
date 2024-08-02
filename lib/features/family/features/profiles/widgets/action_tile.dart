@@ -5,17 +5,17 @@ import 'package:givt_app/utils/utils.dart';
 
 class ActionTile extends StatefulWidget {
   const ActionTile({
-    super.key,
     required this.onTap,
     required this.borderColor,
     required this.backgroundColor,
     required this.textColor,
     required this.iconPath,
-    required this.isDisabled,
+    this.isDisabled = false,
     this.isSelected = false,
     this.titleBig = '',
     this.titleSmall = '',
     this.subtitle = '',
+    super.key,
   });
   final VoidCallback onTap;
   final Color borderColor;

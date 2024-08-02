@@ -38,7 +38,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
 
       await prefs.setInt(Profile.number, response.length);
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
 
       emit(FamilyOverviewErrorState(errorMessage: error.toString()));

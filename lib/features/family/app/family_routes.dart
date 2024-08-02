@@ -133,7 +133,10 @@ class FamilyAppRoutes {
             final challengeCubit = state.extra! as GenerosityChallengeCubit;
             return BlocProvider.value(
               value: challengeCubit,
-              child: const GenerosityChallengeIntruduction(),
+              child: const PopScope(
+                canPop: false,
+                child: GenerosityChallengeIntroduction(),
+              ),
             );
           },
         ),

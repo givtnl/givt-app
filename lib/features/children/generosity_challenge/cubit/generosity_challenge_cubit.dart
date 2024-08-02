@@ -30,15 +30,12 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
   final ChatScriptsRepository _chatScriptsRepository;
   final ChatHistoryRepository _chatHistoryRepository;
 
-  bool _isDebugQuickFlowEnabled = false;
-
   Future<void> loadFromCache() async {
     emit(state.copyWith(status: GenerosityChallengeStatus.loading));
 
     final days = await _generosityChallengeRepository.loadFromCache();
 
-    final chatScripts = await _chatScriptsRepository.loadChatScripts(
-        isDebugQuickFlowEnabled: _isDebugQuickFlowEnabled);
+    final chatScripts = await _chatScriptsRepository.loadChatScripts();
     final chatActorsSettings =
         await _chatScriptsRepository.loadChatActorsSettings();
 
@@ -47,12 +44,6 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       chatScripts: chatScripts,
       chatActorsSettings: chatActorsSettings,
     );
-  }
-
-  void setDebugQuickFlow({required bool enabled}) {
-    _isDebugQuickFlowEnabled = enabled;
-    emit(state.copyWith(isDebugQuickFlowEnabled: enabled));
-    loadFromCache();
   }
 
   Future<void> clearCache() async {
@@ -215,7 +206,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       );
       return true;
     } on Exception catch (e) {
-      unawaited(LoggingInfo.instance.error(e.toString()));
+      LoggingInfo.instance.error(e.toString());
     }
     return false;
   }
@@ -225,7 +216,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       final path = await _generosityChallengeRepository.getDay5PicturePath();
       return path;
     } on Exception catch (e) {
-      unawaited(LoggingInfo.instance.error(e.toString()));
+      LoggingInfo.instance.error(e.toString());
       rethrow;
     }
   }
@@ -257,22 +248,7 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
       final nextActiveDayIndex = lastCompletedDayIndex + 1;
       if (nextActiveDayIndex <
           GenerosityChallengeHelper.generosityChallengeDays) {
-        if (state.unlockDayTimeDifference == UnlockDayTimeDifference.minutes) {
-          // the intention of this mode is just to unlock the next day fast
-          // for development/testing purposes, no need to do an actual time-check
-          return nextActiveDayIndex;
-        } else {
-          final lastCompletedDateTime = DateTime.parse(
-            days[lastCompletedDayIndex].dateCompleted,
-          );
-          final nowDateTime = DateTime.now();
-          if (lastCompletedDateTime.day != nowDateTime.day) {
-            return nextActiveDayIndex;
-          } else {
-            //no active day yet
-            return -1;
-          }
-        }
+        return nextActiveDayIndex;
       } else {
         //the challenge is completed, no active day
         return -1;
@@ -308,19 +284,8 @@ class GenerosityChallengeCubit extends Cubit<GenerosityChallengeState> {
         chatScripts: chatScripts,
         chatActorsSettings: chatActorsSettings,
         availableChatDayIndex: availableChatDayIndex,
-        isDebugQuickFlowEnabled: _isDebugQuickFlowEnabled,
       ),
     );
-  }
-
-  Future<void> toggleTimeDifference(int index) async {
-    final newTimeDifference = index == 0
-        ? UnlockDayTimeDifference.days
-        : UnlockDayTimeDifference.minutes;
-
-    emit(state.copyWith(unlockDayTimeDifference: newTimeDifference));
-    final days = await _generosityChallengeRepository.loadFromCache();
-    _refreshState(days: days);
   }
 
   void dismissMayorPopup() {

@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/children/overview/models/wallet.dart';
 import 'package:givt_app/features/family/features/history/models/donation.dart';
-
-import '../../../../children/overview/models/wallet.dart';
 
 class Profile extends Equatable {
   factory Profile.fromMap(Map<String, dynamic> map) {

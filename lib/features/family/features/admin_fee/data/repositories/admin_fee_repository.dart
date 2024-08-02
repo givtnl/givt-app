@@ -42,10 +42,8 @@ class AdminFeeRepository {
       _adminFeeStreamController.add(_adminFee!);
     } catch (e, s) {
       _adminFee = AdminFee.initial();
-      unawaited(
         LoggingInfo.instance.warning(
           'Failed to fetch admin fee: $e\n\n$s',
-        ),
       );
     }
   }

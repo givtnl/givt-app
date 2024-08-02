@@ -96,7 +96,7 @@ class _FingerprintBottomSheetState extends State<FingerprintBottomSheet> {
                       useFingerprint = value;
                     });
                   } catch (e, stackTrace) {
-                    await LoggingInfo.instance.error(
+                    LoggingInfo.instance.error(
                       e.toString(),
                       methodName: stackTrace.toString(),
                     );

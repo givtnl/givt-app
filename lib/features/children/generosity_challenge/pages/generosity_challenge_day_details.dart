@@ -26,7 +26,6 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     final challenge = context.watch<GenerosityChallengeCubit>();
     final task = GenerosityChallengeContentHelper.getTaskByIndex(
       challenge.state.detailedDayIndex,
-      isDebugQuickFlowEnabled: challenge.state.isDebugQuickFlowEnabled,
     );
     final day = challenge.state.days[challenge.state.detailedDayIndex];
     final isSingleCard = task.partnerCard == null;
@@ -59,9 +58,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
           floatingActionButton: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (day.isCompleted &&
-                  challenge.state.isLastCompleted &&
-                  !challenge.state.hasActiveDay)
+              if (day.isCompleted && challenge.state.isLastCompleted)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
                   child: TextButton.icon(
