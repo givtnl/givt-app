@@ -22,20 +22,13 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
       builder: (context, state) {
         switch (state.status) {
           case TopupStatus.initial:
-            return TopupInitialBottomSheet(
-              topupAmount: topupAmount,
-              amountChanged: (amount) {
-                setState(() {
-                  topupAmount = amount;
-                });
-              },
-            );
+            return const TopupInitialBottomSheet();
 
           case TopupStatus.loading:
             return const TopupLoadingBottomSheet();
 
           case TopupStatus.done:
-            return TopupSuccessBottomSheet(topupAmount: topupAmount);
+            return TopupSuccessBottomSheet(topupAmount: state.amount);
 
           case TopupStatus.error:
             return const TopupErrorBottomSheet();

@@ -9,11 +9,16 @@ class TopupCubit extends Cubit<TopupState> {
 
   final TopupRepository topupRepository;
 
-  Future<void> topup(int amount) async {
-    emit(state.copyWith(status: TopupStatus.loading));
+  Future<void> addMoney(int amount, bool recurring) async {
+    emit(state.copyWith(status: TopupStatus.loading, amount: amount));
 
     try {
-      await topupRepository.topupChild(state.userGuid, amount);
+      if (recurring) {
+        await topupRepository.setupRecurringAmount(state.userGuid, amount);
+      } else {
+        await topupRepository.topupChild(state.userGuid, amount);
+      }
+
       emit(state.copyWith(status: TopupStatus.done));
     } catch (e) {
       emit(state.copyWith(status: TopupStatus.error, error: e.toString()));
@@ -25,6 +30,6 @@ class TopupCubit extends Cubit<TopupState> {
   }
 
   void restart() {
-    emit(state.copyWith(status: TopupStatus.initial));
+    emit(state.copyWith(status: TopupStatus.initial, amount: 0));
   }
 }
