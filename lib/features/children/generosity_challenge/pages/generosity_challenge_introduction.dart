@@ -155,7 +155,7 @@ class _GenerosityChallengeIntruductionState
                 );
                 context.goNamed(
                   FamilyPages.generosityChallengeChat.name,
-                  extra: context.read<GenerosityChallengeCubit>(),
+                  extra: challenge,
                 );
               },
               text: 'Accept the challenge',

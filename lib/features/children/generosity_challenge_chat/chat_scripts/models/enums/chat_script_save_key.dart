@@ -3,6 +3,7 @@ enum ChatScriptSaveKey {
   lastName(value: 'lastName'),
   firstName(value: 'firstName'),
   email(value: 'email'),
+  phone(value: 'phone'),
   password(value: 'password'),
 
   parent2FirstName(value: 'parent2FirstName'),

@@ -655,9 +655,7 @@ class AppRouter {
       queryParameters: params,
     ).query;
 
-    if (GenerosityChallengeHelper.isActivated ||
-        (navigatingPage == FamilyPages.generosityChallenge.path &&
-            !GenerosityChallengeHelper.isCompleted)) {
+    if (GenerosityChallengeHelper.isActivated) {
       return FamilyPages.generosityChallenge.path;
     }
 

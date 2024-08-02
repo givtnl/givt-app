@@ -2,6 +2,7 @@ enum ChatScriptInputAnswerType {
   none,
   text,
   email,
+  phone,
   password,
   number,
   ;

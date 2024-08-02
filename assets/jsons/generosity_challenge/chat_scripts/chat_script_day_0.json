@@ -5,7 +5,7 @@
     "text": "Before we start our adventure, what's the name of your Superhero team?",
     "next": {
       "type": "inputAnswer",
-      "inputAnswerType" : "text",
+      "inputAnswerType": "text",
       "side": "user",
       "text": "Last Name",
       "saveKey": "lastName",
@@ -24,21 +24,21 @@
             "answerText": "Okay",
             "next": {
               "type": "inputAnswer",
-              "inputAnswerType" : "text",
+              "inputAnswerType": "text",
               "side": "user",
               "text": "First name of parent",
               "saveKey": "firstName",
               "hidden": true,
               "next": {
                 "type": "inputAnswer",
-                "inputAnswerType" : "email",
+                "inputAnswerType": "phone",
                 "side": "user",
-                "text": "E-mail address of parent",
-                "saveKey": "email",
+                "text": "Phone number",
+                "saveKey": "phone",
                 "hidden": true,
                 "next": {
                   "type": "inputAnswer",
-                  "inputAnswerType" : "password",
+                  "inputAnswerType": "password",
                   "side": "user",
                   "text": "Password",
                   "saveKey": "password",
@@ -47,51 +47,57 @@
                   "next": {
                     "type": "textMessage",
                     "side": "interlocutor",
-                    "text": "Thanks! I've made a note of that and it's all stored safely",
+                    "text": "Thanks! I'll make a note of that and store it safely",
                     "next": {
                       "type": "textMessage",
                       "side": "interlocutor",
-                      "text": "I want to encourage you throughout your mission",
+                      "text": "One sec ...",
+                      "functionName": "registerUser",
                       "next": {
                         "type": "textMessage",
                         "side": "interlocutor",
-                        "text": "I need to let you know how great a job you are doing and notify you to keep going. Okay?",
+                        "text": "I want to encourage you throughout your mission",
                         "next": {
-                          "type": "buttonGroupAnswer",
-                          "side": "user",
-                          "options": [
-                            {
-                              "type": "textMessage",
-                              "side": "user",
-                              "text": "Not right now",
-                              "answerText": "Not right now",
-                              "amplitudeEvent": "custom_event_demo_name",
-                              "next": {
+                          "type": "textMessage",
+                          "side": "interlocutor",
+                          "text": "I need to let you know how great a job you are doing and notify you to keep going. Okay?",
+                          "next": {
+                            "type": "buttonGroupAnswer",
+                            "side": "user",
+                            "options": [
+                              {
                                 "type": "textMessage",
-                                "side": "interlocutor",
-                                "text": "That's ok. I'll still try and help as much as I can. Let me show you what I found walking round the city today",
+                                "side": "user",
+                                "text": "Not right now",
+                                "answerText": "Not right now",
+                                "amplitudeEvent": "custom_event_demo_name",
                                 "next": {
-                                  "branch": "image01"
+                                  "type": "textMessage",
+                                  "side": "interlocutor",
+                                  "text": "That's ok. I'll still try and help as much as I can. Let me show you what I found walking round the city today",
+                                  "next": {
+                                    "branch": "image01"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "textMessage",
+                                "side": "user",
+                                "text": "Yes",
+                                "amplitudeEvent": "generosity_challenge_chat_user_action",
+                                "answerText": "Yes",
+                                "functionName": "pushNotificationPermission",
+                                "next": {
+                                  "type": "textMessage",
+                                  "side": "interlocutor",
+                                  "text": "Awesome! Let me show you what I found walking round the city today",
+                                  "next": {
+                                    "branch": "image01"
+                                  }
                                 }
                               }
-                            },
-                            {
-                              "type": "textMessage",
-                              "side": "user",
-                              "text": "Yes",
-                              "amplitudeEvent": "generosity_challenge_chat_user_action",
-                              "answerText": "Yes",
-                              "functionName": "pushNotificationPermission",
-                              "next": {
-                                "type": "textMessage",
-                                "side": "interlocutor",
-                                "text": "Awesome! Let me show you what I found walking round the city today",
-                                "next": {
-                                  "branch": "image01"
-                                }
-                              }
-                            }
-                          ]
+                            ]
+                          }
                         }
                       }
                     }
