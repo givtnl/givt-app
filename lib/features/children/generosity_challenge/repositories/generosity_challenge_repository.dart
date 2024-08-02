@@ -149,10 +149,14 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
 
   @override
   Future<void> setAlreadyRegistered({required bool isAlreadyRegistered}) async {
-    await sharedPreferences.setBool(
-      _generosityChallengeIsAlreadyRegisteredKey,
-      isAlreadyRegistered,
-    );
+    final bool =
+        sharedPreferences.getBool(_generosityChallengeIsAlreadyRegisteredKey);
+    if (bool == null) {
+      await sharedPreferences.setBool(
+        _generosityChallengeIsAlreadyRegisteredKey,
+        isAlreadyRegistered,
+      );
+    }
   }
 
   @override

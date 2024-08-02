@@ -24,14 +24,26 @@ class GenerosityChallengeVpcRepository {
   final ChatHistoryRepository _chatHistoryRepository;
   final GenerosityChallengeRepository _generosityChallengeRepository;
 
+  Future<void> login({required String email, required String password}) async {
+    try {
+      await _authRepository.login(email, password);
+    } on Exception catch (e, s) {
+      LoggingInfo.instance.info(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      throw const NotLoggedInException();
+    }
+  }
+
   Future<void> addMembers(List<Member> list) async {
     Session? session;
     try {
       session = await _authRepository.refreshToken(refreshUserExt: true);
     } catch (e, s) {
-        LoggingInfo.instance.info(
-          e.toString(),
-          methodName: s.toString(),
+      LoggingInfo.instance.info(
+        e.toString(),
+        methodName: s.toString(),
       );
     }
     if (true == session?.isLoggedIn) {

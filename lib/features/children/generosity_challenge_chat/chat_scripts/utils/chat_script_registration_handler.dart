@@ -59,9 +59,20 @@ class ChatScriptRegistrationHandler {
       password: password,
       phoneNumber: phoneNr,
     );
-    await _generosityChallengeRepository.setAlreadyRegistered(
-      isAlreadyRegistered: result.isAlreadyRegistered,
-    );
+    // if the result is success and they are not already registered
+    // means they registered through challenge
+    final userSignedUpWithChallenge =
+        result.success && !result.isAlreadyRegistered;
+
+    if (userSignedUpWithChallenge) {
+      await _generosityChallengeRepository.setAlreadyRegistered(
+        isAlreadyRegistered: false,
+      );
+    } else {
+      await _generosityChallengeRepository.setAlreadyRegistered(
+        isAlreadyRegistered: result.isAlreadyRegistered,
+      );
+    }
     return result.success;
   }
 }
