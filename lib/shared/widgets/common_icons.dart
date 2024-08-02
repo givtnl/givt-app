@@ -169,3 +169,30 @@ Widget primaryCircleWithIcon({
         ),
       ),
     );
+
+Widget errorCircleWithIcon({
+  IconData? iconData,
+  double circleSize = 62,
+  double iconSize = 40,
+  Color? circleColor,
+  Color? iconColor,
+}) =>
+    Padding(
+      // 14 is what the design has when exporting svgs
+      padding: const EdgeInsets.all(14),
+      child: Container(
+        width: circleSize,
+        height: circleSize,
+        decoration: BoxDecoration(
+          color: circleColor ?? FamilyAppTheme.error80,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Icon(
+            iconData,
+            color: iconColor ?? FamilyAppTheme.error30,
+            size: iconSize,
+          ),
+        ),
+      ),
+    );
