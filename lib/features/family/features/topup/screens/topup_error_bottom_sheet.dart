@@ -31,7 +31,7 @@ class TopupErrorBottomSheet extends StatelessWidget {
       ),
       primaryButton: GivtElevatedButton(
         text: 'Ok',
-        amplitudeEvent: AmplitudeEvents.topupErrorOkButtonClickec,
+        amplitudeEvent: AmplitudeEvents.topupErrorOkButtonClicked,
         onTap: () {
           context.read<TopupCubit>().restart();
         },
