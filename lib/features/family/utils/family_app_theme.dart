@@ -243,6 +243,18 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         color: colorScheme.background,
         surfaceTintColor: Colors.transparent,
       ),
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return primary80;
+            }
+
+            return Colors.white;
+          },
+        ),
+        checkColor: MaterialStateProperty.all(primary20),
+      ),
     );
   }
 

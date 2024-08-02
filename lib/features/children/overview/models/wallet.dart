@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/features/children/details/models/giving_allowance.dart';
 
 class Wallet extends Equatable {
   const Wallet({
@@ -7,6 +8,7 @@ class Wallet extends Equatable {
     required this.pending,
     required this.currency,
     required this.pendingAllowance,
+    required this.givingAllowance,
   });
 
   const Wallet.empty()
@@ -16,6 +18,7 @@ class Wallet extends Equatable {
           pending: 0,
           currency: 'USD',
           pendingAllowance: false,
+          givingAllowance: const GivingAllowance.empty(),
         );
 
   factory Wallet.fromMap(Map<String, dynamic> map) {
@@ -25,6 +28,11 @@ class Wallet extends Equatable {
       pending: double.parse(map['pending'].toString()),
       pendingAllowance: (map['pendingAllowance'] ?? false) as bool,
       currency: map['currency'] as String,
+      givingAllowance: map['givingAllowance'] != null
+          ? (GivingAllowance.fromMap(
+              map['givingAllowance'] as Map<String, dynamic>,
+            ))
+          : const GivingAllowance.empty(),
     );
   }
 
@@ -33,10 +41,11 @@ class Wallet extends Equatable {
   final double pending;
   final String currency;
   final bool pendingAllowance;
+  final GivingAllowance givingAllowance;
 
   @override
   List<Object?> get props =>
-      [balance, total, pending, currency, pendingAllowance];
+      [balance, total, pending, currency, pendingAllowance, givingAllowance];
 
   Map<String, dynamic> toJson() {
     return {
@@ -45,6 +54,7 @@ class Wallet extends Equatable {
       'pending': pending,
       'currency': currency,
       'pendingAllowance': pendingAllowance,
+      'givingAllowance': givingAllowance,
     };
   }
 }

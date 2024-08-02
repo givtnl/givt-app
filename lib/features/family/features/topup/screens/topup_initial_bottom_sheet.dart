@@ -4,27 +4,34 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class TopupInitialBottomSheet extends StatelessWidget {
+class TopupInitialBottomSheet extends StatefulWidget {
   const TopupInitialBottomSheet({
-    required this.topupAmount,
-    required this.amountChanged,
     super.key,
   });
 
-  final int topupAmount;
-  final void Function(int) amountChanged;
+  @override
+  State<TopupInitialBottomSheet> createState() =>
+      _TopupInitialBottomSheetState();
+}
+
+class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
+  int topupAmount = 5;
+  bool recurring = false;
 
   @override
   Widget build(BuildContext context) {
     final user = context.read<AuthCubit>().state.user;
+    final currentProfile = context.read<ProfilesCubit>().state.activeProfile;
 
     final currency = NumberFormat.simpleCurrency(
       name: Country.fromCode(user.country).currency,
@@ -48,7 +55,22 @@ class TopupInitialBottomSheet extends StatelessWidget {
           AmountCounter(
             currency: currency,
             initialAmount: topupAmount,
-            onAmountChanged: amountChanged,
+            onAmountChanged: (amount) {
+              setState(() {
+                topupAmount = amount;
+              });
+            },
+          ),
+          const SizedBox(height: 8),
+          if(currentProfile.wallet.givingAllowance.amount == 0)
+          InputCheckbox(
+            label: 'Turn this into a monthly recurring amount',
+            value: recurring,
+            onChanged: (value) {
+              setState(() {
+                recurring = value ?? false;
+              });
+            },
           ),
         ],
       ),
@@ -62,7 +84,7 @@ class TopupInitialBottomSheet extends StatelessWidget {
       primaryButton: GivtElevatedButton(
         text: 'Confirm',
         onTap: () async {
-          await context.read<TopupCubit>().topup(topupAmount);
+          await context.read<TopupCubit>().addMoney(topupAmount, recurring);
         },
       ),
       closeAction: () {
