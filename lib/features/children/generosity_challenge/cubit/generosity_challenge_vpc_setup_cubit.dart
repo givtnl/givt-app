@@ -26,9 +26,9 @@ class GenerosityChallengeVpcSetupCubit
 
   Future<void> onClickReadyForVPC() async {
     emitLoading();
-    final isAlreadyRegistered =
-        await _generosityChallengeRepository.isAlreadyRegistered();
-    if (isAlreadyRegistered) {
+    final wasRegisteredBeforeChallenge =
+        await _generosityChallengeRepository.wasRegisteredBeforeChallenge();
+    if (wasRegisteredBeforeChallenge) {
       _skipVPC();
     } else {
       await _handleVPC();

@@ -62,15 +62,15 @@ class ChatScriptRegistrationHandler {
     // if the result is success and they are not already registered
     // means they registered through challenge
     final userSignedUpWithChallenge =
-        result.success && !result.isAlreadyRegistered;
+        result.success && !result.wasRegisteredBeforeChallenge;
 
     if (userSignedUpWithChallenge) {
       await _generosityChallengeRepository.setAlreadyRegistered(
-        isAlreadyRegistered: false,
+        wasRegisteredBeforeChallenge: false,
       );
     } else {
       await _generosityChallengeRepository.setAlreadyRegistered(
-        isAlreadyRegistered: result.isAlreadyRegistered,
+        wasRegisteredBeforeChallenge: result.wasRegisteredBeforeChallenge,
       );
     }
     return result.success;

@@ -21,9 +21,10 @@ mixin GenerosityChallengeRepository {
 
   Future<String> loadFromKey(String key);
 
-  Future<bool> isAlreadyRegistered();
+  Future<bool> wasRegisteredBeforeChallenge();
 
-  Future<void> setAlreadyRegistered({required bool isAlreadyRegistered});
+  Future<void> setAlreadyRegistered(
+      {required bool wasRegisteredBeforeChallenge});
 
   Future<String> submitDay5Picture({required bool takenWithCamera});
 
@@ -39,8 +40,8 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   static const String _generosityChallengeDaysKey = 'generosityChallengeDays';
   static const String _generosityChallengeUserDataKey =
       'generosityChallengeUserDataKey';
-  static const String _generosityChallengeIsAlreadyRegisteredKey =
-      'generosityChallengeIsAlreadyRegisteredKey';
+  static const String _generosityChallengewasRegisteredBeforeChallengeKey =
+      'generosityChallengewasRegisteredBeforeChallengeKey';
 
   final SharedPreferences sharedPreferences;
   final MediaPickerService mediaPickerService;
@@ -141,20 +142,21 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   }
 
   @override
-  Future<bool> isAlreadyRegistered() async {
+  Future<bool> wasRegisteredBeforeChallenge() async {
     return sharedPreferences
-            .getBool(_generosityChallengeIsAlreadyRegisteredKey) ??
+            .getBool(_generosityChallengewasRegisteredBeforeChallengeKey) ??
         false;
   }
 
   @override
-  Future<void> setAlreadyRegistered({required bool isAlreadyRegistered}) async {
-    final bool =
-        sharedPreferences.getBool(_generosityChallengeIsAlreadyRegisteredKey);
+  Future<void> setAlreadyRegistered(
+      {required bool wasRegisteredBeforeChallenge}) async {
+    final bool = sharedPreferences
+        .getBool(_generosityChallengewasRegisteredBeforeChallengeKey);
     if (bool == null) {
       await sharedPreferences.setBool(
-        _generosityChallengeIsAlreadyRegisteredKey,
-        isAlreadyRegistered,
+        _generosityChallengewasRegisteredBeforeChallengeKey,
+        wasRegisteredBeforeChallenge,
       );
     }
   }
