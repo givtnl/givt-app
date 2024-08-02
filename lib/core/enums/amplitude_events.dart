@@ -227,7 +227,7 @@ enum AmplitudeEvents {
   topupErrorOkButtonClickec('topup_error_ok_button_clicked'),
   topupGoBackButtonClicked('topup_go_back_button_clicked'),
   topupStartButtonClicked('topup_start_button_clicked'),
-  topupConfimButtonClicked('topup_confirm_button_clicked'),
+  topupConfirmButtonClicked('topup_confirm_button_clicked'),
   topupRecurringCheckboxChanged('topup_recurring_checkbox_changed'),
   topupDoneButtonClicked('topup_done_button_clicked'),
   ;

@@ -86,7 +86,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       ),
       primaryButton: GivtElevatedButton(
         text: 'Confirm',
-        amplitudeEvent: AmplitudeEvents.topupConfimButtonClicked,
+        amplitudeEvent: AmplitudeEvents.topupConfirmButtonClicked,
         onTap: () async {
           await context.read<TopupCubit>().addMoney(topupAmount, recurring);
         },
