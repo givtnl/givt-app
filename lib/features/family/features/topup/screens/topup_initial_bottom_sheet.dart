@@ -79,6 +79,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       ),
       headlineContent: AdminFeeText(
         amount: topupAmount.toDouble(),
+        isMonthly: recurring,
         textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
               fontWeight: FontWeight.w700,
               fontSize: 15,

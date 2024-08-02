@@ -29,11 +29,13 @@ class InputCheckbox extends StatelessWidget {
                 'value': value,
               },
             );
-            
+
             onChanged?.call(value);
           },
         ),
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
+        Flexible(
+          child: Text(label, style: Theme.of(context).textTheme.bodySmall),
+        ),
       ],
     );
   }
