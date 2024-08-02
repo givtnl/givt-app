@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class GivtBottomSheet extends StatelessWidget {
   const GivtBottomSheet({
@@ -32,7 +34,7 @@ class GivtBottomSheet extends StatelessWidget {
     return BlocBuilder<ImpactGroupsCubit, ImpactGroupsState>(
       builder: (context, state) {
         return Stack(
-          children: [            
+          children: [
             SafeArea(
               minimum: const EdgeInsets.fromLTRB(24, 32, 24, 40),
               child: Column(
@@ -73,7 +75,6 @@ class GivtBottomSheet extends StatelessWidget {
                 ],
               ),
             ),
-
             showCloseButton(),
           ],
         );
@@ -89,7 +90,13 @@ class GivtBottomSheet extends StatelessWidget {
       right: 12,
       child: IconButton(
         icon: const FaIcon(FontAwesomeIcons.xmark),
-        onPressed: closeAction,
+        onPressed: () {
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
+          );
+
+          closeAction!.call();
+        },
       ),
     );
   }

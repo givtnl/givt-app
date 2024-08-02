@@ -1,6 +1,8 @@
+import 'package:amplitude_flutter/amplitude.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
@@ -62,16 +64,17 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
             },
           ),
           const SizedBox(height: 8),
-          if(currentProfile.wallet.givingAllowance.amount == 0)
-          InputCheckbox(
-            label: 'Turn this into a monthly recurring amount',
-            value: recurring,
-            onChanged: (value) {
-              setState(() {
-                recurring = value ?? false;
-              });
-            },
-          ),
+          if (currentProfile.wallet.givingAllowance.amount == 0)
+            InputCheckbox(
+              label: 'Turn this into a monthly recurring amount',
+              value: recurring,
+              amplitudeEvent: AmplitudeEvents.topupRecurringCheckboxChanged,
+              onChanged: (value) {
+                setState(() {
+                  recurring = value ?? false;
+                });
+              },
+            ),
         ],
       ),
       headlineContent: AdminFeeText(
@@ -83,6 +86,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       ),
       primaryButton: GivtElevatedButton(
         text: 'Confirm',
+        amplitudeEvent: AmplitudeEvents.topupConfirmButtonClicked,
         onTap: () async {
           await context.read<TopupCubit>().addMoney(topupAmount, recurring);
         },

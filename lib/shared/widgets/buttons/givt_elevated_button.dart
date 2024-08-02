@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -17,6 +18,7 @@ class GivtElevatedButton extends StatelessWidget {
     this.widthMultiplier = .9,
     this.backgroundColor = AppTheme.primary80,
     this.borderColor = AppTheme.givtGreen40,
+    this.amplitudeEvent,
   });
 
   final void Function()? onTap;
@@ -30,12 +32,19 @@ class GivtElevatedButton extends StatelessWidget {
   final double widthMultiplier;
   final Color backgroundColor;
   final Color borderColor;
+  final AmplitudeEvents? amplitudeEvent;
 
   @override
   Widget build(BuildContext context) {
     final themeData = FamilyAppTheme().toThemeData();
     return ActionContainer(
-      onTap: onTap ?? () {},
+      onTap: () {
+        if (amplitudeEvent != null) {
+          AnalyticsHelper.logEvent(eventName: amplitudeEvent!);
+        }
+
+        onTap?.call();
+      },
       borderColor: isTertiary == true ? AppTheme.secondary80 : borderColor,
       isDisabled: isDisabled,
       borderSize: 0.01,
