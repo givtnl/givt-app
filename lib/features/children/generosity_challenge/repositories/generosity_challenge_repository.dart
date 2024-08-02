@@ -40,8 +40,6 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   static const String _generosityChallengeDaysKey = 'generosityChallengeDays';
   static const String _generosityChallengeUserDataKey =
       'generosityChallengeUserDataKey';
-  static const String _generosityChallengewasRegisteredBeforeChallengeKey =
-      'generosityChallengewasRegisteredBeforeChallengeKey';
 
   final SharedPreferences sharedPreferences;
   final MediaPickerService mediaPickerService;
@@ -143,19 +141,20 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
 
   @override
   Future<bool> wasRegisteredBeforeChallenge() async {
-    return sharedPreferences
-            .getBool(_generosityChallengewasRegisteredBeforeChallengeKey) ??
+    return sharedPreferences.getBool(GenerosityChallengeHelper
+            .generosityChallengewasRegisteredBeforeChallengeKey) ??
         false;
   }
 
   @override
   Future<void> setAlreadyRegistered(
       {required bool wasRegisteredBeforeChallenge}) async {
-    final bool = sharedPreferences
-        .getBool(_generosityChallengewasRegisteredBeforeChallengeKey);
+    final bool = sharedPreferences.getBool(GenerosityChallengeHelper
+        .generosityChallengewasRegisteredBeforeChallengeKey);
     if (bool == null) {
       await sharedPreferences.setBool(
-        _generosityChallengewasRegisteredBeforeChallengeKey,
+        GenerosityChallengeHelper
+            .generosityChallengewasRegisteredBeforeChallengeKey,
         wasRegisteredBeforeChallenge,
       );
     }
