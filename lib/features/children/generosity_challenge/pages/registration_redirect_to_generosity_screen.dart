@@ -86,11 +86,9 @@ class _RegistrationRedirectToGenerosityScreenState
         children: [
           GivtElevatedButton(
             onTap: () {
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.goToChallengeFromRegistrationClicked,
-              );
               context.goNamed(FamilyPages.generosityChallenge.name);
             },
+            amplitudeEvent: AmplitudeEvents.goToChallengeFromRegistrationClicked,
             leftIcon: FontAwesomeIcons.trophy,
             text: 'Go to Challenge',
           ),

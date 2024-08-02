@@ -86,21 +86,6 @@ class _LoginPageState extends State<LoginPage> {
               fontWeight: FontWeight.w600,
             ),
       ),
-      bottomSheet: ElevatedButton(
-        onPressed: context.watch<AuthCubit>().state.status == AuthStatus.loading
-            ? null
-            : isEnabled
-                ? () => onLogin(context)
-                : null,
-        style: ElevatedButton.styleFrom(
-          disabledBackgroundColor: Colors.grey,
-        ),
-        child: context.watch<AuthCubit>().state.status == AuthStatus.loading
-            ? const CircularProgressIndicator.adaptive()
-            : Text(
-                locals.login,
-              ),
-      ),
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state.status == AuthStatus.failure) {
@@ -251,6 +236,24 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
+              const Spacer(),
+              ElevatedButton(
+                onPressed: context.watch<AuthCubit>().state.status ==
+                        AuthStatus.loading
+                    ? null
+                    : isEnabled
+                        ? () => onLogin(context)
+                        : null,
+                style: ElevatedButton.styleFrom(
+                  disabledBackgroundColor: Colors.grey,
+                ),
+                child: context.watch<AuthCubit>().state.status ==
+                        AuthStatus.loading
+                    ? const CircularProgressIndicator.adaptive()
+                    : Text(
+                        locals.login,
+                      ),
+              )
             ],
           ),
         ),

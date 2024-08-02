@@ -77,7 +77,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       builder: (context, state) {
-        final isGiveButtonActive = state.activeProfile.wallet.balance > 0;
         final hasDonations = state.activeProfile.hasDonations;
 
         var countdownAmount = 0.0;
@@ -109,7 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                               children: [
                                 Expanded(
                                   child: ActionTile(
-                                    isDisabled: !isGiveButtonActive,
                                     titleBig: 'Give',
                                     iconPath:
                                         'assets/family/images/give_tile.svg',
@@ -148,7 +146,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: ActionTile(
-                                    isDisabled: false,
                                     titleBig: 'Find Charity',
                                     iconPath:
                                         'assets/family/images/find_tile.svg',

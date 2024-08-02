@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/add_member/widgets/amount_counter.dart';
 import 'package:givt_app/features/children/overview/widgets/models/edit_allowance_uimodel.dart';
+import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
