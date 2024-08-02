@@ -16,8 +16,8 @@ class TopupState extends Equatable {
   final String error;
 
   @override
-  List<Object> get props => [userGuid, status, error];
-
+  List<Object> get props => [userGuid, amount, status, error];
+  
   TopupState copyWith({
     String? userGuid,
     int? amount,
