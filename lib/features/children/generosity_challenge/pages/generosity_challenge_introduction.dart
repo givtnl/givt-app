@@ -32,7 +32,6 @@ class _GenerosityChallengeIntroductionState
 
   @override
   Widget build(BuildContext context) {
-    final challenge = context.read<GenerosityChallengeCubit>();
     const pictureHeight = 150.0;
     final isAuthenticatedUser =
         context.read<AuthCubit>().state.status == AuthStatus.authenticated;
