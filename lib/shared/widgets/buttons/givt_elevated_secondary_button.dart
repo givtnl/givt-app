@@ -2,22 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class GivtElevatedSecondaryButton extends StatefulWidget {
-  const GivtElevatedSecondaryButton({
-    super.key,
-    required this.onTap,
-    required this.text,
-    this.leftIcon,
-    this.rightIcon,
-    this.leadingImage,
-    this.isLoading = false,
-    this.isDisabled = false,
-    this.widthMultiplier = .9,
-  });
+  const GivtElevatedSecondaryButton(
+      {super.key,
+      required this.onTap,
+      required this.text,
+      this.leftIcon,
+      this.rightIcon,
+      this.leadingImage,
+      this.isLoading = false,
+      this.isDisabled = false,
+      this.widthMultiplier = .9,
+      this.amplitudeEvent});
 
   final VoidCallback? onTap;
   final bool isDisabled;
@@ -27,6 +28,7 @@ class GivtElevatedSecondaryButton extends StatefulWidget {
   final Widget? rightIcon;
   final Widget? leadingImage;
   final double widthMultiplier;
+  final AmplitudeEvents? amplitudeEvent;
 
   @override
   State<GivtElevatedSecondaryButton> createState() =>
@@ -53,13 +55,18 @@ class _GivtElevatedSecondaryButtonState
       dropShadowHeight = 4;
       paddingtop = 2;
     }
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return Padding(
       padding: EdgeInsets.only(top: widget.isDisabled ? 4 : paddingtop),
       child: GestureDetector(
         onTap: widget.isDisabled
             ? null
             : () async {
+                if (widget.amplitudeEvent != null) {
+                  await AnalyticsHelper.logEvent(
+                      eventName: widget.amplitudeEvent!);
+                }
+                
                 await Future<void>.delayed(const Duration(milliseconds: 50));
                 widget.onTap?.call();
               },

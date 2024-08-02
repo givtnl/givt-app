@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
@@ -27,6 +28,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       primaryButton: GivtElevatedButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
+        amplitudeEvent: AmplitudeEvents.topupStartButtonClicked,
         onTap: () async {
           await FamilyAuthUtils.authenticateUser(
             context,
@@ -60,6 +62,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
         onTap: () {
           context.pop();
         },
+        amplitudeEvent: AmplitudeEvents.topupGoBackButtonClicked,
       ),
       closeAction: () {
         context.pop();

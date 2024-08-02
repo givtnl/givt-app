@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
@@ -30,6 +31,7 @@ class TopupErrorBottomSheet extends StatelessWidget {
       ),
       primaryButton: GivtElevatedButton(
         text: 'Ok',
+        amplitudeEvent: AmplitudeEvents.topupErrorOkButtonClickec,
         onTap: () {
           context.read<TopupCubit>().restart();
         },
