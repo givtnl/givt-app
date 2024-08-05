@@ -11,7 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_icon_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -176,7 +176,7 @@ class _GenerosityChallengeOverviewState
                   },
                 ),
                 const Spacer(),
-                GivtElevatedButton(
+                GivtElevatedSecondaryButton(
                   onTap: () {
                     context.read<FlowsCubit>().startInGenerosityCoinFlow();
                     context.pushNamed(
