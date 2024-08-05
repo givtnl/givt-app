@@ -17,13 +17,12 @@ class FamilyAvailablePage extends StatefulWidget {
 }
 
 class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<FamilyOverviewCubit>().state
         as FamilyOverviewUpdatedState;
-    final currentUserFirstName = context.read<AuthCubit>().state.user.firstName;
-    final sortedAdultProfiles = state.sortedAdults(currentUserFirstName);
+    final currentUserId = context.read<AuthCubit>().state.user.guid;
+    final sortedAdultProfiles = state.sortedAdults(currentUserId);
     final scrollController = ScrollController();
 
     scrollController.addListener(() {
