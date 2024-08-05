@@ -49,20 +49,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
       case ChatScriptInputAnswerType.email:
         return Util.emailRegEx.hasMatch(input);
       case ChatScriptInputAnswerType.phone:
-        final numericOnly = input.replaceAll(RegExp(r'[^\d]'), '');
-        var formatted = '';
-        if (numericOnly.length == 10) {
-          final chunkSize = [3, 3, 4];
-          var startIndex = 0;
-
-          final chunks = chunkSize.map((size) {
-            final chunk = numericOnly.substring(startIndex, startIndex + size);
-            startIndex += size;
-            return chunk;
-          });
-          formatted = chunks.join('-');
-        }
-        return Util.usPhoneNumberRegEx.hasMatch(formatted);
+        return Util.usPhoneNumberRegEx.hasMatch(Util.formatPhoneNrUs(input));
       case ChatScriptInputAnswerType.text:
         return Util.nameFieldsRegEx.hasMatch(input);
       case ChatScriptInputAnswerType.password:
