@@ -1,16 +1,15 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/family/features/topup/repository/topup_repository.dart';
 
 part 'topup_state.dart';
 
 class TopupCubit extends Cubit<TopupState> {
-  TopupCubit(this.topupRepository) : super(const TopupState());
+  TopupCubit(this.topupRepository) : super(const InitialState('', 5, false));
 
   final TopupRepository topupRepository;
 
   Future<void> addMoney(int amount, bool recurring) async {
-    emit(state.copyWith(status: TopupStatus.loading, amount: amount));
+    emit(LoadingState(state.userGuid, amount, recurring));
 
     try {
       if (recurring) {
@@ -19,17 +18,17 @@ class TopupCubit extends Cubit<TopupState> {
         await topupRepository.topupChild(state.userGuid, amount);
       }
 
-      emit(state.copyWith(status: TopupStatus.done));
+      emit(SuccessState(state.userGuid, amount, recurring));
     } catch (e) {
-      emit(state.copyWith(status: TopupStatus.error, error: e.toString()));
+      emit(ErrorState(state.userGuid, amount, recurring, e.toString()));
     }
   }
 
   void setUser(String guid) {
-    emit(state.copyWith(userGuid: guid, status: TopupStatus.initial));
+    emit(InitialState(guid, 5, false));
   }
 
   void restart() {
-    emit(state.copyWith(status: TopupStatus.initial, amount: 0));
+    emit(InitialState(state.userGuid, state.amount, state.recurring));
   }
 }

@@ -20,19 +20,12 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
   Widget build(BuildContext context) {
     return BlocBuilder<TopupCubit, TopupState>(
       builder: (context, state) {
-        switch (state.status) {
-          case TopupStatus.initial:
-            return const TopupInitialBottomSheet();
-
-          case TopupStatus.loading:
-            return const TopupLoadingBottomSheet();
-
-          case TopupStatus.done:
-            return TopupSuccessBottomSheet(topupAmount: state.amount);
-
-          case TopupStatus.error:
-            return const TopupErrorBottomSheet();
-        }
+        return switch (state) {
+          InitialState() => const TopupInitialBottomSheet(),
+          LoadingState() => const TopupLoadingBottomSheet(),
+          SuccessState() => TopupSuccessBottomSheet(topupAmount: state.amount),
+          ErrorState() => const TopupErrorBottomSheet(),
+        };
       },
     );
   }

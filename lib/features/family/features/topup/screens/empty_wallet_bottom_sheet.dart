@@ -69,4 +69,16 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       },
     );
   }
+
+  static void show(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => const EmptyWalletBottomSheet(),
+    );
+  }
 }
