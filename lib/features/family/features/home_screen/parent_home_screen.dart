@@ -17,7 +17,9 @@ import 'package:go_router/go_router.dart';
 
 class ParentHomeScreen extends StatelessWidget {
   const ParentHomeScreen({required this.id, super.key});
+
   final String id;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
@@ -31,7 +33,7 @@ class ParentHomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 _parentHeaderWidget(profile, context),
-                _giveTile(),
+                _giveTile(context),
               ],
             ),
           ),
@@ -93,10 +95,12 @@ class ParentHomeScreen extends StatelessWidget {
         ),
       );
 
-  Widget _giveTile() => Padding(
+  Widget _giveTile(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
         child: ActionTile(
-          onTap: () {},
+          onTap: () {
+            context.pushNamed(FamilyPages.giveByListFamily.name);
+          },
           borderColor: ColorCombo.secondary.borderColor,
           backgroundColor: ColorCombo.secondary.backgroundColor,
           textColor: ColorCombo.secondary.textColor,

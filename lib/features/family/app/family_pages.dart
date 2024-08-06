@@ -24,10 +24,6 @@ enum FamilyPages {
   ),
   permitUSBiometric(
       path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US'),
-  selectGivingWayFamily(path: 'select-giving-way-family', name: 'GIVING-WAY-FAMILY'),
-  giveByQrCodeFamily(path: 'give-by-qr-code-family', name: 'GIVE-BY-QR-CODE-FAMILY'),
-  giveByLocationFamily(path: 'give-by-location-family', name: 'GIVE-BY-LOCATION-FAMILY'),
-  giveByBeaconFamily(path: 'give-by-beacon-family', name: 'GIVE-BY-BEACON-FAMILY'),
   giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
   creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   test(path: 'test', name: 'TEST'),

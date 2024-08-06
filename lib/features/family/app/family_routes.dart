@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
@@ -78,12 +77,7 @@ import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart'
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
-import 'package:givt_app/features/give/pages/bt_scan_page.dart';
-import 'package:givt_app/features/give/pages/gps_scan_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
-import 'package:givt_app/features/give/pages/qr_code_scan_page.dart';
-import 'package:givt_app/features/give/pages/select_giving_way_family_page.dart';
-import 'package:givt_app/features/give/pages/select_giving_way_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -294,95 +288,35 @@ class FamilyAppRoutes {
           },
         ),
         GoRoute(
-          path: FamilyPages.selectGivingWayFamily.path,
-          name: FamilyPages.selectGivingWayFamily.name,
-          builder: (context, state) => BlocProvider(
-            create: (_) {
-              final extra = state.extra! as Map<String, dynamic>;
-              final auth = context.read<AuthCubit>().state;
-              final bloc = GiveBloc(
-                getIt(),
-                getIt(),
-                getIt(),
-                getIt(),
-              )..add(
-                  GiveAmountChanged(
-                    firstCollectionAmount: extra['firstCollection'] as double,
-                    secondCollectionAmount: extra['secondCollection'] as double,
-                    thirdCollectionAmount: extra['thirdCollection'] as double,
+          path: FamilyPages.giveByListFamily.path,
+          name: FamilyPages.giveByListFamily.name,
+          builder: (context, state) {
+            final user = context.read<AuthCubit>().state.user;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: GiveBloc(
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                    getIt(),
                   ),
-                );
-              if ((extra['code'] as String).isNotEmpty) {
-                bloc.add(
-                  GiveQRCodeScannedOutOfApp(
-                    extra['code'] as String,
-                    extra['afterGivingRedirection'] as String,
-                    auth.user.guid,
-                  ),
-                );
-              }
-              return bloc;
-            },
-            child: const SelectGivingWayFamilyPage(),
-          ),
-          routes: [
-            GoRoute(
-              path: FamilyPages.giveByBeaconFamily.path,
-              name: FamilyPages.giveByBeaconFamily.name,
-              builder: (context, state) => BlocProvider.value(
-                value: state.extra! as GiveBloc
-                  ..add(
-                    const GiveCheckLastDonation(),
-                  ),
-                child: const BTScanPage(),
-              ),
-            ),
-            GoRoute(
-              path: FamilyPages.giveByLocationFamily.path,
-              name: FamilyPages.giveByLocationFamily.name,
-              builder: (context, state) => BlocProvider.value(
-                value: state.extra! as GiveBloc
-                  ..add(
-                    const GiveCheckLastDonation(),
-                  ),
-                child: const GPSScanPage(),
-              ),
-            ),
-            GoRoute(
-              path: FamilyPages.giveByQrCodeFamily.path,
-              name: FamilyPages.giveByQrCodeFamily.name,
-              builder: (context, state) => BlocProvider.value(
-                value: state.extra! as GiveBloc,
-                child: const QrCodeScanPage(),
-              ),
-            ),
-            GoRoute(
-              path: FamilyPages.giveByListFamily.path,
-              name: FamilyPages.giveByListFamily.name,
-              builder: (context, state) {
-                final user = context.read<AuthCubit>().state.user;
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider.value(
-                      value: state.extra! as GiveBloc,
+                ),
+                BlocProvider(
+                  create: (_) => OrganisationBloc(
+                    getIt(),
+                    getIt(),
+                  )..add(
+                      OrganisationFetch(
+                        Country.fromCode(user.country),
+                        type: CollectGroupType.none.index,
+                      ),
                     ),
-                    BlocProvider(
-                      create: (_) => OrganisationBloc(
-                        getIt(),
-                        getIt(),
-                      )..add(
-                          OrganisationFetch(
-                            Country.fromCode(user.country),
-                            type: CollectGroupType.none.index,
-                          ),
-                        ),
-                    ),
-                  ],
-                  child: const OrganizationListPage(),
-                );
-              },
-            ),
-          ],
+                ),
+              ],
+              child: const OrganizationListPage(),
+            );
+          },
         ),
         GoRoute(
           path: FamilyPages.wallet.path,
