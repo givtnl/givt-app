@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/widgets/profile_overview_tile.dart';
 
 class ProfilesOverviewWidget extends StatelessWidget {
@@ -8,7 +8,7 @@ class ProfilesOverviewWidget extends StatelessWidget {
     super.key,
   });
 
-  final List<Profile> profiles;
+  final List<LegacyProfile> profiles;
 
   static const EdgeInsets _padding = EdgeInsets.symmetric(horizontal: 20);
 

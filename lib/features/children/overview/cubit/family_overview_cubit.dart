@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/repositories/family_overview_repository.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +18,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
     emit(const FamilyOverviewLoadingState());
 
     final prefs = await SharedPreferences.getInstance();
-    final initialNumber = prefs.getInt(Profile.number) ?? 0;
+    final initialNumber = prefs.getInt(LegacyProfile.number) ?? 0;
     var displayAllowanceInfo = false;
 
     if (showAllowanceWarning) {
@@ -36,7 +36,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
         ),
       );
 
-      await prefs.setInt(Profile.number, response.length);
+      await prefs.setInt(LegacyProfile.number, response.length);
     } catch (error, stackTrace) {
       LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
@@ -45,7 +45,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
     }
   }
 
-  void removeDisclaimer(List<Profile> profiles) {
+  void removeDisclaimer(List<LegacyProfile> profiles) {
     emit(
       FamilyOverviewUpdatedState(
         profiles: profiles,
