@@ -4,31 +4,30 @@ import 'package:givt_app/features/family/features/topup/repository/topup_reposit
 part 'topup_state.dart';
 
 class TopupCubit extends Cubit<TopupState> {
-  TopupCubit(this.topupRepository) : super(const InitialState('', 5, false));
+  TopupCubit(this.topupRepository) : super(const InitialState());
 
   final TopupRepository topupRepository;
+  String? userGuid;
+
+  void init(String guid) {
+    userGuid = guid;
+
+    emit(const InitialState());
+  }
 
   Future<void> addMoney(int amount, bool recurring) async {
-    emit(LoadingState(state.userGuid, amount, recurring));
+    emit(const LoadingState());
 
     try {
       if (recurring) {
-        await topupRepository.setupRecurringAmount(state.userGuid, amount);
+        await topupRepository.setupRecurringAmount(userGuid!, amount);
       } else {
-        await topupRepository.topupChild(state.userGuid, amount);
+        await topupRepository.topupChild(userGuid!, amount);
       }
 
-      emit(SuccessState(state.userGuid, amount, recurring));
+      emit(SuccessState(amount, recurring));
     } catch (e) {
-      emit(ErrorState(state.userGuid, amount, recurring, e.toString()));
+      emit(const ErrorState());
     }
-  }
-
-  void setUser(String guid) {
-    emit(InitialState(guid, 5, false));
-  }
-
-  void restart() {
-    emit(InitialState(state.userGuid, state.amount, state.recurring));
   }
 }
