@@ -178,6 +178,7 @@ enum AmplitudeEvents {
   accountLocked('account_locked_for_wrong_password'),
   walletTracker('wallet_tracker'),
   parentProfileIconClicked('parent_profile_icon_clicked'),
+  mySettingsClicked('my_settings_clicked'),
   // coin scan
   startScanningCoin('in_app_start_scanning_coin'),
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
