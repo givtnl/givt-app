@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -22,7 +23,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeProfile = context.read<ProfilesCubit>().state.activeProfile;
+    final activeProfile = context.watch<ProfilesCubit>().state.activeProfile;
     return Container(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
       color: AppTheme.highlight99,
@@ -50,8 +51,11 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             GivtElevatedButton(
-              isDisabled: activeProfile.wallet.balance < 1,
               onTap: () {
+                if (activeProfile.wallet.balance < 1) {
+                  EmptyWalletBottomSheet.show(context);
+                  return;
+                }
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.impactGroupDetailsGiveClicked,
                   eventProperties: {'name': impactGroup.name},
