@@ -23,7 +23,10 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
         return switch (state) {
           InitialState() => const TopupInitialBottomSheet(),
           LoadingState() => const TopupLoadingBottomSheet(),
-          SuccessState() => TopupSuccessBottomSheet(topupAmount: state.amount),
+          SuccessState() => TopupSuccessBottomSheet(
+              topupAmount: state.amount,
+              recurring: state.recurring,
+            ),
           ErrorState() => const TopupErrorBottomSheet(),
         };
       },
