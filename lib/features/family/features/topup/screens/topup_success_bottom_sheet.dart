@@ -20,6 +20,11 @@ class TopupSuccessBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var text = "\$$topupAmount has been added to your child's Wallet";
+    if (recurring) {
+      text += ' and your recurring amount has been setup';
+    }
+
     return GivtBottomSheet(
       title: 'Consider it done!',
       icon: primaryCircleWithIcon(
@@ -30,7 +35,7 @@ class TopupSuccessBottomSheet extends StatelessWidget {
       content: Column(
         children: [
           Text(
-            "\$$topupAmount has been added to your child's Wallet",
+            text,
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
