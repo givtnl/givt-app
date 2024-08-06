@@ -35,7 +35,7 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -57,6 +57,7 @@ import 'package:givt_app/features/family/features/history/history_cubit/history_
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/kids_home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
@@ -275,6 +276,16 @@ class FamilyAppRoutes {
         child: const ProfileSelectionScreen(),
       ),
       routes: [
+        GoRoute(
+          path: FamilyPages.parentHome.path,
+          name: FamilyPages.parentHome.name,
+          builder: (context, state) {
+            final extra = state.extra! as String;
+            return ParentHomeScreen(
+              id: extra,
+            );
+          },
+        ),
         GoRoute(
           path: FamilyPages.wallet.path,
           name: FamilyPages.wallet.name,
@@ -645,7 +656,7 @@ class FamilyAppRoutes {
           builder: (context, state) {
             final extras = state.extra! as List<dynamic>;
             final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-            final childProfile = extras[1] as Profile;
+            final childProfile = extras[1] as LegacyProfile;
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(

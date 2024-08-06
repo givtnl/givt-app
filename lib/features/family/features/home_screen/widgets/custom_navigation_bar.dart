@@ -29,6 +29,7 @@ class CustomNavigationBar extends StatelessWidget {
         selectedIndex: index,
         onDestinationSelected: onDestinationSelected,
         backgroundColor: AppTheme.secondary99,
+        indicatorColor: AppTheme.secondary95,
         surfaceTintColor: Colors.transparent,
         destinations: NavigationDestinationData.values
             .map(

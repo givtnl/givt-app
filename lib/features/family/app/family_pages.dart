@@ -5,6 +5,7 @@ enum FamilyPages {
   parentAvatarSelection(
       path: 'parent-avatar-selection', name: 'PARENT-AVATAR-SELECTION'),
   wallet(path: 'wallet', name: 'WALLET'),
+  parentHome(path: 'parent-home', name: 'PARENT-HOME'),
   camera(path: 'camera', name: 'CAMERA'),
   success(path: 'success', name: 'SUCCESS'),
   unregisterUS(path: 'unregister-us', name: 'UNREGISTER-US'),
@@ -104,7 +105,6 @@ enum FamilyPages {
     path: 'day-4-timer',
     name: 'DAY-4-TIMER',
   ),
-
 
   //school event mode
   familyNameLogin(path: 'family-name-login', name: 'FAMILY_NAME_LOGIN'),

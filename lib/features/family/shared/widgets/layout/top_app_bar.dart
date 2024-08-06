@@ -7,12 +7,14 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.actions = const [],
     this.leading,
+    this.color,
     super.key,
   });
 
   final String title;
   final List<Widget> actions;
   final Widget? leading;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,9 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: AppTheme.primary30,
             ),
       ),
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: color ?? Theme.of(context).colorScheme.onPrimary,
       systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: Theme.of(context).colorScheme.onPrimary,
+        statusBarColor: color ?? Theme.of(context).colorScheme.onPrimary,
         statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
         statusBarBrightness: Brightness.light, // For iOS (dark icons)
       ),
