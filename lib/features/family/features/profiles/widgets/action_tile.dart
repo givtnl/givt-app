@@ -15,8 +15,11 @@ class ActionTile extends StatefulWidget {
     this.titleBig = '',
     this.titleSmall = '',
     this.subtitle = '',
+    this.assetSize,
+    this.mainAxisAlignment,
     super.key,
   });
+
   final VoidCallback onTap;
   final Color borderColor;
   final Color backgroundColor;
@@ -27,6 +30,8 @@ class ActionTile extends StatefulWidget {
   final String titleBig;
   final String titleSmall;
   final String subtitle;
+  final double? assetSize;
+  final MainAxisAlignment? mainAxisAlignment;
 
   @override
   State<ActionTile> createState() => _ActionTileState();
@@ -57,6 +62,8 @@ class _ActionTileState extends State<ActionTile> {
             color: backgroundColor,
             width: double.infinity,
             child: Column(
+              mainAxisAlignment:
+                  widget.mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
                 Opacity(
@@ -64,13 +71,13 @@ class _ActionTileState extends State<ActionTile> {
                   child: isOnlineIcon
                       ? SvgPicture.network(
                           widget.iconPath,
-                          height: 140,
-                          width: 140,
+                          height: widget.assetSize ?? 140,
+                          width: widget.assetSize ?? 140,
                         )
                       : SvgPicture.asset(
                           widget.iconPath,
-                          height: 140,
-                          width: 140,
+                          height: widget.assetSize ?? 140,
+                          width: widget.assetSize ?? 140,
                         ),
                 ),
                 Padding(

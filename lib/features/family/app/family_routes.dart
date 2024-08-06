@@ -77,6 +77,7 @@ import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart'
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
+import 'package:givt_app/features/give/pages/organization_list_family_page.dart';
 import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -314,7 +315,7 @@ class FamilyAppRoutes {
                     ),
                 ),
               ],
-              child: const OrganizationListPage(),
+              child: const OrganizationListFamilyPage(),
             );
           },
         ),

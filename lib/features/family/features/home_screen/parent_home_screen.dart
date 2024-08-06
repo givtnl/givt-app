@@ -101,9 +101,9 @@ class ParentHomeScreen extends StatelessWidget {
           onTap: () {
             context.pushNamed(FamilyPages.giveByListFamily.name);
           },
-          borderColor: ColorCombo.secondary.borderColor,
-          backgroundColor: ColorCombo.secondary.backgroundColor,
-          textColor: ColorCombo.secondary.textColor,
+          borderColor: ColorCombo.primary.borderColor,
+          backgroundColor: ColorCombo.primary.backgroundColor,
+          textColor: ColorCombo.primary.textColor,
           iconPath: 'assets/family/images/give_tile.svg',
           titleBig: 'Give',
         ),
