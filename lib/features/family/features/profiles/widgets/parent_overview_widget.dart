@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -33,21 +34,21 @@ class ParentOverviewWidget extends StatelessWidget {
               onTap: () async {
                 if (!context.mounted) return;
                 if (!isMainUser) return;
-                await context.pushNamed(
-                  FamilyPages.parentHome.name,
-                  extra: profile.id,
-                );
-                // await FamilyAuthUtils.authenticateUser(
-                //   context,
-                //   checkAuthRequest: CheckAuthRequest(
-                //     navigate: (context, {isUSUser}) async {
 
-                //       await AnalyticsHelper.setUserProperties(
-                //         userId: profile.id,
-                //       );
-                //     },
-                //   ),
-                // );
+                await FamilyAuthUtils.authenticateUser(
+                  context,
+                  checkAuthRequest: CheckAuthRequest(
+                    navigate: (context, {isUSUser}) async {
+                      await context.pushNamed(
+                        FamilyPages.parentHome.name,
+                        extra: profile.id,
+                      );
+                      await AnalyticsHelper.setUserProperties(
+                        userId: profile.id,
+                      );
+                    },
+                  ),
+                );
 
                 unawaited(AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.parentProfileIconClicked,
