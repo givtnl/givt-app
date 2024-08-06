@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -17,6 +18,7 @@ class ActionTile extends StatefulWidget {
     this.subtitle = '',
     this.assetSize,
     this.mainAxisAlignment,
+    this.iconData,
     super.key,
   });
 
@@ -31,6 +33,7 @@ class ActionTile extends StatefulWidget {
   final String titleSmall;
   final String subtitle;
   final double? assetSize;
+  final IconData? iconData;
   final MainAxisAlignment? mainAxisAlignment;
 
   @override
@@ -68,16 +71,22 @@ class _ActionTileState extends State<ActionTile> {
                 const SizedBox(height: 10),
                 Opacity(
                   opacity: widget.isDisabled ? 0.5 : 1,
-                  child: isOnlineIcon
-                      ? SvgPicture.network(
-                          widget.iconPath,
-                          height: widget.assetSize ?? 140,
-                          width: widget.assetSize ?? 140,
-                        )
-                      : SvgPicture.asset(
-                          widget.iconPath,
-                          height: widget.assetSize ?? 140,
-                          width: widget.assetSize ?? 140,
+                  child: widget.iconData == null
+                      ? isOnlineIcon
+                          ? SvgPicture.network(
+                              widget.iconPath,
+                              height: widget.assetSize ?? 140,
+                              width: widget.assetSize ?? 140,
+                            )
+                          : SvgPicture.asset(
+                              widget.iconPath,
+                              height: widget.assetSize ?? 140,
+                              width: widget.assetSize ?? 140,
+                            )
+                      : FaIcon(
+                          widget.iconData,
+                          size: widget.assetSize ?? 140,
+                    color: AppTheme.tertiary20.withOpacity(0.4),
                         ),
                 ),
                 Padding(

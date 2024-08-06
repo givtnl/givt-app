@@ -4,8 +4,9 @@ import 'package:givt_app/features/family/features/profiles/widgets/action_tile.d
 
 class QuickTile extends StatelessWidget {
   const QuickTile({
-    required this.iconPath,
     super.key,
+    this.iconData,
+    this.iconPath = '',
     this.titleSmall = '',
     this.titleBig = '',
     this.edgeInsets,
@@ -20,6 +21,7 @@ class QuickTile extends StatelessWidget {
   final EdgeInsets? edgeInsets;
   final bool isSelected;
   final ColorCombo colorCombo;
+  final IconData? iconData;
   final void Function(BuildContext context)? onClick;
 
   @override
@@ -35,6 +37,7 @@ class QuickTile extends StatelessWidget {
             textColor: colorCombo.textColor,
             assetSize: 32,
             iconPath: iconPath,
+            iconData: iconData,
             titleBig: titleBig,
             titleSmall: titleSmall,
             mainAxisAlignment: MainAxisAlignment.center,

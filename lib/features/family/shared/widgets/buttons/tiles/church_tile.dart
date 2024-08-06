@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile.dart';
 
 class ChurchTile extends StatelessWidget {
@@ -19,7 +20,7 @@ class ChurchTile extends StatelessWidget {
         child: QuickTile(
           onClick: (context) => onClick?.call(context),
           isSelected: isSelected,
-          iconPath: 'assets/family/images/church.svg',
+          iconPath: 'assets/family/images/church_tile_icon.svg',
           titleBig: 'Church',
         ),
       );
