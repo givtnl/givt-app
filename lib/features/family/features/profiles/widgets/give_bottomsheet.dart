@@ -173,15 +173,6 @@ class GiveBottomSheet extends StatelessWidget {
 
   void showEmptyWalletBottomSheet(BuildContext context) {
     context.pop();
-
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      backgroundColor: Colors.white,
-      builder: (context) => const EmptyWalletBottomSheet(),
-    );
+    EmptyWalletBottomSheet.show(context);
   }
 }

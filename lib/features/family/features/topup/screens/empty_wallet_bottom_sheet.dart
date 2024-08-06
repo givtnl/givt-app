@@ -37,7 +37,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
                 context.pop();
 
                 final user = context.read<ProfilesCubit>().state;
-                context.read<TopupCubit>().setUser(user.activeProfile.id);
+                context.read<TopupCubit>().init(user.activeProfile.id);
 
                 await showModalBottomSheet<void>(
                   context: context,
@@ -67,6 +67,18 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       closeAction: () {
         context.pop();
       },
+    );
+  }
+
+  static void show(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => const EmptyWalletBottomSheet(),
     );
   }
 }

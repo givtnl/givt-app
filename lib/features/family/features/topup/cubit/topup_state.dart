@@ -1,34 +1,24 @@
 part of 'topup_cubit.dart';
 
-enum TopupStatus { initial, loading, done, error }
+sealed class TopupState {
+  const TopupState();
+}
 
-class TopupState extends Equatable {
-  const TopupState({
-    this.userGuid = '',
-    this.amount = 0,
-    this.status = TopupStatus.initial,
-    this.error = '',
-  });
+class InitialState extends TopupState {
+  const InitialState();
+}
 
-  final String userGuid;
+class SuccessState<T> extends TopupState {
+  const SuccessState(this.amount, this.recurring);
+
   final int amount;
-  final TopupStatus status;
-  final String error;
+  final bool recurring;
+}
 
-  @override
-  List<Object> get props => [userGuid, amount, status, error];
-  
-  TopupState copyWith({
-    String? userGuid,
-    int? amount,
-    TopupStatus? status,
-    String? error,
-  }) {
-    return TopupState(
-      userGuid: userGuid ?? this.userGuid,
-      amount: amount ?? this.amount,
-      status: status ?? this.status,
-      error: error ?? this.error,
-    );
-  }
+class LoadingState extends TopupState {
+  const LoadingState();
+}
+
+class ErrorState extends TopupState {
+  const ErrorState();
 }

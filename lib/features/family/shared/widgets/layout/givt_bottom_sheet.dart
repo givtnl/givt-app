@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -31,54 +29,50 @@ class GivtBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ImpactGroupsCubit, ImpactGroupsState>(
-      builder: (context, state) {
-        return Stack(
-          children: [
-            SafeArea(
-              minimum: const EdgeInsets.fromLTRB(24, 32, 24, 40),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
+    return Stack(
+      children: [
+        SafeArea(
+          minimum: const EdgeInsets.fromLTRB(24, 32, 24, 40),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flex(
-                    direction: Axis.horizontal,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          title,
-                          style: Theme.of(context).textTheme.titleMedium,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                  const SizedBox(height: 24),
-
-                  // Icon
-                  SizedBox(
-                    width: 140,
-                    height: 140,
-                    child: icon,
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Content
-                  content,
-
-                  // Extra text above buttons
-                  showHeadlineContent(),
-
-                  // Buttons
-                  showPrimaryButton(),
-                  showSecondaryButton(),
                 ],
               ),
-            ),
-            showCloseButton(),
-          ],
-        );
-      },
+              const SizedBox(height: 24),
+
+              // Icon
+              SizedBox(
+                width: 140,
+                height: 140,
+                child: icon,
+              ),
+              const SizedBox(height: 24),
+
+              // Content
+              content,
+
+              // Extra text above buttons
+              showHeadlineContent(),
+
+              // Buttons
+              showPrimaryButton(),
+              showSecondaryButton(),
+            ],
+          ),
+        ),
+        showCloseButton(),
+      ],
     );
   }
 

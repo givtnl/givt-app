@@ -9,9 +9,14 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
 class TopupSuccessBottomSheet extends StatelessWidget {
-  const TopupSuccessBottomSheet({required this.topupAmount, super.key});
+  const TopupSuccessBottomSheet({
+    required this.topupAmount,
+    required this.recurring,
+    super.key,
+  });
 
   final int topupAmount;
+  final bool recurring;
 
   @override
   Widget build(BuildContext context) {
