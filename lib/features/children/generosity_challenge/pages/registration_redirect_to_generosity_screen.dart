@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
@@ -13,6 +15,7 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.d
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationRedirectToGenerosityScreen extends StatefulWidget {
   const RegistrationRedirectToGenerosityScreen({super.key});
@@ -36,6 +39,18 @@ class _RegistrationRedirectToGenerosityScreenState
         'createStripe': user.personalInfoRegistered.toString(),
       },
     );
+  }
+
+  void _goToChallenge(BuildContext context, UserExt user) {
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.goToChallengeFromRegistrationClicked,
+    );
+    final email = user.email;
+    getIt<SharedPreferences>().setString(
+      ChatScriptSaveKey.email.value,
+      email,
+    );
+    context.goNamed(FamilyPages.generosityChallenge.name);
   }
 
   @override
@@ -85,10 +100,7 @@ class _RegistrationRedirectToGenerosityScreenState
   Widget _buildButtons(BuildContext context, UserExt user) => Column(
         children: [
           GivtElevatedButton(
-            onTap: () {
-              context.goNamed(FamilyPages.generosityChallenge.name);
-            },
-            amplitudeEvent: AmplitudeEvents.goToChallengeFromRegistrationClicked,
+            onTap: () => _goToChallenge(context, user),
             leftIcon: FontAwesomeIcons.trophy,
             text: 'Go to Challenge',
           ),

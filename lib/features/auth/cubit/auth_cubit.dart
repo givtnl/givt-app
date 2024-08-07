@@ -252,19 +252,17 @@ class AuthCubit extends Cubit<AuthState> {
 
       var unRegisteredUserExt = await _authRepositoy.registerUser(
         tempUser: tempUser,
-        isTempUser: true,
+        isNewUser: true,
       );
 
       await AnalyticsHelper.setUserProperties(userId: unRegisteredUserExt.guid);
 
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
-          eventProperties: {
-            'id': unRegisteredUserExt.guid,
-            'profile_country': country.countryCode,
-          },
-        ),
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
+        eventProperties: {
+          'id': unRegisteredUserExt.guid,
+          'profile_country': country.countryCode,
+        },
       );
 
       final newNotificationId = await _updateNotificationId(

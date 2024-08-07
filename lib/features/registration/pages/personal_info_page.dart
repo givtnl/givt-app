@@ -14,7 +14,9 @@ import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalInfoPage extends StatefulWidget {
-  const PersonalInfoPage({super.key,});
+  const PersonalInfoPage({
+    super.key,
+  });
 
   @override
   State<PersonalInfoPage> createState() => _PersonalInfoPageState();
@@ -361,21 +363,8 @@ class _PersonalInfoPageState extends State<PersonalInfoPage> {
                 }
               }
               if (Country.us == _selectedCountry) {
-                final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
-                var formatted = '';
-                if (numericOnly.length == 10) {
-                  final chunkSize = [3, 3, 4];
-                  var startIndex = 0;
-
-                  final chunks = chunkSize.map((size) {
-                    final chunk =
-                        numericOnly.substring(startIndex, startIndex + size);
-                    startIndex += size;
-                    return chunk;
-                  });
-                  formatted = chunks.join('-');
-                }
-                if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
+                if (!Util.usPhoneNumberRegEx
+                    .hasMatch(Util.formatPhoneNrUs(value))) {
                   return '';
                 }
               }

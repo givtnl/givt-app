@@ -30,6 +30,8 @@ class GenerosityChallengeHelper {
     'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
     "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
   ];
+  static const String generosityChallengewasRegisteredBeforeChallengeKey =
+      'generosityChallengewasRegisteredBeforeChallengeKey';
 
   static Future<List<tz.TZDateTime>> generateSchedule(
     List<int> intervals,
