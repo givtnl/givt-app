@@ -61,6 +61,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       }
     });
     final user = context.read<AuthCubit>().state.user;
+    final flow = context.read<FlowsCubit>().state;
+
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesInvitedToGroup) {
@@ -143,14 +145,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 32),
-                            ParentOverviewWidget(
-                              profiles: sortedAdults(
-                                user.guid,
-                                state.profiles
-                                    .where((p) => p.type == 'Parent')
-                                    .toList(),
+                            if (!flow.isCoin)
+                              ParentOverviewWidget(
+                                profiles: sortedAdults(
+                                  user.guid,
+                                  state.profiles
+                                      .where((p) => p.type == 'Parent')
+                                      .toList(),
+                                ),
                               ),
-                            ),
                             const SizedBox(height: 26),
                             if (gridItems.isNotEmpty)
                               Expanded(
@@ -165,38 +168,39 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            GivtElevatedSecondaryButton(
-                              onTap: () async {
-                                if (!context.mounted) return;
+                            if (!flow.isCoin)
+                              GivtElevatedSecondaryButton(
+                                onTap: () async {
+                                  if (!context.mounted) return;
 
-                                await FamilyAuthUtils.authenticateUser(
-                                  context,
-                                  checkAuthRequest: CheckAuthRequest(
-                                    navigate: (context, {isUSUser}) async {
-                                      if (CachedFamilyUtils
-                                          .isFamilyCacheExist()) {
-                                        await context.pushNamed(FamilyPages
-                                            .cachedChildrenOverview.name);
-                                      } else {
-                                        await context.pushNamed(
-                                          FamilyPages.childrenOverview.name,
-                                        );
-                                      }
-                                      _logUser(context, user);
-                                    },
-                                  ),
-                                );
-                                unawaited(AnalyticsHelper.logEvent(
-                                  eventName:
-                                      AmplitudeEvents.manageFamilyPressed,
-                                ));
-                              },
-                              text: 'Manage Family',
-                              leftIcon: const FaIcon(
-                                FontAwesomeIcons.sliders,
-                                color: AppTheme.primary30,
+                                  await FamilyAuthUtils.authenticateUser(
+                                    context,
+                                    checkAuthRequest: CheckAuthRequest(
+                                      navigate: (context, {isUSUser}) async {
+                                        if (CachedFamilyUtils
+                                            .isFamilyCacheExist()) {
+                                          await context.pushNamed(FamilyPages
+                                              .cachedChildrenOverview.name);
+                                        } else {
+                                          await context.pushNamed(
+                                            FamilyPages.childrenOverview.name,
+                                          );
+                                        }
+                                        _logUser(context, user);
+                                      },
+                                    ),
+                                  );
+                                  unawaited(AnalyticsHelper.logEvent(
+                                    eventName:
+                                        AmplitudeEvents.manageFamilyPressed,
+                                  ));
+                                },
+                                text: 'Manage Family',
+                                leftIcon: const FaIcon(
+                                  FontAwesomeIcons.sliders,
+                                  color: AppTheme.primary30,
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),
