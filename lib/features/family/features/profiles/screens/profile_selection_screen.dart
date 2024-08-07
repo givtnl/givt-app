@@ -61,7 +61,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       }
     });
     final user = context.read<AuthCubit>().state.user;
-    final flow = context.read<FlowsCubit>().state;
+    final flow = context.read<FlowsCubit>();
 
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
@@ -145,7 +145,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 32),
-                            if (!flow.isCoin)
+                            if (!flow.state.isCoin)
                               ParentOverviewWidget(
                                 profiles: sortedAdults(
                                   user.guid,
@@ -168,39 +168,38 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            if (!flow.isCoin)
-                              GivtElevatedSecondaryButton(
-                                onTap: () async {
-                                  if (!context.mounted) return;
-
-                                  await FamilyAuthUtils.authenticateUser(
-                                    context,
-                                    checkAuthRequest: CheckAuthRequest(
-                                      navigate: (context, {isUSUser}) async {
-                                        if (CachedFamilyUtils
-                                            .isFamilyCacheExist()) {
-                                          await context.pushNamed(FamilyPages
-                                              .cachedChildrenOverview.name);
-                                        } else {
-                                          await context.pushNamed(
-                                            FamilyPages.childrenOverview.name,
-                                          );
-                                        }
-                                        _logUser(context, user);
-                                      },
-                                    ),
-                                  );
-                                  unawaited(AnalyticsHelper.logEvent(
-                                    eventName:
-                                        AmplitudeEvents.manageFamilyPressed,
-                                  ));
-                                },
-                                text: 'Manage Family',
-                                leftIcon: const FaIcon(
-                                  FontAwesomeIcons.sliders,
-                                  color: AppTheme.primary30,
-                                ),
+                            GivtElevatedSecondaryButton(
+                              onTap: () async {
+                                if (!context.mounted) return;
+                                flow.resetFlow();
+                                await FamilyAuthUtils.authenticateUser(
+                                  context,
+                                  checkAuthRequest: CheckAuthRequest(
+                                    navigate: (context, {isUSUser}) async {
+                                      if (CachedFamilyUtils
+                                          .isFamilyCacheExist()) {
+                                        await context.pushNamed(FamilyPages
+                                            .cachedChildrenOverview.name);
+                                      } else {
+                                        await context.pushNamed(
+                                          FamilyPages.childrenOverview.name,
+                                        );
+                                      }
+                                      _logUser(context, user);
+                                    },
+                                  ),
+                                );
+                                unawaited(AnalyticsHelper.logEvent(
+                                  eventName:
+                                      AmplitudeEvents.manageFamilyPressed,
+                                ));
+                              },
+                              text: 'Manage Family',
+                              leftIcon: const FaIcon(
+                                FontAwesomeIcons.sliders,
+                                color: AppTheme.primary30,
                               ),
+                            ),
                           ],
                         ),
                       ),
