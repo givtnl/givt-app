@@ -56,11 +56,11 @@
                       "next": {
                         "type": "textMessage",
                         "side": "interlocutor",
-                        "text": "I, also, want to encourage you throughout your mission",
+                        "text": "I also want to encourage you throughout your mission",
                         "next": {
                           "type": "textMessage",
                           "side": "interlocutor",
-                          "text": "I need to let you know how great a job you are doing and notify you to keep going. Okay?",
+                          "text": "I need to let you know how great of a job you are doing and notify you to keep going. Okay?",
                           "next": {
                             "type": "buttonGroupAnswer",
                             "side": "user",
@@ -70,7 +70,6 @@
                                 "side": "user",
                                 "text": "Not right now",
                                 "answerText": "Not right now",
-                                "amplitudeEvent": "custom_event_demo_name",
                                 "next": {
                                   "type": "textMessage",
                                   "side": "interlocutor",
