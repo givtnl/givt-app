@@ -37,6 +37,7 @@ class _CameraScreenState extends State<CameraScreen> {
     Size size = MediaQuery.sizeOf(context);
     return BlocConsumer<CameraCubit, CameraState>(
       listener: (context, state) {
+        final cameraCubit = context.read<CameraCubit>();
         log('camera state changed to $state');
         if (state.status == CameraStatus.scanned) {
           log('QR code scanned: ${state.qrValue} \n Getting organisation details');
@@ -48,7 +49,8 @@ class _CameraScreenState extends State<CameraScreen> {
           showDialog<void>(
             context: context,
             builder: (_) {
-              return const CameraPermissionsDialog(isSettings: true);
+              return CameraPermissionsDialog(
+                  cameraCubit: cameraCubit, isSettings: true);
             },
           );
         }
@@ -56,7 +58,7 @@ class _CameraScreenState extends State<CameraScreen> {
           showDialog<void>(
             context: context,
             builder: (_) {
-              return const CameraPermissionsDialog();
+              return CameraPermissionsDialog(cameraCubit: cameraCubit);
             },
           );
         }
