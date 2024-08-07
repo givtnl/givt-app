@@ -271,6 +271,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               return;
             }
             if (flow.flowType == FlowType.deepLinkCoin) {
+              if (selectedProfile.wallet.balance < 1) {
+                EmptyWalletBottomSheet.show(context);
+                return;
+              }
               context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
               return;
             }
