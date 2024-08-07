@@ -12,6 +12,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/campaign_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/charity_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/church_tile.dart';
+import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
@@ -40,10 +41,12 @@ class OrganizationListFamilyPage extends StatefulWidget {
 class _OrganizationListFamilyPageState
     extends State<OrganizationListFamilyPage> {
   final focusNode = FocusNode();
+  final TextEditingController controller = TextEditingController();
 
   @override
   void dispose() {
     focusNode.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -110,22 +113,20 @@ class _OrganizationListFamilyPageState
           },
           builder: (context, state) {
             if (state.selectedType == CollectGroupType.none.index) {
-              focusNode.requestFocus();
+              //focusNode.requestFocus();
             }
             return Column(
               children: [
                 _buildFilterType(bloc, locals),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: CupertinoSearchTextField(
+                  child: FamilySearchField(
                     autocorrect: false,
+                    controller: controller,
                     focusNode: focusNode,
                     onChanged: (value) => context
                         .read<OrganisationBloc>()
                         .add(OrganisationFilterQueryChanged(value)),
-                    placeholder: locals.searchHere,
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: const Icon(Icons.close),
                   ),
                 ),
                 if (state.status == OrganisationStatus.filtered)

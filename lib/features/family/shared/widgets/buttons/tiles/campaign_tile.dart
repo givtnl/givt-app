@@ -22,7 +22,7 @@ class CampaignTile extends StatelessWidget {
           onClick: (context) => onClick?.call(context),
           isSelected: isSelected,
           colorCombo: ColorCombo.highlight,
-          iconData: FontAwesomeIcons.ccAmazonPay,
+          iconData: FontAwesomeIcons.solidFlag,
           iconPath: 'assets/family/images/church.svg',
           titleBig: 'Campaign',
         ),
