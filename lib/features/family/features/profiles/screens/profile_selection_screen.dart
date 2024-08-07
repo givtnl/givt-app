@@ -62,6 +62,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       }
     });
     final user = context.read<AuthCubit>().state.user;
+    final flow = context.read<FlowsCubit>();
+
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesInvitedToGroup) {
@@ -144,14 +146,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 32),
-                            ParentOverviewWidget(
-                              profiles: sortedAdults(
-                                user.guid,
-                                state.profiles
-                                    .where((p) => p.type == 'Parent')
-                                    .toList(),
+                            if (!flow.state.isCoin)
+                              ParentOverviewWidget(
+                                profiles: sortedAdults(
+                                  user.guid,
+                                  state.profiles
+                                      .where((p) => p.type == 'Parent')
+                                      .toList(),
+                                ),
                               ),
-                            ),
                             const SizedBox(height: 26),
                             if (gridItems.isNotEmpty)
                               Expanded(
@@ -169,7 +172,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             GivtElevatedSecondaryButton(
                               onTap: () async {
                                 if (!context.mounted) return;
-
+                                flow.resetFlow();
                                 await FamilyAuthUtils.authenticateUser(
                                   context,
                                   checkAuthRequest: CheckAuthRequest(
