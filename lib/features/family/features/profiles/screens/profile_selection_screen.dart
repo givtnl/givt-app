@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/parent_overview_widget.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -271,6 +272,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               return;
             }
             if (flow.isCoin) {
+              if (selectedProfile.wallet.balance < 1) {
+                EmptyWalletBottomSheet.show(context);
+                return;
+              }
               context.goNamed(FamilyPages.scanNFC.name);
               return;
             }
