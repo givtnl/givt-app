@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups/models/goal.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
@@ -16,26 +14,9 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
   ImpactGroupsCubit(
     this._impactGroupInviteRepository,
     this._campaignRepository,
-    this._authCubit,
-  ) : super(const ImpactGroupsState()) {
-    _authCubit.stream.listen((event) async {
-      // this stops the cubit from executing when an invited user
-      // finished registraion and is now in the user extention refresh loop
-      // see _onStripeSuccess in registration_bloc.dart
-      if ((event.user.tempUser && !event.user.isInvitedUser) ||
-          state.status == ImpactGroupCubitStatus.loading) {
-        return;
-      }
-      if (event.status == AuthStatus.authenticated &&
-          event.user.country == Country.us.countryCode) {
-        await fetchImpactGroups();
-        checkForInvites();
-      }
-    });
-  }
+  ) : super(const ImpactGroupsState());
   final ImpactGroupsRepository _impactGroupInviteRepository;
   final CampaignRepository _campaignRepository;
-  final AuthCubit _authCubit;
   Future<void> fetchImpactGroups() async {
     emit(state.copyWith(status: ImpactGroupCubitStatus.loading));
 

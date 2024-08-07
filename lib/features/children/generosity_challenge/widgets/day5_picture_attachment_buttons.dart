@@ -27,7 +27,8 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
             showDialog<void>(
               context: context,
               builder: (_) {
-                return const CameraPermissionsDialog(isSettings: true);
+                return CameraPermissionsDialog(
+                    cameraCubit: context.read<CameraCubit>(), isSettings: true);
               },
             );
           }

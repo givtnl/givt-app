@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_close_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -21,7 +22,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDonateButtonActive =
-        context.read<ProfilesCubit>().state.activeProfile.wallet.balance > 0;
+        context.watch<ProfilesCubit>().state.activeProfile.wallet.balance > 0;
 
     return FractionallySizedBox(
       heightFactor: 0.9,
@@ -93,8 +94,11 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12),
             child: GivtElevatedButton(
               text: 'Donate',
-              isDisabled: !isDonateButtonActive,
               onTap: () {
+                if (!isDonateButtonActive) {
+                  EmptyWalletBottomSheet.show(context);
+                  return;
+                }
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.donateToRecommendedCharityPressed,
                   eventProperties: {
