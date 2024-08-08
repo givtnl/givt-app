@@ -73,7 +73,7 @@ class ChatScriptRegistrationHandler {
       return _sharedPreferences.getString(ChatScriptSaveKey.email.value) ??
           userData[ChatScriptSaveKey.email.value] as String;
     } catch (e) {
-      return userData[ChatScriptSaveKey.email.value] as String;
+      return '';
     }
   }
 }
