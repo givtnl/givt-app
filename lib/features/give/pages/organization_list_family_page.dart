@@ -9,10 +9,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/campaign_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/charity_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/church_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
+import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
@@ -82,15 +84,9 @@ class _OrganizationListFamilyPageState
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: Text(
-            'Give',
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-          ),
+        appBar: const TopAppBar(
+          leading: GivtBackButtonFlat(),
+          title: 'Give',
         ),
         body: BlocConsumer<OrganisationBloc, OrganisationState>(
           listener: (context, state) {
@@ -105,6 +101,9 @@ class _OrganizationListFamilyPageState
           builder: (context, state) {
             return Column(
               children: [
+                const SizedBox(
+                  height: 16,
+                ),
                 _buildFilterType(bloc, locals),
                 Padding(
                   padding: const EdgeInsets.symmetric(
