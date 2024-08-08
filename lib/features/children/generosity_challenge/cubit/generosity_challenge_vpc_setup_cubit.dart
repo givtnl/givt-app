@@ -67,37 +67,47 @@ class GenerosityChallengeVpcSetupCubit
     try {
       final userData = _generosityChallengeRepository.loadUserData();
       final children = _retrieveChildrenData(userData);
-      var email = '';
-      try {
-        email = getIt<SharedPreferences>()
-                .getString(ChatScriptSaveKey.email.value) ??
-            '';
-      } catch (e) {
-        email = userData[ChatScriptSaveKey.email.value] as String;
-        if (email.isEmpty) {
-          LoggingInfo.instance.error(
-            'Failed to get sign up email in generosity challenge VPC check: $e',
-            methodName: '_handleVPC',
-          );
-        }
-      }
+
+      final email = _getEmailForVPC(userData);
+
       if (email.isEmpty) {
-        _skipVPC();
-        LoggingInfo.instance.error(
-          'Error hadling VPC and getting user email in Generosity Challenge',
-          methodName: '_handleVPC',
-        );
+        _logAndSkipVPC();
         return;
       }
+
       final password = userData[ChatScriptSaveKey.password.value] as String;
+
       await _vpcRepository.login(email: email, password: password);
       await _vpcRepository.addMembers(children);
+
       _navigateToFamilyOverview();
     } on NotLoggedInException {
       _navigateToWelcome();
     } catch (e, s) {
       _handleError(e, s);
     }
+  }
+
+  String _getEmailForVPC(Map<String, dynamic> userData) {
+    try {
+      return getIt<SharedPreferences>()
+              .getString(ChatScriptSaveKey.email.value) ??
+          userData[ChatScriptSaveKey.email.value] as String;
+    } catch (e) {
+      LoggingInfo.instance.error(
+        'Failed to get sign up email in generosity challenge VPC check: $e',
+        methodName: '_handleVPC',
+      );
+      return '';
+    }
+  }
+
+  void _logAndSkipVPC() {
+    _skipVPC();
+    LoggingInfo.instance.error(
+      'Error handling VPC and getting user email in Generosity Challenge',
+      methodName: '_handleVPC',
+    );
   }
 
   void _handleError(Object e, StackTrace s) {
