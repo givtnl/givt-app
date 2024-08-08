@@ -254,7 +254,6 @@ void initRepositories() {
     ..registerLazySingleton<GenerosityStripeRegistrationCubit>(
       () => GenerosityStripeRegistrationCubit(
         getIt(),
-        getIt(),
       ),
     )
     ..registerLazySingleton<GenerosityChallengeVpcRepository>(
