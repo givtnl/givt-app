@@ -233,6 +233,7 @@ enum AmplitudeEvents {
   topupDoneButtonClicked('topup_done_button_clicked'),
 
   //parent
+  parentGiveTileClicked('parent_give_tile_clicked'),
   parentGivingFlowOrganizationClicked('parent_giving_flow_organization_clicked'),
   ;
 
