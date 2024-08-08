@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -160,6 +161,12 @@ class _OrganizationListFamilyPageState
       (element) => element.nameSpace == state.selectedCollectGroup.nameSpace,
     );
     final userGUID = context.read<AuthCubit>().state.user.guid;
+    AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.parentGivingFlowOrganizationClicked,
+      eventProperties: {
+        'organisation': collectGroup.orgName,
+      },
+    );
     //TODO KIDS-1262 navigate to Giving screen
   }
 

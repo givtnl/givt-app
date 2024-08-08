@@ -231,6 +231,9 @@ enum AmplitudeEvents {
   topupConfirmButtonClicked('topup_confirm_button_clicked'),
   topupRecurringCheckboxChanged('topup_recurring_checkbox_changed'),
   topupDoneButtonClicked('topup_done_button_clicked'),
+
+  //parent
+  parentGivingFlowOrganizationClicked('parent_giving_flow_organization_clicked'),
   ;
 
   const AmplitudeEvents(this.value);
