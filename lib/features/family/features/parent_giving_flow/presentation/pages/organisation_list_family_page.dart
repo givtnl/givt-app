@@ -1,5 +1,3 @@
-// ignore_for_file: no_default_cases
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,23 +10,24 @@ import 'package:givt_app/features/family/shared/widgets/buttons/tiles/charity_ti
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/church_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class OrganizationListFamilyPage extends StatefulWidget {
-  const OrganizationListFamilyPage({
+class OrganisationListFamilyPage extends StatefulWidget {
+  const OrganisationListFamilyPage({
     super.key,
   });
 
   @override
-  State<OrganizationListFamilyPage> createState() =>
-      _OrganizationListFamilyPageState();
+  State<OrganisationListFamilyPage> createState() =>
+      _OrganisationListFamilyPageState();
 }
 
-class _OrganizationListFamilyPageState
-    extends State<OrganizationListFamilyPage> {
+class _OrganisationListFamilyPageState
+    extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
 
   @override
@@ -102,7 +101,7 @@ class _OrganizationListFamilyPageState
                 )
               else
                 const Center(
-                  child: CircularProgressIndicator(),
+                  child: CustomCircularProgressIndicator(),
                 ),
             ],
           );
@@ -117,7 +116,7 @@ class _OrganizationListFamilyPageState
     );
     final userGUID = context.read<AuthCubit>().state.user.guid;
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.parentGivingFlowOrganizationClicked,
+      eventName: AmplitudeEvents.parentGivingFlowOrganisationClicked,
       eventProperties: {
         'organisation': collectGroup.orgName,
       },

@@ -62,7 +62,7 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/impact_group_details_page.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organization_list_family_page.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
@@ -314,7 +314,7 @@ class FamilyAppRoutes {
                     ),
                 ),
               ],
-              child: const OrganizationListFamilyPage(),
+              child: const OrganisationListFamilyPage(),
             );
           },
         ),
