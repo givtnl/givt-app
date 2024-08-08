@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +34,7 @@ class ChatScriptRegistrationHandler {
     final userData = _generosityChallengeRepository.loadUserData();
 
     // Retrieve email, prioritize getting it directly from sharedPreferences, fallback to userData
-    final email = _getEmailFromPreferencesOrUserData(userData);
+    final email = GenerosityChallengeHelper.getChallengeEmail(userData);
 
     // Log and return false if email is empty
     if (email.isEmpty) {
@@ -66,14 +67,5 @@ class ChatScriptRegistrationHandler {
     );
 
     return result.success;
-  }
-
-  String _getEmailFromPreferencesOrUserData(Map<String, dynamic> userData) {
-    try {
-      return _sharedPreferences.getString(ChatScriptSaveKey.email.value) ??
-          userData[ChatScriptSaveKey.email.value] as String;
-    } catch (e) {
-      return '';
-    }
   }
 }

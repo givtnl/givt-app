@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/utils/member_utils.dart';
@@ -8,11 +7,11 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/domain/exceptions/not_logged_in_exception.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_vpc_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class GenerosityChallengeVpcSetupCubit
     extends CommonCubit<dynamic, GenerosityChallengeVpcSetupCustom> {
@@ -67,8 +66,7 @@ class GenerosityChallengeVpcSetupCubit
     try {
       final userData = _generosityChallengeRepository.loadUserData();
       final children = _retrieveChildrenData(userData);
-
-      final email = _getEmailForVPC(userData);
+      final email = GenerosityChallengeHelper.getChallengeEmail(userData);
 
       if (email.isEmpty) {
         _logAndSkipVPC();
@@ -85,20 +83,6 @@ class GenerosityChallengeVpcSetupCubit
       _navigateToWelcome();
     } catch (e, s) {
       _handleError(e, s);
-    }
-  }
-
-  String _getEmailForVPC(Map<String, dynamic> userData) {
-    try {
-      return getIt<SharedPreferences>()
-              .getString(ChatScriptSaveKey.email.value) ??
-          userData[ChatScriptSaveKey.email.value] as String;
-    } catch (e) {
-      LoggingInfo.instance.error(
-        'Failed to get sign up email in generosity challenge VPC check: $e',
-        methodName: '_handleVPC',
-      );
-      return '';
     }
   }
 
