@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/shared/widgets/buttons/tiles/campaign_t
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/charity_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/church_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
@@ -35,12 +36,10 @@ class OrganizationListFamilyPage extends StatefulWidget {
 
 class _OrganizationListFamilyPageState
     extends State<OrganizationListFamilyPage> {
-  final focusNode = FocusNode();
   final TextEditingController controller = TextEditingController();
 
   @override
   void dispose() {
-    focusNode.dispose();
     controller.dispose();
     super.dispose();
   }
@@ -108,11 +107,13 @@ class _OrganizationListFamilyPageState
               children: [
                 _buildFilterType(bloc, locals),
                 Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                   child: FamilySearchField(
                     autocorrect: false,
                     controller: controller,
-                    focusNode: focusNode,
                     onChanged: (value) => context
                         .read<OrganisationBloc>()
                         .add(OrganisationFilterQueryChanged(value)),
@@ -130,7 +131,6 @@ class _OrganizationListFamilyPageState
                         return _buildListTile(
                           type: state.filteredOrganisations[index].type,
                           title: state.filteredOrganisations[index].orgName,
-                          isSelected: false,
                           onTap: () {
                             context.read<OrganisationBloc>().add(
                                   OrganisationSelectionChanged(
@@ -166,24 +166,28 @@ class _OrganizationListFamilyPageState
 
   Widget _buildListTile({
     required VoidCallback onTap,
-    required bool isSelected,
     required String title,
     required CollectGroupType type,
   }) =>
       ListTile(
         key: UniqueKey(),
         onTap: onTap,
-        selected: isSelected,
+        splashColor: AppTheme.generosityChallangeCardBackground,
         selectedTileColor: CollectGroupType.getHighlightColor(type),
+        trailing: FaIcon(
+          FontAwesomeIcons.chevronRight,
+          color: FamilyAppTheme.primary50.withOpacity(0.5),
+        ),
         leading: Icon(
           CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
         title: Text(
           title,
-          style: Theme.of(context).textTheme.labelSmall ?? const TextStyle(
-            color: AppTheme.givtBlue,
-          ),
+          style: Theme.of(context).textTheme.labelSmall ??
+              const TextStyle(
+                color: AppTheme.givtBlue,
+              ),
         ),
       );
 
