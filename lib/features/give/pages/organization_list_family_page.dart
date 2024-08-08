@@ -26,12 +26,7 @@ import 'package:go_router/go_router.dart';
 class OrganizationListFamilyPage extends StatefulWidget {
   const OrganizationListFamilyPage({
     super.key,
-    this.isChooseCategory = false,
-    this.isSelection = false,
   });
-
-  final bool isChooseCategory;
-  final bool isSelection;
 
   @override
   State<OrganizationListFamilyPage> createState() =>
@@ -91,10 +86,7 @@ class _OrganizationListFamilyPageState
         appBar: AppBar(
           leading: const BackButton(),
           title: Text(
-            _buildTitle(
-              context.watch<OrganisationBloc>().state.selectedType,
-              locals,
-            ),
+            'Give',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
@@ -112,9 +104,6 @@ class _OrganizationListFamilyPageState
             }
           },
           builder: (context, state) {
-            if (state.selectedType == CollectGroupType.none.index) {
-              //focusNode.requestFocus();
-            }
             return Column(
               children: [
                 _buildFilterType(bloc, locals),
@@ -136,58 +125,20 @@ class _OrganizationListFamilyPageState
                         height: 0.1,
                       ),
                       shrinkWrap: true,
-                      itemCount: state.filteredOrganisations.length + 1,
+                      itemCount: state.filteredOrganisations.length,
                       itemBuilder: (context, index) {
-                        if (index == state.filteredOrganisations.length) {
-                          return ListTile(
-                            key: UniqueKey(),
-                            onTap: () => showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              builder: (_) => AboutGivtBottomSheet(
-                                initialMessage: locals
-                                    .reportMissingOrganisationPrefilledText,
-                              ),
-                            ),
-
-                            /// To keep the symetry of the list
-                            leading: const Icon(
-                              Icons.add,
-                              color: Colors.transparent,
-                            ),
-                            trailing: const Icon(
-                              Icons.add,
-                              color: AppTheme.givtBlue,
-                            ),
-                            title: Text(
-                              locals.reportMissingOrganisationListItem,
-                              style: const TextStyle(
-                                color: AppTheme.givtBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          );
-                        }
                         return _buildListTile(
                           type: state.filteredOrganisations[index].type,
                           title: state.filteredOrganisations[index].orgName,
-                          isSelected: state.selectedCollectGroup.nameSpace ==
-                              state.filteredOrganisations[index].nameSpace,
+                          isSelected: false,
                           onTap: () {
-                            if (widget.isChooseCategory) {
-                              _buildActionSheet(
-                                context,
-                                state.filteredOrganisations[index],
-                              );
-                              return;
-                            }
                             context.read<OrganisationBloc>().add(
                                   OrganisationSelectionChanged(
                                     state
                                         .filteredOrganisations[index].nameSpace,
                                   ),
                                 );
+                            _navigateToGivingScreen(state, context);
                           },
                         );
                       },
@@ -197,27 +148,6 @@ class _OrganizationListFamilyPageState
                   const Center(
                     child: CircularProgressIndicator(),
                   ),
-                _buildGivingButton(
-                  title: widget.isSelection
-                      ? locals.selectReceiverButton
-                      : locals.give,
-                  isLoading: context.watch<GiveBloc>().state.status ==
-                      GiveStatus.loading,
-                  onPressed:
-                      state.selectedCollectGroup.type == CollectGroupType.none
-                          ? null
-                          : () {
-                              final collectGroup =
-                                  state.filteredOrganisations.firstWhere(
-                                (element) =>
-                                    element.nameSpace ==
-                                    state.selectedCollectGroup.nameSpace,
-                              );
-                              final userGUID =
-                                  context.read<AuthCubit>().state.user.guid;
-                              //TODO KIDS-1262 navigate to Giving screen
-                            },
-                ),
               ],
             );
           },
@@ -226,54 +156,12 @@ class _OrganizationListFamilyPageState
     );
   }
 
-  String _buildTitle(int selectedType, AppLocalizations locals) {
-    var title = locals.chooseWhoYouWantToGiveTo;
-
-    if (widget.isSelection) {
-      title = locals.selectRecipient;
-    }
-
-    switch (CollectGroupType.fromInt(selectedType)) {
-      case CollectGroupType.church:
-        title = locals.church;
-      case CollectGroupType.charities:
-        title = locals.charity;
-      case CollectGroupType.campaign:
-        title = locals.campaign;
-      case CollectGroupType.artists:
-        title = locals.artist;
-      default:
-        break;
-    }
-
-    return title;
-  }
-
-  Widget _buildGivingButton({
-    required String title,
-    bool isLoading = false,
-    VoidCallback? onPressed,
-  }) {
-    return Visibility(
-      visible: !widget.isChooseCategory,
-      child: Expanded(
-        flex: 0,
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: !isLoading
-              ? ElevatedButton(
-                  onPressed: onPressed,
-                  style: ElevatedButton.styleFrom(
-                    disabledBackgroundColor: Colors.grey,
-                  ),
-                  child: Text(title),
-                )
-              : const Center(
-                  child: CircularProgressIndicator(),
-                ),
-        ),
-      ),
+  void _navigateToGivingScreen(OrganisationState state, BuildContext context) {
+    final collectGroup = state.filteredOrganisations.firstWhere(
+      (element) => element.nameSpace == state.selectedCollectGroup.nameSpace,
     );
+    final userGUID = context.read<AuthCubit>().state.user.guid;
+    //TODO KIDS-1262 navigate to Giving screen
   }
 
   Widget _buildListTile({
@@ -293,7 +181,7 @@ class _OrganizationListFamilyPageState
         ),
         title: Text(
           title,
-          style: const TextStyle(
+          style: Theme.of(context).textTheme.labelSmall ?? const TextStyle(
             color: AppTheme.givtBlue,
           ),
         ),
