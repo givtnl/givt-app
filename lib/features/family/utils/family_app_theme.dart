@@ -91,6 +91,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
 // FOR TESTING
   static const testingTextStyleLabelMedium = TextStyle(fontSize: 20);
+
   Scheme _schemeLight() {
     final base = CorePalette.of(primaryColor.value);
     final primary = base.primary;
@@ -174,6 +175,12 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         height: 1,
       ),
       labelMedium: TextStyle(
+        color: FamilyAppTheme.defaultTextColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 0,
+      ),
+      labelLarge: TextStyle(
         color: FamilyAppTheme.defaultTextColor,
         fontSize: 20,
         fontWeight: FontWeight.w700,

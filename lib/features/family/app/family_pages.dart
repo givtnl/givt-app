@@ -24,6 +24,7 @@ enum FamilyPages {
   ),
   permitUSBiometric(
       path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US'),
+  giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
   creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   test(path: 'test', name: 'TEST'),
   scanNFC(path: 'scan-nfc', name: 'SCAN_NFC'),

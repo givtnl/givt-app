@@ -84,19 +84,9 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
             filled: true,
             fillColor: Colors.white,
             hintText: 'Number of tasks',
-            hintStyle: textStyle?.copyWith(
-              color: AppTheme.neutralVariant40,
-            ),
-            enabledBorder: buildInputBorder.copyWith(
-              borderSide: borderSide.copyWith(
-                color: AppTheme.inputFieldBorderEnabled,
-              ),
-            ),
-            focusedBorder: buildInputBorder.copyWith(
-              borderSide: borderSide.copyWith(
-                color: AppTheme.inputFieldBorderEnabled,
-              ),
-            ),
+            hintStyle: textStyle,
+            enabledBorder: buildInputBorder,
+            focusedBorder: buildInputBorder,
           ),
         ),
         const SizedBox(height: 16),
@@ -131,16 +121,14 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
   TextStyle? get textStyle => Theme.of(context).textTheme.titleLarge?.copyWith(
         fontFamily: 'Rouna',
         fontWeight: FontWeight.w700,
-        color: AppTheme.primary20,
-      );
-
-  BorderSide get borderSide => const BorderSide(
-        color: AppTheme.inputFieldBorderSelected,
-        width: 2,
+        color: AppTheme.neutralVariant40,
       );
 
   InputBorder get buildInputBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: borderSide,
+        borderSide: const BorderSide(
+          color: AppTheme.inputFieldBorderSelected,
+          width: 2,
+        ),
       );
 }

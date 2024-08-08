@@ -77,6 +77,8 @@ import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart'
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
+import 'package:givt_app/features/give/pages/organization_list_family_page.dart';
+import 'package:givt_app/features/give/pages/organization_list_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -283,6 +285,37 @@ class FamilyAppRoutes {
             final extra = state.extra! as String;
             return ParentHomeScreen(
               id: extra,
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.giveByListFamily.path,
+          name: FamilyPages.giveByListFamily.name,
+          builder: (context, state) {
+            final user = context.read<AuthCubit>().state.user;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: GiveBloc(
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (_) => OrganisationBloc(
+                    getIt(),
+                    getIt(),
+                  )..add(
+                      OrganisationFetch(
+                        Country.fromCode(user.country),
+                        type: CollectGroupType.none.index,
+                      ),
+                    ),
+                ),
+              ],
+              child: const OrganizationListFamilyPage(),
             );
           },
         ),
