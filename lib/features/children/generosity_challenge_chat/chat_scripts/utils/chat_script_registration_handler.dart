@@ -31,27 +31,27 @@ class ChatScriptRegistrationHandler {
 
   Future<bool> _registerUser() async {
     final userData = _generosityChallengeRepository.loadUserData();
-    var email = '';
-    try {
-      email = _sharedPreferences.getString(ChatScriptSaveKey.email.value) ?? '';
-    } catch (e) {
-      email = userData[ChatScriptSaveKey.email.value] as String;
-      if (email.isEmpty) {
-        LoggingInfo.instance.error(
-          'Failed to get sign up email: $e',
-          methodName: '_registerUser',
-        );
-      }
-    }
+
+    // Retrieve email, prioritize getting it directly from sharedPreferences, fallback to userData
+    final email = _getEmailFromPreferencesOrUserData(userData);
+
+    // Log and return false if email is empty
     if (email.isEmpty) {
+      LoggingInfo.instance.error(
+        'Failed to get sign up email.',
+        methodName: '_registerUser',
+      );
       return false;
     }
 
+    // Extract other user data
     final firstname = userData[ChatScriptSaveKey.firstName.value] as String;
     final lastname = userData[ChatScriptSaveKey.lastName.value] as String;
     final password = userData[ChatScriptSaveKey.password.value] as String;
     final phoneNr = (userData[ChatScriptSaveKey.phone.value] ??
         Util.defaultUSPhoneNumber) as String;
+
+    // Register the user
     final result = await _authRepository.registerGenerosityChallengeUser(
       firstname: firstname,
       lastname: lastname,
@@ -59,20 +59,21 @@ class ChatScriptRegistrationHandler {
       password: password,
       phoneNumber: phoneNr,
     );
-    // if the result is success and they are not already registered
-    // means they registered through challenge
-    final userSignedUpWithChallenge =
-        result.success && !result.wasRegisteredBeforeChallenge;
 
-    if (userSignedUpWithChallenge) {
-      await _generosityChallengeRepository.setAlreadyRegistered(
-        wasRegisteredBeforeChallenge: false,
-      );
-    } else {
-      await _generosityChallengeRepository.setAlreadyRegistered(
-        wasRegisteredBeforeChallenge: result.wasRegisteredBeforeChallenge,
-      );
-    }
+    // Handle registration result
+    await _generosityChallengeRepository.setAlreadyRegistered(
+      wasRegisteredBeforeChallenge: result.wasRegisteredBeforeChallenge,
+    );
+
     return result.success;
+  }
+
+  String _getEmailFromPreferencesOrUserData(Map<String, dynamic> userData) {
+    try {
+      return _sharedPreferences.getString(ChatScriptSaveKey.email.value) ??
+          userData[ChatScriptSaveKey.email.value] as String;
+    } catch (e) {
+      return userData[ChatScriptSaveKey.email.value] as String;
+    }
   }
 }
