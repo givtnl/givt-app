@@ -29,17 +29,42 @@ class FamilySearchField extends StatelessWidget {
       focusNode: focusNode,
       style: Theme.of(context).textTheme.labelLarge,
       decoration: InputDecoration(
-        /*suffixIcon: GestureDetector(
-          onTap: controller.clear,
-          child: const FaIcon(
-            FontAwesomeIcons.xmark,
-            color: AppTheme.primary30,
+        contentPadding: EdgeInsets.zero,
+        suffixIcon: GestureDetector(
+          onTap: () {
+            controller.clear();
+            onChanged?.call('');
+          },
+          child: Visibility(
+            visible: controller.text.isNotEmpty,
+            child: const SizedBox(
+              width: 48,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: FaIcon(
+                    FontAwesomeIcons.xmark,
+                    color: AppTheme.primary30,
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
-        prefixIcon: const FaIcon(
-          FontAwesomeIcons.magnifyingGlass,
-          color: AppTheme.primary30,
-        ),*/
+        prefixIcon: const SizedBox(
+          width: 48,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 16),
+              child: FaIcon(
+                FontAwesomeIcons.magnifyingGlass,
+                color: AppTheme.primary30,
+              ),
+            ),
+          ),
+        ),
         filled: true,
         fillColor: Colors.white,
         hintText: 'Search',
@@ -61,10 +86,10 @@ class FamilySearchField extends StatelessWidget {
       );
 
   InputBorder get selectedInputBorder => OutlineInputBorder(
-    borderRadius: BorderRadius.circular(10),
-    borderSide: const BorderSide(
-      color: AppTheme.inputFieldBorderSelected,
-      width: 2,
-    ),
-  );
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(
+          color: AppTheme.inputFieldBorderSelected,
+          width: 2,
+        ),
+      );
 }

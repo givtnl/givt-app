@@ -100,6 +100,9 @@ class ParentHomeScreen extends StatelessWidget {
         child: ActionTile(
           onTap: () {
             context.pushNamed(FamilyPages.giveByListFamily.name);
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.parentGiveTileClicked,
+            );
           },
           borderColor: ColorCombo.primary.borderColor,
           backgroundColor: ColorCombo.primary.backgroundColor,
