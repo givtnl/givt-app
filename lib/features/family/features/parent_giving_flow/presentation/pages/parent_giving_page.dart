@@ -166,14 +166,14 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
 }
 
 /// Custom InAppBrowser class with custom callback
-typedef CustomInAppBroserCallback = void Function(Uri? url);
+typedef CustomInAppBrowserCallback = void Function(Uri? url);
 
 class CustomInAppBrowser extends InAppBrowser {
   CustomInAppBrowser({
     required this.onLoad,
   }) : super();
 
-  final CustomInAppBroserCallback onLoad;
+  final CustomInAppBrowserCallback onLoad;
 
   @override
   Future<void> onLoadStart(Uri? url) async => onLoad(url);
