@@ -16,6 +16,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
 // extra colors within pallette
   static const primary20 = Color(0xFF003920);
+  static const primary30 = Color(0xFF005231);
   static const primary40 = Color(0xFF006D42);
   static const primary50 = Color(0xFF008954);
   static const primary60 = Color(0xFF15A569);
@@ -25,6 +26,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const primary90 = Color(0xFF6BFCAB);
   static const primary98 = Color(0xFFE9FFED);
 
+  static const secondary20 = Color(0xFF003737);
   static const secondary30 = Color(0xFF004F50);
   static const secondary40 = Color(0xFF00696A);
   static const secondary80 = Color(0xFF4CDADB);
@@ -32,6 +34,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const secondary98 = Color(0xFFE2FFFE);
   static const secondary99 = Color(0xFFF1FFFE);
 
+  static const tertiary20 = Color(0xFF431573);
   static const tertiary40 = Color(0xFF744AA5);
   static const tertiary50 = Color(0xFF8E63C0);
   static const tertiary80 = Color(0xFFDAB9FF);
