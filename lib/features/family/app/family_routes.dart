@@ -63,6 +63,7 @@ import 'package:givt_app/features/family/features/impact_groups/model/goal.dart'
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/impact_group_details_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
@@ -77,7 +78,6 @@ import 'package:givt_app/features/family/features/recommendation/tags/screens/lo
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
-import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -324,7 +324,7 @@ class FamilyAppRoutes {
           name: FamilyPages.parentGive.name,
           builder: (context, state) => BlocProvider.value(
             value: state.extra! as GiveBloc,
-            child: const GivingPage(),
+            child: const ParentGivingPage(),
           ),
         ),
         GoRoute(

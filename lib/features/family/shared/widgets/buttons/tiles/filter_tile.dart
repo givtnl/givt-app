@@ -27,7 +27,7 @@ class FilterTile extends StatelessWidget {
           colorCombo: CollectGroupType.getColorComboByType(type),
           iconPath: iconPath ?? '',
           iconData:
-              iconPath == null ? CollectGroupType.getIconByType(type) : null,
+              iconPath == null ? CollectGroupType.getIconByTypeUS(type) : null,
           titleBig: type.name[0].toUpperCase() + type.name.substring(1),
         ),
       );

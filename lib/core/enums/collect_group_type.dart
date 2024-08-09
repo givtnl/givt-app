@@ -68,6 +68,21 @@ enum CollectGroupType {
       case CollectGroupType.charities:
         return FontAwesomeIcons.solidHeart;
       case CollectGroupType.campaign:
+        return FontAwesomeIcons.handHoldingHeart;
+      case CollectGroupType.artists:
+        return FontAwesomeIcons.guitar;
+      default:
+    }
+    return FontAwesomeIcons.church;
+  }
+
+  static IconData getIconByTypeUS(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return FontAwesomeIcons.placeOfWorship;
+      case CollectGroupType.charities:
+        return FontAwesomeIcons.solidHeart;
+      case CollectGroupType.campaign:
         return FontAwesomeIcons.solidFlag;
       case CollectGroupType.artists:
         return FontAwesomeIcons.guitar;

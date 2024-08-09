@@ -174,7 +174,7 @@ class _OrganisationListFamilyPageState
         currency: r'$',
         organisationName: collectGroup.orgName,
         colorCombo: CollectGroupType.getColorComboByType(type),
-        icon: CollectGroupType.getIconByType(type),
+        icon: CollectGroupType.getIconByTypeUS(type),
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
@@ -203,7 +203,7 @@ class _OrganisationListFamilyPageState
           color: FamilyAppTheme.primary50.withOpacity(0.5),
         ),
         leading: Icon(
-          CollectGroupType.getIconByType(type),
+          CollectGroupType.getIconByTypeUS(type),
           color: AppTheme.givtBlue,
         ),
         title: Text(
