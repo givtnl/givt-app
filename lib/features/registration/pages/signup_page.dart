@@ -336,21 +336,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 }
 
                 if (Country.us == _selectedCountry) {
-                  final numericOnly = value.replaceAll(RegExp(r'[^\d]'), '');
-                  var formatted = '';
-                  if (numericOnly.length == 10) {
-                    final chunkSize = [3, 3, 4];
-                    var startIndex = 0;
-
-                    final chunks = chunkSize.map((size) {
-                      final chunk =
-                          numericOnly.substring(startIndex, startIndex + size);
-                      startIndex += size;
-                      return chunk;
-                    });
-                    formatted = chunks.join('-');
-                  }
-                  if (!Util.usPhoneNumberRegEx.hasMatch(formatted)) {
+                  if (!Util.usPhoneNumberRegEx
+                      .hasMatch(Util.formatPhoneNrUs(value))) {
                     return '';
                   }
                 }

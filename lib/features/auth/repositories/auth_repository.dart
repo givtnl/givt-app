@@ -41,7 +41,7 @@ mixin AuthRepository {
 
   Future<UserExt> registerUser({
     required TempUser tempUser,
-    required bool isTempUser,
+    required bool isNewUser,
   });
 
   Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
@@ -49,6 +49,7 @@ mixin AuthRepository {
     required String lastname,
     required String email,
     required String password,
+    String? phoneNumber,
   });
 
   Future<bool> changeGiftAid({
@@ -350,7 +351,7 @@ class AuthRepositoyImpl with AuthRepository {
   @override
   Future<UserExt> registerUser({
     required TempUser tempUser,
-    required bool isTempUser,
+    required bool isNewUser,
   }) async {
     /// register user
     final userGUID = await _apiService.registerUser(tempUser.toJson());
@@ -365,7 +366,7 @@ class AuthRepositoyImpl with AuthRepository {
       email: tempUser.email,
       guid: userGUID,
       amountLimit: tempUser.amountLimit,
-      tempUser: isTempUser,
+      tempUser: isNewUser,
       country: tempUser.country,
       phoneNumber: tempUser.phoneNumber,
       firstName: tempUser.firstName,
@@ -502,6 +503,7 @@ class AuthRepositoyImpl with AuthRepository {
     required String lastname,
     required String email,
     required String password,
+    String? phoneNumber,
   }) async {
     Map<String, dynamic>? response;
     try {
@@ -515,7 +517,7 @@ class AuthRepositoyImpl with AuthRepository {
           address: Util.defaultAdress,
           city: Util.defaultCity,
           postalCode: Util.defaultPostCode,
-          phoneNumber: Util.defaultUSPhoneNumber,
+          phoneNumber: phoneNumber ?? Util.defaultUSPhoneNumber,
           iban: Util.defaultIban,
           sortCode: Util.empty,
           accountNumber: Util.empty,
@@ -526,7 +528,7 @@ class AuthRepositoyImpl with AuthRepository {
         );
         // updates the user extension with the temp user
         // and updates the session
-        await registerUser(tempUser: tempUser, isTempUser: true);
+        await registerUser(tempUser: tempUser, isNewUser: false);
         return GenerosityRegistrationResult.success();
       }
       if (userStatus.contains('true')) {

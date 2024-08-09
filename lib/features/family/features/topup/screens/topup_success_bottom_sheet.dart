@@ -9,12 +9,22 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
 class TopupSuccessBottomSheet extends StatelessWidget {
-  const TopupSuccessBottomSheet({required this.topupAmount, super.key});
+  const TopupSuccessBottomSheet({
+    required this.topupAmount,
+    required this.recurring,
+    super.key,
+  });
 
   final int topupAmount;
+  final bool recurring;
 
   @override
   Widget build(BuildContext context) {
+    var text = "\$$topupAmount has been added to your child's Wallet";
+    if (recurring) {
+      text += ' and your recurring amount has been setup';
+    }
+
     return GivtBottomSheet(
       title: 'Consider it done!',
       icon: primaryCircleWithIcon(
@@ -25,7 +35,7 @@ class TopupSuccessBottomSheet extends StatelessWidget {
       content: Column(
         children: [
           Text(
-            "\$$topupAmount has been added to your child's Wallet",
+            text,
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),

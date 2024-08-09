@@ -82,6 +82,12 @@ AgMBAAE=
     );
   }
 
+  static String formatPhoneNrUs(String input) {
+    final numericOnly = input.replaceAll(RegExp(r'[^\d]'), '');
+    if (numericOnly.length != 10) return '';
+    return '${numericOnly.substring(0, 3)}-${numericOnly.substring(3, 6)}-${numericOnly.substring(6)}';
+  }
+
   static String getCurrencySymbol({required String countryCode}) {
     return getCurrency(countryCode: countryCode).currencySymbol;
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -15,8 +16,12 @@ class ActionTile extends StatefulWidget {
     this.titleBig = '',
     this.titleSmall = '',
     this.subtitle = '',
+    this.assetSize,
+    this.mainAxisAlignment,
+    this.iconData,
     super.key,
   });
+
   final VoidCallback onTap;
   final Color borderColor;
   final Color backgroundColor;
@@ -27,6 +32,9 @@ class ActionTile extends StatefulWidget {
   final String titleBig;
   final String titleSmall;
   final String subtitle;
+  final double? assetSize;
+  final IconData? iconData;
+  final MainAxisAlignment? mainAxisAlignment;
 
   @override
   State<ActionTile> createState() => _ActionTileState();
@@ -57,20 +65,28 @@ class _ActionTileState extends State<ActionTile> {
             color: backgroundColor,
             width: double.infinity,
             child: Column(
+              mainAxisAlignment:
+                  widget.mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
                 Opacity(
                   opacity: widget.isDisabled ? 0.5 : 1,
-                  child: isOnlineIcon
-                      ? SvgPicture.network(
-                          widget.iconPath,
-                          height: 140,
-                          width: 140,
-                        )
-                      : SvgPicture.asset(
-                          widget.iconPath,
-                          height: 140,
-                          width: 140,
+                  child: widget.iconData == null
+                      ? isOnlineIcon
+                          ? SvgPicture.network(
+                              widget.iconPath,
+                              height: widget.assetSize ?? 140,
+                              width: widget.assetSize ?? 140,
+                            )
+                          : SvgPicture.asset(
+                              widget.iconPath,
+                              height: widget.assetSize ?? 140,
+                              width: widget.assetSize ?? 140,
+                            )
+                      : FaIcon(
+                          widget.iconData,
+                          size: widget.assetSize ?? 140,
+                    color: AppTheme.tertiary20.withOpacity(0.4),
                         ),
                 ),
                 Padding(

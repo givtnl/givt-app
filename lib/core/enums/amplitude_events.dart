@@ -177,7 +177,8 @@ enum AmplitudeEvents {
   charityCardPressed('charity_card_pressed'),
   accountLocked('account_locked_for_wrong_password'),
   walletTracker('wallet_tracker'),
-
+  parentProfileIconClicked('parent_profile_icon_clicked'),
+  mySettingsClicked('my_settings_clicked'),
   // coin scan
   startScanningCoin('in_app_start_scanning_coin'),
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
@@ -230,6 +231,10 @@ enum AmplitudeEvents {
   topupConfirmButtonClicked('topup_confirm_button_clicked'),
   topupRecurringCheckboxChanged('topup_recurring_checkbox_changed'),
   topupDoneButtonClicked('topup_done_button_clicked'),
+
+  //parent
+  parentGiveTileClicked('parent_give_tile_clicked'),
+  parentGivingFlowOrganisationClicked('parent_giving_flow_organization_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

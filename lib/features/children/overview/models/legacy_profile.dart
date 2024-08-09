@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/overview/models/wallet.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 
-class Profile extends Equatable {
-  const Profile({
+class LegacyProfile extends Equatable {
+  const LegacyProfile({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -14,7 +14,7 @@ class Profile extends Equatable {
     this.type = ProfileType.Child,
   });
 
-  const Profile.empty()
+  const LegacyProfile.empty()
       : this(
           id: '',
           firstName: '',
@@ -25,10 +25,10 @@ class Profile extends Equatable {
           pictureURL: '',
         );
 
-  factory Profile.fromMap(Map<String, dynamic> map) {
+  factory LegacyProfile.fromMap(Map<String, dynamic> map) {
     final picture = map['picture'] as Map<String, dynamic>;
 
-    return Profile(
+    return LegacyProfile(
       id: map['id'] as String,
       firstName: (map['firstName'] ?? '') as String,
       lastName: (map['lastName'] ?? '') as String,
@@ -40,7 +40,7 @@ class Profile extends Equatable {
     );
   }
 
-  Profile copyWith({
+  LegacyProfile copyWith({
     String? id,
     String? firstName,
     String? lastName,
@@ -50,7 +50,7 @@ class Profile extends Equatable {
     String? pictureURL,
     ProfileType? type,
   }) {
-    return Profile(
+    return LegacyProfile(
       id: id ?? this.id,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,

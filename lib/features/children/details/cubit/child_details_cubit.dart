@@ -8,7 +8,7 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -34,7 +34,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   final ChildDetailsRepository _childDetailsRepository;
   final EditChildRepository _editChildRepository;
   final ProfilesRepository _profilesRepository;
-  Profile _profile;
+  LegacyProfile _profile;
   ProfileExt? _profileExt;
 
   StreamSubscription<String>? _walletChangedSubscription;

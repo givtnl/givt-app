@@ -80,7 +80,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
       await authRepositoy.registerUser(
         tempUser: tempUser,
-        isTempUser: false,
+        isNewUser: false,
       );
 
       await authCubit.refreshUser();

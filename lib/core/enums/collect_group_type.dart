@@ -50,7 +50,7 @@ enum CollectGroupType {
       case CollectGroupType.church:
         return FontAwesomeIcons.placeOfWorship;
       case CollectGroupType.charities:
-        return FontAwesomeIcons.heart;
+        return FontAwesomeIcons.solidHeart;
       case CollectGroupType.campaign:
         return FontAwesomeIcons.handHoldingHeart;
       case CollectGroupType.artists:

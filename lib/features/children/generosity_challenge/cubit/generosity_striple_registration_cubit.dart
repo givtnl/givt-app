@@ -13,7 +13,6 @@ class GenerosityStripeRegistrationCubit
   ) : super(const BaseState.loading());
 
   final AuthRepository _authRepository;
-
   Future<StripeResponse> setupStripeRegistration() async {
     try {
       await _authRepository.refreshToken(refreshUserExt: true);

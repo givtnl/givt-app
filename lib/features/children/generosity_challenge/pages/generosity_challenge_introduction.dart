@@ -14,6 +14,7 @@ import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GenerosityChallengeIntroduction extends StatefulWidget {
   const GenerosityChallengeIntroduction({
@@ -123,6 +124,10 @@ class _GenerosityChallengeIntroductionState
               onTap: () {
                 GenerosityChallengeHelper.activate(
                   isDebug: _appConfig.isTestApp,
+                );
+                getIt<SharedPreferences>().remove(
+                  GenerosityChallengeHelper
+                      .generosityChallengewasRegisteredBeforeChallengeKey,
                 );
                 context.pop();
                 AnalyticsHelper.logEvent(

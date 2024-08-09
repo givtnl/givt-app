@@ -14,13 +14,16 @@ import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/parent_overview_widget.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -58,7 +61,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         NotificationService.instance.navigateFirebaseNotification(message);
       }
     });
-    
+    final user = context.read<AuthCubit>().state.user;
+    final flow = context.read<FlowsCubit>();
+
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
         if (state is ProfilesInvitedToGroup) {
@@ -96,7 +101,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             );
           } else {
             if (state.hasFamily) {
-              final user = context.read<AuthCubit>().state.user;
               context.pushReplacementNamed(
                 FamilyPages.registrationUS.name,
                 queryParameters: {
@@ -120,11 +124,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
-          state.profiles.where((e) => e.type == 'Child').toList(),
-        );
+            state.profiles.where((e) => e.type == 'Child').toList(), user);
         return Scaffold(
           appBar: const TopAppBar(
-            title: 'Who would like to give?',
+            title: 'Family',
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
@@ -143,6 +146,19 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 32),
+                            if (!flow.state.isCoin)
+                              Visibility(
+                                visible: false,
+                                child: ParentOverviewWidget(
+                                  profiles: sortedAdults(
+                                    user.guid,
+                                    state.profiles
+                                        .where((p) => p.type == 'Parent')
+                                        .toList(),
+                                  ),
+                                ),
+                              ),
+                            const SizedBox(height: 26),
                             if (gridItems.isNotEmpty)
                               Expanded(
                                 child: GridView.count(
@@ -159,7 +175,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             GivtElevatedSecondaryButton(
                               onTap: () async {
                                 if (!context.mounted) return;
-
+                                flow.resetFlow();
                                 await FamilyAuthUtils.authenticateUser(
                                   context,
                                   checkAuthRequest: CheckAuthRequest(
@@ -173,7 +189,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                           FamilyPages.childrenOverview.name,
                                         );
                                       }
-                                      _logUser(context);
+                                      _logUser(context, user);
                                     },
                                   ),
                                 );
@@ -197,15 +213,28 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     );
   }
 
-  void _logUser(BuildContext context) {
-    final user = context.read<AuthCubit>().state.user;
+  void _logUser(BuildContext context, UserExt user) {
     unawaited(AnalyticsHelper.setUserProperties(
       userId: user.guid,
       userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
     ));
   }
 
-  List<Widget> createGridItems(List<Profile> profiles) {
+  // The Givt user profile is first in the list
+  static List<Profile> sortedAdults(
+      String givtAccountID, List<Profile> adults) {
+    return adults
+      ..sort((a, b) {
+        final compareNames = a.firstName.compareTo(b.id);
+        return a.id == givtAccountID
+            ? -1
+            : b.id == givtAccountID
+                ? 1
+                : compareNames;
+      });
+  }
+
+  List<Widget> createGridItems(List<Profile> profiles, UserExt user) {
     final gridItems = <Widget>[];
     for (var i = 0;
         i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
@@ -219,7 +248,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                 .read<ProfilesCubit>()
                 .fetchProfile(selectedProfile.id, true);
 
-            final user = context.read<AuthCubit>().state.user;
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,
               userProperties: {
@@ -246,10 +274,18 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               return;
             }
             if (flow.flowType == FlowType.deepLinkCoin) {
+              if (selectedProfile.wallet.balance < 1) {
+                EmptyWalletBottomSheet.show(context);
+                return;
+              }
               context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
               return;
             }
             if (flow.isCoin) {
+              if (selectedProfile.wallet.balance < 1) {
+                EmptyWalletBottomSheet.show(context);
+                return;
+              }
               context.goNamed(FamilyPages.scanNFC.name);
               return;
             }

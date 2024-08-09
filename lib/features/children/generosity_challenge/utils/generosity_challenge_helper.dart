@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
+import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -30,6 +32,8 @@ class GenerosityChallengeHelper {
     'Tulsa needs you! We need to bring colour back to the city. Complete your assignment.',
     "It's never too late to make a difference. Let's finish what we started and complete your assignment.",
   ];
+  static const String generosityChallengewasRegisteredBeforeChallengeKey =
+      'generosityChallengewasRegisteredBeforeChallengeKey';
 
   static Future<List<tz.TZDateTime>> generateSchedule(
     List<int> intervals,
@@ -147,5 +151,19 @@ class GenerosityChallengeHelper {
         Country.us.countryCode,
       ),
     );
+  }
+
+  static String getChallengeEmail(Map<String, dynamic> userData) {
+    try {
+      return getIt<SharedPreferences>()
+              .getString(ChatScriptSaveKey.email.value) ??
+          userData[ChatScriptSaveKey.email.value] as String;
+    } catch (e) {
+      LoggingInfo.instance.error(
+        'Failed to get GEnerosity Challenge email: $e',
+        methodName: 'getChallengeEmail',
+      );
+      return '';
+    }
   }
 }

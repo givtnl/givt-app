@@ -35,7 +35,7 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -57,10 +57,12 @@ import 'package:givt_app/features/family/features/history/history_cubit/history_
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/kids_home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/impact_group_details_page.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
@@ -74,7 +76,6 @@ import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
-import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -87,6 +88,7 @@ import 'package:givt_app/features/registration/pages/signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/organisation/organisation.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -275,6 +277,47 @@ class FamilyAppRoutes {
         child: const ProfileSelectionScreen(),
       ),
       routes: [
+        GoRoute(
+          path: FamilyPages.parentHome.path,
+          name: FamilyPages.parentHome.name,
+          builder: (context, state) {
+            final extra = state.extra! as String;
+            return ParentHomeScreen(
+              id: extra,
+            );
+          },
+        ),
+        GoRoute(
+          path: FamilyPages.giveByListFamily.path,
+          name: FamilyPages.giveByListFamily.name,
+          builder: (context, state) {
+            final user = context.read<AuthCubit>().state.user;
+            return MultiBlocProvider(
+              providers: [
+                BlocProvider.value(
+                  value: GiveBloc(
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                    getIt(),
+                  ),
+                ),
+                BlocProvider(
+                  create: (_) => OrganisationBloc(
+                    getIt(),
+                    getIt(),
+                  )..add(
+                      OrganisationFetch(
+                        Country.fromCode(user.country),
+                        type: CollectGroupType.none.index,
+                      ),
+                    ),
+                ),
+              ],
+              child: const OrganisationListFamilyPage(),
+            );
+          },
+        ),
         GoRoute(
           path: FamilyPages.wallet.path,
           name: FamilyPages.wallet.name,
@@ -645,7 +688,7 @@ class FamilyAppRoutes {
           builder: (context, state) {
             final extras = state.extra! as List<dynamic>;
             final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-            final childProfile = extras[1] as Profile;
+            final childProfile = extras[1] as LegacyProfile;
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(
