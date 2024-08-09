@@ -147,12 +147,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                           children: [
                             const SizedBox(height: 32),
                             if (!flow.state.isCoin)
-                              ParentOverviewWidget(
-                                profiles: sortedAdults(
-                                  user.guid,
-                                  state.profiles
-                                      .where((p) => p.type == 'Parent')
-                                      .toList(),
+                              Visibility(
+                                visible: false,
+                                child: ParentOverviewWidget(
+                                  profiles: sortedAdults(
+                                    user.guid,
+                                    state.profiles
+                                        .where((p) => p.type == 'Parent')
+                                        .toList(),
+                                  ),
                                 ),
                               ),
                             const SizedBox(height: 26),
