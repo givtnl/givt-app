@@ -1,4 +1,5 @@
 enum FamilyPages {
+  parentGive(path: 'parent-give', name: 'PARENT-GIVE'),
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
   kidsAvatarSelection(
       path: 'kids-avatar-selection', name: 'KIDS-AVATAR-SELECTION'),

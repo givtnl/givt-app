@@ -86,7 +86,7 @@ class _ActionTileState extends State<ActionTile> {
                       : FaIcon(
                           widget.iconData,
                           size: widget.assetSize ?? 140,
-                    color: AppTheme.tertiary20.withOpacity(0.4),
+                          color: widget.textColor.withOpacity(0.6),
                         ),
                 ),
                 Padding(

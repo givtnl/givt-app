@@ -22,7 +22,6 @@ class GivingPage extends StatefulWidget {
   const GivingPage({
     super.key,
   });
-
   @override
   State<GivingPage> createState() => _GivingPageState();
 }
@@ -68,12 +67,14 @@ class _GivingPageState extends State<GivingPage> {
     final afterGivingRedirection =
         context.read<GiveBloc>().state.afterGivingRedirection;
 
-    context.goNamed(
-      Pages.home.name,
-      queryParameters: {
-        'given': 'true',
-      },
-    );
+    context.read<AuthCubit>().state.user.isUsUser
+        ? context.pop()
+        : context.goNamed(
+            Pages.home.name,
+            queryParameters: {
+              'given': 'true',
+            },
+          );
 
     if (afterGivingRedirection.isNotEmpty) {
       final url = Uri.parse(afterGivingRedirection);
@@ -126,6 +127,8 @@ class _GivingPageState extends State<GivingPage> {
         builder: (
           context,
         ) {
+          final isUS = context.read<AuthCubit>().state.user.isUsUser;
+
           if (browserIsOpened) {
             return const SizedBox.shrink();
           }
@@ -140,7 +143,7 @@ class _GivingPageState extends State<GivingPage> {
             urlRequest: URLRequest(
               url: Uri.https(
                 getIt<RequestHelper>().apiURL,
-                'confirm.html',
+                isUS ? 'confirm-G4F.html' : 'confirm.html',
                 {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
               ),
             ),
@@ -162,12 +165,14 @@ class _GivingPageState extends State<GivingPage> {
               child: ElevatedButton(
                 child: const Text('Go Back Home'),
                 onPressed: () {
-                  context.goNamed(
-                    Pages.home.name,
-                    queryParameters: {
-                      'given': 'true',
-                    },
-                  );
+                  isUS
+                      ? context.pop()
+                      : context.goNamed(
+                          Pages.home.name,
+                          queryParameters: {
+                            'given': 'true',
+                          },
+                        );
                 },
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 enum CollectGroupType {
@@ -45,6 +46,21 @@ enum CollectGroupType {
     }
   }
 
+  static ColorCombo getColorComboByType(CollectGroupType type) {
+    switch (type) {
+      case CollectGroupType.church:
+        return ColorCombo.primary;
+      case CollectGroupType.charities:
+        return ColorCombo.tertiary;
+      case CollectGroupType.campaign:
+        return ColorCombo.highlight;
+      case CollectGroupType.artists:
+        return ColorCombo.secondary;
+      default:
+    }
+    return ColorCombo.secondary;
+  }
+
   static IconData getIconByType(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:
@@ -52,7 +68,7 @@ enum CollectGroupType {
       case CollectGroupType.charities:
         return FontAwesomeIcons.solidHeart;
       case CollectGroupType.campaign:
-        return FontAwesomeIcons.handHoldingHeart;
+        return FontAwesomeIcons.solidFlag;
       case CollectGroupType.artists:
         return FontAwesomeIcons.guitar;
       default:

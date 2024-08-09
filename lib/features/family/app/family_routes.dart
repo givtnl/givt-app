@@ -77,6 +77,7 @@ import 'package:givt_app/features/family/features/recommendation/tags/screens/lo
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
+import 'package:givt_app/features/give/pages/giving_page.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -317,6 +318,14 @@ class FamilyAppRoutes {
               child: const OrganisationListFamilyPage(),
             );
           },
+        ),
+        GoRoute(
+          path: FamilyPages.parentGive.path,
+          name: FamilyPages.parentGive.name,
+          builder: (context, state) => BlocProvider.value(
+            value: state.extra! as GiveBloc,
+            child: const GivingPage(),
+          ),
         ),
         GoRoute(
           path: FamilyPages.wallet.path,
