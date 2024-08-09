@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/shared/widgets/buttons/tiles/church_til
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -142,13 +143,7 @@ class _OrganisationListFamilyPageState
           CollectGroupType.getIconByType(type),
           color: AppTheme.givtBlue,
         ),
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.labelSmall ??
-              const TextStyle(
-                color: AppTheme.givtBlue,
-              ),
-        ),
+        title: LabelMediumText(title),
       );
 
   Widget _buildFilterType(OrganisationBloc bloc, AppLocalizations locals) =>
