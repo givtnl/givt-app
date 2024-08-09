@@ -104,9 +104,9 @@ class ParentHomeScreen extends StatelessWidget {
               eventName: AmplitudeEvents.parentGiveTileClicked,
             );
           },
-          borderColor: ColorCombo.primary.borderColor,
-          backgroundColor: ColorCombo.primary.backgroundColor,
-          textColor: ColorCombo.primary.textColor,
+          borderColor: ColorCombo.secondary.borderColor,
+          backgroundColor: ColorCombo.secondary.backgroundColor,
+          textColor: ColorCombo.secondary.textColor,
           iconPath: 'assets/family/images/give_tile.svg',
           titleBig: 'Give',
         ),
