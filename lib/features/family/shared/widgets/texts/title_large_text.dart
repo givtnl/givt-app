@@ -74,7 +74,7 @@ class TitleLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.titleLarge.copyWith(color: color),
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
     );
   }
 }

@@ -74,7 +74,7 @@ class BodyMediumText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.bodyMedium.copyWith(color: color),
+      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
     );
   }
 }

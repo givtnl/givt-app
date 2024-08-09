@@ -74,7 +74,7 @@ class TitleSmallText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.titleSmall.copyWith(color: color),
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(color: color),
     );
   }
 }

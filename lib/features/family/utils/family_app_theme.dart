@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/features/family/shared/design/family_text_styles.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 @immutable
@@ -135,72 +136,21 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
   ThemeData _base(ColorScheme colorScheme) {
     const textTheme = TextTheme(
-      titleLarge: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 26,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      titleMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 22,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      titleSmall: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 18,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      headlineMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 30,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      headlineLarge: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 45,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      labelSmall: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1,
-      ),
-      labelMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-      ),
-      labelLarge: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-      ),
-      bodySmall: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 15,
-        fontWeight: FontWeight.w400,
-        letterSpacing: 0,
-      ),
-      bodyMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        letterSpacing: 0,
-      ),
+      displayLarge: FamilyTextStyles.displayLarge,
+      displayMedium: FamilyTextStyles.displayMedium,
+      displaySmall: FamilyTextStyles.displaySmall,
+      titleLarge: FamilyTextStyles.titleLarge,
+      titleMedium: FamilyTextStyles.titleMedium,
+      titleSmall: FamilyTextStyles.titleSmall,
+      headlineSmall: FamilyTextStyles.headlineSmall,
+      headlineMedium: FamilyTextStyles.headlineMedium,
+      headlineLarge: FamilyTextStyles.headlineLarge,
+      labelSmall: FamilyTextStyles.labelSmall,
+      labelMedium: FamilyTextStyles.labelMedium,
+      labelLarge: FamilyTextStyles.labelLarge,
+      bodySmall: FamilyTextStyles.bodySmall,
+      bodyMedium: FamilyTextStyles.bodyMedium,
+      bodyLarge: FamilyTextStyles.bodyLarge,
     );
 
     return ThemeData(

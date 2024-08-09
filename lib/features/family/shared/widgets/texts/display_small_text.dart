@@ -74,7 +74,7 @@ class DisplaySmallText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.displaySmall.copyWith(color: color),
+      style: Theme.of(context).textTheme.displaySmall?.copyWith(color: color),
     );
   }
 }

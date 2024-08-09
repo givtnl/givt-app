@@ -74,7 +74,7 @@ class LabelLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.labelLarge.copyWith(color: color),
+      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: color),
     );
   }
 }

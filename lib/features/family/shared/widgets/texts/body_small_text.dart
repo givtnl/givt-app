@@ -74,7 +74,7 @@ class BodySmallText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.bodySmall.copyWith(color: color),
+      style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color),
     );
   }
 }

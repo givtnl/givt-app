@@ -74,7 +74,7 @@ class LabelSmallText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.labelSmall.copyWith(color: color),
+      style: Theme.of(context).textTheme.labelSmall?.copyWith(color: color),
     );
   }
 }

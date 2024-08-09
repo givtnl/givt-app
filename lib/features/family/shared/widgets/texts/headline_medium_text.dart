@@ -74,7 +74,7 @@ class HeadlineMediumText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.headlineMedium.copyWith(color: color),
+      style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: color),
     );
   }
 }

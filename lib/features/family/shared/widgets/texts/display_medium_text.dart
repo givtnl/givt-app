@@ -74,7 +74,7 @@ class DisplayMediumText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.displayMedium.copyWith(color: color),
+      style: Theme.of(context).textTheme.displayMedium?.copyWith(color: color),
     );
   }
 }

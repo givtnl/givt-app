@@ -64,7 +64,7 @@ class ProfileOverviewTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: AppTheme.givtBlue,
                   ),
             ),

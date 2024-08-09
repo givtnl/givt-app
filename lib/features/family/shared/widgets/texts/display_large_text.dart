@@ -74,7 +74,7 @@ class DisplayLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.displayLarge.copyWith(color: color),
+      style: Theme.of(context).textTheme.displayLarge?.copyWith(color: color),
     );
   }
 }

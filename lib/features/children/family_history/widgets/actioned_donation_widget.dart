@@ -31,7 +31,7 @@ class ActionedDonationWidget extends StatelessWidget {
             children: [
               Text(
                 '\$${donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${donation.name}',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: DonationState.getAmountColor(donation.state),
                     ),
               ),

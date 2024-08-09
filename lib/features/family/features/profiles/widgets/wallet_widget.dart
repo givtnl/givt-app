@@ -137,7 +137,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       children: [
                         Text(
                           'My profile',
-                          style: Theme.of(context).textTheme.labelSmall,
+                          style: Theme.of(context).textTheme.labelMedium,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 4),

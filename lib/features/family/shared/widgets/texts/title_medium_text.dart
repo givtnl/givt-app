@@ -74,7 +74,7 @@ class TitleMediumText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.titleMedium.copyWith(color: color),
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color),
     );
   }
 }

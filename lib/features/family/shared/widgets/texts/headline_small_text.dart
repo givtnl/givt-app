@@ -74,7 +74,7 @@ class HeadlineSmallText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.headlineSmall.copyWith(color: color),
+      style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: color),
     );
   }
 }

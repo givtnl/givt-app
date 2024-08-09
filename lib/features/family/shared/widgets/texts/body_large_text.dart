@@ -74,7 +74,7 @@ class BodyLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.bodyLarge.copyWith(color: color),
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: color),
     );
   }
 }

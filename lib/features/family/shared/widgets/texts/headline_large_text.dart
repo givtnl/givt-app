@@ -74,7 +74,7 @@ class HeadlineLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: FamilyTextStyles.headlineLarge.copyWith(color: color),
+      style: Theme.of(context).textTheme.headlineLarge?.copyWith(color: color),
     );
   }
 }
