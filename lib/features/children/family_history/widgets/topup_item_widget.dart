@@ -29,7 +29,7 @@ class TopupItemWidget extends StatelessWidget {
             children: [
               Text(
                 '+\$${topup.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${topup.name}',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: topup.isNotSuccessful
                           ? AppTheme.childHistoryDeclined
                           : AppTheme.childHistoryAllowance,

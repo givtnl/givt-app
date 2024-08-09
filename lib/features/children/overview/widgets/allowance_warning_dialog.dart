@@ -44,7 +44,7 @@ class AllowancesWarningDialog extends StatelessWidget {
           Text(
             context.l10n.noWorriesWeWillTryAgain,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w600,
                   color: AppTheme.childGivingAllowanceHint,

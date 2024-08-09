@@ -159,7 +159,7 @@ class GiveBottomSheet extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       'Cancel',
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.labelLarge,
                     ),
                   ],
                 ),

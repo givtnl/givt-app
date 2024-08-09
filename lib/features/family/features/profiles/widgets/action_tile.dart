@@ -98,7 +98,7 @@ class _ActionTileState extends State<ActionTile> {
                           widget.titleBig,
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
+                              Theme.of(context).textTheme.labelLarge?.copyWith(
                                     color: widget.isDisabled
                                         ? AppTheme.disabledTileBorder
                                         : widget.textColor,
@@ -111,7 +111,7 @@ class _ActionTileState extends State<ActionTile> {
                           widget.titleSmall,
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     color: widget.isDisabled
                                         ? AppTheme.disabledTileBorder
                                         : widget.textColor,
@@ -125,7 +125,7 @@ class _ActionTileState extends State<ActionTile> {
                           widget.subtitle,
                           textAlign: TextAlign.center,
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     color: widget.textColor.withAlpha(200),
                                   ),
                         )

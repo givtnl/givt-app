@@ -143,12 +143,12 @@ class _GivtElevatedSecondaryButtonState
           Text(
             widget.text,
             style: widget.isDisabled
-                ? theme.textTheme.labelMedium?.copyWith(
+                ? theme.textTheme.labelLarge?.copyWith(
                     color: theme.colorScheme.outline,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
                   )
-                : theme.textTheme.labelMedium?.copyWith(
+                : theme.textTheme.labelLarge?.copyWith(
                     color: AppTheme.primary30,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
@@ -165,12 +165,12 @@ class _GivtElevatedSecondaryButtonState
           Text(
             widget.text,
             style: widget.isDisabled
-                ? theme.textTheme.labelMedium?.copyWith(
+                ? theme.textTheme.labelLarge?.copyWith(
                     color: theme.colorScheme.outline,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
                   )
-                : theme.textTheme.labelMedium?.copyWith(
+                : theme.textTheme.labelLarge?.copyWith(
                     color: AppTheme.primary30,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
@@ -194,12 +194,12 @@ class _GivtElevatedSecondaryButtonState
             Text(
               widget.text,
               style: widget.isDisabled
-                  ? theme.textTheme.labelMedium?.copyWith(
+                  ? theme.textTheme.labelLarge?.copyWith(
                       color: theme.colorScheme.outline,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Rouna',
                     )
-                  : theme.textTheme.labelMedium?.copyWith(
+                  : theme.textTheme.labelLarge?.copyWith(
                       color: AppTheme.primary30,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Rouna',
@@ -216,12 +216,12 @@ class _GivtElevatedSecondaryButtonState
       child: Text(
         widget.text,
         style: widget.isDisabled
-            ? theme.textTheme.labelMedium?.copyWith(
+            ? theme.textTheme.labelLarge?.copyWith(
                 color: theme.colorScheme.outline,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Rouna',
               )
-            : theme.textTheme.labelMedium?.copyWith(
+            : theme.textTheme.labelLarge?.copyWith(
                 color: AppTheme.primary30,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Rouna',

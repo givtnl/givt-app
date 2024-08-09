@@ -73,7 +73,7 @@ class ParentOverviewWidget extends StatelessWidget {
                     children: [
                       Text(
                         profile.firstName,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             color: isMainUser
                                 ? AppTheme.defaultTextColor
                                 : AppTheme.tertiary20),
@@ -84,7 +84,7 @@ class ParentOverviewWidget extends StatelessWidget {
                           FontAwesomeIcons.arrowRight,
                           color: AppTheme.defaultTextColor,
                           size:
-                              Theme.of(context).textTheme.labelSmall?.fontSize,
+                              Theme.of(context).textTheme.labelMedium?.fontSize,
                         ),
                     ],
                   ),

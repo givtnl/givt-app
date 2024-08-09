@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -19,11 +20,8 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(
+      title: TitleMediumText.primary30(
         title,
-        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: AppTheme.primary30,
-            ),
       ),
       backgroundColor: color ?? Theme.of(context).colorScheme.onPrimary,
       systemOverlayStyle: SystemUiOverlayStyle(

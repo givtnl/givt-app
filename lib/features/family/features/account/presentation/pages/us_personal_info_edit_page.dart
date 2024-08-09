@@ -295,7 +295,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
               ),
               _buildInfoRow(
                 context,
-                style: Theme.of(context).textTheme.labelSmall,
+                style: Theme.of(context).textTheme.labelMedium,
                 icon: const Icon(
                   FontAwesomeIcons.rightFromBracket,
                 ),
@@ -353,7 +353,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
               leading: icon,
               title: Text(
                 value,
-                style: style ?? Theme.of(context).textTheme.labelSmall,
+                style: style ?? Theme.of(context).textTheme.labelMedium,
               ),
               trailing: onTap != null
                   ? const Icon(

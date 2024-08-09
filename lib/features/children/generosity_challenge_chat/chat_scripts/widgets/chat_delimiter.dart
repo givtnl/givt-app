@@ -27,7 +27,7 @@ class ChatDelimiter extends StatelessWidget {
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     fontSize: 16,
                     fontFamily: 'Rouna',
                     fontWeight: FontWeight.w700,

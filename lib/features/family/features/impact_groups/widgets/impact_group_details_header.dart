@@ -66,7 +66,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                         Text(
                           'Goal: \$${impactGroup.goal.goalAmount}',
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: AppTheme.primary50,
                                   ),

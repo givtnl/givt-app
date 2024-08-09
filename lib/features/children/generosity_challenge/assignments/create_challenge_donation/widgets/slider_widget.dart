@@ -25,7 +25,7 @@ class SliderWidget extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               '\$${currentAmount.round()}',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                     color: AppTheme.secondary30,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
@@ -80,7 +80,7 @@ class SliderWidget extends StatelessWidget {
   Widget _createLabel(BuildContext context, String text) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+      style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: AppTheme.primary20,
             fontWeight: FontWeight.w700,
             fontSize: 16,

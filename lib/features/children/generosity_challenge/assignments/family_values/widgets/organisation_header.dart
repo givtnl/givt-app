@@ -40,7 +40,7 @@ class OrganisationHeader extends StatelessWidget {
                         ),
                         child: Text(
                           tag.displayText,
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: theme.textTheme.labelMedium?.copyWith(
                             color: value.colorCombo.textColor,
                           ),
                         ),

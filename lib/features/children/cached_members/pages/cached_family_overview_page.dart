@@ -68,7 +68,7 @@ class CachedFamilyOverviewPage extends StatelessWidget {
                           context.l10n.addMember,
                           textAlign: TextAlign.start,
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     color: AppTheme.givtBlue.withOpacity(.25),
                                   ),

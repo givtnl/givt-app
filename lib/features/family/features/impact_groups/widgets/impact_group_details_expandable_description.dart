@@ -21,7 +21,7 @@ class ImpactGroupDetailsExpandableDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = Theme.of(context).textTheme.labelSmall?.copyWith(
+    final textStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
           fontWeight: FontWeight.w500,
           color: Colors.black,
         );
