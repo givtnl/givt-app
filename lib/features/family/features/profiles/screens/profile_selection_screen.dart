@@ -148,7 +148,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 32),
                             if (!flow.state.isCoin)
                               Visibility(
-                                visible: false,
+                                visible: true,
                                 child: ParentOverviewWidget(
                                   profiles: sortedAdults(
                                     user.guid,

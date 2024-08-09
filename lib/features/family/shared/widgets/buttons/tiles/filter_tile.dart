@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/quick_tile.dart';
 
-class CharityTile extends StatelessWidget {
-  const CharityTile({
+class FilterTile extends StatelessWidget {
+  const FilterTile({
     super.key,
     this.edgeInsets,
     this.isSelected = false,
+    this.type = CollectGroupType.none,
+    this.iconPath,
     this.onClick,
   });
 
   final EdgeInsets? edgeInsets;
+  final CollectGroupType type;
+  final String? iconPath;
   final bool isSelected;
   final void Function(BuildContext context)? onClick;
 
@@ -21,9 +24,11 @@ class CharityTile extends StatelessWidget {
         child: QuickTile(
           onClick: (context) => onClick?.call(context),
           isSelected: isSelected,
-          colorCombo: ColorCombo.tertiary,
-          iconData: FontAwesomeIcons.solidHeart,
-          titleBig: 'Charity',
+          colorCombo: CollectGroupType.getColorComboByType(type),
+          iconPath: iconPath ?? '',
+          iconData:
+              iconPath == null ? CollectGroupType.getIconByTypeUS(type) : null,
+          titleBig: type.name[0].toUpperCase() + type.name.substring(1),
         ),
       );
 }

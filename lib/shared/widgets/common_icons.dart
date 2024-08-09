@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -153,21 +154,24 @@ Widget primaryCircleWithIcon({
     Padding(
       // 14 is what the design has when exporting svgs
       padding: const EdgeInsets.all(14),
-      child: Container(
-        width: circleSize,
-        height: circleSize,
-        decoration: BoxDecoration(
-          color: circleColor ?? FamilyAppTheme.primary95,
-          shape: BoxShape.circle,
+      child: Stack(alignment: Alignment.center, children: [
+        Container(
+          width: circleSize,
+          height: circleSize,
+          decoration: BoxDecoration(
+            color: circleColor ?? FamilyAppTheme.primary95,
+            shape: BoxShape.circle,
+          ),
         ),
-        child: Center(
+        SizedBox(
+          width: iconSize * 2,
           child: Icon(
             iconData,
             color: iconColor ?? FamilyAppTheme.primary20,
             size: iconSize,
           ),
         ),
-      ),
+      ]),
     );
 
 Widget errorCircleWithIcon({

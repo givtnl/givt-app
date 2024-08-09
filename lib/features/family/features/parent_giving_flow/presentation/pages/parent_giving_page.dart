@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -18,15 +17,15 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 
-class GivingPage extends StatefulWidget {
-  const GivingPage({
+class ParentGivingPage extends StatefulWidget {
+  const ParentGivingPage({
     super.key,
   });
   @override
-  State<GivingPage> createState() => _GivingPageState();
+  State<ParentGivingPage> createState() => _ParentGivingPageState();
 }
 
-class _GivingPageState extends State<GivingPage> {
+class _ParentGivingPageState extends State<ParentGivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
   bool browserIsOpened = false;
 
@@ -66,13 +65,7 @@ class _GivingPageState extends State<GivingPage> {
 
     final afterGivingRedirection =
         context.read<GiveBloc>().state.afterGivingRedirection;
-
-    context.goNamed(
-      Pages.home.name,
-      queryParameters: {
-        'given': 'true',
-      },
-    );
+    context.pop();
 
     if (afterGivingRedirection.isNotEmpty) {
       final url = Uri.parse(afterGivingRedirection);
@@ -139,7 +132,7 @@ class _GivingPageState extends State<GivingPage> {
             urlRequest: URLRequest(
               url: Uri.https(
                 getIt<RequestHelper>().apiURL,
-                'confirm.html',
+                'confirm-G4F.html',
                 {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
               ),
             ),
@@ -161,12 +154,7 @@ class _GivingPageState extends State<GivingPage> {
               child: ElevatedButton(
                 child: const Text('Go Back Home'),
                 onPressed: () {
-                  context.goNamed(
-                    Pages.home.name,
-                    queryParameters: {
-                      'given': 'true',
-                    },
-                  );
+                  context.pop();
                 },
               ),
             ),
@@ -178,14 +166,14 @@ class _GivingPageState extends State<GivingPage> {
 }
 
 /// Custom InAppBrowser class with custom callback
-typedef CustomInAppBroserCallback = void Function(Uri? url);
+typedef CustomInAppBrowserCallback = void Function(Uri? url);
 
 class CustomInAppBrowser extends InAppBrowser {
   CustomInAppBrowser({
     required this.onLoad,
   }) : super();
 
-  final CustomInAppBroserCallback onLoad;
+  final CustomInAppBrowserCallback onLoad;
 
   @override
   Future<void> onLoadStart(Uri? url) async => onLoad(url);
