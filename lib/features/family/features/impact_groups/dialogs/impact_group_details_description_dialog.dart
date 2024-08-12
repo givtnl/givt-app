@@ -79,7 +79,7 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 24, right: 24, bottom: 30),
                 child: Text(
                   description,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.w500,
                         color: AppTheme.primary20,
                       ),

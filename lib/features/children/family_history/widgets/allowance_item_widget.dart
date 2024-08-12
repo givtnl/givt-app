@@ -35,7 +35,7 @@ class AllowanceItemWidget extends StatelessWidget {
             children: [
               Text(
                 '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: allowance.isNotSuccessful
                           ? AppTheme.childHistoryPendingDark
                           : AppTheme.childHistoryAllowance,

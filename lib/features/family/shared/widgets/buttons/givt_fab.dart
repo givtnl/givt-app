@@ -119,7 +119,7 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
             ),
             Text(
               widget.text,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ],
         ),
@@ -134,7 +134,7 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
           children: [
             Text(
               widget.text,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
@@ -152,7 +152,7 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
       padding: const EdgeInsets.all(12),
       child: Text(
         widget.text,
-        style: Theme.of(context).textTheme.labelMedium,
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:givt_app/features/family/shared/design/family_text_styles.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 @immutable
@@ -16,6 +17,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
 // extra colors within pallette
   static const primary20 = Color(0xFF003920);
+  static const primary30 = Color(0xFF005231);
   static const primary40 = Color(0xFF006D42);
   static const primary50 = Color(0xFF008954);
   static const primary60 = Color(0xFF15A569);
@@ -25,6 +27,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const primary90 = Color(0xFF6BFCAB);
   static const primary98 = Color(0xFFE9FFED);
 
+  static const secondary20 = Color(0xFF003737);
   static const secondary30 = Color(0xFF004F50);
   static const secondary40 = Color(0xFF00696A);
   static const secondary80 = Color(0xFF4CDADB);
@@ -32,6 +35,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const secondary98 = Color(0xFFE2FFFE);
   static const secondary99 = Color(0xFFF1FFFE);
 
+  static const tertiary20 = Color(0xFF431573);
   static const tertiary40 = Color(0xFF744AA5);
   static const tertiary50 = Color(0xFF8E63C0);
   static const tertiary80 = Color(0xFFDAB9FF);
@@ -132,72 +136,21 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
   ThemeData _base(ColorScheme colorScheme) {
     const textTheme = TextTheme(
-      titleLarge: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 26,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      titleMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 22,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      titleSmall: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 18,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      headlineMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 30,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      headlineLarge: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 45,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1.2,
-      ),
-      labelSmall: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 16,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-        height: 1,
-      ),
-      labelMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-      ),
-      labelLarge: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-        letterSpacing: 0,
-      ),
-      bodySmall: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 15,
-        fontWeight: FontWeight.w400,
-        letterSpacing: 0,
-      ),
-      bodyMedium: TextStyle(
-        color: FamilyAppTheme.defaultTextColor,
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        letterSpacing: 0,
-      ),
+      displayLarge: FamilyTextStyles.displayLarge,
+      displayMedium: FamilyTextStyles.displayMedium,
+      displaySmall: FamilyTextStyles.displaySmall,
+      titleLarge: FamilyTextStyles.titleLarge,
+      titleMedium: FamilyTextStyles.titleMedium,
+      titleSmall: FamilyTextStyles.titleSmall,
+      headlineSmall: FamilyTextStyles.headlineSmall,
+      headlineMedium: FamilyTextStyles.headlineMedium,
+      headlineLarge: FamilyTextStyles.headlineLarge,
+      labelSmall: FamilyTextStyles.labelSmall,
+      labelMedium: FamilyTextStyles.labelMedium,
+      labelLarge: FamilyTextStyles.labelLarge,
+      bodySmall: FamilyTextStyles.bodySmall,
+      bodyMedium: FamilyTextStyles.bodyMedium,
+      bodyLarge: FamilyTextStyles.bodyLarge,
     );
 
     return ThemeData(

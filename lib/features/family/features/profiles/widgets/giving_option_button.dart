@@ -45,7 +45,7 @@ class GiveOptionButton extends StatelessWidget {
             Text(
               text,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: secondColor,
                   ),
             ),

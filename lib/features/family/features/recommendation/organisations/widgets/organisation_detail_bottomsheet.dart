@@ -73,7 +73,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                       Text(
                         organisation.shortDescription,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       const SizedBox(height: 12),
                       Text(

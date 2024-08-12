@@ -46,7 +46,7 @@ class FamilyValueContainer extends StatelessWidget {
                 Text(
                   familyValue.displayText,
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: theme.textTheme.labelMedium?.copyWith(
                     color: familyValue.colorCombo.textColor,
                   ),
                 ),

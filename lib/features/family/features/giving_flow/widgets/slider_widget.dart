@@ -25,7 +25,7 @@ class SliderWidget extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               '\$${currentAmount.round()}',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           SliderTheme(
@@ -68,12 +68,12 @@ class SliderWidget extends StatelessWidget {
               children: [
                 Text(
                   r'$0',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
                 const Spacer(),
                 Text(
                   '\$${maxAmount.round()}',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ],
             ),

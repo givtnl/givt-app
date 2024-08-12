@@ -85,12 +85,12 @@ class GivtElevatedButton extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             style: isDisabled == true
-                ? themeData.textTheme.labelMedium?.copyWith(
+                ? themeData.textTheme.labelLarge?.copyWith(
                     color: themeData.colorScheme.outline,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
                   )
-                : themeData.textTheme.labelMedium?.copyWith(
+                : themeData.textTheme.labelLarge?.copyWith(
                     color: borderColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
@@ -108,12 +108,12 @@ class GivtElevatedButton extends StatelessWidget {
             text,
             textAlign: TextAlign.center,
             style: isDisabled == true
-                ? themeData.textTheme.labelMedium?.copyWith(
+                ? themeData.textTheme.labelLarge?.copyWith(
                     color: themeData.colorScheme.outline,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
                   )
-                : themeData.textTheme.labelMedium?.copyWith(
+                : themeData.textTheme.labelLarge?.copyWith(
                     color: borderColor,
                     fontWeight: FontWeight.w700,
                     fontFamily: 'Rouna',
@@ -142,12 +142,12 @@ class GivtElevatedButton extends StatelessWidget {
               text,
               textAlign: TextAlign.center,
               style: isDisabled == true
-                  ? themeData.textTheme.labelMedium?.copyWith(
+                  ? themeData.textTheme.labelLarge?.copyWith(
                       color: themeData.colorScheme.outline,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Rouna',
                     )
-                  : themeData.textTheme.labelMedium?.copyWith(
+                  : themeData.textTheme.labelLarge?.copyWith(
                       color: borderColor,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Rouna',
@@ -165,12 +165,12 @@ class GivtElevatedButton extends StatelessWidget {
         text,
         textAlign: TextAlign.center,
         style: isDisabled == true
-            ? themeData.textTheme.labelMedium?.copyWith(
+            ? themeData.textTheme.labelLarge?.copyWith(
                 color: themeData.colorScheme.outline,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Rouna',
               )
-            : themeData.textTheme.labelMedium?.copyWith(
+            : themeData.textTheme.labelLarge?.copyWith(
                 color: borderColor,
                 fontWeight: FontWeight.w700,
                 fontFamily: 'Rouna',
