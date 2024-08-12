@@ -10,9 +10,11 @@ mixin ImpactGroupsRepository {
     required String groupId,
   });
 
-  Future<List<ImpactGroup>> fetchImpactGroups();
+  Future<List<ImpactGroup>> getImpactGroups();
 
-  Stream<void> groupInviteAcceptedStream();
+  Future<ImpactGroup?> isInvitedToGroup();
+
+  Stream<List<ImpactGroup>> impactGroupsStream();
 }
 
 class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
@@ -21,26 +23,44 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   );
 
   final APIService _apiService;
-  final StreamController<void> _groupInviteAcceptedStreamController =
-      StreamController<void>.broadcast();
+  final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
+      StreamController.broadcast();
+
+  List<ImpactGroup>? _impactGroups;
 
   @override
   Future<void> acceptGroupInvite({
     required String groupId,
   }) async {
     await _apiService.acceptGroupInvite(groupId);
-    _groupInviteAcceptedStreamController.add(null);
+    await _fetchImpactGroups();
   }
 
   @override
-  Future<List<ImpactGroup>> fetchImpactGroups() async {
+  Future<List<ImpactGroup>> getImpactGroups() async {
+    return _impactGroups ??= await _fetchImpactGroups();
+  }
+
+  Future<List<ImpactGroup>> _fetchImpactGroups() async {
     final result = await _apiService.fetchImpactGroups();
-    return result
+    final list = result
         .map((e) => ImpactGroup.fromMap(e as Map<String, dynamic>))
         .toList();
+    _impactGroupsStreamController.add(list);
+    return list;
   }
 
   @override
-  Stream<void> groupInviteAcceptedStream() =>
-      _groupInviteAcceptedStreamController.stream;
+  Stream<List<ImpactGroup>> impactGroupsStream() =>
+      _impactGroupsStreamController.stream;
+
+  @override
+  Future<ImpactGroup?> isInvitedToGroup() async {
+    for (final impactGroup in await getImpactGroups()) {
+      if (impactGroup.status == ImpactGroupStatus.invited) {
+        return impactGroup;
+      }
+    }
+    return null;
+  }
 }

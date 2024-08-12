@@ -49,7 +49,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     _emitLoading();
     try {
       var updatedProfile =
-          await _profilesRepository.fetchChildDetails(_profile.id);
+          await _profilesRepository.getChildDetails(_profile.id);
       _profile = _profile.copyWith(wallet: updatedProfile.wallet);
       _profileExt = await _childDetailsRepository.fetchChildDetails(
         _profile,

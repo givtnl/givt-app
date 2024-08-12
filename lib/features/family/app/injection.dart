@@ -46,6 +46,9 @@ void initRepositories() {
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
         getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<OrganisationDetailsRepository>(
