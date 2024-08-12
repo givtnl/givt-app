@@ -28,7 +28,9 @@ class FilterTile extends StatelessWidget {
           iconPath: iconPath ?? '',
           iconData:
               iconPath == null ? CollectGroupType.getIconByTypeUS(type) : null,
-          titleBig: type.name[0].toUpperCase() + type.name.substring(1),
+          titleBig: type == CollectGroupType.charities
+              ? 'Non-profit'
+              : type.name[0].toUpperCase() + type.name.substring(1),
         ),
       );
 }
