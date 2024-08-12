@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -86,78 +85,71 @@ class _OrganisationListFamilyPageState
                 );
               }
             },
-            builder: (context, giveState) {
-              final filteredOrganisations = getFilteredOrganisations(state);
-              return giveState.status == GiveStatus.loading ||
-                      giveState.status == GiveStatus.processed ||
-                      giveState.status == GiveStatus.success
-                  ? const CustomCircularProgressIndicator()
-                  : Column(
-                      children: [
-                        const SizedBox(
-                          height: 16,
+            builder: (context, giveState) => giveState.status ==
+                        GiveStatus.loading ||
+                    giveState.status == GiveStatus.processed ||
+                    giveState.status == GiveStatus.success
+                ? const CustomCircularProgressIndicator()
+                : Column(
+                    children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      _buildFilterType(bloc, locals),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 16,
                         ),
-                        _buildFilterType(bloc, locals),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 16,
-                          ),
-                          child: FamilySearchField(
-                            autocorrect: false,
-                            controller: controller,
-                            onChanged: (value) => context
-                                .read<OrganisationBloc>()
-                                .add(OrganisationFilterQueryChanged(value)),
-                          ),
+                        child: FamilySearchField(
+                          autocorrect: false,
+                          controller: controller,
+                          onChanged: (value) => context
+                              .read<OrganisationBloc>()
+                              .add(OrganisationFilterQueryChanged(value)),
                         ),
-                        if (state.status == OrganisationStatus.filtered)
-                          Expanded(
-                            child: ListView.separated(
-                              separatorBuilder: (_, index) => const Divider(
-                                height: 0.1,
-                              ),
-                              shrinkWrap: true,
-                              itemCount: filteredOrganisations.length,
-                              itemBuilder: (context, index) {
-                                return _buildListTile(
-                                  type: filteredOrganisations[index].type,
-                                  title: filteredOrganisations[index].orgName,
-                                  onTap: () {
-                                    context.read<OrganisationBloc>().add(
-                                          OrganisationSelectionChanged(
-                                            filteredOrganisations[index]
-                                                .nameSpace,
-                                          ),
-                                        );
-
-                                    _navigateToGivingScreen(
-                                      state,
-                                      context,
-                                      filteredOrganisations[index].type,
-                                    );
-                                  },
-                                );
-                              },
+                      ),
+                      if (state.status == OrganisationStatus.filtered)
+                        Expanded(
+                          child: ListView.separated(
+                            separatorBuilder: (_, index) => const Divider(
+                              height: 0.1,
                             ),
-                          )
-                        else
-                          const Center(
-                            child: CustomCircularProgressIndicator(),
+                            shrinkWrap: true,
+                            itemCount: state.filteredOrganisations.length,
+                            itemBuilder: (context, index) {
+                              return _buildListTile(
+                                type: state.filteredOrganisations[index].type,
+                                title:
+                                    state.filteredOrganisations[index].orgName,
+                                onTap: () {
+                                  context.read<OrganisationBloc>().add(
+                                        OrganisationSelectionChanged(
+                                          state.filteredOrganisations[index]
+                                              .nameSpace,
+                                        ),
+                                      );
+
+                                  _navigateToGivingScreen(
+                                    state,
+                                    context,
+                                    state.filteredOrganisations[index].type,
+                                  );
+                                },
+                              );
+                            },
                           ),
-                      ],
-                    );
-            },
+                        )
+                      else
+                        const Center(
+                          child: CustomCircularProgressIndicator(),
+                        ),
+                    ],
+                  ),
           );
         },
       ),
     );
-  }
-
-  List<CollectGroup> getFilteredOrganisations(OrganisationState state) {
-    return state.filteredOrganisations
-        .where((element) => isIncludedInTypeToShow(element.type))
-        .toList();
   }
 
   void _navigateToGivingScreen(
@@ -233,26 +225,20 @@ class _OrganisationListFamilyPageState
           const SizedBox(
             width: 24,
           ),
-          ...types.where(isIncludedInTypeToShow).map(
-                (e) => FilterTile(
-                  type: e,
-                  edgeInsets: const EdgeInsets.only(right: 8),
-                  isSelected: bloc.state.selectedType == e.index,
-                  onClick: (context) => bloc.add(
-                    OrganisationTypeChanged(
-                      e.index,
-                    ),
-                  ),
+          ...types.map(
+            (e) => FilterTile(
+              type: e,
+              edgeInsets: const EdgeInsets.only(right: 8),
+              isSelected: bloc.state.selectedType == e.index,
+              onClick: (context) => bloc.add(
+                OrganisationTypeChanged(
+                  e.index,
                 ),
               ),
+            ),
+          ),
         ],
       ),
     );
-  }
-
-  bool isIncludedInTypeToShow(CollectGroupType e) {
-    return e == CollectGroupType.church ||
-        e == CollectGroupType.charities ||
-        e == CollectGroupType.campaign;
   }
 }
