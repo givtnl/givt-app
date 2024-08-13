@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -46,7 +47,7 @@ class TokenInterceptor implements InterceptorContract {
 
     unawaited(
       LoggingInfo.instance.logRequest(
-        "API - " + request.method,
+        'API - ${request.method}',
         request.url.toString(),
         correlationId,
       ),

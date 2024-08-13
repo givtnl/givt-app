@@ -253,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                     : Text(
                         locals.login,
                       ),
-              )
+              ),
             ],
           ),
         ),

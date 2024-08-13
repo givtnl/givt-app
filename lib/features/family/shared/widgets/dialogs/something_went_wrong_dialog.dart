@@ -47,7 +47,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
       IconData? primaryRightIcon,
       Widget? primaryLeadingImage,
       bool? showLoadingState = false,
-      void Function()? onClickSecondaryBtn}) {
+      void Function()? onClickSecondaryBtn,}) {
     showDialog<void>(
       context: context,
       barrierDismissible: false,

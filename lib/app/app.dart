@@ -125,7 +125,7 @@ class _AppState extends State<App> {
         child: AppThemeSwitcherWidget(
           key: themeKey,
           builder: (BuildContext context, ThemeData themeData,
-              {required bool isFamilyApp}) {
+              {required bool isFamilyApp,}) {
             if (kDebugMode) {
               log('Rebuilding app with theme, isFamilyApp: $isFamilyApp');
             }
@@ -148,7 +148,7 @@ class _AppState extends State<App> {
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView({required this.themeData, super.key});
+  const _AppView({required this.themeData});
 
   final ThemeData themeData;
 

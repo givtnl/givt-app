@@ -199,7 +199,7 @@ class ChildDetailsPage extends StatelessWidget {
   }
 
   double getBalance(BuildContext context) {
-    var family = context.watch<FamilyOverviewCubit>().state;
+    final family = context.watch<FamilyOverviewCubit>().state;
     if (family is FamilyOverviewUpdatedState) {
       return family.profiles
           .firstWhere(

@@ -41,7 +41,7 @@ class GivtGroup extends Equatable {
     return GivtGroup(
       givts: givts ?? this.givts,
       timeStamp: timeStamp ?? this.timeStamp,
-      organisationName: organisation ?? this.organisationName,
+      organisationName: organisation ?? organisationName,
       status: status ?? this.status,
       amount: amount ?? this.amount,
       isGiftAidEnabled: isGiftAidEnabled ?? this.isGiftAidEnabled,

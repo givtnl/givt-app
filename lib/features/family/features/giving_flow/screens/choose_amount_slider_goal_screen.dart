@@ -140,7 +140,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                         if (state is CreateTransactionUploadingState) {
                           return;
                         }
-                        var transaction = Transaction(
+                        final transaction = Transaction(
                           userId: profilesCubit.state.activeProfile.id,
                           mediumId: mediumId,
                           amount: state.amount,

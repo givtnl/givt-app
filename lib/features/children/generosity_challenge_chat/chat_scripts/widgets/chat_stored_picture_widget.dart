@@ -9,7 +9,7 @@ class ChatStoredPictureWidget extends StatefulWidget {
       {required this.width,
       required this.height,
       required this.path,
-      super.key});
+      super.key,});
   final double width;
   final double height;
   final String path;

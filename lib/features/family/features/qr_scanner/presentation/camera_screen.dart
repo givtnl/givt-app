@@ -34,7 +34,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
+    final size = MediaQuery.sizeOf(context);
     return BlocConsumer<CameraCubit, CameraState>(
       listener: (context, state) {
         final cameraCubit = context.read<CameraCubit>();
@@ -50,7 +50,7 @@ class _CameraScreenState extends State<CameraScreen> {
             context: context,
             builder: (_) {
               return CameraPermissionsDialog(
-                  cameraCubit: cameraCubit, isSettings: true);
+                  cameraCubit: cameraCubit, isSettings: true,);
             },
           );
         }
@@ -76,7 +76,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 },
               );
               context.pushReplacementNamed(
-                  FamilyPages.familyChooseAmountSlider.name);
+                  FamilyPages.familyChooseAmountSlider.name,);
             }
           },
           builder: (context, orgState) {

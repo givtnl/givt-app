@@ -77,7 +77,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
                 padding: const EdgeInsets.only(top: 15),
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (!await getIt<NetworkInfo>()
+                    if (!getIt<NetworkInfo>()
                         .isConnected) {
                       if (!context.mounted) {
                         return;

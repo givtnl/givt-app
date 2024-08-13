@@ -36,7 +36,7 @@ class GivtElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeData = FamilyAppTheme().toThemeData();
+    final themeData = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: () {
         if (amplitudeEvent != null) {

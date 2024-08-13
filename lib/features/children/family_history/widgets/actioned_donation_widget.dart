@@ -46,7 +46,7 @@ class ActionedDonationWidget extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     softWrap: true,
-                    style: Theme.of(context).textTheme.titleSmall),
+                    style: Theme.of(context).textTheme.titleSmall,),
               ),
               Text(
                 donation.date.formatDate(locals),

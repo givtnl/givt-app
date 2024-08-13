@@ -4,6 +4,20 @@ import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/features/history/models/donation.dart';
 
 class Profile extends Equatable {
+
+  const Profile({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.type,
+    required this.nickname,
+    required this.comment,
+    required this.wallet,
+    required this.hasDonations,
+    required this.lastDonationItem,
+    required this.pictureURL,
+    required this.dateOfBirth,
+  });
   factory Profile.fromMap(Map<String, dynamic> map) {
     final pictureMap = map['picture'] as Map<String, dynamic>;
 
@@ -30,20 +44,6 @@ class Profile extends Equatable {
       dateOfBirth: map['dateOfBirth'] as String? ?? '',
     );
   }
-
-  const Profile({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.type,
-    required this.nickname,
-    required this.comment,
-    required this.wallet,
-    required this.hasDonations,
-    required this.lastDonationItem,
-    required this.pictureURL,
-    required this.dateOfBirth,
-  });
 
   Profile.empty()
       : this(

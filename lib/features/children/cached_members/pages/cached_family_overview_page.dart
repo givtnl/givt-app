@@ -41,7 +41,7 @@ class CachedFamilyOverviewPage extends StatelessWidget {
                 context.l10n.childrenMyFamily,
                 style: GoogleFonts.mulish(
                   textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800, color: AppTheme.givtBlue),
+                      fontWeight: FontWeight.w800, color: AppTheme.givtBlue,),
                 ),
               ),
               leading: BackButton(

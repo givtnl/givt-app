@@ -17,7 +17,6 @@ class InterestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionTile(
-      isDisabled: false,
       titleSmall: interest.displayText,
       iconPath: interest.pictureUrl,
       onTap: onPressed,

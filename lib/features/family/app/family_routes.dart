@@ -396,7 +396,7 @@ class FamilyAppRoutes {
             final group = extra as ImpactGroup;
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
-                  context.read<ProfilesCubit>(), getIt()),
+                  context.read<ProfilesCubit>(), getIt(),),
               child: ChooseAmountSliderGoalScreen(
                 group: group,
               ),
@@ -487,7 +487,7 @@ class FamilyAppRoutes {
                 : "${FamilyPages.profileSelection.path}/${FamilyPages.outAppCoinFlow.path}?code=${state.uri.queryParameters['code']}";
           },
           builder: (context, state) {
-            final String mediumID = state.uri.queryParameters['code'] == null ||
+            final mediumID = state.uri.queryParameters['code'] == null ||
                     state.uri.queryParameters['code']!.contains('null')
                 ? OrganisationDetailsCubit.defaultMediumId
                 : state.uri.queryParameters['code']!;
@@ -509,7 +509,7 @@ class FamilyAppRoutes {
 
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
-                  context.read<ProfilesCubit>(), getIt()),
+                  context.read<ProfilesCubit>(), getIt(),),
               child: const ChooseAmountSliderScreen(),
             );
           },

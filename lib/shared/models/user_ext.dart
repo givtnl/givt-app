@@ -38,42 +38,6 @@ class UserExt extends Equatable {
     this.profilePicture = '',
   });
 
-  const UserExt.empty()
-      : email = '',
-        guid = '',
-        amountLimit = 0,
-        tempUser = false,
-        mandateSigned = false,
-        maxAmountRegistered = false,
-        multipleCollectsFirstBallon = true,
-        multipleCollectsSecondBallon = true,
-        needRegistration = true,
-        isInvitedUser = false,
-        personalInfoRegistered = false,
-        pinSet = false,
-        multipleCollectsAccepted = false,
-        firstName = '',
-        lastName = '',
-        phoneNumber = '',
-        address = '',
-        postalCode = '',
-        city = '',
-        country = '',
-        iban = '',
-        payProvMandate = '',
-        payProvMandateStatus = '',
-        countryCode = -1,
-        isGiftAidEnabled = false,
-        accountType = AccountType.none,
-        appLanguage = '',
-        sortCode = '',
-        accountNumber = '',
-        accountBrand = '',
-        notificationId = '',
-        profilePicture = '';
-
-  bool get isUsUser => Country.fromCode(country).isUS;
-
   factory UserExt.fromJson(Map<String, dynamic> json) {
     final isInvitedUser = json['FirstName'] != Util.defaultFirstName &&
         json['LastName'] == Util.defaultLastName &&
@@ -119,6 +83,42 @@ class UserExt extends Equatable {
       profilePicture: (json['ProfilePicture'] ?? '').toString(),
     );
   }
+
+  const UserExt.empty()
+      : email = '',
+        guid = '',
+        amountLimit = 0,
+        tempUser = false,
+        mandateSigned = false,
+        maxAmountRegistered = false,
+        multipleCollectsFirstBallon = true,
+        multipleCollectsSecondBallon = true,
+        needRegistration = true,
+        isInvitedUser = false,
+        personalInfoRegistered = false,
+        pinSet = false,
+        multipleCollectsAccepted = false,
+        firstName = '',
+        lastName = '',
+        phoneNumber = '',
+        address = '',
+        postalCode = '',
+        city = '',
+        country = '',
+        iban = '',
+        payProvMandate = '',
+        payProvMandateStatus = '',
+        countryCode = -1,
+        isGiftAidEnabled = false,
+        accountType = AccountType.none,
+        appLanguage = '',
+        sortCode = '',
+        accountNumber = '',
+        accountBrand = '',
+        notificationId = '',
+        profilePicture = '';
+
+  bool get isUsUser => Country.fromCode(country).isUS;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'Email': email,

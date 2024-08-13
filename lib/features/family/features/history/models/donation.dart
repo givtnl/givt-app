@@ -2,6 +2,15 @@ import 'package:givt_app/features/family/features/history/models/history_item.da
 import 'package:givt_app/features/family/helpers/donation_state.dart';
 
 class Donation extends HistoryItem {
+  const Donation({
+    required super.amount,
+    required super.date,
+    required this.organizationName,
+    required this.state,
+    required this.medium,
+    required super.type,
+    required this.goalId,
+  });
 
   Donation.empty()
       : this(
@@ -22,7 +31,7 @@ class Donation extends HistoryItem {
       state: DonationState.getState(map['status'] as String?),
       medium: DonationMediumType.values.firstWhere(
           (element) => element.type == map['mediumType'],
-          orElse: () => DonationMediumType.unknown),
+          orElse: () => DonationMediumType.unknown,),
       type: HistoryTypes.values.firstWhere(
         (element) => element.value == map['donationType'],
         orElse: () => HistoryTypes.donation,
@@ -30,15 +39,6 @@ class Donation extends HistoryItem {
       goalId: map['goalId'] as String? ?? '',
     );
   }
-  const Donation({
-    required super.amount,
-    required super.date,
-    required this.organizationName,
-    required this.state,
-    required this.medium,
-    required super.type,
-    required this.goalId,
-  });
   final String organizationName;
   final DonationState state;
   final DonationMediumType medium;

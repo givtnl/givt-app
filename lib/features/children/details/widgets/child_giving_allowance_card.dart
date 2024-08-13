@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -21,7 +20,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final nextTopUpDate =
         DateTime.parse(profileDetails.wallet.givingAllowance.nextGivingAllowanceDate);
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),

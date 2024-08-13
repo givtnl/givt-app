@@ -20,7 +20,7 @@ class FamilyValueContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       borderColor: familyValue.colorCombo.borderColor,
       isSelected: isSelected,

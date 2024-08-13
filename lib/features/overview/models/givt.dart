@@ -103,7 +103,7 @@ class Givt extends Equatable {
         organisationTaxDeductible:
             organisationTaxDeductible ?? this.organisationTaxDeductible,
         collectId: collectId ?? this.collectId,
-        isGiftAidEnabled: isGiftAid ?? this.isGiftAidEnabled,
+        isGiftAidEnabled: isGiftAid ?? isGiftAidEnabled,
         status: status ?? this.status,
         timeStamp: timeStamp ?? this.timeStamp,
         mediumId: mediumId ?? this.mediumId,

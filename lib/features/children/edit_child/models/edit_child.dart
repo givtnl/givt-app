@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class EditChild extends Equatable {

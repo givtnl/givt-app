@@ -29,7 +29,7 @@ class CoinErrorPage extends StatelessWidget {
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  String mediumId =
+                  final mediumId =
                       context.read<OrganisationDetailsCubit>().state.mediumId;
                   context
                       .read<OrganisationDetailsCubit>()

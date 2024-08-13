@@ -24,8 +24,6 @@ class GivtBanner extends StatelessWidget {
         boxShadow: const [
           BoxShadow(
             color: AppTheme.highlight80,
-            blurRadius: 0,
-            offset: Offset(0, 0),
           ),
         ],
       ),

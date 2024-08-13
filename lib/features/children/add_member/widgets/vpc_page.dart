@@ -18,7 +18,7 @@ class VPCPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return SafeArea(
       child: Center(
         child: Padding(

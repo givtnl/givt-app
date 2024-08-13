@@ -6,7 +6,7 @@ class Vibrator {
   static Future<void> tryVibrate({
     Duration duration = const Duration(milliseconds: 500),
   }) async {
-    var hasVibrator = await Vibration.hasVibrator();
+    final hasVibrator = await Vibration.hasVibrator();
     if (hasVibrator == true) {
       Vibration.cancel();
       Vibration.vibrate(duration: duration.inMilliseconds);
@@ -17,7 +17,7 @@ class Vibrator {
     List<int> pattern = const [50, 600, 450, 80],
     List<int> intensities = const [0, 128, 0, 255],
   }) async {
-    var hasVibrator = await Vibration.hasVibrator();
+    final hasVibrator = await Vibration.hasVibrator();
     if (hasVibrator == true) {
       Vibration.cancel();
       Vibration.vibrate(

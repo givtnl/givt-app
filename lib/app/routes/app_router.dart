@@ -123,7 +123,7 @@ class AppRouter {
           final uri = state.uri.queryParameters['uri'];
           return RedirectToBrowserPage(
               uri:
-                  uri ?? 'https://givt.app/search-for-coin?${state.uri.query}');
+                  uri ?? 'https://givt.app/search-for-coin?${state.uri.query}',);
         },
       ),
       GoRoute(

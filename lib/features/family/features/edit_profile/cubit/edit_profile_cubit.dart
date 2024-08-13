@@ -31,7 +31,7 @@ class EditChildProfileCubit extends Cubit<EditChildProfileState> {
     if (url.isEmpty) {
       return '';
     }
-    final File file = File(url);
+    final file = File(url);
     return basename(file.path);
   }
 

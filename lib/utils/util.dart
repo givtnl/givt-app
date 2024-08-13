@@ -65,7 +65,7 @@ AgMBAAE=
     return icon;
   }
 
-  // todo remove this
+  // TODOremove this
   static String getCurrencyName({required Country country}) {
     return country == Country.us
         ? 'USD'

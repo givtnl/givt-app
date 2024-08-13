@@ -160,7 +160,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
 
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
     final profile = state.profiles.firstWhere((element) => element.id == id,
-        orElse: () => Profile.empty());
+        orElse: Profile.empty,);
     final index = state.profiles.indexOf(profile);
     final childGuid = state.profiles[index].id;
 

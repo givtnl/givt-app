@@ -47,9 +47,8 @@ class _SearchCoinAnimatedWidgetState extends State<SearchCoinAnimatedWidget>
 
 class AnimatedCoin extends AnimatedWidget {
   const AnimatedCoin({
-    super.key,
+    required Animation<double> animation, super.key,
     this.width = 120,
-    required Animation<double> animation,
   }) : super(listenable: animation);
 
   final double width;

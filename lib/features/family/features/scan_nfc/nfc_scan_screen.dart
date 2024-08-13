@@ -83,7 +83,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
                           );
                         } else {
                           return ScanningNfcAnimation(
-                              scanNfcCubit: scanNfcCubit);
+                              scanNfcCubit: scanNfcCubit,);
                         }
                       },
                     ),
@@ -243,7 +243,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
     );
     unawaited(AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.notAGivtCoinNFCErrorShown,
-    ));
+    ),);
   }
 
   void _navigateToHome(BuildContext context) {

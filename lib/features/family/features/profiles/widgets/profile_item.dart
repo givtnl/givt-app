@@ -5,9 +5,7 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class ProfileItem extends StatelessWidget {
   const ProfileItem({
-    super.key,
-    required this.name,
-    required this.imageUrl,
+    required this.name, required this.imageUrl, super.key,
   });
 
   final String name;

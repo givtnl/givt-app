@@ -130,7 +130,7 @@ class NotificationService implements INotificationService {
 
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
     LoggingInfo.instance.info('Firebase notification received');
-    print("Firebase notification received");
+    print('Firebase notification received');
 
     switch (message.data['Type']) {
       case 'DonationApproval':

@@ -18,7 +18,7 @@ class SearchCoinCubit extends Cubit<SearchCoinState> {
 
   static const searchDuration = Duration(milliseconds: 2000);
 
-  void startAnimation(String mediumId) async {
+  Future<void> startAnimation(String mediumId) async {
     emit(
       state.copyWith(
         status: CoinAnimationStatus.animating,
@@ -34,7 +34,7 @@ class SearchCoinCubit extends Cubit<SearchCoinState> {
     );
   }
 
-  void stopAnimation() async {
+  Future<void> stopAnimation() async {
     // checking if the request took less than the animation duration
     if (state.stopwatch.elapsedMilliseconds <
         SearchCoinCubit.searchDuration.inMilliseconds) {
