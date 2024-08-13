@@ -1,13 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -17,15 +11,15 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class OrganisationListFamilyPage extends StatefulWidget {
   const OrganisationListFamilyPage({
+    required this.onTap,
     super.key,
   });
-
+  final void Function(CollectGroup) onTap;
   @override
   State<OrganisationListFamilyPage> createState() =>
       _OrganisationListFamilyPageState();
@@ -34,7 +28,6 @@ class OrganisationListFamilyPage extends StatefulWidget {
 class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
-
   @override
   void dispose() {
     controller.dispose();
@@ -61,132 +54,53 @@ class _OrganisationListFamilyPageState
           }
         },
         builder: (context, state) {
-          return BlocConsumer<GiveBloc, GiveState>(
-            listener: (context, state) {
-              final userGUID = context.read<AuthCubit>().state.user.guid;
-              if (state.status == GiveStatus.success) {
-                context.read<GiveBloc>().add(
-                      GiveOrganisationSelected(
-                        nameSpace: bloc.state.selectedCollectGroup.nameSpace,
-                        userGUID: userGUID,
-                      ),
-                    );
-              }
-              if (state.status == GiveStatus.readyToGive) {
-                context.pushReplacementNamed(
-                  FamilyPages.parentGive.name,
-                  extra: context.read<GiveBloc>(),
-                );
-              }
-              if (state.status == GiveStatus.error) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(locals.somethingWentWrong),
+          return Column(
+            children: [
+              const SizedBox(
+                height: 16,
+              ),
+              _buildFilterType(bloc, locals),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
+                child: FamilySearchField(
+                  autocorrect: false,
+                  controller: controller,
+                  onChanged: (value) => context
+                      .read<OrganisationBloc>()
+                      .add(OrganisationFilterQueryChanged(value)),
+                ),
+              ),
+              if (state.status == OrganisationStatus.filtered)
+                Expanded(
+                  child: ListView.separated(
+                    separatorBuilder: (_, index) => const Divider(
+                      height: 0.1,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: state.filteredOrganisations.length,
+                    itemBuilder: (context, index) {
+                      return _buildListTile(
+                        type: state.filteredOrganisations[index].type,
+                        title: state.filteredOrganisations[index].orgName,
+                        onTap: () {
+                          widget.onTap(state.filteredOrganisations[index]);
+                        },
+                      );
+                    },
                   ),
-                );
-              }
-            },
-            builder: (context, giveState) => giveState.status ==
-                        GiveStatus.loading ||
-                    giveState.status == GiveStatus.processed ||
-                    giveState.status == GiveStatus.success
-                ? const CustomCircularProgressIndicator()
-                : Column(
-                    children: [
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      _buildFilterType(bloc, locals),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 16,
-                        ),
-                        child: FamilySearchField(
-                          autocorrect: false,
-                          controller: controller,
-                          onChanged: (value) => context
-                              .read<OrganisationBloc>()
-                              .add(OrganisationFilterQueryChanged(value)),
-                        ),
-                      ),
-                      if (state.status == OrganisationStatus.filtered)
-                        Expanded(
-                          child: ListView.separated(
-                            separatorBuilder: (_, index) => const Divider(
-                              height: 0.1,
-                            ),
-                            shrinkWrap: true,
-                            itemCount: state.filteredOrganisations.length,
-                            itemBuilder: (context, index) {
-                              return _buildListTile(
-                                type: state.filteredOrganisations[index].type,
-                                title:
-                                    state.filteredOrganisations[index].orgName,
-                                onTap: () {
-                                  context.read<OrganisationBloc>().add(
-                                        OrganisationSelectionChanged(
-                                          state.filteredOrganisations[index]
-                                              .nameSpace,
-                                        ),
-                                      );
-
-                                  _navigateToGivingScreen(
-                                    state,
-                                    context,
-                                    state.filteredOrganisations[index].type,
-                                  );
-                                },
-                              );
-                            },
-                          ),
-                        )
-                      else
-                        const Center(
-                          child: CustomCircularProgressIndicator(),
-                        ),
-                    ],
-                  ),
+                )
+              else
+                const Center(
+                  child: CustomCircularProgressIndicator(),
+                ),
+            ],
           );
         },
       ),
     );
-  }
-
-  void _navigateToGivingScreen(
-    OrganisationState state,
-    BuildContext context,
-    CollectGroupType type,
-  ) async {
-    final collectGroup = state.filteredOrganisations.firstWhere(
-      (element) => element.nameSpace == state.selectedCollectGroup.nameSpace,
-    );
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.parentGivingFlowOrganisationClicked,
-        eventProperties: {
-          'organisation': collectGroup.orgName,
-        },
-      ),
-    );
-    final dynamic result = await Navigator.push(
-      context,
-      ParentAmountPage(
-        currency: r'$',
-        organisationName: collectGroup.orgName,
-        colorCombo: CollectGroupType.getColorComboByType(type),
-        icon: CollectGroupType.getIconByTypeUS(type),
-      ).toRoute(context),
-    );
-    if (result != null && result is int && context.mounted) {
-      context.read<GiveBloc>().add(
-            GiveAmountChanged(
-              firstCollectionAmount: result.toDouble(),
-              secondCollectionAmount: 0,
-              thirdCollectionAmount: 0,
-            ),
-          );
-    }
   }
 
   Widget _buildListTile({
@@ -196,7 +110,7 @@ class _OrganisationListFamilyPageState
   }) =>
       ListTile(
         key: UniqueKey(),
-        onTap: onTap,
+        onTap: () => onTap.call(),
         splashColor: AppTheme.generosityChallangeCardBackground,
         selectedTileColor: CollectGroupType.getHighlightColor(type),
         trailing: FaIcon(
