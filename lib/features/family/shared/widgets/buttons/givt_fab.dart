@@ -5,10 +5,8 @@ import 'package:flutter/services.dart';
 
 class GivtFloatingActionButton extends StatefulWidget {
   const GivtFloatingActionButton({
-    super.key,
+    required this.onTap, required this.text, super.key,
     this.isDisabled,
-    required this.onTap,
-    required this.text,
     this.leftIcon,
     this.rightIcon,
   });
@@ -83,8 +81,6 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).colorScheme.secondary,
-                blurRadius: 0,
-                offset: const Offset(0, 0),
               ),
             ],
           ),

@@ -49,7 +49,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
   Widget build(BuildContext context) {
     final child =
         widget.isMultipleChildren ? 'each of your children' : widget.childName;
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return Scaffold(
       appBar: const GenerosityAppBar(
         title: 'Recurring Amount',

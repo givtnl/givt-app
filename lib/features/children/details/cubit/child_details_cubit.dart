@@ -5,10 +5,8 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
-import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
-import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -16,13 +14,12 @@ part 'child_details_state.dart';
 
 class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   ChildDetailsCubit(
-    this._childDetailsRepository,
     this._editChildRepository,
     this._profilesRepository,
     this._profile,
   ) : super(const ChildDetailsInitialState()) {
     _walletChangedSubscription =
-        _editChildRepository.walletChangedStream().listen(
+        _editChildRepository.childChangedStream().listen(
       (childGUID) {
         if (childGUID == _profile.id) {
           fetchChildDetails();
@@ -31,11 +28,9 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     );
   }
 
-  final ChildDetailsRepository _childDetailsRepository;
   final EditChildRepository _editChildRepository;
   final ProfilesRepository _profilesRepository;
-  LegacyProfile _profile;
-  ProfileExt? _profileExt;
+  Profile _profile;
 
   StreamSubscription<String>? _walletChangedSubscription;
 
@@ -48,11 +43,8 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   Future<void> fetchChildDetails() async {
     _emitLoading();
     try {
-      var updatedProfile =
-          await _profilesRepository.fetchChildDetails(_profile.id);
-      _profile = _profile.copyWith(wallet: updatedProfile.wallet);
-      _profileExt = await _childDetailsRepository.fetchChildDetails(
-        _profile,
+      _profile = await _profilesRepository.getChildDetails(
+        _profile.id,
       );
       _emitData();
     } catch (error, stackTrace) {
@@ -69,7 +61,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   void _emitData() {
     emit(
       ChildDetailsFetchedState(
-        profileDetails: _profileExt!,
+        profileDetails: _profile,
       ),
     );
   }
@@ -213,7 +205,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
       eventProperties: {
         'child_name': _profile.firstName,
         'new_giving_allowance': allowance,
-        'old_giving_allowance': _profileExt?.givingAllowance.amount,
+        'old_giving_allowance': _profile.wallet.givingAllowance.amount,
       },
     );
   }

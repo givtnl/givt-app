@@ -65,7 +65,7 @@ class OrganisationContainer extends StatelessWidget {
               child: Text(
                 familyValue.organisation.organisationName!,
                 textAlign: TextAlign.center,
-                style: FamilyAppTheme()
+                style: const FamilyAppTheme()
                     .toThemeData()
                     .textTheme
                     .titleSmall

@@ -22,7 +22,7 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
 
     try {
       final impactGroups =
-          await _impactGroupInviteRepository.fetchImpactGroups();
+          await _impactGroupInviteRepository.getImpactGroups();
 
       emit(
         state.copyWith(

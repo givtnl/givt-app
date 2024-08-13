@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -53,9 +52,6 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
               context
                   .read<ImpactGroupsCubit>()
                   .acceptGroupInvite(groupId: invitdImpactGroup.id);
-              context.read<ProfilesCubit>()
-                ..clearInvite()
-                ..fetchAllProfiles(checkRegistrationAndSetup: true);
               context.pop();
             },
           ),

@@ -26,7 +26,7 @@ class GenerosityDailyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool redirect = task.redirect != null && task.redirect!.isNotEmpty;
+    final redirect = task.redirect != null && task.redirect!.isNotEmpty;
     final description =
         dynamicDescription.isNotEmpty ? dynamicDescription : task.description;
     return Center(

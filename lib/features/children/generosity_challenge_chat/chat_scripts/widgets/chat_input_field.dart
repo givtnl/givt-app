@@ -179,7 +179,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
   }
 
   TextStyle? get textStyle =>
-      FamilyAppTheme().toThemeData().textTheme.titleSmall?.copyWith(
+      const FamilyAppTheme().toThemeData().textTheme.titleSmall?.copyWith(
             fontFamily: 'Rouna',
             fontWeight: FontWeight.w700,
             color: AppTheme.primary20,

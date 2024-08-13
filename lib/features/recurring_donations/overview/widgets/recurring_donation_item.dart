@@ -80,7 +80,6 @@ ${locals.setupRecurringGiftText7} ${frequencies[widget.recurringDonation.frequen
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: widget.recurringDonation.collectGroup.type.color,
-              width: 1,
             ),
           ),
           width: double.infinity,

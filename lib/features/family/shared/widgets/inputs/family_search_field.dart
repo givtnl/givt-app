@@ -9,7 +9,7 @@ class FamilySearchField extends StatelessWidget {
       this.autofocus,
       this.autocorrect,
       this.onChanged,
-      super.key});
+      super.key,});
 
   final TextEditingController controller;
   final FocusNode? focusNode;

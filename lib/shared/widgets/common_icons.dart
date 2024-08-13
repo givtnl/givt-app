@@ -171,7 +171,7 @@ Widget primaryCircleWithIcon({
             size: iconSize,
           ),
         ),
-      ]),
+      ],),
     );
 
 Widget errorCircleWithIcon({

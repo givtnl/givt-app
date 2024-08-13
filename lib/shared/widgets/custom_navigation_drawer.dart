@@ -299,7 +299,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   title: locals.logOut,
                   icon: Icons.logout_sharp,
                   onTap: () async {
-                    if (!await getIt<NetworkInfo>().isConnected) {
+                    if (!getIt<NetworkInfo>().isConnected) {
                       if (!context.mounted) {
                         return;
                       }

@@ -60,7 +60,6 @@ class ImpactGroupDetailsPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Flexible(
-                  fit: FlexFit.loose,
                   child: Container(),
                 ),
                 SizedBox(

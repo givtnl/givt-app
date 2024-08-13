@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 extension DateTimeExtension on DateTime {
   String formatDate() {
-    DateTime now = DateTime.now();
+    final now = DateTime.now();
 
     // Check if the date is today
     if (year == now.year && month == now.month && day == now.day) {
@@ -10,7 +10,7 @@ extension DateTimeExtension on DateTime {
     }
 
     // Check if the date is yesterday
-    DateTime yesterday = now.subtract(const Duration(days: 1));
+    final yesterday = now.subtract(const Duration(days: 1));
     if (year == yesterday.year &&
         month == yesterday.month &&
         day == yesterday.day) {

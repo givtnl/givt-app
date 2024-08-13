@@ -21,7 +21,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       title: 'Oops, an empty Wallet',
       icon: walletEmptyIcon(),
       content: Text(
-        'To continue giving you need to add more money to your Wallet. You\'ll need your parent to do this.',
+        "To continue giving you need to add more money to your Wallet. You'll need your parent to do this.",
         style: Theme.of(context).textTheme.bodyMedium,
         textAlign: TextAlign.center,
       ),

@@ -9,9 +9,9 @@ import 'package:givt_app/features/family/features/giving_flow/organisation_detai
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
-import 'package:givt_app/features/family/features/topup/repository/topup_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
+import 'package:givt_app/features/family/features/topup/repository/topup_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 
@@ -45,6 +45,10 @@ void initRepositories() {
     )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
         getIt(),
       ),
     )

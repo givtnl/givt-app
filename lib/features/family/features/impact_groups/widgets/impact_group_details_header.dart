@@ -27,9 +27,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        impactGroup.isFamilyGroup
-            ? const SizedBox(height: 30)
-            : Image.network(impactGroup.image),
+        if (impactGroup.isFamilyGroup) const SizedBox(height: 30) else Image.network(impactGroup.image),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(

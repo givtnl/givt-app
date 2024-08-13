@@ -52,7 +52,7 @@ class ParentOverviewWidget extends StatelessWidget {
 
                 unawaited(AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.parentProfileIconClicked,
-                ));
+                ),);
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -76,7 +76,7 @@ class ParentOverviewWidget extends StatelessWidget {
                         style: Theme.of(context).textTheme.labelMedium?.copyWith(
                             color: isMainUser
                                 ? AppTheme.defaultTextColor
-                                : AppTheme.tertiary20),
+                                : AppTheme.tertiary20,),
                       ),
                       const SizedBox(width: 4),
                       if (profile.id == profiles[0].id)

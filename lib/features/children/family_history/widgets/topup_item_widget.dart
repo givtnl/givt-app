@@ -44,14 +44,14 @@ class TopupItemWidget extends StatelessWidget {
                   maxLines: 3,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
               ),
               Text(
                 topup.isNotSuccessful
                     ? 'Please try again later.'
                     : topup.date.formatDate(locals),
-                style: Theme.of(context).textTheme.bodySmall
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           ),

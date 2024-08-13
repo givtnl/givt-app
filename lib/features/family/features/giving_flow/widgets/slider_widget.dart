@@ -44,7 +44,6 @@ class SliderWidget extends StatelessWidget {
             ),
             child: Slider(
               value: currentAmount,
-              min: 0,
               max: maxAmount,
               divisions: maxAmount.round(),
               onChanged: (value) {
@@ -111,11 +110,11 @@ class SliderWidgetThumb extends SliderComponentShape {
     required Size sizeWithOverflow,
   }) {
     // Draw circle
-    final Paint circleBluePaint = Paint()
+    final circleBluePaint = Paint()
       ..color = sliderTheme.thumbColor!
       ..style = PaintingStyle.fill;
 
-    final Paint circleDarkPaint = Paint()
+    final circleDarkPaint = Paint()
       ..color = AppTheme.secondary30
       ..style = PaintingStyle.fill;
 

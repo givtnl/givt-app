@@ -29,7 +29,7 @@ class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
         HistoryTypes.donation.value,
         HistoryTypes.allowance.value,
         HistoryTypes.topUp.value,
-      ]
+      ],
     };
 
     final response = await _apiService.fetchHistory(body);

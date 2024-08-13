@@ -22,7 +22,7 @@ class CameraScreenFrame extends StatelessWidget {
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
         ),
         title: Text(
-          "Scan the QR code",
+          'Scan the QR code',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium,
         ),

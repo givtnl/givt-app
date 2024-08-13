@@ -15,7 +15,7 @@ class CancelAllowanceDialog extends StatelessWidget {
   final VoidCallback onCancel;
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return Theme(
       data: theme,
       child: Dialog(

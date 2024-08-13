@@ -37,7 +37,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
     }
   }
 
-  void readTag({Duration prescanningDelay = Duration.zero}) async {
+  Future<void> readTag({Duration prescanningDelay = Duration.zero}) async {
     // Prescanning delay is to improve the UI animation (not be jarring)
     await Future<void>.delayed(prescanningDelay);
     AnalyticsHelper.logEvent(eventName: AmplitudeEvents.startScanningCoin);
@@ -48,7 +48,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
       ),
     );
     // Check NFC availability
-    final bool isAvailable = await NfcManager.instance.isAvailable();
+    final isAvailable = await NfcManager.instance.isAvailable();
     //only android bc ios has custom error display
     if (!isAvailable && Platform.isAndroid) {
       await Future<void>.delayed(animationDuration);
@@ -108,8 +108,8 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
             if (ndef.cachedMessage!.records.isNotEmpty &&
                 ndef.cachedMessage!.records.first.typeNameFormat ==
                     NdefTypeNameFormat.nfcWellknown) {
-              String mediumId = '';
-              String readData = '';
+              var mediumId = '';
+              var readData = '';
               final wellKnownRecord = ndef.cachedMessage!.records.first;
               if (wellKnownRecord.payload.first == 0x02) {
                 final languageCodeAndContentBytes =
@@ -118,13 +118,13 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
                     utf8.decode(languageCodeAndContentBytes);
                 final payload = languageCodeAndContentText.substring(2);
                 log('coin payload: $payload');
-                final Uri uri = Uri.parse(payload);
+                final uri = Uri.parse(payload);
                 mediumId = uri.queryParameters['code'] ?? mediumId;
                 readData = payload;
               } else {
                 final decoded = utf8.decode(wellKnownRecord.payload);
                 log('coin decoded: $decoded');
-                final Uri uri = Uri.parse(decoded);
+                final uri = Uri.parse(decoded);
                 mediumId = uri.queryParameters['code'] ?? mediumId;
                 readData = decoded;
               }
@@ -156,7 +156,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
             );
           }
         },
-      ));
+      ),);
     } catch (e, stackTrace) {
       _handleException(e, stackTrace: stackTrace);
     }

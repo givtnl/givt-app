@@ -2,9 +2,9 @@ enum FamilyPages {
   parentGive(path: 'parent-give', name: 'PARENT-GIVE'),
   profileSelection(path: '/profile-selection', name: 'PROFILE_SELECTION'),
   kidsAvatarSelection(
-      path: 'kids-avatar-selection', name: 'KIDS-AVATAR-SELECTION'),
+      path: 'kids-avatar-selection', name: 'KIDS-AVATAR-SELECTION',),
   parentAvatarSelection(
-      path: 'parent-avatar-selection', name: 'PARENT-AVATAR-SELECTION'),
+      path: 'parent-avatar-selection', name: 'PARENT-AVATAR-SELECTION',),
   wallet(path: 'wallet', name: 'WALLET'),
   parentHome(path: 'parent-home', name: 'PARENT-HOME'),
   camera(path: 'camera', name: 'CAMERA'),
@@ -24,7 +24,7 @@ enum FamilyPages {
     name: 'REGISTRATION-SUCCESS-US',
   ),
   permitUSBiometric(
-      path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US'),
+      path: 'permit-biometric-us', name: 'US-PERMIT-BIOMETRIC-US',),
   giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
   creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   test(path: 'test', name: 'TEST'),
@@ -43,7 +43,7 @@ enum FamilyPages {
 
   //recommendation flow
   recommendationStart(
-      path: 'recommendation-start', name: 'RECOMMENDATION_START'),
+      path: 'recommendation-start', name: 'RECOMMENDATION_START',),
   locationSelection(path: 'location-selection', name: 'LOCATION_SELECTION'),
   interestsSelection(path: 'interests-selection', name: 'INTERESTS_SELECTION'),
   recommendedOrganisations(path: 'organisations', name: 'ORGANISATIONS'),
@@ -57,14 +57,14 @@ enum FamilyPages {
   //exhibition flow
   voucherCode(path: 'voucher-code', name: 'VOUCHER_CODE'),
   exhibitionOrganisations(
-      path: 'exhibition-organisations', name: 'EXHIBITION_ORGANISATIONS'),
+      path: 'exhibition-organisations', name: 'EXHIBITION_ORGANISATIONS',),
   successExhibitionCoin(
-      path: 'success-exhibition-coin', name: 'SUCCESS_EXHIBITION_COIN'),
+      path: 'success-exhibition-coin', name: 'SUCCESS_EXHIBITION_COIN',),
 
   //design alignment
   designAlignment(path: 'design-alignment', name: 'DESIGN_ALIGNMENT'),
   chooseAmountSliderGoal(
-      path: 'choose-amount-slider-goal', name: 'CHOOSE_AMOUNT_SLIDER_GOAL'),
+      path: 'choose-amount-slider-goal', name: 'CHOOSE_AMOUNT_SLIDER_GOAL',),
 
   //generosity challenge
   generosityChallengeRedirect(
@@ -112,7 +112,7 @@ enum FamilyPages {
   familyNameLogin(path: 'family-name-login', name: 'FAMILY_NAME_LOGIN'),
   schoolEventInfo(path: 'school-event-info', name: 'SCHOOL_EVENT_INFO'),
   schoolEventOrganisations(
-      path: 'school-event-organisations', name: 'SCHOOL_EVENT_ORGANISATIONS'),
+      path: 'school-event-organisations', name: 'SCHOOL_EVENT_ORGANISATIONS',),
   impactGroupDetails(
     path: 'kids-impact-group-details',
     name: 'KIDS_IMPACT_GROUP_DETAILS',

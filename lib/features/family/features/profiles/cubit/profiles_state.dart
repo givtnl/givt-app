@@ -59,8 +59,7 @@ class ProfilesLoadingState extends ProfilesState {
 class ProfilesUpdatingState extends ProfilesState {
   /// This is the state that is emitted when the profiles are being updated
   const ProfilesUpdatingState({
-    super.profiles = const [],
-    required super.activeProfileIndex,
+    required super.activeProfileIndex, super.profiles = const [],
   });
 }
 
@@ -75,7 +74,7 @@ class ProfilesUpdatedState extends ProfilesState {
 class ProfilesNotSetupState extends ProfilesState {
   /// This is the state that is emitted when profiles have not yet been setup
   const ProfilesNotSetupState(
-      {required super.profiles, required super.activeProfileIndex});
+      {required super.profiles, required super.activeProfileIndex,});
 }
 
 class ProfilesNeedsRegistration extends ProfilesState {
@@ -93,7 +92,7 @@ class ProfilesInvitedToGroup extends ProfilesState {
   const ProfilesInvitedToGroup(
       {required super.profiles,
       required super.activeProfileIndex,
-      required this.impactGroup});
+      required this.impactGroup,});
 
   final ImpactGroup impactGroup;
 

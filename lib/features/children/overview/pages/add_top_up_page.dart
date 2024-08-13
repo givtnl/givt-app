@@ -54,7 +54,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                       primaryCircleWithIcon(
                           iconData: FontAwesomeIcons.plus,
                           circleSize: 140 - 28,
-                          iconSize: 48),
+                          iconSize: 48,),
                       const SizedBox(height: 16),
                       AmountCounter(
                         currency: widget.currency,

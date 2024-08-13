@@ -9,16 +9,14 @@ import 'package:givt_app/utils/utils.dart';
 
 class GivtElevatedSecondaryButton extends StatefulWidget {
   const GivtElevatedSecondaryButton(
-      {super.key,
-      required this.onTap,
-      required this.text,
+      {required this.onTap, required this.text, super.key,
       this.leftIcon,
       this.rightIcon,
       this.leadingImage,
       this.isLoading = false,
       this.isDisabled = false,
       this.widthMultiplier = .9,
-      this.amplitudeEvent});
+      this.amplitudeEvent,});
 
   final VoidCallback? onTap;
   final bool isDisabled;
@@ -64,7 +62,7 @@ class _GivtElevatedSecondaryButtonState
             : () async {
                 if (widget.amplitudeEvent != null) {
                   await AnalyticsHelper.logEvent(
-                      eventName: widget.amplitudeEvent!);
+                      eventName: widget.amplitudeEvent!,);
                 }
                 
                 await Future<void>.delayed(const Duration(milliseconds: 50));

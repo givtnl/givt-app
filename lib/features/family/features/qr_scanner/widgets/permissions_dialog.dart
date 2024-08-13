@@ -14,7 +14,7 @@ class FamilyAppPermissionDialog extends StatelessWidget {
   final PermissionsUIModel model;
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return Theme(
       data: theme,
       child: Dialog(

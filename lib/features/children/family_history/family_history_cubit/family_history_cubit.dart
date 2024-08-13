@@ -21,7 +21,7 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
 
   void _init() {
     _walletChangedSubscription =
-        _editChildRepository.walletChangedStream().listen((childGUID) {
+        _editChildRepository.childChangedStream().listen((childGUID) {
       fetchHistory(fromScratch: true);
     });
   }

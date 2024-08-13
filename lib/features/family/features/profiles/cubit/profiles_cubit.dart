@@ -5,8 +5,6 @@ import 'dart:developer';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
-import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
@@ -20,87 +18,51 @@ part 'profiles_state.dart';
 class ProfilesCubit extends HydratedCubit<ProfilesState> {
   ProfilesCubit(
     this._profilesRepositoy,
-    this._addMemberRepository,
     this._authRepository,
-    this._editChildRepository,
     this._impactGroupsRepository,
   ) : super(const ProfilesInitialState()) {
     _init();
   }
 
   final ProfilesRepository _profilesRepositoy;
-  final AddMemberRepository _addMemberRepository;
   final AuthRepository _authRepository;
-  final EditChildRepository _editChildRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
-  StreamSubscription<void>? _memberAddedSubscription;
-  StreamSubscription<String>? _walletChangedSubscription;
-  StreamSubscription<void>? _groupInviteAcceptedSubscription;
-  ImpactGroup? _invitedToGroup;
+  StreamSubscription<List<Profile>>? _profilesSubscription;
+  StreamSubscription<Profile>? _childDetailsSubscription;
 
   void _init() {
-    _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
-      (_) {
+    _profilesSubscription = _profilesRepositoy.profilesStream().listen(
+      (profiles) {
         fetchAllProfiles();
       },
     );
-    _walletChangedSubscription =
-        _editChildRepository.walletChangedStream().listen(
-      (childGuid) {
-        fetchProfile(childGuid);
-      },
-    );
-    _groupInviteAcceptedSubscription =
-        _impactGroupsRepository.groupInviteAcceptedStream().listen(
-      (_) {
-        _invitedToGroup = null;
-        fetchAllProfiles();
+    _childDetailsSubscription = _profilesRepositoy.childDetailsStream().listen(
+      (profile) {
+        fetchActiveProfile();
       },
     );
   }
 
   Future<void> doInitialChecks() async {
     _emitLoadingState();
-    await checkIfInvitedToGroup();
-    if (_isInvitedToGroup()) {
-      _showInviteSheet();
+    final group = await _impactGroupsRepository.isInvitedToGroup();
+    if (group != null) {
+      _showInviteSheet(group);
     } else {
       await fetchAllProfiles(checkRegistrationAndSetup: true);
     }
   }
 
-  void clearInvite() {
-    _invitedToGroup = null;
-  }
 
-  bool _isInvitedToGroup() => _invitedToGroup != null;
-
-  void _showInviteSheet() {
+  void _showInviteSheet(ImpactGroup impactGroup) {
     emit(
       ProfilesInvitedToGroup(
         profiles: state.profiles,
         activeProfileIndex: state.activeProfileIndex,
-        impactGroup: _invitedToGroup!,
+        impactGroup: impactGroup,
       ),
     );
-  }
-
-  Future<void> checkIfInvitedToGroup() async {
-    try {
-      final impactGroups = await _impactGroupsRepository.fetchImpactGroups();
-      for (final impactGroup in impactGroups) {
-        if (impactGroup.status == ImpactGroupStatus.invited) {
-          _invitedToGroup = impactGroup;
-          break;
-        }
-      }
-    } catch (e, s) {
-      LoggingInfo.instance.logExceptionForDebug(
-        e,
-        stacktrace: s,
-      );
-    }
   }
 
   Future<void> fetchAllProfiles({
@@ -111,15 +73,15 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
 
     try {
       if (checkInvite) {
-        await checkIfInvitedToGroup();
-      }
-      if (_isInvitedToGroup()) {
-        _showInviteSheet();
-        return;
+        final group = await _impactGroupsRepository.isInvitedToGroup();
+        if (group != null) {
+          _showInviteSheet(group);
+          return;
+        }
       }
 
       final newProfiles = <Profile>[];
-      final response = await _profilesRepositoy.fetchAllProfiles();
+      final response = await _profilesRepositoy.getProfiles();
       newProfiles.addAll(response);
 
       for (final oldProfile in state.profiles) {
@@ -197,7 +159,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   }
 
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
-    final profile = state.profiles.firstWhere((element) => element.id == id);
+    final profile = state.profiles.firstWhere((element) => element.id == id,
+        orElse: Profile.empty,);
     final index = state.profiles.indexOf(profile);
     final childGuid = state.profiles[index].id;
 
@@ -218,7 +181,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
       );
     }
     try {
-      final response = await _profilesRepositoy.fetchChildDetails(childGuid);
+      final response = await _profilesRepositoy.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(
         ProfilesUpdatedState(
@@ -272,9 +235,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
 
   @override
   Future<void> close() {
-    _memberAddedSubscription?.cancel();
-    _walletChangedSubscription?.cancel();
-    _groupInviteAcceptedSubscription?.cancel();
+    _profilesSubscription?.cancel();
+    _childDetailsSubscription?.cancel();
     return super.close();
   }
 }

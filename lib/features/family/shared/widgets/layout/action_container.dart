@@ -4,12 +4,9 @@ import 'package:givt_app/utils/utils.dart';
 
 class ActionContainer extends StatefulWidget {
   const ActionContainer({
-    super.key,
+    required this.borderColor, required this.onTap, required this.child, super.key,
     this.isDisabled = false,
     this.isSelected = false,
-    required this.borderColor,
-    required this.onTap,
-    required this.child,
     this.base = ActionContainerBase.bottom,
     this.margin,
     this.borderSize = 2,
@@ -113,7 +110,7 @@ class _ActionContainerState extends State<ActionContainer> {
       child: Container(
         margin: _getOpositeMarginByBase(widget.base),
         decoration: BoxDecoration(
-          color: borderColor!,
+          color: borderColor,
           border: _getBorderByBase(widget.base),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),

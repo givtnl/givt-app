@@ -50,7 +50,7 @@ final class ChildDetailsFetchedState extends ChildDetailsState {
     required this.profileDetails,
   });
 
-  final ProfileExt profileDetails;
+  final Profile profileDetails;
 
   @override
   List<Object> get props => [profileDetails];
