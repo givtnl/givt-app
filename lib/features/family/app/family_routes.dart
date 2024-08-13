@@ -62,7 +62,8 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/impact_group_details_page.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/give_from_list_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
@@ -295,13 +296,16 @@ class FamilyAppRoutes {
             final user = context.read<AuthCubit>().state.user;
             return MultiBlocProvider(
               providers: [
-                BlocProvider.value(
-                  value: GiveBloc(
+                BlocProvider(
+                  create: (_) => GiveBloc(
                     getIt(),
                     getIt(),
                     getIt(),
                     getIt(),
                   ),
+                ),
+                BlocProvider(
+                  create: (_) => MediumCubit(),
                 ),
                 BlocProvider(
                   create: (_) => OrganisationBloc(
@@ -315,7 +319,7 @@ class FamilyAppRoutes {
                     ),
                 ),
               ],
-              child: const OrganisationListFamilyPage(),
+              child: const GiveFromListPage(),
             );
           },
         ),
