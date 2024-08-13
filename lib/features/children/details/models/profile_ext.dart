@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/details/models/giving_allowance.dart';
-import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/models/wallet.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class ProfileExt extends Equatable {
   const ProfileExt({
@@ -12,16 +12,16 @@ class ProfileExt extends Equatable {
     required this.pendingAllowance,
   });
 
-  const ProfileExt.empty()
+  ProfileExt.empty()
       : this(
-          profile: const LegacyProfile.empty(),
+          profile: Profile.empty(),
           givingAllowance: const GivingAllowance.empty(),
           dateOfBirth: '',
           firstName: '',
           pendingAllowance: false,
         );
 
-  factory ProfileExt.fromMap(LegacyProfile profile, Map<String, dynamic> map) {
+  factory ProfileExt.fromMap(Profile profile, Map<String, dynamic> map) {
     final walletMap = map['wallet'] as Map<String, dynamic>;
     final givingAllowanceMap =
         walletMap['givingAllowance'] as Map<String, dynamic>;
@@ -37,7 +37,7 @@ class ProfileExt extends Equatable {
     );
   }
 
-  final LegacyProfile profile;
+  final Profile profile;
   final GivingAllowance givingAllowance;
   final String dateOfBirth;
   final String firstName;

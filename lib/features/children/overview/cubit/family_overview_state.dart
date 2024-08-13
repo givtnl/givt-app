@@ -25,15 +25,15 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
     required this.displayAllowanceInfo,
   });
 
-  final List<LegacyProfile> profiles;
+  final List<Profile> profiles;
   final bool displayAllowanceInfo;
 
-  List<LegacyProfile> get children {
-    return profiles.where((p) => p.type == ProfileType.Child).toList();
+  List<Profile> get children {
+    return profiles.where((p) => p.isChild).toList();
   }
 
-  List<LegacyProfile> get adults {
-    return profiles.where((p) => p.type == ProfileType.Parent).toList();
+  List<Profile> get adults {
+    return profiles.where((p) => p.isAdult).toList();
   }
 
   bool get hasChildren {
@@ -45,7 +45,7 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   }
 
   // The Givt user profile is first in the list
-  List<LegacyProfile> sortedAdults(String givtAccountID) {
+  List<Profile> sortedAdults(String givtAccountID) {
     return adults
       ..sort((a, b) {
         final compareNames = a.firstName.compareTo(b.id);

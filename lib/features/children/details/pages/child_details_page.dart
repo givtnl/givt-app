@@ -121,7 +121,7 @@ class ChildDetailsPage extends StatelessWidget {
                         eventProperties: {
                           'child_name': state.profileDetails.firstName,
                           'giving_allowance':
-                              state.profileDetails.givingAllowance.amount,
+                              state.profileDetails.wallet.givingAllowance.amount,
                         },
                       );
 
@@ -162,13 +162,13 @@ class ChildDetailsPage extends StatelessWidget {
                                 eventProperties: {
                                   'child_name': state.profileDetails.firstName,
                                   'giving_allowance': state
-                                      .profileDetails.givingAllowance.amount,
+                                      .profileDetails.wallet.givingAllowance.amount,
                                 },
                               );
 
                               _navigateToEditAllowanceScreen(
                                 context,
-                                state.profileDetails.givingAllowance.amount
+                                state.profileDetails.wallet.givingAllowance.amount
                                     .toInt(),
                               );
                             },
@@ -208,7 +208,6 @@ class ChildDetailsPage extends StatelessWidget {
                 (context.watch<ChildDetailsCubit>().state
                         as ChildDetailsFetchedState)
                     .profileDetails
-                    .profile
                     .id,
           )
           .wallet
@@ -217,7 +216,6 @@ class ChildDetailsPage extends StatelessWidget {
     return (context.watch<ChildDetailsCubit>().state
             as ChildDetailsFetchedState)
         .profileDetails
-        .profile
         .wallet
         .balance;
   }

@@ -2,33 +2,6 @@ import 'package:givt_app/features/family/features/history/models/history_item.da
 import 'package:givt_app/features/family/helpers/donation_state.dart';
 
 class Donation extends HistoryItem {
-  const Donation({
-    required super.amount,
-    required super.date,
-    required this.organizationName,
-    required this.state,
-    required this.medium,
-    required super.type,
-    required this.goalId,
-  });
-  final String organizationName;
-  final DonationState state;
-  final DonationMediumType medium;
-  final String goalId;
-
-  bool get isToGoal {
-    return goalId.isNotEmpty;
-  }
-
-  @override
-  List<Object?> get props => [
-        amount,
-        date,
-        organizationName,
-        state,
-        medium,
-        goalId,
-      ];
 
   Donation.empty()
       : this(
@@ -57,6 +30,33 @@ class Donation extends HistoryItem {
       goalId: map['goalId'] as String? ?? '',
     );
   }
+  const Donation({
+    required super.amount,
+    required super.date,
+    required this.organizationName,
+    required this.state,
+    required this.medium,
+    required super.type,
+    required this.goalId,
+  });
+  final String organizationName;
+  final DonationState state;
+  final DonationMediumType medium;
+  final String goalId;
+
+  bool get isToGoal {
+    return goalId.isNotEmpty;
+  }
+
+  @override
+  List<Object?> get props => [
+        amount,
+        date,
+        organizationName,
+        state,
+        medium,
+        goalId,
+      ];
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,

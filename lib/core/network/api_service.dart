@@ -534,48 +534,6 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<List<dynamic>> fetchProfiles() async {
-    final url = Uri.https(
-      _apiURL,
-      '/givtservice/v1/profiles',
-    );
-
-    final response = await client.get(
-      url,
-      headers: {'Content-Type': 'application/json'},
-    );
-    if (response.statusCode >= 300) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    }
-
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    final itemMap = decodedBody['item'] as Map<String, dynamic>;
-    return itemMap['profiles'] as List<dynamic>;
-  }
-
-  Future<Map<String, dynamic>> fetchChildDetails(String childGuid) async {
-    final url = Uri.https(
-      _apiURL,
-      '/givtservice/v1/ChildProfile/$childGuid',
-    );
-
-    final response = await client.get(url);
-
-    if (response.statusCode >= 300) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    }
-
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    final itemMap = decodedBody['item'] as Map<String, dynamic>;
-    return itemMap;
-  }
-
   Future<Map<String, dynamic>> submitParentalApprovalDecision({
     required String childId,
     required Map<String, dynamic> body,

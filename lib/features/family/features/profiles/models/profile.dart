@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/overview/models/wallet.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/features/history/models/donation.dart';
 
 class Profile extends Equatable {
@@ -20,14 +21,16 @@ class Profile extends Equatable {
       lastName: map['lastName'] as String? ?? '',
       nickname: map['nickname'] as String? ?? '',
       comment: map['comment'] as String? ?? '',
-      type: map['type'] as String,
+      type: map['type'] as String? ?? '',
       hasDonations:
           map['hasDonations'] as bool? ?? map['latestDonation'] != null,
       wallet: walletMap,
       lastDonationItem: donationMap,
       pictureURL: pictureMap['pictureURL'] as String,
+      dateOfBirth: map['dateOfBirth'] as String? ?? '',
     );
   }
+
   const Profile({
     required this.id,
     required this.firstName,
@@ -39,6 +42,7 @@ class Profile extends Equatable {
     required this.hasDonations,
     required this.lastDonationItem,
     required this.pictureURL,
+    required this.dateOfBirth,
   });
 
   Profile.empty()
@@ -53,6 +57,7 @@ class Profile extends Equatable {
           wallet: const Wallet.empty(),
           lastDonationItem: Donation.empty(),
           pictureURL: '',
+    dateOfBirth: '',
         );
 
   final String id;
@@ -65,6 +70,15 @@ class Profile extends Equatable {
   final Wallet wallet;
   final Donation lastDonationItem;
   final String pictureURL;
+  final String dateOfBirth;
+
+  ProfileType get profileType => ProfileType.getByTypeName(type);
+
+  bool get isAdult => profileType == ProfileType.Parent;
+
+  bool get isChild => profileType == ProfileType.Child;
+
+  static String number = 'kid_profiles_nr';
 
   @override
   List<Object?> get props => [
@@ -77,6 +91,7 @@ class Profile extends Equatable {
         hasDonations,
         wallet,
         pictureURL,
+        dateOfBirth,
       ];
 
   Profile copyWith({
@@ -90,6 +105,7 @@ class Profile extends Equatable {
     Wallet? wallet,
     Donation? lastDonationItem,
     String? pictureURL,
+    String? dateOfBirth,
   }) {
     return Profile(
       id: id ?? this.id,
@@ -102,6 +118,7 @@ class Profile extends Equatable {
       wallet: wallet ?? this.wallet,
       lastDonationItem: lastDonationItem ?? this.lastDonationItem,
       pictureURL: pictureURL ?? this.pictureURL,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
     );
   }
 
@@ -119,6 +136,7 @@ class Profile extends Equatable {
       'picture': {
         'pictureURL': pictureURL,
       },
+      'dateOfBirth': dateOfBirth,
     };
   }
 }

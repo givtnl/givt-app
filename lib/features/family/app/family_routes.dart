@@ -35,7 +35,6 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -65,6 +64,7 @@ import 'package:givt_app/features/family/features/impact_groups/pages/impact_gro
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/presentation/camera_screen.dart';
@@ -697,7 +697,7 @@ class FamilyAppRoutes {
           builder: (context, state) {
             final extras = state.extra! as List<dynamic>;
             final childrenOverviewCubit = extras[0] as FamilyOverviewCubit;
-            final childProfile = extras[1] as LegacyProfile;
+            final childProfile = extras[1] as Profile;
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(
@@ -705,7 +705,6 @@ class FamilyAppRoutes {
                 ),
                 BlocProvider(
                   create: (_) => ChildDetailsCubit(
-                    getIt(),
                     getIt(),
                     getIt(),
                     childProfile,
