@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
+import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 mixin ImpactGroupsRepository {
   Future<void> acceptGroupInvite({
@@ -11,6 +12,10 @@ mixin ImpactGroupsRepository {
   });
 
   Future<List<ImpactGroup>> getImpactGroups();
+
+  // this method should only be called externally when the screen itself
+  // has a refresh mechanism for the user
+  Future<List<ImpactGroup>> refreshImpactGroups();
 
   Future<ImpactGroup?> isInvitedToGroup();
 
@@ -20,13 +25,24 @@ mixin ImpactGroupsRepository {
 class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   ImpactGroupsRepositoryImpl(
     this._apiService,
-  );
+      this._givtRepository,
+  ) {
+    _init();
+  }
 
   final APIService _apiService;
+  final GivtRepository _givtRepository;
+
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
 
   List<ImpactGroup>? _impactGroups;
+
+  Future<void> _init() async {
+    _givtRepository.onGivtsChangedStream().listen(
+          (_) => _fetchImpactGroups(),
+        );
+  }
 
   @override
   Future<void> acceptGroupInvite({
@@ -63,4 +79,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     }
     return null;
   }
+
+  @override
+  Future<List<ImpactGroup>> refreshImpactGroups() => _fetchImpactGroups();
 }

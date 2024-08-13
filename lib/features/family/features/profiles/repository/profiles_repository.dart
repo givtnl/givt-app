@@ -5,11 +5,16 @@ import 'package:givt_app/features/children/edit_child/repositories/edit_child_re
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 mixin ProfilesRepository {
   Future<Profile> getChildDetails(String childGuid);
 
   Future<List<Profile>> getProfiles();
+
+  // this method should only be called externally when the screen itself
+  // has a refresh mechanism for the user
+  Future<List<Profile>> refreshProfiles();
 
   Stream<List<Profile>> profilesStream();
 
@@ -22,6 +27,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._editChildRepository,
     this._addMemberRepository,
     this._impactGroupsRepository,
+    this._givtRepository,
   ) {
     _init();
   }
@@ -30,10 +36,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final EditChildRepository _editChildRepository;
   final AddMemberRepository _addMemberRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
-
-  StreamSubscription<void>? _memberAddedSubscription;
-  StreamSubscription<String>? _walletChangedSubscription;
-  StreamSubscription<void>? _groupInviteAcceptedSubscription;
+  final GivtRepository _givtRepository;
 
   final StreamController<List<Profile>> _profilesStreamController =
       StreamController<List<Profile>>.broadcast();
@@ -44,23 +47,19 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final Map<String, Profile> _profileMap = {};
 
   void _init() {
-    _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
-      (_) {
-        _fetchProfiles();
-      },
-    );
-    _walletChangedSubscription =
-        _editChildRepository.walletChangedStream().listen(
-      (childGuid) {
-        _fetchChildDetails(childGuid);
-      },
-    );
-    _groupInviteAcceptedSubscription =
-        _impactGroupsRepository.impactGroupsStream().listen(
-      (_) {
-        _fetchProfiles();
-      },
-    );
+    _addMemberRepository.memberAddedStream().listen(
+          (_) => _fetchProfiles(),
+        );
+
+    _editChildRepository.childChangedStream().listen(_fetchChildDetails);
+
+    _impactGroupsRepository.impactGroupsStream().listen(
+          (_) => _fetchProfiles(),
+        );
+
+    _givtRepository.onGivtsChangedStream().listen(
+          (_) => _fetchProfiles(),
+        );
   }
 
   @override
@@ -96,4 +95,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
   @override
   Stream<Profile> childDetailsStream() => _childDetailsStreamController.stream;
+
+  @override
+  Future<List<Profile>> refreshProfiles() => _fetchProfiles();
 }

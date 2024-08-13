@@ -233,6 +233,7 @@ void initRepositories() {
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<GenerosityChallengeRepository>(

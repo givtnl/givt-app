@@ -12,7 +12,7 @@ mixin EditChildRepository {
 
   Future<bool> cancelAllowance(String childGUID);
 
-  Stream<String> walletChangedStream();
+  Stream<String> childChangedStream();
 }
 
 class EditChildRepositoryImpl with EditChildRepository {
@@ -26,6 +26,7 @@ class EditChildRepositoryImpl with EditChildRepository {
   @override
   Future<bool> editChild(String childGUID, EditChild child) async {
     final response = await apiService.editChild(childGUID, child.toJson());
+    _childGUIDController.add(childGUID);
     return response;
   }
 
@@ -48,9 +49,10 @@ class EditChildRepositoryImpl with EditChildRepository {
   @override
   Future<bool> cancelAllowance(String childGUID) async {
     final response = await apiService.cancelAllowance(childGUID);
+    _childGUIDController.add(childGUID);
     return response;
   }
 
   @override
-  Stream<String> walletChangedStream() => _childGUIDController.stream;
+  Stream<String> childChangedStream() => _childGUIDController.stream;
 }

@@ -22,7 +22,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     this._profile,
   ) : super(const ChildDetailsInitialState()) {
     _walletChangedSubscription =
-        _editChildRepository.walletChangedStream().listen(
+        _editChildRepository.childChangedStream().listen(
       (childGUID) {
         if (childGUID == _profile.id) {
           fetchChildDetails();
