@@ -37,7 +37,7 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
   }
 
   Profile get _familyLeader {
-    return _profiles.firstWhere((prifile) => prifile.id == _familyLeaderId);
+    return _profiles.firstWhere((profile) => profile.id == _familyLeaderId);
   }
 
   List<Profile> get _otherMembers {
