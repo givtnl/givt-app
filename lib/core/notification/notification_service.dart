@@ -136,6 +136,10 @@ class NotificationService implements INotificationService {
       case 'DonationApproval':
         LoggingInfo.instance.info('Navigating to family overview screen');
         AppRouter.router.goNamed(FamilyPages.childrenOverview.name);
+      case 'HabitReminder':
+        LoggingInfo.instance
+            .info('Navigating to profiles screen from sunday notification');
+        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
     }
   }
 
