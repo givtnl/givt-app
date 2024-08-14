@@ -140,6 +140,11 @@ class NotificationService implements INotificationService {
         LoggingInfo.instance
             .info('Navigating to profiles screen from sunday notification');
         AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+      default:
+        LoggingInfo.instance.info(
+          'Navigating to profiles screen screen, from firebase notification',
+        );
+        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
     }
   }
 
