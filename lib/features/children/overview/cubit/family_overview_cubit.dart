@@ -19,7 +19,8 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
   final ProfilesRepository _profilesRepository;
 
   Future<void> _init() async {
-   _profilesSubscription = _profilesRepository.profilesStream().listen((profiles) {
+    _profilesSubscription =
+        _profilesRepository.onProfilesChanged().listen((profiles) {
       fetchFamilyProfiles();
     });
   }
@@ -69,4 +70,6 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
     await _profilesSubscription?.cancel();
     await super.close();
   }
+
+  Future<void> refresh() async => _profilesRepository.refreshProfiles();
 }

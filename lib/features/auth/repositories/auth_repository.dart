@@ -317,6 +317,7 @@ class AuthRepositoyImpl with AuthRepository {
     final session = Session.fromJson(
       jsonDecode(sessionString) as Map<String, dynamic>,
     );
+    _hasSessionStreamController.add(false);
     return _prefs.setString(
       Session.tag,
       jsonEncode(

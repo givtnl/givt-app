@@ -26,6 +26,25 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
         }
       },
     );
+    _profilesChangedSubscription =
+        _profilesRepository.onProfilesChanged().listen(
+      (profiles) {
+        for (final profile in profiles) {
+          _onMatchUpdateProfile(profile);
+        }
+      },
+    );
+    _childDetailsChangedSubscription =
+        _profilesRepository.onChildChanged().listen(
+              _onMatchUpdateProfile,
+            );
+  }
+
+  void _onMatchUpdateProfile(Profile profile) {
+    if (profile.id == _profile.id) {
+      _profile = profile;
+      _emitData();
+    }
   }
 
   final EditChildRepository _editChildRepository;
@@ -33,10 +52,14 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   Profile _profile;
 
   StreamSubscription<String>? _walletChangedSubscription;
+  StreamSubscription<List<Profile>>? _profilesChangedSubscription;
+  StreamSubscription<Profile>? _childDetailsChangedSubscription;
 
   @override
   Future<void> close() async {
     await _walletChangedSubscription?.cancel();
+    await _profilesChangedSubscription?.cancel();
+    await _childDetailsChangedSubscription?.cancel();
     await super.close();
   }
 

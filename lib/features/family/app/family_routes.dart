@@ -396,7 +396,9 @@ class FamilyAppRoutes {
             final group = extra as ImpactGroup;
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
-                  context.read<ProfilesCubit>(), getIt(),),
+                context.read<ProfilesCubit>(),
+                getIt(),
+              ),
               child: ChooseAmountSliderGoalScreen(
                 group: group,
               ),
@@ -509,7 +511,9 @@ class FamilyAppRoutes {
 
             return BlocProvider(
               create: (BuildContext context) => CreateTransactionCubit(
-                  context.read<ProfilesCubit>(), getIt(),),
+                context.read<ProfilesCubit>(),
+                getIt(),
+              ),
               child: const ChooseAmountSliderScreen(),
             );
           },
@@ -781,7 +785,8 @@ class FamilyAppRoutes {
                 ),
                 BlocProvider(
                   create: (context) =>
-                      FamilyHistoryCubit(getIt(), getIt())..fetchHistory(),
+                      FamilyHistoryCubit(getIt(), getIt(), getIt())
+                        ..fetchHistory(),
                 ),
               ],
               child: const FamilyOverviewPage(),

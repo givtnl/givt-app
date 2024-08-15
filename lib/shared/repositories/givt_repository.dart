@@ -58,7 +58,7 @@ mixin GivtRepository {
     required String groupType,
   });
 
-  Stream<void> onGivtsChangedStream();
+  Stream<void> onGivtsChanged();
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -84,7 +84,7 @@ class GivtRepositoryImpl with GivtRepository {
         body: givts,
         guid: guid,
       );
-      _givtsChangedStreamController.add(null);
+      _addGivtsChangedEventAfterOneSecond();
     } on SocketException {
       await _cacheGivts(body);
 
@@ -152,7 +152,7 @@ class GivtRepositoryImpl with GivtRepository {
       await prefs.remove(
         GivtTransaction.givtTransactions,
       );
-      _givtsChangedStreamController.add(null);
+      _addGivtsChangedEventAfterOneSecond();
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
@@ -180,7 +180,7 @@ class GivtRepositoryImpl with GivtRepository {
   @override
   Future<bool> deleteGivt(List<dynamic> ids) async {
     final result = apiClient.deleteGivts(body: ids);
-    _givtsChangedStreamController.add(null);
+    _addGivtsChangedEventAfterOneSecond();
     return result;
   }
 
@@ -253,7 +253,7 @@ class GivtRepositoryImpl with GivtRepository {
   @override
   Future<bool> deleteExternalDonation(String id) async {
     final result = apiClient.deleteExternalDonation(id);
-    _givtsChangedStreamController.add(null);
+    _addGivtsChangedEventAfterOneSecond();
     return result;
   }
 
@@ -262,7 +262,7 @@ class GivtRepositoryImpl with GivtRepository {
     required Map<String, dynamic> body,
   }) async {
     final result = apiClient.addExternalDonation(body);
-    _givtsChangedStreamController.add(null);
+    _addGivtsChangedEventAfterOneSecond();
     return result;
   }
 
@@ -272,10 +272,19 @@ class GivtRepositoryImpl with GivtRepository {
     required Map<String, dynamic> body,
   }) async {
     final result = apiClient.updateExternalDonation(id, body);
-    _givtsChangedStreamController.add(null);
+    _addGivtsChangedEventAfterOneSecond();
     return result;
   }
 
+  // The reason we are not immediately adding this event to the stream is
+  // because money-related calls require an update from Stripe for the BE
+  // which takes a bit of time
+  void _addGivtsChangedEventAfterOneSecond() {
+    Future.delayed(const Duration(seconds: 1), () {
+      _givtsChangedStreamController.add(null);
+    });
+  }
+
   @override
-  Stream<void> onGivtsChangedStream() => _givtsChangedStreamController.stream;
+  Stream<void> onGivtsChanged() => _givtsChangedStreamController.stream;
 }

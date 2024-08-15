@@ -4,12 +4,16 @@ import 'dart:io';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/repositories/collect_group_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin CampaignRepository {
   Future<Organisation> getOrganisation(String mediumId);
+
   Future<bool> saveLastDonation(Organisation organisation);
+
   Future<Organisation> getLastOrganisationDonated();
+
   Future<Organisation> getCachedOrganisation(String mediumId);
 }
 
@@ -17,9 +21,12 @@ class CampaignRepositoryImpl with CampaignRepository {
   CampaignRepositoryImpl(
     this.apiService,
     this.prefs,
+    this._collectGroupRepository,
   );
+
   final APIService apiService;
   final SharedPreferences prefs;
+  final CollectGroupRepository _collectGroupRepository;
 
   @override
   Future<Organisation> getCachedOrganisation(String mediumId) async {
@@ -98,7 +105,7 @@ class CampaignRepositoryImpl with CampaignRepository {
       CollectGroup.orgBeaconListKey,
     );
     if (collectGroupList == null) {
-      return <CollectGroup>[];
+      return _collectGroupRepository.getCollectGroupList();
     }
     final collectGroups = collectGroupList
         .map(

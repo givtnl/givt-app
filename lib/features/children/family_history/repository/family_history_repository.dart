@@ -6,7 +6,7 @@ import 'package:givt_app/features/children/family_history/models/history_item.da
 import 'package:givt_app/features/children/family_history/models/topup.dart';
 
 mixin FamilyDonationHistoryRepository {
-  Future<List<HistoryItem>> fetchHistory({
+  Future<List<HistoryItem>> getHistory({
     required int pageNumber,
   });
 }
@@ -19,7 +19,7 @@ class FamilyDonationHistoryRepositoryImpl with FamilyDonationHistoryRepository {
   final APIService _apiService;
 
   @override
-  Future<List<HistoryItem>> fetchHistory({
+  Future<List<HistoryItem>> getHistory({
     required int pageNumber,
   }) async {
     final body = <String, dynamic>{
