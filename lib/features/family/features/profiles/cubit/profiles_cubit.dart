@@ -15,7 +15,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 //here
 
-class ProfilesCubit extends HydratedCubit<ProfilesState> {
+class ProfilesCubit extends Cubit<ProfilesState> {
   ProfilesCubit(
     this._profilesRepository,
     this._authRepository,
