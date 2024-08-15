@@ -85,7 +85,7 @@ class CreditCardDetailsPage extends StatelessWidget {
               );
               context
                   .read<ProfilesCubit>()
-                  .fetchAllProfiles(checkRegistrationAndSetup: true);
+                  .fetchAllProfiles(doChecks: true);
             }
 
             /* Logged as info as stripe is giving exception
