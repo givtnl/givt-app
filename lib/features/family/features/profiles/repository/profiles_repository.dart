@@ -74,8 +74,14 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         );
 
     _authRepository.hasSessionStream().listen(
-          (_) => _clearData(),
-        );
+      (hasSession) {
+        if (hasSession) {
+          _fetchProfiles();
+        } else {
+          _clearData();
+        }
+      },
+    );
   }
 
   void _clearData() {
