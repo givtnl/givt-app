@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
@@ -51,7 +52,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
   List<Profile>? _profiles;
   final Map<String, Profile> _profileMap = {};
-  Completer<List<Profile>> _profilesCompleter = Completer<List<Profile>>();
+  Completer<List<Profile>>? _profilesCompleter;
 
   void _init() {
     _addMemberRepository.memberAddedStream().listen(
@@ -73,19 +74,34 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         );
 
     _authRepository.hasSessionStream().listen(
-          (_) => _clearData(),
-        );
+      (hasSession) {
+        if (hasSession) {
+          _fetchProfiles();
+        } else {
+          _clearData();
+        }
+      },
+    );
   }
 
   void _clearData() {
     _profiles = null;
     _profileMap.clear();
+    _profilesCompleter = null;
   }
 
   @override
   Future<List<Profile>> getProfiles() async {
-    await _profilesCompleter.future;
-    return _profiles ??= await _fetchProfiles();
+    try {
+      await _profilesCompleter?.future;
+      return _profiles ??= await _fetchProfiles();
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
+      );
+      return _profiles ?? [];
+    }
   }
 
   Future<List<Profile>> _fetchProfiles() async {
@@ -97,10 +113,11 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         result.add(Profile.fromMap(profileMap as Map<String, dynamic>));
       }
       _profilesStreamController.add(result);
-      _profilesCompleter.complete(result);
       return result;
     } catch (e) {
       rethrow;
+    } finally {
+      _profilesCompleter?.complete([]);
     }
   }
 
