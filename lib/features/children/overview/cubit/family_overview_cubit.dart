@@ -20,7 +20,7 @@ class FamilyOverviewCubit extends Cubit<FamilyOverviewState> {
 
   Future<void> _init() async {
     _profilesSubscription =
-        _profilesRepository.profilesStream().listen((profiles) {
+        _profilesRepository.onProfilesChanged().listen((profiles) {
       fetchFamilyProfiles();
     });
   }

@@ -18,9 +18,9 @@ mixin ProfilesRepository {
   // has a refresh mechanism for the user
   Future<List<Profile>> refreshProfiles();
 
-  Stream<List<Profile>> profilesStream();
+  Stream<List<Profile>> onProfilesChanged();
 
-  Stream<Profile> childDetailsStream();
+  Stream<Profile> onChildChanged();
 }
 
 class ProfilesRepositoryImpl with ProfilesRepository {
@@ -118,10 +118,10 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   }
 
   @override
-  Stream<List<Profile>> profilesStream() => _profilesStreamController.stream;
+  Stream<List<Profile>> onProfilesChanged() => _profilesStreamController.stream;
 
   @override
-  Stream<Profile> childDetailsStream() => _childDetailsStreamController.stream;
+  Stream<Profile> onChildChanged() => _childDetailsStreamController.stream;
 
   @override
   Future<List<Profile>> refreshProfiles() => _fetchProfiles();

@@ -32,12 +32,12 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   StreamSubscription<Profile>? _childDetailsSubscription;
 
   void _init() {
-    _profilesSubscription = _profilesRepositoy.profilesStream().listen(
+    _profilesSubscription = _profilesRepositoy.onProfilesChanged().listen(
       (profiles) {
         fetchAllProfiles();
       },
     );
-    _childDetailsSubscription = _profilesRepositoy.childDetailsStream().listen(
+    _childDetailsSubscription = _profilesRepositoy.onChildChanged().listen(
       (profile) {
         fetchActiveProfile();
       },
