@@ -139,7 +139,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                           context.read<ProfilesCubit>().fetchAllProfiles(
                                 doChecks: true,
                               ),
-          )
+                    )
                   : SafeArea(
                       minimum: const EdgeInsets.only(bottom: 40),
                       child: Padding(
@@ -233,7 +233,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   ) {
     return adults
       ..sort((a, b) {
-        final compareNames = a.firstName.compareTo(b.id);
+        final compareNames = a.compareNames(b);
         return a.id == givtAccountID
             ? -1
             : b.id == givtAccountID

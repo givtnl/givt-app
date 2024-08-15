@@ -80,6 +80,12 @@ class Profile extends Equatable {
 
   static String number = 'kid_profiles_nr';
 
+  int compareNames(Profile other) {
+    return firstName.compareTo(other.firstName);
+  }
+
+  bool isLoggedInUser(String guid) => id == guid;
+
   @override
   List<Object?> get props => [
         id,
