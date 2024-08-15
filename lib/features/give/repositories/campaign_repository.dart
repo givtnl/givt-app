@@ -105,7 +105,11 @@ class CampaignRepositoryImpl with CampaignRepository {
       CollectGroup.orgBeaconListKey,
     );
     if (collectGroupList == null) {
-      return _collectGroupRepository.getCollectGroupList();
+      try {
+        return _collectGroupRepository.getCollectGroupList();
+      } catch (e, s) {
+        return [];
+      }
     }
     final collectGroups = collectGroupList
         .map(
