@@ -127,6 +127,7 @@ void initRepositories() {
       () => CampaignRepositoryImpl(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<CollectGroupRepository>(
@@ -220,6 +221,9 @@ void initRepositories() {
     )
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
+        getIt(),
+        getIt(),
+        getIt(),
         getIt(),
         getIt(),
       ),

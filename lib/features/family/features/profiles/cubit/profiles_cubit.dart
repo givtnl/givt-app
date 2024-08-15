@@ -46,14 +46,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
 
   Future<void> doInitialChecks() async {
     _emitLoadingState();
-    final group = await _impactGroupsRepository.isInvitedToGroup();
-    if (group != null) {
-      _showInviteSheet(group);
-    } else {
-      await fetchAllProfiles(checkRegistrationAndSetup: true);
-    }
+    await fetchAllProfiles(checkRegistrationAndSetup: true, checkInvite: true);
   }
-
 
   void _showInviteSheet(ImpactGroup impactGroup) {
     emit(
@@ -159,8 +153,10 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   }
 
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
-    final profile = state.profiles.firstWhere((element) => element.id == id,
-        orElse: Profile.empty,);
+    final profile = state.profiles.firstWhere(
+      (element) => element.id == id,
+      orElse: Profile.empty,
+    );
     final index = state.profiles.indexOf(profile);
     final childGuid = state.profiles[index].id;
 

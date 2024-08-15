@@ -24,13 +24,13 @@ class ParentalApprovalDialogContent extends StatelessWidget {
   final ChildDonation donation;
 
   Future<void> _refreshHistory(BuildContext context) async {
-    await context.read<FamilyOverviewCubit>().fetchFamilyProfiles();
+    await context.read<FamilyOverviewCubit>().refresh();
     if (!context.mounted) return;
 
     // Exectue the following cubits in parallel
     await Future.wait([
       context.read<FamilyHistoryCubit>().fetchHistory(fromScratch: true),
-      context.read<ImpactGroupsCubit>().fetchImpactGroups(),
+      context.read<ImpactGroupsCubit>().refresh(),
     ]);
   }
 

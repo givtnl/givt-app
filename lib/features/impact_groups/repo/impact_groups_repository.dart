@@ -3,6 +3,9 @@
 import 'dart:async';
 
 import 'package:givt_app/core/network/api_service.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
+import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
@@ -19,19 +22,25 @@ mixin ImpactGroupsRepository {
 
   Future<ImpactGroup?> isInvitedToGroup();
 
-  Stream<List<ImpactGroup>> impactGroupsStream();
+  Stream<List<ImpactGroup>> onImpactGroupsChanged();
 }
 
 class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   ImpactGroupsRepositoryImpl(
     this._apiService,
-      this._givtRepository,
+    this._givtRepository,
+    this._createFamilyGoalRepository,
+    this._parentalApprovalRepository,
+    this._authRepository,
   ) {
     _init();
   }
 
   final APIService _apiService;
   final GivtRepository _givtRepository;
+  final CreateFamilyGoalRepository _createFamilyGoalRepository;
+  final ParentalApprovalRepository _parentalApprovalRepository;
+  final AuthRepository _authRepository;
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
@@ -39,9 +48,25 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   List<ImpactGroup>? _impactGroups;
 
   Future<void> _init() async {
-    _givtRepository.onGivtsChangedStream().listen(
+    _givtRepository.onGivtsChanged().listen(
           (_) => _fetchImpactGroups(),
         );
+    _createFamilyGoalRepository.onFamilyGoalCreated().listen(
+          (_) => _fetchImpactGroups(),
+        );
+    _parentalApprovalRepository.onParentalApprovalChanged().listen(
+          (_) => _fetchImpactGroups(),
+        );
+    _authRepository.hasSessionStream().listen(
+      (hasSession) {
+        if (hasSession) {
+          _fetchImpactGroups();
+        } else {
+          _impactGroups = null;
+          _impactGroupsStreamController.add([]);
+        }
+      },
+    );
   }
 
   @override
@@ -67,7 +92,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Stream<List<ImpactGroup>> impactGroupsStream() =>
+  Stream<List<ImpactGroup>> onImpactGroupsChanged() =>
       _impactGroupsStreamController.stream;
 
   @override
