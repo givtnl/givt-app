@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/children/add_member/pages/add_member_counter_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
@@ -14,7 +12,6 @@ import 'package:givt_app/features/children/overview/widgets/no_children_page.dar
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
-import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -113,7 +110,18 @@ class FamilyOverviewPage extends StatelessWidget {
     //   ).toRoute(context),
     // );
     // if (result != null && result is int && context.mounted) {
-    //   // todo
+    //   final dynamic member = await Navigator.push(
+    //     context,
+    //     AddMemberFormPage(
+    //       index: 1,
+    //       totalCount: result,
+    //     ).toRoute(context),
+    //   );
+    //   if (member != null && member is Member && context.mounted) {
+    //     // todo
+    //     print(
+    //         'Member is ${member.type}, ${member.firstName}, ${member.age}, ${member.allowance}, ${member.email}');
+    //   }
     // }
   }
 }
