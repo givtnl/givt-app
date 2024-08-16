@@ -137,7 +137,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
               newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
         ),
       );
-    } else if (newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
+    } else if (newProfiles.length <= 1) {
       emit(
         ProfilesNotSetupState(
           profiles: newProfiles,
@@ -161,7 +161,8 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
-    final profile = state.profiles.firstWhere(
+    try {
+      final profile = state.profiles.firstWhere(
       (element) => element.id == id,
       orElse: Profile.empty,
     );
@@ -184,7 +185,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         ),
       );
     }
-    try {
       final response = await _profilesRepository.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(
