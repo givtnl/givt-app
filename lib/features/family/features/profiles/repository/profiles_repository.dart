@@ -55,8 +55,10 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   Completer<List<Profile>>? _profilesCompleter;
 
   void _init() {
-    _addMemberRepository.memberAddedStream().listen(
-          (_) => _fetchProfiles(),
+    _addMemberRepository.onMemberAdded().listen(
+          (_) {
+            _fetchProfiles();
+          },
         );
 
     _editChildRepository.childChangedStream().listen(_fetchChildDetails);
@@ -112,6 +114,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
       for (final profileMap in response) {
         result.add(Profile.fromMap(profileMap as Map<String, dynamic>));
       }
+      _profiles = result;
       _profilesStreamController.add(result);
       return result;
     } catch (e) {

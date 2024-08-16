@@ -133,7 +133,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
-              : state.children.isEmpty
+              : state.profiles.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
                           context.read<ProfilesCubit>().fetchAllProfiles(
