@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class FamilySearchField extends StatelessWidget {
-  const FamilySearchField(
-      {required this.controller,
-      this.focusNode,
-      this.autofocus,
-      this.autocorrect,
-      this.onChanged,
-      super.key,});
+  const FamilySearchField({
+    required this.controller,
+    this.focusNode,
+    this.autofocus,
+    this.autocorrect,
+    this.onChanged,
+    super.key,
+  });
 
   final TextEditingController controller;
   final FocusNode? focusNode;
@@ -76,20 +78,4 @@ class FamilySearchField extends StatelessWidget {
       ),
     );
   }
-
-  InputBorder get enabledInputBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(
-          color: AppTheme.inputFieldBorderEnabled,
-          width: 2,
-        ),
-      );
-
-  InputBorder get selectedInputBorder => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(
-          color: AppTheme.inputFieldBorderSelected,
-          width: 2,
-        ),
-      );
 }
