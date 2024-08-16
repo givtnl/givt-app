@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -213,30 +211,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
 
   void clearProfiles() {
     emit(const ProfilesInitialState());
-  }
-
-  @override
-  ProfilesState? fromJson(Map<String, dynamic> json) {
-    log('fromJSON: $json');
-    final profilesMap = jsonDecode(json['profiles'] as String);
-    final activeProfileIndex = json['activeProfileIndex'] as int;
-    final profiles = <Profile>[];
-    for (final profileMap in profilesMap as List<dynamic>) {
-      profiles.add(Profile.fromMap(profileMap as Map<String, dynamic>));
-    }
-    return ProfilesUpdatedState(
-      profiles: profiles,
-      activeProfileIndex: activeProfileIndex,
-    );
-  }
-
-  @override
-  Map<String, dynamic>? toJson(ProfilesState state) {
-    final result = {
-      'profiles': jsonEncode(state.profiles),
-      'activeProfileIndex': state.activeProfileIndex,
-    };
-    return result;
   }
 
   @override
