@@ -30,6 +30,11 @@ Widget plusIcon({double? size}) => FaIcon(
       color: AppTheme.givtLightGreen,
       size: size,
     );
+Widget smilePurpleIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/smiley_purple.svg',
+      width: width,
+      height: height,
+    );
 
 Widget registeredCheck({double? width, double? height, Clip? clipBehavior}) =>
     SvgPicture.asset(
@@ -154,24 +159,27 @@ Widget primaryCircleWithIcon({
     Padding(
       // 14 is what the design has when exporting svgs
       padding: const EdgeInsets.all(14),
-      child: Stack(alignment: Alignment.center, children: [
-        Container(
-          width: circleSize,
-          height: circleSize,
-          decoration: BoxDecoration(
-            color: circleColor ?? FamilyAppTheme.primary95,
-            shape: BoxShape.circle,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: circleSize,
+            height: circleSize,
+            decoration: BoxDecoration(
+              color: circleColor ?? FamilyAppTheme.primary95,
+              shape: BoxShape.circle,
+            ),
           ),
-        ),
-        SizedBox(
-          width: iconSize * 2,
-          child: Icon(
-            iconData,
-            color: iconColor ?? FamilyAppTheme.primary20,
-            size: iconSize,
+          SizedBox(
+            width: iconSize * 2,
+            child: Icon(
+              iconData,
+              color: iconColor ?? FamilyAppTheme.primary20,
+              size: iconSize,
+            ),
           ),
-        ),
-      ],),
+        ],
+      ),
     );
 
 Widget errorCircleWithIcon({
