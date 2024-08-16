@@ -15,38 +15,46 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 //here
 
-class ProfilesCubit extends HydratedCubit<ProfilesState> {
+class ProfilesCubit extends Cubit<ProfilesState> {
   ProfilesCubit(
-    this._profilesRepositoy,
+    this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
   ) : super(const ProfilesInitialState()) {
     _init();
   }
 
-  final ProfilesRepository _profilesRepositoy;
+  final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
   StreamSubscription<List<Profile>>? _profilesSubscription;
   StreamSubscription<Profile>? _childDetailsSubscription;
+  StreamSubscription<bool>? _hasSessionSubscription;
 
   void _init() {
-    _profilesSubscription = _profilesRepositoy.onProfilesChanged().listen(
+    _profilesSubscription = _profilesRepository.onProfilesChanged().listen(
       (profiles) {
         fetchAllProfiles();
       },
     );
-    _childDetailsSubscription = _profilesRepositoy.onChildChanged().listen(
+    _childDetailsSubscription = _profilesRepository.onChildChanged().listen(
       (profile) {
         fetchActiveProfile();
+      },
+    );
+    _hasSessionSubscription = _authRepository.hasSessionStream().listen(
+      (hasSession) {
+        if (!hasSession) {
+          emit(const ProfilesInitialState());
+        }
       },
     );
   }
 
   Future<void> doInitialChecks() async {
     _emitLoadingState();
-    await fetchAllProfiles(checkRegistrationAndSetup: true, checkInvite: true);
+    await fetchAllProfiles(doChecks: true);
   }
 
   void _showInviteSheet(ImpactGroup impactGroup) {
@@ -60,22 +68,13 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   }
 
   Future<void> fetchAllProfiles({
-    bool checkRegistrationAndSetup = false,
-    bool checkInvite = false,
+    bool doChecks = false,
   }) async {
     _emitLoadingState();
 
     try {
-      if (checkInvite) {
-        final group = await _impactGroupsRepository.isInvitedToGroup();
-        if (group != null) {
-          _showInviteSheet(group);
-          return;
-        }
-      }
-
       final newProfiles = <Profile>[];
-      final response = await _profilesRepositoy.getProfiles();
+      final response = await _profilesRepository.getProfiles();
       newProfiles.addAll(response);
 
       for (final oldProfile in state.profiles) {
@@ -92,31 +91,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
       }
-      UserExt? userExternal;
-      if (checkRegistrationAndSetup) {
-        // ignore: unused_local_variable
-        final (userExt, session, amountPresets) =
-            await _authRepository.isAuthenticated() ?? (null, null, null);
-        userExternal = userExt;
-      }
-
-      if (userExternal?.needRegistration ?? false) {
-        emit(
-          ProfilesNeedsRegistration(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-            hasFamily:
-                newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
-          ),
-        );
-      } else if (checkRegistrationAndSetup &&
-          newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
-        emit(
-          ProfilesNotSetupState(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-          ),
-        );
+      if (doChecks) {
+        unawaited(_doChecks(newProfiles));
       }
       emit(
         ProfilesUpdatedState(
@@ -134,6 +110,40 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           errorMessage: error.toString(),
           activeProfileIndex: state.activeProfileIndex,
           profiles: state.profiles,
+        ),
+      );
+    }
+  }
+
+  Future<void> _doChecks(List<Profile> list) async {
+    final group = await _impactGroupsRepository.isInvitedToGroup();
+    if (group != null) {
+      _showInviteSheet(group);
+    } else {
+      await _doRegistrationCheck(list);
+    }
+  }
+
+  Future<void> _doRegistrationCheck(List<Profile> newProfiles) async {
+    UserExt? userExternal;
+    final (userExt, session, amountPresets) =
+        await _authRepository.isAuthenticated() ?? (null, null, null);
+    userExternal = userExt;
+
+    if (userExternal?.needRegistration ?? false) {
+      emit(
+        ProfilesNeedsRegistration(
+          profiles: newProfiles,
+          activeProfileIndex: state.activeProfileIndex,
+          hasFamily:
+              newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
+        ),
+      );
+    } else if (newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
+      emit(
+        ProfilesNotSetupState(
+          profiles: newProfiles,
+          activeProfileIndex: state.activeProfileIndex,
         ),
       );
     }
@@ -177,7 +187,7 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
       );
     }
     try {
-      final response = await _profilesRepositoy.getChildDetails(childGuid);
+      final response = await _profilesRepository.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(
         ProfilesUpdatedState(
