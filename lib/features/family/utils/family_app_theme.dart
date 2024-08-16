@@ -156,6 +156,16 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.white,
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+      ),
       fontFamily: 'Rouna',
       textTheme: textTheme,
       primaryColor: colorScheme.primary,
