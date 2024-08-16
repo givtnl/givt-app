@@ -48,12 +48,12 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   List<Profile> sortedAdults(String givtAccountID) {
     return adults
       ..sort((a, b) {
-        final comapreId = a.id.compareTo(b.id);
+        final compareNames = a.firstName.compareTo(b.id);
         return a.id == givtAccountID
             ? -1
             : b.id == givtAccountID
                 ? 1
-                : comapreId;
+                : compareNames;
       });
   }
 

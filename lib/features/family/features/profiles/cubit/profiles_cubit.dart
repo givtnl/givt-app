@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -139,7 +137,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
               newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
         ),
       );
-    } else if (newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
+    } else if (newProfiles.length <= 1) {
       emit(
         ProfilesNotSetupState(
           profiles: newProfiles,
@@ -163,7 +161,8 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
-    final profile = state.profiles.firstWhere(
+    try {
+      final profile = state.profiles.firstWhere(
       (element) => element.id == id,
       orElse: Profile.empty,
     );
@@ -186,7 +185,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         ),
       );
     }
-    try {
       final response = await _profilesRepository.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(
@@ -216,33 +214,10 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   @override
-  ProfilesState? fromJson(Map<String, dynamic> json) {
-    log('fromJSON: $json');
-    final profilesMap = jsonDecode(json['profiles'] as String);
-    final activeProfileIndex = json['activeProfileIndex'] as int;
-    final profiles = <Profile>[];
-    for (final profileMap in profilesMap as List<dynamic>) {
-      profiles.add(Profile.fromMap(profileMap as Map<String, dynamic>));
-    }
-    return ProfilesUpdatedState(
-      profiles: profiles,
-      activeProfileIndex: activeProfileIndex,
-    );
-  }
-
-  @override
-  Map<String, dynamic>? toJson(ProfilesState state) {
-    final result = {
-      'profiles': jsonEncode(state.profiles),
-      'activeProfileIndex': state.activeProfileIndex,
-    };
-    return result;
-  }
-
-  @override
   Future<void> close() {
     _profilesSubscription?.cancel();
     _childDetailsSubscription?.cancel();
+    _hasSessionSubscription?.cancel();
     return super.close();
   }
 }

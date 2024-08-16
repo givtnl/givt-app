@@ -87,6 +87,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     final list = result
         .map((e) => ImpactGroup.fromMap(e as Map<String, dynamic>))
         .toList();
+    _impactGroups = list;
     _impactGroupsStreamController.add(list);
     return list;
   }
