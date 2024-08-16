@@ -10,7 +10,7 @@ import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 
-class FamilyMemberForm extends StatefulWidget {
+class FamilyMemberForm extends StatelessWidget {
   const FamilyMemberForm({
     required this.formKey,
     required this.nameController,
@@ -30,21 +30,17 @@ class FamilyMemberForm extends StatefulWidget {
   final bool isChildSelected;
 
   @override
-  State<FamilyMemberForm> createState() => _FamilyMemberFormState();
-}
-
-class _FamilyMemberFormState extends State<FamilyMemberForm> {
-  @override
   Widget build(BuildContext context) {
     return Form(
-      key: widget.formKey,
-      child: widget.isChildSelected
-          ? _buildChildForm(widget.nameController, widget.ageController)
-          : _buildParentForm(widget.nameController, widget.emailController),
+      key: formKey,
+      child: isChildSelected
+          ? _buildChildForm(context, nameController, ageController)
+          : _buildParentForm(context, nameController, emailController),
     );
   }
 
   Widget _buildChildForm(
+    BuildContext context,
     TextEditingController nameChildController,
     TextEditingController ageController,
   ) {
@@ -100,12 +96,12 @@ class _FamilyMemberFormState extends State<FamilyMemberForm> {
         const SizedBox(height: 16),
         AmountCounter(
             currency: r'$',
-            initialAmount: widget.allowanceAmount,
+            initialAmount: allowanceAmount,
             canAmountBeZero: true,
-            onAmountChanged: widget.onAmountChanged),
+            onAmountChanged: onAmountChanged),
         const SizedBox(height: 16),
         AdminFeeText(
-          amount: widget.allowanceAmount.toDouble(),
+          amount: allowanceAmount.toDouble(),
           textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,
         ),
       ],
@@ -113,6 +109,7 @@ class _FamilyMemberFormState extends State<FamilyMemberForm> {
   }
 
   Widget _buildParentForm(
+    BuildContext context,
     TextEditingController nameChildController,
     TextEditingController emailController,
   ) {
