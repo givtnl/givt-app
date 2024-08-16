@@ -11,10 +11,12 @@ import 'package:givt_app/features/children/overview/widgets/allowance_warning_di
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
   const FamilyOverviewPage({
@@ -95,19 +97,23 @@ class FamilyOverviewPage extends StatelessWidget {
     return const SizedBox();
   }
 
-  void _addNewChild(
-      BuildContext context, FamilyOverviewUpdatedState state) async {
-    unawaited(AnalyticsHelper.logEvent(
+  void _addNewChild(BuildContext context, FamilyOverviewUpdatedState state) {
+    AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.addMemerClicked,
-    ));
-    final dynamic result = await Navigator.push(
-      context,
-      const AddMemberCounterPage(
-        initialAmount: 1,
-      ).toRoute(context),
     );
-    if (result != null && result is int && context.mounted) {
-      // todo
-    }
+    final familyExists = state.hasChildren || !state.isAdultSingle;
+    context.pushReplacementNamed(
+      FamilyPages.addMember.name,
+      extra: familyExists,
+    );
+    // final dynamic result = await Navigator.push(
+    //   context,
+    //   const AddMemberCounterPage(
+    //     initialAmount: 1,
+    //   ).toRoute(context),
+    // );
+    // if (result != null && result is int && context.mounted) {
+    //   // todo
+    // }
   }
 }
