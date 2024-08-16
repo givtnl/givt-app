@@ -86,7 +86,7 @@ import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
-import 'package:givt_app/features/registration/pages/signup_page.dart';
+import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -817,7 +817,7 @@ class FamilyAppRoutes {
                   ),
                 ),
               ],
-              child: SignUpPage(
+              child: UsSignUpPage(
                 email: email,
               ),
             );

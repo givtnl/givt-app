@@ -261,6 +261,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                               }
                             : null,
                         text: locals.continueKey,
+                        rightIcon: FontAwesomeIcons.arrowRight,
                       )
                   ],
                 ),
