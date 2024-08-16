@@ -243,6 +243,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   Future<void> close() {
     _profilesSubscription?.cancel();
     _childDetailsSubscription?.cancel();
+    _hasSessionSubscription?.cancel();
     return super.close();
   }
 }
