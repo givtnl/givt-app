@@ -13,7 +13,7 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
-import 'package:givt_app/features/registration/widgets/widgets.dart';
+import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
@@ -261,39 +261,40 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             ),
           ),
           const SizedBox(height: 16),
-          // MobileNumberFormField(
-          //   phone: _phoneNumberController,
-          //   selectedCountryPrefix: _selectedCountry.prefix,
-          //   hintText: locals.mobileNumberUsDigits,
-          //   onPhoneChanged: (String value) => setState(() {
-          //     _formKey.currentState!.validate();
-          //   }),
-          //   onPrefixChanged: (String selected) {
-          //     setState(() {
-          //       _selectedCountry = Country.sortedCountries().firstWhere(
-          //         (Country country) => country.countryCode == selected,
-          //       );
-          //     });
-          //   },
-          //   formatter: [
-          //     FilteringTextInputFormatter.digitsOnly,
-          //     LengthLimitingTextInputFormatter(10),
-          //   ],
-          //   validator: (String? value) {
-          //     if (value == null || value.isEmpty) {
-          //       return '';
-          //     }
+          MobileNumberFormFieldUs(
+            phone: _phoneNumberController,
+            selectedCountryPrefix: _selectedCountry.prefix,
+            hintText: 'Mobile number',
+            onPhoneChanged: (String value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            onPrefixChanged: (String selected) {
+              setState(() {
+                _selectedCountry = Country.sortedCountries().firstWhere(
+                  (Country country) => country.countryCode == selected,
+                );
+              });
+            },
+            formatter: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(10),
+            ],
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
 
-          //     if (Country.us == _selectedCountry) {
-          //       if (!Util.usPhoneNumberRegEx
-          //           .hasMatch(Util.formatPhoneNrUs(value))) {
-          //         return '';
-          //       }
-          //     }
+              if (Country.us == _selectedCountry) {
+                if (!Util.usPhoneNumberRegEx
+                    .hasMatch(Util.formatPhoneNrUs(value))) {
+                  return '';
+                }
+              }
 
-          //     return null;
-          //   },
-          // ),const SizedBox(height: 16),
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
           OutlinedTextFormField(
             controller: _passwordController,
             onChanged: (value) => setState(() {

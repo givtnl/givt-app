@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
@@ -10,6 +11,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.keyboardType,
     this.readOnly = false,
     this.autofillHints = const [],
+    this.inputFormatters,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
     this.textCapitalization = TextCapitalization.none,
@@ -30,6 +32,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
   final IconButton? suffixIcon;
   final List<String> autofillHints;
+  final List<TextInputFormatter>? inputFormatters;
   final TextCapitalization textCapitalization;
 
   @override
@@ -37,9 +40,10 @@ class OutlinedTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       onChanged: onChanged,
-      style: FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-            color: const Color.fromRGBO(0, 109, 66, 1),
-          ),
+      style:
+          const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
+                color: FamilyAppTheme.primary40,
+              ),
       decoration: InputDecoration(
         hintText: hintText,
         border: enabledInputBorder,
@@ -49,13 +53,14 @@ class OutlinedTextFormField extends StatelessWidget {
         suffixIcon: suffixIcon,
         errorStyle: errorStyle,
       ),
+      inputFormatters: inputFormatters,
       keyboardType: keyboardType,
-      scrollPadding: const EdgeInsets.all(0),
       autofillHints: autofillHints,
       readOnly: readOnly,
       autocorrect: false,
       validator: validator,
       obscureText: obscureText,
+      obscuringCharacter: '*',
       textInputAction: textInputAction,
       textCapitalization: textCapitalization,
     );
