@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-
-import '../../family/utils/utils.dart';
 
 typedef OnMobileNumberChanged = void Function(String selected);
 
