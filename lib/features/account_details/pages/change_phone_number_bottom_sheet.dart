@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
+import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
@@ -35,6 +36,36 @@ class _ChangePhoneNumberBottomSheetState
     super.initState();
   }
 
+  String? validator(String? value) {
+    if (value == null || value.isEmpty) {
+      return '';
+    }
+    if (!Util.phoneNumberRegExWithPrefix()
+        .hasMatch('${selectedCountry.prefix}$value')) {
+      return '';
+    }
+
+    if (Country.unitedKingdomCodes().contains(selectedCountry.countryCode)) {
+      if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
+        return '';
+      }
+    }
+
+    return null;
+  }
+
+  void onPrefixChanged(String selected) {
+    setState(() {
+      selectedCountry = Country.sortedCountries().firstWhere(
+        (Country country) => country.countryCode == selected,
+      );
+    });
+  }
+
+  void onPhoneChanged(String value) {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
@@ -51,39 +82,24 @@ class _ChangePhoneNumberBottomSheetState
             key: formKey,
             child: Column(
               children: [
-                MobileNumberFormField(
-                  phone: phone,
-                  hintText: selectedCountry != Country.us
-                      ? locals.phoneNumber
-                      : locals.mobileNumberUsDigits,
-                  selectedCountryPrefix: selectedCountry.prefix,
-                  onPhoneChanged: (String value) => setState(() {}),
-                  onPrefixChanged: (String selected) {
-                    setState(() {
-                      selectedCountry = Country.sortedCountries().firstWhere(
-                        (Country country) => country.countryCode == selected,
-                      );
-                    });
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return '';
-                    }
-                    if (!Util.phoneNumberRegExWithPrefix()
-                        .hasMatch('${selectedCountry.prefix}$value')) {
-                      return '';
-                    }
-
-                    if (Country.unitedKingdomCodes()
-                        .contains(selectedCountry.countryCode)) {
-                      if (!Util.ukPhoneNumberRegEx.hasMatch(value)) {
-                        return '';
-                      }
-                    }
-
-                    return null;
-                  },
-                ),
+                if (selectedCountry == Country.us)
+                  MobileNumberFormFieldUs(
+                    phone: phone,
+                    onPhoneChanged: onPhoneChanged,
+                    onPrefixChanged: onPrefixChanged,
+                    validator: validator,
+                    hintText: locals.phoneNumber,
+                    selectedCountryPrefix: selectedCountry.prefix,
+                  )
+                else
+                  MobileNumberFormField(
+                    phone: phone,
+                    hintText: locals.phoneNumber,
+                    selectedCountryPrefix: selectedCountry.prefix,
+                    onPhoneChanged: onPhoneChanged,
+                    onPrefixChanged: onPrefixChanged,
+                    validator: validator,
+                  ),
                 const SizedBox(height: 15),
                 Expanded(child: Container()),
                 if (state.status == PersonalInfoEditStatus.loading)

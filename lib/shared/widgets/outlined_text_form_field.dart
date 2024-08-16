@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
@@ -6,11 +7,14 @@ class OutlinedTextFormField extends StatelessWidget {
   const OutlinedTextFormField({
     required this.controller,
     required this.hintText,
+    this.errorStyle,
     this.keyboardType,
     this.readOnly = false,
     this.autofillHints = const [],
+    this.inputFormatters,
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
+    this.textCapitalization = TextCapitalization.none,
     this.suffixIcon,
     this.onChanged,
     this.validator,
@@ -19,6 +23,7 @@ class OutlinedTextFormField extends StatelessWidget {
 
   final TextEditingController controller;
   final String hintText;
+  final TextStyle? errorStyle;
   final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -27,15 +32,18 @@ class OutlinedTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
   final IconButton? suffixIcon;
   final List<String> autofillHints;
+  final List<TextInputFormatter>? inputFormatters;
+  final TextCapitalization textCapitalization;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       onChanged: onChanged,
-      style: FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-            color: const Color.fromRGBO(0, 109, 66, 1),
-          ),
+      style:
+          const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
+                color: FamilyAppTheme.primary40,
+              ),
       decoration: InputDecoration(
         hintText: hintText,
         border: enabledInputBorder,
@@ -43,14 +51,18 @@ class OutlinedTextFormField extends StatelessWidget {
         focusedBorder: selectedInputBorder,
         errorBorder: errorInputBorder,
         suffixIcon: suffixIcon,
+        errorStyle: errorStyle,
       ),
+      inputFormatters: inputFormatters,
       keyboardType: keyboardType,
       autofillHints: autofillHints,
       readOnly: readOnly,
       autocorrect: false,
       validator: validator,
       obscureText: obscureText,
+      obscuringCharacter: '*',
       textInputAction: textInputAction,
+      textCapitalization: textCapitalization,
     );
   }
 }
