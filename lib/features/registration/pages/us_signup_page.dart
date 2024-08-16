@@ -1,23 +1,30 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/routes/routes.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
+import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
-import 'package:givt_app/utils/color_schemes.g.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({
+class UsSignUpPage extends StatefulWidget {
+  const UsSignUpPage({
     super.key,
     this.email = '',
   });
@@ -25,15 +32,16 @@ class SignUpPage extends StatefulWidget {
   final String email;
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<UsSignUpPage> createState() => _UsSignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _UsSignUpPageState extends State<UsSignUpPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
+  late TextEditingController _phoneNumberController;
 
   bool _acceptPolicy = false;
   bool isLoading = false;
@@ -47,6 +55,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
+    _phoneNumberController = TextEditingController();
     final user = context.read<AuthCubit>().state.user;
     _selectedCountry = Country.fromCode(user.country);
   }
@@ -58,31 +67,18 @@ class _SignUpPageState extends State<SignUpPage> {
 
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (state.status == RegistrationStatus.personalInfo) {
+        if (state.status == RegistrationStatus.createStripeAccount) {
           context.goNamed(
-            Pages.personalInfo.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
-
-        if (state.status == RegistrationStatus.sepaMandateExplanation) {
-          context.goNamed(
-            Pages.sepaMandateExplanation.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
-
-        if (state.status ==
-            RegistrationStatus.bacsDirectDebitMandateExplanation) {
-          context.goNamed(
-            Pages.bacsMandateExplanation.name,
+            FamilyPages.creditCardDetails.name,
             extra: context.read<RegistrationBloc>(),
           );
         }
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: RegistrationAppBar(
+          appBar: GenerosityAppBar(
+            leading: const GenerosityBackButton(),
+            title: 'Enter you details',
             actions: [
               IconButton(
                 onPressed: () => showModalBottomSheet<void>(
@@ -93,8 +89,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   builder: (_) => const FAQBottomSheet(),
                 ),
                 icon: const Icon(
-                  Icons.question_mark_outlined,
+                  FontAwesomeIcons.question,
                   size: 26,
+                  color: AppTheme.primary30,
                 ),
               ),
             ],
@@ -127,12 +124,6 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       isLoading = true;
     });
-    if (_formKey.currentState!.validate() == false &&
-        _selectedCountry != Country.us) {
-      setState(() {
-        isLoading = false;
-      });
-    }
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.registrationFilledInPersonalInfoSheetFilled,
@@ -142,14 +133,30 @@ class _SignUpPageState extends State<SignUpPage> {
         },
       ),
     );
-    context.read<RegistrationBloc>().add(
-          RegistrationPasswordSubmitted(
-            email: _emailController.text,
-            password: _passwordController.text,
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-          ),
-        );
+    context.read<RegistrationBloc>()
+      ..add(
+        RegistrationPasswordSubmitted(
+          email: _emailController.text,
+          password: _passwordController.text,
+          firstName: _firstNameController.text,
+          lastName: _lastNameController.text,
+        ),
+      )
+      ..add(
+        RegistrationPersonalInfoSubmitted(
+          address: Util.defaultAdress,
+          city: Util.defaultCity,
+          postalCode: Util.defaultPostCode,
+          country: _selectedCountry.countryCode,
+          phoneNumber: _phoneNumberController.text,
+          iban: Util.defaultIban,
+          sortCode: Util.empty,
+          accountNumber: Util.empty,
+          appLanguage: Localizations.localeOf(context).languageCode,
+          countryCode: _selectedCountry.countryCode,
+        ),
+      );
+
     setState(() {
       isLoading = false;
     });
@@ -163,11 +170,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildLoadingState() {
-    return const Center(
+    return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircularProgressIndicator(),
+          Text(context.l10n.holdOnRegistration),
+          const SizedBox(height: 16),
+          const CustomCircularProgressIndicator(),
         ],
       ),
     );
@@ -182,7 +191,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AcceptPolicyRow(
+          AcceptPolicyRowUs(
             onTap: (value) {
               setState(() {
                 _acceptPolicy = value!;
@@ -190,14 +199,10 @@ class _SignUpPageState extends State<SignUpPage> {
             },
             checkBoxValue: _acceptPolicy,
           ),
-          ElevatedButton(
-            onPressed: _isEnabled ? _register : null,
-            style: ElevatedButton.styleFrom(
-              disabledBackgroundColor: Colors.grey,
-            ),
-            child: Text(
-              locals.next,
-            ),
+          GivtElevatedButton(
+            isDisabled: !_isEnabled,
+            onTap: _isEnabled ? _register : null,
+            text: locals.enterPaymentDetails,
           ),
         ],
       ),
@@ -210,7 +215,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextFormField(
+          OutlinedTextFormField(
             controller: _firstNameController,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -225,19 +230,15 @@ class _SignUpPageState extends State<SignUpPage> {
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
             }),
-            style:
-                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).firstName,
-              errorStyle: const TextStyle(
-                height: 0,
-              ),
-            ),
+            hintText: AppLocalizations.of(context).firstName,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
+            errorStyle: const TextStyle(
+              height: 0,
+            ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
+          OutlinedTextFormField(
             controller: _lastNameController,
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
@@ -252,50 +253,48 @@ class _SignUpPageState extends State<SignUpPage> {
               return null;
             },
             textInputAction: TextInputAction.next,
-            style:
-                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).surname,
-              errorStyle: const TextStyle(
-                height: 0,
-              ),
-            ),
+            hintText: AppLocalizations.of(context).surname,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            enabled: widget.email.isEmpty,
-            readOnly: widget.email.isNotEmpty,
-            controller: _emailController,
-            onChanged: (value) => setState(() {
-              _formKey.currentState!.validate();
-            }),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return context.l10n.invalidEmail;
-              }
-              if (!Util.emailRegEx.hasMatch(value)) {
-                return context.l10n.invalidEmail;
-              }
-              return null;
-            },
-            textInputAction: TextInputAction.next,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 16,
-                  color: widget.email.isNotEmpty
-                      ? Colors.grey
-                      : lightColorScheme.primary,
-                ),
-            decoration: InputDecoration(
-              hintText: context.l10n.email,
-              errorStyle: const TextStyle(
-                height: 0,
-              ),
+            errorStyle: const TextStyle(
+              height: 0,
             ),
           ),
           const SizedBox(height: 16),
-          TextFormField(
+          // MobileNumberFormField(
+          //   phone: _phoneNumberController,
+          //   selectedCountryPrefix: _selectedCountry.prefix,
+          //   hintText: locals.mobileNumberUsDigits,
+          //   onPhoneChanged: (String value) => setState(() {
+          //     _formKey.currentState!.validate();
+          //   }),
+          //   onPrefixChanged: (String selected) {
+          //     setState(() {
+          //       _selectedCountry = Country.sortedCountries().firstWhere(
+          //         (Country country) => country.countryCode == selected,
+          //       );
+          //     });
+          //   },
+          //   formatter: [
+          //     FilteringTextInputFormatter.digitsOnly,
+          //     LengthLimitingTextInputFormatter(10),
+          //   ],
+          //   validator: (String? value) {
+          //     if (value == null || value.isEmpty) {
+          //       return '';
+          //     }
+
+          //     if (Country.us == _selectedCountry) {
+          //       if (!Util.usPhoneNumberRegEx
+          //           .hasMatch(Util.formatPhoneNrUs(value))) {
+          //         return '';
+          //       }
+          //     }
+
+          //     return null;
+          //   },
+          // ),const SizedBox(height: 16),
+          OutlinedTextFormField(
             controller: _passwordController,
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
@@ -316,31 +315,26 @@ class _SignUpPageState extends State<SignUpPage> {
 
               return null;
             },
+            errorStyle: const TextStyle(
+              height: 0,
+            ),
             obscureText: _obscureText,
             textInputAction: TextInputAction.next,
-            style:
-                Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 16),
-            decoration: InputDecoration(
-              hintText: AppLocalizations.of(context).password,
-              errorStyle: const TextStyle(
-                height: 0,
+            hintText: AppLocalizations.of(context).password,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility : Icons.visibility_off,
               ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureText ? Icons.visibility : Icons.visibility_off,
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
-              ),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
             ),
           ),
           const SizedBox(height: 16),
-          Text(
+          BodySmallText.primary40(
             locals.passwordRule,
-            textAlign: TextAlign.left,
           ),
         ],
       ),

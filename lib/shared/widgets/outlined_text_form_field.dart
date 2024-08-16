@@ -6,11 +6,13 @@ class OutlinedTextFormField extends StatelessWidget {
   const OutlinedTextFormField({
     required this.controller,
     required this.hintText,
+    this.errorStyle,
     this.keyboardType,
     this.readOnly = false,
     this.autofillHints = const [],
     this.obscureText = false,
     this.textInputAction = TextInputAction.next,
+    this.textCapitalization = TextCapitalization.none,
     this.suffixIcon,
     this.onChanged,
     this.validator,
@@ -19,6 +21,7 @@ class OutlinedTextFormField extends StatelessWidget {
 
   final TextEditingController controller;
   final String hintText;
+  final TextStyle? errorStyle;
   final ValueChanged<String>? onChanged;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
@@ -27,6 +30,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
   final IconButton? suffixIcon;
   final List<String> autofillHints;
+  final TextCapitalization textCapitalization;
 
   @override
   Widget build(BuildContext context) {
@@ -43,14 +47,17 @@ class OutlinedTextFormField extends StatelessWidget {
         focusedBorder: selectedInputBorder,
         errorBorder: errorInputBorder,
         suffixIcon: suffixIcon,
+        errorStyle: errorStyle,
       ),
       keyboardType: keyboardType,
+      scrollPadding: const EdgeInsets.all(0),
       autofillHints: autofillHints,
       readOnly: readOnly,
       autocorrect: false,
       validator: validator,
       obscureText: obscureText,
       textInputAction: textInputAction,
+      textCapitalization: textCapitalization,
     );
   }
 }
