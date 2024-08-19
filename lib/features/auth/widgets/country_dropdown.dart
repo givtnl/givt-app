@@ -34,6 +34,9 @@ class CountryDropDown extends StatelessWidget {
           ),
       menuHeight: 250,
       menuStyle: MenuStyle(
+        surfaceTintColor: MaterialStateProperty.resolveWith((states) {
+          return Colors.white;
+        }),
         backgroundColor: MaterialStateProperty.resolveWith((states) {
           return Colors.white;
         }),
