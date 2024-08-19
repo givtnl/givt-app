@@ -130,6 +130,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   }
 
   Future<Profile> _fetchChildDetails(String childGuid) async {
+    unawaited(_fetchProfiles());
     final response = await _apiService.fetchChildDetails(childGuid);
     response['type'] = 'Child';
     final profile = Profile.fromMap(response);
