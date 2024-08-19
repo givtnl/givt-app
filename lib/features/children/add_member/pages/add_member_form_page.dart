@@ -13,8 +13,8 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 
-class CreateMemberPage extends StatefulWidget {
-  const CreateMemberPage({
+class AddMemberFormPage extends StatefulWidget {
+  const AddMemberFormPage({
     required this.familyAlreadyExists,
     super.key,
   });
@@ -22,10 +22,10 @@ class CreateMemberPage extends StatefulWidget {
   final bool familyAlreadyExists;
 
   @override
-  State<CreateMemberPage> createState() => _CreateMemberPageState();
+  State<AddMemberFormPage> createState() => _AddMemberFormPageState();
 }
 
-class _CreateMemberPageState extends State<CreateMemberPage> {
+class _AddMemberFormPageState extends State<AddMemberFormPage> {
   final List<Widget> _forms = [];
   final Map<GlobalKey, FocusNode> _ageFocusNodes = {};
 

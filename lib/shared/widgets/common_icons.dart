@@ -35,6 +35,11 @@ Widget smilePurpleIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+Widget smileGreyIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/smiley_grey.svg',
+      width: width,
+      height: height,
+    );
 
 Widget registeredCheck({double? width, double? height, Clip? clipBehavior}) =>
     SvgPicture.asset(

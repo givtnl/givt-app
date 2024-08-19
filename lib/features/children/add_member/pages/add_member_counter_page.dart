@@ -39,7 +39,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                   textAlign: TextAlign.center,
                 ),
                 const Spacer(),
-                SmileyCounter(amount: _amount),
+                SmileyCounter(totalCount: _amount),
                 AmountCounter(
                   currency: '',
                   initialAmount: _amount,
