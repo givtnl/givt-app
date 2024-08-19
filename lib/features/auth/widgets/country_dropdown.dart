@@ -104,11 +104,6 @@ class CountryDropDown extends StatelessWidget {
           ),
         ),
       );
-
-      // Add a divider between items except after the last item
-      // if (i < countries.length - 1) {
-      //   items.add(const DropdownMenuItem(height: 1));
-      // }
     }
     return items;
   }
