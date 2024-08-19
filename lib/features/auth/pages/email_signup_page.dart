@@ -115,6 +115,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
       child: Scaffold(
         appBar: AppBar(
           leading: const BackButton(),
+          scrolledUnderElevation: 0,
         ),
         body: SafeArea(
           child: BlocListener<AuthCubit, AuthState>(

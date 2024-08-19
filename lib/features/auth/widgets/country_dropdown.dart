@@ -1,9 +1,10 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/widgets/outlined_input_borders.dart';
 
 class CountryDropDown extends StatelessWidget {
   const CountryDropDown({
@@ -22,92 +23,87 @@ class CountryDropDown extends StatelessWidget {
         .where((element) => element != Country.unknown)
         .toList();
 
-    return PopupMenuButton<Country>(
-      initialValue: selectedCountry,
+    return DropdownMenu<Country>(
+      dropdownMenuEntries: _buildPopupItems(countries, locals, context),
+      inputDecorationTheme: InputDecorationTheme(
+        enabledBorder: selectedInputBorder,
+        border: enabledInputBorder,
+      ),
+      textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+            color: FamilyAppTheme.primary40,
+          ),
+      menuHeight: 250,
+      menuStyle: MenuStyle(
+        surfaceTintColor: MaterialStateProperty.resolveWith((states) {
+          return Colors.white;
+        }),
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          return Colors.white;
+        }),
+        side: MaterialStateProperty.resolveWith((states) {
+          return const BorderSide(
+            color: FamilyAppTheme.neutralVariant80,
+            width: 2,
+          );
+        }),
+        shape: MaterialStateProperty.resolveWith((states) {
+          return const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          );
+        }),
+      ),
+      width: MediaQuery.of(context).size.width - 32,
+      initialSelection: selectedCountry,
+      trailingIcon: const Icon(
+        FontAwesomeIcons.chevronDown,
+        color: FamilyAppTheme.primary20,
+      ),
+      selectedTrailingIcon: const Icon(
+        FontAwesomeIcons.chevronUp,
+        color: FamilyAppTheme.primary20,
+      ),
       onSelected: (Country? country) {
         if (country != null) {
           onChanged?.call(country);
         }
       },
-      itemBuilder: (BuildContext context) {
-        return _buildPopupItems(countries, locals);
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(
-          color: AppTheme.inputFieldBorderEnabled,
-          width: 2,
-        ),
-      ),
-      clipBehavior: Clip.hardEdge,
-      surfaceTintColor: Colors.transparent,
-      shadowColor: Colors.transparent,
-      padding: EdgeInsets.zero,
-      color: Colors.white,
-      offset: const Offset(0, 200),
-      constraints: BoxConstraints(
-        minWidth: MediaQuery.sizeOf(context).width - 32,
-        maxWidth: MediaQuery.sizeOf(context).width - 32,
-        minHeight: MediaQuery.sizeOf(context).height * 0.3,
-        maxHeight: MediaQuery.sizeOf(context).height * 0.5,
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppTheme.inputFieldBorderEnabled, width: 2),
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.transparent,
-        ),
-        child: Row(
-          children: [
-            CountryFlag.fromCountryCode(
-              selectedCountry.countryCode,
-              shape: const RoundedRectangle(4),
-              height: 20,
-              width: 25,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              Country.getCountry(selectedCountry.countryCode, locals),
-              style:
-                  FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(
-                        color: AppTheme.primary40,
-                      ),
-            ),
-            const Spacer(),
-            const Icon(Icons.arrow_downward_rounded, color: AppTheme.primary20),
-          ],
+      leadingIcon: Container(
+        padding: const EdgeInsets.only(left: 12, right: 8, top: 12, bottom: 12),
+        child: CountryFlag.fromCountryCode(
+          selectedCountry.countryCode,
+          shape: const RoundedRectangle(4),
+          height: 25,
+          width: 35,
         ),
       ),
     );
   }
 
-  List<PopupMenuEntry<Country>> _buildPopupItems(
-      List<Country> countries, AppLocalizations locals) {
-    final items = <PopupMenuEntry<Country>>[];
+  List<DropdownMenuEntry<Country>> _buildPopupItems(
+    List<Country> countries,
+    AppLocalizations locals,
+    BuildContext context,
+  ) {
+    final items = <DropdownMenuEntry<Country>>[];
     for (var i = 0; i < countries.length; i++) {
       final country = countries[i];
 
-      items.add(PopupMenuItem<Country>(
-        value: country,
-        child: Row(
-          children: [
-            CountryFlag.fromCountryCode(
-              country.countryCode,
-              shape: const RoundedRectangle(4),
-              height: 20,
-              width: 25,
-            ),
-            const SizedBox(width: 4),
-            Text(Country.getCountry(country.countryCode, locals)),
-          ],
+      items.add(
+        DropdownMenuEntry<Country>(
+          value: country,
+          label: Country.getCountry(country.countryCode, locals),
+          leadingIcon: CountryFlag.fromCountryCode(
+            country.countryCode,
+            shape: const RoundedRectangle(4),
+            height: 20,
+            width: 25,
+          ),
+          labelWidget: Text(
+            Country.getCountry(country.countryCode, locals),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(),
+          ),
         ),
-      ));
-
-      // Add a divider between items except after the last item
-      if (i < countries.length - 1) {
-        items.add(const PopupMenuDivider(height: 1));
-      }
+      );
     }
     return items;
   }
