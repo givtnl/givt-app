@@ -40,6 +40,17 @@ class CountryDropDown extends StatelessWidget {
         backgroundColor: MaterialStateProperty.resolveWith((states) {
           return Colors.white;
         }),
+        side: MaterialStateProperty.resolveWith((states) {
+          return const BorderSide(
+            color: FamilyAppTheme.neutralVariant80,
+            width: 2,
+          );
+        }),
+        shape: MaterialStateProperty.resolveWith((states) {
+          return const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          );
+        }),
       ),
       width: MediaQuery.of(context).size.width - 32,
       initialSelection: selectedCountry,
