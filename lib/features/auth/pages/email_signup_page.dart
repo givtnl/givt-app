@@ -184,9 +184,14 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                         });
                       },
                       validator: (value) {
-                        if (value == null ||
-                            value.isEmpty ||
-                            !Util.emailRegEx.hasMatch(value)) {
+                        final isUnknownStatus =
+                            context.read<AuthCubit>().state.status ==
+                                AuthStatus.unknown;
+
+                        if (!isUnknownStatus &&
+                            (value == null ||
+                                value.isEmpty ||
+                                !Util.emailRegEx.hasMatch(value))) {
                           return context.l10n.invalidEmail;
                         }
                         return null;
@@ -214,7 +219,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                           context: context,
                           isScrollControlled: true,
                           useSafeArea: true,
-                          backgroundColor: AppTheme.givtPurple,
                           builder: (BuildContext context) =>
                               const TermsAndConditionsDialog(
                             typeOfTerms: TypeOfTerms.termsAndConditions,

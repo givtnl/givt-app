@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -8,8 +9,8 @@ import 'package:givt_app/utils/analytics_helper.dart';
 class GivtBottomSheet extends StatelessWidget {
   const GivtBottomSheet({
     required this.title,
-    required this.icon,
     required this.content,
+    this.icon,
     this.headlineContent,
     this.primaryButton,
     this.secondaryButton,
@@ -18,7 +19,7 @@ class GivtBottomSheet extends StatelessWidget {
   });
 
   final String title;
-  final Widget icon;
+  final Widget? icon;
   final Widget content;
   final Widget? headlineContent;
 
@@ -29,69 +30,65 @@ class GivtBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SafeArea(
-          minimum: const EdgeInsets.fromLTRB(24, 32, 24, 40),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Flex(
-                direction: Axis.horizontal,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            showCloseButton(),
+            // Title
+            TitleMediumText(
+              title,
+              textAlign: TextAlign.center,
+            ),
+
+            // Icon
+            if (icon != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: SizedBox(
+                  width: 140,
+                  height: 140,
+                  child: icon,
+                ),
               ),
-              const SizedBox(height: 24),
 
-              // Icon
-              SizedBox(
-                width: 140,
-                height: 140,
-                child: icon,
-              ),
-              const SizedBox(height: 24),
+            if (icon == null) const SizedBox(height: 8),
+            // Content
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: content,
+            ),
 
-              // Content
-              content,
+            // Extra text above buttons
+            showHeadlineContent(),
 
-              // Extra text above buttons
-              showHeadlineContent(),
-
-              // Buttons
-              showPrimaryButton(),
-              showSecondaryButton(),
-            ],
-          ),
+            // Buttons
+            showPrimaryButton(),
+            showSecondaryButton(),
+          ],
         ),
-        showCloseButton(),
-      ],
+      ),
     );
   }
 
   Widget showCloseButton() {
     if (closeAction == null) return const SizedBox.shrink();
 
-    return Positioned(
-      top: 12,
-      right: 12,
-      child: IconButton(
-        icon: const FaIcon(FontAwesomeIcons.xmark),
-        onPressed: () {
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
-          );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+          icon: const FaIcon(FontAwesomeIcons.xmark),
+          onPressed: () {
+            AnalyticsHelper.logEvent(
+              eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
+            );
 
-          closeAction!.call();
-        },
-      ),
+            closeAction!.call();
+          },
+        ),
+      ],
     );
   }
 
