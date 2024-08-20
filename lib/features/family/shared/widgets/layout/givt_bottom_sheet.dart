@@ -118,4 +118,25 @@ class GivtBottomSheet extends StatelessWidget {
       child: secondaryButton,
     );
   }
+
+  void show(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => GivtBottomSheet(
+        title: title,
+        content: content,
+        icon: icon,
+        headlineContent: headlineContent,
+        primaryButton: primaryButton,
+        secondaryButton: secondaryButton,
+        closeAction: closeAction,
+      ),
+    );
+  }
 }

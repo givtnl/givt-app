@@ -28,6 +28,7 @@ class RegistrationSuccessUs extends StatelessWidget {
           leading: null,
         ),
         body: SafeArea(
+          minimum: const EdgeInsets.fromLTRB(24, 24, 24, 40),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Center(
@@ -57,7 +58,6 @@ class RegistrationSuccessUs extends StatelessWidget {
                         ..pushNamed(FamilyPages.addMember.name);
                     },
                   ),
-                  const SizedBox(height: 10),
                 ],
               ),
             ),

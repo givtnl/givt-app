@@ -97,7 +97,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             ],
           ),
           body: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
             child: isLoading
                 ? _buildLoadingState()
                 : CustomScrollView(
@@ -156,10 +156,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           countryCode: _selectedCountry.countryCode,
         ),
       );
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   bool get _isEnabled {
@@ -187,7 +183,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     Size size,
   ) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.only(bottom: 40),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -324,7 +320,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             hintText: AppLocalizations.of(context).password,
             suffixIcon: IconButton(
               icon: Icon(
-                _obscureText ? Icons.visibility : Icons.visibility_off,
+                _obscureText
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
               ),
               onPressed: () {
                 setState(() {

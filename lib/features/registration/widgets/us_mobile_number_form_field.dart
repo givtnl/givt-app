@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
@@ -63,8 +64,8 @@ class MobileNumberFormFieldUs extends StatelessWidget {
               onPrefixChanged(newValue!);
             },
             icon: const Icon(
-              Icons.arrow_downward,
-              color: FamilyAppTheme.primary30,
+              FontAwesomeIcons.chevronDown,
+              color: FamilyAppTheme.primary20,
             ),
           ),
         ),

@@ -52,7 +52,7 @@ class CountryDropDown extends StatelessWidget {
           );
         }),
       ),
-      width: MediaQuery.of(context).size.width - 32,
+      width: MediaQuery.of(context).size.width - 48,
       initialSelection: selectedCountry,
       trailingIcon: const Icon(
         FontAwesomeIcons.chevronDown,
