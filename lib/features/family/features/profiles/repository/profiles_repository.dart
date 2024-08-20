@@ -56,10 +56,10 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
   void _init() {
     _addMemberRepository.onMemberAdded().listen(
-          (_) {
-            _fetchProfiles();
-          },
-        );
+      (_) {
+        _fetchProfiles();
+      },
+    );
 
     _editChildRepository.childChangedStream().listen(_fetchChildDetails);
 
@@ -117,8 +117,9 @@ class ProfilesRepositoryImpl with ProfilesRepository {
       _profiles = result;
       _profilesStreamController.add(result);
       return result;
-    } catch (e) {
-      rethrow;
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+      return _profiles ?? [];
     } finally {
       _profilesCompleter?.complete([]);
     }
