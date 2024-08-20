@@ -18,8 +18,8 @@ class ChildGivingAllowanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nextTopUpDate =
-        DateTime.parse(profileDetails.wallet.givingAllowance.nextGivingAllowanceDate);
+    final nextTopUpDate = DateTime.tryParse(
+        profileDetails.wallet.givingAllowance.nextGivingAllowanceDate);
     final theme = const FamilyAppTheme().toThemeData();
     final size = MediaQuery.of(context).size;
     return Container(
@@ -53,7 +53,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
   Widget getLayout(
     BuildContext context, {
     required bool hasAllowance,
-    required DateTime nextTopUpDate,
+    DateTime? nextTopUpDate,
     required Size size,
     ThemeData? theme,
   }) {
@@ -73,12 +73,13 @@ class ChildGivingAllowanceCard extends StatelessWidget {
             style: theme?.textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          Text(
-            (profileDetails.wallet.pendingAllowance)
-                ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
-                : 'Next due: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
-            style: theme?.textTheme.bodySmall,
-          ),
+          if (nextTopUpDate != null)
+            Text(
+              (profileDetails.wallet.pendingAllowance)
+                  ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
+                  : 'Next due: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
+              style: theme?.textTheme.bodySmall,
+            ),
         ],
       );
     }
