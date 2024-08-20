@@ -110,7 +110,22 @@ class NotificationService implements INotificationService {
       );
 
   @override
-  Future<void> init() async {
+  Future<void> init({isApnsTokenRetryAttempt}) async {
+    if (Platform.isIOS) {
+      final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      if (apnsToken == null && isApnsTokenRetryAttempt != true) {
+        // sometimes it takes a while to get the apns token on startup
+        await Future.delayed(const Duration(seconds: 1),
+            () => init(isApnsTokenRetryAttempt: true));
+      } else {
+        await _doInit();
+      }
+    } else {
+      await _doInit();
+    }
+  }
+
+  Future<void> _doInit() async {
     await FirebaseMessaging.instance.subscribeToTopic('dev');
     await FirebaseMessaging.instance.subscribeToTopic('all');
     await setupFlutterNotifications();
