@@ -110,13 +110,13 @@ class NotificationService implements INotificationService {
       );
 
   @override
-  Future<void> init({isApnsTokenRetryAttempt}) async {
+  Future<void> init({bool isApnsTokenRetryAttempt = false}) async {
     if (Platform.isIOS) {
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
       if (apnsToken == null && isApnsTokenRetryAttempt != true) {
         // sometimes it takes a while to get the apns token on startup
         await Future.delayed(const Duration(seconds: 1),
-            () => init(isApnsTokenRetryAttempt: true));
+                () => init(isApnsTokenRetryAttempt: true));
       } else {
         await _doInit();
       }
