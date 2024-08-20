@@ -56,9 +56,11 @@ class _ActionContainerState extends State<ActionContainer> {
   }
 
   void _setManualPressed(bool value) {
-    setState(() {
-      _isManualPressed = value;
-    });
+    if (mounted) {
+      setState(() {
+        _isManualPressed = value;
+      });
+    }
   }
 
   @override

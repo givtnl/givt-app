@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -30,65 +29,81 @@ class GivtBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            showCloseButton(),
-            // Title
-            TitleMediumText(
-              title,
-              textAlign: TextAlign.center,
-            ),
+    return Stack(
+      children: [
+        SafeArea(
+          minimum: const EdgeInsets.fromLTRB(24, 32, 24, 40),
+          child: Column(
+            children: [
+              Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              
+              // Icon
+              showIcon(),
 
-            // Icon
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: SizedBox(
-                  width: 140,
-                  height: 140,
-                  child: icon,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Content
+                      content,
+
+                      // Extra text above buttons
+                      showHeadlineContent(),
+
+                      // Buttons
+                      showPrimaryButton(),
+                      showSecondaryButton(),
+                    ],
+                  ),
                 ),
               ),
-
-            if (icon == null) const SizedBox(height: 8),
-            // Content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: content,
-            ),
-
-            // Extra text above buttons
-            showHeadlineContent(),
-
-            // Buttons
-            showPrimaryButton(),
-            showSecondaryButton(),
-          ],
+            ],
+          ),
         ),
-      ),
+        showCloseButton(),
+      ],
+    );
+  }
+
+  Widget showIcon() {
+    if (icon == null) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: icon,
     );
   }
 
   Widget showCloseButton() {
     if (closeAction == null) return const SizedBox.shrink();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.xmark),
-          onPressed: () {
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
-            );
+    return Positioned(
+      top: 12,
+      right: 12,
+      child: IconButton(
+        icon: const FaIcon(FontAwesomeIcons.xmark),
+        onPressed: () {
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
+          );
 
-            closeAction!.call();
-          },
-        ),
-      ],
+          closeAction!.call();
+        },
+      ),
     );
   }
 

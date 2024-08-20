@@ -18,6 +18,7 @@ class OutlinedTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.validator,
+    this.onTapOutside,
     super.key,
   });
 
@@ -34,6 +35,7 @@ class OutlinedTextFormField extends StatelessWidget {
   final List<String> autofillHints;
   final List<TextInputFormatter>? inputFormatters;
   final TextCapitalization textCapitalization;
+  final void Function(PointerDownEvent)? onTapOutside;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,7 @@ class OutlinedTextFormField extends StatelessWidget {
       obscuringCharacter: '*',
       textInputAction: textInputAction,
       textCapitalization: textCapitalization,
+      onTapOutside: onTapOutside,
     );
   }
 }

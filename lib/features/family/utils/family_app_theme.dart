@@ -172,7 +172,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       primaryColor: colorScheme.primary,
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
+          statusBarColor: Colors.transparent,
+          systemNavigationBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
         ),

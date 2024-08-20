@@ -77,7 +77,6 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
 
     return BottomSheetLayout(
@@ -142,11 +141,12 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TitleSmallText(
+              const SizedBox(height: 24),
+              BodyMediumText(
                 locals.loginText,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: size.height * 0.05),
+              const SizedBox(height: 24),
               OutlinedTextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -170,7 +170,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 },
                 hintText: locals.email,
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 16),
               OutlinedTextFormField(
                 controller: passwordController,
                 autofillHints: const [AutofillHints.password],
@@ -211,7 +211,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 16),
                 child: Align(
                   child: TextButton(
                     onPressed: () => showModalBottomSheet<void>(

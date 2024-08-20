@@ -49,6 +49,7 @@ class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const FamilyGoalTracker(),
+            const SizedBox(height: 24),
             ProfilesOverviewWidget(
               profiles: sortedAdultProfiles,
             ),

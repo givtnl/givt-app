@@ -24,6 +24,7 @@ class KidsHomeScreenAppBar extends StatelessWidget
       title: navigation.state.activeDestination.appBarTitle.isEmpty
           ? profiles.state.activeProfile.firstName
           : navigation.state.activeDestination.appBarTitle,
+      systemNavigationBarColor: AppTheme.secondary99,
       actions: [
         if (navigation.state.activeDestination ==
             NavigationDestinationData.home)
