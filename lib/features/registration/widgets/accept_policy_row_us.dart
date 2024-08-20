@@ -11,8 +11,10 @@ class AcceptPolicyRowUs extends StatelessWidget {
     required this.checkBoxValue,
     super.key,
   });
+
   final void Function(bool?)? onTap;
   final bool checkBoxValue;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,6 +28,7 @@ class AcceptPolicyRowUs extends StatelessWidget {
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Checkbox(
             value: checkBoxValue,
@@ -35,30 +38,23 @@ class AcceptPolicyRowUs extends StatelessWidget {
               width: 2,
             ),
           ),
-          Text.rich(
-            TextSpan(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                WidgetSpan(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: BodySmallText.primary40(
-                      'Givt is permitted to save my data',
-                    ),
-                  ),
-                ),
-                const WidgetSpan(
-                  child: SizedBox(width: 8),
-                ),
-                const WidgetSpan(
-                  child: Icon(
-                    FontAwesomeIcons.circleInfo,
-                    size: 20,
-                    color: AppTheme.primary20,
-                  ),
+                BodySmallText.primary40(
+                  'Givt is permitted to save my data',
                 ),
               ],
             ),
-            textAlign: TextAlign.center,
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(
+              FontAwesomeIcons.circleInfo,
+              size: 20,
+              color: AppTheme.primary20,
+            ),
           ),
         ],
       ),

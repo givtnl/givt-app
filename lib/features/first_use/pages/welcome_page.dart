@@ -71,7 +71,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.fromLTRB(24, 24, 24, 40),
           child: Column(
             children: [
               Expanded(

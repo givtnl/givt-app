@@ -15,10 +15,10 @@ class NoChildrenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      minimum: const EdgeInsets.fromLTRB(24, 24, 24, 40),
       child: Center(
         child: Column(
           children: [
-            const SizedBox(height: 24),
             const BodyMediumText(
               'Create your first impact group and\nexperience generosity together.',
               textAlign: TextAlign.center,
