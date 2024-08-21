@@ -5,6 +5,7 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -12,6 +13,8 @@ import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 mixin ProfilesRepository {
   Future<Profile> getChildDetails(String childGuid);
+
+  Future<Profile> refreshChildDetails(String childGuid);
 
   Future<List<Profile>> getProfiles();
 
@@ -33,6 +36,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._givtRepository,
     this._authRepository,
     this._parentalApprovalRepository,
+    this._createTransactionRepository,
   ) {
     _init();
   }
@@ -44,6 +48,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final GivtRepository _givtRepository;
   final AuthRepository _authRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
+  final CreateTransactionRepository _createTransactionRepository;
 
   final StreamController<List<Profile>> _profilesStreamController =
       StreamController<List<Profile>>.broadcast();
@@ -84,6 +89,12 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         }
       },
     );
+
+    _createTransactionRepository.onTransaction().listen(
+      (_) {
+        _fetchProfiles();
+      },
+    );
   }
 
   void _clearData() {
@@ -108,6 +119,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
   Future<List<Profile>> _fetchProfiles() async {
     try {
+      _profileMap.clear();
       _profilesCompleter = Completer<List<Profile>>();
       final response = await _apiService.fetchAllProfiles();
       final result = <Profile>[];
@@ -136,6 +148,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     response['type'] = 'Child';
     final profile = Profile.fromMap(response);
     _childDetailsStreamController.add(profile);
+    _profileMap[childGuid] = profile;
     return profile;
   }
 
@@ -147,4 +160,8 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
   @override
   Future<List<Profile>> refreshProfiles() => _fetchProfiles();
+
+  @override
+  Future<Profile> refreshChildDetails(String childGuid) async =>
+      _fetchChildDetails(childGuid);
 }

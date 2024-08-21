@@ -226,6 +226,7 @@ void initRepositories() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<GenerosityChallengeRepository>(
@@ -238,7 +239,7 @@ void initRepositories() {
       ChatScriptsAssetRepositoryImpl.new,
     )
     ..registerLazySingleton<ChatScriptRegistrationHandler>(
-      () => ChatScriptRegistrationHandler(
+          () => ChatScriptRegistrationHandler(
         getIt(),
         getIt(),
         getIt(),
