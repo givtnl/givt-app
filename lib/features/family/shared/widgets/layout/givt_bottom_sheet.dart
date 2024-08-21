@@ -74,11 +74,13 @@ class GivtBottomSheet extends StatelessWidget {
   }
 
   Widget showCloseButton() {
-    if (closeAction == null) return const SizedBox.shrink();
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        if(closeAction == null)
+        const SizedBox(height: 24),
+
+        if(closeAction != null)
         IconButton(
           icon: const FaIcon(FontAwesomeIcons.xmark),
           onPressed: () {
