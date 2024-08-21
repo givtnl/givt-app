@@ -34,7 +34,7 @@ class _RegistrationRedirectToGenerosityScreenState
       eventName: AmplitudeEvents.registerWithoutChallengeClicked,
     );
 
-    context.pushNamed(
+    context.pushReplacementNamed(
       FamilyPages.registrationUS.name,
       queryParameters: {
         'email': user.email,
