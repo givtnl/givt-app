@@ -5,7 +5,9 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class StripeInfoSheet extends StatelessWidget {
-  const StripeInfoSheet({super.key,});
+  const StripeInfoSheet({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,9 @@ class StripeInfoSheet extends StatelessWidget {
               showDragHandle: true,
               isScrollControlled: true,
               useSafeArea: true,
-              backgroundColor: AppTheme.givtBlue,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
               builder: (_) => const TermsAndConditionsDialog(
                 typeOfTerms: TypeOfTerms.privacyPolicy,
               ),
