@@ -6,6 +6,7 @@ import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
@@ -32,6 +33,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     this._createFamilyGoalRepository,
     this._parentalApprovalRepository,
     this._authRepository,
+    this._createTransactionRepository,
   ) {
     _init();
   }
@@ -41,6 +43,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final CreateFamilyGoalRepository _createFamilyGoalRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
   final AuthRepository _authRepository;
+  final CreateTransactionRepository _createTransactionRepository;
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
@@ -67,6 +70,9 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
         }
       },
     );
+    _createTransactionRepository.onTransaction().listen(
+          (_) => _fetchImpactGroups(),
+        );
   }
 
   @override

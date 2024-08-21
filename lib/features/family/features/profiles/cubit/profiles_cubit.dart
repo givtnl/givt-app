@@ -185,7 +185,9 @@ class ProfilesCubit extends Cubit<ProfilesState> {
           ),
         );
       }
-      final response = await _profilesRepository.getChildDetails(childGuid);
+      final response = forceLoading
+          ? await _profilesRepository.refreshChildDetails(childGuid)
+          : await _profilesRepository.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(
         ProfilesUpdatedState(
