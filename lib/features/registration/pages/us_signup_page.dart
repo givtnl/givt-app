@@ -69,7 +69,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
         if (state.status == RegistrationStatus.createStripeAccount) {
-          context.goNamed(
+          context.pushReplacementNamed(
             FamilyPages.creditCardDetails.name,
             extra: context.read<RegistrationBloc>(),
           );
