@@ -22,7 +22,9 @@ class AcceptPolicyRowUs extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         useSafeArea: true,
-        backgroundColor: AppTheme.givtPurple,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
         builder: (_) => const TermsAndConditionsDialog(
           typeOfTerms: TypeOfTerms.privacyPolicy,
         ),
