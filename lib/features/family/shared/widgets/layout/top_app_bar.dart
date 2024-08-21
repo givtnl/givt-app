@@ -9,6 +9,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions = const [],
     this.leading,
     this.color,
+    this.systemNavigationBarColor,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget> actions;
   final Widget? leading;
   final Color? color;
+  final Color? systemNavigationBarColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,6 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
       ),
       backgroundColor: color ?? Theme.of(context).colorScheme.onPrimary,
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: color ?? Theme.of(context).colorScheme.onPrimary,
-        statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
-        statusBarBrightness: Brightness.light, // For iOS (dark icons)
-      ),
       actionsIconTheme: const IconThemeData(
         color: AppTheme.primary30,
       ),
@@ -39,6 +36,9 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
       scrolledUnderElevation: 0,
       automaticallyImplyLeading: false,
       leading: leading,
+      systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarColor: systemNavigationBarColor ?? Colors.white,
+      ),
     );
   }
 

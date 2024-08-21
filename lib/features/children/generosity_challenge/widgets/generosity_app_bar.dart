@@ -28,7 +28,6 @@ class GenerosityAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       leading: leading,
       systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: AppTheme.givtLightBackgroundGreen,
         statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
         statusBarBrightness: Brightness.light, // For iOS (dark icons)
       ),

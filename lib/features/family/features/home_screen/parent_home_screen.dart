@@ -115,6 +115,7 @@ class ParentHomeScreen extends StatelessWidget {
   TopAppBar _topAppBar(Profile profile, BuildContext context) => TopAppBar(
         title: profile.firstName,
         color: AppTheme.secondary99,
+        systemNavigationBarColor: AppTheme.secondary99,
         actions: [
           IconButton(
             icon: switchProfilesIcon(),

@@ -27,13 +27,11 @@ class FamilyHistory extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
-          child: Text(
-            locals.childHistoryAllGivts,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
+        Text(
+          locals.childHistoryAllGivts,
+          style: Theme.of(context).textTheme.titleSmall,
         ),
+        const SizedBox(height: 16),
         BlocBuilder<FamilyHistoryCubit, FamilyHistoryState>(
           builder: (context, state) {
             if (state.status == HistroryStatus.loading &&
@@ -64,12 +62,8 @@ class FamilyHistory extends StatelessWidget {
                         topup: state.history[index] as Topup,
                       );
                     }
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                      child: DonationItemWidget(
-                        donation: state.history[index] as ChildDonation,
-                      ),
+                    return DonationItemWidget(
+                      donation: state.history[index] as ChildDonation,
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {

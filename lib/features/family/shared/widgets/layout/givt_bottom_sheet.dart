@@ -31,6 +31,7 @@ class GivtBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
+      minimum: const EdgeInsets.fromLTRB(0, 0, 0, 40),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,

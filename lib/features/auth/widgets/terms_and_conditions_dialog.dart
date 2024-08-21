@@ -19,7 +19,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: FamilyAppTheme().toThemeData(),
+      data: const FamilyAppTheme().toThemeData(),
       child: FutureBuilder(
         future: getIt<CountryIsoInfo>().checkCountryIso,
         builder: (context, AsyncSnapshot<String?> snapshot) {

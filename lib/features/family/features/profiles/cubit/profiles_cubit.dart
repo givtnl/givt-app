@@ -163,28 +163,28 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
     try {
       final profile = state.profiles.firstWhere(
-      (element) => element.id == id,
-      orElse: Profile.empty,
-    );
-    final index = state.profiles.indexOf(profile);
-    final childGuid = state.profiles[index].id;
+        (element) => element.id == id,
+        orElse: Profile.empty,
+      );
+      final index = state.profiles.indexOf(profile);
+      final childGuid = state.profiles[index].id;
 
-    if (index == state.activeProfileIndex && !forceLoading) {
-      // When updating the same profile, we don't want to show the loading state
-      emit(
-        ProfilesUpdatingState(
-          profiles: state.profiles,
-          activeProfileIndex: index,
-        ),
-      );
-    } else {
-      emit(
-        ProfilesLoadingState(
-          profiles: state.profiles,
-          activeProfileIndex: index,
-        ),
-      );
-    }
+      if (index == state.activeProfileIndex && !forceLoading) {
+        // When updating the same profile, we don't want to show the loading state
+        emit(
+          ProfilesUpdatingState(
+            profiles: state.profiles,
+            activeProfileIndex: index,
+          ),
+        );
+      } else {
+        emit(
+          ProfilesLoadingState(
+            profiles: state.profiles,
+            activeProfileIndex: index,
+          ),
+        );
+      }
       final response = await _profilesRepository.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(

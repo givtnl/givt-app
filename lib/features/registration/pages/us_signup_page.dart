@@ -17,6 +17,7 @@ import 'package:givt_app/features/registration/widgets/us_mobile_number_form_fie
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -75,7 +76,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
+        return FamilyScaffold(
           appBar: GenerosityAppBar(
             leading: const GenerosityBackButton(),
             title: 'Enter you details',
@@ -96,25 +97,22 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-            child: isLoading
-                ? _buildLoadingState()
-                : CustomScrollView(
-                    slivers: <Widget>[
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Column(
-                          children: [
-                            _buildSignUpForm(locals, size),
-                            const Spacer(),
-                            _buildBottomWidgetGroup(locals, size),
-                          ],
-                        ),
+          body: isLoading
+              ? _buildLoadingState()
+              : CustomScrollView(
+                  slivers: <Widget>[
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        children: [
+                          _buildSignUpForm(locals, size),
+                          const Spacer(),
+                          _buildBottomWidgetGroup(locals, size),
+                        ],
                       ),
-                    ],
-                  ),
-          ),
+                    ),
+                  ],
+                ),
         );
       },
     );
@@ -170,7 +168,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(context.l10n.holdOnRegistration),
+          Text(context.l10n.holdOnRegistration, textAlign: TextAlign.center,),
           const SizedBox(height: 16),
           const CustomCircularProgressIndicator(),
         ],
@@ -182,26 +180,24 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     AppLocalizations locals,
     Size size,
   ) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 40),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AcceptPolicyRowUs(
-            onTap: (value) {
-              setState(() {
-                _acceptPolicy = value!;
-              });
-            },
-            checkBoxValue: _acceptPolicy,
-          ),
-          GivtElevatedButton(
-            isDisabled: !_isEnabled,
-            onTap: _isEnabled ? _register : null,
-            text: locals.enterPaymentDetails,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AcceptPolicyRowUs(
+          onTap: (value) {
+            setState(() {
+              _acceptPolicy = value!;
+            });
+          },
+          checkBoxValue: _acceptPolicy,
+        ),
+        const SizedBox(height: 12),
+        GivtElevatedButton(
+          isDisabled: !_isEnabled,
+          onTap: _isEnabled ? _register : null,
+          text: locals.enterPaymentDetails,
+        ),
+      ],
     );
   }
 

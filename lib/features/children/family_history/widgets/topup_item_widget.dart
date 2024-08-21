@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/children/family_history/models/topup.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -24,38 +25,39 @@ class TopupItemWidget extends StatelessWidget {
           else
             SvgPicture.asset('assets/images/donation_states_added.svg'),
           const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '+\$${topup.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${topup.name}',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: topup.isNotSuccessful
-                          ? AppTheme.childHistoryDeclined
-                          : AppTheme.childHistoryAllowance,
-                    ),
-              ),
-              SizedBox(
-                width: size.width * 0.7,
-                child: Text(
-                  topup.isNotSuccessful
-                      ? "Oops! We couldn't top up your child’s Wallet."
-                      : '${locals.childHistoryYay} ${topup.name} ${locals.childHistoryCanContinueMakingADifference}',
-                  maxLines: 3,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '+\$${topup.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${topup.name}',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: topup.isNotSuccessful
+                            ? AppTheme.childHistoryDeclined
+                            : AppTheme.childHistoryAllowance,
+                      ),
                 ),
-              ),
-              Text(
-                topup.isNotSuccessful
-                    ? 'Please try again later.'
-                    : topup.date.formatDate(locals),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
+                SizedBox(
+                  width: size.width * 0.7,
+                  child: Text(
+                    topup.isNotSuccessful
+                        ? "Oops! We couldn't top up your child’s Wallet."
+                        : '${locals.childHistoryYay} ${topup.name} ${locals.childHistoryCanContinueMakingADifference}',
+                    maxLines: 3,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                Text(
+                  topup.isNotSuccessful
+                      ? 'Please try again later.'
+                      : topup.date.formatDate(locals),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
-          const Spacer(),
         ],
       ),
     );
