@@ -109,8 +109,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                 },
               );
             } else {
-              await context
-                  .pushNamed(FamilyPages.generosityChallengeRedirect.name);
+              context.pushReplacementNamed(
+                FamilyPages.generosityChallengeRedirect.name,
+              );
             }
           }
         }
@@ -298,7 +299,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               return;
             }
 
-            context.pushReplacementNamed(FamilyPages.wallet.name);
+            context.pushNamed(FamilyPages.wallet.name);
           },
           child: ProfileItem(
             name: profiles[i].firstName,

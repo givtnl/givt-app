@@ -69,7 +69,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
         if (state.status == RegistrationStatus.createStripeAccount) {
-          context.goNamed(
+          context.pushReplacementNamed(
             FamilyPages.creditCardDetails.name,
             extra: context.read<RegistrationBloc>(),
           );
@@ -78,7 +78,11 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       builder: (context, state) {
         return FamilyScaffold(
           appBar: GenerosityAppBar(
-            leading: const GenerosityBackButton(),
+            leading: GenerosityBackButton(
+              onPressed: () => context.pushReplacementNamed(
+                FamilyPages.generosityChallengeRedirect.name,
+              ),
+            ),
             title: 'Enter you details',
             actions: [
               IconButton(
@@ -168,7 +172,10 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(context.l10n.holdOnRegistration, textAlign: TextAlign.center,),
+          Text(
+            context.l10n.holdOnRegistration,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 16),
           const CustomCircularProgressIndicator(),
         ],
