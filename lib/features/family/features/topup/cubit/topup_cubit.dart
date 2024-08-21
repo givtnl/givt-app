@@ -1,12 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'package:givt_app/features/family/features/topup/repository/topup_repository.dart';
+import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 
 part 'topup_state.dart';
 
 class TopupCubit extends Cubit<TopupState> {
-  TopupCubit(this.topupRepository) : super(const InitialState());
+  TopupCubit(this.editChildRepository) : super(const InitialState());
 
-  final TopupRepository topupRepository;
+  final EditChildRepository editChildRepository;
   String? userGuid;
 
   void init(String guid) {
@@ -20,9 +20,9 @@ class TopupCubit extends Cubit<TopupState> {
 
     try {
       if (recurring) {
-        await topupRepository.setupRecurringAmount(userGuid!, amount);
+        await editChildRepository.editChildAllowance(userGuid!, amount);
       } else {
-        await topupRepository.topupChild(userGuid!, amount);
+        await editChildRepository.topUpChild(userGuid!, amount);
       }
 
       emit(SuccessState(amount, recurring));
