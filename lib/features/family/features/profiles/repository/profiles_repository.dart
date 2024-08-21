@@ -101,6 +101,8 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     _profiles = null;
     _profileMap.clear();
     _profilesCompleter = null;
+    _profilesStreamController.add([]);
+    _childDetailsStreamController.add(Profile.empty());
   }
 
   @override
@@ -118,6 +120,14 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   }
 
   Future<List<Profile>> _fetchProfiles() async {
+    if (true == _profilesCompleter?.isCompleted) {
+      return _doProfilesFetching();
+    } else {
+      return _profilesCompleter?.future ?? _doProfilesFetching();
+    }
+  }
+
+  Future<List<Profile>> _doProfilesFetching() async {
     try {
       _profileMap.clear();
       _profilesCompleter = Completer<List<Profile>>();
