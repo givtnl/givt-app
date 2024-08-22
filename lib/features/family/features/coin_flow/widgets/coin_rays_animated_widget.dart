@@ -24,7 +24,7 @@ class _CoinRaysAnimatedWidgetState extends State<CoinRaysAnimatedWidget>
     controller = AnimationController(
       duration: widget.animationDuration,
       vsync: this,
-    )..repeat(reverse: false);
+    )..repeat();
 
     animation = CurvedAnimation(
       parent: controller,
@@ -44,8 +44,7 @@ class _CoinRaysAnimatedWidgetState extends State<CoinRaysAnimatedWidget>
 
 class AnimatedRays extends AnimatedWidget {
   const AnimatedRays({
-    super.key,
-    required Animation<double> animation,
+    required Animation<double> animation, super.key,
   }) : super(listenable: animation);
 
   @override

@@ -81,7 +81,7 @@ class LogMessage extends Equatable {
       model: model ?? this.model,
       platformID: platformID ?? this.platformID,
       tag: tag ?? this.tag,
-      deviceUTCTimestamp: timestamp ?? this.deviceUTCTimestamp,
+      deviceUTCTimestamp: timestamp ?? deviceUTCTimestamp,
       versionOS: versionOS ?? this.versionOS,
       appVersion: appVersion ?? this.appVersion,
       lang: lang ?? this.lang,

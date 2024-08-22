@@ -32,24 +32,35 @@ class _FamilyAvailablePageState extends State<FamilyAvailablePage> {
         context.read<FamilyHistoryCubit>().fetchHistory();
       }
     });
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      controller: scrollController,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const FamilyGoalTracker(),
-          ProfilesOverviewWidget(
-            profiles: sortedAdultProfiles,
-          ),
-          const SizedBox(height: 20),
-          ProfilesOverviewWidget(
-            profiles: state.children,
-          ),
-          const SizedBox(height: 28),
-          const FamilyHistory(),
-        ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.wait(
+          [
+            context.read<FamilyOverviewCubit>().refresh(),
+            context.read<FamilyHistoryCubit>().refresh(),
+          ],
+        );
+      },
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        controller: scrollController,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const FamilyGoalTracker(),
+            const SizedBox(height: 24),
+            ProfilesOverviewWidget(
+              profiles: sortedAdultProfiles,
+            ),
+            const SizedBox(height: 20),
+            ProfilesOverviewWidget(
+              profiles: state.children,
+            ),
+            const SizedBox(height: 28),
+            const FamilyHistory(),
+          ],
+        ),
       ),
     );
   }

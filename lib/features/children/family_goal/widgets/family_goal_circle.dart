@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +26,7 @@ class FamilyGoalCircle extends StatefulWidget {
 class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
   static const _avatarSize = 100.0;
 
-  List<LegacyProfile> get _profiles {
+  List<Profile> get _profiles {
     return (context.read<FamilyOverviewCubit>().state
             as FamilyOverviewUpdatedState)
         .profiles;
@@ -36,11 +36,11 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
     return context.read<AuthCubit>().state.user.guid;
   }
 
-  LegacyProfile get _familyLeader {
-    return _profiles.firstWhere((prifile) => prifile.id == _familyLeaderId);
+  Profile get _familyLeader {
+    return _profiles.firstWhere((profile) => profile.id == _familyLeaderId);
   }
 
-  List<LegacyProfile> get _otherMembers {
+  List<Profile> get _otherMembers {
     return [..._profiles]
       ..removeWhere((profile) => profile.id == _familyLeaderId);
   }

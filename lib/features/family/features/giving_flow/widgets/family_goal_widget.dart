@@ -3,14 +3,14 @@ import 'package:givt_app/features/family/features/giving_flow/organisation_detai
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 
 class FamilyGoalWidget extends StatelessWidget {
-  final OrganisationDetails organisation;
-  final ImpactGroup group;
 
   const FamilyGoalWidget(
     this.group,
     this.organisation, {
     super.key,
   });
+  final OrganisationDetails organisation;
+  final ImpactGroup group;
 
   @override
   Widget build(BuildContext context) {

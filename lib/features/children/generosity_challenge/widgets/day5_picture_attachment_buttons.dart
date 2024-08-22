@@ -28,7 +28,7 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
               context: context,
               builder: (_) {
                 return CameraPermissionsDialog(
-                    cameraCubit: context.read<CameraCubit>(), isSettings: true);
+                    cameraCubit: context.read<CameraCubit>(), isSettings: true,);
               },
             );
           }
@@ -53,12 +53,12 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                 );
                 if (context.mounted && !success) {
                   unawaited(
-                      context.read<CameraCubit>().checkCameraPermission());
+                      context.read<CameraCubit>().checkCameraPermission(),);
                 }
                 unawaited(AnalyticsHelper.logEvent(
                   eventName:
                       AmplitudeEvents.generosityChallengeTakePictureClicked,
-                ));
+                ),);
               },
               leftIcon: FontAwesomeIcons.camera,
               text: 'Take Picture',
@@ -71,7 +71,7 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                 );
                 if (context.mounted && !success) {
                   unawaited(
-                      context.read<CameraCubit>().checkGalleryPermission());
+                      context.read<CameraCubit>().checkGalleryPermission(),);
                 }
                 unawaited(
                   AnalyticsHelper.logEvent(

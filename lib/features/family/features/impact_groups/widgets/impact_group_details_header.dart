@@ -27,9 +27,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        impactGroup.isFamilyGroup
-            ? const SizedBox(height: 30)
-            : Image.network(impactGroup.image),
+        if (impactGroup.isFamilyGroup) const SizedBox(height: 30) else Image.network(impactGroup.image),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
@@ -66,7 +64,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                         Text(
                           'Goal: \$${impactGroup.goal.goalAmount}',
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontWeight: FontWeight.w500,
                                     color: AppTheme.primary50,
                                   ),

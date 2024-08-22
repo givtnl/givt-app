@@ -20,7 +20,7 @@ class FamilyValueContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       borderColor: familyValue.colorCombo.borderColor,
       isSelected: isSelected,
@@ -46,7 +46,7 @@ class FamilyValueContainer extends StatelessWidget {
                 Text(
                   familyValue.displayText,
                   textAlign: TextAlign.center,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: theme.textTheme.labelMedium?.copyWith(
                     color: familyValue.colorCombo.textColor,
                   ),
                 ),

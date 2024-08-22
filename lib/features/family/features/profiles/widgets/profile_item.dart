@@ -5,9 +5,7 @@ import 'package:givt_app/utils/app_theme.dart';
 
 class ProfileItem extends StatelessWidget {
   const ProfileItem({
-    super.key,
-    required this.name,
-    required this.imageUrl,
+    required this.name, required this.imageUrl, super.key,
   });
 
   final String name;
@@ -36,7 +34,7 @@ class ProfileItem extends StatelessWidget {
                   textAlign: TextAlign.center,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ),
               const SizedBox(width: 4),

@@ -17,7 +17,7 @@ class Wallet extends StatelessWidget {
       children: [
         Text(
           '\$${activeProfile.wallet.balance.toStringAsFixed(2)}',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: AppTheme.info20,
               ),
         ),

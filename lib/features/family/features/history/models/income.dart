@@ -7,9 +7,6 @@ class Income extends HistoryItem {
     required super.type,
   });
 
-  @override
-  List<Object?> get props => [amount, date, type];
-
   Income.empty()
       : this(
           amount: 0,
@@ -23,8 +20,11 @@ class Income extends HistoryItem {
         date: DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
         type: HistoryTypes.values.firstWhere(
           (element) => element.value == map['donationType'],
-        ));
+        ),);
   }
+
+  @override
+  List<Object?> get props => [amount, date, type];
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,

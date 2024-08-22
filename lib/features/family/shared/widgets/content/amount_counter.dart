@@ -11,12 +11,14 @@ class AmountCounter extends StatefulWidget {
     required this.currency,
     this.initialAmount,
     this.onAmountChanged,
+    this.maxAmount,
     this.canAmountBeZero = false,
     super.key,
   });
 
   final String? currency;
   final int? initialAmount;
+  final int? maxAmount;
   final void Function(int amount)? onAmountChanged;
   final bool canAmountBeZero;
 
@@ -28,7 +30,7 @@ class _AmountCounterState extends State<AmountCounter> {
   static const int tapTime = 240;
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;
-  static const int maxAmount = 999;
+  static int maxAmount = 999;
   static late int minAmount;
   static const int amountIncrement = 5;
   static const int amountIncrement2 = 10;
@@ -41,6 +43,7 @@ class _AmountCounterState extends State<AmountCounter> {
   void initState() {
     super.initState();
     minAmount = widget.canAmountBeZero ? 0 : 1;
+    maxAmount = widget.maxAmount ?? maxAmount;
     _currentAmount = widget.initialAmount ?? 15;
   }
 

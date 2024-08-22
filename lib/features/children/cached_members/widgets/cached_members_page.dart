@@ -89,7 +89,7 @@ class CachedMembersPage extends StatelessWidget {
             ),
             const TextSpan(
                 text:
-                    " for your child's Wallet. Please check your payment details."),
+                    " for your child's Wallet. Please check your payment details.",),
           ],
         ),
       );
@@ -109,7 +109,7 @@ class CachedMembersPage extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.w700),
           ),
           const TextSpan(
-              text: " for verification. Please check your payment details."),
+              text: ' for verification. Please check your payment details.',),
         ],
       ),
     );

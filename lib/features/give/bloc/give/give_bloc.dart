@@ -304,25 +304,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
       );
       return;
     } on GivtServerFailure catch (e, stackTrace) {
-      final statusCode = e.statusCode;
-      final body = e.body;
-      log('StatusCode:$statusCode Body:$body');
-      LoggingInfo.instance.warning(
-        body.toString(),
-        methodName: stackTrace.toString(),
-      );
-      if (statusCode == 417) {
-        emit(
-          state.copyWith(
-            status: GiveStatus.donatedToSameOrganisationInLessThan30Seconds,
-          ),
-        );
-        return;
-      }
-      emit(
-        state.copyWith(status: GiveStatus.error),
-      );
-      return;
+      _handleGivtServerFailure(e, stackTrace, emit);
     }
 
     emit(
@@ -332,6 +314,29 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         givtTransactions: transactionList,
       ),
     );
+  }
+
+  void _handleGivtServerFailure(
+      GivtServerFailure e, StackTrace stackTrace, Emitter<GiveState> emit) {
+    final statusCode = e.statusCode;
+    final body = e.body;
+    log('StatusCode:$statusCode Body:$body');
+    LoggingInfo.instance.warning(
+      body.toString(),
+      methodName: stackTrace.toString(),
+    );
+    if (statusCode == 417) {
+      emit(
+        state.copyWith(
+          status: GiveStatus.donatedToSameOrganisationInLessThan30Seconds,
+        ),
+      );
+      return;
+    }
+    emit(
+      state.copyWith(status: GiveStatus.error),
+    );
+    return;
   }
 
   Future<void> _checkBatteryVoltage(
@@ -426,6 +431,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
         ),
       );
       return;
+    } on GivtServerFailure catch (e, stackTrace) {
+      _handleGivtServerFailure(e, stackTrace, emit);
     }
   }
 

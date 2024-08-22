@@ -11,24 +11,6 @@ class Donation extends HistoryItem {
     required super.type,
     required this.goalId,
   });
-  final String organizationName;
-  final DonationState state;
-  final DonationMediumType medium;
-  final String goalId;
-
-  bool get isToGoal {
-    return goalId.isNotEmpty;
-  }
-
-  @override
-  List<Object?> get props => [
-        amount,
-        date,
-        organizationName,
-        state,
-        medium,
-        goalId,
-      ];
 
   Donation.empty()
       : this(
@@ -49,7 +31,7 @@ class Donation extends HistoryItem {
       state: DonationState.getState(map['status'] as String?),
       medium: DonationMediumType.values.firstWhere(
           (element) => element.type == map['mediumType'],
-          orElse: () => DonationMediumType.unknown),
+          orElse: () => DonationMediumType.unknown,),
       type: HistoryTypes.values.firstWhere(
         (element) => element.value == map['donationType'],
         orElse: () => HistoryTypes.donation,
@@ -57,6 +39,24 @@ class Donation extends HistoryItem {
       goalId: map['goalId'] as String? ?? '',
     );
   }
+  final String organizationName;
+  final DonationState state;
+  final DonationMediumType medium;
+  final String goalId;
+
+  bool get isToGoal {
+    return goalId.isNotEmpty;
+  }
+
+  @override
+  List<Object?> get props => [
+        amount,
+        date,
+        organizationName,
+        state,
+        medium,
+        goalId,
+      ];
   Map<String, dynamic> toJson() {
     return {
       'amount': amount,

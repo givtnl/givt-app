@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/tiles/campaign_tile.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/tiles/charity_tile.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/tiles/church_tile.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationListFamilyPage extends StatefulWidget {
   const OrganisationListFamilyPage({
+    required this.onTap,
     super.key,
   });
-
+  final void Function(CollectGroup) onTap;
   @override
   State<OrganisationListFamilyPage> createState() =>
       _OrganisationListFamilyPageState();
@@ -29,7 +28,6 @@ class OrganisationListFamilyPage extends StatefulWidget {
 class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
-
   @override
   void dispose() {
     controller.dispose();
@@ -88,12 +86,7 @@ class _OrganisationListFamilyPageState
                         type: state.filteredOrganisations[index].type,
                         title: state.filteredOrganisations[index].orgName,
                         onTap: () {
-                          context.read<OrganisationBloc>().add(
-                                OrganisationSelectionChanged(
-                                  state.filteredOrganisations[index].nameSpace,
-                                ),
-                              );
-                          _navigateToGivingScreen(state, context);
+                          widget.onTap(state.filteredOrganisations[index]);
                         },
                       );
                     },
@@ -110,20 +103,6 @@ class _OrganisationListFamilyPageState
     );
   }
 
-  void _navigateToGivingScreen(OrganisationState state, BuildContext context) {
-    final collectGroup = state.filteredOrganisations.firstWhere(
-      (element) => element.nameSpace == state.selectedCollectGroup.nameSpace,
-    );
-    final userGUID = context.read<AuthCubit>().state.user.guid;
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.parentGivingFlowOrganisationClicked,
-      eventProperties: {
-        'organisation': collectGroup.orgName,
-      },
-    );
-    //TODO KIDS-1262 navigate to Giving screen
-  }
-
   Widget _buildListTile({
     required VoidCallback onTap,
     required String title,
@@ -131,7 +110,7 @@ class _OrganisationListFamilyPageState
   }) =>
       ListTile(
         key: UniqueKey(),
-        onTap: onTap,
+        onTap: () => onTap.call(),
         splashColor: AppTheme.generosityChallangeCardBackground,
         selectedTileColor: CollectGroupType.getHighlightColor(type),
         trailing: FaIcon(
@@ -139,55 +118,36 @@ class _OrganisationListFamilyPageState
           color: FamilyAppTheme.primary50.withOpacity(0.5),
         ),
         leading: Icon(
-          CollectGroupType.getIconByType(type),
+          CollectGroupType.getIconByTypeUS(type),
           color: AppTheme.givtBlue,
         ),
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.labelSmall ??
-              const TextStyle(
-                color: AppTheme.givtBlue,
-              ),
-        ),
+        title: LabelMediumText(title),
       );
 
-  Widget _buildFilterType(OrganisationBloc bloc, AppLocalizations locals) =>
-      SizedBox(
-        height: 116,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
-            CharityTile(
-              edgeInsets: const EdgeInsets.only(right: 8, left: 24),
-              isSelected:
-                  bloc.state.selectedType == CollectGroupType.charities.index,
-              onClick: (context) => bloc.add(
-                OrganisationTypeChanged(
-                  CollectGroupType.charities.index,
-                ),
-              ),
-            ),
-            ChurchTile(
+  Widget _buildFilterType(OrganisationBloc bloc, AppLocalizations locals) {
+    final types = bloc.state.organisations.map((e) => e.type).toSet().toList();
+    return SizedBox(
+      height: 116,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        children: [
+          const SizedBox(
+            width: 24,
+          ),
+          ...types.map(
+            (e) => FilterTile(
+              type: e,
               edgeInsets: const EdgeInsets.only(right: 8),
-              isSelected:
-                  bloc.state.selectedType == CollectGroupType.church.index,
+              isSelected: bloc.state.selectedType == e.index,
               onClick: (context) => bloc.add(
                 OrganisationTypeChanged(
-                  CollectGroupType.church.index,
+                  e.index,
                 ),
               ),
             ),
-            CampaignTile(
-              edgeInsets: const EdgeInsets.only(right: 8),
-              isSelected:
-                  bloc.state.selectedType == CollectGroupType.campaign.index,
-              onClick: (context) => bloc.add(
-                OrganisationTypeChanged(
-                  CollectGroupType.campaign.index,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
+  }
 }

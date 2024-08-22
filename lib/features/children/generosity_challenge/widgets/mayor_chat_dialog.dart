@@ -18,7 +18,7 @@ class MayorChatDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: FamilyAppTheme().toThemeData(),
+      data: const FamilyAppTheme().toThemeData(),
       child: Dialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),

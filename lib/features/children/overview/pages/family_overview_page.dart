@@ -12,6 +12,7 @@ import 'package:givt_app/features/children/overview/widgets/no_children_page.dar
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,9 +47,13 @@ class FamilyOverviewPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
+        return FamilyScaffold(
           appBar: TopAppBar(
-            title: 'Manage Family',
+            title: state is FamilyOverviewUpdatedState &&
+                    !state.hasChildren &&
+                    state.isAdultSingle
+                ? 'Set up Family'
+                : 'Manage Family',
             actions: [
               if (state is FamilyOverviewUpdatedState &&
                   (state.hasChildren || !state.isAdultSingle))
@@ -61,9 +66,7 @@ class FamilyOverviewPage extends StatelessWidget {
             ],
             leading: const LeadingBackButton(),
           ),
-          body: SafeArea(
-            child: buildFamilyOverviewBody(state, context),
-          ),
+          body: buildFamilyOverviewBody(state, context),
         );
       },
     );
@@ -99,5 +102,25 @@ class FamilyOverviewPage extends StatelessWidget {
       FamilyPages.addMember.name,
       extra: familyExists,
     );
+    // final dynamic result = await Navigator.push(
+    //   context,
+    //   const AddMemberCounterPage(
+    //     initialAmount: 1,
+    //   ).toRoute(context),
+    // );
+    // if (result != null && result is int && context.mounted) {
+    //   final dynamic member = await Navigator.push(
+    //     context,
+    //     AddMemberFormPage(
+    //       index: 1,
+    //       totalCount: result,
+    //     ).toRoute(context),
+    //   );
+    //   if (member != null && member is Member && context.mounted) {
+    //     // todo
+    //     print(
+    //         'Member is ${member.type}, ${member.firstName}, ${member.age}, ${member.allowance}, ${member.email}');
+    //   }
+    // }
   }
 }

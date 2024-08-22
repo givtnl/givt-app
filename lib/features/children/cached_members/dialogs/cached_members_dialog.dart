@@ -10,6 +10,6 @@ class CachedMembersDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Theme(
         data: AppTheme.lightTheme,
-        child: const CardDialog(child: CachedMembersDialogContent()));
+        child: const CardDialog(child: CachedMembersDialogContent()),);
   }
 }

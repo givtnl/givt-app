@@ -46,7 +46,6 @@ class AvatarItem extends StatelessWidget {
                   border: Border.all(
                     width: 6,
                     color: Theme.of(context).colorScheme.primaryContainer,
-                    style: BorderStyle.solid,
                   ),
                 ),
               ),

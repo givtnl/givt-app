@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -24,6 +23,7 @@ class KidsHomeScreenAppBar extends StatelessWidget
       title: navigation.state.activeDestination.appBarTitle.isEmpty
           ? profiles.state.activeProfile.firstName
           : navigation.state.activeDestination.appBarTitle,
+      systemNavigationBarColor: AppTheme.secondary99,
       actions: [
         if (navigation.state.activeDestination ==
             NavigationDestinationData.home)
@@ -33,7 +33,7 @@ class KidsHomeScreenAppBar extends StatelessWidget
               profiles.fetchAllProfiles();
               context.read<FlowsCubit>().resetFlow();
 
-              context.pushReplacementNamed(FamilyPages.profileSelection.name);
+              context.pop();
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.profileSwitchPressed,
               );

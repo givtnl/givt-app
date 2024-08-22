@@ -10,7 +10,7 @@ class OrganisationHeader extends StatelessWidget {
   final FamilyValue value;
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return Container(
       padding: const EdgeInsets.only(right: 20),
       child: Row(
@@ -40,7 +40,7 @@ class OrganisationHeader extends StatelessWidget {
                         ),
                         child: Text(
                           tag.displayText,
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: theme.textTheme.labelMedium?.copyWith(
                             color: value.colorCombo.textColor,
                           ),
                         ),

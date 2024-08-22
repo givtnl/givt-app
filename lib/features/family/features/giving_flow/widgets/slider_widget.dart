@@ -25,7 +25,7 @@ class SliderWidget extends StatelessWidget {
             alignment: Alignment.center,
             child: Text(
               '\$${currentAmount.round()}',
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           SliderTheme(
@@ -44,7 +44,6 @@ class SliderWidget extends StatelessWidget {
             ),
             child: Slider(
               value: currentAmount,
-              min: 0,
               max: maxAmount,
               divisions: maxAmount.round(),
               onChanged: (value) {
@@ -68,12 +67,12 @@ class SliderWidget extends StatelessWidget {
               children: [
                 Text(
                   r'$0',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
                 const Spacer(),
                 Text(
                   '\$${maxAmount.round()}',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ],
             ),
@@ -111,11 +110,11 @@ class SliderWidgetThumb extends SliderComponentShape {
     required Size sizeWithOverflow,
   }) {
     // Draw circle
-    final Paint circleBluePaint = Paint()
+    final circleBluePaint = Paint()
       ..color = sliderTheme.thumbColor!
       ..style = PaintingStyle.fill;
 
-    final Paint circleDarkPaint = Paint()
+    final circleDarkPaint = Paint()
       ..color = AppTheme.secondary30
       ..style = PaintingStyle.fill;
 

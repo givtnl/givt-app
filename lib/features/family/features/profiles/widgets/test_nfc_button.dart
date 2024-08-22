@@ -14,7 +14,7 @@ class TestNFCButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         minimumSize: const Size(double.maxFinite, 60),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
       child: const Text(

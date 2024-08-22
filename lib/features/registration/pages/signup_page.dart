@@ -1,19 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/features/registration/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/color_schemes.g.dart';
@@ -38,7 +34,6 @@ class _SignUpPageState extends State<SignUpPage> {
   late TextEditingController _passwordController;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
-  late TextEditingController _phoneNumberController;
 
   bool _acceptPolicy = false;
   bool isLoading = false;
@@ -52,7 +47,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
-    _phoneNumberController = TextEditingController();
     final user = context.read<AuthCubit>().state.user;
     _selectedCountry = Country.fromCode(user.country);
   }
@@ -61,12 +55,10 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);
-    final isUS = _selectedCountry == Country.us;
 
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
-        if (!(_selectedCountry == Country.us) &&
-            state.status == RegistrationStatus.personalInfo) {
+        if (state.status == RegistrationStatus.personalInfo) {
           context.goNamed(
             Pages.personalInfo.name,
             extra: context.read<RegistrationBloc>(),
@@ -87,27 +79,10 @@ class _SignUpPageState extends State<SignUpPage> {
             extra: context.read<RegistrationBloc>(),
           );
         }
-        if (state.status == RegistrationStatus.createStripeAccount) {
-          context.goNamed(
-            FamilyPages.creditCardDetails.name,
-            extra: context.read<RegistrationBloc>(),
-          );
-        }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: RegistrationAppBar(
-            leading: isUS ? const LeadingBackButton() : null,
-            title: isUS
-                ? Text(
-                    locals.signUpPageTitle,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                        ),
-                  )
-                : null,
             actions: [
               IconButton(
                 onPressed: () => showModalBottomSheet<void>(
@@ -127,16 +102,16 @@ class _SignUpPageState extends State<SignUpPage> {
           body: Padding(
             padding: const EdgeInsets.all(16),
             child: isLoading
-                ? _buildLoadingState(isUS)
+                ? _buildLoadingState()
                 : CustomScrollView(
                     slivers: <Widget>[
                       SliverFillRemaining(
                         hasScrollBody: false,
                         child: Column(
                           children: [
-                            _buildSignUpForm(locals, size, isUS),
+                            _buildSignUpForm(locals, size),
                             const Spacer(),
-                            _buildBottomWidgetGroup(locals, size, isUS),
+                            _buildBottomWidgetGroup(locals, size),
                           ],
                         ),
                       ),
@@ -175,23 +150,6 @@ class _SignUpPageState extends State<SignUpPage> {
             lastName: _lastNameController.text,
           ),
         );
-    if (_selectedCountry == Country.us) {
-      context.read<RegistrationBloc>().add(
-            RegistrationPersonalInfoSubmitted(
-              address: Util.defaultAdress,
-              city: Util.defaultCity,
-              postalCode: Util.defaultPostCode,
-              country: _selectedCountry.countryCode,
-              phoneNumber: _phoneNumberController.text,
-              iban: Util.defaultIban,
-              sortCode: Util.empty,
-              accountNumber: Util.empty,
-              appLanguage: Localizations.localeOf(context).languageCode,
-              countryCode: _selectedCountry.countryCode,
-            ),
-          );
-      return;
-    }
     setState(() {
       isLoading = false;
     });
@@ -204,15 +162,12 @@ class _SignUpPageState extends State<SignUpPage> {
     return false;
   }
 
-  Widget _buildLoadingState(bool isUS) {
-    return Center(
+  Widget _buildLoadingState() {
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (isUS) Text(context.l10n.holdOnRegistration),
-          if (isUS) const SizedBox(height: 16),
-          if (isUS) const CustomCircularProgressIndicator(),
-          if (!isUS) const CircularProgressIndicator(),
+          CircularProgressIndicator(),
         ],
       ),
     );
@@ -221,7 +176,6 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _buildBottomWidgetGroup(
     AppLocalizations locals,
     Size size,
-    bool isUS,
   ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
@@ -242,7 +196,7 @@ class _SignUpPageState extends State<SignUpPage> {
               disabledBackgroundColor: Colors.grey,
             ),
             child: Text(
-              isUS ? locals.enterPaymentDetails : locals.next,
+              locals.next,
             ),
           ),
         ],
@@ -250,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildSignUpForm(AppLocalizations locals, Size size, bool isUS) {
+  Widget _buildSignUpForm(AppLocalizations locals, Size size) {
     return Form(
       key: _formKey,
       child: Column(
@@ -309,76 +263,34 @@ class _SignUpPageState extends State<SignUpPage> {
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
           ),
-          // Height 6 because of the 10px padding in MobileNumberFormField
-          const SizedBox(height: 6),
-          if (_selectedCountry == Country.us)
-            MobileNumberFormField(
-              phone: _phoneNumberController,
-              selectedCountryPrefix: _selectedCountry.prefix,
-              hintText: locals.mobileNumberUsDigits,
-              onPhoneChanged: (String value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              onPrefixChanged: (String selected) {
-                setState(() {
-                  _selectedCountry = Country.sortedCountries().firstWhere(
-                    (Country country) => country.countryCode == selected,
-                  );
-                });
-              },
-              formatter: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(10),
-              ],
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return '';
-                }
-
-                if (Country.us == _selectedCountry) {
-                  if (!Util.usPhoneNumberRegEx
-                      .hasMatch(Util.formatPhoneNrUs(value))) {
-                    return '';
-                  }
-                }
-
-                return null;
-              },
-            ),
-          Visibility(
-            visible: !isUS,
-            child: const SizedBox(height: 16),
-          ),
-          Visibility(
-            visible: !isUS,
-            child: TextFormField(
-              enabled: widget.email.isEmpty,
-              readOnly: widget.email.isNotEmpty,
-              controller: _emailController,
-              onChanged: (value) => setState(() {
-                _formKey.currentState!.validate();
-              }),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return context.l10n.invalidEmail;
-                }
-                if (!Util.emailRegEx.hasMatch(value)) {
-                  return context.l10n.invalidEmail;
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontSize: 16,
-                    color: widget.email.isNotEmpty
-                        ? Colors.grey
-                        : lightColorScheme.primary,
-                  ),
-              decoration: InputDecoration(
-                hintText: context.l10n.email,
-                errorStyle: const TextStyle(
-                  height: 0,
+          const SizedBox(height: 16),
+          TextFormField(
+            enabled: widget.email.isEmpty,
+            readOnly: widget.email.isNotEmpty,
+            controller: _emailController,
+            onChanged: (value) => setState(() {
+              _formKey.currentState!.validate();
+            }),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return context.l10n.invalidEmail;
+              }
+              if (!Util.emailRegEx.hasMatch(value)) {
+                return context.l10n.invalidEmail;
+              }
+              return null;
+            },
+            textInputAction: TextInputAction.next,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontSize: 16,
+                  color: widget.email.isNotEmpty
+                      ? Colors.grey
+                      : lightColorScheme.primary,
                 ),
+            decoration: InputDecoration(
+              hintText: context.l10n.email,
+              errorStyle: const TextStyle(
+                height: 0,
               ),
             ),
           ),

@@ -7,16 +7,19 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/login_page.dart';
+import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
 
 class CheckAuthRequest {
   CheckAuthRequest({
     required this.navigate,
     this.email = '',
+    this.isUSUser = false,
     this.forceLogin = false,
   });
 
   final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
   final String email;
+  final bool isUSUser;
   final bool forceLogin;
 }
 
@@ -65,8 +68,10 @@ class AuthUtils {
       if (!context.mounted) {
         return;
       }
-      await checkAuthRequest.navigate(context,
-          isUSUser: auth.state.user.isUsUser);
+      await checkAuthRequest.navigate(
+        context,
+        isUSUser: auth.state.user.isUsUser,
+      );
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
         'Error while authenticating with biometrics: ${e.message}',
@@ -103,13 +108,24 @@ class AuthUtils {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => LoginPage(
-        email: checkAuthRequest.email.isNotEmpty
-            ? checkAuthRequest.email
-            : context.read<AuthCubit>().state.user.email,
-        isEmailEditable: checkAuthRequest.email.isNotEmpty,
-        navigate: checkAuthRequest.navigate,
-      ),
+      builder: (_) {
+        if (checkAuthRequest.isUSUser) {
+          return FamilyLoginPage(
+            email: checkAuthRequest.email.isNotEmpty
+                ? checkAuthRequest.email
+                : context.read<AuthCubit>().state.user.email,
+            navigate: checkAuthRequest.navigate,
+          );
+        } else {
+          return LoginPage(
+            email: checkAuthRequest.email.isNotEmpty
+                ? checkAuthRequest.email
+                : context.read<AuthCubit>().state.user.email,
+            isEmailEditable: checkAuthRequest.email.isNotEmpty,
+            navigate: checkAuthRequest.navigate,
+          );
+        }
+      },
     );
   }
 }

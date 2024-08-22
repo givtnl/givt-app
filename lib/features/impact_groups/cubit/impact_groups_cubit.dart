@@ -14,15 +14,29 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
   ImpactGroupsCubit(
     this._impactGroupInviteRepository,
     this._campaignRepository,
-  ) : super(const ImpactGroupsState());
+  ) : super(const ImpactGroupsState()) {
+    _init();
+  }
+
   final ImpactGroupsRepository _impactGroupInviteRepository;
   final CampaignRepository _campaignRepository;
+
+  StreamSubscription<List<ImpactGroup>>? _impactGroupsSubscription;
+
+  void _init() {
+    _impactGroupsSubscription =
+        _impactGroupInviteRepository.onImpactGroupsChanged().listen(
+      (impactGroups) {
+        fetchImpactGroups();
+      },
+    );
+  }
+
   Future<void> fetchImpactGroups() async {
     emit(state.copyWith(status: ImpactGroupCubitStatus.loading));
 
     try {
-      final impactGroups =
-          await _impactGroupInviteRepository.fetchImpactGroups();
+      final impactGroups = await _impactGroupInviteRepository.getImpactGroups();
 
       emit(
         state.copyWith(
@@ -118,5 +132,15 @@ class ImpactGroupsCubit extends Cubit<ImpactGroupsState> {
     emit(
       state.copyWith(dismissedGoalId: id),
     );
+  }
+
+  Future<void> refresh() async {
+    await _impactGroupInviteRepository.refreshImpactGroups();
+  }
+
+  @override
+  Future<void> close() async {
+    await _impactGroupsSubscription?.cancel();
+    await super.close();
   }
 }

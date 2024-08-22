@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/overview/models/legacy_profile.dart';
 import 'package:givt_app/features/children/overview/widgets/profile_overview_tile.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class ProfilesOverviewWidget extends StatelessWidget {
   const ProfilesOverviewWidget({
@@ -8,9 +8,7 @@ class ProfilesOverviewWidget extends StatelessWidget {
     super.key,
   });
 
-  final List<LegacyProfile> profiles;
-
-  static const EdgeInsets _padding = EdgeInsets.symmetric(horizontal: 20);
+  final List<Profile> profiles;
 
   @override
   Widget build(BuildContext context) {
@@ -24,31 +22,25 @@ class ProfilesOverviewWidget extends StatelessWidget {
   }
 
   Widget _createLayoutForSingleProfile(BuildContext context) {
-    return Padding(
-      padding: _padding,
-      child: Row(
-        children: [
-          Expanded(
-            child: ProfileOverviewTile(profile: profiles.first),
-          ),
-          const Spacer(),
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: ProfileOverviewTile(profile: profiles.first),
+        ),
+        const Spacer(),
+      ],
     );
   }
 
   Widget _createLayoutForTwoThreeProfiles(BuildContext context) {
-    return Padding(
-      padding: _padding,
-      child: Row(
-        children: profiles
-            .map(
-              (profile) => Expanded(
-                child: ProfileOverviewTile(profile: profile),
-              ),
-            )
-            .toList(),
-      ),
+    return Row(
+      children: profiles
+          .map(
+            (profile) => Expanded(
+              child: ProfileOverviewTile(profile: profile),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -57,18 +49,15 @@ class ProfilesOverviewWidget extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: _padding,
-        child: Row(
-          children: profiles
-              .map(
-                (profile) => SizedBox(
-                  width: size.width * 0.29,
-                  child: ProfileOverviewTile(profile: profile),
-                ),
-              )
-              .toList(),
-        ),
+      child: Row(
+        children: profiles
+            .map(
+              (profile) => SizedBox(
+                width: size.width * 0.29,
+                child: ProfileOverviewTile(profile: profile),
+              ),
+            )
+            .toList(),
       ),
     );
   }

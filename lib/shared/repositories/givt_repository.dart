@@ -1,5 +1,6 @@
 // ignore_for_file: equal_keys_in_map
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -17,6 +18,7 @@ mixin GivtRepository {
     required String guid,
     required Map<String, dynamic> body,
   });
+
   Future<void> syncOfflineGivts();
 
   Future<List<Givt>> fetchGivts();
@@ -55,6 +57,8 @@ mixin GivtRepository {
     required String orderType,
     required String groupType,
   });
+
+  Stream<void> onGivtsChanged();
 }
 
 class GivtRepositoryImpl with GivtRepository {
@@ -62,6 +66,9 @@ class GivtRepositoryImpl with GivtRepository {
 
   final APIService apiClient;
   final SharedPreferences prefs;
+
+  final StreamController<void> _givtsChangedStreamController =
+      StreamController.broadcast();
 
   @override
   Future<void> submitGivts({
@@ -77,6 +84,7 @@ class GivtRepositoryImpl with GivtRepository {
         body: givts,
         guid: guid,
       );
+      _addGivtsChangedEventAfterOneSecond();
     } on SocketException {
       await _cacheGivts(body);
 
@@ -144,6 +152,7 @@ class GivtRepositoryImpl with GivtRepository {
       await prefs.remove(
         GivtTransaction.givtTransactions,
       );
+      _addGivtsChangedEventAfterOneSecond();
     } on GivtServerFailure catch (e, stackTrace) {
       final statusCode = e.statusCode;
       final body = e.body;
@@ -169,8 +178,11 @@ class GivtRepositoryImpl with GivtRepository {
   }
 
   @override
-  Future<bool> deleteGivt(List<dynamic> ids) async =>
-      apiClient.deleteGivts(body: ids);
+  Future<bool> deleteGivt(List<dynamic> ids) async {
+    final result = apiClient.deleteGivts(body: ids);
+    _addGivtsChangedEventAfterOneSecond();
+    return result;
+  }
 
   @override
   Future<bool> downloadYearlyOverview({
@@ -196,10 +208,18 @@ class GivtRepositoryImpl with GivtRepository {
       'TransactionStatusses': '2',
       'TransactionStatusses': '3',
     };
-    final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
-    return SummaryItem.fromJsonList(
-      decodedJson,
-    );
+    try {
+      final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
+      return SummaryItem.fromJsonList(
+        decodedJson,
+      );
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: 'fetchSummary',
+      );
+      return [];
+    }
   }
 
   @override
@@ -240,14 +260,18 @@ class GivtRepositoryImpl with GivtRepository {
 
   @override
   Future<bool> deleteExternalDonation(String id) async {
-    return apiClient.deleteExternalDonation(id);
+    final result = apiClient.deleteExternalDonation(id);
+    _addGivtsChangedEventAfterOneSecond();
+    return result;
   }
 
   @override
   Future<bool> addExternalDonation({
     required Map<String, dynamic> body,
   }) async {
-    return apiClient.addExternalDonation(body);
+    final result = apiClient.addExternalDonation(body);
+    _addGivtsChangedEventAfterOneSecond();
+    return result;
   }
 
   @override
@@ -255,6 +279,20 @@ class GivtRepositoryImpl with GivtRepository {
     required String id,
     required Map<String, dynamic> body,
   }) async {
-    return apiClient.updateExternalDonation(id, body);
+    final result = apiClient.updateExternalDonation(id, body);
+    _addGivtsChangedEventAfterOneSecond();
+    return result;
   }
+
+  // The reason we are not immediately adding this event to the stream is
+  // because money-related calls require an update from Stripe for the BE
+  // which takes a bit of time
+  void _addGivtsChangedEventAfterOneSecond() {
+    Future.delayed(const Duration(seconds: 1), () {
+      _givtsChangedStreamController.add(null);
+    });
+  }
+
+  @override
+  Stream<void> onGivtsChanged() => _givtsChangedStreamController.stream;
 }

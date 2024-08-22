@@ -1,15 +1,6 @@
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
 class Topup extends HistoryItem {
-  const Topup.empty()
-      : this(
-          amount: 0,
-          date: '',
-          type: HistoryTypes.topUp,
-          name: '',
-          status: HistoryItemStatus.proccessed,
-          attemptNr: 0,
-        );
 
   const Topup({
     required super.amount,
@@ -19,6 +10,15 @@ class Topup extends HistoryItem {
     required this.status,
     required this.attemptNr,
   });
+  const Topup.empty()
+      : this(
+          amount: 0,
+          date: '',
+          type: HistoryTypes.topUp,
+          name: '',
+          status: HistoryItemStatus.proccessed,
+          attemptNr: 0,
+        );
 
   factory Topup.fromMap(Map<String, dynamic> map) {
     return Topup(

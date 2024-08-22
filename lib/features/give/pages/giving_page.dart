@@ -22,7 +22,6 @@ class GivingPage extends StatefulWidget {
   const GivingPage({
     super.key,
   });
-
   @override
   State<GivingPage> createState() => _GivingPageState();
 }

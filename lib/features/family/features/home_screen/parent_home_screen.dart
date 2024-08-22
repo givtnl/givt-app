@@ -87,7 +87,7 @@ class ParentHomeScreen extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 NavigationDestinationData.home.label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(),
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(),
               ),
               const SizedBox(height: 16),
             ],
@@ -115,6 +115,7 @@ class ParentHomeScreen extends StatelessWidget {
   TopAppBar _topAppBar(Profile profile, BuildContext context) => TopAppBar(
         title: profile.firstName,
         color: AppTheme.secondary99,
+        systemNavigationBarColor: AppTheme.secondary99,
         actions: [
           IconButton(
             icon: switchProfilesIcon(),
@@ -161,14 +162,14 @@ class ParentHomeScreen extends StatelessWidget {
                     children: [
                       Text(
                         'My Settings',
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 4),
                         child: Icon(
                           FontAwesomeIcons.arrowRight,
                           size:
-                              Theme.of(context).textTheme.labelSmall?.fontSize,
+                              Theme.of(context).textTheme.labelMedium?.fontSize,
                           color:
                               Theme.of(context).colorScheme.onPrimaryContainer,
                         ),

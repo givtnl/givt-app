@@ -109,8 +109,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                 },
               );
             } else {
-              await context
-                  .pushNamed(FamilyPages.generosityChallengeRedirect.name);
+              context.pushReplacementNamed(
+                FamilyPages.generosityChallengeRedirect.name,
+              );
             }
           }
         }
@@ -124,19 +125,20 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
-            state.profiles.where((e) => e.type == 'Child').toList(), user);
+          state.profiles.where((e) => e.type == 'Child').toList(),
+          user,
+        );
         return Scaffold(
           appBar: const TopAppBar(
             title: 'Family',
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
-              : state.children.isEmpty
+              : state.profiles.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
                           context.read<ProfilesCubit>().fetchAllProfiles(
-                                checkRegistrationAndSetup: true,
-                                checkInvite: true,
+                                doChecks: true,
                               ),
                     )
                   : SafeArea(
@@ -148,7 +150,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             const SizedBox(height: 32),
                             if (!flow.state.isCoin)
                               Visibility(
-                                visible: false,
                                 child: ParentOverviewWidget(
                                   profiles: sortedAdults(
                                     user.guid,
@@ -182,8 +183,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                     navigate: (context, {isUSUser}) async {
                                       if (CachedFamilyUtils
                                           .isFamilyCacheExist()) {
-                                        await context.pushNamed(FamilyPages
-                                            .cachedChildrenOverview.name);
+                                        await context.pushNamed(
+                                          FamilyPages
+                                              .cachedChildrenOverview.name,
+                                        );
                                       } else {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
@@ -193,10 +196,12 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                     },
                                   ),
                                 );
-                                unawaited(AnalyticsHelper.logEvent(
-                                  eventName:
-                                      AmplitudeEvents.manageFamilyPressed,
-                                ));
+                                unawaited(
+                                  AnalyticsHelper.logEvent(
+                                    eventName:
+                                        AmplitudeEvents.manageFamilyPressed,
+                                  ),
+                                );
                               },
                               text: 'Manage Family',
                               leftIcon: const FaIcon(
@@ -214,18 +219,22 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   }
 
   void _logUser(BuildContext context, UserExt user) {
-    unawaited(AnalyticsHelper.setUserProperties(
-      userId: user.guid,
-      userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
-    ));
+    unawaited(
+      AnalyticsHelper.setUserProperties(
+        userId: user.guid,
+        userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
+      ),
+    );
   }
 
   // The Givt user profile is first in the list
   static List<Profile> sortedAdults(
-      String givtAccountID, List<Profile> adults) {
+    String givtAccountID,
+    List<Profile> adults,
+  ) {
     return adults
       ..sort((a, b) {
-        final compareNames = a.firstName.compareTo(b.id);
+        final compareNames = a.compareNames(b);
         return a.id == givtAccountID
             ? -1
             : b.id == givtAccountID
@@ -243,7 +252,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         GestureDetector(
           onTap: () {
             final flow = context.read<FlowsCubit>().state;
-            var selectedProfile = profiles[i];
+            final selectedProfile = profiles[i];
             context
                 .read<ProfilesCubit>()
                 .fetchProfile(selectedProfile.id, true);
@@ -290,7 +299,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               return;
             }
 
-            context.pushReplacementNamed(FamilyPages.wallet.name);
+            context.pushNamed(FamilyPages.wallet.name);
           },
           child: ProfileItem(
             name: profiles[i].firstName,

@@ -110,7 +110,23 @@ class NotificationService implements INotificationService {
       );
 
   @override
-  Future<void> init() async {
+  Future<void> init({bool isApnsTokenRetryAttempt = false}) async {
+    if (Platform.isIOS) {
+      final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+      if (apnsToken == null && isApnsTokenRetryAttempt != true) {
+        // sometimes it takes a while to get the apns token on startup
+        return Future.delayed(
+          const Duration(seconds: 1),
+          () async => init(
+            isApnsTokenRetryAttempt: true,
+          ),
+        );
+      }
+    }
+    await _doInit();
+  }
+
+  Future<void> _doInit() async {
     await FirebaseMessaging.instance.subscribeToTopic('dev');
     await FirebaseMessaging.instance.subscribeToTopic('all');
     await setupFlutterNotifications();
@@ -130,12 +146,21 @@ class NotificationService implements INotificationService {
 
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
     LoggingInfo.instance.info('Firebase notification received');
-    print("Firebase notification received");
+    print('Firebase notification received');
 
     switch (message.data['Type']) {
       case 'DonationApproval':
         LoggingInfo.instance.info('Navigating to family overview screen');
         AppRouter.router.goNamed(FamilyPages.childrenOverview.name);
+      case 'HabitReminder':
+        LoggingInfo.instance
+            .info('Navigating to profiles screen from sunday notification');
+        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+      default:
+        LoggingInfo.instance.info(
+          'Navigating to profiles screen screen, from firebase notification',
+        );
+        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
     }
   }
 

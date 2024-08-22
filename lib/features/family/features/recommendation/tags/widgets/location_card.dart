@@ -17,7 +17,6 @@ class LocationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionTile(
-      isDisabled: false,
       titleSmall: location.displayText,
       iconPath: location.pictureUrl,
       onTap: onPressed ?? () {},

@@ -1,12 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
-import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
@@ -17,109 +13,66 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'profiles_state.dart';
 //here
 
-class ProfilesCubit extends HydratedCubit<ProfilesState> {
+class ProfilesCubit extends Cubit<ProfilesState> {
   ProfilesCubit(
-    this._profilesRepositoy,
-    this._addMemberRepository,
+    this._profilesRepository,
     this._authRepository,
-    this._editChildRepository,
     this._impactGroupsRepository,
   ) : super(const ProfilesInitialState()) {
     _init();
   }
 
-  final ProfilesRepository _profilesRepositoy;
-  final AddMemberRepository _addMemberRepository;
+  final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
-  final EditChildRepository _editChildRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
-  StreamSubscription<void>? _memberAddedSubscription;
-  StreamSubscription<String>? _walletChangedSubscription;
-  StreamSubscription<void>? _groupInviteAcceptedSubscription;
-  ImpactGroup? _invitedToGroup;
+  StreamSubscription<List<Profile>>? _profilesSubscription;
+  StreamSubscription<Profile>? _childDetailsSubscription;
+  StreamSubscription<bool>? _hasSessionSubscription;
 
   void _init() {
-    _memberAddedSubscription = _addMemberRepository.memberAddedStream().listen(
-      (_) {
+    _profilesSubscription = _profilesRepository.onProfilesChanged().listen(
+      (profiles) {
         fetchAllProfiles();
       },
     );
-    _walletChangedSubscription =
-        _editChildRepository.walletChangedStream().listen(
-      (childGuid) {
-        fetchProfile(childGuid);
+    _childDetailsSubscription = _profilesRepository.onChildChanged().listen(
+      (profile) {
+        fetchActiveProfile();
       },
     );
-    _groupInviteAcceptedSubscription =
-        _impactGroupsRepository.groupInviteAcceptedStream().listen(
-      (_) {
-        _invitedToGroup = null;
-        fetchAllProfiles();
+    _hasSessionSubscription = _authRepository.hasSessionStream().listen(
+      (hasSession) {
+        if (!hasSession) {
+          emit(const ProfilesInitialState());
+        }
       },
     );
   }
 
   Future<void> doInitialChecks() async {
     _emitLoadingState();
-    await checkIfInvitedToGroup();
-    if (_isInvitedToGroup()) {
-      _showInviteSheet();
-    } else {
-      await fetchAllProfiles(checkRegistrationAndSetup: true);
-    }
+    await fetchAllProfiles(doChecks: true);
   }
 
-  void clearInvite() {
-    _invitedToGroup = null;
-  }
-
-  bool _isInvitedToGroup() => _invitedToGroup != null;
-
-  void _showInviteSheet() {
+  void _showInviteSheet(ImpactGroup impactGroup) {
     emit(
       ProfilesInvitedToGroup(
         profiles: state.profiles,
         activeProfileIndex: state.activeProfileIndex,
-        impactGroup: _invitedToGroup!,
+        impactGroup: impactGroup,
       ),
     );
   }
 
-  Future<void> checkIfInvitedToGroup() async {
-    try {
-      final impactGroups = await _impactGroupsRepository.fetchImpactGroups();
-      for (final impactGroup in impactGroups) {
-        if (impactGroup.status == ImpactGroupStatus.invited) {
-          _invitedToGroup = impactGroup;
-          break;
-        }
-      }
-    } catch (e, s) {
-      LoggingInfo.instance.logExceptionForDebug(
-        e,
-        stacktrace: s,
-      );
-    }
-  }
-
   Future<void> fetchAllProfiles({
-    bool checkRegistrationAndSetup = false,
-    bool checkInvite = false,
+    bool doChecks = false,
   }) async {
     _emitLoadingState();
 
     try {
-      if (checkInvite) {
-        await checkIfInvitedToGroup();
-      }
-      if (_isInvitedToGroup()) {
-        _showInviteSheet();
-        return;
-      }
-
       final newProfiles = <Profile>[];
-      final response = await _profilesRepositoy.fetchAllProfiles();
+      final response = await _profilesRepository.getProfiles();
       newProfiles.addAll(response);
 
       for (final oldProfile in state.profiles) {
@@ -136,31 +89,8 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
       }
-      UserExt? userExternal;
-      if (checkRegistrationAndSetup) {
-        // ignore: unused_local_variable
-        final (userExt, session, amountPresets) =
-            await _authRepository.isAuthenticated() ?? (null, null, null);
-        userExternal = userExt;
-      }
-
-      if (userExternal?.needRegistration ?? false) {
-        emit(
-          ProfilesNeedsRegistration(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-            hasFamily:
-                newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
-          ),
-        );
-      } else if (checkRegistrationAndSetup &&
-          newProfiles.where((p) => p.type.contains('Child')).isEmpty) {
-        emit(
-          ProfilesNotSetupState(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-          ),
-        );
+      if (doChecks) {
+        unawaited(_doChecks(newProfiles));
       }
       emit(
         ProfilesUpdatedState(
@@ -183,6 +113,40 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
     }
   }
 
+  Future<void> _doChecks(List<Profile> list) async {
+    final group = await _impactGroupsRepository.isInvitedToGroup();
+    if (group != null) {
+      _showInviteSheet(group);
+    } else {
+      await _doRegistrationCheck(list);
+    }
+  }
+
+  Future<void> _doRegistrationCheck(List<Profile> newProfiles) async {
+    UserExt? userExternal;
+    final (userExt, session, amountPresets) =
+        await _authRepository.isAuthenticated() ?? (null, null, null);
+    userExternal = userExt;
+
+    if (userExternal?.needRegistration ?? false) {
+      emit(
+        ProfilesNeedsRegistration(
+          profiles: newProfiles,
+          activeProfileIndex: state.activeProfileIndex,
+          hasFamily:
+              newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
+        ),
+      );
+    } else if (newProfiles.length <= 1) {
+      emit(
+        ProfilesNotSetupState(
+          profiles: newProfiles,
+          activeProfileIndex: state.activeProfileIndex,
+        ),
+      );
+    }
+  }
+
   void _emitLoadingState() {
     emit(
       ProfilesLoadingState(
@@ -197,28 +161,33 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   }
 
   Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
-    final profile = state.profiles.firstWhere((element) => element.id == id);
-    final index = state.profiles.indexOf(profile);
-    final childGuid = state.profiles[index].id;
-
-    if (index == state.activeProfileIndex && !forceLoading) {
-      // When updating the same profile, we don't want to show the loading state
-      emit(
-        ProfilesUpdatingState(
-          profiles: state.profiles,
-          activeProfileIndex: index,
-        ),
-      );
-    } else {
-      emit(
-        ProfilesLoadingState(
-          profiles: state.profiles,
-          activeProfileIndex: index,
-        ),
-      );
-    }
     try {
-      final response = await _profilesRepositoy.fetchChildDetails(childGuid);
+      final profile = state.profiles.firstWhere(
+        (element) => element.id == id,
+        orElse: Profile.empty,
+      );
+      final index = state.profiles.indexOf(profile);
+      final childGuid = state.profiles[index].id;
+
+      if (index == state.activeProfileIndex && !forceLoading) {
+        // When updating the same profile, we don't want to show the loading state
+        emit(
+          ProfilesUpdatingState(
+            profiles: state.profiles,
+            activeProfileIndex: index,
+          ),
+        );
+      } else {
+        emit(
+          ProfilesLoadingState(
+            profiles: state.profiles,
+            activeProfileIndex: index,
+          ),
+        );
+      }
+      final response = forceLoading
+          ? await _profilesRepository.refreshChildDetails(childGuid)
+          : await _profilesRepository.getChildDetails(childGuid);
       state.profiles[index] = response;
       emit(
         ProfilesUpdatedState(
@@ -247,34 +216,10 @@ class ProfilesCubit extends HydratedCubit<ProfilesState> {
   }
 
   @override
-  ProfilesState? fromJson(Map<String, dynamic> json) {
-    log('fromJSON: $json');
-    final profilesMap = jsonDecode(json['profiles'] as String);
-    final activeProfileIndex = json['activeProfileIndex'] as int;
-    final profiles = <Profile>[];
-    for (final profileMap in profilesMap as List<dynamic>) {
-      profiles.add(Profile.fromMap(profileMap as Map<String, dynamic>));
-    }
-    return ProfilesUpdatedState(
-      profiles: profiles,
-      activeProfileIndex: activeProfileIndex,
-    );
-  }
-
-  @override
-  Map<String, dynamic>? toJson(ProfilesState state) {
-    final result = {
-      'profiles': jsonEncode(state.profiles),
-      'activeProfileIndex': state.activeProfileIndex,
-    };
-    return result;
-  }
-
-  @override
   Future<void> close() {
-    _memberAddedSubscription?.cancel();
-    _walletChangedSubscription?.cancel();
-    _groupInviteAcceptedSubscription?.cancel();
+    _profilesSubscription?.cancel();
+    _childDetailsSubscription?.cancel();
+    _hasSessionSubscription?.cancel();
     return super.close();
   }
 }

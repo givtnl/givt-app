@@ -6,7 +6,7 @@ import 'package:givt_app/features/children/add_member/models/member.dart';
 mixin AddMemberRepository {
   Future<void> addMembers(List<Member> members, {required bool isRGA});
 
-  Stream<void> memberAddedStream();
+  Stream<void> onMemberAdded();
 }
 
 class AddMemberRepositoryImpl with AddMemberRepository {
@@ -30,5 +30,5 @@ class AddMemberRepositoryImpl with AddMemberRepository {
   }
 
   @override
-  Stream<void> memberAddedStream() => _memberAddedStreamController.stream;
+  Stream<void> onMemberAdded() => _memberAddedStreamController.stream;
 }

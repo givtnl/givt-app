@@ -23,7 +23,6 @@ class CharityTile extends StatelessWidget {
           isSelected: isSelected,
           colorCombo: ColorCombo.tertiary,
           iconData: FontAwesomeIcons.solidHeart,
-          iconPath: 'assets/family/images/church.svg',
           titleBig: 'Charity',
         ),
       );

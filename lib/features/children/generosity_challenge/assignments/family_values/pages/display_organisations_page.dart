@@ -34,7 +34,7 @@ class DisplayOrganisations extends StatelessWidget {
                   child: Text(
                     'Which organisation would you\nlike to give to?',
                     textAlign: TextAlign.center,
-                    style: FamilyAppTheme().toThemeData().textTheme.titleSmall,
+                    style: const FamilyAppTheme().toThemeData().textTheme.titleSmall,
                   ),
                 ),
               ),

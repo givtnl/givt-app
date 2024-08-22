@@ -41,15 +41,15 @@ class GoalProgressBar extends StatelessWidget {
         final isCompleted = goal.amount >= goal.goalAmount;
 
         final progress = goal.amount / goal.goalAmount.toDouble();
-        final _progress = progress > 1.0 ? 1.0 : progress;
+        final progress0 = progress > 1.0 ? 1.0 : progress;
         final totalProgress = goal.totalAmount / goal.goalAmount.toDouble();
-        final _totalProgress = totalProgress > 1.0 ? 1.0 : totalProgress;
+        final totalProgress0 = totalProgress > 1.0 ? 1.0 : totalProgress;
 
         final availableWidth = constraints.maxWidth;
-        final widthToApply = availableWidth * _progress < barHeight
+        final widthToApply = availableWidth * progress0 < barHeight
             ? barHeight
-            : availableWidth * _progress;
-        final totalWidthToApply = availableWidth * _totalProgress;
+            : availableWidth * progress0;
+        final totalWidthToApply = availableWidth * totalProgress0;
 
         const currentLabelOffsetY = 38.0;
         return Column(
@@ -109,7 +109,7 @@ class GoalProgressBar extends StatelessWidget {
                           ),
                           decoration: _gradientProgressBarDecoration(
                             colors.map((e) => e.withOpacity(0.4)).toList(),
-                            _totalProgress,
+                            totalProgress0,
                             false,
                           ),
                         ),
@@ -126,7 +126,7 @@ class GoalProgressBar extends StatelessWidget {
                           ),
                           decoration: _gradientProgressBarDecoration(
                             colors,
-                            _progress,
+                            progress0,
                             true,
                           ),
                         ),

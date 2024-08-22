@@ -31,7 +31,7 @@ class TopUpFailureDialog extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'We are having trouble getting the funds from your card. Please try again.',
               textAlign: TextAlign.center,
             ),

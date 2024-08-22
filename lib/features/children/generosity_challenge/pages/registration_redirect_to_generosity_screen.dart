@@ -4,15 +4,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +34,7 @@ class _RegistrationRedirectToGenerosityScreenState
       eventName: AmplitudeEvents.registerWithoutChallengeClicked,
     );
 
-    context.pushNamed(
+    context.pushReplacementNamed(
       FamilyPages.registrationUS.name,
       queryParameters: {
         'email': user.email,
@@ -58,41 +60,32 @@ class _RegistrationRedirectToGenerosityScreenState
     final theme = const FamilyAppTheme().toThemeData();
     final user = context.read<AuthCubit>().state.user;
 
-    return Theme(
-      data: theme,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: GivtBackButton(
-            onPressedForced: () {
-              logout(context);
-            },
-          ),
+    return FamilyScaffold(
+      appBar: AppBar(
+        leading: GenerosityBackButton(
+          onPressed: () {
+            logout(context);
+          },
         ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Join the Generosity Challenge!',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.titleLarge,
-                ),
-                familySuperheroesIcon(),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    'Help your city by spreading generosity!',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.titleSmall,
-                  ),
-                ),
-                _buildButtons(context, user),
-              ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Join the Generosity Challenge!',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.titleLarge,
+          ),
+          familySuperheroesIcon(),
+          const Padding(
+            padding: EdgeInsets.all(8),
+            child: BodyMediumText(
+              'Help your city by spreading generosity!',
+              textAlign: TextAlign.center,
             ),
           ),
-        ),
+          _buildButtons(context, user),
+        ],
       ),
     );
   }
@@ -109,7 +102,6 @@ class _RegistrationRedirectToGenerosityScreenState
             onTap: () => _navigate(context, user),
             text: 'Register without Challenge',
           ),
-          const SizedBox(height: 8),
         ],
       );
 }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 class ProfileSwitchButton extends StatelessWidget {
   const ProfileSwitchButton({
-    super.key,
-    required this.name,
-    required this.onClicked,
+    required this.name, required this.onClicked, super.key,
   });
   final String name;
   final VoidCallback onClicked;
@@ -19,7 +17,7 @@ class ProfileSwitchButton extends StatelessWidget {
       ),
       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+          borderRadius: BorderRadius.circular(30),
         ),
       ),
     );

@@ -9,13 +9,20 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WelcomePage extends StatelessWidget {
-  const WelcomePage({required this.prefs, super.key,});
+  const WelcomePage({
+    required this.prefs,
+    super.key,
+  });
   final SharedPreferences prefs;
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,10 @@ class WelcomePage extends StatelessWidget {
 }
 
 class WelcomePageView extends StatefulWidget {
-  const WelcomePageView({required this.prefs, super.key,});
+  const WelcomePageView({
+    required this.prefs,
+    super.key,
+  });
   final SharedPreferences prefs;
   @override
   State<WelcomePageView> createState() => _WelcomePageViewState();
@@ -49,7 +59,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       'firstuse_orgs',
     ];
 
-    return Scaffold(
+    return FamilyScaffold(
       appBar: AppBar(
         leading: const BackButton(
           color: Colors.transparent,
@@ -59,82 +69,75 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           height: 30,
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Expanded(
-                child: _buildCarouselSlider(
-                  size,
-                  imageNames,
-                  locals,
-                  locale,
-                ),
-              ),
-              _buildAnimatedBottomIndexes(imageNames, size, context),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (!await getIt<NetworkInfo>()
-                        .isConnected) {
-                      if (!context.mounted) {
-                        return;
-                      }
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => WarningDialog(
-                          title: locals.noInternetConnectionTitle,
-                          content: locals.noInternet,
-                        ),
-                      );
-                      return;
-                    }
-                    if (!context.mounted) {
-                      return;
-                    }
-                    // Without biometrics we use the regular route to login
-                    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
-                      if (!mounted) {
-                        return;
-                      }
-                      await Navigator.of(context).push(EmailSignupPage.route());
-                      return;
-                    }
-
-                    final hasAuthenticated =
-                        await LocalAuthInfo.instance.authenticate();
-
-                    // When not authenticated we go to the regular route
-                    if (!hasAuthenticated) {
-                      if (!mounted) {
-                        return;
-                      }
-
-                      await Navigator.of(context).push(EmailSignupPage.route());
-                      return;
-                    }
-
-                    // When authenticated we go to the home route
-                    if (!mounted) {
-                      return;
-                    }
-                    await context.read<AuthCubit>().authenticate();
-                    if (!mounted) {
-                      return;
-                    }
-
-                    context.goNamed(Pages.home.name);
-                  },
-                  child: Text(
-                    locals.welcomeContinue,
-                  ),
-                ),
-              ),
-            ],
+      minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildCarouselSlider(
+              size,
+              imageNames,
+              locals,
+              locale,
+            ),
           ),
-        ),
+          _buildAnimatedBottomIndexes(imageNames, size, context),
+          Padding(
+            padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
+            child: GivtElevatedButton(
+              onTap: () async {
+                if (!getIt<NetworkInfo>().isConnected) {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  await showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.noInternetConnectionTitle,
+                      content: locals.noInternet,
+                    ),
+                  );
+                  return;
+                }
+                if (!context.mounted) {
+                  return;
+                }
+                // Without biometrics we use the regular route to login
+                if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  await Navigator.of(context).push(EmailSignupPage.route());
+                  return;
+                }
+
+                final hasAuthenticated =
+                    await LocalAuthInfo.instance.authenticate();
+
+                // When not authenticated we go to the regular route
+                if (!hasAuthenticated) {
+                  if (!context.mounted) {
+                    return;
+                  }
+
+                  await Navigator.of(context).push(EmailSignupPage.route());
+                  return;
+                }
+
+                // When authenticated we go to the home route
+                if (!context.mounted) {
+                  return;
+                }
+                await context.read<AuthCubit>().authenticate();
+                if (!context.mounted) {
+                  return;
+                }
+
+                context.goNamed(Pages.home.name);
+              },
+              text: locals.welcomeContinue,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -216,7 +219,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           direction: Axis.vertical,
           children: [
             SizedBox(
-              height: 75,
+              height: 80,
               child: _buildTitleAndSubtitle(
                 title: title,
                 subtitle: isFirst ? locals.firstUseWelcomeSubTitle : '',
@@ -238,24 +241,20 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   Widget _buildTitleAndSubtitle({
     required String title,
     String subtitle = '',
-    bool isFirst = true,
   }) {
-    return Column(
-      children: [
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-        ),
-        Text(
-          subtitle,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: isFirst ? FontWeight.w300 : FontWeight.bold,
-              ),
-        ),
-      ],
+    return Theme(
+      data: const FamilyAppTheme().toThemeData(),
+      child: Column(
+        children: [
+          TitleMediumText(
+            title,
+            textAlign: TextAlign.center,
+          ),
+          BodyMediumText(
+            subtitle,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -46,90 +46,97 @@ class _BTScanPageState extends State<BTScanPage> {
   }
 
   Future<void> initBluetooth() async {
-    LoggingInfo.instance.info('initBluetooth');
+    try {
+      LoggingInfo.instance.info('initBluetooth');
 
-    if (await FlutterBluePlus.isSupported == false) {
-      LoggingInfo.instance.info('Bluetooth not supported on this device');
-      return;
-    }
-
-    // Set listen method for scan results
-    FlutterBluePlus.scanResults.listen(
-      _onPeripheralsDetectedData,
-      onError: (dynamic e) {
-        LoggingInfo.instance.error('Error while scanning for peripherals: $e');
-      },
-    );
-
-    FlutterBluePlus.isScanning.listen((event) async {
-      if (event == false && !FlutterBluePlus.isScanningNow && isSearching) {
-        LoggingInfo.instance.info('Restart Scan');
-        await startBluetoothScan();
+      if (await FlutterBluePlus.isSupported == false) {
+        LoggingInfo.instance.info('Bluetooth not supported on this device');
+        return;
       }
-    });
 
-    // Listen to scan mode changes
-    FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
-      switch (state) {
-        case BluetoothAdapterState.on:
-          if (!FlutterBluePlus.isScanningNow) {
-            LoggingInfo.instance.info('Start Scan');
-            await startBluetoothScan();
-          }
-        case BluetoothAdapterState.unauthorized:
-          LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
-          if (!context.mounted) {
-            return;
-          }
-          await showDialog<void>(
-            context: context,
-            builder: (_) => WarningDialog(
-              title: context.l10n.authoriseBluetooth,
-              content:
-                  '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
-              onConfirm: () async {
-                await startBluetoothScan();
-                if (!context.mounted) {
-                  return;
-                }
-                Navigator.of(context).pop();
-              },
-            ),
-          );
-        case BluetoothAdapterState.unavailable:
-        case BluetoothAdapterState.off:
-          LoggingInfo.instance.info('Bluetooth adapter is off');
-          if (Platform.isAndroid) {
-            LoggingInfo.instance.info('Trying to turn it on...');
-            try {
-              await FlutterBluePlus.turnOn(timeout: 10);
-            } catch (_) {
-              // We can't turn on the bluetooth automatically, so show a dialog
-              await showTurnOnBluetoothDialog();
+      // Set listen method for scan results
+      FlutterBluePlus.scanResults.listen(
+        _onPeripheralsDetectedData,
+        onError: (dynamic e) {
+          LoggingInfo.instance
+              .error('Error while scanning for peripherals: $e');
+        },
+      );
+
+      FlutterBluePlus.isScanning.listen((event) async {
+        if (event == false && !FlutterBluePlus.isScanningNow && isSearching) {
+          LoggingInfo.instance.info('Restart Scan');
+          await startBluetoothScan();
+        }
+      });
+
+      // Listen to scan mode changes
+      FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
+        switch (state) {
+          case BluetoothAdapterState.on:
+            if (!FlutterBluePlus.isScanningNow) {
+              LoggingInfo.instance.info('Start Scan');
+              await startBluetoothScan();
             }
-          }
-          if (Platform.isIOS) {
-            LoggingInfo.instance.info('iOS User has Bluetooth off...');
+          case BluetoothAdapterState.unauthorized:
+            LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
             if (!context.mounted) {
               return;
             }
-            await showTurnOnBluetoothDialog();
-          }
-        // We don't want to handle other cases at the moment, so:
-        // ignore: no_default_cases
-        default:
-          break;
-      }
-    });
-
-    Future.delayed(const Duration(seconds: 5), () {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        isVisible = true;
+            await showDialog<void>(
+              context: context,
+              builder: (_) => WarningDialog(
+                title: context.l10n.authoriseBluetooth,
+                content:
+                    '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
+                onConfirm: () async {
+                  await startBluetoothScan();
+                  if (!context.mounted) {
+                    return;
+                  }
+                  Navigator.of(context).pop();
+                },
+              ),
+            );
+          case BluetoothAdapterState.unavailable:
+          case BluetoothAdapterState.off:
+            LoggingInfo.instance.info('Bluetooth adapter is off');
+            if (Platform.isAndroid) {
+              LoggingInfo.instance.info('Trying to turn it on...');
+              try {
+                await FlutterBluePlus.turnOn(timeout: 10);
+              } catch (_) {
+                // We can't turn on the bluetooth automatically, so show a dialog
+                await showTurnOnBluetoothDialog();
+              }
+            }
+            if (Platform.isIOS) {
+              LoggingInfo.instance.info('iOS User has Bluetooth off...');
+              if (!context.mounted) {
+                return;
+              }
+              await showTurnOnBluetoothDialog();
+            }
+          // We don't want to handle other cases at the moment, so:
+          // ignore: no_default_cases
+          default:
+            break;
+        }
       });
-    });
+
+      Future.delayed(const Duration(seconds: 5), () {
+        if (!mounted) {
+          return;
+        }
+        setState(() {
+          isVisible = true;
+        });
+      });
+    } catch (e, s) {
+      LoggingInfo.instance
+          .error('Error in BT scan page: $e', methodName: 'initBluetooth');
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> showTurnOnBluetoothDialog() {

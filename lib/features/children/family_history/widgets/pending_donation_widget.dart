@@ -90,55 +90,55 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
             ),
             child: Row(
               children: [
-                const SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '\$${widget.donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${widget.donation.name}',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: DonationState.getAmountColor(
-                              widget.donation.state,
-                            ),
-                          ),
-                    ),
-                    SizedBox(
-                      width: widget.donation.medium == DonationMediumType.nfc
-                          ? size.width * 0.55
-                          : size.width * 0.75,
-                      child: Text(
-                        '${widget.donation.isToGoal ? context.l10n.familyGoalPrefix : ''}'
-                        '${widget.donation.organizationName}',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: AppTheme.childHistoryPendingDark,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '\$${widget.donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${widget.donation.name}',
+                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                              color: DonationState.getAmountColor(
+                                widget.donation.state,
+                              ),
                             ),
                       ),
-                    ),
-                    Text(
-                      '${widget.donation.date.formatDate(locals)} - ${locals.childHistoryToBeApproved}',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color:
-                                widget.donation.state == DonationState.pending
-                                    ? DonationState.getAmountColor(
-                                        widget.donation.state,
-                                      )
-                                    : AppTheme.givtPurple,
-                          ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    size: 15,
-                    color: DonationState.getAmountColor(widget.donation.state),
+                      SizedBox(
+                        width: widget.donation.medium == DonationMediumType.nfc
+                            ? size.width * 0.55
+                            : size.width * 0.75,
+                        child: Text(
+                          '${widget.donation.isToGoal ? context.l10n.familyGoalPrefix : ''}'
+                          '${widget.donation.organizationName}',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                color: AppTheme.childHistoryPendingDark,
+                              ),
+                        ),
+                      ),
+                      Text(
+                        '${widget.donation.date.formatDate(locals)} - ${locals.childHistoryToBeApproved}',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color:
+                                  widget.donation.state == DonationState.pending
+                                      ? DonationState.getAmountColor(
+                                          widget.donation.state,
+                                        )
+                                      : AppTheme.givtPurple,
+                            ),
+                      ),
+                    ],
                   ),
                 ),
+                const SizedBox(width: 8),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  size: 15,
+                  color: DonationState.getAmountColor(widget.donation.state),
+                ),
+                const SizedBox(width: 8),
               ],
             ),
           ),

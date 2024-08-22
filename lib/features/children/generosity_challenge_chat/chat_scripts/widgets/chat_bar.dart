@@ -75,7 +75,7 @@ class ChatBar extends StatelessWidget {
               child: Text(
                 state.currentConditionalItem.options[0].text,
                 textAlign: TextAlign.center,
-                style: FamilyAppTheme().toThemeData().textTheme.labelMedium,
+                style: const FamilyAppTheme().toThemeData().textTheme.labelLarge,
               ),
             ),
           ),

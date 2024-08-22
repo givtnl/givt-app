@@ -13,8 +13,7 @@ import 'package:givt_app/utils/utils.dart';
 
 class OrganisationItem extends StatelessWidget {
   const OrganisationItem({
-    super.key,
-    required this.organisation,
+    required this.organisation, super.key,
   });
 
   final Organisation organisation;
@@ -52,7 +51,6 @@ class OrganisationItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20),
         color: Colors.white,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             OrganisationHeader(
               organisation: organisation,

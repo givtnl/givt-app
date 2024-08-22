@@ -7,8 +7,6 @@ import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
@@ -83,9 +81,7 @@ class CreditCardDetailsPage extends StatelessWidget {
                   },
                 ),
               );
-              context
-                  .read<ProfilesCubit>()
-                  .fetchAllProfiles(checkRegistrationAndSetup: true);
+              context.read<ProfilesCubit>().fetchAllProfiles(doChecks: true);
             }
 
             /* Logged as info as stripe is giving exception
@@ -106,18 +102,12 @@ class CreditCardDetailsPage extends StatelessWidget {
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
     context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
-    final hasBeenInvited =
-        context.read<ImpactGroupsCubit>().state.invitedGroup !=
-            const ImpactGroup.empty();
-    context.pushNamed(
+
+    context.pushReplacementNamed(
       FamilyPages.permitUSBiometric.name,
-      extra: PermitBiometricRequest.registration(
-        redirect: (context) => context.pushReplacementNamed(
-          hasBeenInvited
-              ? FamilyPages.profileSelection.name
-              : FamilyPages.registrationSuccessUs.name,
-        ),
-      ),
+      extra: PermitBiometricRequest.registration(redirect: (context) {
+        context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
+      }),
     );
   }
 }
