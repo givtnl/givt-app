@@ -83,6 +83,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     _authRepository.hasSessionStream().listen(
       (hasSession) {
         if (hasSession) {
+          _clearData();
           _fetchProfiles();
         } else {
           _clearData();

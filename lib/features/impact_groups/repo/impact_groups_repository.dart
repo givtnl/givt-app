@@ -63,16 +63,21 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     _authRepository.hasSessionStream().listen(
       (hasSession) {
         if (hasSession) {
+          _clearData();
           _fetchImpactGroups();
         } else {
-          _impactGroups = null;
-          _impactGroupsStreamController.add([]);
+          _clearData();
         }
       },
     );
     _createTransactionRepository.onTransaction().listen(
           (_) => _fetchImpactGroups(),
         );
+  }
+
+  void _clearData() {
+    _impactGroups = null;
+    _impactGroupsStreamController.add([]);
   }
 
   @override
