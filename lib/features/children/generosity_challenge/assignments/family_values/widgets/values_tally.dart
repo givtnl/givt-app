@@ -31,7 +31,7 @@ class ValuesTally extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         color: tally >= index
             ? AppTheme.primary70
-            : Theme.of(context).colorScheme.surfaceVariant,
+            : Theme.of(context).colorScheme.surfaceContainerHighest,
       ),
       child: Text(
         index.toStringAsFixed(0),

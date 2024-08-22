@@ -132,7 +132,7 @@ class _BTScanPageState extends State<BTScanPage> {
           isVisible = true;
         });
       });
-    } catch (e, s) {
+    } catch (e) {
       LoggingInfo.instance
           .error('Error in BT scan page: $e', methodName: 'initBluetooth');
       Navigator.of(context).pop();

@@ -44,7 +44,7 @@ class WelcomePageView extends StatefulWidget {
 
 class _WelcomePageViewState extends State<WelcomePageView> {
   int _current = 0;
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

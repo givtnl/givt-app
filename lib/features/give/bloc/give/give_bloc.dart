@@ -317,7 +317,7 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
   }
 
   void _handleGivtServerFailure(
-      GivtServerFailure e, StackTrace stackTrace, Emitter<GiveState> emit) {
+      GivtServerFailure e, StackTrace stackTrace, Emitter<GiveState> emit,) {
     final statusCode = e.statusCode;
     final body = e.body;
     log('StatusCode:$statusCode Body:$body');

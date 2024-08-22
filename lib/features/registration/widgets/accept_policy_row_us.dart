@@ -30,7 +30,6 @@ class AcceptPolicyRowUs extends StatelessWidget {
         ),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Checkbox(
             value: checkBoxValue,

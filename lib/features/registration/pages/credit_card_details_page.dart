@@ -107,7 +107,7 @@ class CreditCardDetailsPage extends StatelessWidget {
       FamilyPages.permitUSBiometric.name,
       extra: PermitBiometricRequest.registration(redirect: (context) {
         context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
-      }),
+      },),
     );
   }
 }

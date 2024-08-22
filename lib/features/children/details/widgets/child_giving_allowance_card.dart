@@ -19,7 +19,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nextTopUpDate = DateTime.tryParse(
-        profileDetails.wallet.givingAllowance.nextGivingAllowanceDate);
+        profileDetails.wallet.givingAllowance.nextGivingAllowanceDate,);
     final theme = const FamilyAppTheme().toThemeData();
     final size = MediaQuery.of(context).size;
     return Container(
@@ -53,8 +53,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
   Widget getLayout(
     BuildContext context, {
     required bool hasAllowance,
-    DateTime? nextTopUpDate,
-    required Size size,
+    required Size size, DateTime? nextTopUpDate,
     ThemeData? theme,
   }) {
     if (hasAllowance) {

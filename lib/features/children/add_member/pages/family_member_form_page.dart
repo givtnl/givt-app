@@ -12,7 +12,7 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.d
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage(
-      {required this.index, required this.totalCount, super.key});
+      {required this.index, required this.totalCount, super.key,});
   final int index;
   final int totalCount;
   @override

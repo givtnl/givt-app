@@ -27,7 +27,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const GenerosityAppBar(
-          title: 'Set up Family', leading: GenerosityBackButton()),
+          title: 'Set up Family', leading: GenerosityBackButton(),),
       body: SafeArea(
         child: Center(
           child: Padding(

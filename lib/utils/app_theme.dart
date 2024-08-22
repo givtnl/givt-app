@@ -177,7 +177,7 @@ class AppTheme {
           top: Radius.circular(30),
         ),
       ),
-      dragHandleColor: lightColorScheme.onBackground,
+      dragHandleColor: lightColorScheme.onSurface,
     ),
     inputDecorationTheme: const InputDecorationTheme(
       hintStyle: TextStyle(
@@ -247,9 +247,9 @@ class AppTheme {
       color: lightColorScheme.primary,
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith(
+      fillColor: WidgetStateProperty.resolveWith(
         (states) {
-          if (states.contains(MaterialState.selected)) {
+          if (states.contains(WidgetState.selected)) {
             return givtLightGreen;
           }
           return Colors.white;
@@ -258,18 +258,18 @@ class AppTheme {
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
-        elevation: MaterialStatePropertyAll(0),
-        textStyle: MaterialStatePropertyAll(
+        elevation: WidgetStatePropertyAll(0),
+        textStyle: WidgetStatePropertyAll(
           TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
         ),
-        backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
-        foregroundColor: MaterialStatePropertyAll(Colors.white),
-        minimumSize: MaterialStatePropertyAll(Size.fromHeight(45)),
-        shape: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(Color(0xFF41c98e)),
+        foregroundColor: WidgetStatePropertyAll(Colors.white),
+        minimumSize: WidgetStatePropertyAll(Size.fromHeight(45)),
+        shape: WidgetStatePropertyAll(
           ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),

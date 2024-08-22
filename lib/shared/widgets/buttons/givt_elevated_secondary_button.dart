@@ -115,7 +115,7 @@ class _GivtElevatedSecondaryButtonState
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: widget.isDisabled
-                  ? theme.colorScheme.surfaceVariant
+                  ? theme.colorScheme.surfaceContainerHighest
                   : Colors.white,
             ),
             child: getChild(theme),

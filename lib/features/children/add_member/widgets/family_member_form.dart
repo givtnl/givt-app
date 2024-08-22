@@ -98,7 +98,7 @@ class FamilyMemberForm extends StatelessWidget {
             currency: r'$',
             initialAmount: allowanceAmount,
             canAmountBeZero: true,
-            onAmountChanged: onAmountChanged),
+            onAmountChanged: onAmountChanged,),
         const SizedBox(height: 16),
         AdminFeeText(
           amount: allowanceAmount.toDouble(),

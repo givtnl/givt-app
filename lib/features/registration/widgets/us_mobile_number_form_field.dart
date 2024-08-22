@@ -79,7 +79,6 @@ class MobileNumberFormFieldUs extends StatelessWidget {
             controller: phone,
             validator: validator,
             onChanged: onPhoneChanged,
-            textInputAction: TextInputAction.next,
             keyboardType: TextInputType.phone,
             hintText: hintText,
             errorStyle: const TextStyle(

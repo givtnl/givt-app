@@ -22,7 +22,7 @@ class FirstUseSummaryDialog extends StatefulWidget {
 
 class _FirstUseSummaryDialogState extends State<FirstUseSummaryDialog> {
   int currentIndex = 0;
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

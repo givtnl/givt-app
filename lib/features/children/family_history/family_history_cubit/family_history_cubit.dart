@@ -12,7 +12,7 @@ part 'family_history_state.dart';
 
 class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
   FamilyHistoryCubit(this.historyRepo, this._editChildRepository,
-      this._parentalApprovalRepository)
+      this._parentalApprovalRepository,)
       : super(const FamilyHistoryState()) {
     _init();
   }
