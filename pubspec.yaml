@@ -11,9 +11,11 @@ dependencies:
   animated_toggle_switch: ^0.8.3
   app_settings: ^5.1.1
   appcheck: ^1.0.6
+  audioplayers: ^6.0.0
   badges: ^3.1.1
   bloc: ^8.1.1
   carousel_slider: ^5.0.0
+  country_flags: ^3.0.0
   countup: ^0.1.4
   cupertino_icons: ^1.0.6
   currency_text_input_formatter: ^2.1.10
@@ -61,7 +63,7 @@ dependencies:
   local_auth: ^2.1.7
   logging: ^1.2.0
   lottie: ^3.0.0
-  material_color_utilities: ^0.8.0 
+  material_color_utilities: ^0.8.0
   mobile_scanner: ^5.2.1
   nfc_manager: ^3.3.0
   package_info_plus: ^8.0.2
@@ -76,8 +78,6 @@ dependencies:
   url_launcher: ^6.1.12
   uuid: ^4.4.0
   vibration: ^2.0.0
-  audioplayers: ^6.0.0
-  country_flags: ^3.0.0
 
 dev_dependencies:
   bloc_test: ^9.1.1
