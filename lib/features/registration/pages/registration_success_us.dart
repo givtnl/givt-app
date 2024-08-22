@@ -21,41 +21,43 @@ class RegistrationSuccessUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: AppTheme.lightTheme,
-      child: FamilyScaffold(
-        appBar: const GenerosityAppBar(
-          title: 'Registration complete',
-          leading: null,
-        ),
-        body: Center(
-          child: Column(
-            children: [
-              const Spacer(),
-              const RegisteredCheckAnimation(),
-              const Spacer(),
-              GivtElevatedButton(
-                text: context.l10n.setUpFamily,
-                onTap: () {
-                  final user = context.read<AuthCubit>().state.user;
+    return PopScope(
+      onPopInvoked: (didPop) =>
+          context.goNamed(FamilyPages.profileSelection.name),
+      child: Theme(
+        data: AppTheme.lightTheme,
+        child: FamilyScaffold(
+          appBar: const GenerosityAppBar(
+            title: 'Registration complete',
+            leading: null,
+          ),
+          body: Center(
+            child: Column(
+              children: [
+                const Spacer(),
+                const RegisteredCheckAnimation(),
+                const Spacer(),
+                GivtElevatedButton(
+                  text: context.l10n.setUpFamily,
+                  onTap: () {
+                    final user = context.read<AuthCubit>().state.user;
 
-                  unawaited(
-                    AnalyticsHelper.logEvent(
-                      eventName:
-                          AmplitudeEvents.registrationSuccesButtonClicked,
-                      eventProperties: {
-                        'id': user.guid,
-                      },
-                    ),
-                  );
-                  context
-                    ..pushReplacementNamed(
+                    unawaited(
+                      AnalyticsHelper.logEvent(
+                        eventName:
+                            AmplitudeEvents.registrationSuccesButtonClicked,
+                        eventProperties: {
+                          'id': user.guid,
+                        },
+                      ),
+                    );
+                    context.pushReplacementNamed(
                       FamilyPages.profileSelection.name,
-                    )
-                    ..pushNamed(FamilyPages.addMember.name);
-                },
-              ),
-            ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
