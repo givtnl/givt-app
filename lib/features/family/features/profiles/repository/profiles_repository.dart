@@ -153,7 +153,6 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   }
 
   Future<Profile> _fetchChildDetails(String childGuid) async {
-    unawaited(_fetchProfiles());
     final response = await _apiService.fetchChildDetails(childGuid);
     response['type'] = 'Child';
     final profile = Profile.fromMap(response);
@@ -172,6 +171,8 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   Future<List<Profile>> refreshProfiles() => _fetchProfiles();
 
   @override
-  Future<Profile> refreshChildDetails(String childGuid) async =>
-      _fetchChildDetails(childGuid);
+  Future<Profile> refreshChildDetails(String childGuid) async {
+    unawaited(_fetchProfiles());
+    return _fetchChildDetails(childGuid);
+  }
 }
