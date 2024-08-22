@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
@@ -20,9 +21,8 @@ class EmptyWalletBottomSheet extends StatelessWidget {
     return GivtBottomSheet(
       title: 'Oops, an empty Wallet',
       icon: walletEmptyIcon(),
-      content: Text(
+      content: const BodyMediumText(
         "To continue giving you need to add more money to your Wallet. You'll need your parent to do this.",
-        style: Theme.of(context).textTheme.bodyMedium,
         textAlign: TextAlign.center,
       ),
       primaryButton: GivtElevatedButton(

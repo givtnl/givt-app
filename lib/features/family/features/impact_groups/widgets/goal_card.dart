@@ -3,6 +3,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,9 +43,8 @@ class GoalCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
+              TitleSmallText(
                 goal.orgName,
-                style: Theme.of(context).textTheme.titleSmall,
                 textAlign: TextAlign.center,
               ),
               if (group.type == ImpactGroupType.family)

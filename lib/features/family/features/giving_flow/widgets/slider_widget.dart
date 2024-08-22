@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class SliderWidget extends StatelessWidget {
@@ -23,9 +24,8 @@ class SliderWidget extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            child: Text(
+            child: HeadlineLargeText(
               '\$${currentAmount.round()}',
-              style: Theme.of(context).textTheme.headlineLarge,
             ),
           ),
           SliderTheme(

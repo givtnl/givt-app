@@ -7,12 +7,15 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/utils.dart';
 
 import 'package:lottie/lottie.dart';
 
 class SuccessScreen extends StatefulWidget {
-  const SuccessScreen({super.key,});
+  const SuccessScreen({
+    super.key,
+  });
 
   @override
   State<SuccessScreen> createState() => _SuccessScreenState();
@@ -74,10 +77,9 @@ class _SuccessScreenState extends State<SuccessScreen> {
               width: double.infinity,
               child: Column(
                 children: [
-                  Text(
+                  TitleLargeText(
                     organisation.thankYou ?? 'Awesome!',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                   Text(
                     'Thank you for your donation \n to ${organisation.name}',

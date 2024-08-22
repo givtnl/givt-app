@@ -4,9 +4,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/models/organisation_details.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class OrganisationWidget extends StatelessWidget {
-  const OrganisationWidget(this.organisation, {super.key,});
+  const OrganisationWidget(
+    this.organisation, {
+    super.key,
+  });
 
   final OrganisationDetails organisation;
 
@@ -40,9 +44,8 @@ class OrganisationWidget extends StatelessWidget {
                 );
               } else {
                 return Expanded(
-                  child: Text(
+                  child: TitleMediumText(
                     organisation.name,
-                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 );
               }

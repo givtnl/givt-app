@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class InputCheckbox extends StatelessWidget {
@@ -34,7 +35,7 @@ class InputCheckbox extends StatelessWidget {
           },
         ),
         Flexible(
-          child: Text(label, style: Theme.of(context).textTheme.bodySmall),
+          child: BodySmallText(label),
         ),
       ],
     );

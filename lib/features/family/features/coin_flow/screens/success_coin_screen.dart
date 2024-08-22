@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -89,12 +90,9 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
         padding: const EdgeInsets.only(left: 20, right: 20, top: 70),
         child: Column(
           children: [
-            Text(
+            TitleMediumText(
               widget.isGoal ? 'Well done!' : 'Activated!',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppTheme.defaultTextColor,
-                  ),
             ),
             const SizedBox(
               height: 10,
