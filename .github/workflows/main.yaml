@@ -41,7 +41,7 @@ jobs:
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
       GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
     with:
-      flutter-version: '3.19.x'
+      flutter-version: '3.24.x'
 
   ios:
     needs: linter
@@ -54,7 +54,7 @@ jobs:
       LOGIT_API_KEY: ${{ secrets.LOGIT_API_KEY }}
       GOOGLE_SERVICES_PLIST: ${{ secrets.GOOGLE_SERVICES_PLIST }}
     with:
-      flutter-version: '3.19.x'
+      flutter-version: '3.24.x'
   
 
   semantic-pr:
