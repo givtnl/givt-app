@@ -20,24 +20,16 @@ class AddMemberRepositoryImpl with AddMemberRepository {
   @override
   Future<void> addMembers(List<Member> members, {required bool isRGA}) async {
     final profilesJsonList = members.map((member) => member.toJson()).toList();
-    final hasChild = members.any((member) => member.isChild);
     final body = {
       'profiles': profilesJsonList,
       'allowanceType': isRGA ? 0 : 1,
     };
 
     await apiService.addMember(body);
-    _memberAddedStreamController.add(null);
 
-    if (hasChild) {
-      _addMemberEventAfterOneSecond();
-    }
-  }
-
-  // The reason we are adding this event to the stream is
-  // because money-related calls require an update from Stripe for the BE
-  // which takes a bit of time
-  void _addMemberEventAfterOneSecond() {
+    // We add this event to the stream delayed
+    // because money-related calls require an update from Stripe for the BE
+    // which takes a bit of time
     Future.delayed(const Duration(seconds: 1), () {
       _memberAddedStreamController.add(null);
     });
