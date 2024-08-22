@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class GoalProgressBarLabel extends StatelessWidget {
   const GoalProgressBarLabel({
@@ -42,7 +42,7 @@ class GoalProgressBarLabel extends StatelessWidget {
           text,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,
-                color: AppTheme.secondary30,
+                color: FamilyAppTheme.secondary30,
               ),
         ),
       ),

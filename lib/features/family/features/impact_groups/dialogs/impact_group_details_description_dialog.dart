@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
@@ -17,7 +17,7 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
   }) async {
     await showDialog<void>(
       context: context,
-      barrierColor: AppTheme.impactGroupDialogBarrierColor,
+      barrierColor: FamilyAppTheme.impactGroupDialogBarrierColor,
       builder: (_) =>
           ImpactGroupDetailsDescriptionDialog(description: description),
     );
@@ -48,7 +48,7 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: AppTheme.primary20,
+                            color: FamilyAppTheme.primary20,
                           ),
                     ),
                   ),
@@ -67,7 +67,7 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
                         ),
                         child: const Icon(
                           FontAwesomeIcons.xmark,
-                          color: AppTheme.primary20,
+                          color: FamilyAppTheme.primary20,
                           size: 24,
                         ),
                       ),
@@ -81,7 +81,7 @@ class ImpactGroupDetailsDescriptionDialog extends StatelessWidget {
                   description,
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         fontWeight: FontWeight.w500,
-                        color: AppTheme.primary20,
+                        color: FamilyAppTheme.primary20,
                       ),
                 ),
               ),

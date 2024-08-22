@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/action_tile.d
 import 'package:givt_app/features/family/features/profiles/widgets/give_bottomsheet.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -149,7 +150,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     titleBig: 'Find Charity',
                                     iconPath:
                                         'assets/family/images/find_tile.svg',
-                                    backgroundColor: AppTheme.primary98,
+                                    backgroundColor: FamilyAppTheme.primary98,
                                     borderColor: Theme.of(context)
                                         .colorScheme
                                         .primaryContainer,
