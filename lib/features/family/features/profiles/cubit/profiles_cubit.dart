@@ -43,8 +43,11 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
     _hasSessionSubscription = _authRepository.hasSessionStream().listen(
       (hasSession) {
-        if (!hasSession) {
-          emit(const ProfilesInitialState());
+        if (hasSession) {
+          clearProfiles();
+          fetchAllProfiles();
+        } else {
+          clearProfiles();
         }
       },
     );
