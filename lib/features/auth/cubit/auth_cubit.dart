@@ -92,6 +92,7 @@ class AuthCubit extends Cubit<AuthState> {
           navigate: navigate,
         ),
       );
+      _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e.toString().contains('invalid_grant')) {
         LoggingInfo.instance.warning(
@@ -280,6 +281,7 @@ class AuthCubit extends Cubit<AuthState> {
           user: unRegisteredUserExt,
         ),
       );
+      _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e is SocketException) {
         emit(
