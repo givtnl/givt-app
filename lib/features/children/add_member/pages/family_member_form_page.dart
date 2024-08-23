@@ -66,7 +66,53 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     return null;
   }
 
-  void pop() {}
+  void onDone({bool isChildSelected = false}) {
+    final member = addMember(isChildSelected: isChildSelected);
+
+    if (member != null) {
+      final members = [
+        ...widget.membersToCombine,
+        member,
+      ];
+      if (members.any((member) => member.isChild)) {
+        showModalBottomSheet<void>(
+          context: context,
+          showDragHandle: true,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (_) => BlocProvider(
+            create: (context) => AddMemberCubit(
+              getIt(),
+              getIt(),
+            ),
+            child: Builder(
+              builder: (context) {
+                return VPCPage(
+                  onReadyClicked: () {
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.vpcAccepted,
+                    );
+                    submitMembersAndNavigate(members: members);
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      } else {
+        submitMembersAndNavigate(members: members);
+      }
+    }
+  }
+
+  void submitMembersAndNavigate({List<Member> members = const []}) {
+    context.read<AddMemberCubit>()
+      ..addAllMembers(members)
+      ..createMember();
+    Navigator.of(context).popUntil(
+      (route) => FamilyPages.childrenOverview.name == route.settings.name,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,49 +159,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 const Spacer(),
                 if (isLast)
                   GivtElevatedButton(
-                    onTap: () {
-                      final member =
-                          addMember(isChildSelected: isChildSelected);
-                      if (member != null) {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          showDragHandle: true,
-                          isScrollControlled: true,
-                          useSafeArea: true,
-                          builder: (_) => BlocProvider(
-                            create: (context) => AddMemberCubit(
-                              getIt(),
-                              getIt(),
-                            ),
-                            child: Builder(
-                              builder: (context) {
-                                return VPCPage(
-                                  onReadyClicked: () {
-                                    AnalyticsHelper.logEvent(
-                                      eventName: AmplitudeEvents.vpcAccepted,
-                                    );
-
-                                    context.read<AddMemberCubit>()
-                                      ..addAllMembers(
-                                        [
-                                          ...widget.membersToCombine,
-                                          member,
-                                        ],
-                                      )
-                                      ..createMember();
-                                    Navigator.of(context).popUntil(
-                                      (route) =>
-                                          FamilyPages.childrenOverview.name ==
-                                          route.settings.name,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      }
-                    },
+                    onTap: () => onDone(isChildSelected: isChildSelected),
                     text: 'Done',
                     rightIcon: FontAwesomeIcons.exclamation,
                   )
