@@ -16,15 +16,14 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class ParentHomeScreen extends StatelessWidget {
-  const ParentHomeScreen({required this.id, super.key});
+  const ParentHomeScreen({required this.profile, super.key});
 
-  final String id;
+  final Profile profile;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       builder: (context, state) {
-        final profile = state.profiles.firstWhere((p) => p.id == id);
         return Scaffold(
           appBar: _topAppBar(profile, context),
           backgroundColor: FamilyAppTheme.secondary99,
@@ -54,7 +53,6 @@ class ParentHomeScreen extends StatelessWidget {
   }
 
   void _onProfileSwitchPressed(BuildContext context) {
-    context.read<ProfilesCubit>().fetchAllProfiles();
     context.pop();
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.profileSwitchPressed,

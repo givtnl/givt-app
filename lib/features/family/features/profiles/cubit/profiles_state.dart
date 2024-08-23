@@ -56,13 +56,6 @@ class ProfilesLoadingState extends ProfilesState {
   });
 }
 
-class ProfilesUpdatingState extends ProfilesState {
-  /// This is the state that is emitted when the profiles are being updated
-  const ProfilesUpdatingState({
-    required super.activeProfileIndex, super.profiles = const [],
-  });
-}
-
 class ProfilesUpdatedState extends ProfilesState {
   /// This is the state that is emitted when the profiles are updated
   const ProfilesUpdatedState({

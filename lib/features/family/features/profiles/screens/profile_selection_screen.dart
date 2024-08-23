@@ -254,7 +254,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             final selectedProfile = profiles[i];
             context
                 .read<ProfilesCubit>()
-                .fetchProfile(selectedProfile.id, true);
+                .setActiveProfile(selectedProfile.id);
 
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,
