@@ -4,7 +4,9 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
+import 'package:givt_app/features/children/edit_profile/repositories/edit_parent_profile_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
+import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
@@ -37,6 +39,8 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._authRepository,
     this._parentalApprovalRepository,
     this._createTransactionRepository,
+    this._editChildProfileRepository,
+    this._editParentProfileRepository,
   ) {
     _init();
   }
@@ -49,6 +53,8 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final AuthRepository _authRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final EditProfileRepository _editChildProfileRepository;
+  final EditParentProfileRepository _editParentProfileRepository;
 
   final StreamController<List<Profile>> _profilesStreamController =
       StreamController<List<Profile>>.broadcast();
@@ -60,13 +66,13 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   Completer<List<Profile>>? _profilesCompleter;
 
   void _init() {
-    _addMemberRepository.onMemberAdded().listen(
-      (_) {
-        _fetchProfiles();
-      },
-    );
+    _addMemberRepository.onMemberAdded().listen((_) => _fetchProfiles());
 
     _editChildRepository.childChangedStream().listen(_fetchChildDetails);
+
+    _editChildProfileRepository
+        .onChildAvatarChanged()
+        .listen(_fetchChildDetails);
 
     _impactGroupsRepository.onImpactGroupsChanged().listen(
           (_) => _fetchProfiles(),
@@ -91,11 +97,13 @@ class ProfilesRepositoryImpl with ProfilesRepository {
       },
     );
 
-    _createTransactionRepository.onTransaction().listen(
-      (_) {
-        _fetchProfiles();
-      },
-    );
+    _createTransactionRepository
+        .onTransaction()
+        .listen((_) => _fetchProfiles());
+
+    _editParentProfileRepository
+        .onProfileChanged()
+        .listen((_) => _fetchProfiles());
   }
 
   void _clearData() {
