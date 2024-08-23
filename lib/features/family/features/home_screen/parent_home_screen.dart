@@ -15,23 +15,31 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
-class ParentHomeScreen extends StatelessWidget {
+class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({required this.profile, super.key});
 
   final Profile profile;
 
   @override
+  State<ParentHomeScreen> createState() => _ParentHomeScreenState();
+}
+
+class _ParentHomeScreenState extends State<ParentHomeScreen> {
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       builder: (context, state) {
+        final activeProfile = state.activeProfile == Profile.empty()
+            ? widget.profile
+            : state.activeProfile;
         return Scaffold(
-          appBar: _topAppBar(profile, context),
+          appBar: _topAppBar(activeProfile, context),
           backgroundColor: FamilyAppTheme.secondary99,
           body: ColoredBox(
             color: Colors.white,
             child: Column(
               children: [
-                _parentHeaderWidget(profile, context),
+                _parentHeaderWidget(activeProfile, context),
                 _giveTile(context),
               ],
             ),
