@@ -186,8 +186,14 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
   @override
   Future<Profile> refreshChildDetails(String childGuid) async {
-    unawaited(_fetchProfiles());
     _profileMap.remove(childGuid);
+    try {
+      await _fetchProfiles();
+    } catch (e, s) {
+      // it's okay if this one fails, we'll still refresh the specific child
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+    }
+
     return _fetchChildDetails(childGuid);
   }
 }
