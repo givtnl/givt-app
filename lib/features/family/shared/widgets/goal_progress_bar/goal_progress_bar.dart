@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar_label.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class GoalProgressBar extends StatefulWidget {
   const GoalProgressBar({
@@ -11,8 +11,8 @@ class GoalProgressBar extends StatefulWidget {
     this.showFlag = false,
     this.showGoalLabel = false,
     this.showCurrentLabel = false,
-    this.goalLabelBackgroundColor = AppTheme.primary95,
-    this.currentLabelBackgroundColor = AppTheme.secondary98,
+    this.goalLabelBackgroundColor = FamilyAppTheme.primary95,
+    this.currentLabelBackgroundColor = FamilyAppTheme.secondary98,
     super.key,
   });
 
@@ -26,11 +26,11 @@ class GoalProgressBar extends StatefulWidget {
   final bool showCurrentLabel;
 
   static const _defaultColors = [
-    AppTheme.highlight90,
-    AppTheme.progressGradient1,
-    AppTheme.progressGradient2,
-    AppTheme.progressGradient3,
-    AppTheme.primary70,
+    FamilyAppTheme.highlight90,
+    FamilyAppTheme.progressGradient1,
+    FamilyAppTheme.progressGradient2,
+    FamilyAppTheme.progressGradient3,
+    FamilyAppTheme.primary70,
   ];
 
   @override

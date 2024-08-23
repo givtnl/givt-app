@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar({
@@ -28,8 +28,8 @@ class CustomNavigationBar extends StatelessWidget {
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         selectedIndex: index,
         onDestinationSelected: onDestinationSelected,
-        backgroundColor: AppTheme.secondary99,
-        indicatorColor: AppTheme.secondary95,
+        backgroundColor: FamilyAppTheme.secondary99,
+        indicatorColor: FamilyAppTheme.secondary95,
         surfaceTintColor: Colors.transparent,
         destinations: NavigationDestinationData.values
             .map(

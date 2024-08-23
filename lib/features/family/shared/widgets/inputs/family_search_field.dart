@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-import 'package:givt_app/utils/app_theme.dart';
 
 class FamilySearchField extends StatelessWidget {
   const FamilySearchField({
@@ -47,7 +47,7 @@ class FamilySearchField extends StatelessWidget {
                   padding: EdgeInsets.only(right: 16),
                   child: FaIcon(
                     FontAwesomeIcons.xmark,
-                    color: AppTheme.primary30,
+                    color: FamilyAppTheme.primary30,
                   ),
                 ),
               ),
@@ -62,7 +62,7 @@ class FamilySearchField extends StatelessWidget {
               padding: EdgeInsets.only(left: 16),
               child: FaIcon(
                 FontAwesomeIcons.magnifyingGlass,
-                color: AppTheme.primary30,
+                color: FamilyAppTheme.primary30,
               ),
             ),
           ),
@@ -71,7 +71,7 @@ class FamilySearchField extends StatelessWidget {
         fillColor: Colors.white,
         hintText: 'Search',
         hintStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: AppTheme.neutralVariant40,
+              color: FamilyAppTheme.neutralVariant40,
             ),
         enabledBorder: enabledInputBorder,
         focusedBorder: selectedInputBorder,

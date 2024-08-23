@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -40,12 +41,12 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
       appBar: AppBar(
         toolbarHeight: 0,
         systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: AppTheme.secondary98,
+          statusBarColor: FamilyAppTheme.secondary98,
           statusBarIconBrightness: Brightness.dark,
         ),
-        backgroundColor: AppTheme.secondary98,
+        backgroundColor: FamilyAppTheme.secondary98,
       ),
-      backgroundColor: AppTheme.secondary98,
+      backgroundColor: FamilyAppTheme.secondary98,
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -93,7 +94,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
               widget.isGoal ? 'Well done!' : 'Activated!',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppTheme.defaultTextColor,
+                    color: FamilyAppTheme.defaultTextColor,
                   ),
             ),
             const SizedBox(
@@ -105,7 +106,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
                   : 'Drop your coin in\nthe giving box.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.defaultTextColor,
+                    color: FamilyAppTheme.defaultTextColor,
                   ),
             ),
           ],

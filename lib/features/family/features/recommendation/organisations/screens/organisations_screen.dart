@@ -7,10 +7,13 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/cubit/organisations_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationsScreen extends StatelessWidget {
-  const OrganisationsScreen({super.key,});
+  const OrganisationsScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +67,7 @@ class OrganisationsScreen extends StatelessWidget {
                         (BuildContext context, int index) {
                       return const Center(
                         child: CircularProgressIndicator(
-                          color: AppTheme.primary70,
+                          color: FamilyAppTheme.primary70,
                         ),
                       );
                     }),

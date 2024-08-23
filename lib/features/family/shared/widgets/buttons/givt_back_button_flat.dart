@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class GivtBackButtonFlat extends StatelessWidget {
@@ -19,7 +19,7 @@ class GivtBackButtonFlat extends StatelessWidget {
     return IconButton(
       icon: FaIcon(
         FontAwesomeIcons.arrowLeft,
-        color: color ?? AppTheme.primary20,
+        color: color ?? FamilyAppTheme.primary20,
       ),
       onPressed: () {
         SystemSound.play(SystemSoundType.click);
