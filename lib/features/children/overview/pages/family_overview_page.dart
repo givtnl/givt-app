@@ -113,6 +113,14 @@ class FamilyOverviewPage extends StatelessWidget {
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.numberOfMembersSelected,
+          eventProperties: {
+            'nrOfMembers': result,
+          },
+        ),
+      );
       await Navigator.push(
         context,
         FamilyMemberFormPage(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/widgets/child_or_parent_selector.dart';
@@ -15,6 +16,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
@@ -129,6 +131,10 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                               builder: (context) {
                                 return VPCPage(
                                   onReadyClicked: () {
+                                    AnalyticsHelper.logEvent(
+                                      eventName: AmplitudeEvents.vpcAccepted,
+                                    );
+
                                     context.read<AddMemberCubit>()
                                       ..addAllMembers(
                                         [
