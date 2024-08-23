@@ -99,7 +99,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
       ..addAllMembers(members)
       ..createMember();
     Navigator.of(context).popUntil(
-      (route) => FamilyPages.childrenOverview.name == route.settings.name,
+      (route) => FamilyPages.profileSelection.name == route.settings.name,
     );
   }
 
