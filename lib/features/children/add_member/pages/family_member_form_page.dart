@@ -23,9 +23,11 @@ class FamilyMemberFormPage extends StatefulWidget {
     required this.membersToCombine,
     super.key,
   });
+
   final int index;
   final int totalCount;
   final List<Member> membersToCombine;
+
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
 }
@@ -36,7 +38,6 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   final _emailController = TextEditingController();
   final _ageController = TextEditingController();
   List<bool> selections = [true, false];
-  List<Member> members = [];
   int _amount = 5;
 
   @override
@@ -44,7 +45,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     super.initState();
   }
 
-  bool addMember({bool isChildSelected = false}) {
+  Member? addMember({bool isChildSelected = false}) {
     if (_formKey.currentState!.validate()) {
       final newMember = isChildSelected
           ? Member(
@@ -58,14 +59,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               email: _emailController.text,
               type: ProfileType.Parent,
             );
-      members
-        ..addAll(widget.membersToCombine)
-        ..add(newMember)
-        ..toSet()
-        ..toList();
-      return true;
+      return newMember;
     }
-    return false;
+    return null;
   }
 
   void pop() {}
@@ -119,11 +115,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   GivtElevatedButton(
                     onTap: () {
                       // handle api call
-                      if (addMember(isChildSelected: isChildSelected)) {
-                        print('members added: ${members.length}');
-                        for (final member in members) {
-                          print(member.firstName);
-                        }
+                      final member =
+                          addMember(isChildSelected: isChildSelected);
+                      if (member != null) {
                         showModalBottomSheet<void>(
                           context: context,
                           showDragHandle: true,
@@ -139,7 +133,12 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                                 return VPCPage(
                                   onReadyClicked: () {
                                     context.read<AddMemberCubit>()
-                                      ..addAllMembers(members)
+                                      ..addAllMembers(
+                                        [
+                                          ...widget.membersToCombine,
+                                          member,
+                                        ],
+                                      )
                                       ..createMember();
                                     Navigator.of(context).popUntil(
                                       (route) =>
@@ -166,13 +165,18 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 else
                   GivtElevatedSecondaryButton(
                     onTap: () {
-                      if (addMember(isChildSelected: isChildSelected)) {
+                      final member =
+                          addMember(isChildSelected: isChildSelected);
+                      if (member != null) {
                         Navigator.push(
                           context,
                           FamilyMemberFormPage(
                             index: widget.index + 1,
                             totalCount: widget.totalCount,
-                            membersToCombine: members,
+                            membersToCombine: [
+                              ...widget.membersToCombine,
+                              member,
+                            ],
                           ).toRoute(context),
                         );
                       }
