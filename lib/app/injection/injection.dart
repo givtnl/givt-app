@@ -8,6 +8,7 @@ import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
@@ -265,6 +266,12 @@ void initRepositories() {
     )
     ..registerLazySingleton<ChatHistoryRepository>(
       () => ChatHistoryRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<AddMemberCubit>(
+      () => AddMemberCubit(
+        getIt(),
         getIt(),
       ),
     );

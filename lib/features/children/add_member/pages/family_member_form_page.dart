@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -80,23 +79,13 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           showDragHandle: true,
           isScrollControlled: true,
           useSafeArea: true,
-          builder: (_) => BlocProvider(
-            create: (context) => AddMemberCubit(
-              getIt(),
-              getIt(),
-            ),
-            child: Builder(
-              builder: (context) {
-                return VPCPage(
-                  onReadyClicked: () {
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.vpcAccepted,
-                    );
-                    submitMembersAndNavigate(members: members);
-                  },
-                );
-              },
-            ),
+          builder: (_) => VPCPage(
+            onReadyClicked: () {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.vpcAccepted,
+              );
+              submitMembersAndNavigate(members: members);
+            },
           ),
         );
       } else {
@@ -106,7 +95,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   }
 
   void submitMembersAndNavigate({List<Member> members = const []}) {
-    context.read<AddMemberCubit>()
+    getIt<AddMemberCubit>()
       ..addAllMembers(members)
       ..createMember();
     Navigator.of(context).popUntil(
