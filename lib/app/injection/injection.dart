@@ -239,8 +239,7 @@ void initRepositories() {
       ChatScriptsAssetRepositoryImpl.new,
     )
     ..registerLazySingleton<ChatScriptRegistrationHandler>(
-          () => ChatScriptRegistrationHandler(
-        getIt(),
+      () => ChatScriptRegistrationHandler(
         getIt(),
         getIt(),
       ),

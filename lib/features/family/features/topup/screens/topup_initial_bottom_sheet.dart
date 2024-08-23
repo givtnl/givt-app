@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
@@ -47,9 +48,8 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       ),
       content: Column(
         children: [
-          Text(
+          const BodyMediumText(
             "How much would you like to add to your child's Wallet?",
-            style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),

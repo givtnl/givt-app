@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/impact_groups/model/impact_gro
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +27,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
     final activeProfile = context.watch<ProfilesCubit>().state.activeProfile;
     return Container(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 10),
-      color: AppTheme.highlight99,
+      color: FamilyAppTheme.highlight99,
       child: SafeArea(
         minimum: const EdgeInsets.only(bottom: 16),
         child: Column(
@@ -39,7 +40,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: AppTheme.secondary30,
+                    color: FamilyAppTheme.secondary30,
                   ),
             ),
             const SizedBox(height: 5),

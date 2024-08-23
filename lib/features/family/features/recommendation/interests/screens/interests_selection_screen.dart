@@ -6,8 +6,9 @@ import 'package:givt_app/features/family/features/recommendation/interests/cubit
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interests_tally.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {
@@ -29,14 +30,13 @@ class InterestsSelectionScreen extends StatelessWidget {
                   sliver: SliverAppBar(
                     pinned: true,
                     backgroundColor: Colors.white,
-                    surfaceTintColor: AppTheme.primary90,
+                    surfaceTintColor: FamilyAppTheme.primary90,
                     automaticallyImplyLeading: false,
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const TitleSmallText(
                           'Select your top 3 choices',
-                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                         InterestsTally(
                           tally: state.selectedInterests.length,

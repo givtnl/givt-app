@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class CameraScreenFrame extends StatelessWidget {
   const CameraScreenFrame({
@@ -21,10 +22,9 @@ class CameraScreenFrame extends StatelessWidget {
           statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
         ),
-        title: Text(
+        title: const TitleMediumText(
           'Scan the QR code',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium,
         ),
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         automaticallyImplyLeading: false,
@@ -42,10 +42,9 @@ class CameraScreenFrame extends StatelessWidget {
               height: 80,
               color: Theme.of(context).colorScheme.onPrimary,
               child: Center(
-                child: Text(
+                child: BodyMediumText(
                   feedback,
                   textAlign: TextAlign.start,
-                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
             ),

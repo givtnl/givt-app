@@ -6,9 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class ParentOverviewWidget extends StatelessWidget {
@@ -50,9 +50,11 @@ class ParentOverviewWidget extends StatelessWidget {
                   ),
                 );
 
-                unawaited(AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.parentProfileIconClicked,
-                ),);
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.parentProfileIconClicked,
+                  ),
+                );
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -73,16 +75,18 @@ class ParentOverviewWidget extends StatelessWidget {
                     children: [
                       Text(
                         profile.firstName,
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: isMainUser
-                                ? AppTheme.defaultTextColor
-                                : AppTheme.tertiary20,),
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: isMainUser
+                                      ? FamilyAppTheme.defaultTextColor
+                                      : FamilyAppTheme.tertiary20,
+                                ),
                       ),
                       const SizedBox(width: 4),
                       if (profile.id == profiles[0].id)
                         FaIcon(
                           FontAwesomeIcons.arrowRight,
-                          color: AppTheme.defaultTextColor,
+                          color: FamilyAppTheme.defaultTextColor,
                           size:
                               Theme.of(context).textTheme.labelMedium?.fontSize,
                         ),

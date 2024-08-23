@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SomethingWentWrongDialog extends StatefulWidget {
@@ -35,19 +35,21 @@ class SomethingWentWrongDialog extends StatefulWidget {
   final Future<void> Function() onClickPrimaryBtn;
   final void Function()? onClickSecondaryBtn;
 
-  static void show(BuildContext context,
-      {required String primaryBtnText,
-      required Future<void> Function() onClickPrimaryBtn,
-      String? secondaryBtnText = 'Close',
-      String? description = 'Oops, something went wrong',
-      IconData? icon,
-      Color? iconColor,
-      Color? circleColor,
-      IconData? primaryLeftIcon,
-      IconData? primaryRightIcon,
-      Widget? primaryLeadingImage,
-      bool? showLoadingState = false,
-      void Function()? onClickSecondaryBtn,}) {
+  static void show(
+    BuildContext context, {
+    required String primaryBtnText,
+    required Future<void> Function() onClickPrimaryBtn,
+    String? secondaryBtnText = 'Close',
+    String? description = 'Oops, something went wrong',
+    IconData? icon,
+    Color? iconColor,
+    Color? circleColor,
+    IconData? primaryLeftIcon,
+    IconData? primaryRightIcon,
+    Widget? primaryLeadingImage,
+    bool? showLoadingState = false,
+    void Function()? onClickSecondaryBtn,
+  }) {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -99,7 +101,7 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontFamily: 'Raleway',
-                      color: AppTheme.givtBlue,
+                      color: FamilyAppTheme.givtBlue,
                       letterSpacing: 0.25,
                     ),
               ),
