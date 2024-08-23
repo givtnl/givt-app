@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -23,7 +24,7 @@ class KidsHomeScreenAppBar extends StatelessWidget
       title: navigation.state.activeDestination.appBarTitle.isEmpty
           ? profiles.state.activeProfile.firstName
           : navigation.state.activeDestination.appBarTitle,
-      systemNavigationBarColor: AppTheme.secondary99,
+      systemNavigationBarColor: FamilyAppTheme.secondary99,
       actions: [
         if (navigation.state.activeDestination ==
             NavigationDestinationData.home)

@@ -27,7 +27,6 @@ import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -206,7 +205,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               text: 'Manage Family',
                               leftIcon: const FaIcon(
                                 FontAwesomeIcons.sliders,
-                                color: AppTheme.primary30,
+                                color: FamilyAppTheme.primary30,
                               ),
                             ),
                           ],
@@ -255,7 +254,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             final selectedProfile = profiles[i];
             context
                 .read<ProfilesCubit>()
-                .fetchProfile(selectedProfile.id, true);
+                .setActiveProfile(selectedProfile.id);
 
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,

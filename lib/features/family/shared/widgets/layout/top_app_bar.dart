@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TopAppBar({
@@ -27,10 +27,10 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       backgroundColor: color ?? Theme.of(context).colorScheme.onPrimary,
       actionsIconTheme: const IconThemeData(
-        color: AppTheme.primary30,
+        color: FamilyAppTheme.primary30,
       ),
       iconTheme: const IconThemeData(
-        color: AppTheme.primary30,
+        color: FamilyAppTheme.primary30,
       ),
       actions: actions,
       scrolledUnderElevation: 0,

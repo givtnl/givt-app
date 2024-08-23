@@ -83,7 +83,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
                 FamilyPages.generosityChallengeRedirect.name,
               ),
             ),
-            title: 'Enter you details',
+            title: 'Enter your details',
             actions: [
               IconButton(
                 onPressed: () => showModalBottomSheet<void>(

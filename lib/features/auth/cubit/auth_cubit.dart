@@ -92,6 +92,7 @@ class AuthCubit extends Cubit<AuthState> {
           navigate: navigate,
         ),
       );
+      _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e.toString().contains('invalid_grant')) {
         LoggingInfo.instance.warning(
@@ -149,7 +150,7 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
-  Future<void> checkAuth() async {
+  Future<void> checkAuth({bool isAppStartupCheck = false}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       var (userExt, session, amountPresets) =
@@ -157,12 +158,14 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (userExt == null || session == null) {
         emit(state.copyWith(status: AuthStatus.unknown));
+        _authRepositoy.setHasSessionInitialValue(false);
         return;
       }
 
       LoggingInfo.instance.info('CheckedAuth for $userExt');
       if (!session.isLoggedIn) {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
+        _authRepositoy.setHasSessionInitialValue(false);
         return;
       }
 
@@ -184,12 +187,14 @@ class AuthCubit extends Cubit<AuthState> {
           presets: amountPresets,
         ),
       );
+      _authRepositoy.setHasSessionInitialValue(true);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: AuthStatus.failure));
+      _authRepositoy.setHasSessionInitialValue(false);
     }
   }
 
@@ -280,6 +285,7 @@ class AuthCubit extends Cubit<AuthState> {
           user: unRegisteredUserExt,
         ),
       );
+      _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e is SocketException) {
         emit(

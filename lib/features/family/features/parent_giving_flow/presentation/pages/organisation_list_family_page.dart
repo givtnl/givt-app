@@ -12,7 +12,6 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
-import 'package:givt_app/utils/utils.dart';
 
 class OrganisationListFamilyPage extends StatefulWidget {
   const OrganisationListFamilyPage({
@@ -111,7 +110,7 @@ class _OrganisationListFamilyPageState
       ListTile(
         key: UniqueKey(),
         onTap: () => onTap.call(),
-        splashColor: AppTheme.generosityChallangeCardBackground,
+        splashColor: FamilyAppTheme.highlight99,
         selectedTileColor: CollectGroupType.getHighlightColor(type),
         trailing: FaIcon(
           FontAwesomeIcons.chevronRight,
@@ -119,7 +118,7 @@ class _OrganisationListFamilyPageState
         ),
         leading: Icon(
           CollectGroupType.getIconByTypeUS(type),
-          color: AppTheme.givtBlue,
+          color: FamilyAppTheme.givtBlue,
         ),
         title: LabelMediumText(title),
       );

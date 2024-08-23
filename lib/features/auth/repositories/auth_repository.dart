@@ -81,7 +81,11 @@ mixin AuthRepository {
     required String notificationId,
   });
 
+  void updateSessionStream(bool hasSession);
+
   Stream<bool> hasSessionStream();
+
+  void setHasSessionInitialValue(bool hasSession);
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -92,6 +96,7 @@ class AuthRepositoyImpl with AuthRepository {
 
   final SharedPreferences _prefs;
   final APIService _apiService;
+  bool? _hasSession;
 
   // bool hasSession
   final StreamController<bool> _hasSessionStreamController =
@@ -128,6 +133,7 @@ class AuthRepositoyImpl with AuthRepository {
     if (refreshUserExt) {
       try {
         await fetchUserExtension(newSession.userGUID);
+        updateSessionStream(true);
       } catch (e, s) {
         LoggingInfo.instance.error(
           e.toString(),
@@ -136,7 +142,6 @@ class AuthRepositoyImpl with AuthRepository {
       }
     }
     await _fetchUserExtension();
-    _hasSessionStreamController.add(true);
     return newSession;
   }
 
@@ -309,6 +314,8 @@ class AuthRepositoyImpl with AuthRepository {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
+    updateSessionStream(false);
+
     // If the data is already gone, just continue :)
     if (sessionString == null) {
       return true;
@@ -317,7 +324,6 @@ class AuthRepositoyImpl with AuthRepository {
     final session = Session.fromJson(
       jsonDecode(sessionString) as Map<String, dynamic>,
     );
-    _hasSessionStreamController.add(false);
     return _prefs.setString(
       Session.tag,
       jsonEncode(
@@ -564,12 +570,25 @@ class AuthRepositoyImpl with AuthRepository {
     } catch (e) {
       //failing one of these is non-blocking
     } finally {
-      _hasSessionStreamController.add(true);
+      updateSessionStream(true);
     }
     if (response['errorMessage'] == 'USER_ALREADY_EXISTS') {
       return GenerosityRegistrationResult.alreadyRegistered();
     } else {
       return GenerosityRegistrationResult.success();
     }
+  }
+
+  @override
+  void updateSessionStream(bool hasSession) {
+    if (_hasSession != hasSession) {
+      _hasSession = hasSession;
+      _hasSessionStreamController.add(hasSession);
+    }
+  }
+
+  @override
+  void setHasSessionInitialValue(bool hasSession) {
+    _hasSession = hasSession;
   }
 }

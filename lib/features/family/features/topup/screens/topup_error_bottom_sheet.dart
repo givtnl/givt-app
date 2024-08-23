@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
@@ -21,11 +22,10 @@ class TopupErrorBottomSheet extends StatelessWidget {
         iconData: FontAwesomeIcons.triangleExclamation,
         iconSize: 48,
       ),
-      content: Column(
+      content: const Column(
         children: [
-          Text(
+          BodyMediumText(
             'We are having trouble getting the funds from your card. Please try again.',
-            style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
         ],
