@@ -28,6 +28,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with WidgetsBindingObserver {
   bool isiPad = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -56,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<void> refresh() async {
     // Execute tasks in parallel
     await Future.wait([
-      context.read<ProfilesCubit>().fetchActiveProfile(true),
+      context.read<ProfilesCubit>().refresh(),
     ]);
   }
 

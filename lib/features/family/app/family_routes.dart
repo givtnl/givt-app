@@ -283,9 +283,9 @@ class FamilyAppRoutes {
           path: FamilyPages.parentHome.path,
           name: FamilyPages.parentHome.name,
           builder: (context, state) {
-            final extra = state.extra! as String;
+            final extra = state.extra! as Profile;
             return ParentHomeScreen(
-              id: extra,
+              profile: extra,
             );
           },
         ),
@@ -335,7 +335,6 @@ class FamilyAppRoutes {
           path: FamilyPages.wallet.path,
           name: FamilyPages.wallet.name,
           builder: (context, state) {
-            context.read<ProfilesCubit>().fetchActiveProfile();
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return MultiBlocProvider(
@@ -772,7 +771,6 @@ class FamilyAppRoutes {
             if (state.extra != null) {
               showAllowanceWarning = state.extra!.toString().contains('true');
             }
-            context.read<ProfilesCubit>().fetchActiveProfile();
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return MultiBlocProvider(
