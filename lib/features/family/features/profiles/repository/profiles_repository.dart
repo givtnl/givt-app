@@ -68,11 +68,11 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   void _init() {
     _addMemberRepository.onMemberAdded().listen((_) => _fetchProfiles());
 
-    _editChildRepository.childChangedStream().listen(_fetchChildDetails);
+    _editChildRepository.childChangedStream().listen(refreshChildDetails);
 
     _editChildProfileRepository
         .onChildAvatarChanged()
-        .listen(_fetchChildDetails);
+        .listen(refreshChildDetails);
 
     _impactGroupsRepository.onImpactGroupsChanged().listen(
           (_) => _fetchProfiles(),

@@ -38,7 +38,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     _hasSessionSubscription = _authRepository.hasSessionStream().listen(
       (hasSession) {
         if (hasSession) {
-          clearProfiles();
+          clearProfiles(clearIndex: false);
           fetchAllProfiles();
         } else {
           clearProfiles();
@@ -185,8 +185,14 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     }
   }
 
-  void clearProfiles() {
-    emit(const ProfilesInitialState());
+  void clearProfiles({bool clearIndex = true}) {
+    emit(
+      ProfilesInitialState(
+        activeProfileIndex: clearIndex
+            ? ProfilesState._loggedInUserSelected
+            : state.activeProfileIndex,
+      ),
+    );
   }
 
   @override
