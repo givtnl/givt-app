@@ -26,8 +26,9 @@ class AddMemberRepositoryImpl with AddMemberRepository {
     };
 
     await apiService.addMember(body);
+    _memberAddedStreamController.add(null);
 
-    // We add this event to the stream delayed
+    // We add this second event to the stream delayed
     // because money-related calls require an update from Stripe for the BE
     // which takes a bit of time
     Future.delayed(const Duration(seconds: 1), () {
