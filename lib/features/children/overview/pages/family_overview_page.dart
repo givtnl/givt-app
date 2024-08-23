@@ -63,7 +63,9 @@ class FamilyOverviewPage extends StatelessWidget {
                   icon: const Icon(
                     FontAwesomeIcons.userPlus,
                   ),
-                  onPressed: () => _addNewChild(context, state),
+                  onPressed: () => addNewMember(
+                    context,
+                  ),
                 ),
             ],
             leading: const LeadingBackButton(),
@@ -85,7 +87,7 @@ class FamilyOverviewPage extends StatelessWidget {
     if (state is FamilyOverviewUpdatedState) {
       if (!state.hasChildren && state.isAdultSingle) {
         return NoChildrenPage(
-          onAddNewChildPressed: () => _addNewChild(context, state),
+          onAddNewChildPressed: () => addNewMember(context),
         );
       }
 
@@ -95,8 +97,9 @@ class FamilyOverviewPage extends StatelessWidget {
     return const SizedBox();
   }
 
-  void _addNewChild(
-      BuildContext context, FamilyOverviewUpdatedState state) async {
+  Future<void> addNewMember(
+    BuildContext context,
+  ) async {
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.addMemerClicked,

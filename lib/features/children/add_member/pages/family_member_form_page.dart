@@ -112,7 +112,6 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 if (isLast)
                   GivtElevatedButton(
                     onTap: () {
-                      // handle api call
                       final member =
                           addMember(isChildSelected: isChildSelected);
                       if (member != null) {
@@ -148,13 +147,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                               },
                             ),
                           ),
-                        ).then((value) {
-                          // if (context.read<AddMemberCubit>().state.status ==
-                          //     AddMemberStateStatus.loading) {
-                          //   return;
-                          // }
-                          // context.read<AddMemberCubit>().dismissedVPC();
-                        });
+                        );
                       }
                     },
                     text: 'Done',
