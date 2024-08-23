@@ -95,10 +95,11 @@ class FamilyMemberForm extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         AmountCounter(
-            currency: r'$',
-            initialAmount: allowanceAmount,
-            canAmountBeZero: true,
-            onAmountChanged: onAmountChanged),
+          currency: r'$',
+          initialAmount: allowanceAmount,
+          canAmountBeZero: true,
+          onAmountChanged: onAmountChanged,
+        ),
         const SizedBox(height: 16),
         AdminFeeText(
           amount: allowanceAmount.toDouble(),
