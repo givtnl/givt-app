@@ -66,7 +66,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   Completer<List<Profile>>? _profilesCompleter;
 
   void _init() {
-    _addMemberRepository.onMemberAdded().listen((_) => _fetchProfiles());
+    _addMemberRepository.onMemberAdded().listen((_) => refreshProfiles());
 
     _editChildRepository.childChangedStream().listen(refreshChildDetails);
 
@@ -75,22 +75,22 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         .listen(refreshChildDetails);
 
     _impactGroupsRepository.onImpactGroupsChanged().listen(
-          (_) => _fetchProfiles(),
+          (_) => refreshProfiles(),
         );
 
     _givtRepository.onGivtsChanged().listen(
-          (_) => _fetchProfiles(),
+          (_) => refreshProfiles(),
         );
 
     _parentalApprovalRepository.onParentalApprovalChanged().listen(
-          (_) => _fetchProfiles(),
+          (_) => refreshProfiles(),
         );
 
     _authRepository.hasSessionStream().listen(
       (hasSession) {
         if (hasSession) {
           _clearData();
-          _fetchProfiles();
+          refreshProfiles();
         } else {
           _clearData();
         }
@@ -99,19 +99,21 @@ class ProfilesRepositoryImpl with ProfilesRepository {
 
     _createTransactionRepository
         .onTransaction()
-        .listen((_) => _fetchProfiles());
+        .listen((_) => refreshProfiles());
 
     _editParentProfileRepository
         .onProfileChanged()
-        .listen((_) => _fetchProfiles());
+        .listen((_) => refreshProfiles());
   }
 
-  void _clearData() {
+  void _clearData({bool updateListeners = true}) {
     _profiles = null;
     _profileMap.clear();
     _profilesCompleter = null;
-    _profilesStreamController.add([]);
-    _childDetailsStreamController.add(Profile.empty());
+    if (updateListeners) {
+      _profilesStreamController.add([]);
+      _childDetailsStreamController.add(Profile.empty());
+    }
   }
 
   @override
@@ -177,11 +179,15 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   Stream<Profile> onChildChanged() => _childDetailsStreamController.stream;
 
   @override
-  Future<List<Profile>> refreshProfiles() => _fetchProfiles();
+  Future<List<Profile>> refreshProfiles() {
+    _clearData(updateListeners: false);
+    return _fetchProfiles();
+  }
 
   @override
   Future<Profile> refreshChildDetails(String childGuid) async {
     unawaited(_fetchProfiles());
+    _profileMap.remove(childGuid);
     return _fetchChildDetails(childGuid);
   }
 }
