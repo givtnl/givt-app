@@ -285,7 +285,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                   isScrollControlled: true,
                   useSafeArea: true,
                   builder: (_) => Theme(
-                    data: AppTheme.lightTheme,
+                    data: const FamilyAppTheme().toThemeData(),
                     child: const AboutGivtBottomSheet(),
                   ),
                 ),

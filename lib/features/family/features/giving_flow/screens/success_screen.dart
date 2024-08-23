@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 import 'package:lottie/lottie.dart';
 
@@ -38,12 +38,12 @@ class _SuccessScreenState extends State<SuccessScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
-        backgroundColor: AppTheme.secondary98,
+        backgroundColor: FamilyAppTheme.secondary98,
         systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: AppTheme.secondary98,
+          statusBarColor: FamilyAppTheme.secondary98,
         ),
       ),
-      backgroundColor: AppTheme.secondary98,
+      backgroundColor: FamilyAppTheme.secondary98,
       body: SafeArea(
         bottom: false,
         child: Stack(

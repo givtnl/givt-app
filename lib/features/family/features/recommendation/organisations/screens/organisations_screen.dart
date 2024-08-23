@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/c
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationsScreen extends StatelessWidget {
@@ -66,7 +67,7 @@ class OrganisationsScreen extends StatelessWidget {
                         (BuildContext context, int index) {
                       return const Center(
                         child: CircularProgressIndicator(
-                          color: AppTheme.primary70,
+                          color: FamilyAppTheme.primary70,
                         ),
                       );
                     }),

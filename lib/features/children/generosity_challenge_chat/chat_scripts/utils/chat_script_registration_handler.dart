@@ -5,17 +5,14 @@ import 'package:givt_app/features/children/generosity_challenge/repositories/gen
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/utils/util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatScriptRegistrationHandler {
   const ChatScriptRegistrationHandler(
     this._authRepository,
-    this._sharedPreferences,
     this._generosityChallengeRepository,
   );
 
   final AuthRepository _authRepository;
-  final SharedPreferences _sharedPreferences;
   final GenerosityChallengeRepository _generosityChallengeRepository;
 
   Future<bool> handleRegistration() async {

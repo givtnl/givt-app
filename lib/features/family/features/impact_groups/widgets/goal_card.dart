@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,10 +30,10 @@ class GoalCard extends StatelessWidget {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: AppTheme.highlight99,
+          color: FamilyAppTheme.highlight99,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppTheme.neutralVariant95,
+            color: FamilyAppTheme.neutralVariant95,
             width: 2,
           ),
         ),
@@ -53,7 +54,7 @@ class GoalCard extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
-                      ?.copyWith(color: AppTheme.primary50),
+                      ?.copyWith(color: FamilyAppTheme.primary50),
                   textAlign: TextAlign.center,
                 )
               else
@@ -63,21 +64,21 @@ class GoalCard extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall
-                        ?.copyWith(color: AppTheme.primary50),
+                        ?.copyWith(color: FamilyAppTheme.primary50),
                     children: [
                       TextSpan(
                         text: ' · ',
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall
-                            ?.copyWith(color: AppTheme.neutralVariant60),
+                            ?.copyWith(color: FamilyAppTheme.neutralVariant60),
                       ),
                       TextSpan(
                         text: '${group.amountOfMembers} members',
                         style: Theme.of(context)
                             .textTheme
                             .bodySmall
-                            ?.copyWith(color: AppTheme.tertiary50),
+                            ?.copyWith(color: FamilyAppTheme.tertiary50),
                       ),
                     ],
                   ),
