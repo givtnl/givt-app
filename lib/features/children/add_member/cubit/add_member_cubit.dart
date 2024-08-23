@@ -32,6 +32,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     try {
       await _addMemberRepository.addMembers(members, isRGA: false);
 
+      emit(state.copyWith(status: AddMemberStateStatus.success));
       unawaited(
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.memberCreatedSuccesfully,

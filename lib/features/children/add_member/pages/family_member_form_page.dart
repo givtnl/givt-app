@@ -4,6 +4,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/widgets/add_member_loading_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/child_or_parent_selector.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
@@ -11,11 +12,11 @@ import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
@@ -98,9 +99,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     getIt<AddMemberCubit>()
       ..addAllMembers(members)
       ..createMember();
-    Navigator.of(context).popUntil(
-      (route) => FamilyPages.profileSelection.name == route.settings.name,
-    );
+
+    Navigator.push(context, const AddMemberLoadingPage().toRoute(context));
   }
 
   @override
@@ -149,8 +149,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 if (isLast)
                   GivtElevatedButton(
                     onTap: () => onDone(isChildSelected: isChildSelected),
-                    text: 'Done',
-                    rightIcon: FontAwesomeIcons.exclamation,
+                    text: 'Done!',
                   )
                 else
                   GivtElevatedSecondaryButton(
