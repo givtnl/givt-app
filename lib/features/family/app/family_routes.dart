@@ -6,8 +6,6 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
@@ -748,19 +746,6 @@ class FamilyAppRoutes {
                 ),
               ],
               child: const EditChildPage(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.addMember.path,
-          name: FamilyPages.addMember.name,
-          builder: (context, state) {
-            final familyAlreadyExists = state.extra as bool? ?? false;
-            return BlocProvider(
-              create: (_) => AddMemberCubit(getIt(), getIt()),
-              child: AddMemberMainScaffold(
-                familyAlreadyExists: familyAlreadyExists,
-              ),
             );
           },
         ),
