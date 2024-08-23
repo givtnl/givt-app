@@ -215,6 +215,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     }
   }
 
+  void addAllMembers(List<Member> members) {
+    emit(state.copyWith(members: members));
+  }
+
   Future<void> _saveMembersToCache() async {
     await _cachedMembersRepository.saveToCache(state.members);
     emit(state.copyWith(status: AddMemberStateStatus.successCached));

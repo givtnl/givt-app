@@ -1,20 +1,22 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/children/add_member/pages/add_member_counter_page.dart';
+import 'package:givt_app/features/children/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
   const FamilyOverviewPage({
@@ -93,34 +95,29 @@ class FamilyOverviewPage extends StatelessWidget {
     return const SizedBox();
   }
 
-  void _addNewChild(BuildContext context, FamilyOverviewUpdatedState state) {
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.addMemerClicked,
+  void _addNewChild(
+      BuildContext context, FamilyOverviewUpdatedState state) async {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.addMemerClicked,
+      ),
     );
-    final familyExists = state.hasChildren || !state.isAdultSingle;
-    context.pushReplacementNamed(
-      FamilyPages.addMember.name,
-      extra: familyExists,
+
+    final dynamic result = await Navigator.push(
+      context,
+      const AddMemberCounterPage(
+        initialAmount: 1,
+      ).toRoute(context),
     );
-    // final dynamic result = await Navigator.push(
-    //   context,
-    //   const AddMemberCounterPage(
-    //     initialAmount: 1,
-    //   ).toRoute(context),
-    // );
-    // if (result != null && result is int && context.mounted) {
-    //   final dynamic member = await Navigator.push(
-    //     context,
-    //     AddMemberFormPage(
-    //       index: 1,
-    //       totalCount: result,
-    //     ).toRoute(context),
-    //   );
-    //   if (member != null && member is Member && context.mounted) {
-    //     // todo
-    //     print(
-    //         'Member is ${member.type}, ${member.firstName}, ${member.age}, ${member.allowance}, ${member.email}');
-    //   }
-    // }
+    if (result != null && result is int && context.mounted) {
+      await Navigator.push(
+        context,
+        FamilyMemberFormPage(
+          index: 1,
+          totalCount: result,
+          membersToCombine: [],
+        ).toRoute(context),
+      );
+    }
   }
 }
