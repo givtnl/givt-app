@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/giving_flow/widgets/slider_wid
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -73,9 +74,8 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                     children: [
                       FamilyGoalWidget(group, organisation),
                       const Spacer(),
-                      Text(
+                      const BodyMediumText(
                         'How much would you like to give?',
-                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 32),
                     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 
@@ -20,10 +21,9 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const BodyMediumText(
               'There are no profiles attached to the current user.',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(
               height: 24,

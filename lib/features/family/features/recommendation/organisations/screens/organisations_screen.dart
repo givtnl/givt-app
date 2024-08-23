@@ -7,6 +7,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/cubit/organisations_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -52,12 +53,11 @@ class OrganisationsScreen extends StatelessWidget {
                     automaticallyImplyLeading: false,
                     title: state is OrganisationsFetchingState
                         ? const SizedBox()
-                        : Text(
+                        : TitleSmallText(
                             state.organisations.isEmpty
                                 ? 'Oops, something went wrong...'
                                 : 'Which organisation would you\nlike to give to?',
                             textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleSmall,
                           ),
                   ),
                 ),
