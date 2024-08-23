@@ -163,11 +163,6 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       await _addMemberRepository.addMembers(members, isRGA: false);
 
       emit(state.copyWith(status: AddMemberStateStatus.success));
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.vpcAccepted,
-        ),
-      );
 
       unawaited(
         AnalyticsHelper.logEvent(
