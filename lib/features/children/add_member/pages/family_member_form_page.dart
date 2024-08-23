@@ -71,11 +71,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     final isLast = widget.index == widget.totalCount;
     final isChildSelected = selections[0];
     return Scaffold(
-      appBar: GenerosityAppBar(
+      appBar: const GenerosityAppBar(
         title: 'Set up Family',
-        leading: GenerosityBackButton(
-          onPressed: () {},
-        ),
+        leading: GenerosityBackButton(),
       ),
       body: SafeArea(
         child: Center(
