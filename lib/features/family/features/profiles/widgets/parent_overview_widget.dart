@@ -42,6 +42,9 @@ class ParentOverviewWidget extends StatelessWidget {
                         profile.id,
                       ),
                 );
+                unawaited(AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.parentProfileIconClicked,
+                ));
 
                 await FamilyAuthUtils.authenticateUser(
                   context,
@@ -55,12 +58,6 @@ class ParentOverviewWidget extends StatelessWidget {
                         userId: profile.id,
                       );
                     },
-                  ),
-                );
-
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.parentProfileIconClicked,
                   ),
                 );
               },
