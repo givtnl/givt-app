@@ -125,7 +125,8 @@ enum AmplitudeEvents {
     'generosity_challenge_take_picture_clicked',
   ),
   generosityChallengeDay4TimerStarted(
-      'generosity_challenge_day_4_timer_started',),
+    'generosity_challenge_day_4_timer_started',
+  ),
   generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
   generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
   // Registration flow
@@ -187,13 +188,17 @@ enum AmplitudeEvents {
   notAGivtCoinNFCErrorShown('not_a_givt_coin_nfc_error_shown'),
   coinMediumIdNotRecognized('coin_medium_id_not_recognized'),
   notAGivtCoinNFCErrorGoBackHomeClicked(
-      'not_a_givt_coin_nfc_error_go_back_home_clicked',),
+    'not_a_givt_coin_nfc_error_go_back_home_clicked',
+  ),
   notAGivtCoinNFCErrorTryAgainClicked(
-      'not_a_givt_coin_nfc_error_try_again_clicked',),
+    'not_a_givt_coin_nfc_error_try_again_clicked',
+  ),
   coinMediumIdNotRecognizedGoBackHomeClicked(
-      'coin_medium_id_not_recognized_go_back_home_clicked',),
+    'coin_medium_id_not_recognized_go_back_home_clicked',
+  ),
   coinMediumIdNotRecognizedTryAgainClicked(
-      'coin_medium_id_not_recognized_try_again_clicked',),
+    'coin_medium_id_not_recognized_try_again_clicked',
+  ),
 
   organisationSelected('organisation_is_set'),
   editAvatarIconClicked('edit_avatar_icon_clicked'),
@@ -234,7 +239,9 @@ enum AmplitudeEvents {
 
   //parent
   parentGiveTileClicked('parent_give_tile_clicked'),
-  parentGivingFlowOrganisationClicked('parent_giving_flow_organization_clicked'),
+  parentGivingFlowOrganisationClicked(
+      'parent_giving_flow_organization_clicked'),
+  parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   ;
 
   const AmplitudeEvents(this.value);
