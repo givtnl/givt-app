@@ -29,6 +29,8 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     final members = state.members;
     final memberNames = members.map((member) => member.firstName).toList();
 
+    emit(state.copyWith(status: AddMemberStateStatus.loading));
+
     try {
       await _addMemberRepository.addMembers(members, isRGA: false);
 

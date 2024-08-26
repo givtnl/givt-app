@@ -24,8 +24,12 @@ class BodyMediumText extends StatelessWidget {
   factory BodyMediumText.primary30(String text) =>
       BodyMediumText(text, color: FamilyAppTheme.primary30);
 
-  factory BodyMediumText.primary40(String text) =>
-      BodyMediumText(text, color: FamilyAppTheme.primary40);
+  factory BodyMediumText.primary40(String text, {TextAlign? textAlign}) =>
+      BodyMediumText(
+        text,
+        textAlign: textAlign,
+        color: FamilyAppTheme.primary40,
+      );
 
   factory BodyMediumText.secondary20(String text) =>
       BodyMediumText(text, color: FamilyAppTheme.secondary20);

@@ -2,14 +2,11 @@ part of 'add_member_cubit.dart';
 
 enum AddMemberStateStatus {
   initial,
-  input,
   loading,
   success,
   successNoAllowances,
   successCached,
   error,
-  vpc,
-  continueWithoutVPC
 }
 
 class AddMemberState extends Equatable {
