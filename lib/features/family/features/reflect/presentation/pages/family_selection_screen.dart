@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -23,6 +23,7 @@ class FamilySelectionScreen extends StatefulWidget {
 
 class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   var cubit = getIt<FamilySelectionCubit>();
+  var selectedProfiles = <GameProfile>[];
 
   @override
   void didChangeDependencies() {
@@ -51,6 +52,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   createAdultGrid(
                     profiles.where((profile) => profile.isAdult).toList(),
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: GridView.count(
                       childAspectRatio: 0.9,
@@ -91,15 +93,20 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   Widget _dragTarget() {
     return Align(
         alignment: Alignment.bottomCenter,
-        child: DragTarget<int>(
+        child: DragTarget<GameProfile>(
+          hitTestBehavior: HitTestBehavior.opaque,
           onWillAcceptWithDetails: (details) {
             return true;
           },
           onAcceptWithDetails: (details) {
+            // Only add once
+            if (selectedProfiles.contains(details.data)) {
+              return;
+            }
+
             setState(() {
-              // _draggedOnChurch.add(details.data);
+              selectedProfiles.add(details.data);
             });
-            // widget.onDonationDraggedOnChurch?.call();
           },
           builder: (BuildContext context, List<Object?> candidateData,
               List<dynamic> rejectedData) {
@@ -145,10 +152,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         for (var i = 0; i < profiles.length; i++)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ProfileItem(
-              name: profiles[i].firstName!,
-              imageUrl: profiles[i].pictureURL!,
-            ),
+            child: isSelected(profiles[i])
+                ? getEmptyProfileItem()
+                : ProfileItem(profile: profiles[i]),
           ),
       ],
     );
@@ -160,14 +166,30 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
       gridItems.add(
         GestureDetector(
           onTap: () {},
-          child: ProfileItem(
-            name: profiles[i].firstName!,
-            imageUrl: profiles[i].pictureURL!,
-          ),
+          child: isSelected(profiles[i])
+              ? getEmptyProfileItem()
+              : ProfileItem(
+                  profile: profiles[i],
+                ),
         ),
       );
     }
     return gridItems;
+  }
+
+  bool isSelected(GameProfile profile) {
+    return selectedProfiles.contains(profile);
+  }
+
+  Widget getEmptyProfileItem() {
+    return Container(
+      width: 80,
+      height: 0,
+      decoration: BoxDecoration(
+        color: FamilyAppTheme.secondary95,
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
   }
 
   bool _shouldHighlight(List<Object?> candidateData) =>
