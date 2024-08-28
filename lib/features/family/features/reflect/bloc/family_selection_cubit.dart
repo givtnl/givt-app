@@ -15,4 +15,8 @@ class FamilySelectionCubit extends CommonCubit<List<GameProfile>, dynamic> {
       emit(BaseState.data(profiles));
     });
   }
+
+  List<GameProfile> getReporters() {
+    return _reflectAndShareRepository.getCurrentReporters();
+  }
 }
