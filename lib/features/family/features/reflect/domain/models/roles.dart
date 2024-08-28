@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 sealed class Role {
   const Role({required this.color, required this.name});
@@ -12,14 +13,14 @@ sealed class Role {
 
   const factory Role.sidekick() = Sidekick;
 
-  final ColorCombo color;
+  final Color color;
   final String name;
 }
 
 class SuperHero extends Role {
   const SuperHero({
     this.secretWord,
-    super.color = ColorCombo.primary,
+    super.color = FamilyAppTheme.primary80,
     super.name = 'superhero',
   });
 
@@ -29,7 +30,7 @@ class SuperHero extends Role {
 class Reporter extends Role {
   const Reporter({
     this.questions,
-    super.color = ColorCombo.secondary,
+    super.color = FamilyAppTheme.secondary80,
     super.name = 'reporter',
   });
 
@@ -38,7 +39,7 @@ class Reporter extends Role {
 
 class Sidekick extends Role {
   const Sidekick({
-    super.color = ColorCombo.tertiary,
+    super.color = FamilyAppTheme.tertiary80,
     super.name = 'sidekick',
   });
 }
