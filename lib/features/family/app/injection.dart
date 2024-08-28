@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/r
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
@@ -116,5 +117,6 @@ void initRepositories() {
       () => FamilySelectionCubit(
         getIt(),
       ),
-    );
+    )
+    ..registerFactory<InterviewCubit>(() => InterviewCubit(getIt()));
 }

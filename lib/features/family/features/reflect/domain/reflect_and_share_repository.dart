@@ -28,6 +28,14 @@ class ReflectAndShareRepository {
         type: "child",
         role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
       ),
+      GameProfile(
+        firstName: "John",
+        lastName: "Doe",
+        pictureURL:
+            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero2.svg",
+        type: "child",
+        role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
+      ),
       // GameProfile(
       //   firstName: "Jane",
       //   lastName: "Doe",
