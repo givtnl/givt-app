@@ -24,18 +24,21 @@ class ReflectAndShareRepository {
         firstName: "John",
         lastName: "Doe",
         pictureURL: "https://randomuser.me/api/portraits",
+        type: "child",
         role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
       ),
       GameProfile(
         firstName: "Jane",
         lastName: "Doe",
         pictureURL: "https://randomuser.me/api/portraits",
+        type: "child",
         role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
       ),
       GameProfile(
         firstName: "John",
         lastName: "Doe",
         pictureURL: "https://randomuser.me/api/portraits",
+        type: "child",
         role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
       ),
     ];
@@ -58,15 +61,7 @@ class ReflectAndShareRepository {
       return _allProfiles!;
     }
     final profiles = await _profilesRepository.getProfiles();
-    _allProfiles = profiles
-        .map(
-          (profile) => GameProfile(
-            firstName: profile.firstName,
-            lastName: profile.lastName,
-            pictureURL: profile.pictureURL,
-          ),
-        )
-        .toList();
+    _allProfiles = profiles.map((profile) => profile.toGameProfile()).toList();
     return _allProfiles!;
   }
 
