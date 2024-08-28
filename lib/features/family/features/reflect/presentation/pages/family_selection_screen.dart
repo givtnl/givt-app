@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
@@ -65,6 +66,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                       ),
                     ),
                   ),
+                  _selectedProfiles(),
                   GivtElevatedButton(
                       onTap: () {
                         cubit.rolesClicked(selectedProfiles);
@@ -77,6 +79,26 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _selectedProfiles() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var i = 0; i < selectedProfiles.length; i++)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: SvgPicture.network(
+                selectedProfiles[i].pictureURL!,
+                width: 40,
+                height: 40,
+              ),
+            ),
+        ],
       ),
     );
   }
