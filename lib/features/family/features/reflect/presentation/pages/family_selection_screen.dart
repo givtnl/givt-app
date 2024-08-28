@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';

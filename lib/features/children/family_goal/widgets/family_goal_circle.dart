@@ -13,11 +13,13 @@ class FamilyGoalCircle extends StatefulWidget {
   const FamilyGoalCircle({
     this.amount = 0,
     this.showConfetti = false,
+    this.icon,
     super.key,
   });
 
   final int amount;
   final bool showConfetti;
+  final Widget? icon;
 
   @override
   State<FamilyGoalCircle> createState() => _FamilyGoalCircleState();
@@ -70,7 +72,7 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
                     if (widget.amount > 0) const SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: SvgPicture.asset(
+                      child: widget.icon ?? SvgPicture.asset(
                         'assets/images/family_goal_circle_flag.svg',
                         width: 64,
                         height: 64,
