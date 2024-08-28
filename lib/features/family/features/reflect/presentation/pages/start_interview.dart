@@ -101,7 +101,8 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
         ...reporters.map((reporter) {
           return SizedBox(
             child: GameProfileItem(
-                name: reporter.firstName!, imageUrl: reporter.pictureURL!),
+              profile: reporter,
+            ),
             width: 120,
             height: 120,
           );
