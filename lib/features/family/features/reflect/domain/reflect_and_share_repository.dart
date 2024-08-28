@@ -104,7 +104,7 @@ class ReflectAndShareRepository {
       }
     });
     _selectedProfiles = list;
-    getSecretWord();
+    randomizeSecretWord();
     return list;
   }
 
@@ -126,21 +126,21 @@ class ReflectAndShareRepository {
       }
     }
 
-    var questions = _getQuestions();
+    final questions = _getQuestions();
+    final list = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
       if (index == superheroIndex) {
-        _selectedProfiles[index] = profile.copyWith(role: Role.superhero());
+        list.add(profile.copyWith(role: const Role.superhero()));
       } else if (index == sidekickIndex) {
-        _selectedProfiles[index] =
-            profile.copyWith(role: const Role.sidekick());
+        list.add(profile.copyWith(role: const Role.sidekick()));
       } else {
         var question = questions[rng.nextInt(questions.length)];
-        _selectedProfiles[index] =
-            profile.copyWith(role: Role.reporter(questions: [question]));
+        list.add(profile.copyWith(role: Role.reporter(questions: [question])));
         questions.remove(question);
       }
     });
-    // getSecretWord();
+    _selectedProfiles = list;
+    randomizeSecretWord();
     return _selectedProfiles;
   }
 
@@ -159,11 +159,17 @@ class ReflectAndShareRepository {
 
   // get currently playing family members with their possibly assigned roles
   List<GameProfile> getPlayers() {
-    return [];
+    return _selectedProfiles;
+  }
+
+  String getCurrentSecretWord() {
+    final superheroindex = _getCurrentSuperHeroIndex();
+    final profile = _selectedProfiles[superheroindex];
+    return (profile as SuperHero).secretWord!;
   }
 
   // call this to get a secret word or reroll it
-  String getSecretWord() {
+  String randomizeSecretWord() {
     final list =
         _secretWords.where((word) => !_usedSecretWords.contains(word)).toList();
     final rng = Random();
