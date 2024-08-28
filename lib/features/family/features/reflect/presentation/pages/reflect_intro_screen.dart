@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_circle.dart';
@@ -34,18 +35,30 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
         appBar: const TopAppBar(title: 'Reflect and share'),
         body: BlocConsumer<FamilyOverviewCubit, FamilyOverviewState>(
           builder: (BuildContext context, state) {
-            return Column(
+            return Stack(
+              alignment: Alignment.topCenter,
               children: [
-                const TitleMediumText(
-                    'Build a family habit of reflection, sharing and gratitude.'),
-                if (state is FamilyOverviewUpdatedState)
-                  const FamilyGoalCircle(),
-                GivtElevatedButton(
-                    onTap: () {
-                      Navigator.of(context)
-                          .push(const FamilySelectionScreen().toRoute(context));
-                    },
-                    text: "Let's start"),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const TitleMediumText(
+                        'Build a family habit of reflection, sharing and gratitude.',
+                        textAlign: TextAlign.center),
+                    const SizedBox(height: 32),
+                    if (state is FamilyOverviewUpdatedState)
+                      const FamilyGoalCircle(),
+                    const SizedBox(height: 64),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: GivtElevatedButton(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            const FamilySelectionScreen().toRoute(context));
+                      },
+                      text: "Let's start"),
+                ),
               ],
             );
           },
