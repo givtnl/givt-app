@@ -10,7 +10,7 @@ on:
     branches:
       - main
       - develop
-      - givt4families
+      - feature/reflect-and-share-hackathon
 
 jobs:
   linter:
