@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 
 class GameProfileItem extends StatelessWidget {
   const GameProfileItem({
     required this.name,
     required this.imageUrl,
-    this.borderColor,
+    this.role,
     super.key,
   });
 
   final String name;
   final String imageUrl;
-  final Color? borderColor;
+  final Role? role;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class GameProfileItem extends StatelessWidget {
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: borderColor,
+            color: role?.color.borderColor,
           ),
           child: Container(
             decoration: const BoxDecoration(

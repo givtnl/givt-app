@@ -65,7 +65,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
         GestureDetector(
           onTap: () {},
           child: GameProfileItem(
-            borderColor: profiles[i].role?.color.borderColor,
+            role: profiles[i].role,
             name: profiles[i].firstName!,
             imageUrl: profiles[i].pictureURL!,
           ),
