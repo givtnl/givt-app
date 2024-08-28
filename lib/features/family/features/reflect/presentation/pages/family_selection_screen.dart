@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -61,7 +63,12 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                       ),
                     ),
                   ),
-                  GivtElevatedButton(onTap: () {}, text: 'See roles'),
+                  GivtElevatedButton(
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(const FamilyRolesScreen().toRoute(context));
+                      },
+                      text: 'See roles'),
                 ],
               ),
             ),
@@ -138,7 +145,10 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         for (var i = 0; i < profiles.length; i++)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ProfileItem(profile: profiles[i]),
+            child: ProfileItem(
+              name: profiles[i].firstName!,
+              imageUrl: profiles[i].pictureURL!,
+            ),
           ),
       ],
     );
@@ -151,7 +161,8 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         GestureDetector(
           onTap: () {},
           child: ProfileItem(
-            profile: profiles[i],
+            name: profiles[i].firstName!,
+            imageUrl: profiles[i].pictureURL!,
           ),
         ),
       );
