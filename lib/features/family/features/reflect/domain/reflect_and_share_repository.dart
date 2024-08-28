@@ -103,6 +103,8 @@ class ReflectAndShareRepository {
         questions.remove(question);
       }
     });
+    _selectedProfiles = list;
+    getSecretWord();
     return list;
   }
 
