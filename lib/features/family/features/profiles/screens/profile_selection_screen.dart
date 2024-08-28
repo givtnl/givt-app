@@ -24,6 +24,7 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
@@ -148,11 +149,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 32),
-                            GivtElevatedButton(
-                                onTap: () => context.goNamed(
-                                      FamilyPages.reflectIntro.name,
-                                    ),
-                                text: 'Reflect & Share'),
                             if (!flow.state.isCoin)
                               Visibility(
                                 child: ParentOverviewWidget(
@@ -177,6 +173,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   children: gridItems,
                                 ),
                               ),
+                            const SizedBox(height: 8),
+                            GivtElevatedButton(
+                                isTertiary: true,
+                                onTap: () => context.goNamed(
+                                      FamilyPages.reflectIntro.name,
+                                    ),
+                                text: 'Reflect & Share'),
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {

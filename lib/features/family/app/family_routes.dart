@@ -836,6 +836,11 @@ class FamilyAppRoutes {
             );
           },
         ),
+        GoRoute(
+          path: FamilyPages.reflectIntro.path,
+          name: FamilyPages.reflectIntro.name,
+          builder: (context, state) => const ReflectIntroScreen(),
+        ),
       ],
       redirect: (context, state) {
         final page = state.uri.queryParameters['page'];
@@ -845,11 +850,6 @@ class FamilyAppRoutes {
           return null;
         }
       },
-    ),
-    GoRoute(
-      path: FamilyPages.reflectIntro.path,
-      name: FamilyPages.reflectIntro.name,
-      builder: (context, state) => const ReflectIntroScreen(),
     ),
   ];
 }
