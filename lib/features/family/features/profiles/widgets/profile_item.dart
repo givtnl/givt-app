@@ -13,22 +13,40 @@ class ProfileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SvgPicture.network(
-          imageUrl,
-          width: 80,
-          height: 80,
-        ),
-        const SizedBox(height: 12),
-        Text(
-          name,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
-      ],
+    final imgSize = (MediaQuery.of(context).size.width - 24 * 2 - 20 * 2) / 3;
+
+    return Container(
+      alignment: Alignment.center,
+      child: Column(
+        children: [
+          SvgPicture.network(
+            imageUrl,
+            width: imgSize,
+            height: imgSize,
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
+                child: Text(
+                  name,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
+              ),
+              const SizedBox(width: 4),
+              const FaIcon(
+                FontAwesomeIcons.arrowRight,
+                color: FamilyAppTheme.defaultTextColor,
+                size: 16,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
