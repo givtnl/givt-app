@@ -24,6 +24,8 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -172,6 +174,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
+                            GivtElevatedButton(
+                                isTertiary: true,
+                                onTap: () => context.goNamed(
+                                      FamilyPages.reflectIntro.name,
+                                    ),
+                                text: 'Reflect & Share'),
+                            const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
                                 if (!context.mounted) return;
@@ -252,9 +261,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           onTap: () {
             final flow = context.read<FlowsCubit>().state;
             final selectedProfile = profiles[i];
-            context
-                .read<ProfilesCubit>()
-                .setActiveProfile(selectedProfile.id);
+            context.read<ProfilesCubit>().setActiveProfile(selectedProfile.id);
 
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,

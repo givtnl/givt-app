@@ -76,6 +76,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/s
 import 'package:givt_app/features/family/features/recommendation/start_recommendation/start_recommendation_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
@@ -834,6 +835,11 @@ class FamilyAppRoutes {
               child: const PermitBiometricPage(),
             );
           },
+        ),
+        GoRoute(
+          path: FamilyPages.reflectIntro.path,
+          name: FamilyPages.reflectIntro.name,
+          builder: (context, state) => const ReflectIntroScreen(),
         ),
       ],
       redirect: (context, state) {
