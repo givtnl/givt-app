@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/overview/models/wallet.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/features/history/models/donation.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 
 class Profile extends Equatable {
 
@@ -125,6 +126,14 @@ class Profile extends Equatable {
       lastDonationItem: lastDonationItem ?? this.lastDonationItem,
       pictureURL: pictureURL ?? this.pictureURL,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+    );
+  }
+
+  GameProfile toGameProfile() {
+    return GameProfile(
+      firstName: firstName,
+      lastName: lastName,
+      pictureURL: pictureURL,
     );
   }
 
