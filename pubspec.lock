@@ -1459,6 +1459,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  scratcher:
+    dependency: "direct main"
+    description:
+      name: scratcher
+      sha256: "540be49eb4773e7e300d4a85a9f93c600f7386cd2a82abb5b40a7f8f245e9785"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.0"
   share_plus:
     dependency: "direct main"
     description:
