@@ -22,4 +22,10 @@ class ReflectAndShareRepository {
   List<GameProfile> getSelectedProfiles() {
     return [];
   }
+
+  Future<List<String>> getQuestions() async {
+    return ["what?", "how?", "when?"];
+  }
+
+
 }
