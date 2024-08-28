@@ -31,11 +31,6 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final gridItems = createGridItems(
-    //   state.profiles.where((e) => e.type == 'Child').toList(),
-    //   user,
-    // );
-
     return FamilyScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
       appBar: const TopAppBar(title: 'Who is playing?'),
@@ -46,22 +41,30 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         onData: (context, profiles) => Stack(
           children: [
             Align(alignment: Alignment.bottomCenter, child: _totalDragTarget()),
-            Column(
-              children: [
-                const Center(child: TitleMediumText('Drag to add players')),
-                const SizedBox(height: 20),
-                // Expanded(
-                //   child: GridView.count(
-                //     childAspectRatio: 0.74,
-                //     crossAxisCount: gridItems.length < 3 ? gridItems.length : 3,
-                //     mainAxisSpacing: 20,
-                //     crossAxisSpacing: 20,
-                //     children: gridItems,
-                //   ),
-                // ),
-                const Spacer(),
-                GivtElevatedButton(onTap: () {}, text: 'See roles'),
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const Center(child: TitleMediumText('Drag to add players')),
+                  const SizedBox(height: 20),
+                  createAdultGrid(
+                    profiles.where((profile) => profile.isAdult).toList(),
+                  ),
+                  Expanded(
+                    child: GridView.count(
+                      childAspectRatio: 0.9,
+                      crossAxisCount: 3,
+                      children: createGridItems(
+                        profiles
+                            .where((profile) => profile.isChild)
+                            .take(6)
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                  GivtElevatedButton(onTap: () {}, text: 'See roles'),
+                ],
+              ),
             ),
           ],
         ),
@@ -129,15 +132,31 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
-  List<Widget> createGridItems(List<Profile> profiles) {
+  Widget createAdultGrid(List<GameProfile> profiles) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (var i = 0; i < profiles.length; i++)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: ProfileItem(
+              name: profiles[i].firstName!,
+              imageUrl: profiles[i].pictureURL!,
+            ),
+          ),
+      ],
+    );
+  }
+
+  List<Widget> createGridItems(List<GameProfile> profiles) {
     final gridItems = <Widget>[];
     for (var i = 0; i < profiles.length; i++) {
       gridItems.add(
         GestureDetector(
           onTap: () {},
           child: ProfileItem(
-            name: profiles[i].firstName,
-            imageUrl: profiles[i].pictureURL,
+            name: profiles[i].firstName!,
+            imageUrl: profiles[i].pictureURL!,
           ),
         ),
       );
