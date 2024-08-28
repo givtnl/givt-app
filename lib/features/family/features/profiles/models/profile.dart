@@ -134,6 +134,7 @@ class Profile extends Equatable {
       firstName: firstName,
       lastName: lastName,
       pictureURL: pictureURL,
+      type: type,
     );
   }
 
