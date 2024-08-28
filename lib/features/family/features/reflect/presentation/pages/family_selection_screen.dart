@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -23,6 +23,7 @@ class FamilySelectionScreen extends StatefulWidget {
 
 class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   var cubit = getIt<FamilySelectionCubit>();
+  var selectedProfiles = <GameProfile>[];
 
   @override
   void didChangeDependencies() {
@@ -51,6 +52,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   createAdultGrid(
                     profiles.where((profile) => profile.isAdult).toList(),
                   ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: GridView.count(
                       childAspectRatio: 0.9,
@@ -65,6 +67,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   ),
                   GivtElevatedButton(
                       onTap: () {
+                        cubit.rolesClicked(selectedProfiles);
                         Navigator.of(context)
                             .push(const FamilyRolesScreen().toRoute(context));
                       },
@@ -90,51 +93,57 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   Widget _dragTarget() {
     return Align(
-        alignment: Alignment.bottomCenter,
-        child: DragTarget<int>(
-          onWillAcceptWithDetails: (details) {
-            return true;
-          },
-          onAcceptWithDetails: (details) {
-            setState(() {
-              // _draggedOnChurch.add(details.data);
-            });
-            // widget.onDonationDraggedOnChurch?.call();
-          },
-          builder: (BuildContext context, List<Object?> candidateData,
-              List<dynamic> rejectedData) {
-            return _dragWidget(context, candidateData);
-          },
-        ));
+      alignment: Alignment.bottomCenter,
+      child: DragTarget<GameProfile>(
+        onWillAcceptWithDetails: (details) {
+          return true;
+        },
+        onAcceptWithDetails: (details) {
+          // Only add once
+          if (selectedProfiles.contains(details.data)) {
+            return;
+          }
+
+          setState(() {
+            selectedProfiles.add(details.data);
+          });
+        },
+        builder: (BuildContext context, List<Object?> candidateData,
+            List<dynamic> rejectedData) {
+          return _dragWidget(context, candidateData);
+        },
+      ),
+    );
   }
 
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      clipBehavior: Clip.hardEdge,
-      children: [
-        Positioned(
-          left: -50,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedArc(
-              diameter: MediaQuery.sizeOf(context).width + 100,
-              color: _shouldHighlight(candidateDate)
-                  ? FamilyAppTheme.secondary80.withOpacity(0.5)
-                  : FamilyAppTheme.secondary98,
+    return Container(
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Positioned(
+            left: -50,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedArc(
+                diameter: MediaQuery.sizeOf(context).width + 100,
+                color: _shouldHighlight(candidateDate)
+                    ? FamilyAppTheme.secondary80.withOpacity(0.5)
+                    : FamilyAppTheme.secondary98,
+              ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Arc(
-            diameter: MediaQuery.sizeOf(context).width,
-            color: _shouldHighlight(candidateDate)
-                ? FamilyAppTheme.secondary95.withOpacity(0.5)
-                : FamilyAppTheme.secondary95,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Arc(
+              diameter: MediaQuery.sizeOf(context).width,
+              color: _shouldHighlight(candidateDate)
+                  ? FamilyAppTheme.secondary95.withOpacity(0.5)
+                  : FamilyAppTheme.secondary95,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -145,10 +154,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         for (var i = 0; i < profiles.length; i++)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: ProfileItem(
-              name: profiles[i].firstName!,
-              imageUrl: profiles[i].pictureURL!,
-            ),
+            child: isSelected(profiles[i])
+                ? getEmptyProfileItem()
+                : ProfileItem(profile: profiles[i]),
           ),
       ],
     );
@@ -160,14 +168,30 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
       gridItems.add(
         GestureDetector(
           onTap: () {},
-          child: ProfileItem(
-            name: profiles[i].firstName!,
-            imageUrl: profiles[i].pictureURL!,
-          ),
+          child: isSelected(profiles[i])
+              ? getEmptyProfileItem()
+              : ProfileItem(
+                  profile: profiles[i],
+                ),
         ),
       );
     }
     return gridItems;
+  }
+
+  bool isSelected(GameProfile profile) {
+    return selectedProfiles.contains(profile);
+  }
+
+  Widget getEmptyProfileItem() {
+    return Container(
+      width: 80,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+      ),
+    );
   }
 
   bool _shouldHighlight(List<Object?> candidateData) =>

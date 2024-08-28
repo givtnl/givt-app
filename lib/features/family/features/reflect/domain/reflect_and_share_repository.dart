@@ -75,13 +75,8 @@ class ReflectAndShareRepository {
   }
 
   // select the family members that will participate in the game
-  List<GameProfile> selectProfiles(List<int> selectedIndexes) {
-    _selectedProfiles = [];
-    final map = _allProfiles!.asMap();
-    for (final index in selectedIndexes) {
-      _selectedProfiles.add(map[index]!);
-    }
-    return _selectedProfiles;
+  void selectProfiles(List<GameProfile> selectedProfiles) {
+    _selectedProfiles = selectedProfiles;
   }
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)
