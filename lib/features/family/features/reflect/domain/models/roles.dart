@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 sealed class Role {
-  const Role({this.color});
+  const Role({required this.color, required this.name});
 
   const factory Role.superhero({String secretWord}) = SuperHero;
 
@@ -11,21 +11,33 @@ sealed class Role {
 
   const factory Role.sidekick() = Sidekick;
 
-  final Color? color;
+  final Color color;
+  final String name;
 }
 
 class SuperHero extends Role {
-  const SuperHero({this.secretWord, super.color = Colors.red});
+  const SuperHero({
+    this.secretWord,
+    super.color = Colors.red,
+    super.name = 'superhero',
+  });
 
   final String? secretWord;
 }
 
 class Reporter extends Role {
-  const Reporter({this.questions, super.color = Colors.blue});
+  const Reporter({
+    this.questions,
+    super.color = Colors.blue,
+    super.name = 'reporter',
+  });
 
   final List<String>? questions;
 }
 
 class Sidekick extends Role {
-  const Sidekick({super.color = Colors.green});
+  const Sidekick({
+    super.color = Colors.green,
+    super.name = 'sidekick',
+  });
 }

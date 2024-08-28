@@ -21,26 +21,27 @@ class ReflectAndShareRepository {
     //for quick prototyping/ development
     return [
       GameProfile(
-        firstName: "John",
+        firstName: "Debbie",
         lastName: "Doe",
-        pictureURL: "https://randomuser.me/api/portraits",
+        pictureURL:
+            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero7.svg",
         type: "child",
         role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
       ),
-      GameProfile(
-        firstName: "Jane",
-        lastName: "Doe",
-        pictureURL: "https://randomuser.me/api/portraits",
-        type: "child",
-        role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
-      ),
-      GameProfile(
-        firstName: "John",
-        lastName: "Doe",
-        pictureURL: "https://randomuser.me/api/portraits",
-        type: "child",
-        role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
-      ),
+      // GameProfile(
+      //   firstName: "Jane",
+      //   lastName: "Doe",
+      //   pictureURL: "https://randomuser.me/api/portraits",
+      //   type: "child",
+      //   role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
+      // ),
+      // GameProfile(
+      //   firstName: "John",
+      //   lastName: "Doe",
+      //   pictureURL: "https://randomuser.me/api/portraits",
+      //   type: "child",
+      //   role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
+      // ),
     ];
     //TODO uncomment this if you want to do it based on the actual selection and randomisation
     return _selectedProfiles
