@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -43,7 +44,6 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             const Center(child: CircularProgressIndicator()),
         onData: (context, profiles) => Stack(
           children: [
-            Align(alignment: Alignment.bottomCenter, child: _totalDragTarget()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
@@ -66,21 +66,24 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                       ),
                     ),
                   ),
-                  _selectedProfiles(),
-                  GivtElevatedButton(
-                      onTap: () {
-                        cubit.rolesClicked(selectedProfiles);
-                        Navigator.of(context)
-                            .push(const FamilyRolesScreen().toRoute(context));
-                      },
-                      text: 'See roles'),
                 ],
               ),
             ),
+            Align(alignment: Alignment.bottomCenter, child: _totalDragTarget()),
           ],
         ),
       ),
     );
+  }
+
+  GivtElevatedButton _seeRolesButton(BuildContext context) {
+    return GivtElevatedButton(
+                    onTap: () {
+                      cubit.rolesClicked(selectedProfiles);
+                      Navigator.of(context)
+                          .push(const FamilyRolesScreen().toRoute(context));
+                    },
+                    text: 'See roles');
   }
 
   Widget _selectedProfiles() {
@@ -140,6 +143,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
     return Container(
+      height: MediaQuery.sizeOf(context).height * 0.35,
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -164,6 +168,10 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   : FamilyAppTheme.secondary95,
             ),
           ),
+          Positioned(
+              bottom: 52,
+              child: _selectedProfiles()),
+          _seeRolesButton(context),
         ],
       ),
     );
