@@ -18,7 +18,7 @@ class PassThePhone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: FamilyAppTheme.secondary90,
+      backgroundColor: user.role!.color.accentColor,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -33,7 +33,7 @@ class PassThePhone extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(70),
                       border: Border.all(
-                        color: user.role!.color,
+                        color: user.role!.color.borderColor,
                         width: 8,
                       ),
                     ),
