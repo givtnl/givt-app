@@ -9,12 +9,22 @@ class ReflectAndShareRepository {
 
   final ProfilesRepository _profilesRepository;
 
-  // list to keep track if everyone has been the superhero yet
-  List<int> superheroes = [];
+  int completedLoops = 0;
 
   List<GameProfile>? allProfiles;
   List<GameProfile> selectedProfiles = [];
+  String? currentSecretWord;
 
+  List<String> usedSecretWords = [];
+
+  // complete a game loop/ round
+  // return TRUE when all family members have been the superhero and the game should end, FALSE otherwhise
+  bool completeLoop() {
+    completedLoops++;
+    return completedLoops == allProfiles!.length;
+  }
+
+  // get all possibly family members that can play the game
   Future<List<GameProfile>> getFamilyProfiles() async {
     if (allProfiles != null) {
       return allProfiles!;
@@ -32,6 +42,7 @@ class ReflectAndShareRepository {
     return allProfiles!;
   }
 
+  // select the family members that will participate in the game
   List<GameProfile> selectProfiles(List<int> selectedIndexes) {
     selectedProfiles = [];
     final map = allProfiles!.asMap();
@@ -41,9 +52,10 @@ class ReflectAndShareRepository {
     return selectedProfiles;
   }
 
+  // randomly assign roles to the selected family members (superhero, sidekick, reporter)
   List<GameProfile> randomlyAssignRoles() {
     final rng = Random();
-    var sidekickIndex;
+    int sidekickIndex;
     final superheroIndex = rng.nextInt(allProfiles!.length);
     if (_isLastIndex(superheroIndex)) {
       sidekickIndex = 0;
@@ -51,48 +63,107 @@ class ReflectAndShareRepository {
       sidekickIndex = superheroIndex + 1;
     }
 
-    final questions = getQuestions();
+    var questions = getQuestions();
     selectedProfiles.asMap().forEach((index, profile) {
       if (index == superheroIndex) {
-        selectedProfiles[index] =
-            profile.copyWith(role: Role.superhero(secretWord: getSecretWord()));
+        selectedProfiles[index] = profile.copyWith(role: Role.superhero());
       } else if (index == sidekickIndex) {
         selectedProfiles[index] = profile.copyWith(role: const Role.sidekick());
       } else {
-        selectedProfiles[index] = profile.copyWith(
-            role: Role.reporter(questions: [questions[index]]));
+        var question = questions[rng.nextInt(questions.length)];
+        selectedProfiles[index] =
+            profile.copyWith(role: Role.reporter(questions: [question]));
+        questions.remove(question);
       }
     });
-    final amountReporters = selectedProfiles.length - 2;
+    getSecretWord();
     return selectedProfiles;
   }
 
-  String getSecretWord() {
-    return "banana";
+  //
+  List<GameProfile> assignRolesForNextRound() {
+    final rng = Random();
+    final superheroIndex = _getCurrentSuperHeroIndex();
+    int newIndex;
+    int sidekickIndex;
+    if (_isLastIndex(superheroIndex)) {
+      newIndex = 0;
+      sidekickIndex = 1;
+    } else {
+      newIndex = superheroIndex + 1;
+      if (_isLastIndex(newIndex)) {
+        sidekickIndex = 0;
+      } else {
+        sidekickIndex = newIndex + 1;
+      }
+    }
+
+    var questions = getQuestions();
+    selectedProfiles.asMap().forEach((index, profile) {
+      if (index == superheroIndex) {
+        selectedProfiles[index] = profile.copyWith(role: Role.superhero());
+      } else if (index == sidekickIndex) {
+        selectedProfiles[index] = profile.copyWith(role: const Role.sidekick());
+      } else {
+        var question = questions[rng.nextInt(questions.length)];
+        selectedProfiles[index] =
+            profile.copyWith(role: Role.reporter(questions: [question]));
+        questions.remove(question);
+      }
+    });
+    getSecretWord();
+    return selectedProfiles;
   }
 
-  String rerollSecretWord() {
-    final GameProfile? profile = null;
+  int _getCurrentSuperHeroIndex() {
     final index = selectedProfiles.indexWhere((profile) {
       if (profile.role is SuperHero) {
-        profile = profile;
         return true;
       }
       return false;
     });
-
-    selectedProfiles[index] =
-        profile!.copyWith(role: Role.superhero(secretWord: "macarena"));
-    return "macarena";
+    return index;
   }
 
   bool _isLastIndex(int superheroIndex) =>
       superheroIndex == allProfiles!.length - 1;
 
-  List<GameProfile> getSelectedProfiles() {
+  // get currently playing family members with their possibly assigned roles
+  List<GameProfile> getPlayers() {
     return [];
   }
 
+  // call this to get a secret word or reroll it
+  String getSecretWord() {
+    final list =
+        secretWords.where((word) => !usedSecretWords.contains(word)).toList();
+    final rng = Random();
+    final wordIndex = rng.nextInt(list.length);
+    currentSecretWord = list[wordIndex];
+    usedSecretWords.add(list[wordIndex]);
+    final superheroindex = _getCurrentSuperHeroIndex();
+    final profile = selectedProfiles[superheroindex];
+    selectedProfiles[superheroindex] =
+        profile.copyWith(role: Role.superhero(secretWord: list[wordIndex]));
+    return list[wordIndex];
+  }
+
+  List<String> secretWords = [
+    "banana",
+    "macarena",
+    "shark",
+    "hungry",
+    "dance",
+    "penguin",
+    "sunset",
+    "moon",
+    "sun",
+    "star",
+    "planet",
+    "earth",
+  ];
+
+// get the questions that the reporters can ask
   List<String> getQuestions() {
     return [
       "what is Gamora?",
