@@ -5,6 +5,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
+Widget microphoneIcon({double? width, double? height}) =>
+    SvgPicture.asset('assets/images/microphone.svg',
+        width: width, height: height);
+
+Widget sidekickIcon({double? width, double? height}) =>
+    SvgPicture.asset('assets/images/sidekick.svg',
+        width: width, height: height);
+
+Widget superheroMaskIcon({double? width, double? height}) =>
+    SvgPicture.asset('assets/images/superhero_mask.svg',
+        width: width, height: height);
+
 Widget walletIcon({double? width, double? height}) =>
     SvgPicture.asset('assets/images/wallet.svg', width: width, height: height);
 
@@ -19,22 +31,26 @@ Widget calendarClockIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
 Widget calendarClockAvatarIcon({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/calendar_clock_avatar.svg',
       width: width,
       height: height,
     );
+
 Widget plusIcon({double? size}) => FaIcon(
       FontAwesomeIcons.plus,
       color: AppTheme.givtLightGreen,
       size: size,
     );
+
 Widget smilePurpleIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/family/images/smiley_purple.svg',
       width: width,
       height: height,
     );
+
 Widget smileGreyIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/family/images/smiley_grey.svg',
       width: width,
@@ -55,6 +71,7 @@ Widget registeredCheckBackground({double? width, double? height}) =>
       width: width,
       height: height,
     );
+
 Widget registeredCheckAvatar({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/registered_check_avatar.svg',
@@ -83,6 +100,7 @@ Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
 Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_error.svg',
     );
+
 Widget trashAvatarIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/trash_avatar.svg',
       width: width,
@@ -94,6 +112,7 @@ Widget secureCardsIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
 Widget familySuperheroesIcon({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/family_superheroes.svg',
@@ -118,6 +137,7 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
 Widget secretWordBackground({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/family/images/secret_word_bg.svg',
