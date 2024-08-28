@@ -67,6 +67,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   ),
                   GivtElevatedButton(
                       onTap: () {
+                        cubit.rolesClicked(selectedProfiles);
                         Navigator.of(context)
                             .push(const FamilyRolesScreen().toRoute(context));
                       },
