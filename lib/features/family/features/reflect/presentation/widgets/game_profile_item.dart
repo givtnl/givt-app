@@ -22,7 +22,7 @@ class GameProfileItem extends StatelessWidget {
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: role?.color.borderColor,
+            color: role?.color,
           ),
           child: Container(
             decoration: const BoxDecoration(
