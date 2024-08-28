@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 
 class GameProfileItem extends StatelessWidget {
   const GameProfileItem({
-    required this.name,
-    required this.imageUrl,
-    this.role,
+    required this.profile,
     super.key,
   });
 
-  final String name;
-  final String imageUrl;
-  final Role? role;
+  final GameProfile profile;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +18,7 @@ class GameProfileItem extends StatelessWidget {
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: role?.color.borderColor,
+            color: profile.role?.color.borderColor,
           ),
           child: Container(
             decoration: const BoxDecoration(
@@ -30,7 +26,7 @@ class GameProfileItem extends StatelessWidget {
               color: Colors.white,
             ),
             child: SvgPicture.network(
-              imageUrl,
+              profile.pictureURL!,
               width: 80,
               height: 80,
             ),
@@ -38,7 +34,7 @@ class GameProfileItem extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          name,
+          profile.firstName!,
           textAlign: TextAlign.center,
           overflow: TextOverflow.ellipsis,
           maxLines: 2,
