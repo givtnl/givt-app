@@ -90,22 +90,20 @@ class ReflectAndShareRepository {
       sidekickIndex = superheroIndex + 1;
     }
 
-    var questions = _getQuestions();
+    final questions = _getQuestions();
+    final list = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
       if (index == superheroIndex) {
-        _selectedProfiles[index] = profile.copyWith(role: Role.superhero());
+        list.add(profile.copyWith(role: const Role.superhero()));
       } else if (index == sidekickIndex) {
-        _selectedProfiles[index] =
-            profile.copyWith(role: const Role.sidekick());
+        list.add(profile.copyWith(role: const Role.sidekick()));
       } else {
         var question = questions[rng.nextInt(questions.length)];
-        _selectedProfiles[index] =
-            profile.copyWith(role: Role.reporter(questions: [question]));
+        list.add(profile.copyWith(role: Role.reporter(questions: [question])));
         questions.remove(question);
       }
     });
-    getSecretWord();
-    return _selectedProfiles;
+    return list;
   }
 
   //
@@ -140,7 +138,7 @@ class ReflectAndShareRepository {
         questions.remove(question);
       }
     });
-    getSecretWord();
+    // getSecretWord();
     return _selectedProfiles;
   }
 
