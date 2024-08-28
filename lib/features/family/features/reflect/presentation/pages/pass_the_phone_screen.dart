@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 
 class PassThePhone extends StatelessWidget {
@@ -18,7 +17,7 @@ class PassThePhone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: user.role!.color.accentColor,
+      backgroundColor: user.role!.color,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -33,7 +32,7 @@ class PassThePhone extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(70),
                       border: Border.all(
-                        color: user.role!.color.borderColor,
+                        color: user.role!.color,
                         width: 8,
                       ),
                     ),
@@ -52,7 +51,9 @@ class PassThePhone extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: GivtElevatedButton(
-                        onTap: () {}, text: 'Start Interview'),
+                      onTap: onTap,
+                      text: buttonText,
+                    ),
                   ),
                 ],
               ),
