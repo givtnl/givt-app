@@ -93,56 +93,57 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   Widget _dragTarget() {
     return Align(
-        alignment: Alignment.bottomCenter,
-        child: DragTarget<GameProfile>(
-          hitTestBehavior: HitTestBehavior.opaque,
-          onWillAcceptWithDetails: (details) {
-            return true;
-          },
-          onAcceptWithDetails: (details) {
-            // Only add once
-            if (selectedProfiles.contains(details.data)) {
-              return;
-            }
+      alignment: Alignment.bottomCenter,
+      child: DragTarget<GameProfile>(
+        onWillAcceptWithDetails: (details) {
+          return true;
+        },
+        onAcceptWithDetails: (details) {
+          // Only add once
+          if (selectedProfiles.contains(details.data)) {
+            return;
+          }
 
-            setState(() {
-              selectedProfiles.add(details.data);
-            });
-          },
-          builder: (BuildContext context, List<Object?> candidateData,
-              List<dynamic> rejectedData) {
-            return _dragWidget(context, candidateData);
-          },
-        ));
+          setState(() {
+            selectedProfiles.add(details.data);
+          });
+        },
+        builder: (BuildContext context, List<Object?> candidateData,
+            List<dynamic> rejectedData) {
+          return _dragWidget(context, candidateData);
+        },
+      ),
+    );
   }
 
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
-    return Stack(
-      alignment: Alignment.bottomCenter,
-      clipBehavior: Clip.hardEdge,
-      children: [
-        Positioned(
-          left: -50,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: AnimatedArc(
-              diameter: MediaQuery.sizeOf(context).width + 100,
-              color: _shouldHighlight(candidateDate)
-                  ? FamilyAppTheme.secondary80.withOpacity(0.5)
-                  : FamilyAppTheme.secondary98,
+    return Container(
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Positioned(
+            left: -50,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: AnimatedArc(
+                diameter: MediaQuery.sizeOf(context).width + 100,
+                color: _shouldHighlight(candidateDate)
+                    ? FamilyAppTheme.secondary80.withOpacity(0.5)
+                    : FamilyAppTheme.secondary98,
+              ),
             ),
           ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: Arc(
-            diameter: MediaQuery.sizeOf(context).width,
-            color: _shouldHighlight(candidateDate)
-                ? FamilyAppTheme.secondary95.withOpacity(0.5)
-                : FamilyAppTheme.secondary95,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Arc(
+              diameter: MediaQuery.sizeOf(context).width,
+              color: _shouldHighlight(candidateDate)
+                  ? FamilyAppTheme.secondary95.withOpacity(0.5)
+                  : FamilyAppTheme.secondary95,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -185,9 +186,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   Widget getEmptyProfileItem() {
     return Container(
       width: 80,
-      height: 0,
+      height: 100,
       decoration: BoxDecoration(
-        color: FamilyAppTheme.secondary95,
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),
       ),
     );
