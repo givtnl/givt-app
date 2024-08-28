@@ -78,6 +78,7 @@ dependencies:
   vibration: ^1.8.4
   audioplayers: ^6.0.0
   country_flags: ^3.0.0
+  flutter_sound: ^9.6.0
 
 dev_dependencies:
   bloc_test: ^9.1.1

@@ -24,7 +24,6 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_secondary_border_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
