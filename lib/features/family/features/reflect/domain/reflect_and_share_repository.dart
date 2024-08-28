@@ -83,7 +83,7 @@ class ReflectAndShareRepository {
   List<GameProfile> randomlyAssignRoles() {
     final rng = Random();
     int sidekickIndex;
-    final superheroIndex = rng.nextInt(_allProfiles!.length);
+    final superheroIndex = rng.nextInt(_selectedProfiles.length);
     if (_isLastIndex(superheroIndex)) {
       sidekickIndex = 0;
     } else {
