@@ -196,14 +196,9 @@ class ReflectAndShareRepository {
 // get the questions that the reporters can ask
   List<String> _getQuestions() {
     return [
-      "what is Gamora?",
-      "how is Gamora?",
-      "when is Gamora?",
-      "where is Gamora?",
-      "who is Gamora?",
-      "why is Gamora?",
-      "what is a non-interesting fact about yourself?",
-      "did you dance today?"
+      "What is something kind that someone did for you today?",
+      "What is something you did today that you’re proud of?",
+      "What is something you wish you could have done for someone else today?",
     ];
   }
 }
