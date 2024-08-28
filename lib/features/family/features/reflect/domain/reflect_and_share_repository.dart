@@ -192,7 +192,7 @@ class ReflectAndShareRepository {
   List<String> _getQuestions() {
     return [
       "What is something kind that someone did for you today?",
-      "What is something you did today that you’re proud of?",
+      "What is something you did today that you're proud of?",
       "What is something you wish you could have done for someone else today?",
     ];
   }
