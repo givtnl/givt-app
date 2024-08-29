@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -48,7 +50,12 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       ),
                     ),
                   ),
-                  GivtElevatedButton(onTap: () {}, text: 'Start'),
+                  GivtElevatedButton(
+                      onTap: () {
+                        Navigator.of(context)
+                            .push(RevealSecretWordScreen().toRoute(context));
+                      },
+                      text: 'Start'),
                 ],
               ),
             ),

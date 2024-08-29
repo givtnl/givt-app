@@ -11,9 +11,6 @@ class FamilyRolesCubit extends CommonCubit<List<GameProfile>, dynamic> {
 
   void init() {
     final list = _reflectAndShareRepository.randomlyAssignRoles();
-    emit(const BaseState.loading());
-    _reflectAndShareRepository.getFamilyProfiles().then((profiles) {
-      emit(BaseState.data(profiles));
-    });
+    emit(BaseState.data(list));
   }
 }
