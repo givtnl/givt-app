@@ -67,15 +67,6 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                     ),
                   ),
                   _selectedProfiles(),
-                  GivtElevatedButton(
-                    onTap: () {
-                      cubit.rolesClicked(selectedProfiles);
-                      Navigator.of(context)
-                          .push(const FamilyRolesScreen().toRoute(context));
-                    },
-                    isDisabled: selectedProfiles.length < 3,
-                    text: 'See roles',
-                  ),
                 ],
               ),
             ),
@@ -88,12 +79,13 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   GivtElevatedButton _seeRolesButton(BuildContext context) {
     return GivtElevatedButton(
-        onTap: () {
-          cubit.rolesClicked(selectedProfiles);
-          Navigator.of(context)
-              .push(const FamilyRolesScreen().toRoute(context));
-        },
-        text: 'See roles');
+      onTap: () {
+        cubit.rolesClicked(selectedProfiles);
+        Navigator.of(context).push(const FamilyRolesScreen().toRoute(context));
+      },
+      isDisabled: selectedProfiles.length < 3,
+      text: 'See roles',
+    );
   }
 
   Widget _selectedProfiles() {
