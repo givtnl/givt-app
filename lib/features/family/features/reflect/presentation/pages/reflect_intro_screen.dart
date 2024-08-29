@@ -45,7 +45,7 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const TitleMediumText(
-                        'Build a family habit of reflection, sharing and gratitude.',
+                        'Build a family habit of reflection, sharing and gratitude',
                         textAlign: TextAlign.center),
                     const SizedBox(height: 32),
                     if (state is !FamilyOverviewUpdatedState)
