@@ -138,6 +138,18 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
       height: height,
     );
 
+Widget recordMicRedIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/record_mic_red.svg',
+      width: width,
+      height: height,
+    );
+
+Widget recordMicGreenIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/record_mic_green.svg',
+      width: width,
+      height: height,
+    );
+
 Widget secretWordBackground({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/family/images/secret_word_bg.svg',

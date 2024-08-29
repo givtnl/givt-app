@@ -29,7 +29,7 @@ class SuperHero extends Role {
 class Reporter extends Role {
   const Reporter({
     this.questions,
-    super.color = FamilyAppTheme.secondary80,
+    super.color = FamilyAppTheme.secondary90,
     super.name = 'reporter',
   });
 
