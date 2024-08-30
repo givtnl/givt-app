@@ -101,7 +101,8 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context, List<Member> cachedMembers) {
+  static void show(
+      BuildContext context, List<Member> cachedMembers, VoidCallback onThen) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -111,6 +112,6 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (context) =>
           VPCFailedCachedMembersBottomsheet(members: cachedMembers),
-    );
+    ).then((value) => onThen());
   }
 }

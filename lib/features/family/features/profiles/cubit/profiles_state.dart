@@ -4,7 +4,9 @@ abstract class ProfilesState extends Equatable {
   const ProfilesState({
     required this.profiles,
     required this.activeProfileIndex,
+    this.cachedMembers = const [],
   });
+  final List<Member> cachedMembers;
 
   static const int _noProfileSelected = -1;
 
@@ -59,7 +61,8 @@ class ProfilesLoadingState extends ProfilesState {
 class ProfilesUpdatingState extends ProfilesState {
   /// This is the state that is emitted when the profiles are being updated
   const ProfilesUpdatingState({
-    required super.activeProfileIndex, super.profiles = const [],
+    required super.activeProfileIndex,
+    super.profiles = const [],
   });
 }
 
@@ -68,13 +71,16 @@ class ProfilesUpdatedState extends ProfilesState {
   const ProfilesUpdatedState({
     required super.profiles,
     required super.activeProfileIndex,
+    super.cachedMembers,
   });
 }
 
 class ProfilesNotSetupState extends ProfilesState {
   /// This is the state that is emitted when profiles have not yet been setup
-  const ProfilesNotSetupState(
-      {required super.profiles, required super.activeProfileIndex,});
+  const ProfilesNotSetupState({
+    required super.profiles,
+    required super.activeProfileIndex,
+  });
 }
 
 class ProfilesNeedsRegistration extends ProfilesState {
@@ -89,10 +95,11 @@ class ProfilesNeedsRegistration extends ProfilesState {
 
 class ProfilesInvitedToGroup extends ProfilesState {
   /// This is the state that is emitted when the user still needs to register
-  const ProfilesInvitedToGroup(
-      {required super.profiles,
-      required super.activeProfileIndex,
-      required this.impactGroup,});
+  const ProfilesInvitedToGroup({
+    required super.profiles,
+    required super.activeProfileIndex,
+    required this.impactGroup,
+  });
 
   final ImpactGroup impactGroup;
 

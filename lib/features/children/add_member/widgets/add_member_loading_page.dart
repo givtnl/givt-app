@@ -39,7 +39,8 @@ class AddMemberLoadingPage extends StatelessWidget {
             SnackBarHelper.showMessage(context, text: state.error);
           } else if (state.status == AddMemberStateStatus.successCached) {
             _navigateToProfileSelectionRefresh(context);
-            VPCFailedCachedMembersBottomsheet.show(context, state.members);
+            VPCFailedCachedMembersBottomsheet.show(
+                context, state.members, () {});
           } else if (state.status == AddMemberStateStatus.successNoAllowances) {
             _navigateToProfileSelection(context);
             final walletAmount = state.members.fold(

@@ -5,15 +5,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
-import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
-import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -47,26 +44,12 @@ class ProfileSelectionScreen extends StatefulWidget {
 }
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
-  final cachedCubit = getIt<CachedMembersCubit>();
-  List<Member> cachedMembers = [];
+  bool isCachedMembersBottomsheetUp = false;
 
   @override
   void initState() {
     super.initState();
     context.read<ProfilesCubit>().doInitialChecks();
-    if (CachedFamilyUtils.isFamilyCacheExist()) {
-      getCachedMembers();
-    }
-  }
-
-  Future<void> getCachedMembers() async {
-    final members = await cachedCubit.loadFromCache();
-    setState(() {
-      cachedMembers = members;
-      if (members.isNotEmpty) {
-        VPCFailedCachedMembersBottomsheet.show(context, cachedMembers);
-      }
-    });
   }
 
   @override
@@ -99,6 +82,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               );
             },
           );
+        } else if (state is ProfilesUpdatedState) {
+          if (state.cachedMembers.isNotEmpty && !isCachedMembersBottomsheetUp) {
+            showCachedMembersBottomsheet(state);
+          }
         } else if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
@@ -107,8 +94,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (cachedMembers.isNotEmpty) {
-            VPCFailedCachedMembersBottomsheet.show(context, cachedMembers);
+          if (state.cachedMembers.isNotEmpty && !isCachedMembersBottomsheetUp) {
+            showCachedMembersBottomsheet(state);
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
           }
@@ -140,14 +127,15 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           current is ProfilesNotSetupState ||
           current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration ||
-          current is ProfilesExternalErrorState,
+          current is ProfilesExternalErrorState ||
+          current is ProfilesUpdatedState,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
           current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
-          cachedMembers
+          state.cachedMembers
               .where((element) => element.type == ProfileType.Child)
               .toList(),
           user,
@@ -158,7 +146,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
-              : state.profiles.isEmpty
+              : state.profiles.isEmpty && state.cachedMembers.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
                           context.read<ProfilesCubit>().fetchAllProfiles(
@@ -181,7 +169,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                         .where((p) => p.type == 'Parent')
                                         .toList(),
                                   ),
-                                  cachedMembers: cachedMembers,
+                                  cachedMembers: state.cachedMembers,
                                 ),
                               ),
                             const SizedBox(height: 26),
@@ -202,11 +190,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();
-                                if (cachedMembers.isNotEmpty) {
-                                  VPCFailedCachedMembersBottomsheet.show(
-                                    context,
-                                    cachedMembers,
-                                  );
+                                if (state.cachedMembers.isNotEmpty &&
+                                    !isCachedMembersBottomsheetUp) {
+                                  showCachedMembersBottomsheet(state);
                                 } else {
                                   await FamilyAuthUtils.authenticateUser(
                                     context,
@@ -349,6 +335,23 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       );
     }
     return gridItems;
+  }
+
+  void clearBottomsheet() {
+    setState(() {
+      isCachedMembersBottomsheetUp = false;
+    });
+  }
+
+  void showCachedMembersBottomsheet(ProfilesState state) {
+    setState(() {
+      isCachedMembersBottomsheetUp = true;
+    });
+    VPCFailedCachedMembersBottomsheet.show(
+      context,
+      state.cachedMembers,
+      clearBottomsheet,
+    );
   }
 
   @override
