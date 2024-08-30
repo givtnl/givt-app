@@ -19,33 +19,34 @@ class GameProfileItem extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Stack(
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: profile.role?.color ?? Colors.red,
-                ),
+        Container(
+          width: 80,
+          height: 100,
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
                 child: Container(
-                  decoration: const BoxDecoration(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white,
+                    color: profile.role?.color ?? Colors.red,
                   ),
-                  child: SvgPicture.network(
-                    profile.pictureURL!,
-                    width: 80,
-                    height: 80,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                    ),
+                    child: SvgPicture.network(
+                      profile.pictureURL!,
+                      width: 80,
+                      height: 80,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 180,
+              Align(
+                alignment: Alignment.bottomCenter,
                 child: Container(
                   width: 36,
                   height: 36,
@@ -59,8 +60,8 @@ class GameProfileItem extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 12),
         Text(
