@@ -11,6 +11,12 @@ class FamilyRolesCubit extends CommonCubit<List<GameProfile>, dynamic> {
 
   void init() {
     final list = _reflectAndShareRepository.randomlyAssignRoles();
-    emit(BaseState.data(list));
+    emitData(list);
+  }
+
+  void assignRolesForNextRound() {
+    _reflectAndShareRepository.completeLoop();
+    final list = _reflectAndShareRepository.assignRolesForNextRound();
+    emitData(list);
   }
 }

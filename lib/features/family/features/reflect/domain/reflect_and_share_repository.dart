@@ -95,6 +95,10 @@ class ReflectAndShareRepository {
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)
   List<GameProfile> randomlyAssignRoles() {
+    if (completedLoops > 0) {
+      throw Exception(
+          'You are only supposed to call randomlyAssignRoles() once in the beginning!');
+    }
     final rng = Random();
     int sidekickIndex;
     final superheroIndex = rng.nextInt(_selectedProfiles.length);
@@ -104,42 +108,32 @@ class ReflectAndShareRepository {
       sidekickIndex = superheroIndex + 1;
     }
 
-    final questions = _getQuestions();
-    final list = <GameProfile>[];
-    _selectedProfiles.asMap().forEach((index, profile) {
-      if (index == superheroIndex) {
-        list.add(profile.copyWith(role: const Role.superhero()));
-      } else if (index == sidekickIndex) {
-        list.add(profile.copyWith(role: const Role.sidekick()));
-      } else {
-        var question = questions[rng.nextInt(questions.length)];
-        list.add(profile.copyWith(role: Role.reporter(questions: [question])));
-        questions.remove(question);
-      }
-    });
-    _selectedProfiles = list;
-    randomizeSecretWord();
-    return list;
+    return _setProfiles(superheroIndex, sidekickIndex, rng);
   }
 
-  //
+  // assign roles for the next round
   List<GameProfile> assignRolesForNextRound() {
     final rng = Random();
     final superheroIndex = _getCurrentSuperHeroIndex();
-    int newIndex;
-    int sidekickIndex;
+    int newSuperheroIndex;
+    int newSideKickIndex;
     if (_isLastIndex(superheroIndex)) {
-      newIndex = 0;
-      sidekickIndex = 1;
+      newSuperheroIndex = 0;
+      newSideKickIndex = 1;
     } else {
-      newIndex = superheroIndex + 1;
-      if (_isLastIndex(newIndex)) {
-        sidekickIndex = 0;
+      newSuperheroIndex = superheroIndex + 1;
+      if (_isLastIndex(newSuperheroIndex)) {
+        newSideKickIndex = 0;
       } else {
-        sidekickIndex = newIndex + 1;
+        newSideKickIndex = newSuperheroIndex + 1;
       }
     }
 
+    return _setProfiles(newSuperheroIndex, newSideKickIndex, rng);
+  }
+
+  List<GameProfile> _setProfiles(
+      int superheroIndex, int sidekickIndex, Random rng) {
     final questions = _getQuestions();
     final list = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
@@ -148,7 +142,7 @@ class ReflectAndShareRepository {
       } else if (index == sidekickIndex) {
         list.add(profile.copyWith(role: const Role.sidekick()));
       } else {
-        var question = questions[rng.nextInt(questions.length)];
+        final question = questions[rng.nextInt(questions.length)];
         list.add(profile.copyWith(role: Role.reporter(questions: [question])));
         questions.remove(question);
       }
@@ -169,7 +163,7 @@ class ReflectAndShareRepository {
   }
 
   bool _isLastIndex(int superheroIndex) =>
-      superheroIndex == _allProfiles!.length - 1;
+      superheroIndex == _selectedProfiles.length - 1;
 
   // get currently playing family members with their possibly assigned roles
   List<GameProfile> getPlayers() {

@@ -51,6 +51,11 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                     ),
                   ),
                   GivtElevatedButton(
+                    onTap: () {
+                      _cubit.assignRolesForNextRound();
+                    },
+                    text: 'Test: assign roles for next round',),
+                  GivtElevatedButton(
                       onTap: () {
                         Navigator.of(context)
                             .push(RevealSecretWordScreen().toRoute(context));

@@ -50,7 +50,6 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               textAlign: TextAlign.center,
               color: FamilyAppTheme.primary30,
             ),
-
             const Spacer(),
             Scratcher(
               key: scratchKey,
@@ -75,29 +74,6 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 ],
               ),
             ),
-            // Stack(alignment: Alignment.center, children: [
-            //   secretWordBackground(
-            //     width: MediaQuery.sizeOf(context).width,
-            //   ),
-            //   Scratcher(
-            //     brushSize: 30,
-            //     threshold: 50,
-            //     color: Colors.grey,
-            //     onChange: (value) => setState(() {
-            //       _isScratched = value > 20;
-            //     }),
-            //     onThreshold: () => print("Threshold reached, you won!"),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(24),
-            //       child: DisplayMediumText(
-            //         widget.word,
-            //         textAlign: TextAlign.center,
-            //         color: FamilyAppTheme.primary30,
-            //       ),
-            //     ),
-            //   ),
-            // ]),
-
             const Spacer(),
             Visibility(
               visible: !_isSecondWord,
@@ -131,11 +107,11 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LabelLargeText.primary30('Change'),
+            LabelLargeText.primary30('Re-roll (1 times)'),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(FontAwesomeIcons.shuffle,
-                  size: 24, color: FamilyAppTheme.primary30),
+                  size: 24, color: FamilyAppTheme.primary30,),
             ),
           ],
         ),
