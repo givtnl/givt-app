@@ -22,6 +22,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
   final CachedMembersRepository _cachedMembersRepository;
 
   Future<void> createMember() async {
+    emit(state.copyWith(status: AddMemberStateStatus.loading));
     LoggingInfo.instance.info(
       'Create member',
       methodName: 'createMember',

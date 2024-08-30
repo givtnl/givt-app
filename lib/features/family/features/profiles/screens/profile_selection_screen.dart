@@ -5,9 +5,14 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
+import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
@@ -42,10 +47,23 @@ class ProfileSelectionScreen extends StatefulWidget {
 }
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
+  final cachedCubit = getIt<CachedMembersCubit>();
+  List<Member> cachedMembers = [];
+
   @override
   void initState() {
     super.initState();
     context.read<ProfilesCubit>().doInitialChecks();
+    if (CachedFamilyUtils.isFamilyCacheExist()) {
+      getCachedMembers();
+    }
+  }
+
+  Future<void> getCachedMembers() async {
+    final members = await cachedCubit.loadFromCache();
+    setState(() {
+      cachedMembers = members;
+    });
   }
 
   @override
@@ -86,8 +104,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (CachedFamilyUtils.isFamilyCacheExist()) {
-            await context.pushNamed(FamilyPages.cachedChildrenOverview.name);
+          if (cachedMembers.isNotEmpty) {
+            VPCFailedCachedMembersBottomsheet.show(context, cachedMembers);
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
           }
@@ -125,6 +143,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
+          cachedMembers
+              .where((element) => element.type == ProfileType.Child)
+              .toList(),
           user,
         );
         return Scaffold(
@@ -156,6 +177,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                         .where((p) => p.type == 'Parent')
                                         .toList(),
                                   ),
+                                  cachedMembers: cachedMembers,
                                 ),
                               ),
                             const SizedBox(height: 26),
@@ -176,31 +198,30 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();
-                                await FamilyAuthUtils.authenticateUser(
-                                  context,
-                                  checkAuthRequest: CheckAuthRequest(
-                                    navigate: (context, {isUSUser}) async {
-                                      if (CachedFamilyUtils
-                                          .isFamilyCacheExist()) {
-                                        await context.pushNamed(
-                                          FamilyPages
-                                              .cachedChildrenOverview.name,
-                                        );
-                                      } else {
+                                if (cachedMembers.isNotEmpty) {
+                                  VPCFailedCachedMembersBottomsheet.show(
+                                    context,
+                                    cachedMembers,
+                                  );
+                                } else {
+                                  await FamilyAuthUtils.authenticateUser(
+                                    context,
+                                    checkAuthRequest: CheckAuthRequest(
+                                      navigate: (context, {isUSUser}) async {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
                                         );
-                                      }
-                                      _logUser(context, user);
-                                    },
-                                  ),
-                                );
-                                unawaited(
-                                  AnalyticsHelper.logEvent(
-                                    eventName:
-                                        AmplitudeEvents.manageFamilyPressed,
-                                  ),
-                                );
+                                        _logUser(context, user);
+                                      },
+                                    ),
+                                  );
+                                  unawaited(
+                                    AnalyticsHelper.logEvent(
+                                      eventName:
+                                          AmplitudeEvents.manageFamilyPressed,
+                                    ),
+                                  );
+                                }
                               },
                               text: 'Manage Family',
                               leftIcon: const FaIcon(
@@ -242,10 +263,26 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       });
   }
 
-  List<Widget> createGridItems(List<Profile> profiles, UserExt user) {
+  List<Widget> createGridItems(
+      List<Profile> profiles, List<Member> cachedChildren, UserExt user) {
     final gridItems = <Widget>[];
     for (var i = 0;
-        i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
+        i < cachedChildren.length &&
+            i < ProfileSelectionScreen.maxVivibleProfiles;
+        i++) {
+      gridItems.add(
+        ProfileItem(
+          name: cachedChildren[i].firstName!,
+          assetImage: 'assets/images/default_hero.svg',
+        ),
+      );
+    }
+
+    for (var i = 0;
+        i < profiles.length &&
+            i <
+                ProfileSelectionScreen.maxVivibleProfiles -
+                    cachedChildren.length;
         i++) {
       gridItems.add(
         GestureDetector(

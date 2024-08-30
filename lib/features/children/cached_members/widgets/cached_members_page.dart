@@ -54,9 +54,11 @@ class CachedMembersPage extends StatelessWidget {
             right: 24,
             bottom: 12,
           ),
+          //todo delete
           child: CustomGreenElevatedButton(
-            onPressed: () =>
-                context.read<CachedMembersCubit>().tryCreateMembersFromCache(),
+            onPressed: () => context
+                .read<CachedMembersCubit>()
+                .tryCreateMembersFromCache([]),
             title: context.l10n.tryAgain,
           ),
         ),
@@ -88,8 +90,9 @@ class CachedMembersPage extends StatelessWidget {
               ),
             ),
             const TextSpan(
-                text:
-                    " for your child's Wallet. Please check your payment details.",),
+              text:
+                  " for your child's Wallet. Please check your payment details.",
+            ),
           ],
         ),
       );
@@ -109,7 +112,8 @@ class CachedMembersPage extends StatelessWidget {
             style: const TextStyle(fontWeight: FontWeight.w700),
           ),
           const TextSpan(
-              text: ' for verification. Please check your payment details.',),
+            text: ' for verification. Please check your payment details.',
+          ),
         ],
       ),
     );

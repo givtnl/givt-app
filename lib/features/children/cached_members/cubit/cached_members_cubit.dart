@@ -16,7 +16,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
   CachedMembersCubit(
     this._addMemberRepository,
     this._cachedMembersRepository, {
-    required String familyLeaderName,
+    String familyLeaderName = '',
   }) : super(
           CachedMembersState(
             familyLeader: Member(
@@ -29,7 +29,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
   final CachedMembersRepository _cachedMembersRepository;
   final AddMemberRepository _addMemberRepository;
 
-  Future<void> loadFromCache() async {
+  Future<List<Member>> loadFromCache() async {
     emit(state.copyWith(status: CachedMembersStateStatus.loading));
 
     final members = await _cachedMembersRepository.loadFromCache();
@@ -40,16 +40,18 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
         members: members,
       ),
     );
+
+    return members;
   }
 
   void overviewCached() {
     emit(state.copyWith(status: CachedMembersStateStatus.overview));
   }
 
-  Future<void> tryCreateMembersFromCache() async {
+  Future<void> tryCreateMembersFromCache(List<Member>? cached) async {
     emit(state.copyWith(status: CachedMembersStateStatus.noFundsRetrying));
     try {
-      final members = state.members;
+      final members = cached ?? state.members;
       await _addMemberRepository.addMembers(members, isRGA: false);
 
       emit(state.copyWith(status: CachedMembersStateStatus.noFundsSuccess));

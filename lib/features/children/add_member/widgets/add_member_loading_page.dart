@@ -9,6 +9,11 @@ import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class AddMemberLoadingPage extends StatelessWidget {
   const AddMemberLoadingPage({super.key});
+  void _navigateToProfileSelection(BuildContext context) {
+    Navigator.of(context).popUntil(
+      (route) => FamilyPages.profileSelection.name == route.settings.name,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,23 +21,15 @@ class AddMemberLoadingPage extends StatelessWidget {
       value: getIt<AddMemberCubit>(),
       child: BlocListener<AddMemberCubit, AddMemberState>(
         listener: (context, state) {
-          // TODO: KIDS-1274, caching members, errors and others
           if (state.status == AddMemberStateStatus.success) {
-            Navigator.of(context).popUntil(
-              (route) =>
-                  FamilyPages.profileSelection.name == route.settings.name,
-            );
+            _navigateToProfileSelection(context);
           } else if (state.status == AddMemberStateStatus.error) {
-            Navigator.of(context).popUntil(
-              (route) =>
-                  FamilyPages.profileSelection.name == route.settings.name,
-            );
+            _navigateToProfileSelection(context);
             SnackBarHelper.showMessage(context, text: state.error);
+          } else if (state.status == AddMemberStateStatus.successCached) {
+            _navigateToProfileSelection(context);
           } else {
-            Navigator.of(context).popUntil(
-              (route) =>
-                  FamilyPages.profileSelection.name == route.settings.name,
-            );
+            _navigateToProfileSelection(context);
             SnackBarHelper.showMessage(
               context,
               text: state.status.toString(),
