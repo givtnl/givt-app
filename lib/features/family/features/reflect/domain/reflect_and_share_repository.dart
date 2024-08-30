@@ -177,10 +177,7 @@ class ReflectAndShareRepository {
   }
 
   String getCurrentSecretWord() {
-    return "test";
-    final superheroindex = _getCurrentSuperHeroIndex();
-    final profile = _selectedProfiles[superheroindex];
-    return (profile as SuperHero).secretWord!;
+    return _currentSecretWord!;
   }
 
   // call this to get a secret word or reroll it

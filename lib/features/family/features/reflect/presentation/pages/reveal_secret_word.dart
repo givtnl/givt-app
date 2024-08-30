@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
@@ -25,8 +23,9 @@ class RevealSecretWordScreen extends StatefulWidget {
 
 class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   final SecretWordCubit _cubit = SecretWordCubit(getIt());
+  final scratchKey = GlobalKey<ScratcherState>();
   bool _isScratched = false;
-
+  bool _isSecondWord = false;
 
   @override
   void didChangeDependencies() {
@@ -54,6 +53,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
 
             const Spacer(),
             Scratcher(
+              key: scratchKey,
               brushSize: 30,
               threshold: 50,
               color: Colors.grey,
@@ -99,7 +99,13 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             // ]),
 
             const Spacer(),
-            // shuffleButton(),
+            Visibility(
+              visible: !_isSecondWord,
+              maintainSize: true,
+              maintainState: true,
+              maintainAnimation: true,
+              child: shuffleButton(),
+            ),
             const SizedBox(height: 8),
             GivtElevatedButton(
               isDisabled: !_isScratched,
@@ -116,6 +122,11 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
         behavior: HitTestBehavior.translucent,
         onTap: () {
           _cubit.onShuffleClicked();
+          setState(() {
+            _isScratched = false;
+            _isSecondWord = true;
+            scratchKey.currentState?.reset();
+          });
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
