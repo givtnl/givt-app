@@ -19,6 +19,7 @@ class FamilyRolesScreen extends StatefulWidget {
 
 class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
   var _cubit = getIt<FamilyRolesCubit>();
+  final AppConfig _appConfig = getIt();
 
   @override
   void didChangeDependencies() {
@@ -50,11 +51,13 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       ),
                     ),
                   ),
-                  GivtElevatedButton(
-                    onTap: () {
-                      _cubit.assignRolesForNextRound();
-                    },
-                    text: 'Test: assign roles for next round',),
+                  if (_appConfig.isTestApp)
+                    GivtElevatedButton(
+                      onTap: () {
+                        _cubit.assignRolesForNextRound();
+                      },
+                      text: 'Test: assign roles for next round',
+                    ),
                   GivtElevatedButton(
                       onTap: () {
                         Navigator.of(context)
