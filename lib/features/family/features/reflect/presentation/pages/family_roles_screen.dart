@@ -19,7 +19,7 @@ class FamilyRolesScreen extends StatefulWidget {
 }
 
 class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
-  var _cubit = getIt<FamilyRolesCubit>();
+  final _cubit = getIt<FamilyRolesCubit>();
   final AppConfig _appConfig = getIt();
 
   @override
