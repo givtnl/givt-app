@@ -8,6 +8,7 @@ enum CachedMembersStateStatus {
   noFundsRetrying,
   noFundsSuccess,
   noFundsError,
+  error,
 }
 
 class CachedMembersState extends Equatable {

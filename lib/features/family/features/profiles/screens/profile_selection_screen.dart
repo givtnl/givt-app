@@ -63,6 +63,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     final members = await cachedCubit.loadFromCache();
     setState(() {
       cachedMembers = members;
+      if (members.isNotEmpty) {
+        VPCFailedCachedMembersBottomsheet.show(context, cachedMembers);
+      }
     });
   }
 
@@ -136,7 +139,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
           current is ProfilesInvitedToGroup ||
-          current is ProfilesNeedsRegistration,
+          current is ProfilesNeedsRegistration ||
+          current is ProfilesExternalErrorState,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
           current is! ProfilesNeedsRegistration,

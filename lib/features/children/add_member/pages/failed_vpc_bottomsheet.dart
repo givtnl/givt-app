@@ -6,6 +6,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
@@ -17,80 +18,86 @@ import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.d
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
-import 'package:go_router/go_router.dart';
 
 class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
   VPCFailedCachedMembersBottomsheet({required this.members, super.key});
   final List<Member> members;
   final cacheCubit = getIt<CachedMembersCubit>();
-  final stripeCubit = getIt<StripeCubit>();
 
   @override
   Widget build(BuildContext context) {
-    return GivtBottomSheet(
-      title: "Almost there...",
-      icon: Stack(
-        alignment: Alignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: CircleAvatar(
-              radius: 60,
-              backgroundColor: FamilyAppTheme.primary95,
+    final walletAmount = members.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + (element.allowance ?? 0).toInt());
+    return BlocProvider(
+      create: (context) => StripeCubit(authRepositoy: getIt<AuthRepository>()),
+      child: BlocBuilder<StripeCubit, StripeState>(
+        builder: (context, state) {
+          return GivtBottomSheet(
+            title: "Your payment method has been declined",
+            icon: Stack(
+              alignment: Alignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundColor: FamilyAppTheme.primary95,
+                  ),
+                ),
+                walletEmptyIcon(width: 140, height: 140),
+              ],
             ),
-          ),
-          walletIcon(width: 140, height: 140),
-        ],
-      ),
-      content: const BodyMediumText(
-        'Your payment method has been declined. Check with your bank and try again.',
-        textAlign: TextAlign.center,
-      ),
-      primaryButton: GivtElevatedButton(
-        text: 'Change payment method',
-        amplitudeEvent: AmplitudeEvents.changePaymentMethodForFailedVPCClicked,
-        onTap: () async {
-          if (!context.mounted) return;
-          await stripeCubit.fetchSetupIntent();
+            content: BodyMediumText(
+              'We couldn’t take the \$0.50 for verification and the \$${walletAmount.toStringAsFixed(0)} for your child’s wallet.\n\nCheck your payment details and try again or choose another one.',
+              textAlign: TextAlign.center,
+            ),
+            primaryButton: GivtElevatedButton(
+              text: 'Try again',
+              amplitudeEvent:
+                  AmplitudeEvents.changePaymentMethodForFailedVPCClicked,
+              onTap: () async {
+                await cacheCubit.tryCreateMembersFromCache(members);
+              },
+            ),
+            secondaryButton: GivtElevatedSecondaryButton(
+              text: 'Change payment method',
+              rightIcon: const FaIcon(
+                FontAwesomeIcons.arrowsRotate,
+                size: 24,
+              ),
+              onTap: () async {
+                if (!context.mounted) return;
+                await context.read<StripeCubit>().fetchSetupIntent();
 
-          if (!context.mounted) return;
+                if (!context.mounted) return;
 
-          try {
-            await StripeHelper(context).showPaymentSheet();
+                try {
+                  await StripeHelper(context).showPaymentSheet();
 
-            if (!context.mounted) return;
-            await context.read<AuthCubit>().refreshUser();
-          } on StripeException catch (e, stackTrace) {
-            await AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.editPaymentDetailsCanceled,
-            );
+                  if (!context.mounted) return;
+                  await context.read<AuthCubit>().refreshUser();
+                } on StripeException catch (e, stackTrace) {
+                  await AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.tryAgainForFailedVPCClicked,
+                  );
 
-            /* Logged as info as stripe is giving exception
-                               when for example people close the bottomsheet.
-                               So it's not a real error :)
-                            */
-            LoggingInfo.instance.info(
-              e.toString(),
-              methodName: stackTrace.toString(),
-            );
-          }
+                  /* Logged as info as stripe is giving exception
+                                         when for example people close the bottomsheet.
+                                         So it's not a real error :)
+                                      */
+                  LoggingInfo.instance.info(
+                    e.toString(),
+                    methodName: stackTrace.toString(),
+                  );
+                }
+              },
+              amplitudeEvent: AmplitudeEvents.editPaymentDetailsCanceled,
+            ),
+          );
         },
       ),
-      secondaryButton: GivtElevatedSecondaryButton(
-        text: 'Try again',
-        rightIcon: const FaIcon(
-          FontAwesomeIcons.arrowsRotate,
-          size: 24,
-        ),
-        onTap: () async {
-          // this does not work since the cached members are not emmited to state yet
-          await cacheCubit.tryCreateMembersFromCache(members);
-        },
-        amplitudeEvent: AmplitudeEvents.tryAgainForFailedVPCClicked,
-      ),
-      closeAction: () {
-        context.pop();
-      },
     );
   }
 

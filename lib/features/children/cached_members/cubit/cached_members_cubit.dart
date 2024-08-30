@@ -44,8 +44,17 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
     return members;
   }
 
-  void overviewCached() {
-    emit(state.copyWith(status: CachedMembersStateStatus.overview));
+  Future<void> clearCache() async {
+    emit(state.copyWith(status: CachedMembersStateStatus.loading));
+
+    try {
+      await _cachedMembersRepository.clearCache();
+      emit(state.copyWith(status: CachedMembersStateStatus.noFundsInitial));
+    } catch (error, stackTrace) {
+      LoggingInfo.instance
+          .error(error.toString(), methodName: stackTrace.toString());
+      emit(state.copyWith(status: CachedMembersStateStatus.error));
+    }
   }
 
   Future<void> tryCreateMembersFromCache(List<Member>? cached) async {
@@ -55,6 +64,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
       await _addMemberRepository.addMembers(members, isRGA: false);
 
       emit(state.copyWith(status: CachedMembersStateStatus.noFundsSuccess));
+      await clearCache();
 
       final memberNames = members.map((member) => member.firstName).toList();
       unawaited(
@@ -77,7 +87,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
 
       emit(
         state.copyWith(
-          status: CachedMembersStateStatus.noFundsError,
+          status: CachedMembersStateStatus.error,
         ),
       );
     }
