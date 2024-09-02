@@ -45,11 +45,9 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
   }
 
   Future<void> clearCache() async {
-    emit(state.copyWith(status: CachedMembersStateStatus.loading));
-
     try {
       await _cachedMembersRepository.clearCache();
-      emit(state.copyWith(status: CachedMembersStateStatus.noFundsInitial));
+      emit(state.copyWith(status: CachedMembersStateStatus.clearedCache));
     } catch (error, stackTrace) {
       LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());

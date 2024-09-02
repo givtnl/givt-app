@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/pages/failed_allowances_bottomsheet.dart';
-import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
@@ -30,8 +29,6 @@ class AddMemberLoadingPage extends StatelessWidget {
             SnackBarHelper.showMessage(context, text: state.error);
           } else if (state.status == AddMemberStateStatus.successCached) {
             _navigateToProfileSelection(context);
-            VPCFailedCachedMembersBottomsheet.show(
-                context, state.members, () {});
           } else if (state.status == AddMemberStateStatus.successNoAllowances) {
             _navigateToProfileSelection(context);
             final walletAmount = state.members.fold(

@@ -4,6 +4,7 @@ enum CachedMembersStateStatus {
   loading,
   noFundsInitial,
   noFundsSuccess,
+  clearedCache,
   error,
 }
 

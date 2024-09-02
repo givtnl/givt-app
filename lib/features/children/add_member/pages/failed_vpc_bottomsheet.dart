@@ -43,39 +43,40 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
         builder: (context, state) {
           return BlocConsumer<CachedMembersCubit, CachedMembersState>(
             listener: (context, state) {
-              if (state.status == CachedMembersStateStatus.noFundsSuccess) {
-                Navigator.of(context).pop();
-              }
-              if (state.status == CachedMembersStateStatus.error) {
+              if (state.status == CachedMembersStateStatus.clearedCache) {
                 Navigator.of(context).pop();
               }
             },
             builder: (context, state) {
-              if (state.status == CachedMembersStateStatus.loading) {
-                return const Center(
-                  child: CustomCircularProgressIndicator(),
-                );
-              }
               return GivtBottomSheet(
-                title: "Your payment method has been declined",
-                icon: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor: FamilyAppTheme.primary95,
+                title: 'Your payment method has been declined',
+                icon: (state.status == CachedMembersStateStatus.loading)
+                    ? const Center(
+                        child: CustomCircularProgressIndicator(),
+                      )
+                    : Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8),
+                            child: CircleAvatar(
+                              radius: 60,
+                              backgroundColor: FamilyAppTheme.primary95,
+                            ),
+                          ),
+                          walletEmptyIcon(width: 140, height: 140),
+                        ],
                       ),
-                    ),
-                    walletEmptyIcon(width: 140, height: 140),
-                  ],
-                ),
-                content: BodyMediumText(
-                  'We couldn’t take the \$0.50 for verification and the \$${walletAmount.toStringAsFixed(0)} for your child’s wallet.\n\nCheck your payment details and try again or choose another one.',
-                  textAlign: TextAlign.center,
-                ),
+                content: (state.status == CachedMembersStateStatus.loading)
+                    ? const SizedBox.shrink()
+                    : BodyMediumText(
+                        'We couldn’t take the \$0.50 for verification and the \$${walletAmount.toStringAsFixed(0)} for your child’s wallet.\n\nCheck your payment details and try again or choose another one.',
+                        textAlign: TextAlign.center,
+                      ),
                 primaryButton: GivtElevatedButton(
+                  isDisabled: state.status ==
+                          CachedMembersStateStatus.loading ||
+                      state.status == CachedMembersStateStatus.noFundsSuccess,
                   text: 'Try again',
                   amplitudeEvent:
                       AmplitudeEvents.changePaymentMethodForFailedVPCClicked,
@@ -84,6 +85,9 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                   },
                 ),
                 secondaryButton: GivtElevatedSecondaryButton(
+                  isDisabled: state.status ==
+                          CachedMembersStateStatus.loading ||
+                      state.status == CachedMembersStateStatus.noFundsSuccess,
                   text: 'Change payment method',
                   rightIcon: const FaIcon(
                     FontAwesomeIcons.arrowsRotate,
