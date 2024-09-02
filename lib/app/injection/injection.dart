@@ -10,6 +10,7 @@ import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
+import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
 import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/edit_profile/repositories/edit_profile_repository.dart';
@@ -31,6 +32,7 @@ import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel
 import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
@@ -267,6 +269,17 @@ void initRepositories() {
       () => AddMemberCubit(
         getIt(),
         getIt(),
+      ),
+    )
+    ..registerLazySingleton<CachedMembersCubit>(
+      () => CachedMembersCubit(
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<StripeCubit>(
+      () => StripeCubit(
+        authRepositoy: getIt<AuthRepository>(),
       ),
     );
 }
