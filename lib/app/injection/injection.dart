@@ -16,7 +16,6 @@ import 'package:givt_app/features/children/edit_profile/repositories/edit_profil
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_asset_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/chat_scripts_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
@@ -242,11 +241,6 @@ void initRepositories() {
     ..registerLazySingleton<ChatScriptRegistrationHandler>(
       () => ChatScriptRegistrationHandler(
         getIt(),
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<GenerosityStripeRegistrationCubit>(
-      () => GenerosityStripeRegistrationCubit(
         getIt(),
       ),
     )
