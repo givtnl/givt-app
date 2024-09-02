@@ -188,10 +188,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
   }
 
-  Future<void> fetchActiveProfile([bool forceLoading = false]) async {
-    return fetchProfile(state.activeProfile.id, forceLoading);
-  }
-
   Future<void> refresh() async => _profilesRepository.refreshProfiles();
 
   Future<void> setActiveProfile(String id) async {
