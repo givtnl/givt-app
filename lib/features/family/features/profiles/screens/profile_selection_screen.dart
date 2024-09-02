@@ -127,7 +127,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           current is ProfilesNotSetupState ||
           current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration ||
-          current is ProfilesExternalErrorState ||
           current is ProfilesUpdatedState,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&

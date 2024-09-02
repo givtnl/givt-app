@@ -17,15 +17,6 @@ class AddMemberLoadingPage extends StatelessWidget {
     );
   }
 
-  void _navigateToProfileSelectionRefresh(BuildContext context) {
-    Navigator.of(context)
-      ..popUntil(
-        (route) => FamilyPages.profileSelection.name == route.settings.name,
-      )
-      ..pop()
-      ..pushNamed(FamilyPages.profileSelection.name);
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
@@ -38,7 +29,7 @@ class AddMemberLoadingPage extends StatelessWidget {
             _navigateToProfileSelection(context);
             SnackBarHelper.showMessage(context, text: state.error);
           } else if (state.status == AddMemberStateStatus.successCached) {
-            _navigateToProfileSelectionRefresh(context);
+            _navigateToProfileSelection(context);
             VPCFailedCachedMembersBottomsheet.show(
                 context, state.members, () {});
           } else if (state.status == AddMemberStateStatus.successNoAllowances) {

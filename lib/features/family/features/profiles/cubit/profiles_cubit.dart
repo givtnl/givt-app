@@ -33,6 +33,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   StreamSubscription<List<Profile>>? _profilesSubscription;
   StreamSubscription<Profile>? _childDetailsSubscription;
   StreamSubscription<bool>? _hasSessionSubscription;
+  StreamSubscription<List<Member>>? _cachedMembersSubscription;
 
   void _init() {
     _profilesSubscription = _profilesRepository.onProfilesChanged().listen(
@@ -43,6 +44,18 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     _childDetailsSubscription = _profilesRepository.onChildChanged().listen(
       (profile) {
         fetchActiveProfile();
+      },
+    );
+    _cachedMembersSubscription =
+        _cachedMembersRepository.onCachedMembersChanged().listen(
+      (members) {
+        emit(
+          ProfilesUpdatedState(
+            profiles: state.profiles,
+            activeProfileIndex: state.activeProfileIndex,
+            cachedMembers: members,
+          ),
+        );
       },
     );
     _hasSessionSubscription = _authRepository.hasSessionStream().listen(
@@ -99,17 +112,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
       if (doChecks) {
         unawaited(_doChecks(newProfiles));
       }
-      var cachedMembers = <Member>[];
-
-      try {
-        final members = await _cachedMembersRepository.loadFromCache();
-        cachedMembers = members;
-      } on Exception catch (e, s) {
-        LoggingInfo.instance.error(
-          'Error while fetching profiles: $e',
-          methodName: s.toString(),
-        );
-      }
+      final cachedMembers = await cachedMembersCheck();
 
       emit(
         ProfilesUpdatedState(
@@ -140,6 +143,21 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     } else {
       await _doRegistrationCheck(list);
     }
+  }
+
+  Future<List<Member>> cachedMembersCheck() async {
+    var cachedMembers = <Member>[];
+
+    try {
+      final members = await _cachedMembersRepository.loadFromCache();
+      cachedMembers = members;
+    } on Exception catch (e, s) {
+      LoggingInfo.instance.error(
+        'Error while fetching profiles: $e',
+        methodName: s.toString(),
+      );
+    }
+    return cachedMembers;
   }
 
   Future<void> _doRegistrationCheck(List<Profile> newProfiles) async {
@@ -240,6 +258,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     _profilesSubscription?.cancel();
     _childDetailsSubscription?.cancel();
     _hasSessionSubscription?.cancel();
+    _cachedMembersSubscription?.cancel();
     return super.close();
   }
 }

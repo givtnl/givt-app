@@ -58,7 +58,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
   }
 
   Future<void> tryCreateMembersFromCache(List<Member>? cached) async {
-    emit(state.copyWith(status: CachedMembersStateStatus.noFundsRetrying));
+    emit(state.copyWith(status: CachedMembersStateStatus.loading));
     try {
       final members = cached ?? state.members;
       await _addMemberRepository.addMembers(members, isRGA: false);
