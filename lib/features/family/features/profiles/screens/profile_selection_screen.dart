@@ -92,28 +92,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
           }
-        } else if (state is ProfilesNeedsRegistration) {
-          if (context.read<RegistrationBloc>().state.status ==
-              RegistrationStatus.createStripeAccount) {
-            context.goNamed(
-              FamilyPages.creditCardDetails.name,
-              extra: context.read<RegistrationBloc>(),
-            );
-          } else {
-            if (state.hasFamily) {
-              context.pushReplacementNamed(
-                FamilyPages.registrationUS.name,
-                queryParameters: {
-                  'email': user.email,
-                  'createStripe': user.personalInfoRegistered.toString(),
-                },
-              );
-            } else {
-              context.pushReplacementNamed(
-                FamilyPages.generosityChallengeRedirect.name,
-              );
-            }
-          }
         }
       },
       listenWhen: (previous, current) =>
