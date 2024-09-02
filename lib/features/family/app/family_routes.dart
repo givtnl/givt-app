@@ -6,8 +6,6 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
-import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
@@ -684,18 +682,6 @@ class FamilyAppRoutes {
               child: const CreateFamilyGoalFlowPage(),
             );
           },
-        ),
-        GoRoute(
-          path: FamilyPages.cachedChildrenOverview.path,
-          name: FamilyPages.cachedChildrenOverview.name,
-          builder: (context, state) => BlocProvider(
-            create: (_) => CachedMembersCubit(
-              getIt(),
-              getIt(),
-              familyLeaderName: context.read<AuthCubit>().state.user.firstName,
-            )..loadFromCache(),
-            child: const CachedFamilyOverviewPage(),
-          ),
         ),
         GoRoute(
           path: FamilyPages.childDetails.path,
