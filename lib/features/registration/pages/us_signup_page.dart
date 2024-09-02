@@ -76,13 +76,17 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         }
       },
       builder: (context, state) {
+        final user = context.read<AuthCubit>().state.user;
+
         return FamilyScaffold(
           appBar: GenerosityAppBar(
-            leading: GenerosityBackButton(
-              onPressed: () => context.pushReplacementNamed(
-                FamilyPages.generosityChallengeRedirect.name,
-              ),
-            ),
+            leading: context.canPop()
+                ? GenerosityBackButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                  )
+                : null,
             title: 'Enter your details',
             actions: [
               IconButton(
