@@ -49,13 +49,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     _cachedMembersSubscription =
         _cachedMembersRepository.onCachedMembersChanged().listen(
       (members) {
-        emit(
-          ProfilesUpdatedState(
-            profiles: state.profiles,
-            activeProfileIndex: state.activeProfileIndex,
-            cachedMembers: members,
-          ),
-        );
+        _emitProfilesUpdatedWithCachedMembers(state.profiles, members);
       },
     );
     _hasSessionSubscription = _authRepository.hasSessionStream().listen(
@@ -113,14 +107,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
       if (doChecks) {
         unawaited(_doChecks(newProfiles, cachedMembers));
       }
-
-      emit(
-        ProfilesUpdatedState(
-          profiles: newProfiles,
-          activeProfileIndex: state.activeProfileIndex,
-          cachedMembers: cachedMembers,
-        ),
-      );
+      _emitProfilesUpdatedWithCachedMembers(newProfiles, cachedMembers);
     } catch (error, stackTrace) {
       LoggingInfo.instance.error(
         'Error while fetching profiles: $error',
@@ -192,6 +179,17 @@ class ProfilesCubit extends Cubit<ProfilesState> {
       ProfilesLoadingState(
         profiles: state.profiles,
         activeProfileIndex: state.activeProfileIndex,
+      ),
+    );
+  }
+
+  void _emitProfilesUpdatedWithCachedMembers(
+      List<Profile> profiles, List<Member> members) {
+    emit(
+      ProfilesUpdatedState(
+        profiles: profiles,
+        activeProfileIndex: state.activeProfileIndex,
+        cachedMembers: members,
       ),
     );
   }
