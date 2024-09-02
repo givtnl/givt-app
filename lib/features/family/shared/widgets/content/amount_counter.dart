@@ -30,11 +30,10 @@ class _AmountCounterState extends State<AmountCounter> {
   static const int tapTime = 240;
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;
-  static int maxAmount = 999;
-  static late int minAmount;
   static const int amountIncrement = 5;
   static const int amountIncrement2 = 10;
-
+  static late int minAmount;
+  int maxAmount = 999;
   late int _currentAmount;
   Timer? _timer;
   Duration _heldDuration = Duration.zero;

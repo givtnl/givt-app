@@ -24,7 +24,7 @@ class ProfileOverviewTile extends StatelessWidget {
     final currencySymbol = Util.getCurrencySymbol(countryCode: user.country);
     final isGivtAccount = profile.firstName == user.firstName;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           foregroundColor: _getBorderColor(context, isGivtAccount),

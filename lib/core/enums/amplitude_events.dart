@@ -6,6 +6,7 @@ enum AmplitudeEvents {
   addChildProfile('add_child_profile'),
   addParentProfile('add_parent_profile'),
   addMemerClicked('add_member_clicked'),
+  numberOfMembersSelected('number_of_members_selected'),
   memberCreatedSuccesfully('member_created_succesfully'),
   failedToCreateMember('failed_to_create_member'),
   failedToGetVpc('failed_to_get_vpc'),
@@ -56,6 +57,10 @@ enum AmplitudeEvents {
   avatarSelected('avatar_selected'),
   avatarSaved('avatar_saved'),
   cacheMembersDueToNoFunds('cache_members_due_to_no_funds'),
+  changePaymentMethodForFailedVPCClicked(
+    'change_payment_method_for_failed_vpc_clicked',
+  ),
+  tryAgainForFailedVPCClicked('try_again_for_failed_vpc_clicked'),
   failedToCreateMembersFromCache('failed_to_create_members_from_cache'),
   familyGoalCreateClicked('family_goal_create_clicked'),
   familyGoalCauseSet('family_goal_cause_set'),
