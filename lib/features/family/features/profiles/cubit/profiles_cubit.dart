@@ -109,10 +109,10 @@ class ProfilesCubit extends Cubit<ProfilesState> {
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
       }
-      if (doChecks) {
-        unawaited(_doChecks(newProfiles));
-      }
       final cachedMembers = await cachedMembersCheck();
+      if (doChecks) {
+        unawaited(_doChecks(newProfiles, cachedMembers));
+      }
 
       emit(
         ProfilesUpdatedState(
@@ -136,12 +136,12 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     }
   }
 
-  Future<void> _doChecks(List<Profile> list) async {
+  Future<void> _doChecks(List<Profile> list, List<Member> members) async {
     final group = await _impactGroupsRepository.isInvitedToGroup();
     if (group != null) {
       _showInviteSheet(group);
     } else {
-      await _doRegistrationCheck(list);
+      await _doRegistrationCheck(list, members);
     }
   }
 
@@ -160,7 +160,8 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     return cachedMembers;
   }
 
-  Future<void> _doRegistrationCheck(List<Profile> newProfiles) async {
+  Future<void> _doRegistrationCheck(
+      List<Profile> newProfiles, List<Member> members) async {
     UserExt? userExternal;
     final (userExt, session, amountPresets) =
         await _authRepository.isAuthenticated() ?? (null, null, null);
@@ -180,6 +181,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         ProfilesNotSetupState(
           profiles: newProfiles,
           activeProfileIndex: state.activeProfileIndex,
+          cachedMembers: members,
         ),
       );
     }

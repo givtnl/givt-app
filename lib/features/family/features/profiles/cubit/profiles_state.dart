@@ -80,6 +80,7 @@ class ProfilesNotSetupState extends ProfilesState {
   const ProfilesNotSetupState({
     required super.profiles,
     required super.activeProfileIndex,
+    super.cachedMembers,
   });
 }
 

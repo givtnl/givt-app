@@ -94,7 +94,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (state.cachedMembers.isNotEmpty && !isCachedMembersBottomsheetUp) {
+          if (state.cachedMembers.isNotEmpty) {
             showCachedMembersBottomsheet(state);
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
@@ -189,8 +189,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();
-                                if (state.cachedMembers.isNotEmpty &&
-                                    !isCachedMembersBottomsheetUp) {
+                                if (state.cachedMembers.isNotEmpty) {
                                   showCachedMembersBottomsheet(state);
                                 } else {
                                   await FamilyAuthUtils.authenticateUser(
@@ -343,14 +342,16 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   }
 
   void showCachedMembersBottomsheet(ProfilesState state) {
-    setState(() {
-      isCachedMembersBottomsheetUp = true;
-    });
-    VPCFailedCachedMembersBottomsheet.show(
-      context,
-      state.cachedMembers,
-      clearBottomsheet,
-    );
+    if (!isCachedMembersBottomsheetUp) {
+      setState(() {
+        isCachedMembersBottomsheetUp = true;
+      });
+      VPCFailedCachedMembersBottomsheet.show(
+        context,
+        state.cachedMembers,
+        clearBottomsheet,
+      );
+    }
   }
 
   @override

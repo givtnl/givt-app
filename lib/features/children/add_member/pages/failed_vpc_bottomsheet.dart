@@ -9,6 +9,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -31,6 +32,10 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
         0,
         (previousValue, element) =>
             previousValue + (element.allowance ?? 0).toInt());
+    final child =
+        members.where((element) => element.type == ProfileType.Child).length > 1
+            ? 'children'
+            : 'child';
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -70,7 +75,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                 content: (state.status == CachedMembersStateStatus.loading)
                     ? const SizedBox.shrink()
                     : BodyMediumText(
-                        'We couldn’t take the \$0.50 for verification and the \$${walletAmount.toStringAsFixed(0)} for your child’s wallet.\n\nCheck your payment details and try again or choose another one.',
+                        'We couldn’t take the \$0.50 for verification and the \$${walletAmount.toStringAsFixed(0)} for your $child’s wallet.\n\nCheck your payment details and try again or choose another one.',
                         textAlign: TextAlign.center,
                       ),
                 primaryButton: GivtElevatedButton(
@@ -129,8 +134,8 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
     );
   }
 
-  static void show(
-      BuildContext context, List<Member> cachedMembers, VoidCallback onThen) {
+  static void show(BuildContext context, List<Member> cachedMembers,
+      VoidCallback onBottomsheetClosed) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -140,6 +145,6 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (context) =>
           VPCFailedCachedMembersBottomsheet(members: cachedMembers),
-    ).then((value) => onThen());
+    ).then((value) => onBottomsheetClosed());
   }
 }
