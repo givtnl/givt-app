@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -99,28 +100,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
           }
-        } else if (state is ProfilesNeedsRegistration) {
-          if (context.read<RegistrationBloc>().state.status ==
-              RegistrationStatus.createStripeAccount) {
-            context.goNamed(
-              FamilyPages.creditCardDetails.name,
-              extra: context.read<RegistrationBloc>(),
-            );
-          } else {
-            if (state.hasFamily) {
-              context.pushReplacementNamed(
-                FamilyPages.registrationUS.name,
-                queryParameters: {
-                  'email': user.email,
-                  'createStripe': user.personalInfoRegistered.toString(),
-                },
-              );
-            } else {
-              context.pushReplacementNamed(
-                FamilyPages.generosityChallengeRedirect.name,
-              );
-            }
-          }
         }
       },
       listenWhen: (previous, current) =>
@@ -184,6 +163,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   children: gridItems,
                                 ),
                               ),
+                            const SizedBox(height: 8),
+                            GivtElevatedButton(
+                                isTertiary: true,
+                                onTap: () => context.goNamed(
+                                      FamilyPages.reflectIntro.name,
+                                    ),
+                                text: 'Reflect & Share'),
                             const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
@@ -277,9 +263,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           onTap: () {
             final flow = context.read<FlowsCubit>().state;
             final selectedProfile = profiles[i];
-            context
-                .read<ProfilesCubit>()
-                .fetchProfile(selectedProfile.id, true);
+            context.read<ProfilesCubit>().setActiveProfile(selectedProfile.id);
 
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,

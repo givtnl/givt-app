@@ -246,6 +246,7 @@ enum AmplitudeEvents {
   parentGiveTileClicked('parent_give_tile_clicked'),
   parentGivingFlowOrganisationClicked(
       'parent_giving_flow_organization_clicked'),
+  parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

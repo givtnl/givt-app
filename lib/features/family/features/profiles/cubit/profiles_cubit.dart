@@ -31,7 +31,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   final CachedMembersRepository _cachedMembersRepository;
 
   StreamSubscription<List<Profile>>? _profilesSubscription;
-  StreamSubscription<Profile>? _childDetailsSubscription;
   StreamSubscription<bool>? _hasSessionSubscription;
   StreamSubscription<List<Member>>? _cachedMembersSubscription;
 
@@ -55,7 +54,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     _hasSessionSubscription = _authRepository.hasSessionStream().listen(
       (hasSession) {
         if (hasSession) {
-          clearProfiles();
+          clearProfiles(clearIndex: false);
           fetchAllProfiles();
         } else {
           clearProfiles();
@@ -198,35 +197,16 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     return fetchProfile(state.activeProfile.id, forceLoading);
   }
 
-  Future<void> fetchProfile(String id, [bool forceLoading = false]) async {
+  Future<void> refresh() async => _profilesRepository.refreshProfiles();
+
+  Future<void> setActiveProfile(String id) async {
     try {
       final profile = state.profiles.firstWhere(
         (element) => element.id == id,
         orElse: Profile.empty,
       );
       final index = state.profiles.indexOf(profile);
-      final childGuid = state.profiles[index].id;
 
-      if (index == state.activeProfileIndex && !forceLoading) {
-        // When updating the same profile, we don't want to show the loading state
-        emit(
-          ProfilesUpdatingState(
-            profiles: state.profiles,
-            activeProfileIndex: index,
-          ),
-        );
-      } else {
-        emit(
-          ProfilesLoadingState(
-            profiles: state.profiles,
-            activeProfileIndex: index,
-          ),
-        );
-      }
-      final response = forceLoading
-          ? await _profilesRepository.refreshChildDetails(childGuid)
-          : await _profilesRepository.getChildDetails(childGuid);
-      state.profiles[index] = response;
       emit(
         ProfilesUpdatedState(
           profiles: state.profiles,
@@ -249,14 +229,19 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     }
   }
 
-  void clearProfiles() {
-    emit(const ProfilesInitialState());
+  void clearProfiles({bool clearIndex = true}) {
+    emit(
+      ProfilesInitialState(
+        activeProfileIndex: clearIndex
+            ? ProfilesState._loggedInUserSelected
+            : state.activeProfileIndex,
+      ),
+    );
   }
 
   @override
   Future<void> close() {
     _profilesSubscription?.cancel();
-    _childDetailsSubscription?.cancel();
     _hasSessionSubscription?.cancel();
     _cachedMembersSubscription?.cancel();
     return super.close();

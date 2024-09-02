@@ -1,12 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -41,24 +43,27 @@ class ParentOverviewWidget extends StatelessWidget {
                   if (!context.mounted) return;
                   if (!isMainUser) return;
 
+                  unawaited(
+                    context.read<ProfilesCubit>().setActiveProfile(
+                          profile.id,
+                        ),
+                  );
+                  unawaited(AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.parentProfileIconClicked,
+                  ));
+
                   await FamilyAuthUtils.authenticateUser(
                     context,
                     checkAuthRequest: CheckAuthRequest(
                       navigate: (context, {isUSUser}) async {
                         await context.pushNamed(
                           FamilyPages.parentHome.name,
-                          extra: profile.id,
+                          extra: profile,
                         );
                         await AnalyticsHelper.setUserProperties(
                           userId: profile.id,
                         );
                       },
-                    ),
-                  );
-
-                  unawaited(
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.parentProfileIconClicked,
                     ),
                   );
                 },

@@ -27,6 +27,7 @@ class ParentalApprovalCubit extends Cubit<ParentalApprovalState> {
   Future<void> _emitDelayedPopWithDecision(bool decisionMade) async {
     // ignore: inference_failure_on_instance_creation
     await Future.delayed(_approvalResultDelay);
+    if (isClosed) return;
     emit(
       state.copyWith(
         status: DecisionStatus.pop,

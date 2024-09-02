@@ -8,7 +8,7 @@ abstract class ProfilesState extends Equatable {
   });
   final List<Member> cachedMembers;
 
-  static const int _noProfileSelected = -1;
+  static const int _loggedInUserSelected = 0;
 
   final List<Profile> profiles;
   final int activeProfileIndex;
@@ -17,11 +17,11 @@ abstract class ProfilesState extends Equatable {
   List<Object> get props => [profiles, activeProfileIndex];
 
   bool get isProfileSelected {
-    return activeProfileIndex != _noProfileSelected;
+    return profiles.isNotEmpty;
   }
 
   Profile get activeProfile {
-    if (activeProfileIndex == _noProfileSelected || profiles.isEmpty) {
+    if (profiles.isEmpty) {
       return Profile.empty();
     } else {
       return profiles[activeProfileIndex];
@@ -46,7 +46,7 @@ abstract class ProfilesState extends Equatable {
 class ProfilesInitialState extends ProfilesState {
   const ProfilesInitialState({
     super.profiles = const [],
-    super.activeProfileIndex = ProfilesState._noProfileSelected,
+    super.activeProfileIndex = ProfilesState._loggedInUserSelected,
   });
 }
 
@@ -61,8 +61,8 @@ class ProfilesLoadingState extends ProfilesState {
 class ProfilesUpdatingState extends ProfilesState {
   /// This is the state that is emitted when the profiles are being updated
   const ProfilesUpdatingState({
-    required super.activeProfileIndex,
     super.profiles = const [],
+    super.activeProfileIndex = ProfilesState._loggedInUserSelected,
   });
 }
 
@@ -91,6 +91,7 @@ class ProfilesNeedsRegistration extends ProfilesState {
     required super.activeProfileIndex,
     this.hasFamily = false,
   });
+
   final bool hasFamily;
 }
 

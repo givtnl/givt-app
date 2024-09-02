@@ -31,6 +31,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const secondary30 = Color(0xFF004F50);
   static const secondary40 = Color(0xFF00696A);
   static const secondary80 = Color(0xFF4CDADB);
+  static const secondary90 = Color(0xFF6FF6F7);
   static const secondary95 = Color(0xFFAEFFFF);
   static const secondary98 = Color(0xFFE2FFFE);
   static const secondary99 = Color(0xFFF1FFFE);

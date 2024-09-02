@@ -27,7 +27,6 @@ class KidsAvatarSelectionScreen extends StatelessWidget {
         if (state.status == EditChildProfileStatus.error) {
           SnackBarHelper.showMessage(context, text: state.error, isError: true);
         } else if (state.status == EditChildProfileStatus.edited) {
-          context.read<ProfilesCubit>().fetchActiveProfile();
           context.pop();
           if (state.isRewardAchieved) {
             AnalyticsHelper.logEvent(

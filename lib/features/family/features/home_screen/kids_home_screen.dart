@@ -69,7 +69,6 @@ class KidsHomeScreen extends StatelessWidget {
     final user = context.read<ProfilesCubit>().state.activeProfile;
     switch (destination) {
       case NavigationDestinationData.home:
-        context.read<ProfilesCubit>().fetchActiveProfile();
         return const ProfileScreen();
       case NavigationDestinationData.groups:
         context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id);

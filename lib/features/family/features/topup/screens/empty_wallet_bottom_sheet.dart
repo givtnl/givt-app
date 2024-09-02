@@ -30,14 +30,13 @@ class EmptyWalletBottomSheet extends StatelessWidget {
         leftIcon: FontAwesomeIcons.plus,
         amplitudeEvent: AmplitudeEvents.topupStartButtonClicked,
         onTap: () async {
+          final user = context.read<ProfilesCubit>().state;
+          context.read<TopupCubit>().init(user.activeProfile.id);
           await FamilyAuthUtils.authenticateUser(
             context,
             checkAuthRequest: CheckAuthRequest(
               navigate: (context, {isUSUser}) async {
                 context.pop();
-
-                final user = context.read<ProfilesCubit>().state;
-                context.read<TopupCubit>().init(user.activeProfile.id);
 
                 await showModalBottomSheet<void>(
                   context: context,

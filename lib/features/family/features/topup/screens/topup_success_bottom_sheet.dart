@@ -45,12 +45,10 @@ class TopupSuccessBottomSheet extends StatelessWidget {
         text: 'Done',
         amplitudeEvent: AmplitudeEvents.topupDoneButtonClicked,
         onTap: () {
-          context.read<ProfilesCubit>().fetchActiveProfile();
           context.pop();
         },
       ),
       closeAction: () {
-        context.read<ProfilesCubit>().fetchActiveProfile();
         context.pop();
       },
     );
