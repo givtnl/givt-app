@@ -54,14 +54,6 @@ class ProfilesLoadingState extends ProfilesState {
   /// This is the state that is emitted when the profiles are being fetched for the first time.
   const ProfilesLoadingState({
     super.profiles = const [],
-    super.activeProfileIndex = ProfilesState._noProfileSelected,
-  });
-}
-
-class ProfilesUpdatingState extends ProfilesState {
-  /// This is the state that is emitted when the profiles are being updated
-  const ProfilesUpdatingState({
-    super.profiles = const [],
     super.activeProfileIndex = ProfilesState._loggedInUserSelected,
   });
 }

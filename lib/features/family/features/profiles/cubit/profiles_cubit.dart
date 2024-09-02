@@ -40,11 +40,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         fetchAllProfiles();
       },
     );
-    _childDetailsSubscription = _profilesRepository.onChildChanged().listen(
-      (profile) {
-        fetchActiveProfile();
-      },
-    );
     _cachedMembersSubscription =
         _cachedMembersRepository.onCachedMembersChanged().listen(
       (members) {
