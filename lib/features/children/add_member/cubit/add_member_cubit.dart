@@ -58,12 +58,10 @@ class AddMemberCubit extends Cubit<AddMemberState> {
           ),
         );
       } else if (error is GivtServerFailure &&
-          error.type == FailureType.ALLOWANCE_NOT_SUCCESSFUL) {
-        emit(state.copyWith(status: AddMemberStateStatus.successNoAllowances));
-
+          error.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.allowanceNotSuccessful,
+            eventName: AmplitudeEvents.topupFailed,
           ),
         );
       } else {

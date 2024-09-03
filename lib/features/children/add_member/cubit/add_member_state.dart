@@ -4,7 +4,6 @@ enum AddMemberStateStatus {
   initial,
   loading,
   success,
-  successNoAllowances,
   successCached,
   error,
 }
