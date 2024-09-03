@@ -15,6 +15,7 @@ import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -107,16 +108,16 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
     final isChildSelected = selections[0];
-    return Scaffold(
-      appBar: const GenerosityAppBar(
-        title: 'Set up Family',
-        leading: GenerosityBackButton(),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+    final keyboardIsVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    return FamilyScaffold(
+        appBar: const GenerosityAppBar(
+          title: 'Set up Family',
+          leading: GenerosityBackButton(),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SmileyCounter(
                   totalCount: widget.totalCount,
@@ -145,39 +146,48 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   isChildSelected: isChildSelected,
                 ),
                 const SizedBox(height: 40),
-                const Spacer(),
-                if (isLast)
-                  GivtElevatedButton(
-                    onTap: () => onDone(isChildSelected: isChildSelected),
-                    text: 'Done!',
-                  )
-                else
-                  GivtElevatedSecondaryButton(
-                    onTap: () {
-                      final member =
-                          addMember(isChildSelected: isChildSelected);
-                      if (member != null) {
-                        Navigator.push(
-                          context,
-                          FamilyMemberFormPage(
-                            index: widget.index + 1,
-                            totalCount: widget.totalCount,
-                            membersToCombine: [
-                              ...widget.membersToCombine,
-                              member,
-                            ],
-                          ).toRoute(context),
-                        );
-                      }
-                    },
-                    text: 'Continue',
-                    rightIcon: const Icon(FontAwesomeIcons.arrowRight),
-                  ),
+                if (keyboardIsVisible && isLast)
+                  _primaryButton(isChildSelected)
+                else if (keyboardIsVisible)
+                  _secondaryButton(isChildSelected),
               ],
             ),
           ),
         ),
-      ),
+        floatingActionButton: keyboardIsVisible
+            ? null
+            : (isLast)
+                ? _primaryButton(isChildSelected)
+                : _secondaryButton(isChildSelected));
+  }
+
+  Widget _primaryButton(bool isChildSelected) {
+    return GivtElevatedButton(
+      onTap: () => onDone(isChildSelected: isChildSelected),
+      text: 'Done!',
+    );
+  }
+
+  Widget _secondaryButton(bool isChildSelected) {
+    return GivtElevatedSecondaryButton(
+      onTap: () {
+        final member = addMember(isChildSelected: isChildSelected);
+        if (member != null) {
+          Navigator.push(
+            context,
+            FamilyMemberFormPage(
+              index: widget.index + 1,
+              totalCount: widget.totalCount,
+              membersToCombine: [
+                ...widget.membersToCombine,
+                member,
+              ],
+            ).toRoute(context),
+          );
+        }
+      },
+      text: 'Continue',
+      rightIcon: const Icon(FontAwesomeIcons.arrowRight),
     );
   }
 }
