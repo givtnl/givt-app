@@ -83,7 +83,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           appBar: GenerosityAppBar(
             leading: GenerosityBackButton(
                     onPressed: () {
-                      logout(context);
+                      logout(context, fromLogoutBtn: true);
                     },
                   ),
             title: 'Enter your details',
