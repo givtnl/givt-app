@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
@@ -77,7 +80,101 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   }
 
   Widget _getReportersWidget() {
-    bool many = reporters.length > 2;
+    switch (reporters.length) {
+      case 1:
+        GameProfileItem(
+          profile: reporters.first,
+          displayName: false,
+          size: 140,
+        );
+      case 2:
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            width: double.infinity,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                const Positioned(
+                    left: 1,
+                    child: SizedBox(
+                      height: 100,
+                      width: 100,
+                    )),
+                Positioned(
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(70),
+                      border: Border.all(
+                        color: reporters[1].role!.color,
+                        width: 6,
+                      ),
+                    ),
+                    padding: EdgeInsets.zero,
+                    child: SvgPicture.network(
+                      reporters[1].pictureURL!,
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                ),
+                GameProfileItem(
+                  profile: reporters.first,
+                  displayName: false,
+                  size: 140,
+                ),
+              ],
+            ),
+          ),
+        );
+      case 3:
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SizedBox(
+            width: double.infinity,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                ...reporters.reversed.map((reporter) {
+                  return Positioned(
+                    right: reporters.indexOf(reporter) == 1 ? 1 : null,
+                    left: reporters.indexOf(reporter) == 2 ? 1 : null,
+                    child: reporters.indexOf(reporter) == 0
+                        ? GameProfileItem(
+                            profile: reporter,
+                            displayName: false,
+                            size: 140,
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(70),
+                              border: Border.all(
+                                color: reporter.role!.color,
+                                width: 6,
+                              ),
+                            ),
+                            padding: EdgeInsets.zero,
+                            child: SvgPicture.network(
+                              reporter.pictureURL!,
+                              width: 100,
+                              height: 100,
+                            ),
+                          ),
+                  );
+                }).toList(),
+              ],
+            ),
+          ),
+        );
+      default:
+        GameProfileItem(
+          profile: reporters.first,
+          displayName: false,
+          size: 140,
+        );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
@@ -87,49 +184,10 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
 
           return Padding(
             padding: const EdgeInsets.only(right: 4),
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(70),
-                    border: Border.all(
-                      color: reporter.role!.color,
-                      width: 8,
-                    ),
-                  ),
-                  padding: EdgeInsets.zero,
-                  child: SvgPicture.network(
-                    reporter.pictureURL!,
-                    width: isFirst
-                        ? 120
-                        : many
-                            ? 60
-                            : 80,
-                    height: isFirst
-                        ? 120
-                        : many
-                            ? 60
-                            : 80,
-                  ),
-                ),
-                if (isFirst)
-                  Positioned(
-                    bottom: 0,
-                    left: 50,
-                    child: Container(
-                      width: 36,
-                      height: 36,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: reporter.role?.color ?? Colors.red,
-                      ),
-                      child: Icon(
-                        _getIconPerRole(reporter),
-                        color: FamilyAppTheme.primary20,
-                      ),
-                    ),
-                  ),
-              ],
+            child: GameProfileItem(
+              profile: reporter,
+              displayName: false,
+              size: 140,
             ),
           );
         }).toList(),

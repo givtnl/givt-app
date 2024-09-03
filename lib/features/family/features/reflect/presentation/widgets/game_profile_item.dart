@@ -8,10 +8,14 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 class GameProfileItem extends StatelessWidget {
   const GameProfileItem({
     required this.profile,
+    this.displayName = true,
+    this.size = 80,
     super.key,
   });
 
   final GameProfile profile;
+  final bool displayName;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +24,8 @@ class GameProfileItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Container(
-          width: 80,
-          height: 100,
+          width: size,
+          height: size + 20,
           child: Stack(
             children: [
               Align(
@@ -39,8 +43,8 @@ class GameProfileItem extends StatelessWidget {
                     ),
                     child: SvgPicture.network(
                       profile.pictureURL!,
-                      width: 80,
-                      height: 80,
+                      width: size,
+                      height: size,
                     ),
                   ),
                 ),
@@ -63,14 +67,15 @@ class GameProfileItem extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
-        Text(
-          profile.firstName!,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 2,
-          style: Theme.of(context).textTheme.labelMedium,
-        ),
+        if (displayName) const SizedBox(height: 12),
+        if (displayName)
+          Text(
+            profile.firstName!,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
       ],
     );
   }
