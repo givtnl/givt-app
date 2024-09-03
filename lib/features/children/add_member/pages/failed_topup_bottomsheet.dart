@@ -10,20 +10,25 @@ import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
+import 'package:go_router/go_router.dart';
 
 class InsufficientFundsBottomsheet extends StatelessWidget {
-  InsufficientFundsBottomsheet({required this.amount, super.key});
+  InsufficientFundsBottomsheet(
+      {required this.amount, required this.isMultipleChildren, super.key});
   final int amount;
+  final bool isMultipleChildren;
   final stripeCubit = getIt<StripeCubit>();
 
   @override
   Widget build(BuildContext context) {
+    final topup = isMultipleChildren ? 'top up' : 'top ups';
     return GivtBottomSheet(
-      title: "You had inssufficient funds",
+      title: "Oops!\nSomething went wrong",
       icon: Stack(
         alignment: Alignment.center,
         children: [
@@ -38,9 +43,11 @@ class InsufficientFundsBottomsheet extends StatelessWidget {
         ],
       ),
       content: BodyMediumText(
-        'We couldn’t take the \$${amount.toStringAsFixed(0)} to top up your child’s wallet.\n\nDon\'t worry we will try again tomorrow.',
+        'We had trouble getting money from your account for the \$$amount $topup.\n\nNo worries, we will try again tomorrow!',
         textAlign: TextAlign.center,
       ),
+      primaryButton:
+          GivtElevatedButton(onTap: () => context.pop(), text: 'Dismiss'),
       secondaryButton: GivtElevatedSecondaryButton(
         text: 'Change payment method',
         rightIcon: const FaIcon(
@@ -78,7 +85,7 @@ class InsufficientFundsBottomsheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context, int amount) {
+  static void show(BuildContext context, int amount, bool isMultipleChildren) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -86,7 +93,10 @@ class InsufficientFundsBottomsheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => InsufficientFundsBottomsheet(amount: amount),
+      builder: (context) => InsufficientFundsBottomsheet(
+        amount: amount,
+        isMultipleChildren: isMultipleChildren,
+      ),
     );
   }
 }

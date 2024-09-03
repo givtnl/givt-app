@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/add_member/pages/failed_allowances_bottomsheet.dart';
+import 'package:givt_app/features/children/add_member/pages/failed_topup_bottomsheet.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
@@ -29,14 +29,16 @@ class AddMemberLoadingPage extends StatelessWidget {
             SnackBarHelper.showMessage(context, text: state.error);
           } else if (state.status == AddMemberStateStatus.successCached) {
             _navigateToProfileSelection(context);
-          } else if (state.status == AddMemberStateStatus.successNoAllowances) {
+          } else if (state.status == AddMemberStateStatus.successNoTopup) {
             _navigateToProfileSelection(context);
             final walletAmount = state.members.fold(
               0,
               (previousValue, element) =>
                   previousValue + (element.allowance ?? 0).toInt(),
             );
-            InsufficientFundsBottomsheet.show(context, walletAmount);
+            final isMultipleChildren = state.children.length > 1;
+            InsufficientFundsBottomsheet.show(
+                context, walletAmount, isMultipleChildren);
           } else {
             _navigateToProfileSelection(context);
             SnackBarHelper.showMessage(
