@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/features/family/shared/design/fun_text_styles.dart';
-import 'package:givt_app/features/family/shared/design/theme/family_text_styles.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 @immutable

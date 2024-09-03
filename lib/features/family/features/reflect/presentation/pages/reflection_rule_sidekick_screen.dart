@@ -8,9 +8,9 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectionRuleSidekickScreen extends StatefulWidget {
   const ReflectionRuleSidekickScreen({super.key});
@@ -24,7 +24,7 @@ class _ReflectionRuleSidekickScreenState
     extends State<ReflectionRuleSidekickScreen> {
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
+    return FunScaffold(
       appBar: const TopAppBar(title: 'Reflection rules'),
       body: Center(
         child: FunCard(
@@ -34,7 +34,7 @@ class _ReflectionRuleSidekickScreenState
             'Listen carefully to the superhero and try to guess the secret word at the end.',
             textAlign: TextAlign.left,
           ),
-          button: GivtElevatedButton(
+          button: FunButton(
             onTap: () {
               Navigator.of(context).push(
                 const RevealSecretWordScreen().toRoute(context),

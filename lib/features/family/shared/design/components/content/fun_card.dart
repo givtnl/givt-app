@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 
 class FunCard extends StatelessWidget {
   const FunCard({
@@ -16,7 +15,7 @@ class FunCard extends StatelessWidget {
   final FunIcon icon;
   final String title;
   final Widget content;
-  final GivtElevatedButton button;
+  final Widget? button;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +48,8 @@ class FunCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             content,
-            const SizedBox(height: 16),
-            button,
+            if (button != null) const SizedBox(height: 16),
+            if (button != null) button!,
           ],
         ),
       ),

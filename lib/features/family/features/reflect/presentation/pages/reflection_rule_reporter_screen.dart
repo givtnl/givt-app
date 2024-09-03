@@ -6,8 +6,8 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectionRuleReporterScreen extends StatefulWidget {
   const ReflectionRuleReporterScreen({super.key});
@@ -21,7 +21,7 @@ class _ReflectionRuleReporterScreenState
     extends State<ReflectionRuleReporterScreen> {
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
+    return FunScaffold(
       appBar: const TopAppBar(title: 'Reflection rules'),
       body: Center(
         child: FunCard(
@@ -31,7 +31,7 @@ class _ReflectionRuleReporterScreenState
             'Each reporter takes turns asking one question to the superhero, then passes the turn to the next reporter. ',
             textAlign: TextAlign.left,
           ),
-          button: GivtElevatedButton(
+          button: FunButton(
             onTap: () {
               Navigator.of(context).push(
                 const ReflectionRuleSidekickScreen().toRoute(context),
