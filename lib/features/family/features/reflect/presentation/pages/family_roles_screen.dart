@@ -60,8 +60,8 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                   GivtElevatedButton(
                     onTap: () {
                       Navigator.of(context).push(
-                          const ReflectionRuleSuperheroScreen()
-                              .toRoute(context));
+                        const ReflectionRuleSuperheroScreen().toRoute(context),
+                      );
                     },
                     text: 'Start',
                   ),
