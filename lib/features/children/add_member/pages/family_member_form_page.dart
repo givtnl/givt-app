@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/widgets/add_member_loading_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/child_or_parent_selector.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
+import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class FamilyMemberFormPage extends StatefulWidget {
-  const FamilyMemberFormPage(
-      {required this.index, required this.totalCount, super.key,});
+  const FamilyMemberFormPage({
+    required this.index,
+    required this.totalCount,
+    required this.membersToCombine,
+    super.key,
+  });
+
   final int index;
   final int totalCount;
+  final List<Member> membersToCombine;
+
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
 }
@@ -32,39 +48,76 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     super.initState();
   }
 
-  void pop({bool isChildSelected = false}) {
+  Member? addMember({bool isChildSelected = false}) {
     if (_formKey.currentState!.validate()) {
-      Navigator.of(context).pop(
-        isChildSelected
-            ? Member(
-                firstName: _nameController.text,
-                age: int.parse(_ageController.text),
-                allowance: _amount,
-                type: ProfileType.Child,
-              )
-            : Member(
-                firstName: _nameController.text,
-                email: _emailController.text,
-                type: ProfileType.Parent,
-              ),
-      );
+      final newMember = isChildSelected
+          ? Member(
+              firstName: _nameController.text,
+              age: int.parse(_ageController.text),
+              allowance: _amount,
+              type: ProfileType.Child,
+            )
+          : Member(
+              firstName: _nameController.text,
+              email: _emailController.text,
+              type: ProfileType.Parent,
+            );
+      return newMember;
     }
+    return null;
+  }
+
+  void onDone({bool isChildSelected = false}) {
+    final member = addMember(isChildSelected: isChildSelected);
+
+    if (member != null) {
+      final members = [
+        ...widget.membersToCombine,
+        member,
+      ];
+      if (members.any((member) => member.isChild)) {
+        showModalBottomSheet<void>(
+          context: context,
+          showDragHandle: true,
+          isScrollControlled: true,
+          useSafeArea: true,
+          builder: (_) => VPCPage(
+            onReadyClicked: () {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.vpcAccepted,
+              );
+              submitMembersAndNavigate(members: members);
+            },
+          ),
+        );
+      } else {
+        submitMembersAndNavigate(members: members);
+      }
+    }
+  }
+
+  void submitMembersAndNavigate({List<Member> members = const []}) {
+    getIt<AddMemberCubit>()
+      ..addAllMembers(members)
+      ..createMember();
+
+    Navigator.push(context, const AddMemberLoadingPage().toRoute(context));
   }
 
   @override
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
     final isChildSelected = selections[0];
-    return Scaffold(
-      appBar: const GenerosityAppBar(
-        title: 'Set up Family',
-        leading: GenerosityBackButton(),
-      ),
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+    final keyboardIsVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    return FamilyScaffold(
+        appBar: const GenerosityAppBar(
+          title: 'Set up Family',
+          leading: GenerosityBackButton(),
+        ),
+        body: Center(
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 SmileyCounter(
                   totalCount: widget.totalCount,
@@ -93,28 +146,48 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   isChildSelected: isChildSelected,
                 ),
                 const SizedBox(height: 40),
-                const Spacer(),
-                if (isLast)
-                  GivtElevatedButton(
-                    onTap: () {
-                      pop(isChildSelected: isChildSelected);
-                    },
-                    text: 'Done',
-                    rightIcon: FontAwesomeIcons.exclamation,
-                  )
-                else
-                  GivtElevatedSecondaryButton(
-                    onTap: () {
-                      pop(isChildSelected: isChildSelected);
-                    },
-                    text: 'Continue',
-                    rightIcon: const Icon(FontAwesomeIcons.arrowRight),
-                  ),
+                if (keyboardIsVisible && isLast)
+                  _primaryButton(isChildSelected)
+                else if (keyboardIsVisible)
+                  _secondaryButton(isChildSelected),
               ],
             ),
           ),
         ),
-      ),
+        floatingActionButton: keyboardIsVisible
+            ? null
+            : (isLast)
+                ? _primaryButton(isChildSelected)
+                : _secondaryButton(isChildSelected));
+  }
+
+  Widget _primaryButton(bool isChildSelected) {
+    return GivtElevatedButton(
+      onTap: () => onDone(isChildSelected: isChildSelected),
+      text: 'Done!',
+    );
+  }
+
+  Widget _secondaryButton(bool isChildSelected) {
+    return GivtElevatedSecondaryButton(
+      onTap: () {
+        final member = addMember(isChildSelected: isChildSelected);
+        if (member != null) {
+          Navigator.push(
+            context,
+            FamilyMemberFormPage(
+              index: widget.index + 1,
+              totalCount: widget.totalCount,
+              membersToCombine: [
+                ...widget.membersToCombine,
+                member,
+              ],
+            ).toRoute(context),
+          );
+        }
+      },
+      text: 'Continue',
+      rightIcon: const Icon(FontAwesomeIcons.arrowRight),
     );
   }
 }

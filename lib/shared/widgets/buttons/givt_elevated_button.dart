@@ -56,7 +56,7 @@ class GivtElevatedButton extends StatelessWidget {
           color: isDisabled
               ? AppTheme.givtGraycece
               : isTertiary == true
-                  ? Colors.white
+                  ? FamilyAppTheme.secondary99
                   : backgroundColor,
         ),
         child: getChild(context, themeData),

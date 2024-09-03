@@ -8,7 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/utils/cached_family_utils.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -24,10 +26,10 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,6 +45,8 @@ class ProfileSelectionScreen extends StatefulWidget {
 }
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
+  bool isCachedMembersBottomsheetUp = false;
+
   @override
   void initState() {
     super.initState();
@@ -79,6 +83,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               );
             },
           );
+        } else if (state is ProfilesUpdatedState) {
+          if (state.cachedMembers.isNotEmpty && !isCachedMembersBottomsheetUp) {
+            showCachedMembersBottomsheet(state);
+          }
         } else if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
@@ -87,45 +95,27 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (CachedFamilyUtils.isFamilyCacheExist()) {
-            await context.pushNamed(FamilyPages.cachedChildrenOverview.name);
+          if (state.cachedMembers.isNotEmpty) {
+            showCachedMembersBottomsheet(state);
           } else {
             await context.pushNamed(FamilyPages.childrenOverview.name);
-          }
-        } else if (state is ProfilesNeedsRegistration) {
-          if (context.read<RegistrationBloc>().state.status ==
-              RegistrationStatus.createStripeAccount) {
-            context.goNamed(
-              FamilyPages.creditCardDetails.name,
-              extra: context.read<RegistrationBloc>(),
-            );
-          } else {
-            if (state.hasFamily) {
-              context.pushReplacementNamed(
-                FamilyPages.registrationUS.name,
-                queryParameters: {
-                  'email': user.email,
-                  'createStripe': user.personalInfoRegistered.toString(),
-                },
-              );
-            } else {
-              context.pushReplacementNamed(
-                FamilyPages.generosityChallengeRedirect.name,
-              );
-            }
           }
         }
       },
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
           current is ProfilesInvitedToGroup ||
-          current is ProfilesNeedsRegistration,
+          current is ProfilesNeedsRegistration ||
+          current is ProfilesUpdatedState,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
           current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
+          state.cachedMembers
+              .where((element) => element.type == ProfileType.Child)
+              .toList(),
           user,
         );
         return Scaffold(
@@ -134,7 +124,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
-              : state.profiles.isEmpty
+              : state.profiles.isEmpty && state.cachedMembers.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
                           context.read<ProfilesCubit>().fetchAllProfiles(
@@ -157,6 +147,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                         .where((p) => p.type == 'Parent')
                                         .toList(),
                                   ),
+                                  cachedMembers: state.cachedMembers,
                                 ),
                               ),
                             const SizedBox(height: 26),
@@ -173,40 +164,43 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
+                            GivtElevatedButton(
+                                isTertiary: true,
+                                onTap: () => context.goNamed(
+                                      FamilyPages.reflectIntro.name,
+                                    ),
+                                text: 'Reflect & Share'),
+                            const SizedBox(height: 8),
                             GivtElevatedSecondaryButton(
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();
-                                await FamilyAuthUtils.authenticateUser(
-                                  context,
-                                  checkAuthRequest: CheckAuthRequest(
-                                    navigate: (context, {isUSUser}) async {
-                                      if (CachedFamilyUtils
-                                          .isFamilyCacheExist()) {
-                                        await context.pushNamed(
-                                          FamilyPages
-                                              .cachedChildrenOverview.name,
-                                        );
-                                      } else {
+                                if (state.cachedMembers.isNotEmpty) {
+                                  showCachedMembersBottomsheet(state);
+                                } else {
+                                  await FamilyAuthUtils.authenticateUser(
+                                    context,
+                                    checkAuthRequest: CheckAuthRequest(
+                                      navigate: (context, {isUSUser}) async {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
                                         );
-                                      }
-                                      _logUser(context, user);
-                                    },
-                                  ),
-                                );
-                                unawaited(
-                                  AnalyticsHelper.logEvent(
-                                    eventName:
-                                        AmplitudeEvents.manageFamilyPressed,
-                                  ),
-                                );
+                                        _logUser(context, user);
+                                      },
+                                    ),
+                                  );
+                                  unawaited(
+                                    AnalyticsHelper.logEvent(
+                                      eventName:
+                                          AmplitudeEvents.manageFamilyPressed,
+                                    ),
+                                  );
+                                }
                               },
                               text: 'Manage Family',
                               leftIcon: const FaIcon(
                                 FontAwesomeIcons.sliders,
-                                color: AppTheme.primary30,
+                                color: FamilyAppTheme.primary30,
                               ),
                             ),
                           ],
@@ -243,19 +237,33 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       });
   }
 
-  List<Widget> createGridItems(List<Profile> profiles, UserExt user) {
+  List<Widget> createGridItems(
+      List<Profile> profiles, List<Member> cachedChildren, UserExt user) {
     final gridItems = <Widget>[];
     for (var i = 0;
-        i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
+        i < cachedChildren.length &&
+            i < ProfileSelectionScreen.maxVivibleProfiles;
+        i++) {
+      gridItems.add(
+        ProfileItem(
+          name: cachedChildren[i].firstName!,
+          assetImage: 'assets/images/default_hero.svg',
+        ),
+      );
+    }
+
+    for (var i = 0;
+        i < profiles.length &&
+            i <
+                ProfileSelectionScreen.maxVivibleProfiles -
+                    cachedChildren.length;
         i++) {
       gridItems.add(
         GestureDetector(
           onTap: () {
             final flow = context.read<FlowsCubit>().state;
             final selectedProfile = profiles[i];
-            context
-                .read<ProfilesCubit>()
-                .fetchProfile(selectedProfile.id, true);
+            context.read<ProfilesCubit>().setActiveProfile(selectedProfile.id);
 
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,
@@ -309,6 +317,25 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       );
     }
     return gridItems;
+  }
+
+  void clearBottomsheet() {
+    setState(() {
+      isCachedMembersBottomsheetUp = false;
+    });
+  }
+
+  void showCachedMembersBottomsheet(ProfilesState state) {
+    if (!isCachedMembersBottomsheetUp) {
+      setState(() {
+        isCachedMembersBottomsheetUp = true;
+      });
+      VPCFailedCachedMembersBottomsheet.show(
+        context,
+        state.cachedMembers,
+        clearBottomsheet,
+      );
+    }
   }
 
   @override

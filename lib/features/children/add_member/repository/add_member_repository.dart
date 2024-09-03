@@ -25,14 +25,19 @@ class AddMemberRepositoryImpl with AddMemberRepository {
       'allowanceType': isRGA ? 0 : 1,
     };
 
-    await apiService.addMember(body);
-
-    // We add this event to the stream delayed
-    // because money-related calls require an update from Stripe for the BE
-    // which takes a bit of time
-    Future.delayed(const Duration(seconds: 1), () {
+    try {
+      await apiService.addMember(body);
+    } finally {
+      //always add even if there are errors
       _memberAddedStreamController.add(null);
-    });
+
+      // We add this second event to the stream delayed
+      // because money-related calls require an update from Stripe for the BE
+      // which takes a bit of time
+      Future.delayed(const Duration(seconds: 2), () {
+        _memberAddedStreamController.add(null);
+      });
+    }
   }
 
   @override

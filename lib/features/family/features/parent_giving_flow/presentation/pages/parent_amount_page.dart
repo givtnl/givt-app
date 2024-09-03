@@ -3,6 +3,7 @@ import 'package:givt_app/features/children/generosity_challenge/models/color_com
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
@@ -55,16 +56,14 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
                   iconColor: widget.colorCombo.textColor.withOpacity(0.6),
                 ),
                 const SizedBox(height: 16),
-                Text(
+                TitleLargeText(
                   widget.organisationName,
-                  style: Theme.of(context).textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
-                Text(
+                const BodyMediumText(
                   'How much would you like to give?',
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 16),
                 AmountCounter(

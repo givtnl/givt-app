@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:givt_app/core/network/api_service.dart';
@@ -9,6 +10,7 @@ mixin CachedMembersRepository {
   Future<List<Member>> loadFromCache();
   Future<void> clearCache();
   bool isCacheExist();
+  Stream<List<Member>> onCachedMembersChanged();
 }
 
 class CachedMembersRepositoryImpl with CachedMembersRepository {
@@ -16,7 +18,8 @@ class CachedMembersRepositoryImpl with CachedMembersRepository {
     this.apiService,
     this.sharedPreferences,
   );
-
+  final StreamController<List<Member>> _cachedMembersStreamController =
+      StreamController<List<Member>>.broadcast();
   static const String _cachedMembersKey = 'cachedMembers';
 
   final APIService apiService;
@@ -30,6 +33,8 @@ class CachedMembersRepositoryImpl with CachedMembersRepository {
       _cachedMembersKey,
       jsonEncode(membersJsonList),
     );
+
+    _cachedMembersStreamController.add(members);
   }
 
   @override
@@ -56,4 +61,8 @@ class CachedMembersRepositoryImpl with CachedMembersRepository {
   bool isCacheExist() {
     return sharedPreferences.containsKey(_cachedMembersKey);
   }
+
+  @override
+  Stream<List<Member>> onCachedMembersChanged() =>
+      _cachedMembersStreamController.stream;
 }

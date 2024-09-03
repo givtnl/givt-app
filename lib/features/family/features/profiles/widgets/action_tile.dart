@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class ActionTile extends StatefulWidget {
   const ActionTile({
@@ -51,8 +51,8 @@ class _ActionTileState extends State<ActionTile> {
     final isOnlineIcon = widget.iconPath.contains('http');
 
     if (widget.isDisabled) {
-      backgroundColor = AppTheme.disabledTileBackground;
-      borderColor = AppTheme.disabledTileBorder;
+      backgroundColor = FamilyAppTheme.disabledTileBackground;
+      borderColor = FamilyAppTheme.disabledTileBorder;
     }
     return ActionContainer(
       isDisabled: widget.isDisabled,
@@ -100,7 +100,7 @@ class _ActionTileState extends State<ActionTile> {
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
                                     color: widget.isDisabled
-                                        ? AppTheme.disabledTileBorder
+                                        ? FamilyAppTheme.disabledTileBorder
                                         : widget.textColor,
                                   ),
                         )
@@ -113,7 +113,7 @@ class _ActionTileState extends State<ActionTile> {
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
                                     color: widget.isDisabled
-                                        ? AppTheme.disabledTileBorder
+                                        ? FamilyAppTheme.disabledTileBorder
                                         : widget.textColor,
                                   ),
                         )
@@ -144,7 +144,7 @@ class _ActionTileState extends State<ActionTile> {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: const BoxDecoration(
-                  color: AppTheme.primary70,
+                  color: FamilyAppTheme.primary70,
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(8),
                     bottomLeft: Radius.circular(4),

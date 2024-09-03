@@ -84,6 +84,8 @@ mixin AuthRepository {
   void updateSessionStream(bool hasSession);
 
   Stream<bool> hasSessionStream();
+
+  void setHasSessionInitialValue(bool hasSession);
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -579,9 +581,14 @@ class AuthRepositoyImpl with AuthRepository {
 
   @override
   void updateSessionStream(bool hasSession) {
-    if(_hasSession != hasSession) {
+    if (_hasSession != hasSession) {
       _hasSession = hasSession;
       _hasSessionStreamController.add(hasSession);
     }
+  }
+
+  @override
+  void setHasSessionInitialValue(bool hasSession) {
+    _hasSession = hasSession;
   }
 }

@@ -14,6 +14,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/content/wallet.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -64,9 +65,8 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                     children: [
                       OrganisationWidget(organisation),
                       const Spacer(),
-                      Text(
+                      const BodyMediumText(
                         'How much would you like to give?',
-                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 32),
                     ],

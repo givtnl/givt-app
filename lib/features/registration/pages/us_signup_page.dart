@@ -9,6 +9,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -76,14 +77,16 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         }
       },
       builder: (context, state) {
+        final user = context.read<AuthCubit>().state.user;
+
         return FamilyScaffold(
           appBar: GenerosityAppBar(
             leading: GenerosityBackButton(
-              onPressed: () => context.pushReplacementNamed(
-                FamilyPages.generosityChallengeRedirect.name,
-              ),
-            ),
-            title: 'Enter you details',
+                    onPressed: () {
+                      logout(context, fromLogoutBtn: true);
+                    },
+                  ),
+            title: 'Enter your details',
             actions: [
               IconButton(
                 onPressed: () => showModalBottomSheet<void>(
