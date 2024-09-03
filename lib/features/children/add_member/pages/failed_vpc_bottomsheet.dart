@@ -9,7 +9,6 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
-import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -28,14 +27,6 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final walletAmount = members.fold(
-        0,
-        (previousValue, element) =>
-            previousValue + (element.allowance ?? 0).toInt());
-    final child =
-        members.where((element) => element.type == ProfileType.Child).length > 1
-            ? 'children'
-            : 'child';
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -45,17 +36,18 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
         BlocProvider.value(value: cacheCubit),
       ],
       child: BlocBuilder<StripeCubit, StripeState>(
-        builder: (context, state) {
+        builder: (context, stripestate) {
           return BlocConsumer<CachedMembersCubit, CachedMembersState>(
-            listener: (context, state) {
-              if (state.status == CachedMembersStateStatus.clearedCache) {
+            listener: (context, cachestate) {
+              if (cachestate.status == CachedMembersStateStatus.clearedCache) {
                 Navigator.of(context).pop();
               }
             },
-            builder: (context, state) {
+            builder: (context, cachestate) {
               return GivtBottomSheet(
                 title: 'Your payment method has been declined',
-                icon: (state.status == CachedMembersStateStatus.loading)
+                icon: (cachestate.status == CachedMembersStateStatus.loading ||
+                        stripestate.stripeStatus == StripeObjectStatus.loading)
                     ? const Center(
                         child: CustomCircularProgressIndicator(),
                       )
@@ -72,16 +64,20 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                           walletEmptyIcon(width: 140, height: 140),
                         ],
                       ),
-                content: (state.status == CachedMembersStateStatus.loading)
+                content: (cachestate.status ==
+                            CachedMembersStateStatus.loading ||
+                        stripestate.stripeStatus == StripeObjectStatus.loading)
                     ? const SizedBox.shrink()
-                    : BodyMediumText(
-                        'We couldn’t take the \$0.50 for verification and the \$${walletAmount.toStringAsFixed(0)} for your $child’s wallet.\n\nCheck your payment details and try again or choose another one.',
+                    : const BodyMediumText(
+                        'Make sure you have enough funds in your account, then try again. Or choose another payment method.',
                         textAlign: TextAlign.center,
                       ),
                 primaryButton: GivtElevatedButton(
-                  isDisabled: state.status ==
+                  isDisabled: cachestate.status ==
                           CachedMembersStateStatus.loading ||
-                      state.status == CachedMembersStateStatus.noFundsSuccess,
+                      cachestate.status ==
+                          CachedMembersStateStatus.noFundsSuccess ||
+                      stripestate.stripeStatus == StripeObjectStatus.loading,
                   text: 'Try again',
                   amplitudeEvent:
                       AmplitudeEvents.changePaymentMethodForFailedVPCClicked,
@@ -90,9 +86,11 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                   },
                 ),
                 secondaryButton: GivtElevatedSecondaryButton(
-                  isDisabled: state.status ==
+                  isDisabled: cachestate.status ==
                           CachedMembersStateStatus.loading ||
-                      state.status == CachedMembersStateStatus.noFundsSuccess,
+                      cachestate.status ==
+                          CachedMembersStateStatus.noFundsSuccess ||
+                      stripestate.stripeStatus == StripeObjectStatus.loading,
                   text: 'Change payment method',
                   rightIcon: const FaIcon(
                     FontAwesomeIcons.arrowsRotate,
