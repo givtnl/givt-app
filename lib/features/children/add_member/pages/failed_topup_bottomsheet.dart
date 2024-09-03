@@ -43,7 +43,7 @@ class InsufficientFundsBottomsheet extends StatelessWidget {
         ],
       ),
       content: BodyMediumText(
-        'We had trouble the \$$amount from your account for the $topup.\n\nNo worries, we will try again tomorrow!',
+        'We had trouble getting the \$$amount from your account for the $topup.\n\nNo worries, we will try again tomorrow!',
         textAlign: TextAlign.center,
       ),
       primaryButton:
