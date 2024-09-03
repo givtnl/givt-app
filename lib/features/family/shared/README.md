@@ -25,9 +25,32 @@ Here we have everything related to the FUN theming: colors, sizes etc.
 Here we have the FUN illustrations, icons etc.
 For a default icon you should use the `FunIcon` widget. Some icons are already defined via factory constructors.
 
-### Content
+### Components
+
+Here we have all the FUN components. To make it easier to find the components we have grouped them in the following categories.
+
+To use a component you should import it from the `lib/features/family/shared/components.dart` file.
+
+#### Actions
+
+- Button => `FunButton`
+- Secondary Button => `FunSecondaryButton`
+
+#### Content
 
 - Card => `FunCard`
+
+#### Inputs
+
+- Counter => `FunCounter`
+
+#### Navigation
+
+- Top App Bar => `FunTopAppBar`
+
+#### Overlays
+
+- Bottom Sheet => `FunBottomSheet`
 
 ## Widgets
 
