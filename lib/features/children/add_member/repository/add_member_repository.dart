@@ -28,7 +28,7 @@ class AddMemberRepositoryImpl with AddMemberRepository {
     try {
       await apiService.addMember(body);
     } finally {
-      //does not get emmited if call fails
+      //always add even if there are errors
       _memberAddedStreamController.add(null);
 
       // We add this second event to the stream delayed
