@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 
 class StartInterviewScreen extends StatefulWidget {
@@ -82,7 +79,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   Widget _getReportersWidget() {
     switch (reporters.length) {
       case 1:
-        GameProfileItem(
+        return GameProfileItem(
           profile: reporters.first,
           displayName: false,
           size: 140,
@@ -168,31 +165,12 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
           ),
         );
       default:
-        GameProfileItem(
+        return GameProfileItem(
           profile: reporters.first,
           displayName: false,
           size: 140,
         );
     }
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ...reporters.map((reporter) {
-          final isFirst = reporter == reporters.first;
-
-          return Padding(
-            padding: const EdgeInsets.only(right: 4),
-            child: GameProfileItem(
-              profile: reporter,
-              displayName: false,
-              size: 140,
-            ),
-          );
-        }).toList(),
-      ],
-    );
   }
 
   Widget _getReporterWidget() {
