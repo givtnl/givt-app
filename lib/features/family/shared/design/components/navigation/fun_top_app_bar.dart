@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TopAppBar({
+class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const FunTopAppBar({
     required this.title,
     this.actions = const [],
     this.leading,

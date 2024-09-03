@@ -20,7 +20,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/parent_overvi
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
@@ -119,7 +119,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           user,
         );
         return Scaffold(
-          appBar: const TopAppBar(
+          appBar: const FunTopAppBar(
             title: 'Family',
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup

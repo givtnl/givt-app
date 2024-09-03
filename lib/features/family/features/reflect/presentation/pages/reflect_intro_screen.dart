@@ -7,7 +7,7 @@ import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_selection_screen.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -35,7 +35,7 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
     return BlocProvider(
       create: (_) => _cubit,
       child: FunScaffold(
-        appBar: const TopAppBar(title: 'Reflect and share'),
+        appBar: const FunTopAppBar(title: 'Reflect and share'),
         body: BlocConsumer<FamilyOverviewCubit, FamilyOverviewState>(
           builder: (BuildContext context, state) {
             return Stack(

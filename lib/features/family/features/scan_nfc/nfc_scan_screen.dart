@@ -20,7 +20,7 @@ import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_s
 import 'package:givt_app/features/family/features/scan_nfc/widgets/start_scan_nfc_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/something_went_wrong_dialog.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -124,7 +124,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: TopAppBar(
+            appBar: FunTopAppBar(
               leading: GivtBackButton(
                 onPressedExt: () {
                   context.read<FlowsCubit>().resetFlow();

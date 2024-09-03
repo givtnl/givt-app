@@ -4,7 +4,7 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_reporter_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/content/fun_card.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -24,7 +24,7 @@ class _ReflectionRuleSuperheroScreenState
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      appBar: const TopAppBar(title: 'Reflection rules'),
+      appBar: const FunTopAppBar(title: 'Reflection rules'),
       body: Center(
         child: FunCard(
           icon: FunIcon.mask(),
