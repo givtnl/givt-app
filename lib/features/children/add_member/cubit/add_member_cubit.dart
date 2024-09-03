@@ -59,8 +59,6 @@ class AddMemberCubit extends Cubit<AddMemberState> {
         );
       } else if (error is GivtServerFailure &&
           error.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
-        emit(state.copyWith(status: AddMemberStateStatus.successNoTopup));
-
         unawaited(
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.topupFailed,
