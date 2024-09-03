@@ -13,7 +13,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
-import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';

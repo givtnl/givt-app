@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_secondary_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 

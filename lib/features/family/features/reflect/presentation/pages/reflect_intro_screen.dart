@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart'
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectIntroScreen extends StatefulWidget {

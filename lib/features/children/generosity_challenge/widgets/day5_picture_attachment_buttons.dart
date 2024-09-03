@@ -9,8 +9,8 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/gallery_permissions_dialog.dart';
 
-import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
-import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
+import 'package:givt_app/features/family/shared/design/components/actions/fun_secondary_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class Day5PictureAttachmentButtons extends StatelessWidget {
