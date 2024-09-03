@@ -5,7 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -18,7 +18,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GivtBottomSheet(
+    return FunBottomSheet(
       title: 'Oops, an empty Wallet',
       icon: walletEmptyIcon(),
       content: const BodyMediumText(

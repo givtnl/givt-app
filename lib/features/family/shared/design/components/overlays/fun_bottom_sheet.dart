@@ -6,8 +6,8 @@ import 'package:givt_app/features/family/shared/design/components/actions/fun_bu
 import 'package:givt_app/features/family/shared/design/components/actions/fun_secondary_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
-class GivtBottomSheet extends StatelessWidget {
-  const GivtBottomSheet({
+class FunBottomSheet extends StatelessWidget {
+  const FunBottomSheet({
     required this.title,
     required this.content,
     this.icon,
@@ -131,7 +131,7 @@ class GivtBottomSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => GivtBottomSheet(
+      builder: (context) => FunBottomSheet(
         title: title,
         content: content,
         icon: icon,

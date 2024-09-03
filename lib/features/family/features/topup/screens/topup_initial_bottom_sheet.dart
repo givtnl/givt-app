@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -39,7 +39,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       name: Country.fromCode(user.country).currency,
     ).currencySymbol;
 
-    return GivtBottomSheet(
+    return FunBottomSheet(
       title: 'Top up my wallet',
       icon: primaryCircleWithIcon(
         circleSize: 140,

@@ -9,7 +9,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -44,7 +44,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
               }
             },
             builder: (context, cachestate) {
-              return GivtBottomSheet(
+              return FunBottomSheet(
                 title: 'Your payment method has been declined',
                 icon: (cachestate.status == CachedMembersStateStatus.loading ||
                         stripestate.stripeStatus == StripeObjectStatus.loading)
