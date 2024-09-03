@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/models/organisation_details.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class FamilyGoalWidget extends StatelessWidget {
-
   const FamilyGoalWidget(
     this.group,
     this.organisation, {
@@ -33,15 +33,13 @@ class FamilyGoalWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                TitleMediumText(
                   group.goal.orgName,
-                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-                Text(
+                BodyMediumText(
                   group.type == ImpactGroupType.family
                       ? 'Family goal: \$${group.goal.goalAmount}'
                       : 'Goal: \$${group.goal.goalAmount}',
-                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],
             ),

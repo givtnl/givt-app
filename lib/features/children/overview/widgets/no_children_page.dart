@@ -14,24 +14,21 @@ class NoChildrenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            const BodyMediumText(
-              'Create your first impact group and\nexperience generosity together.',
-              textAlign: TextAlign.center,
-            ),
-            const Spacer(),
-            familySuperheroesIcon(),
-            const Spacer(),
-            GivtElevatedButton(
-              onTap: onAddNewChildPressed,
-              text: context.l10n.plusAddMembers,
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        children: [
+          const BodyMediumText(
+            'Create your first impact group and\nexperience generosity together.',
+            textAlign: TextAlign.center,
+          ),
+          const Spacer(),
+          familySuperheroesIcon(),
+          const Spacer(),
+          GivtElevatedButton(
+            onTap: onAddNewChildPressed,
+            text: context.l10n.plusAddMembers,
+          ),
+        ],
       ),
     );
   }

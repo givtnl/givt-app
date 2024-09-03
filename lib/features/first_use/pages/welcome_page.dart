@@ -9,12 +9,12 @@ import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,7 +59,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       'firstuse_orgs',
     ];
 
-    return Scaffold(
+    return FamilyScaffold(
       appBar: AppBar(
         leading: const BackButton(
           color: Colors.transparent,
@@ -69,79 +69,75 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           height: 30,
         ),
       ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Expanded(
-                child: _buildCarouselSlider(
-                  size,
-                  imageNames,
-                  locals,
-                  locale,
-                ),
-              ),
-              _buildAnimatedBottomIndexes(imageNames, size, context),
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: GivtElevatedButton(
-                  onTap: () async {
-                    if (!getIt<NetworkInfo>().isConnected) {
-                      if (!context.mounted) {
-                        return;
-                      }
-                      await showDialog<void>(
-                        context: context,
-                        builder: (_) => WarningDialog(
-                          title: locals.noInternetConnectionTitle,
-                          content: locals.noInternet,
-                        ),
-                      );
-                      return;
-                    }
-                    if (!context.mounted) {
-                      return;
-                    }
-                    // Without biometrics we use the regular route to login
-                    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
-                      if (!mounted) {
-                        return;
-                      }
-                      await Navigator.of(context).push(EmailSignupPage.route());
-                      return;
-                    }
-
-                    final hasAuthenticated =
-                        await LocalAuthInfo.instance.authenticate();
-
-                    // When not authenticated we go to the regular route
-                    if (!hasAuthenticated) {
-                      if (!mounted) {
-                        return;
-                      }
-
-                      await Navigator.of(context).push(EmailSignupPage.route());
-                      return;
-                    }
-
-                    // When authenticated we go to the home route
-                    if (!mounted) {
-                      return;
-                    }
-                    await context.read<AuthCubit>().authenticate();
-                    if (!mounted) {
-                      return;
-                    }
-
-                    context.goNamed(Pages.home.name);
-                  },
-                  text: locals.welcomeContinue,
-                ),
-              ),
-            ],
+      minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildCarouselSlider(
+              size,
+              imageNames,
+              locals,
+              locale,
+            ),
           ),
-        ),
+          _buildAnimatedBottomIndexes(imageNames, size, context),
+          Padding(
+            padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
+            child: GivtElevatedButton(
+              onTap: () async {
+                if (!getIt<NetworkInfo>().isConnected) {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  await showDialog<void>(
+                    context: context,
+                    builder: (_) => WarningDialog(
+                      title: locals.noInternetConnectionTitle,
+                      content: locals.noInternet,
+                    ),
+                  );
+                  return;
+                }
+                if (!context.mounted) {
+                  return;
+                }
+                // Without biometrics we use the regular route to login
+                if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+                  if (!context.mounted) {
+                    return;
+                  }
+                  await Navigator.of(context).push(EmailSignupPage.route());
+                  return;
+                }
+
+                final hasAuthenticated =
+                    await LocalAuthInfo.instance.authenticate();
+
+                // When not authenticated we go to the regular route
+                if (!hasAuthenticated) {
+                  if (!context.mounted) {
+                    return;
+                  }
+
+                  await Navigator.of(context).push(EmailSignupPage.route());
+                  return;
+                }
+
+                // When authenticated we go to the home route
+                if (!context.mounted) {
+                  return;
+                }
+                await context.read<AuthCubit>().authenticate();
+                if (!context.mounted) {
+                  return;
+                }
+
+                context.goNamed(Pages.home.name);
+              },
+              text: locals.welcomeContinue,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -245,10 +241,9 @@ class _WelcomePageViewState extends State<WelcomePageView> {
   Widget _buildTitleAndSubtitle({
     required String title,
     String subtitle = '',
-    bool isFirst = true,
   }) {
     return Theme(
-      data: FamilyAppTheme().toThemeData(),
+      data: const FamilyAppTheme().toThemeData(),
       child: Column(
         children: [
           TitleMediumText(

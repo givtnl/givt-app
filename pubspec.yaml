@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.3.12
+version: 4.4.3
 publish_to: none
 
 environment:
@@ -78,6 +78,8 @@ dependencies:
   vibration: ^1.8.4
   audioplayers: ^6.0.0
   country_flags: ^3.0.0
+  flutter_sound: ^9.6.0
+  scratcher: ^2.5.0
 
 dev_dependencies:
   bloc_test: ^9.1.1

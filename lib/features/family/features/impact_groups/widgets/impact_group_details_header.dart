@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class ImpactGroupDetailsHeader extends StatelessWidget {
   const ImpactGroupDetailsHeader({
@@ -27,7 +27,10 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (impactGroup.isFamilyGroup) const SizedBox(height: 30) else Image.network(impactGroup.image),
+        if (impactGroup.isFamilyGroup)
+          const SizedBox(height: 30)
+        else
+          Image.network(impactGroup.image),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
@@ -66,7 +69,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
                                     fontWeight: FontWeight.w500,
-                                    color: AppTheme.primary50,
+                                    color: FamilyAppTheme.primary50,
                                   ),
                         ),
                         if (!impactGroup.isFamilyGroup)
@@ -77,7 +80,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                                 .labelSmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.w500,
-                                  color: AppTheme.neutralVariant60,
+                                  color: FamilyAppTheme.neutralVariant60,
                                 ),
                           ),
                         if (!impactGroup.isFamilyGroup)
@@ -88,7 +91,7 @@ class ImpactGroupDetailsHeader extends StatelessWidget {
                                 .labelSmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.w500,
-                                  color: AppTheme.tertiary50,
+                                  color: FamilyAppTheme.tertiary50,
                                 ),
                           ),
                       ],

@@ -17,6 +17,7 @@ import 'package:givt_app/features/registration/widgets/us_mobile_number_form_fie
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/family_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -68,17 +69,25 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
         if (state.status == RegistrationStatus.createStripeAccount) {
-          context.goNamed(
+          context.pushReplacementNamed(
             FamilyPages.creditCardDetails.name,
             extra: context.read<RegistrationBloc>(),
           );
         }
       },
       builder: (context, state) {
-        return Scaffold(
+        final user = context.read<AuthCubit>().state.user;
+
+        return FamilyScaffold(
           appBar: GenerosityAppBar(
-            leading: const GenerosityBackButton(),
-            title: 'Enter you details',
+            leading: context.canPop()
+                ? GenerosityBackButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                  )
+                : null,
+            title: 'Enter your details',
             actions: [
               IconButton(
                 onPressed: () => showModalBottomSheet<void>(
@@ -96,25 +105,22 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               ),
             ],
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16),
-            child: isLoading
-                ? _buildLoadingState()
-                : CustomScrollView(
-                    slivers: <Widget>[
-                      SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: Column(
-                          children: [
-                            _buildSignUpForm(locals, size),
-                            const Spacer(),
-                            _buildBottomWidgetGroup(locals, size),
-                          ],
-                        ),
+          body: isLoading
+              ? _buildLoadingState()
+              : CustomScrollView(
+                  slivers: <Widget>[
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
+                        children: [
+                          _buildSignUpForm(locals, size),
+                          const Spacer(),
+                          _buildBottomWidgetGroup(locals, size),
+                        ],
                       ),
-                    ],
-                  ),
-          ),
+                    ),
+                  ],
+                ),
         );
       },
     );
@@ -156,10 +162,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           countryCode: _selectedCountry.countryCode,
         ),
       );
-
-    setState(() {
-      isLoading = false;
-    });
   }
 
   bool get _isEnabled {
@@ -174,7 +176,10 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(context.l10n.holdOnRegistration),
+          Text(
+            context.l10n.holdOnRegistration,
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 16),
           const CustomCircularProgressIndicator(),
         ],
@@ -186,26 +191,24 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     AppLocalizations locals,
     Size size,
   ) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 30),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AcceptPolicyRowUs(
-            onTap: (value) {
-              setState(() {
-                _acceptPolicy = value!;
-              });
-            },
-            checkBoxValue: _acceptPolicy,
-          ),
-          GivtElevatedButton(
-            isDisabled: !_isEnabled,
-            onTap: _isEnabled ? _register : null,
-            text: locals.enterPaymentDetails,
-          ),
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AcceptPolicyRowUs(
+          onTap: (value) {
+            setState(() {
+              _acceptPolicy = value!;
+            });
+          },
+          checkBoxValue: _acceptPolicy,
+        ),
+        const SizedBox(height: 12),
+        GivtElevatedButton(
+          isDisabled: !_isEnabled,
+          onTap: _isEnabled ? _register : null,
+          text: locals.enterPaymentDetails,
+        ),
+      ],
     );
   }
 
@@ -324,7 +327,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             hintText: AppLocalizations.of(context).password,
             suffixIcon: IconButton(
               icon: Icon(
-                _obscureText ? Icons.visibility : Icons.visibility_off,
+                _obscureText
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
               ),
               onPressed: () {
                 setState(() {

@@ -8,15 +8,18 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GivtElevatedSecondaryButton extends StatefulWidget {
-  const GivtElevatedSecondaryButton(
-      {required this.onTap, required this.text, super.key,
-      this.leftIcon,
-      this.rightIcon,
-      this.leadingImage,
-      this.isLoading = false,
-      this.isDisabled = false,
-      this.widthMultiplier = .9,
-      this.amplitudeEvent,});
+  const GivtElevatedSecondaryButton({
+    required this.onTap,
+    required this.text,
+    super.key,
+    this.leftIcon,
+    this.rightIcon,
+    this.leadingImage,
+    this.isLoading = false,
+    this.isDisabled = false,
+    this.widthMultiplier = .9,
+    this.amplitudeEvent,
+  });
 
   final VoidCallback? onTap;
   final bool isDisabled;
@@ -62,9 +65,10 @@ class _GivtElevatedSecondaryButtonState
             : () async {
                 if (widget.amplitudeEvent != null) {
                   await AnalyticsHelper.logEvent(
-                      eventName: widget.amplitudeEvent!,);
+                    eventName: widget.amplitudeEvent!,
+                  );
                 }
-                
+
                 await Future<void>.delayed(const Duration(milliseconds: 50));
                 widget.onTap?.call();
               },
@@ -97,9 +101,10 @@ class _GivtElevatedSecondaryButtonState
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: FamilyAppTheme.primary80,
+                color:
+                    widget.isDisabled ? Colors.white : FamilyAppTheme.primary80,
               ),
             ],
           ),
@@ -114,9 +119,7 @@ class _GivtElevatedSecondaryButtonState
             height: 58,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: widget.isDisabled
-                  ? theme.colorScheme.surfaceVariant
-                  : Colors.white,
+              color: Colors.white,
             ),
             child: getChild(theme),
           ),

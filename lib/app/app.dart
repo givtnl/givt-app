@@ -78,7 +78,7 @@ class _AppState extends State<App> {
           BlocProvider(
             create: (_) => AuthCubit(
               getIt(),
-            )..checkAuth(),
+            )..checkAuth(isAppStartupCheck: true),
             lazy: false,
           ),
           BlocProvider(
@@ -97,7 +97,7 @@ class _AppState extends State<App> {
           ),
           BlocProvider<ProfilesCubit>(
             create: (BuildContext context) =>
-                ProfilesCubit(getIt(), getIt(), getIt()),
+                ProfilesCubit(getIt(), getIt(), getIt(), getIt()),
           ),
           BlocProvider(
             create: (context) => TopupCubit(getIt()),
@@ -124,8 +124,11 @@ class _AppState extends State<App> {
         ],
         child: AppThemeSwitcherWidget(
           key: themeKey,
-          builder: (BuildContext context, ThemeData themeData,
-              {required bool isFamilyApp,}) {
+          builder: (
+            BuildContext context,
+            ThemeData themeData, {
+            required bool isFamilyApp,
+          }) {
             if (kDebugMode) {
               log('Rebuilding app with theme, isFamilyApp: $isFamilyApp');
             }

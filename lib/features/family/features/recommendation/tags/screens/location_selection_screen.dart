@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/recommendation/tags/widgets/ci
 import 'package:givt_app/features/family/features/recommendation/tags/widgets/location_card.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -34,14 +35,13 @@ class LocationSelectionScreen extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     forceMaterialTransparency: true,
                     automaticallyImplyLeading: false,
-                    title: Text(
+                    title: TitleSmallText(
                       state is TagsStateFetching
                           ? 'Give me a moment to think'
                           : isCitySelection
                               ? 'Which City?'
                               : 'Where do you want to help?',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
                 ),

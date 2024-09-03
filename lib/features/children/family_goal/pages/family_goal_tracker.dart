@@ -27,8 +27,6 @@ class FamilyGoalTracker extends StatelessWidget {
         }
       },
       child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.all(24),
         decoration: ShapeDecoration(
           color: AppTheme.primary98,
           shape: RoundedRectangleBorder(

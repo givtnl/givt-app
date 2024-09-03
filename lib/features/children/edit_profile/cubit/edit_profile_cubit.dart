@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/edit_profile/models/edit_profile.dart';
-import 'package:givt_app/features/children/edit_profile/repositories/edit_profile_repository.dart';
+import 'package:givt_app/features/children/edit_profile/repositories/edit_parent_profile_repository.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
@@ -22,7 +22,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
           ),
         );
 
-  final EditProfileRepository editProfileRepository;
+  final EditParentProfileRepository editProfileRepository;
 
   static String _extractFileNameFromPictureUrl(String url) {
     if (url.isEmpty) {

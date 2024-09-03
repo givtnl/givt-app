@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class ActionContainer extends StatefulWidget {
   const ActionContainer({
-    required this.borderColor, required this.onTap, required this.child, super.key,
+    required this.borderColor,
+    required this.onTap,
+    required this.child,
+    super.key,
     this.isDisabled = false,
     this.isSelected = false,
     this.base = ActionContainerBase.bottom,
@@ -47,8 +50,9 @@ class _ActionContainerState extends State<ActionContainer> {
 
   @override
   Widget build(BuildContext context) {
-    borderColor =
-        widget.isDisabled ? AppTheme.disabledTileBorder : widget.borderColor;
+    borderColor = widget.isDisabled
+        ? FamilyAppTheme.disabledTileBorder
+        : widget.borderColor;
     return widget.isDisabled
         ? _buildContainer(widget.child)
         : GestureDetector(

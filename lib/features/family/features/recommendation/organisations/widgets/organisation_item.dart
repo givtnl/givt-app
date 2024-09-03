@@ -9,11 +9,13 @@ import 'package:givt_app/features/family/features/recommendation/organisations/w
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationItem extends StatelessWidget {
   const OrganisationItem({
-    required this.organisation, super.key,
+    required this.organisation,
+    super.key,
   });
 
   final Organisation organisation;
@@ -70,7 +72,7 @@ class OrganisationItem extends StatelessWidget {
                 organisation.name,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                  color: AppTheme.recommendationItemText,
+                  color: FamilyAppTheme.recommendationItemText,
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                   height: 0,

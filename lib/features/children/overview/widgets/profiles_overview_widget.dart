@@ -10,8 +10,6 @@ class ProfilesOverviewWidget extends StatelessWidget {
 
   final List<Profile> profiles;
 
-  static const EdgeInsets _padding = EdgeInsets.symmetric(horizontal: 20);
-
   @override
   Widget build(BuildContext context) {
     if (profiles.length == 1) {
@@ -24,31 +22,25 @@ class ProfilesOverviewWidget extends StatelessWidget {
   }
 
   Widget _createLayoutForSingleProfile(BuildContext context) {
-    return Padding(
-      padding: _padding,
-      child: Row(
-        children: [
-          Expanded(
-            child: ProfileOverviewTile(profile: profiles.first),
-          ),
-          const Spacer(),
-        ],
-      ),
+    return Row(
+      children: [
+        Expanded(
+          child: ProfileOverviewTile(profile: profiles.first),
+        ),
+        const Spacer(),
+      ],
     );
   }
 
   Widget _createLayoutForTwoThreeProfiles(BuildContext context) {
-    return Padding(
-      padding: _padding,
-      child: Row(
-        children: profiles
-            .map(
-              (profile) => Expanded(
-                child: ProfileOverviewTile(profile: profile),
-              ),
-            )
-            .toList(),
-      ),
+    return Row(
+      children: profiles
+          .map(
+            (profile) => Expanded(
+              child: ProfileOverviewTile(profile: profile),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -57,18 +49,15 @@ class ProfilesOverviewWidget extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
-      child: Padding(
-        padding: _padding,
-        child: Row(
-          children: profiles
-              .map(
-                (profile) => SizedBox(
-                  width: size.width * 0.29,
-                  child: ProfileOverviewTile(profile: profile),
-                ),
-              )
-              .toList(),
-        ),
+      child: Row(
+        children: profiles
+            .map(
+              (profile) => SizedBox(
+                width: size.width * 0.28,
+                child: ProfileOverviewTile(profile: profile),
+              ),
+            )
+            .toList(),
       ),
     );
   }

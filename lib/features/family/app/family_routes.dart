@@ -6,10 +6,6 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
-import 'package:givt_app/features/children/add_member/pages/member_main_scaffold_page.dart';
-import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
-import 'package:givt_app/features/children/cached_members/pages/cached_family_overview_page.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
@@ -30,7 +26,6 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/set_
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_introduction.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/registration_redirect_to_generosity_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
@@ -76,6 +71,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/s
 import 'package:givt_app/features/family/features/recommendation/start_recommendation/start_recommendation_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
@@ -99,12 +95,6 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
-    GoRoute(
-      path: FamilyPages.generosityChallengeRedirect.path,
-      name: FamilyPages.generosityChallengeRedirect.name,
-      builder: (context, state) =>
-          const RegistrationRedirectToGenerosityScreen(),
-    ),
     GoRoute(
       path: FamilyPages.generosityChallenge.path,
       name: FamilyPages.generosityChallenge.name,
@@ -283,9 +273,9 @@ class FamilyAppRoutes {
           path: FamilyPages.parentHome.path,
           name: FamilyPages.parentHome.name,
           builder: (context, state) {
-            final extra = state.extra! as String;
+            final extra = state.extra! as Profile;
             return ParentHomeScreen(
-              id: extra,
+              profile: extra,
             );
           },
         ),
@@ -335,7 +325,6 @@ class FamilyAppRoutes {
           path: FamilyPages.wallet.path,
           name: FamilyPages.wallet.name,
           builder: (context, state) {
-            context.read<ProfilesCubit>().fetchActiveProfile();
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return MultiBlocProvider(
@@ -688,18 +677,6 @@ class FamilyAppRoutes {
           },
         ),
         GoRoute(
-          path: FamilyPages.cachedChildrenOverview.path,
-          name: FamilyPages.cachedChildrenOverview.name,
-          builder: (context, state) => BlocProvider(
-            create: (_) => CachedMembersCubit(
-              getIt(),
-              getIt(),
-              familyLeaderName: context.read<AuthCubit>().state.user.firstName,
-            )..loadFromCache(),
-            child: const CachedFamilyOverviewPage(),
-          ),
-        ),
-        GoRoute(
           path: FamilyPages.childDetails.path,
           name: FamilyPages.childDetails.name,
           builder: (context, state) {
@@ -752,19 +729,6 @@ class FamilyAppRoutes {
           },
         ),
         GoRoute(
-          path: FamilyPages.addMember.path,
-          name: FamilyPages.addMember.name,
-          builder: (context, state) {
-            final familyAlreadyExists = state.extra as bool? ?? false;
-            return BlocProvider(
-              create: (_) => AddMemberCubit(getIt(), getIt()),
-              child: AddMemberMainScaffold(
-                familyAlreadyExists: familyAlreadyExists,
-              ),
-            );
-          },
-        ),
-        GoRoute(
           path: FamilyPages.childrenOverview.path,
           name: FamilyPages.childrenOverview.name,
           builder: (context, state) {
@@ -772,7 +736,6 @@ class FamilyAppRoutes {
             if (state.extra != null) {
               showAllowanceWarning = state.extra!.toString().contains('true');
             }
-            context.read<ProfilesCubit>().fetchActiveProfile();
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
             return MultiBlocProvider(
@@ -836,6 +799,11 @@ class FamilyAppRoutes {
               child: const PermitBiometricPage(),
             );
           },
+        ),
+        GoRoute(
+          path: FamilyPages.reflectIntro.path,
+          name: FamilyPages.reflectIntro.name,
+          builder: (context, state) => const ReflectIntroScreen(),
         ),
       ],
       redirect: (context, state) {

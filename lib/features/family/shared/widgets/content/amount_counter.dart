@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
-import 'package:givt_app/utils/utils.dart';
 
 class AmountCounter extends StatefulWidget {
   const AmountCounter({
@@ -30,11 +30,10 @@ class _AmountCounterState extends State<AmountCounter> {
   static const int tapTime = 240;
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;
-  static int maxAmount = 999;
-  static late int minAmount;
   static const int amountIncrement = 5;
   static const int amountIncrement2 = 10;
-
+  static late int minAmount;
+  int maxAmount = 999;
   late int _currentAmount;
   Timer? _timer;
   Duration _heldDuration = Duration.zero;
@@ -134,9 +133,9 @@ class _AmountCounterState extends State<AmountCounter> {
             size: 25,
             color: (_currentAmount < 2)
                 ? widget.canAmountBeZero && _currentAmount > 0
-                    ? AppTheme.primary20
+                    ? FamilyAppTheme.primary20
                     : Colors.grey
-                : AppTheme.primary20,
+                : FamilyAppTheme.primary20,
           ),
         ),
         Container(
@@ -146,7 +145,7 @@ class _AmountCounterState extends State<AmountCounter> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.displaySmall!.copyWith(
               fontWeight: FontWeight.w700,
-              color: AppTheme.secondary30,
+              color: FamilyAppTheme.secondary30,
               fontFeatures: <FontFeature>[
                 const FontFeature.liningFigures(),
                 const FontFeature.tabularFigures(),
@@ -165,7 +164,8 @@ class _AmountCounterState extends State<AmountCounter> {
           child: FaIcon(
             FontAwesomeIcons.plus,
             size: 25,
-            color: (_currentAmount > 998) ? Colors.grey : AppTheme.primary20,
+            color:
+                (_currentAmount > 998) ? Colors.grey : FamilyAppTheme.primary20,
           ),
         ),
       ],

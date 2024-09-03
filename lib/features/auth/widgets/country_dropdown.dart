@@ -23,57 +23,68 @@ class CountryDropDown extends StatelessWidget {
         .where((element) => element != Country.unknown)
         .toList();
 
-    return DropdownMenu<Country>(
-      dropdownMenuEntries: _buildPopupItems(countries, locals, context),
-      inputDecorationTheme: InputDecorationTheme(
-        enabledBorder: selectedInputBorder,
-        border: enabledInputBorder,
-      ),
-      textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-            color: FamilyAppTheme.primary40,
-          ),
-      menuHeight: 250,
-      menuStyle: MenuStyle(
-        surfaceTintColor: MaterialStateProperty.resolveWith((states) {
-          return Colors.white;
-        }),
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          return Colors.white;
-        }),
-        side: MaterialStateProperty.resolveWith((states) {
-          return const BorderSide(
-            color: FamilyAppTheme.neutralVariant80,
-            width: 2,
-          );
-        }),
-        shape: MaterialStateProperty.resolveWith((states) {
-          return const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          );
-        }),
-      ),
-      width: MediaQuery.of(context).size.width - 32,
-      initialSelection: selectedCountry,
-      trailingIcon: const Icon(
-        FontAwesomeIcons.chevronDown,
-        color: FamilyAppTheme.primary20,
-      ),
-      selectedTrailingIcon: const Icon(
-        FontAwesomeIcons.chevronUp,
-        color: FamilyAppTheme.primary20,
-      ),
-      onSelected: (Country? country) {
-        if (country != null) {
-          onChanged?.call(country);
+    return GestureDetector(
+      onTapDown: (_) {
+        final currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus &&
+            currentFocus.focusedChild != null) {
+          currentFocus.focusedChild!.unfocus();
         }
       },
-      leadingIcon: Container(
-        padding: const EdgeInsets.only(left: 12, right: 8, top: 12, bottom: 12),
-        child: CountryFlag.fromCountryCode(
-          selectedCountry.countryCode,
-          shape: const RoundedRectangle(4),
-          height: 25,
-          width: 35,
+      behavior: HitTestBehavior.translucent,
+      child: DropdownMenu<Country>(
+        dropdownMenuEntries: _buildPopupItems(countries, locals, context),
+        inputDecorationTheme: InputDecorationTheme(
+          enabledBorder: selectedInputBorder,
+          border: enabledInputBorder,
+        ),
+        textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: FamilyAppTheme.primary40,
+            ),
+        menuHeight: 250,
+        menuStyle: MenuStyle(
+          surfaceTintColor: MaterialStateProperty.resolveWith((states) {
+            return Colors.white;
+          }),
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            return Colors.white;
+          }),
+          side: MaterialStateProperty.resolveWith((states) {
+            return const BorderSide(
+              color: FamilyAppTheme.neutralVariant80,
+              width: 2,
+            );
+          }),
+          shape: MaterialStateProperty.resolveWith((states) {
+            return const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            );
+          }),
+        ),
+        width: MediaQuery.of(context).size.width - 48,
+        initialSelection: selectedCountry,
+        trailingIcon: const Icon(
+          FontAwesomeIcons.chevronDown,
+          color: FamilyAppTheme.primary20,
+        ),
+        selectedTrailingIcon: const Icon(
+          FontAwesomeIcons.chevronUp,
+          color: FamilyAppTheme.primary20,
+        ),
+        onSelected: (Country? country) {
+          if (country != null) {
+            onChanged?.call(country);
+          }
+        },
+        leadingIcon: Container(
+          padding:
+              const EdgeInsets.only(left: 12, right: 8, top: 12, bottom: 12),
+          child: CountryFlag.fromCountryCode(
+            selectedCountry.countryCode,
+            shape: const RoundedRectangle(4),
+            height: 25,
+            width: 35,
+          ),
         ),
       ),
     );

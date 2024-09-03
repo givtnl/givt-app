@@ -10,29 +10,36 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
-class ParentHomeScreen extends StatelessWidget {
-  const ParentHomeScreen({required this.id, super.key});
+class ParentHomeScreen extends StatefulWidget {
+  const ParentHomeScreen({required this.profile, super.key});
 
-  final String id;
+  final Profile profile;
 
+  @override
+  State<ParentHomeScreen> createState() => _ParentHomeScreenState();
+}
+
+class _ParentHomeScreenState extends State<ParentHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       builder: (context, state) {
-        final profile = state.profiles.firstWhere((p) => p.id == id);
+        final activeProfile = state.activeProfile == Profile.empty()
+            ? widget.profile
+            : state.activeProfile;
         return Scaffold(
-          appBar: _topAppBar(profile, context),
-          backgroundColor: AppTheme.secondary99,
+          appBar: _topAppBar(activeProfile, context),
+          backgroundColor: FamilyAppTheme.secondary99,
           body: ColoredBox(
             color: Colors.white,
             child: Column(
               children: [
-                _parentHeaderWidget(profile, context),
+                _parentHeaderWidget(activeProfile, context),
                 _giveTile(context),
               ],
             ),
@@ -54,7 +61,6 @@ class ParentHomeScreen extends StatelessWidget {
   }
 
   void _onProfileSwitchPressed(BuildContext context) {
-    context.read<ProfilesCubit>().fetchAllProfiles();
     context.pop();
     AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.profileSwitchPressed,
@@ -63,7 +69,7 @@ class ParentHomeScreen extends StatelessWidget {
 
   Widget _fakeAppBar(BuildContext context) => SafeArea(
         child: Container(
-          color: AppTheme.secondary99,
+          color: FamilyAppTheme.secondary99,
           width: MediaQuery.sizeOf(context).width,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -72,7 +78,7 @@ class ParentHomeScreen extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  color: AppTheme.secondary95,
+                  color: FamilyAppTheme.secondary95,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -114,7 +120,8 @@ class ParentHomeScreen extends StatelessWidget {
 
   TopAppBar _topAppBar(Profile profile, BuildContext context) => TopAppBar(
         title: profile.firstName,
-        color: AppTheme.secondary99,
+        color: FamilyAppTheme.secondary99,
+        systemNavigationBarColor: FamilyAppTheme.secondary99,
         actions: [
           IconButton(
             icon: switchProfilesIcon(),
@@ -126,7 +133,7 @@ class ParentHomeScreen extends StatelessWidget {
   Widget _parentHeaderWidget(Profile profile, BuildContext context) =>
       Container(
         width: MediaQuery.sizeOf(context).width,
-        color: AppTheme.secondary99,
+        color: FamilyAppTheme.secondary99,
         child: Stack(
           children: [
             Positioned(

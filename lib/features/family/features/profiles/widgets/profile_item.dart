@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class ProfileItem extends StatelessWidget {
   const ProfileItem({
-    required this.name, required this.imageUrl, super.key,
+    required this.name,
+    this.imageUrl,
+    this.assetImage,
+    super.key,
   });
 
   final String name;
-  final String imageUrl;
+  final String? imageUrl;
+  final String? assetImage;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +23,18 @@ class ProfileItem extends StatelessWidget {
       alignment: Alignment.center,
       child: Column(
         children: [
-          SvgPicture.network(
-            imageUrl,
-            width: imgSize,
-            height: imgSize,
-          ),
+          if (assetImage != null)
+            SvgPicture.asset(
+              assetImage!,
+              width: imgSize,
+              height: imgSize,
+            ),
+          if (imageUrl != null)
+            SvgPicture.network(
+              imageUrl!,
+              width: imgSize,
+              height: imgSize,
+            ),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -40,7 +51,7 @@ class ProfileItem extends StatelessWidget {
               const SizedBox(width: 4),
               const FaIcon(
                 FontAwesomeIcons.arrowRight,
-                color: AppTheme.defaultTextColor,
+                color: FamilyAppTheme.defaultTextColor,
                 size: 16,
               ),
             ],

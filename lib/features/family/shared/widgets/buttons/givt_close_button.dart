@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class GivtCloseButton extends StatelessWidget {
@@ -22,7 +22,7 @@ class GivtCloseButton extends StatelessWidget {
       child: Container(
         width: 40,
         height: 40,
-        color: isDisabled ? AppTheme.disabledTileBorder : Colors.white,
+        color: isDisabled ? FamilyAppTheme.disabledTileBorder : Colors.white,
         child: Icon(
           FontAwesomeIcons.xmark,
           size: 20,

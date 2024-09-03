@@ -208,10 +208,18 @@ class GivtRepositoryImpl with GivtRepository {
       'TransactionStatusses': '2',
       'TransactionStatusses': '3',
     };
-    final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
-    return SummaryItem.fromJsonList(
-      decodedJson,
-    );
+    try {
+      final decodedJson = await apiClient.fetchMonthlySummary(guid, params);
+      return SummaryItem.fromJsonList(
+        decodedJson,
+      );
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: 'fetchSummary',
+      );
+      return [];
+    }
   }
 
   @override

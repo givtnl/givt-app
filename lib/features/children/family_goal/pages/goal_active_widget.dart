@@ -22,17 +22,14 @@ class GoalActiveWidget extends StatelessWidget {
               Text(
                 org.organisationName ?? 'Name Placeholder',
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 17,
-                      fontFamily: 'Mulish',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
               ),
               const SizedBox(height: 4),
               Text(
                 '${context.l10n.familyGoalPrefix}\$${currentGoal.goalAmount}',
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontFamily: 'Mulish',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
               ),

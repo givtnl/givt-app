@@ -31,6 +31,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const secondary30 = Color(0xFF004F50);
   static const secondary40 = Color(0xFF00696A);
   static const secondary80 = Color(0xFF4CDADB);
+  static const secondary90 = Color(0xFF6FF6F7);
   static const secondary95 = Color(0xFFAEFFFF);
   static const secondary98 = Color(0xFFE2FFFE);
   static const secondary99 = Color(0xFFF1FFFE);
@@ -56,46 +57,34 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const error30 = Color(0xFF920700);
   static const error80 = Color(0xFFFFB4A7);
 
-  static const neutralVariant95 = Color(0xFFEEF2E4);
-  static const neutralVariant80 = Color(0xFFC8C7BF);
+  static const neutralVariant40 = Color(0xFF5B6055);
+  static const neutralVariant50 = Color(0xFF74796D);
   static const neutralVariant60 = Color(0xFF8E9286);
+  static const neutralVariant80 = Color(0xFFC8C7BF);
+  static const neutralVariant90 = Color(0xFFE4E3DB);
+  static const neutralVariant95 = Color(0xFFEEF2E4);
 
   static const disabledTileBackground = Color(0xFFF5F4F5);
   static const disabledTileBorder = Color(0xFFC8C6C9);
 
-//colors of tiles in the give bottomsheet
-  static const lightPurple = Color(0xFFF9F6FD);
-  static const darkPurpleText = Color(0xFF7957A2);
-  static const lightYellow = Color(0xFFFFF7CC);
-  static const darkYellowText = Color(0xFF89610F);
-
-//for recommendation flow
-  static const recommendationItemSelected = Color(0xFFC7DFBC);
+  //for recommendation flow
   static const recommendationItemText = Color(0xFF405A66);
-  static const interestsTallyText = Color(0xFFFBFCFF);
-  static const interestCardRadio = Color(0xFF7AAA35);
 
   // gradient bar colors
   static const progressGradient1 = Color(0xFFC6D96D);
   static const progressGradient2 = Color(0xFF9DD273);
   static const progressGradient3 = Color(0xFF74CA79);
 
-//functionally used on screen
-  static const givt4KidsBlue = Color(0xFF54A1EE);
-  static const offWhite = Color(0xFFEEEDE4);
+  //functionally used on screen
   static const disabledCameraGrey = Color(0xFFD8D8D8);
-  static const backButtonColor = Color(0xFFBFDBFC);
-  static const successBackgroundLightBlue = Color(0xFFB9D7FF);
   static const defaultTextColor = FamilyAppTheme.primary20;
-  static const givyBubbleBackground = Color(0xFFEAEFFD);
   static final historyAllowanceColor =
       const Color(0xFF89BCEF).withAlpha((255 * 0.1).toInt());
   static const downloadAppBackground = Color.fromARGB(255, 46, 41, 87);
 
   static const impactGroupDialogBarrierColor = Color(0x40006D42);
 
-// FOR TESTING
-  static const testingTextStyleLabelMedium = TextStyle(fontSize: 20);
+  static const givtBlue = Color(0xFF2e2957);
 
   Scheme _schemeLight() {
     final base = CorePalette.of(primaryColor.value);
@@ -172,7 +161,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       primaryColor: colorScheme.primary,
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
+          statusBarColor: Colors.transparent,
+          systemNavigationBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark, // For Android (dark icons)
           statusBarBrightness: Brightness.light, // For iOS (dark icons)
         ),
