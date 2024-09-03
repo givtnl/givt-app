@@ -134,7 +134,7 @@ class ReflectAndShareRepository {
 
   List<GameProfile> _setProfiles(
       int superheroIndex, int sidekickIndex, Random rng) {
-     var questions = _getAllQuestions();
+    var questions = _getAllQuestions();
     final list = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
       if (index == superheroIndex) {
@@ -145,7 +145,7 @@ class ReflectAndShareRepository {
         final question = questions[rng.nextInt(questions.length)];
         list.add(profile.copyWith(role: Role.reporter(questions: [question])));
         questions.remove(question);
-        if(questions.isEmpty) {
+        if (questions.isEmpty) {
           questions = _getAllQuestions();
         }
       }
@@ -183,6 +183,7 @@ class ReflectAndShareRepository {
         _secretWords.where((word) => !_usedSecretWords.contains(word)).toList();
     if (list.isEmpty) {
       list = _secretWords;
+      _usedSecretWords.clear();
     }
     final rng = Random();
     final wordIndex = rng.nextInt(list.length);
