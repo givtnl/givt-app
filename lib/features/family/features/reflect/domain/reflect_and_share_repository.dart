@@ -134,7 +134,7 @@ class ReflectAndShareRepository {
 
   List<GameProfile> _setProfiles(
       int superheroIndex, int sidekickIndex, Random rng) {
-    final questions = _getQuestions();
+    var questions = _getAllQuestions();
     final list = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
       if (index == superheroIndex) {
@@ -145,6 +145,9 @@ class ReflectAndShareRepository {
         final question = questions[rng.nextInt(questions.length)];
         list.add(profile.copyWith(role: Role.reporter(questions: [question])));
         questions.remove(question);
+        if (questions.isEmpty) {
+          questions = _getAllQuestions();
+        }
       }
     });
     _selectedProfiles = list;
@@ -176,8 +179,12 @@ class ReflectAndShareRepository {
 
   // call this to get a secret word or reroll it
   String randomizeSecretWord() {
-    final list =
+    var list =
         _secretWords.where((word) => !_usedSecretWords.contains(word)).toList();
+    if (list.isEmpty) {
+      list = _secretWords;
+      _usedSecretWords.clear();
+    }
     final rng = Random();
     final wordIndex = rng.nextInt(list.length);
     _currentSecretWord = list[wordIndex];
@@ -205,7 +212,7 @@ class ReflectAndShareRepository {
   ];
 
 // get the questions that the reporters can ask
-  List<String> _getQuestions() {
+  List<String> _getAllQuestions() {
     return [
       "What is something kind that someone did for you today?",
       "What is something you did today that you're proud of?",
