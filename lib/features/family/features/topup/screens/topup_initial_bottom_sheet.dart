@@ -7,7 +7,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/input/fun_counter.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
 import 'package:givt_app/features/family/shared/design/components/overlays/fun_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -53,7 +53,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          AmountCounter(
+          FunCounter(
             currency: currency,
             initialAmount: topupAmount,
             onAmountChanged: (amount) {

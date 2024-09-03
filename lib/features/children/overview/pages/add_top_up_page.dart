@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/input/fun_counter.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -56,7 +56,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                       iconSize: 48,
                     ),
                     const SizedBox(height: 16),
-                    AmountCounter(
+                    FunCounter(
                       currency: widget.currency,
                       initialAmount: _amount,
                       onAmountChanged: (amount) => setState(() {
