@@ -79,7 +79,7 @@ class EditAllowanceWidget extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child:
-                CustomGreenElevatedButton(title: 'Confirm', onPressed: () {}),
+                CustomElevatedButton(title: 'Confirm', onPressed: () {}),
           ),
         ],
       ),

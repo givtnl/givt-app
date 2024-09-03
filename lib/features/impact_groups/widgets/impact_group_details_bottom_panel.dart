@@ -46,7 +46,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
               showGoalLabel: true,
             ),
             const SizedBox(height: 15),
-            CustomGreenElevatedButton(
+            CustomElevatedButton(
               title: context.l10n.give,
               onPressed: () {
                 AnalyticsHelper.logEvent(

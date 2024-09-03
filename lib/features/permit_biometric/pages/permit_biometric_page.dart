@@ -100,7 +100,7 @@ class PermitBiometricPage extends StatelessWidget {
                         context.read<PermitBiometricCubit>().denyBiometric();
                       },
                     ),
-                    CustomGreenElevatedButton(
+                    CustomElevatedButton(
                       title: context.l10n.permitBiometricActivateWithType(
                         state.biometricType.name,
                       ),
