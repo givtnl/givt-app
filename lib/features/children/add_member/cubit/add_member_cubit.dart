@@ -63,7 +63,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
         unawaited(
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.allowanceNotSuccessful,
+            eventName: AmplitudeEvents.topupFailed,
           ),
         );
       } else {

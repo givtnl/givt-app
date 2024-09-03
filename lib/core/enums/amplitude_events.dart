@@ -12,6 +12,7 @@ enum AmplitudeEvents {
   failedToGetVpc('failed_to_get_vpc'),
   failedTopUpNoFunds('failed_top_up_no_funds'),
   allowanceNotSuccessful('allowance_not_successful'),
+  topupFailed('topup_failed'),
   backClicked('back_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),
   directNoticeClicked('direct_notice_clicked'),
