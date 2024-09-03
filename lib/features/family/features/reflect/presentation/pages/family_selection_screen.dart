@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -9,11 +8,10 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/fam
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class FamilySelectionScreen extends StatefulWidget {

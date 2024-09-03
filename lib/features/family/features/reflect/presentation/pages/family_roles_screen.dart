@@ -6,9 +6,8 @@ import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubi
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
-import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class FamilyRolesScreen extends StatefulWidget {

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
-import 'package:givt_app/features/family/shared/design/components/input/fun_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class ParentAmountPage extends StatefulWidget {

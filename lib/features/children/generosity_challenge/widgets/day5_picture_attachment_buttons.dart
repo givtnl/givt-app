@@ -8,9 +8,7 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/gallery_permissions_dialog.dart';
-
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_secondary_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class Day5PictureAttachmentButtons extends StatelessWidget {
@@ -28,7 +26,9 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
               context: context,
               builder: (_) {
                 return CameraPermissionsDialog(
-                    cameraCubit: context.read<CameraCubit>(), isSettings: true,);
+                  cameraCubit: context.read<CameraCubit>(),
+                  isSettings: true,
+                );
               },
             );
           }
@@ -53,12 +53,15 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                 );
                 if (context.mounted && !success) {
                   unawaited(
-                      context.read<CameraCubit>().checkCameraPermission(),);
+                    context.read<CameraCubit>().checkCameraPermission(),
+                  );
                 }
-                unawaited(AnalyticsHelper.logEvent(
-                  eventName:
-                      AmplitudeEvents.generosityChallengeTakePictureClicked,
-                ),);
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName:
+                        AmplitudeEvents.generosityChallengeTakePictureClicked,
+                  ),
+                );
               },
               leftIcon: FontAwesomeIcons.camera,
               text: 'Take Picture',
@@ -71,7 +74,8 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                 );
                 if (context.mounted && !success) {
                   unawaited(
-                      context.read<CameraCubit>().checkGalleryPermission(),);
+                    context.read<CameraCubit>().checkGalleryPermission(),
+                  );
                 }
                 unawaited(
                   AnalyticsHelper.logEvent(

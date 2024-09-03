@@ -3,9 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
-import 'package:givt_app/features/family/shared/design/components/input/fun_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
   const AddMemberCounterPage({this.initialAmount, super.key});
