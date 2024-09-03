@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/features/family/shared/design/family_text_styles.dart';
+import 'package:givt_app/features/family/shared/design/fun_text_styles.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 @immutable
@@ -126,21 +126,21 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
   ThemeData _base(ColorScheme colorScheme) {
     const textTheme = TextTheme(
-      displayLarge: FamilyTextStyles.displayLarge,
-      displayMedium: FamilyTextStyles.displayMedium,
-      displaySmall: FamilyTextStyles.displaySmall,
-      titleLarge: FamilyTextStyles.titleLarge,
-      titleMedium: FamilyTextStyles.titleMedium,
-      titleSmall: FamilyTextStyles.titleSmall,
-      headlineSmall: FamilyTextStyles.headlineSmall,
-      headlineMedium: FamilyTextStyles.headlineMedium,
-      headlineLarge: FamilyTextStyles.headlineLarge,
-      labelSmall: FamilyTextStyles.labelSmall,
-      labelMedium: FamilyTextStyles.labelMedium,
-      labelLarge: FamilyTextStyles.labelLarge,
-      bodySmall: FamilyTextStyles.bodySmall,
-      bodyMedium: FamilyTextStyles.bodyMedium,
-      bodyLarge: FamilyTextStyles.bodyLarge,
+      displayLarge: FunTextStyles.displayLarge,
+      displayMedium: FunTextStyles.displayMedium,
+      displaySmall: FunTextStyles.displaySmall,
+      titleLarge: FunTextStyles.titleLarge,
+      titleMedium: FunTextStyles.titleMedium,
+      titleSmall: FunTextStyles.titleSmall,
+      headlineSmall: FunTextStyles.headlineSmall,
+      headlineMedium: FunTextStyles.headlineMedium,
+      headlineLarge: FunTextStyles.headlineLarge,
+      labelSmall: FunTextStyles.labelSmall,
+      labelMedium: FunTextStyles.labelMedium,
+      labelLarge: FunTextStyles.labelLarge,
+      bodySmall: FunTextStyles.bodySmall,
+      bodyMedium: FunTextStyles.bodyMedium,
+      bodyLarge: FunTextStyles.bodyLarge,
     );
 
     return ThemeData(

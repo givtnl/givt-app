@@ -26,8 +26,8 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -164,14 +164,14 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            GivtElevatedButton(
+                            FunButton(
                                 isTertiary: true,
                                 onTap: () => context.goNamed(
                                       FamilyPages.reflectIntro.name,
                                     ),
                                 text: 'Reflect & Share'),
                             const SizedBox(height: 8),
-                            GivtElevatedSecondaryButton(
+                            FunSecondaryButton(
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();

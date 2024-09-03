@@ -7,9 +7,9 @@ import 'package:givt_app/features/family/features/admin_fee/presentation/widgets
 import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowancePage extends StatefulWidget {
@@ -51,7 +51,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
     final child =
         widget.isMultipleChildren ? 'each of your children' : widget.childName;
     final theme = const FamilyAppTheme().toThemeData();
-    return FamilyScaffold(
+    return FunScaffold(
       appBar: const GenerosityAppBar(
         title: 'Recurring Amount',
         leading: GenerosityBackButton(),
@@ -109,7 +109,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     isMultipleChildren: widget.isMultipleChildren,
                   ),
                   const SizedBox(height: 4),
-                  GivtElevatedButton(
+                  FunButton(
                     text: context.l10n.confirm,
                     onTap: () {
                       Navigator.of(context).pop(_allowance);

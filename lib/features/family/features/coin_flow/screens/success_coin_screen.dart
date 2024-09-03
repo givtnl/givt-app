@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 import 'package:go_router/go_router.dart';
@@ -115,7 +115,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
 
   Widget _buildFAB(bool isOnlyChild) {
     if (widget.isGoal) {
-      return GivtElevatedButton(
+      return FunButton(
         text: 'Done',
         onTap: () {
           context.goNamed(FamilyPages.wallet.name);

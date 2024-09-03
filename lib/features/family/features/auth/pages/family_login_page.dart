@@ -5,7 +5,7 @@ import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
@@ -229,7 +229,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 ),
               ),
               const Spacer(),
-              GivtElevatedButton(
+              FunButton(
                 onTap: context.watch<AuthCubit>().state.status ==
                         AuthStatus.loading
                     ? null

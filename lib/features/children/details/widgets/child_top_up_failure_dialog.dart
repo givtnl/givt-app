@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,7 +36,7 @@ class TopUpFailureDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            GivtElevatedButton(text: 'OK', onTap: () => context.pop()),
+            FunButton(text: 'OK', onTap: () => context.pop()),
           ],
         ),
       ),

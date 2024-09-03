@@ -11,7 +11,7 @@ import 'package:givt_app/features/family/shared/widgets/content/amount_counter.d
 import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -84,7 +84,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
               fontSize: 15,
             ),
       ),
-      primaryButton: GivtElevatedButton(
+      primaryButton: FunButton(
         text: 'Confirm',
         amplitudeEvent: AmplitudeEvents.topupConfirmButtonClicked,
         onTap: () async {

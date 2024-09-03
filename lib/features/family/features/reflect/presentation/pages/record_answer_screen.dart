@@ -12,8 +12,8 @@ import 'package:givt_app/features/family/features/reflect/domain/models/roles.da
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
@@ -84,7 +84,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
+    return FunScaffold(
       appBar: GenerosityAppBar(
         title: _currentReporter!.firstName!,
         leading: null,
@@ -130,7 +130,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                 // record button
                 Padding(
                   padding: const EdgeInsets.all(24),
-                  child: GivtElevatedButton(
+                  child: FunButton(
                     isDisabled: widget.reporters.length == 0,
                     rightIcon: FontAwesomeIcons.arrowRight,
                     onTap: () {

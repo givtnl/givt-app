@@ -9,8 +9,8 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/gallery_permissions_dialog.dart';
 
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class Day5PictureAttachmentButtons extends StatelessWidget {
@@ -46,7 +46,7 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
         builder: (context, state) => Column(
           children: [
             const SizedBox(height: 8),
-            GivtElevatedButton(
+            FunButton(
               onTap: () async {
                 final success = await cubit.submitDay5Picture(
                   takenWithCamera: true,
@@ -64,7 +64,7 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
               text: 'Take Picture',
             ),
             const SizedBox(height: 8),
-            GivtElevatedSecondaryButton(
+            FunSecondaryButton(
               onTap: () async {
                 final success = await cubit.submitDay5Picture(
                   takenWithCamera: false,

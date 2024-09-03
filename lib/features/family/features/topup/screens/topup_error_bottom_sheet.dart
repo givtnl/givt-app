@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,7 +30,7 @@ class TopupErrorBottomSheet extends StatelessWidget {
           ),
         ],
       ),
-      primaryButton: GivtElevatedButton(
+      primaryButton: FunButton(
         text: 'Ok',
         amplitudeEvent: AmplitudeEvents.topupErrorOkButtonClicked,
         onTap: () {

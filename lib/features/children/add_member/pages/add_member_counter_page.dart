@@ -5,7 +5,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
   const AddMemberCounterPage({this.initialAmount, super.key});
@@ -50,7 +50,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                 ),
                 const SizedBox(height: 40),
                 const Spacer(),
-                GivtElevatedButton(
+                FunButton(
                   onTap: () {
                     Navigator.of(context).pop(_amount);
                   },

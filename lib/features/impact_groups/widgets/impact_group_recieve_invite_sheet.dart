@@ -7,7 +7,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -37,7 +37,7 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
             ),
           ),
           SvgPicture.asset('assets/images/family_superheroes.svg'),
-          GivtElevatedButton(
+          FunButton(
             text: context.l10n.acceptInviteKey,
             onTap: () {
               unawaited(

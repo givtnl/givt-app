@@ -13,8 +13,8 @@ import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart'
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class FamilySelectionScreen extends StatefulWidget {
   const FamilySelectionScreen({super.key});
@@ -35,7 +35,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
+    return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
       appBar: const TopAppBar(title: 'Who is playing?'),
       body: BaseStateConsumer<List<GameProfile>, dynamic>(
@@ -77,8 +77,8 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
-  GivtElevatedButton _seeRolesButton(BuildContext context) {
-    return GivtElevatedButton(
+  FunButton _seeRolesButton(BuildContext context) {
+    return FunButton(
       onTap: () {
         cubit.rolesClicked(selectedProfiles);
         Navigator.of(context).push(const FamilyRolesScreen().toRoute(context));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 
 class FoundNfcAnimation extends StatelessWidget {
   const FoundNfcAnimation({super.key});
@@ -30,7 +30,7 @@ class FoundNfcAnimation extends StatelessWidget {
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            child: GivtElevatedButton(
+            child: FunButton(
               isDisabled: true,
               onTap: null,
               text: '',

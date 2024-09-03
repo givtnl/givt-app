@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:go_router/go_router.dart';
 
 class StartRecommendationScreen extends StatelessWidget {
@@ -43,7 +43,7 @@ class StartRecommendationScreen extends StatelessWidget {
                 width: MediaQuery.sizeOf(context).width * .7,
               ),
             ),
-            GivtElevatedButton(
+            FunButton(
               text: 'Start',
               onTap: () =>
                   context.pushReplacementNamed(FamilyPages.locationSelection.name),

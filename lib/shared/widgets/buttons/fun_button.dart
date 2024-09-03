@@ -4,8 +4,8 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class GivtElevatedButton extends StatelessWidget {
-  const GivtElevatedButton({
+class FunButton extends StatelessWidget {
+  const FunButton({
     required this.onTap,
     required this.text,
     super.key,

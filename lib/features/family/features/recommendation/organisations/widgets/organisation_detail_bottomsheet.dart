@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/w
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_close_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -91,7 +91,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: GivtElevatedButton(
+            child: FunButton(
               text: 'Donate',
               onTap: () {
                 if (!isDonateButtonActive) {

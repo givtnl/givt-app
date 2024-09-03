@@ -14,8 +14,8 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
@@ -72,7 +72,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                         'Make sure you have enough funds in your account, then try again. Or choose another payment method.',
                         textAlign: TextAlign.center,
                       ),
-                primaryButton: GivtElevatedButton(
+                primaryButton: FunButton(
                   isDisabled: cachestate.status ==
                           CachedMembersStateStatus.loading ||
                       cachestate.status ==
@@ -85,7 +85,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                     await cacheCubit.tryCreateMembersFromCache(members);
                   },
                 ),
-                secondaryButton: GivtElevatedSecondaryButton(
+                secondaryButton: FunSecondaryButton(
                   isDisabled: cachestate.status ==
                           CachedMembersStateStatus.loading ||
                       cachestate.status ==

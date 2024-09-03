@@ -8,8 +8,8 @@ import 'package:givt_app/features/family/features/topup/screens/topup_bottom_she
 import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,7 +25,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
         "To continue giving you need to add more money to your Wallet. You'll need your parent to do this.",
         textAlign: TextAlign.center,
       ),
-      primaryButton: GivtElevatedButton(
+      primaryButton: FunButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
         amplitudeEvent: AmplitudeEvents.topupStartButtonClicked,
@@ -52,7 +52,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           );
         },
       ),
-      secondaryButton: GivtElevatedSecondaryButton(
+      secondaryButton: FunSecondaryButton(
         text: 'Go back',
         leftIcon: const Icon(
           FontAwesomeIcons.arrowLeft,

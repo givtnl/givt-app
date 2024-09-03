@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,7 +15,7 @@ class BackHomeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GivtElevatedButton(
+    return FunButton(
       text: 'Back to home',
       leftIcon: FontAwesomeIcons.house,
       onTap: () async {

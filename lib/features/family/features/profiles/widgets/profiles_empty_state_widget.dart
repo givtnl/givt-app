@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_secondary_button.dart';
 
 class ProfilesEmptyStateWidget extends StatelessWidget {
   const ProfilesEmptyStateWidget({
@@ -31,7 +31,7 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: GivtElevatedSecondaryButton(
+                  child: FunSecondaryButton(
                     onTap: () => logout(context, fromLogoutBtn: true),
                     text: 'Logout',
                     leftIcon: SvgPicture.asset(
@@ -44,7 +44,7 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
                   width: 16,
                 ),
                 Expanded(
-                  child: GivtElevatedButton(
+                  child: FunButton(
                     onTap: onRetry,
                     text: 'Retry',
                     leftIcon: Icons.refresh_rounded,

@@ -4,7 +4,7 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_input_field.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
 
 class ChatBar extends StatelessWidget {
   const ChatBar({
@@ -36,7 +36,7 @@ class ChatBar extends StatelessWidget {
           const Spacer(flex: 2),
           Flexible(
             flex: 5,
-            child: GivtElevatedButton(
+            child: FunButton(
               onTap: () {
                 context.read<ChatScriptsCubit>().provideAnswer(
                       context,
@@ -80,7 +80,7 @@ class ChatBar extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: GivtElevatedButton(
+            child: FunButton(
               onTap: () {
                 context.read<ChatScriptsCubit>().provideAnswer(
                       context,

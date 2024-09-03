@@ -13,8 +13,8 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/buttons/fun_button.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,7 +59,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
       'firstuse_orgs',
     ];
 
-    return FamilyScaffold(
+    return FunScaffold(
       appBar: AppBar(
         leading: const BackButton(
           color: Colors.transparent,
@@ -83,7 +83,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
           _buildAnimatedBottomIndexes(imageNames, size, context),
           Padding(
             padding: const EdgeInsets.only(top: 16, left: 24, right: 24),
-            child: GivtElevatedButton(
+            child: FunButton(
               onTap: () async {
                 if (!getIt<NetworkInfo>().isConnected) {
                   if (!context.mounted) {

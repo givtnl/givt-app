@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
@@ -32,7 +32,7 @@ class AddMemberLoadingPage extends StatelessWidget {
             _navigateToProfileSelection(context);
           }
         },
-        child: const FamilyScaffold(
+        child: const FunScaffold(
           body: SettingUpFamilySpaceLoadingWidget(),
         ),
       ),
