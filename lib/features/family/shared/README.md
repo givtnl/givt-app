@@ -4,6 +4,16 @@
 
 Everything related to the FUN Design System in Figma.
 
+https://www.figma.com/design/TpvZkfxdBBBlGmTD7QyxJ3/FUN-Design-System?node-id=47909-2&node-type=CANVAS&t=3S7LFtEtrq3bKbWH-0
+
+Convention:
+- `Fun` prefix for all the components
+- Name from component in Figma
+- Folder name is the grouped name in Figma
+
+So for example for the `Card` component in Figma: 
+Name is `FunCard` and we put it in the folder called `content`.
+
 ### Theme
 
 Here we have everything related to the FUN theming: colors, sizes etc.
