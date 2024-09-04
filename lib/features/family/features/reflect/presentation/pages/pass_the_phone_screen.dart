@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class PassThePhone extends StatelessWidget {
   const PassThePhone({
@@ -11,9 +13,21 @@ class PassThePhone extends StatelessWidget {
     required this.buttonText,
     super.key,
   });
+
+  factory PassThePhone.toSuperhero(GameProfile user) {
+    return PassThePhone(
+      user: user,
+      onTap: (context) => Navigator.of(context).push(
+        const RevealSecretWordScreen().toRoute(context),
+      ),
+      buttonText: 'Reveal secret word',
+    );
+  }
+
   final GameProfile user;
-  final VoidCallback onTap;
+  final void Function(BuildContext context) onTap;
   final String buttonText;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +42,10 @@ class PassThePhone extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(70),
-                      border: Border.all(
-                        color: user.role!.color,
-                        width: 8,
-                      ),
-                    ),
-                    padding: EdgeInsets.zero,
-                    child: SvgPicture.network(
-                      user.pictureURL!,
-                      width: 120,
-                      height: 120,
-                    ),
+                  GameProfileItem(
+                    profile: user,
+                    size: 120,
+                    displayName: false,
                   ),
                   const SizedBox(height: 16),
                   TitleMediumText(
@@ -51,7 +55,7 @@ class PassThePhone extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: FunButton(
-                      onTap: onTap,
+                      onTap: () => onTap.call(context),
                       text: buttonText,
                     ),
                   ),

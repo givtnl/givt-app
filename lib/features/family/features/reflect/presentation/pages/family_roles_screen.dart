@@ -32,8 +32,15 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
     return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
       appBar: const FunTopAppBar(title: 'Your roles'),
-      body: BaseStateConsumer<List<GameProfile>, dynamic>(
+      body: BaseStateConsumer<List<GameProfile>, GameProfile>(
         cubit: _cubit,
+        onCustom: (context, superhero) {
+          Navigator.of(context).push(
+            ReflectionRuleSuperheroScreen(
+              superhero: superhero,
+            ).toRoute(context),
+          );
+        },
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
         onData: (context, profiles) => Stack(
@@ -57,11 +64,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       text: 'Test: assign roles for next round',
                     ),
                   FunButton(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        const ReflectionRuleSuperheroScreen().toRoute(context),
-                      );
-                    },
+                    onTap: _cubit.onClickStart,
                     text: 'Start',
                   ),
                 ],
