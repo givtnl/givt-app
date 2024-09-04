@@ -16,7 +16,6 @@ class SecretWordInput extends StatefulWidget {
 class _SecretWordInputState extends State<SecretWordInput> {
   List<FocusNode> focusNodes = [];
   List<TextEditingController> controllers = [];
-  int currentFocusNode = 0;
 
   @override
   Widget build(BuildContext context) {
