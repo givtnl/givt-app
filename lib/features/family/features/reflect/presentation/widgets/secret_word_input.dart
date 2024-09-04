@@ -20,7 +20,16 @@ class _SecretWordInputState extends State<SecretWordInput> {
 
   @override
   Widget build(BuildContext context) {
-    focusNodes = List.generate(widget.amountOfLetters, (index) => FocusNode());
+    
+    focusNodes = List.generate(
+      widget.amountOfLetters,
+      (index) => FocusNode(),
+    );
+
+    controllers = List.generate(
+      widget.amountOfLetters,
+      (index) => TextEditingController(),
+    );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -30,6 +39,7 @@ class _SecretWordInputState extends State<SecretWordInput> {
             width: 16,
             child: TextField(
               focusNode: focusNodes[i],
+              controller: controllers[i],
               textAlign: TextAlign.center,
               maxLength: 1,
               decoration: const InputDecoration(

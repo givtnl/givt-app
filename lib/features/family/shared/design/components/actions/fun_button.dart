@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
@@ -75,7 +76,7 @@ class FunButton extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: Icon(
+            child: FaIcon(
               leftIcon,
               size: 24,
               color: isDisabled ? themeData.colorScheme.outline : borderColor,
@@ -121,7 +122,7 @@ class FunButton extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 12),
-            child: Icon(
+            child: FaIcon(
               rightIcon,
               size: 24,
               color: isDisabled ? themeData.colorScheme.outline : borderColor,
