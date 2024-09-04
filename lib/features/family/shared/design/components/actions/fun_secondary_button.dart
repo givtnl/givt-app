@@ -32,12 +32,10 @@ class FunSecondaryButton extends StatefulWidget {
   final AmplitudeEvents? amplitudeEvent;
 
   @override
-  State<FunSecondaryButton> createState() =>
-      _FunSecondaryButtonState();
+  State<FunSecondaryButton> createState() => _FunSecondaryButtonState();
 }
 
-class _FunSecondaryButtonState
-    extends State<FunSecondaryButton> {
+class _FunSecondaryButtonState extends State<FunSecondaryButton> {
   double dropShadowHeight = 4;
   double paddingtop = 4;
   bool isPressed = false;
@@ -179,7 +177,7 @@ class _FunSecondaryButtonState
           ),
           Padding(
             padding: const EdgeInsets.only(left: 8),
-            child: widget.leftIcon,
+            child: widget.rightIcon,
           ),
         ],
       );

@@ -28,7 +28,6 @@ class RegistrationSuccessUs extends StatelessWidget {
         child: FunScaffold(
           appBar: FunTopAppBar.primary99(
             title: 'Registration complete',
-            leading: null,
           ),
           body: Center(
             child: Column(
