@@ -101,13 +101,12 @@ class CreditCardDetailsPage extends StatelessWidget {
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
-    context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
-
     context.pushReplacementNamed(
       FamilyPages.permitUSBiometric.name,
       extra: PermitBiometricRequest.registration(redirect: (context) {
         context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
       }),
     );
+    context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
   }
 }
