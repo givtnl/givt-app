@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
@@ -161,7 +161,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   children: gridItems,
                                 ),
                               ),
-                            const SizedBox(height: 8),
+                            const Visibility(
+                                visible: false,
+                                child: SizedBox(height: 8)),
                             Visibility(
                               visible: false,
                               child: FunButton(
