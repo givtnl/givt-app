@@ -13,7 +13,6 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/crea
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/widgets/slider_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_initial_dialog.dart';
@@ -74,7 +73,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
             }
           },
           child: Scaffold(
-            appBar: const GenerosityAppBar(
+            appBar: FunTopAppBar.primary99(
               title: 'Day 7',
               leading: GenerosityBackButton(),
             ),

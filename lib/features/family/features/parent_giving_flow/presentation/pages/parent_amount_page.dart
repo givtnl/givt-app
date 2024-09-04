@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -36,7 +35,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: 'Give',
         leading: GenerosityBackButton(),
       ),

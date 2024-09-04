@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
@@ -51,7 +50,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
         widget.isMultipleChildren ? 'each of your children' : widget.childName;
     final theme = const FamilyAppTheme().toThemeData();
     return FunScaffold(
-      appBar: const GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: 'Recurring Amount',
         leading: GenerosityBackButton(),
       ),

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
@@ -85,7 +84,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      appBar: GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: _currentReporter!.firstName!,
         leading: null,
         actions: [
