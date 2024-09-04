@@ -12,6 +12,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -96,7 +97,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           if (state.cachedMembers.isNotEmpty) {
             showCachedMembersBottomsheet(state);
           } else {
-            await context.pushNamed(FamilyPages.childrenOverview.name);
+            await AddMemberUtil.addMemberPushPages(context);
           }
         }
       },
