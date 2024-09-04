@@ -57,6 +57,12 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
+  factory FunIcon.magnifyingGlass([Color circleColor = FamilyAppTheme.primary95]) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.magnifyingGlass,
+        circleColor: circleColor,
+      );
+
   /// The icon to be displayed in the center of the circle.
   /// If [icon] is provided, it will be used instead of [iconData].
   final IconData? iconData;
