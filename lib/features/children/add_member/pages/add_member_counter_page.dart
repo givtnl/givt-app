@@ -3,9 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
   const AddMemberCounterPage({this.initialAmount, super.key});
@@ -40,7 +39,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                 ),
                 const Spacer(),
                 SmileyCounter(totalCount: _amount),
-                AmountCounter(
+                FunCounter(
                   currency: '',
                   initialAmount: _amount,
                   onAmountChanged: (amount) => setState(() {
@@ -50,7 +49,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                 ),
                 const SizedBox(height: 40),
                 const Spacer(),
-                GivtElevatedButton(
+                FunButton(
                   onTap: () {
                     Navigator.of(context).pop(_amount);
                   },

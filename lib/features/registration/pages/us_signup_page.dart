@@ -10,6 +10,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -17,8 +18,7 @@ import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -79,7 +79,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       builder: (context, state) {
         final user = context.read<AuthCubit>().state.user;
 
-        return FamilyScaffold(
+        return FunScaffold(
           appBar: GenerosityAppBar(
             leading: GenerosityBackButton(
                     onPressed: () {
@@ -202,7 +202,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           checkBoxValue: _acceptPolicy,
         ),
         const SizedBox(height: 12),
-        GivtElevatedButton(
+        FunButton(
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? _register : null,
           text: locals.enterPaymentDetails,

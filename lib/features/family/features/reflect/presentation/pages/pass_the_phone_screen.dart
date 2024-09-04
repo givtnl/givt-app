@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 
 class PassThePhone extends StatelessWidget {
   const PassThePhone({
@@ -50,7 +50,7 @@ class PassThePhone extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(24),
-                    child: GivtElevatedButton(
+                    child: FunButton(
                       onTap: onTap,
                       text: buttonText,
                     ),

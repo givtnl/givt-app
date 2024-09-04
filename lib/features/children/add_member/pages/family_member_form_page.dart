@@ -13,9 +13,8 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -109,7 +108,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     final isLast = widget.index == widget.totalCount;
     final isChildSelected = selections[0];
     final keyboardIsVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    return FamilyScaffold(
+    return FunScaffold(
         appBar: const GenerosityAppBar(
           title: 'Set up Family',
           leading: GenerosityBackButton(),
@@ -162,14 +161,14 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   }
 
   Widget _primaryButton(bool isChildSelected) {
-    return GivtElevatedButton(
+    return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
       text: 'Done!',
     );
   }
 
   Widget _secondaryButton(bool isChildSelected) {
-    return GivtElevatedSecondaryButton(
+    return FunSecondaryButton(
       onTap: () {
         final member = addMember(isChildSelected: isChildSelected);
         if (member != null) {

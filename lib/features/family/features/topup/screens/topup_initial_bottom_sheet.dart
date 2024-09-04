@@ -7,11 +7,9 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/input_checkbox.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +37,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
       name: Country.fromCode(user.country).currency,
     ).currencySymbol;
 
-    return GivtBottomSheet(
+    return FunBottomSheet(
       title: 'Top up my wallet',
       icon: primaryCircleWithIcon(
         circleSize: 140,
@@ -53,7 +51,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          AmountCounter(
+          FunCounter(
             currency: currency,
             initialAmount: topupAmount,
             onAmountChanged: (amount) {
@@ -84,7 +82,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
               fontSize: 15,
             ),
       ),
-      primaryButton: GivtElevatedButton(
+      primaryButton: FunButton(
         text: 'Confirm',
         amplitudeEvent: AmplitudeEvents.topupConfirmButtonClicked,
         onTap: () async {

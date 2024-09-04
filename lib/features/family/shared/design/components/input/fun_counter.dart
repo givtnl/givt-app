@@ -6,8 +6,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
 
-class AmountCounter extends StatefulWidget {
-  const AmountCounter({
+class FunCounter extends StatefulWidget {
+  const FunCounter({
     required this.currency,
     this.initialAmount,
     this.onAmountChanged,
@@ -23,10 +23,10 @@ class AmountCounter extends StatefulWidget {
   final bool canAmountBeZero;
 
   @override
-  State<AmountCounter> createState() => _AmountCounterState();
+  State<FunCounter> createState() => _FunCounterState();
 }
 
-class _AmountCounterState extends State<AmountCounter> {
+class _FunCounterState extends State<FunCounter> {
   static const int tapTime = 240;
   static const int holdDownDuration = 1000;
   static const int holdDownDuration2 = 2000;

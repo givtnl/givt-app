@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
-class GivtBottomSheet extends StatelessWidget {
-  const GivtBottomSheet({
+class FunBottomSheet extends StatelessWidget {
+  const FunBottomSheet({
     required this.title,
     required this.content,
     this.icon,
@@ -23,8 +22,8 @@ class GivtBottomSheet extends StatelessWidget {
   final Widget content;
   final Widget? headlineContent;
 
-  final GivtElevatedButton? primaryButton;
-  final GivtElevatedSecondaryButton? secondaryButton;
+  final FunButton? primaryButton;
+  final FunSecondaryButton? secondaryButton;
 
   final VoidCallback? closeAction;
 
@@ -131,7 +130,7 @@ class GivtBottomSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => GivtBottomSheet(
+      builder: (context) => FunBottomSheet(
         title: title,
         content: content,
         icon: icon,

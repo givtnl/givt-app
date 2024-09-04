@@ -18,7 +18,7 @@ import 'package:givt_app/features/children/overview/pages/models/edit_allowance_
 import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
 import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -100,7 +100,7 @@ class ChildDetailsPage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: TopAppBar(
+          appBar: FunTopAppBar(
             title: (state is ChildDetailsFetchedState)
                 ? state.profileDetails.firstName
                 : '',

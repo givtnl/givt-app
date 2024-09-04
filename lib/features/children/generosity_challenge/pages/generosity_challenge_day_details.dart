@@ -11,7 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeDayDetails extends StatelessWidget {
@@ -89,7 +89,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                   ),
                 ),
               if (shouldShowCompleteButton)
-                GivtElevatedButton(
+                FunButton(
                   onTap: () async {
                     await showDialog<void>(
                       context: context,

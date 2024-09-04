@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class AddTopUpPage extends StatefulWidget {
@@ -35,8 +33,8 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
-      appBar: const TopAppBar(
+    return FunScaffold(
+      appBar: const FunTopAppBar(
         title: 'Top Up',
         leading: GenerosityBackButton(),
       ),
@@ -56,7 +54,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                       iconSize: 48,
                     ),
                     const SizedBox(height: 16),
-                    AmountCounter(
+                    FunCounter(
                       currency: widget.currency,
                       initialAmount: _amount,
                       onAmountChanged: (amount) => setState(() {
@@ -86,7 +84,7 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                     amount: _amount.toDouble(),
                   ),
                   const SizedBox(height: 4),
-                  GivtElevatedButton(
+                  FunButton(
                     text: context.l10n.confirm,
                     onTap: () {
                       Navigator.of(context).pop(_amount);

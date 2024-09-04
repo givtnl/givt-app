@@ -16,13 +16,13 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/widgets/country_dropdown.dart';
 import 'package:givt_app/features/auth/widgets/terms_and_conditions_dialog.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -110,7 +110,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    return FamilyScaffold(
+    return FunScaffold(
       appBar: AppBar(
         leading: const BackButton(),
         scrolledUnderElevation: 0,
@@ -244,7 +244,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
               if (_isLoading)
                 const Center(child: CircularProgressIndicator())
               else
-                GivtElevatedButton(
+                FunButton(
                   isDisabled: !isEnabled,
                   onTap: isEnabled
                       ? () async {

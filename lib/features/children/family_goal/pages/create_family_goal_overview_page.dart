@@ -84,7 +84,7 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
                       right: 24,
                       bottom: 16,
                     ),
-                    child: CustomGreenElevatedButton(
+                    child: CustomElevatedButton(
                       title: context.l10n.familyGoalCreate,
                       onPressed: () {
                         context.read<CreateFamilyGoalCubit>().showCause();
