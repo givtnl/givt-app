@@ -29,12 +29,13 @@ For a default icon you should use the `FunIcon` widget. Some icons are already d
 
 Here we have all the FUN components. To make it easier to find the components we have grouped them in the following categories.
 
-To use a component you should import it from the `lib/features/family/shared/components.dart` file.
+To use a component you should import it from the `lib/features/family/shared/design/components.dart` file.
 
 #### Actions
 
 - Button => `FunButton`
 - Secondary Button => `FunSecondaryButton`
+- Tile => `FunTile`
 
 #### Content
 
