@@ -7,7 +7,6 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/values_tally.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/family_values_content_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -22,7 +21,7 @@ class SelectFamilyValues extends StatelessWidget {
     return BlocBuilder<FamilyValuesCubit, FamilyValuesState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: const GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             title: 'Day 2',
             leading: GenerosityBackButton(),
           ),

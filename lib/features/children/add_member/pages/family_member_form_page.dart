@@ -9,7 +9,6 @@ import 'package:givt_app/features/children/add_member/widgets/child_or_parent_se
 import 'package:givt_app/features/children/add_member/widgets/family_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -109,9 +108,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     final isChildSelected = selections[0];
     final keyboardIsVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return FunScaffold(
-        appBar: const GenerosityAppBar(
+        appBar: FunTopAppBar.primary99(
           title: 'Set up Family',
-          leading: GenerosityBackButton(),
+          leading: const GenerosityBackButton(),
         ),
         body: Center(
           child: SingleChildScrollView(

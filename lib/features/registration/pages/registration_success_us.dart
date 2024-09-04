@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/registration/widgets/registered_check_animation.dart';
@@ -27,7 +26,7 @@ class RegistrationSuccessUs extends StatelessWidget {
       child: Theme(
         data: AppTheme.lightTheme,
         child: FunScaffold(
-          appBar: const GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             title: 'Registration complete',
             leading: null,
           ),

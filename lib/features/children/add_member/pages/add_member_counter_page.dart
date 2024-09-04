@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -25,8 +24,10 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const GenerosityAppBar(
-          title: 'Set up Family', leading: GenerosityBackButton()),
+      appBar: FunTopAppBar.primary99(
+        title: 'Set up Family',
+        leading: const GenerosityBackButton(),
+      ),
       body: SafeArea(
         child: Center(
           child: Padding(

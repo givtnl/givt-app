@@ -7,7 +7,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/day_button.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_icon_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -110,7 +109,7 @@ class _GenerosityChallengeOverviewState
     final arePersonalDetailsAvailable = userData.isNotEmpty;
 
     return Scaffold(
-      appBar: GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: 'Generosity Challenge',
         leading: widget.isDebug ? _deactivateButton() : null,
         actions: const [ChatIconButton()],

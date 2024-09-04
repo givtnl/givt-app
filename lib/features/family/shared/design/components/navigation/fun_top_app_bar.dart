@@ -13,6 +13,20 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
   });
 
+  factory FunTopAppBar.primary99({
+    required String title,
+    List<Widget> actions = const [],
+    Widget? leading,
+    Color? systemNavigationBarColor,
+  }) =>
+      FunTopAppBar(
+        title: title,
+        actions: actions,
+        leading: leading,
+        color: FamilyAppTheme.primary99,
+        systemNavigationBarColor: systemNavigationBarColor,
+      );
+
   final String title;
   final List<Widget> actions;
   final Widget? leading;

@@ -9,7 +9,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/how_many_tasks_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/timer_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
@@ -138,7 +137,7 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
     return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             title: 'Day ${challenge.state.detailedDayIndex + 1}',
             leading: GenerosityBackButton(
               onPressed: () {

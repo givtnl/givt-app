@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
@@ -80,7 +79,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         final user = context.read<AuthCubit>().state.user;
 
         return FunScaffold(
-          appBar: GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             leading: GenerosityBackButton(
                     onPressed: () {
                       logout(context, fromLogoutBtn: true);

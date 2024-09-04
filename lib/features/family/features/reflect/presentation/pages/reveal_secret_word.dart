@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -36,7 +35,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      appBar: const GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
         leading: null,
       ),

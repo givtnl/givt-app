@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_history.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +40,7 @@ class _ChatScriptPageState extends State<ChatScriptPage> {
             0;
         return Scaffold(
           backgroundColor: AppTheme.primary99,
-          appBar: GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             title: 'Chat',
             leading: showBackButton ? const GenerosityBackButton() : null,
             actions: [
