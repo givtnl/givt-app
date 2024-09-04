@@ -162,13 +162,19 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   children: gridItems,
                                 ),
                               ),
-                            const SizedBox(height: 8),
-                            FunButton(
-                                isTertiary: true,
-                                onTap: () => context.goNamed(
-                                      FamilyPages.reflectIntro.name,
-                                    ),
-                                text: 'Reflect & Share'),
+                            const Visibility(
+                              visible: false,
+                              child: SizedBox(height: 8),
+                            ),
+                            Visibility(
+                              visible: false,
+                              child: FunButton(
+                                  isTertiary: true,
+                                  onTap: () => context.goNamed(
+                                        FamilyPages.reflectIntro.name,
+                                      ),
+                                  text: 'Reflect & Share'),
+                            ),
                             const SizedBox(height: 8),
                             FunSecondaryButton(
                               onTap: () async {
