@@ -162,10 +162,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const Visibility(
-                                visible: false,
-                                child: SizedBox(height: 8)),
+                                visible: true, child: SizedBox(height: 8)),
                             Visibility(
-                              visible: false,
+                              visible: true,
                               child: FunButton(
                                   isTertiary: true,
                                   onTap: () => context.goNamed(

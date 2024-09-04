@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 import 'package:scratcher/widgets.dart';
 
 class RevealSecretWordScreen extends StatefulWidget {
@@ -84,7 +85,11 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             const SizedBox(height: 8),
             FunButton(
               isDisabled: !_isScratched,
-              onTap: () => context.pop(),
+              onTap: () {
+                Navigator.of(context).push(
+                  const StartInterviewScreen().toRoute(context),
+                );
+              },
               text: 'Ready',
             )
           ],
@@ -109,8 +114,11 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             LabelLargeText.primary30('Re-roll (1 times)'),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(FontAwesomeIcons.shuffle,
-                  size: 24, color: FamilyAppTheme.primary30,),
+              child: Icon(
+                FontAwesomeIcons.shuffle,
+                size: 24,
+                color: FamilyAppTheme.primary30,
+              ),
             ),
           ],
         ),
