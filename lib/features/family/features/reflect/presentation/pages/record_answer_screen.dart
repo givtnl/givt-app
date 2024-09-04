@@ -6,18 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
   RecordAnswerScreen({required this.reporters, super.key});
+
   final List<GameProfile> reporters;
+
   @override
   State<RecordAnswerScreen> createState() => _RecordAnswerScreenState();
 }
@@ -29,6 +33,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   int _remainingSeconds;
   GameProfile? _currentReporter;
   String buttontext = 'Start Recording';
+
   @override
   void initState() {
     super.initState();
@@ -149,6 +154,20 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                               ? 'Finish'
                               : 'Next journalist';
                         });
+                      }
+                      if (_remainingSeconds == 0 ||
+                          widget.reporters.length <= 1) {
+                        //TODO tamara will fix this
+                        Navigator.of(context).push(
+                          PassThePhone.toSidekick(GameProfile(
+                                  type: 'Child',
+                                  firstName: 'Test',
+                                  lastName: 'Test',
+                                  pictureURL:
+                                      "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero7.svg",
+                                  role: Role.sidekick()))
+                              .toRoute(context),
+                        );
                       }
                     },
                     text: buttontext,
