@@ -38,7 +38,6 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
-        leading: null,
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
