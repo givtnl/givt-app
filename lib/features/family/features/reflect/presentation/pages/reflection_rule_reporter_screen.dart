@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_sidekick_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -8,7 +9,9 @@ import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectionRuleReporterScreen extends StatefulWidget {
-  const ReflectionRuleReporterScreen({super.key});
+  const ReflectionRuleReporterScreen({required this.superhero, super.key});
+
+  final GameProfile superhero;
 
   @override
   State<ReflectionRuleReporterScreen> createState() =>
@@ -32,7 +35,8 @@ class _ReflectionRuleReporterScreenState
           button: FunButton(
             onTap: () {
               Navigator.of(context).push(
-                const ReflectionRuleSidekickScreen().toRoute(context),
+                ReflectionRuleSidekickScreen(superhero: widget.superhero)
+                    .toRoute(context),
               );
             },
             text: 'Next',

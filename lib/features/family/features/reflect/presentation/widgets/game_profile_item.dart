@@ -21,9 +21,8 @@ class GameProfileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
+        SizedBox(
           width: size,
           height: size + 20,
           child: Stack(

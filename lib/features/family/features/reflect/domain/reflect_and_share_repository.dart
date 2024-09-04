@@ -219,4 +219,7 @@ class ReflectAndShareRepository {
       "What is something you wish you could have done for someone else today?",
     ];
   }
+
+  GameProfile getCurrentSuperhero() =>
+      _selectedProfiles[_getCurrentSuperHeroIndex()];
 }

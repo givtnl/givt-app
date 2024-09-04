@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class FamilyRolesCubit extends CommonCubit<List<GameProfile>, dynamic> {
+class FamilyRolesCubit extends CommonCubit<List<GameProfile>, GameProfile> {
   FamilyRolesCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
@@ -18,5 +18,9 @@ class FamilyRolesCubit extends CommonCubit<List<GameProfile>, dynamic> {
     _reflectAndShareRepository.completeLoop();
     final list = _reflectAndShareRepository.assignRolesForNextRound();
     emitData(list);
+  }
+
+  void onClickStart() {
+    emitCustom(_reflectAndShareRepository.getCurrentSuperhero());
   }
 }
