@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -14,13 +15,23 @@ class PassThePhone extends StatelessWidget {
     super.key,
   });
 
-  factory PassThePhone.toSuperhero(GameProfile user) {
+  factory PassThePhone.toSuperhero(GameProfile superhero) {
     return PassThePhone(
-      user: user,
+      user: superhero,
       onTap: (context) => Navigator.of(context).push(
         const RevealSecretWordScreen().toRoute(context),
       ),
       buttonText: 'Reveal secret word',
+    );
+  }
+
+  factory PassThePhone.toSidekick(GameProfile sidekick) {
+    return PassThePhone(
+      user: sidekick,
+      onTap: (context) => Navigator.of(context).push(
+        const GuessSecretWordScreen().toRoute(context),
+      ),
+      buttonText: 'Guess secret word',
     );
   }
 

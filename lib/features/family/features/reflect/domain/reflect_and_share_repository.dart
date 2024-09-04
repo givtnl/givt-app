@@ -18,54 +18,6 @@ class ReflectAndShareRepository {
   List<String> _usedSecretWords = [];
 
   List<GameProfile> getCurrentReporters() {
-    //for quick prototyping/ development
-    return [
-      GameProfile(
-        firstName: "Debbie",
-        lastName: "Doe",
-        pictureURL:
-            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero7.svg",
-        type: "child",
-        role: Role.reporter(questions: [
-          "What is something kind that someone did for you today?",
-        ]),
-      ),
-      GameProfile(
-        firstName: "John",
-        lastName: "Doe",
-        pictureURL:
-            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero2.svg",
-        type: "child",
-        role: Role.reporter(questions: [
-          "What is something you did today that you're proud of?",
-        ]),
-      ),
-      GameProfile(
-        firstName: "Kore",
-        lastName: "Doe",
-        pictureURL:
-            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero5.svg",
-        type: "child",
-        role: Role.reporter(questions: [
-          "What is something you wish you could have done for someone else today?",
-        ]),
-      ),
-      // GameProfile(
-      //   firstName: "Jane",
-      //   lastName: "Doe",
-      //   pictureURL: "https://randomuser.me/api/portraits",
-      //   type: "child",
-      //   role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
-      // ),
-      // GameProfile(
-      //   firstName: "John",
-      //   lastName: "Doe",
-      //   pictureURL: "https://randomuser.me/api/portraits",
-      //   type: "child",
-      //   role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
-      // ),
-    ];
-    //TODO uncomment this if you want to do it based on the actual selection and randomisation
     return _selectedProfiles
         .where((profile) => profile.role is Reporter)
         .toList();
