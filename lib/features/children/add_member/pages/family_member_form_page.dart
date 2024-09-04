@@ -13,6 +13,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -112,44 +113,42 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           title: 'Set up Family',
           leading: const GenerosityBackButton(),
         ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SmileyCounter(
-                  totalCount: widget.totalCount,
-                  index: widget.index,
-                ),
-                ChildOrParentSelector(
-                  selections: selections,
-                  onPressed: (int index) {
-                    setState(() {
-                      selections = [index == 0, index == 1];
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                FamilyMemberForm(
-                  formKey: _formKey,
-                  nameController: _nameController,
-                  emailController: _emailController,
-                  ageController: _ageController,
-                  allowanceAmount: _amount,
-                  onAmountChanged: (amount) {
-                    setState(() {
-                      _amount = amount;
-                    });
-                  },
-                  isChildSelected: isChildSelected,
-                ),
-                const SizedBox(height: 40),
-                if (keyboardIsVisible && isLast)
-                  _primaryButton(isChildSelected)
-                else if (keyboardIsVisible)
-                  _secondaryButton(isChildSelected),
-              ],
-            ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SmileyCounter(
+                totalCount: widget.totalCount,
+                index: widget.index,
+              ),
+              ChildOrParentSelector(
+                selections: selections,
+                onPressed: (int index) {
+                  setState(() {
+                    selections = [index == 0, index == 1];
+                  });
+                },
+              ),
+              const SizedBox(height: 16),
+              FamilyMemberForm(
+                formKey: _formKey,
+                nameController: _nameController,
+                emailController: _emailController,
+                ageController: _ageController,
+                allowanceAmount: _amount,
+                onAmountChanged: (amount) {
+                  setState(() {
+                    _amount = amount;
+                  });
+                },
+                isChildSelected: isChildSelected,
+              ),
+              const SizedBox(height: 40),
+              if (keyboardIsVisible && isLast)
+                _primaryButton(isChildSelected)
+              else if (keyboardIsVisible)
+                _secondaryButton(isChildSelected),
+            ],
           ),
         ),
         floatingActionButton: keyboardIsVisible
@@ -184,8 +183,11 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           );
         }
       },
-      text: 'Continue',
-      rightIcon: const Icon(FontAwesomeIcons.arrowRight),
+      text: 'Add next member',
+      rightIcon: const Icon(
+        FontAwesomeIcons.arrowRight,
+        color: FamilyAppTheme.defaultTextColor,
+      ),
     );
   }
 }
