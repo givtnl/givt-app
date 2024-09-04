@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class SecretWordInput extends StatefulWidget {
   const SecretWordInput({
     required this.amountOfLetters,
+    required this.onChanged,
     super.key,
   });
 
   final int amountOfLetters;
+  final void Function(String word) onChanged;
 
   @override
   State<SecretWordInput> createState() => _SecretWordInputState();
@@ -42,6 +44,8 @@ class _SecretWordInputState extends State<SecretWordInput> {
                 } else {
                   if (i > 0) focusNodes[i - 1].requestFocus();
                 }
+
+                widget.onChanged(getWord());
               },
             ),
           ),
@@ -49,5 +53,9 @@ class _SecretWordInputState extends State<SecretWordInput> {
         ],
       ],
     );
+  }
+
+  String getWord() {
+    return controllers.map((e) => e.text).join();
   }
 }

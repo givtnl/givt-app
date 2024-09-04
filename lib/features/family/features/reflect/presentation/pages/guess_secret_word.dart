@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/result_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/secret_word_input.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
@@ -17,6 +19,7 @@ class GuessSecretWordScreen extends StatefulWidget {
 
 class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   final GuessSecretWordCubit _cubit = GuessSecretWordCubit(getIt());
+  String currentGuessedWord = '';
 
   @override
   void didChangeDependencies() {
@@ -37,10 +40,16 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               title: 'Type in the secret word',
               content: SecretWordInput(
                 amountOfLetters: secretWord.length,
+                onChanged: (word) {
+                  currentGuessedWord = word;
+                },
               ),
               button: FunButton(
                 onTap: () {
-                  // KIDS-1343
+                  Navigator.of(context).push(
+                    ResultScreen(success: currentGuessedWord == secretWord)
+                        .toRoute(context),
+                  );
                 },
                 text: 'Done',
               ),
