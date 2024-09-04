@@ -7,8 +7,8 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class GivtElevatedSecondaryButton extends StatefulWidget {
-  const GivtElevatedSecondaryButton({
+class FunSecondaryButton extends StatefulWidget {
+  const FunSecondaryButton({
     required this.onTap,
     required this.text,
     super.key,
@@ -32,12 +32,12 @@ class GivtElevatedSecondaryButton extends StatefulWidget {
   final AmplitudeEvents? amplitudeEvent;
 
   @override
-  State<GivtElevatedSecondaryButton> createState() =>
-      _GivtElevatedSecondaryButtonState();
+  State<FunSecondaryButton> createState() =>
+      _FunSecondaryButtonState();
 }
 
-class _GivtElevatedSecondaryButtonState
-    extends State<GivtElevatedSecondaryButton> {
+class _FunSecondaryButtonState
+    extends State<FunSecondaryButton> {
   double dropShadowHeight = 4;
   double paddingtop = 4;
   bool isPressed = false;

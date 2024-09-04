@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class PictureAttachmentButtons extends StatelessWidget {
@@ -16,7 +15,7 @@ class PictureAttachmentButtons extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 8),
-        GivtElevatedButton(
+        FunButton(
           onTap: () => cubit.submitDay5Picture(
             takenWithCamera: true,
           ),
@@ -24,7 +23,7 @@ class PictureAttachmentButtons extends StatelessWidget {
           text: 'Take Picture',
         ),
         const SizedBox(height: 8),
-        GivtElevatedSecondaryButton(
+        FunSecondaryButton(
           onTap: () {
             AnalyticsHelper.logEvent(
               eventName:

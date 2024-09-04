@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -41,7 +41,7 @@ class GiveBottomSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: ActionTile(
+                      child: FunTile(
                         titleBig: 'Family Goal',
                         subtitle: state.familyGoal.orgName,
                         iconPath: 'assets/family/images/goal_tile.svg',
@@ -87,7 +87,7 @@ class GiveBottomSheet extends StatelessWidget {
                     const SizedBox()
                   else
                     Expanded(
-                      child: ActionTile(
+                      child: FunTile(
                         titleBig: 'Coin',
                         iconPath: 'assets/family/images/give_with_coin.svg',
                         backgroundColor: FamilyAppTheme.highlight98,
@@ -112,7 +112,7 @@ class GiveBottomSheet extends StatelessWidget {
                     ),
                   if (isiPad) const SizedBox() else const SizedBox(width: 16),
                   Expanded(
-                    child: ActionTile(
+                    child: FunTile(
                       titleBig: 'QR Code',
                       iconPath: 'assets/family/images/give_with_qr.svg',
                       borderColor:

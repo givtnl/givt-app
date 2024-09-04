@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class FamilyScaffold extends StatelessWidget {
-  const FamilyScaffold({
+class FunScaffold extends StatelessWidget {
+  const FunScaffold({
     required this.body,
     this.appBar,
     this.minimumPadding = const EdgeInsets.fromLTRB(24, 24, 24, 40),

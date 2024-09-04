@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +20,7 @@ class SwitchProfileSuccessButton extends StatelessWidget {
     final flowsCubit = context.read<FlowsCubit>();
     final profilesCubit = context.read<ProfilesCubit>();
 
-    return GivtElevatedButton(
+    return FunButton(
       text: 'Switch profile',
       isTertiary: true,
       leadingImage: ClipRRect(

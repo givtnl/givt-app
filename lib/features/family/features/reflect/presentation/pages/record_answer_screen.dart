@@ -6,14 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
@@ -84,8 +83,8 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
-      appBar: GenerosityAppBar(
+    return FunScaffold(
+      appBar: FunTopAppBar.primary99(
         title: _currentReporter!.firstName!,
         leading: null,
         actions: [
@@ -130,7 +129,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                 // record button
                 Padding(
                   padding: const EdgeInsets.all(24),
-                  child: GivtElevatedButton(
+                  child: FunButton(
                     isDisabled: widget.reporters.length == 0,
                     rightIcon: FontAwesomeIcons.arrowRight,
                     onTap: () {

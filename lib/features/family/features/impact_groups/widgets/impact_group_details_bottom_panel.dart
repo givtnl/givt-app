@@ -10,7 +10,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,7 +51,7 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
               showGoalLabel: true,
             ),
             const SizedBox(height: 15),
-            GivtElevatedButton(
+            FunButton(
               onTap: () {
                 if (activeProfile.wallet.balance < 1) {
                   EmptyWalletBottomSheet.show(context);

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:scratcher/widgets.dart';
 
@@ -35,8 +34,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
-      appBar: const GenerosityAppBar(
+    return FunScaffold(
+      appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
         leading: null,
       ),
@@ -83,7 +82,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               child: shuffleButton(),
             ),
             const SizedBox(height: 8),
-            GivtElevatedButton(
+            FunButton(
               isDisabled: !_isScratched,
               onTap: () => context.pop(),
               text: 'Ready',

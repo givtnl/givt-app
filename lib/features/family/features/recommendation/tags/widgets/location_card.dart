@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 
 class LocationCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class LocationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionTile(
+    return FunTile(
       titleSmall: location.displayText,
       iconPath: location.pictureUrl,
       onTap: onPressed ?? () {},

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -106,7 +105,7 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
                     ),
               ),
             const SizedBox(height: 16),
-            GivtElevatedButton(
+            FunButton(
               text: widget.primaryBtnText,
               onTap: () async {
                 if (true == widget.showLoading) {
@@ -125,7 +124,7 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               isLoading: _isLoading,
             ),
             const SizedBox(height: 16),
-            GivtElevatedSecondaryButton(
+            FunSecondaryButton(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
             ),

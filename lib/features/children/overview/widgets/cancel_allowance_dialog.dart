@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -46,7 +45,7 @@ class CancelAllowanceDialog extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  GivtElevatedButton(
+                  FunButton(
                     onTap: () => {
                       onCancel.call(),
                       context
@@ -59,7 +58,7 @@ class CancelAllowanceDialog extends StatelessWidget {
                     borderColor: AppTheme.error30,
                   ),
                   const SizedBox(height: 8),
-                  GivtElevatedSecondaryButton(
+                  FunSecondaryButton(
                     onTap: () => context.pop(),
                     text: 'No, go back',
                   ),

@@ -4,7 +4,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -20,7 +20,7 @@ class KidsHomeScreenAppBar extends StatelessWidget
   Widget build(BuildContext context) {
     final profiles = context.watch<ProfilesCubit>();
     final navigation = context.watch<NavigationCubit>();
-    return TopAppBar(
+    return FunTopAppBar(
       title: navigation.state.activeDestination.appBarTitle.isEmpty
           ? profiles.state.activeProfile.firstName
           : navigation.state.activeDestination.appBarTitle,

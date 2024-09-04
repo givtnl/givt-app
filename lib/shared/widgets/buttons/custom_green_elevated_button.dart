@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
-class CustomGreenElevatedButton extends StatelessWidget {
-  const CustomGreenElevatedButton({
+class CustomElevatedButton extends StatelessWidget {
+  const CustomElevatedButton({
     required this.title,
-    required this.onPressed,
+    this.backgroundColor = AppTheme.givtLightGreen,
+    this.onPressed,
     super.key,
   });
+
+  factory CustomElevatedButton.blue({
+    required String title,
+    VoidCallback? onPressed,
+  }) {
+    return CustomElevatedButton(
+      title: title,
+      onPressed: onPressed,
+      backgroundColor: AppTheme.givtBlue,
+    );
+  }
+
   final String title;
+  final Color? backgroundColor;
   final VoidCallback? onPressed;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -16,7 +31,7 @@ class CustomGreenElevatedButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppTheme.givtLightGreen,
+          backgroundColor: backgroundColor,
           disabledBackgroundColor: Colors.grey,
         ),
         child: Text(

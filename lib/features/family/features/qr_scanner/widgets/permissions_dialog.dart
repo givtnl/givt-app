@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/permissions_dialog_ui_model.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -42,7 +42,7 @@ class FamilyAppPermissionDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   if (model.isSettings)
-                    GivtElevatedButton(
+                    FunButton(
                       onTap: () {
                         AnalyticsHelper.logEvent(
                           eventName: AmplitudeEvents.openAppPermissionsSettings,
@@ -53,7 +53,7 @@ class FamilyAppPermissionDialog extends StatelessWidget {
                       text: 'Go to Settings',
                     )
                   else
-                    GivtElevatedButton(
+                    FunButton(
                       onTap: model.onNextTap,
                       text: 'Next',
                     ),

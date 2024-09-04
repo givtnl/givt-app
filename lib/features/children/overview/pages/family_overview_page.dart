@@ -13,9 +13,9 @@ import 'package:givt_app/features/children/overview/widgets/children_loading_pag
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
@@ -49,8 +49,8 @@ class FamilyOverviewPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return FamilyScaffold(
-          appBar: TopAppBar(
+        return FunScaffold(
+          appBar: FunTopAppBar(
             title: state is FamilyOverviewUpdatedState &&
                     !state.hasChildren &&
                     state.isAdultSingle

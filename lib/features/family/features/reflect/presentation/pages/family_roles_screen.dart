@@ -6,10 +6,9 @@ import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubi
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class FamilyRolesScreen extends StatefulWidget {
   const FamilyRolesScreen({super.key});
@@ -30,9 +29,9 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FamilyScaffold(
+    return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: const TopAppBar(title: 'Your roles'),
+      appBar: const FunTopAppBar(title: 'Your roles'),
       body: BaseStateConsumer<List<GameProfile>, dynamic>(
         cubit: _cubit,
         onLoading: (context) =>
@@ -53,11 +52,11 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                     ),
                   ),
                   if (_appConfig.isTestApp)
-                    GivtElevatedButton(
+                    FunButton(
                       onTap: _cubit.assignRolesForNextRound,
                       text: 'Test: assign roles for next round',
                     ),
-                  GivtElevatedButton(
+                  FunButton(
                     onTap: () {
                       Navigator.of(context).push(
                         const ReflectionRuleSuperheroScreen().toRoute(context),

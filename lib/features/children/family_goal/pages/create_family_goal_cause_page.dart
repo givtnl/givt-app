@@ -115,7 +115,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
-            child: CustomGreenElevatedButton(
+            child: CustomElevatedButton(
               title: context.l10n.continueKey,
               onPressed: state.selectedCollectGroup.type ==
                       CollectGroupType.none

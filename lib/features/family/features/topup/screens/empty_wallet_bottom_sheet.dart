@@ -5,11 +5,9 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,14 +16,14 @@ class EmptyWalletBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GivtBottomSheet(
+    return FunBottomSheet(
       title: 'Oops, an empty Wallet',
       icon: walletEmptyIcon(),
       content: const BodyMediumText(
         "To continue giving you need to add more money to your Wallet. You'll need your parent to do this.",
         textAlign: TextAlign.center,
       ),
-      primaryButton: GivtElevatedButton(
+      primaryButton: FunButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
         amplitudeEvent: AmplitudeEvents.topupStartButtonClicked,
@@ -52,7 +50,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           );
         },
       ),
-      secondaryButton: GivtElevatedSecondaryButton(
+      secondaryButton: FunSecondaryButton(
         text: 'Go back',
         leftIcon: const Icon(
           FontAwesomeIcons.arrowLeft,

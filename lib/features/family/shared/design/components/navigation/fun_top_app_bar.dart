@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TopAppBar({
+class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const FunTopAppBar({
     required this.title,
     this.actions = const [],
     this.leading,
@@ -12,6 +12,20 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.systemNavigationBarColor,
     super.key,
   });
+
+  factory FunTopAppBar.primary99({
+    required String title,
+    List<Widget> actions = const [],
+    Widget? leading,
+    Color? systemNavigationBarColor,
+  }) =>
+      FunTopAppBar(
+        title: title,
+        actions: actions,
+        leading: leading,
+        color: FamilyAppTheme.primary99,
+        systemNavigationBarColor: systemNavigationBarColor,
+      );
 
   final String title;
   final List<Widget> actions;

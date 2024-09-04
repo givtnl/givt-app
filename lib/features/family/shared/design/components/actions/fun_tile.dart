@@ -4,8 +4,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class ActionTile extends StatefulWidget {
-  const ActionTile({
+class FunTile extends StatefulWidget {
+  const FunTile({
     required this.onTap,
     required this.borderColor,
     required this.backgroundColor,
@@ -37,10 +37,10 @@ class ActionTile extends StatefulWidget {
   final MainAxisAlignment? mainAxisAlignment;
 
   @override
-  State<ActionTile> createState() => _ActionTileState();
+  State<FunTile> createState() => _FunTileState();
 }
 
-class _ActionTileState extends State<ActionTile> {
+class _FunTileState extends State<FunTile> {
   late Color backgroundColor;
   late Color borderColor;
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class FamilyTextStyles {
+class FunTextStyles {
 
  static const displayLarge = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
