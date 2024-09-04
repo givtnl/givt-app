@@ -8,25 +8,25 @@ import 'package:givt_app/features/family/utils/utils.dart';
 /// The icon size can be customized with [iconSize].
 /// The circle color can be customized with [circleColor].
 /// The icon color can be customized with [iconColor].
-/// 
+///
 /// Example on how to use the standard icons:
 /// ```dart
 /// FunIcon.mask();
 /// FunIcon.handshake();
 /// FunIcon.microphone();
-/// 
+///
 /// ```
-/// 
+///
 /// The above examples will create a mask, handshake and microphone icon respectively.
-///  
+///
 /// Example on how to use the custom icon:
-/// 
+///
 /// ```dart
 /// FunIcon(
 ///   iconData: FontAwesomeIcons.mask,
 ///   circleColor: FamilyAppTheme.primary95,
 /// );
-/// 
+///
 /// ```
 class FunIcon extends StatelessWidget {
   const FunIcon({
@@ -57,9 +57,22 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.magnifyingGlass([Color circleColor = FamilyAppTheme.primary95]) =>
+  factory FunIcon.magnifyingGlass(
+          [Color circleColor = FamilyAppTheme.primary95]) =>
       FunIcon(
         iconData: FontAwesomeIcons.magnifyingGlass,
+        circleColor: circleColor,
+      );
+
+  factory FunIcon.checkmark([Color circleColor = FamilyAppTheme.primary95]) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.check,
+        circleColor: circleColor,
+      );
+
+  factory FunIcon.xmark([Color circleColor = FamilyAppTheme.primary95]) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.xmark,
         circleColor: circleColor,
       );
 
@@ -91,11 +104,11 @@ class FunIcon extends StatelessWidget {
             ),
           ),
           icon ??
-          FaIcon(
-            iconData,
-            color: iconColor,
-            size: iconSize,
-          ),
+              FaIcon(
+                iconData,
+                color: iconColor,
+                size: iconSize,
+              ),
         ],
       ),
     );
