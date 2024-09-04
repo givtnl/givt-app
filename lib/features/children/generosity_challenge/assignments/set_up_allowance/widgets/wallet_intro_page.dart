@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class WalletIntroPage extends StatelessWidget {
@@ -17,7 +16,7 @@ class WalletIntroPage extends StatelessWidget {
     return Theme(
       data: theme,
       child: Scaffold(
-        appBar: const GenerosityAppBar(
+        appBar: FunTopAppBar.primary99(
           title: 'Gift from the Mayor',
           leading: GenerosityBackButton(),
         ),
@@ -61,7 +60,7 @@ class WalletIntroPage extends StatelessWidget {
                   ),
                 ),
                 const Spacer(flex: 2),
-                GivtElevatedButton(
+                FunButton(
                   onTap: onContinue,
                   text: 'Continue',
                 ),

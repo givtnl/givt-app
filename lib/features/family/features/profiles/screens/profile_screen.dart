@@ -8,7 +8,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/give_bottomsheet.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -109,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: ActionTile(
+                                  child: FunTile(
                                     titleBig: 'Give',
                                     iconPath:
                                         'assets/family/images/give_tile.svg',
@@ -147,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
-                                  child: ActionTile(
+                                  child: FunTile(
                                     titleBig: 'Find Charity',
                                     iconPath:
                                         'assets/family/images/find_tile.svg',

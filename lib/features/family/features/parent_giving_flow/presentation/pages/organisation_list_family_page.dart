@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -38,7 +38,7 @@ class _OrganisationListFamilyPageState
     final locals = context.l10n;
     final bloc = context.read<OrganisationBloc>();
     return Scaffold(
-      appBar: const TopAppBar(
+      appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
         title: 'Give',
       ),

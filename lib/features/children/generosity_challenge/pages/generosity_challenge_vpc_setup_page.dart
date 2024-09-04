@@ -7,9 +7,9 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_vpc_setup_custom.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/setting_up_family_space_loading_widget.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -48,9 +48,9 @@ class _GenerosityChallengeVpcSetupPageState
 
   Scaffold _vpc(BuildContext context) {
     return Scaffold(
-      appBar: const GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: 'Parental Permission',
-        leading: GenerosityBackButton(),
+        leading: const GenerosityBackButton(),
       ),
       body: VPCPage(
         onReadyClicked: () {

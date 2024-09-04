@@ -11,6 +11,10 @@ import 'package:givt_app/features/family/features/impact_groups/repository/impac
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 
@@ -98,5 +102,21 @@ void initRepositories() {
       () => ImpactGroupsRepositoryImpl(
         getIt(),
       ),
-    );
+    )
+    ..registerLazySingleton<ReflectAndShareRepository>(
+      () => ReflectAndShareRepository(
+        getIt(),
+      ),
+    )
+    ..registerFactory<FamilyRolesCubit>(
+      () => FamilyRolesCubit(
+        getIt(),
+      ),
+    )
+    ..registerFactory<FamilySelectionCubit>(
+      () => FamilySelectionCubit(
+        getIt(),
+      ),
+    )
+    ..registerFactory<InterviewCubit>(() => InterviewCubit(getIt()));
 }

@@ -53,7 +53,7 @@ class ProfilesOverviewWidget extends StatelessWidget {
         children: profiles
             .map(
               (profile) => SizedBox(
-                width: size.width * 0.29,
+                width: size.width * 0.28,
                 child: ProfileOverviewTile(profile: profile),
               ),
             )

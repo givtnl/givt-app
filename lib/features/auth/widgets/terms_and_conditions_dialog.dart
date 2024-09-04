@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/network/country_iso_info.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/givt_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -68,7 +68,7 @@ class TermsAndConditionsDialog extends StatelessWidget {
             title = locals.giftAidInfoTitle;
             termsAndConditions = locals.giftAidInfoBody;
           }
-          return GivtBottomSheet(
+          return FunBottomSheet(
             title: title,
             content: BodySmallText(
               termsAndConditions,

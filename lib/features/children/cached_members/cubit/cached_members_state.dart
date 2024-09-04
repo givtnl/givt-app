@@ -1,18 +1,16 @@
 part of 'cached_members_cubit.dart';
 
 enum CachedMembersStateStatus {
-  initial,
   loading,
-  overview,
   noFundsInitial,
-  noFundsRetrying,
   noFundsSuccess,
-  noFundsError,
+  clearedCache,
+  error,
 }
 
 class CachedMembersState extends Equatable {
   const CachedMembersState({
-    this.status = CachedMembersStateStatus.initial,
+    this.status = CachedMembersStateStatus.noFundsInitial,
     this.familyLeader = const Member.empty(),
     this.members = const [],
   });

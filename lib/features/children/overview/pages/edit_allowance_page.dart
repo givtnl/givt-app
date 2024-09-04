@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/widgets/cancel_allowance_dialog.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/family_scaffold.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class EditAllowancePage extends StatefulWidget {
@@ -51,8 +49,8 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
     final child =
         widget.isMultipleChildren ? 'each of your children' : widget.childName;
     final theme = const FamilyAppTheme().toThemeData();
-    return FamilyScaffold(
-      appBar: const GenerosityAppBar(
+    return FunScaffold(
+      appBar: FunTopAppBar.primary99(
         title: 'Recurring Amount',
         leading: GenerosityBackButton(),
       ),
@@ -76,7 +74,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                       height: 140,
                     ),
                     const SizedBox(height: 16),
-                    AmountCounter(
+                    FunCounter(
                       currency: widget.currency,
                       initialAmount: _allowance,
                       onAmountChanged: (allowance) => setState(() {
@@ -109,7 +107,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     isMultipleChildren: widget.isMultipleChildren,
                   ),
                   const SizedBox(height: 4),
-                  GivtElevatedButton(
+                  FunButton(
                     text: context.l10n.confirm,
                     onTap: () {
                       Navigator.of(context).pop(_allowance);

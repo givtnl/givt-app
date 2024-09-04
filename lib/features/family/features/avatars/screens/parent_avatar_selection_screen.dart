@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.da
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -113,7 +113,7 @@ Widget _getContent({
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
-                child: GivtElevatedButton(
+                child: FunButton(
                   text: context.l10n.save,
                   onTap: editProfileState.isSameProfilePicture
                       ? null

@@ -4,7 +4,9 @@ abstract class ProfilesState extends Equatable {
   const ProfilesState({
     required this.profiles,
     required this.activeProfileIndex,
+    this.cachedMembers = const [],
   });
+  final List<Member> cachedMembers;
 
   static const int _loggedInUserSelected = 0;
 
@@ -61,6 +63,7 @@ class ProfilesUpdatedState extends ProfilesState {
   const ProfilesUpdatedState({
     required super.profiles,
     required super.activeProfileIndex,
+    super.cachedMembers,
   });
 }
 
@@ -69,6 +72,7 @@ class ProfilesNotSetupState extends ProfilesState {
   const ProfilesNotSetupState({
     required super.profiles,
     required super.activeProfileIndex,
+    super.cachedMembers,
   });
 }
 

@@ -8,7 +8,7 @@ import 'package:givt_app/features/family/features/recommendation/interests/widge
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {
@@ -87,7 +87,7 @@ class InterestsSelectionScreen extends StatelessWidget {
           floatingActionButton: Visibility(
             visible:
                 state.selectedInterests.length == InterestsState.maxInterests,
-            child: GivtElevatedButton(
+            child: FunButton(
               isDisabled:
                   state.selectedInterests.length != InterestsState.maxInterests,
               text: 'Next',

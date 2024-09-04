@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/overview/widgets/models/edit_allowance_uimodel.dart';
-import 'package:givt_app/features/family/shared/widgets/content/amount_counter.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -60,7 +60,7 @@ class EditAllowanceWidget extends StatelessWidget {
                       ),
                 ),
                 const SizedBox(height: 10),
-                AmountCounter(
+                FunCounter(
                   currency: uiModel.currency,
                   initialAmount: uiModel.initialAllowance,
                   onAmountChanged: onAllowanceChanged,
@@ -79,7 +79,7 @@ class EditAllowanceWidget extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child:
-                CustomGreenElevatedButton(title: 'Confirm', onPressed: () {}),
+                CustomElevatedButton(title: 'Confirm', onPressed: () {}),
           ),
         ],
       ),

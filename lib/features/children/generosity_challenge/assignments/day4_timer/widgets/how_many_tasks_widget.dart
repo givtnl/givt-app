@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -90,7 +90,7 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
           ),
         ),
         const SizedBox(height: 16),
-        GivtElevatedButton(
+        FunButton(
           text: 'Save',
           onTap: _handleOnTapSaved,
         ),

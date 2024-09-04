@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/features/family/shared/design/family_text_styles.dart';
+import 'package:givt_app/features/family/shared/design/theme/fun_text_styles.dart';
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 @immutable
@@ -26,11 +26,13 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const primary95 = Color(0xFFC0FFD6);
   static const primary90 = Color(0xFF6BFCAB);
   static const primary98 = Color(0xFFE9FFED);
+  static const primary99 = Color(0xFFF5FFF5);
 
   static const secondary20 = Color(0xFF003737);
   static const secondary30 = Color(0xFF004F50);
   static const secondary40 = Color(0xFF00696A);
   static const secondary80 = Color(0xFF4CDADB);
+  static const secondary90 = Color(0xFF6FF6F7);
   static const secondary95 = Color(0xFFAEFFFF);
   static const secondary98 = Color(0xFFE2FFFE);
   static const secondary99 = Color(0xFFF1FFFE);
@@ -125,21 +127,21 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
 
   ThemeData _base(ColorScheme colorScheme) {
     const textTheme = TextTheme(
-      displayLarge: FamilyTextStyles.displayLarge,
-      displayMedium: FamilyTextStyles.displayMedium,
-      displaySmall: FamilyTextStyles.displaySmall,
-      titleLarge: FamilyTextStyles.titleLarge,
-      titleMedium: FamilyTextStyles.titleMedium,
-      titleSmall: FamilyTextStyles.titleSmall,
-      headlineSmall: FamilyTextStyles.headlineSmall,
-      headlineMedium: FamilyTextStyles.headlineMedium,
-      headlineLarge: FamilyTextStyles.headlineLarge,
-      labelSmall: FamilyTextStyles.labelSmall,
-      labelMedium: FamilyTextStyles.labelMedium,
-      labelLarge: FamilyTextStyles.labelLarge,
-      bodySmall: FamilyTextStyles.bodySmall,
-      bodyMedium: FamilyTextStyles.bodyMedium,
-      bodyLarge: FamilyTextStyles.bodyLarge,
+      displayLarge: FunTextStyles.displayLarge,
+      displayMedium: FunTextStyles.displayMedium,
+      displaySmall: FunTextStyles.displaySmall,
+      titleLarge: FunTextStyles.titleLarge,
+      titleMedium: FunTextStyles.titleMedium,
+      titleSmall: FunTextStyles.titleSmall,
+      headlineSmall: FunTextStyles.headlineSmall,
+      headlineMedium: FunTextStyles.headlineMedium,
+      headlineLarge: FunTextStyles.headlineLarge,
+      labelSmall: FunTextStyles.labelSmall,
+      labelMedium: FunTextStyles.labelMedium,
+      labelLarge: FunTextStyles.labelLarge,
+      bodySmall: FunTextStyles.bodySmall,
+      bodyMedium: FunTextStyles.bodyMedium,
+      bodyLarge: FunTextStyles.bodyLarge,
     );
 
     return ThemeData(

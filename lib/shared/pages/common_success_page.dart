@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class CommonSuccessPage extends StatelessWidget {
@@ -29,7 +28,7 @@ class CommonSuccessPage extends StatelessWidget {
     return Theme(
       data: theme,
       child: Scaffold(
-        appBar: TopAppBar(
+        appBar: FunTopAppBar(
           title: appBarTitle,
         ),
         body: SafeArea(
@@ -75,7 +74,7 @@ class CommonSuccessPage extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,
-                  child: GivtElevatedButton(
+                  child: FunButton(
                     text: buttonText,
                     onTap: onClickButton ?? () => Navigator.of(context).pop(),
                   ),

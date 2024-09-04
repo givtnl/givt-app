@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 
 class QuickTile extends StatelessWidget {
   const QuickTile({
@@ -29,7 +29,7 @@ class QuickTile extends StatelessWidget {
         padding: edgeInsets ?? EdgeInsets.zero,
         child: ConstrainedBox(
           constraints: const BoxConstraints.expand(width: 156, height: 116),
-          child: ActionTile(
+          child: FunTile(
             onTap: () => onClick?.call(context),
             isSelected: isSelected,
             borderColor: colorCombo.borderColor,
