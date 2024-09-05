@@ -2,16 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/result_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
 class ResultScreen extends StatefulWidget {
@@ -76,19 +73,6 @@ class _ResultScreenState extends State<ResultScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const Spacer(),
-                  // FunButton(
-                  //   onTap: () {
-                  //     final nextSuperhero = _cubit.getNextSuperhero();
-
-                  //     Navigator.of(context).push(
-                  //       PassThePhone.toSuperhero(nextSuperhero)
-                  //           .toRoute(context),
-                  //     );
-                  //   },
-                  //   text: 'Next round',
-                  //   rightIcon: FontAwesomeIcons.arrowRight,
-                  // ),
-
                   // Temporary solution
                   // Get users out of the flow from
                   FunButton(
