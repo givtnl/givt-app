@@ -1,6 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -57,6 +58,7 @@ class NfcNotAvailableSheet extends StatelessWidget {
           child: FunButton.secondary(
             onTap: () => cancelScanning(context),
             text: 'Cancel',
+            amplitudeEvent: AmplitudeEvents.cancelClicked,
           ),
         ),
       ],

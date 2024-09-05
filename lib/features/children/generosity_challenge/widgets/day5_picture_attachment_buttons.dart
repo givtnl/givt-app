@@ -77,15 +77,11 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                     context.read<CameraCubit>().checkGalleryPermission(),
                   );
                 }
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.generosityChallengeUploadPictureClicked,
-                  ),
-                );
               },
               leftIcon: FontAwesomeIcons.image,
               text: 'Upload Picture',
+              amplitudeEvent:
+                  AmplitudeEvents.generosityChallengeUploadPictureClicked,
             ),
           ],
         ),

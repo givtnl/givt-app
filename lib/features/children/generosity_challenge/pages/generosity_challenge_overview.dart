@@ -184,12 +184,11 @@ class _GenerosityChallengeOverviewState
                         'isGenerosityChallenge': true,
                       },
                     );
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.giveWithCoinInChallengeClicked,
-                    );
                   },
                   leadingImage: coin(width: 32, height: 32),
                   text: 'Give with a coin',
+                  amplitudeEvent:
+                      AmplitudeEvents.giveWithCoinInChallengeClicked,
                 ),
               ],
             ),

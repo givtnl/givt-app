@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -61,6 +62,7 @@ class CancelAllowanceDialog extends StatelessWidget {
                   FunButton.secondary(
                     onTap: () => context.pop(),
                     text: 'No, go back',
+                    amplitudeEvent: AmplitudeEvents.backClicked,
                   ),
                 ],
               ),

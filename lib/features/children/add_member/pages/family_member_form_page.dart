@@ -184,6 +184,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
       },
       text: 'Add next member',
       rightIcon: FontAwesomeIcons.arrowRight,
+      amplitudeEvent: AmplitudeEvents.addMemerClicked,
     );
   }
 }

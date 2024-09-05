@@ -187,16 +187,12 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                       },
                                     ),
                                   );
-                                  unawaited(
-                                    AnalyticsHelper.logEvent(
-                                      eventName:
-                                          AmplitudeEvents.manageFamilyPressed,
-                                    ),
-                                  );
                                 }
                               },
                               text: 'Manage Family',
                               leftIcon: FontAwesomeIcons.sliders,
+                              amplitudeEvent:
+                                  AmplitudeEvents.manageFamilyPressed,
                             ),
                           ],
                         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -34,6 +35,7 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
                     onTap: () => logout(context, fromLogoutBtn: true),
                     text: 'Logout',
                     leftIcon: FontAwesomeIcons.arrowRightFromBracket,
+                    amplitudeEvent: AmplitudeEvents.logoutClicked,
                   ),
                 ),
                 const SizedBox(

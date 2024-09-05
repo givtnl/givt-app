@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -8,6 +9,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
   const SomethingWentWrongDialog({
     required this.primaryBtnText,
     required this.onClickPrimaryBtn,
+    required this.amplitudeEvent,
     super.key,
     this.secondaryBtnText,
     this.description,
@@ -31,6 +33,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
   final IconData? primaryBtnRightIcon;
   final Widget? primaryBtnLeadingImage;
   final bool? showLoading;
+  final AmplitudeEvents amplitudeEvent;
   final Future<void> Function() onClickPrimaryBtn;
   final void Function()? onClickSecondaryBtn;
 
@@ -38,6 +41,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
     BuildContext context, {
     required String primaryBtnText,
     required Future<void> Function() onClickPrimaryBtn,
+    required AmplitudeEvents amplitudeEvent,
     String? secondaryBtnText = 'Close',
     String? description = 'Oops, something went wrong',
     IconData? icon,
@@ -65,6 +69,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
         iconColor: iconColor,
         circleColor: circleColor,
         showLoading: showLoadingState,
+        amplitudeEvent: amplitudeEvent,
       ),
     );
   }
@@ -127,6 +132,7 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
             FunButton.secondary(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
+              amplitudeEvent: widget.amplitudeEvent,
             ),
           ],
         ),
