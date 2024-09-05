@@ -163,7 +163,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            FunButton.tertiary(
+                            FunButton(
                                 onTap: () => context.goNamed(
                                       FamilyPages.reflectIntro.name,
                                     ),
