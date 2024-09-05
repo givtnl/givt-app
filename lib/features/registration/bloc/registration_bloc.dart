@@ -173,6 +173,15 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       emit(
         state.copyWith(status: RegistrationStatus.failure),
       );
+    } catch (e, stackTrace) {
+      log(e.toString());
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(status: RegistrationStatus.failure),
+      );
     }
   }
 
