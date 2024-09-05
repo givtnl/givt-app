@@ -59,8 +59,14 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   Future<void> doInitialChecks() async {
-    _emitLoadingState();
-    await fetchAllProfiles(doChecks: true);
+    //TODO remove this and undo comments (this is to test the skip 2 screens in registration bug)
+    emit(ProfilesNotSetupState(
+      profiles: state.profiles,
+      activeProfileIndex: state.activeProfileIndex,
+      cachedMembers: [],
+    ));
+    //_emitLoadingState();
+    //await fetchAllProfiles(doChecks: true);
   }
 
   void _showInviteSheet(ImpactGroup impactGroup) {

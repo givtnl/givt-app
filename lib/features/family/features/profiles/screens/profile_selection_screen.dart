@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,10 +9,11 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/pages/add_member_counter_page.dart';
 import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
-import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -21,6 +21,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/parent_overview_widget.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/profiles_not_setup_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -96,8 +97,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         } else if (state is ProfilesNotSetupState) {
           if (state.cachedMembers.isNotEmpty) {
             showCachedMembersBottomsheet(state);
-          } else {
-            await AddMemberUtil.addMemberPushPages(context);
           }
         }
       },
@@ -106,9 +105,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration ||
           current is ProfilesUpdatedState,
-      buildWhen: (previous, current) =>
-          current is! ProfilesNotSetupState &&
-          current is! ProfilesNeedsRegistration,
+      buildWhen: (previous, current) => current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
@@ -123,89 +120,100 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           ),
           body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
-              : state.profiles.isEmpty && state.cachedMembers.isEmpty
-                  ? ProfilesEmptyStateWidget(
-                      onRetry: () =>
-                          context.read<ProfilesCubit>().fetchAllProfiles(
-                                doChecks: true,
-                              ),
+              : state is ProfilesNotSetupState
+                  ? ProfilesNotSetupWidget(
+                      onSetupClicked: () =>
+                          Navigator.push(
+                            context,
+                            const AddMemberCounterPage(
+                              initialAmount: 1,
+                            ).toRoute(context),
+                          ),
                     )
-                  : SafeArea(
-                      minimum: const EdgeInsets.only(bottom: 40),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 32),
-                            if (!flow.state.isCoin)
-                              Visibility(
-                                child: ParentOverviewWidget(
-                                  profiles: sortedAdults(
-                                    user.guid,
-                                    state.profiles
-                                        .where((p) => p.type == 'Parent')
-                                        .toList(),
+              : state.profiles.isEmpty && state.cachedMembers.isEmpty
+                      ? ProfilesEmptyStateWidget(
+                          onRetry: () =>
+                              context.read<ProfilesCubit>().fetchAllProfiles(
+                                    doChecks: true,
                                   ),
-                                  cachedMembers: state.cachedMembers,
+                        )
+                      : SafeArea(
+                          minimum: const EdgeInsets.only(bottom: 40),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 32),
+                                if (!flow.state.isCoin)
+                                  Visibility(
+                                    child: ParentOverviewWidget(
+                                      profiles: sortedAdults(
+                                        user.guid,
+                                        state.profiles
+                                            .where((p) => p.type == 'Parent')
+                                            .toList(),
+                                      ),
+                                      cachedMembers: state.cachedMembers,
+                                    ),
+                                  ),
+                                const SizedBox(height: 26),
+                                if (gridItems.isNotEmpty)
+                                  Expanded(
+                                    child: GridView.count(
+                                      childAspectRatio: 0.74,
+                                      crossAxisCount: gridItems.length < 3
+                                          ? gridItems.length
+                                          : 3,
+                                      mainAxisSpacing: 20,
+                                      crossAxisSpacing: 20,
+                                      children: gridItems,
+                                    ),
+                                  ),
+                                const SizedBox(height: 8),
+                                FunButton(
+                                    isTertiary: true,
+                                    onTap: () => context.goNamed(
+                                          FamilyPages.reflectIntro.name,
+                                        ),
+                                    text: 'Reflect & Share'),
+                                const SizedBox(height: 8),
+                                FunSecondaryButton(
+                                  onTap: () async {
+                                    if (!context.mounted) return;
+                                    flow.resetFlow();
+                                    if (state.cachedMembers.isNotEmpty) {
+                                      showCachedMembersBottomsheet(state);
+                                    } else {
+                                      await FamilyAuthUtils.authenticateUser(
+                                        context,
+                                        checkAuthRequest: CheckAuthRequest(
+                                          navigate: (context,
+                                              {isUSUser}) async {
+                                            await context.pushNamed(
+                                              FamilyPages.childrenOverview.name,
+                                            );
+                                            _logUser(context, user);
+                                          },
+                                        ),
+                                      );
+                                      unawaited(
+                                        AnalyticsHelper.logEvent(
+                                          eventName: AmplitudeEvents
+                                              .manageFamilyPressed,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  text: 'Manage Family',
+                                  leftIcon: const FaIcon(
+                                    FontAwesomeIcons.sliders,
+                                    color: FamilyAppTheme.primary30,
+                                  ),
                                 ),
-                              ),
-                            const SizedBox(height: 26),
-                            if (gridItems.isNotEmpty)
-                              Expanded(
-                                child: GridView.count(
-                                  childAspectRatio: 0.74,
-                                  crossAxisCount: gridItems.length < 3
-                                      ? gridItems.length
-                                      : 3,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
-                                  children: gridItems,
-                                ),
-                              ),
-                            const SizedBox(height: 8),
-                            FunButton(
-                                isTertiary: true,
-                                onTap: () => context.goNamed(
-                                      FamilyPages.reflectIntro.name,
-                                    ),
-                                text: 'Reflect & Share'),
-                            const SizedBox(height: 8),
-                            FunSecondaryButton(
-                              onTap: () async {
-                                if (!context.mounted) return;
-                                flow.resetFlow();
-                                if (state.cachedMembers.isNotEmpty) {
-                                  showCachedMembersBottomsheet(state);
-                                } else {
-                                  await FamilyAuthUtils.authenticateUser(
-                                    context,
-                                    checkAuthRequest: CheckAuthRequest(
-                                      navigate: (context, {isUSUser}) async {
-                                        await context.pushNamed(
-                                          FamilyPages.childrenOverview.name,
-                                        );
-                                        _logUser(context, user);
-                                      },
-                                    ),
-                                  );
-                                  unawaited(
-                                    AnalyticsHelper.logEvent(
-                                      eventName:
-                                          AmplitudeEvents.manageFamilyPressed,
-                                    ),
-                                  );
-                                }
-                              },
-                              text: 'Manage Family',
-                              leftIcon: const FaIcon(
-                                FontAwesomeIcons.sliders,
-                                color: FamilyAppTheme.primary30,
-                              ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
         );
       },
     );

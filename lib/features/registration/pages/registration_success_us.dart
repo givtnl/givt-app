@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/add_member/pages/add_member_counter_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/registration/widgets/registered_check_animation.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -49,8 +51,11 @@ class RegistrationSuccessUs extends StatelessWidget {
                         },
                       ),
                     );
-                    context.pushReplacementNamed(
-                      FamilyPages.profileSelection.name,
+                    Navigator.push(
+                      context,
+                      const AddMemberCounterPage(
+                        initialAmount: 1,
+                      ).toRoute(context),
                     );
                   },
                 ),
