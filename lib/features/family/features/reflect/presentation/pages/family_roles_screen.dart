@@ -54,7 +54,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       childAspectRatio: 0.9,
                       crossAxisCount: 3,
                       children: createGridItems(
-                        profiles.take(6).toList(),
+                        profiles.take(9).toList(),
                       ),
                     ),
                   ),
