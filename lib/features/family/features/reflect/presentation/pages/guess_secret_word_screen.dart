@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
@@ -53,6 +54,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                   );
                 },
                 text: 'Done',
+                amplitudeEvent: AmplitudeEvents.reflectAndShareDoneClicked,
               ),
             ),
           );

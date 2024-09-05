@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -63,6 +64,8 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                           );
                         },
                         text: 'Interview Superhero',
+                        amplitudeEvent: AmplitudeEvents
+                            .reflectAndShareStartInterviewClicked,
                       ),
                     ),
                   ],

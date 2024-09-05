@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
@@ -40,6 +41,7 @@ class _ReflectionRuleSidekickScreenState
               );
             },
             text: 'Next',
+            amplitudeEvent: AmplitudeEvents.reflectAndShareRulesNextClicked,
           ),
         ),
       ),
