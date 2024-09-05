@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -90,10 +89,6 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                           CachedMembersStateStatus.noFundsSuccess ||
                       stripestate.stripeStatus == StripeObjectStatus.loading,
                   text: 'Change payment method',
-                  rightIcon: const FaIcon(
-                    FontAwesomeIcons.arrowsRotate,
-                    size: 24,
-                  ),
                   onTap: () async {
                     if (!context.mounted) return;
                     await context.read<StripeCubit>().fetchSetupIntent();
