@@ -56,7 +56,9 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const highlight99 = Color(0xFFFFFDF7);
 
   static const error30 = Color(0xFF920700);
+  static const error40 = Color(0xFFB91F0F);
   static const error80 = Color(0xFFFFB4A7);
+  static const error90 = Color(0xFFFFDAD4);
 
   static const neutralVariant40 = Color(0xFF5B6055);
   static const neutralVariant50 = Color(0xFF74796D);

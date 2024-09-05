@@ -76,15 +76,13 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         }
       },
       builder: (context, state) {
-        final user = context.read<AuthCubit>().state.user;
-
         return FunScaffold(
           appBar: FunTopAppBar.primary99(
             leading: GenerosityBackButton(
-                    onPressed: () {
-                      logout(context, fromLogoutBtn: true);
-                    },
-                  ),
+              onPressed: () {
+                logout(context, fromLogoutBtn: true);
+              },
+            ),
             title: 'Enter your details',
             actions: [
               IconButton(
