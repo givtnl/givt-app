@@ -30,40 +30,43 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: reporters.first.role!.color,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Card(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 16),
-                  _getTopWidget(),
-                  const SizedBox(height: 16),
-                  TitleMediumText(
-                    'Pass the phone to the\n ${reporters.first.role!.name} ${reporters.first.firstName}',
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: FunButton(
-                      onTap: () {
-                        // push recording screen
-                        Navigator.push(
-                          context,
-                          RecordAnswerScreen(
-                            reporters: reporters,
-                          ).toRoute(context),
-                        );
-                      },
-                      text: 'Interview Superhero',
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: reporters.first.role!.color,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Card(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    _getTopWidget(),
+                    const SizedBox(height: 16),
+                    TitleMediumText(
+                      'Pass the phone to the\n ${reporters.first.role!.name} ${reporters.first.firstName}',
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: FunButton(
+                        onTap: () {
+                          // push recording screen
+                          Navigator.push(
+                            context,
+                            RecordAnswerScreen(
+                              reporters: reporters,
+                            ).toRoute(context),
+                          );
+                        },
+                        text: 'Interview Superhero',
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

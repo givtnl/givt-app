@@ -89,6 +89,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: _currentReporter!.firstName!,
         leading: null,
