@@ -124,7 +124,7 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               isLoading: _isLoading,
             ),
             const SizedBox(height: 16),
-            FunSecondaryButton(
+            FunButton.secondary(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
             ),

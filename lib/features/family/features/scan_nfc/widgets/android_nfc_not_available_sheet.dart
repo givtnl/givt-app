@@ -54,7 +54,7 @@ class NfcNotAvailableSheet extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 32),
-          child: FunSecondaryButton(
+          child: FunButton.secondary(
             onTap: () => cancelScanning(context),
             text: 'Cancel',
           ),

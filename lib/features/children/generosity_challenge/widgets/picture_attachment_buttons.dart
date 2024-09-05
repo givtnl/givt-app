@@ -23,7 +23,7 @@ class PictureAttachmentButtons extends StatelessWidget {
           text: 'Take Picture',
         ),
         const SizedBox(height: 8),
-        FunSecondaryButton(
+        FunButton.secondary(
           onTap: () {
             AnalyticsHelper.logEvent(
               eventName:
@@ -33,11 +33,7 @@ class PictureAttachmentButtons extends StatelessWidget {
               takenWithCamera: false,
             );
           },
-          leftIcon: const Icon(
-            FontAwesomeIcons.image,
-            size: 24,
-            color: AppTheme.givtGreen40,
-          ),
+          leftIcon: FontAwesomeIcons.image,
           text: 'Upload Picture',
         ),
       ],

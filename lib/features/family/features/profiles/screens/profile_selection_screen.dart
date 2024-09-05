@@ -163,14 +163,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            FunButton(
-                                isTertiary: true,
+                            FunButton.tertiary(
                                 onTap: () => context.goNamed(
                                       FamilyPages.reflectIntro.name,
                                     ),
                                 text: 'Reflect & Share'),
                             const SizedBox(height: 8),
-                            FunSecondaryButton(
+                            FunButton.secondary(
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();
@@ -197,10 +196,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 }
                               },
                               text: 'Manage Family',
-                              leftIcon: const FaIcon(
-                                FontAwesomeIcons.sliders,
-                                color: FamilyAppTheme.primary30,
-                              ),
+                              leftIcon: FontAwesomeIcons.sliders,
                             ),
                           ],
                         ),

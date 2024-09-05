@@ -175,7 +175,7 @@ class _GenerosityChallengeOverviewState
                   },
                 ),
                 const Spacer(),
-                FunSecondaryButton(
+                FunButton.secondary(
                   onTap: () {
                     context.read<FlowsCubit>().startInGenerosityCoinFlow();
                     context.pushNamed(

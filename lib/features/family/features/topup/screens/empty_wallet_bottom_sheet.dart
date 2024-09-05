@@ -50,12 +50,9 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           );
         },
       ),
-      secondaryButton: FunSecondaryButton(
+      secondaryButton: FunButton.secondary(
         text: 'Go back',
-        leftIcon: const Icon(
-          FontAwesomeIcons.arrowLeft,
-          size: 24,
-        ),
+        leftIcon: FontAwesomeIcons.arrowLeft,
         onTap: () {
           context.pop();
         },

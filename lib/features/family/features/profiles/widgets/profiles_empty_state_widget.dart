@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -30,13 +30,10 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: FunSecondaryButton(
+                  child: FunButton.secondary(
                     onTap: () => logout(context, fromLogoutBtn: true),
                     text: 'Logout',
-                    leftIcon: SvgPicture.asset(
-                      'assets/family/images/logout.svg',
-                      width: 36,
-                    ),
+                    leftIcon: FontAwesomeIcons.arrowRightFromBracket,
                   ),
                 ),
                 const SizedBox(

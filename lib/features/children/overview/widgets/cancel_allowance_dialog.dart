@@ -58,7 +58,7 @@ class CancelAllowanceDialog extends StatelessWidget {
                     borderColor: AppTheme.error30,
                   ),
                   const SizedBox(height: 8),
-                  FunSecondaryButton(
+                  FunButton.secondary(
                     onTap: () => context.pop(),
                     text: 'No, go back',
                   ),

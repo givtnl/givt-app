@@ -67,7 +67,7 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
               text: 'Take Picture',
             ),
             const SizedBox(height: 8),
-            FunSecondaryButton(
+            FunButton.secondary(
               onTap: () async {
                 final success = await cubit.submitDay5Picture(
                   takenWithCamera: false,
@@ -84,11 +84,7 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                   ),
                 );
               },
-              leftIcon: const Icon(
-                FontAwesomeIcons.image,
-                size: 24,
-                color: AppTheme.givtGreen40,
-              ),
+              leftIcon: FontAwesomeIcons.image,
               text: 'Upload Picture',
             ),
           ],

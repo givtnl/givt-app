@@ -82,7 +82,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                     await cacheCubit.tryCreateMembersFromCache(members);
                   },
                 ),
-                secondaryButton: FunSecondaryButton(
+                secondaryButton: FunButton.secondary(
                   isDisabled: cachestate.status ==
                           CachedMembersStateStatus.loading ||
                       cachestate.status ==
