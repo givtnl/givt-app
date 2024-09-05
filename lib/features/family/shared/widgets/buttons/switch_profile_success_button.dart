@@ -36,10 +36,8 @@ class SwitchProfileSuccessButton extends StatelessWidget {
         }
 
         context.goNamed(FamilyPages.profileSelection.name);
-        await AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.profileSwitchPressed,
-        );
       },
+      amplitudeEvent: AmplitudeEvents.profileSwitchPressed,
     );
   }
 }

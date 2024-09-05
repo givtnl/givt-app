@@ -51,12 +51,12 @@ class FunButton extends StatelessWidget {
   factory FunButton.tertiary({
     required void Function()? onTap,
     required String text,
+    required AmplitudeEvents amplitudeEvent,
     bool isDisabled = false,
     bool isLoading = false,
     IconData? leftIcon,
     IconData? rightIcon,
     Widget? leadingImage,
-    AmplitudeEvents? amplitudeEvent,
   }) {
     return FunButton(
       onTap: onTap,
