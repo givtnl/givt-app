@@ -165,7 +165,7 @@ class FunButton extends StatelessWidget {
           ),
         // all leading images must be 32 pixels wide
         // this centers the text
-        if (leadingImage == null) const SizedBox(width: 32),
+        if (leadingImage != null) const SizedBox(width: 32),
       ],
     );
   }
