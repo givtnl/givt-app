@@ -8,6 +8,8 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_selection_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -34,7 +36,10 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
     return BlocProvider(
       create: (_) => _cubit,
       child: FunScaffold(
-        appBar: const FunTopAppBar(title: 'Reflect and share'),
+        appBar: const FunTopAppBar(
+          title: 'Reflect and share',
+          leading: GivtBackButtonFlat(),
+        ),
         body: BlocConsumer<FamilyOverviewCubit, FamilyOverviewState>(
           builder: (BuildContext context, state) {
             return Stack(
@@ -47,7 +52,7 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
                         'Build a family habit of reflection, sharing and gratitude',
                         textAlign: TextAlign.center),
                     const SizedBox(height: 32),
-                    if (state is !FamilyOverviewUpdatedState)
+                    if (state is! FamilyOverviewUpdatedState)
                       const CustomCircularProgressIndicator(),
                     if (state is FamilyOverviewUpdatedState)
                       const FamilyGoalCircle(

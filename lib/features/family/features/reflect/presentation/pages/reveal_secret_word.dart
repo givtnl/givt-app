@@ -36,6 +36,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
       ),

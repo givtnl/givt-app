@@ -22,6 +22,7 @@ class _ReflectionRuleSuperheroScreenState
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: const FunTopAppBar(title: 'Reflection rules'),
       body: Center(
         child: FunCard(
@@ -33,7 +34,7 @@ class _ReflectionRuleSuperheroScreenState
           ),
           button: FunButton(
             onTap: () {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 ReflectionRuleReporterScreen(
                   superhero: widget.superhero,
                 ).toRoute(context),

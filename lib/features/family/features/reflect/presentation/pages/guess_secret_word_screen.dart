@@ -30,6 +30,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: const FunTopAppBar(title: 'Guess the word'),
       body: BaseStateConsumer(
         cubit: _cubit,
@@ -46,7 +47,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               ),
               button: FunButton(
                 onTap: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     ResultScreen(success: currentGuessedWord == secretWord)
                         .toRoute(context),
                   );

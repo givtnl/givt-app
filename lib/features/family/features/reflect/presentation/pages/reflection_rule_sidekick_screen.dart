@@ -23,6 +23,7 @@ class _ReflectionRuleSidekickScreenState
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: const FunTopAppBar(title: 'Reflection rules'),
       body: Center(
         child: FunCard(
@@ -34,7 +35,7 @@ class _ReflectionRuleSidekickScreenState
           ),
           button: FunButton(
             onTap: () {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 PassThePhone.toSuperhero(widget.superhero).toRoute(context),
               );
             },

@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -30,16 +31,18 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: const FunTopAppBar(title: 'Your roles'),
+      appBar: const FunTopAppBar(
+        title: 'Your roles',
+        leading: GivtBackButtonFlat(),
+      ),
       body: BaseStateConsumer<List<GameProfile>, GameProfile>(
         cubit: _cubit,
         onCustom: (context, superhero) {
-          Navigator.of(context).push(
-            ReflectionRuleSuperheroScreen(
-              superhero: superhero,
-            ).toRoute(context),
-          );
+          Navigator.of(context).push(ReflectionRuleSuperheroScreen(
+            superhero: superhero,
+          ).toRoute(context));
         },
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
