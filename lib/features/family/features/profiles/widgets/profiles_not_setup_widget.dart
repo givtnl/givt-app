@@ -45,7 +45,7 @@ class ProfilesNotSetupWidget extends StatelessWidget {
                 Expanded(
                   child: FunButton(
                     onTap: onSetupClicked,
-                    text: 'Setup my Family',
+                    text: 'Setup',
                     leftIcon: Icons.refresh_rounded,
                   ),
                 ),
