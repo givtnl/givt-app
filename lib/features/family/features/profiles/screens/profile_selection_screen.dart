@@ -163,13 +163,16 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            FunButton(
+                            if (state.profiles.length >= 3) ...[
+                              FunButton(
                                 isTertiary: true,
                                 onTap: () => context.goNamed(
-                                      FamilyPages.reflectIntro.name,
-                                    ),
-                                text: 'Reflect & Share'),
-                            const SizedBox(height: 8),
+                                  FamilyPages.reflectIntro.name,
+                                ),
+                                text: 'Reflect & Share',
+                              ),
+                              const SizedBox(height: 8),
+                            ],
                             FunSecondaryButton(
                               onTap: () async {
                                 if (!context.mounted) return;
