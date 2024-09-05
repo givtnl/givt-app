@@ -40,6 +40,7 @@ class _SecretWordInputState extends State<SecretWordInput> {
             child: TextField(
               focusNode: focusNodes[i],
               controller: controllers[i],
+              autofocus: i == 0,
               textAlign: TextAlign.center,
               maxLength: 1,
               decoration: const InputDecoration(
