@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -239,7 +239,10 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                           }
                           _advanceToNextReporter();
                         },
-                        text: 'Start test 20 seconds'),
+                        text: 'Start test 20 seconds',
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.debugButtonClicked,
+                        )),
                   ),
                 ),
                 const SizedBox(height: 24),
