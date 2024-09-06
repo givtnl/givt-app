@@ -30,6 +30,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   void initState() {
     super.initState();
     reporters = cubit.getReporters();
+    cubit.init();
   }
 
   @override
@@ -62,7 +63,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                           Navigator.push(
                             context,
                             BaseStateConsumer(
-                              cubit: getIt<InterviewCubit>()..init(),
+                              cubit: cubit,
                               onInitial: (context) => const SizedBox.shrink(),
                               onCustom: (context, sidekick) =>
                                   Navigator.of(context).push(
