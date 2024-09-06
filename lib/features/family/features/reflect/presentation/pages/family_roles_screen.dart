@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -40,9 +41,11 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
       body: BaseStateConsumer<List<GameProfile>, GameProfile>(
         cubit: _cubit,
         onCustom: (context, superhero) {
-          Navigator.of(context).push(ReflectionRuleSuperheroScreen(
-            superhero: superhero,
-          ).toRoute(context));
+          Navigator.of(context).push(
+            ReflectionRuleSuperheroScreen(
+              superhero: superhero,
+            ).toRoute(context),
+          );
         },
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
@@ -61,14 +64,15 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       ),
                     ),
                   ),
-                  if (_appConfig.isTestApp)
-                    FunButton(
-                      onTap: _cubit.assignRolesForNextRound,
-                      text: 'Test: assign roles for next round',
-                    ),
+                  FunButton(
+                    isDebugOnly: true,
+                    onTap: _cubit.assignRolesForNextRound,
+                    text: 'Test: assign roles for next round',
+                  ),
                   FunButton(
                     onTap: _cubit.onClickStart,
                     text: 'Start',
+                    amplitudeEvent: AmplitudeEvents.reflectAndShareStartClicked,
                   ),
                 ],
               ),

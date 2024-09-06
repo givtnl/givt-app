@@ -248,6 +248,22 @@ enum AmplitudeEvents {
   parentGivingFlowOrganisationClicked(
       'parent_giving_flow_organization_clicked'),
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
+
+  // Reflect and Share
+  reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
+  reflectAndShareClicked('reflect_and_share_clicked'),
+  reflectAndShareStartClicked('reflect_and_share_start_clicked'),
+  reflectAndShareSeeRolesClicked('reflect_and_share_see_roles_clicked'),
+  reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
+  reflectAndShareMemberAdded('reflect_and_share_member_added'),
+  reflectAndSharePassThePhoneClicked(
+      'reflect_and_share_pass_the_phone_clicked'),
+  reflectAndShareReadyClicked('reflect_and_share_ready_clicked'),
+  reflectAndShareStartInterviewClicked(
+      'reflect_and_share_start_interview_clicked'),
+  reflectAndShareDoneClicked('reflect_and_share_done_clicked'),
+  reflectAndShareResultGoBackClicked(
+      'reflect_and_share_result_go_back_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

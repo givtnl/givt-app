@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_circle.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_selection_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -49,8 +49,9 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const TitleMediumText(
-                        'Build a family habit of reflection, sharing and gratitude',
-                        textAlign: TextAlign.center),
+                      'Build a family habit of reflection, sharing and gratitude',
+                      textAlign: TextAlign.center,
+                    ),
                     const SizedBox(height: 32),
                     if (state is! FamilyOverviewUpdatedState)
                       const CustomCircularProgressIndicator(),
@@ -68,11 +69,13 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: FunButton(
-                      onTap: () {
-                        Navigator.of(context).push(
-                            const FamilySelectionScreen().toRoute(context));
-                      },
-                      text: "Let's start"),
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(const FamilySelectionScreen().toRoute(context));
+                    },
+                    text: "Let's start",
+                    amplitudeEvent: AmplitudeEvents.reflectAndShareStartClicked,
+                  ),
                 ),
               ],
             );

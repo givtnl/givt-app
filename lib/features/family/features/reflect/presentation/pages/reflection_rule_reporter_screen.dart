@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_sidekick_screen.dart';
@@ -41,6 +42,7 @@ class _ReflectionRuleReporterScreenState
               );
             },
             text: 'Next',
+            amplitudeEvent: AmplitudeEvents.reflectAndShareRulesNextClicked,
           ),
         ),
       ),

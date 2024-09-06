@@ -170,6 +170,8 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   FamilyPages.reflectIntro.name,
                                 ),
                                 text: 'Reflect & Share',
+                              amplitudeEvent:
+                                  AmplitudeEvents.reflectAndShareClicked,
                               ),
                               const SizedBox(height: 8),
                             ],

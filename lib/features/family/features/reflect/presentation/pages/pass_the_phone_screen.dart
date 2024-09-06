@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
@@ -70,6 +71,8 @@ class PassThePhone extends StatelessWidget {
                       child: FunButton(
                         onTap: () => onTap.call(context),
                         text: buttonText,
+                        amplitudeEvent:
+                            AmplitudeEvents.reflectAndSharePassThePhoneClicked,
                       ),
                     ),
                   ],
