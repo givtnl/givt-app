@@ -66,7 +66,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                               cubit: cubit,
                               onInitial: (context) => const SizedBox.shrink(),
                               onCustom: (context, sidekick) =>
-                                  Navigator.of(context).push(
+                                  Navigator.of(context).pushReplacement(
                                 PassThePhone.toSidekick(sidekick)
                                     .toRoute(context),
                               ),
