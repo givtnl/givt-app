@@ -86,9 +86,11 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             const SizedBox(height: 8),
             FunButton(
               isDisabled: !_isScratched,
-              onTap: () => Navigator.of(context).push(
-                const StartInterviewScreen().toRoute(context),
-              ),
+              onTap: () {
+                Navigator.of(context).push(
+                  const StartInterviewScreen().toRoute(context),
+                );
+              },
               text: 'Ready',
               amplitudeEvent: AmplitudeEvents.reflectAndShareReadyClicked,
             )

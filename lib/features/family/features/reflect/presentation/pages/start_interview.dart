@@ -131,7 +131,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
             ),
           ),
         );
-      case 3:
+      case >= 3:
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
@@ -180,20 +180,10 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   }
 
   Widget _getReporterWidget() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(70),
-        border: Border.all(
-          color: reporters.first.role!.color,
-          width: 8,
-        ),
-      ),
-      padding: EdgeInsets.zero,
-      child: SvgPicture.network(
-        reporters.first.pictureURL!,
-        width: 120,
-        height: 120,
-      ),
+    return GameProfileItem(
+      profile: reporters.first,
+      displayName: false,
+      size: 140,
     );
   }
 
