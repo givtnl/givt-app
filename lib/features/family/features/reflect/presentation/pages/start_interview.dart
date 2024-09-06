@@ -134,6 +134,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
           ),
         );
       case >= 3:
+        reporters = reporters.take(3).toList();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
