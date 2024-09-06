@@ -202,6 +202,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                     onTap: () {
                       if (_remainingSeconds == 60 * 2) {
                         _startCountdown();
+                        setState(() {
+                          isTestBtnVisible = false;
+                        });
                         return;
                       }
                       _advanceToNextReporter();
