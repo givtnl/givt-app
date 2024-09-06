@@ -39,6 +39,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   String buttontext = 'Start Recording';
   InterviewCubit cubit = getIt<InterviewCubit>();
   AppConfig config = getIt<AppConfig>();
+  bool isTestBtnVisible = false;
 
   late GameProfile _currentReporter;
   late GameProfile _currentSidekick;
@@ -48,6 +49,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     super.initState();
     _currentReporter = widget.reporters[_currentReporterIndex];
     _currentSidekick = cubit.getSidecick();
+    isTestBtnVisible = config.isTestApp;
   }
 
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
@@ -207,9 +209,12 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                     text: buttontext,
                   ),
                 ),
-                if (config.isTestApp) const SizedBox(height: 8),
-                if (config.isTestApp)
-                  Padding(
+                Visibility(
+                    visible: isTestBtnVisible,
+                    child: const SizedBox(height: 8)),
+                Visibility(
+                  visible: isTestBtnVisible,
+                  child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
                         isTertiary: true,
@@ -218,6 +223,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                             _startCountdown();
                             setState(() {
                               _remainingSeconds = 20;
+                              isTestBtnVisible = false;
                             });
                             return;
                           }
@@ -225,6 +231,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                         },
                         text: 'Start test 20 seconds'),
                   ),
+                ),
                 const SizedBox(height: 24),
               ],
             ),
