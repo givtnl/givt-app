@@ -316,11 +316,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> refreshUser() async {
-    emit(state.copyWith(status: AuthStatus.loading));
+  Future<void> refreshUser({bool emitAuthentication = true}) async {
+    if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
-      emit(
+      if(emitAuthentication) emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           user: userExt,
@@ -379,12 +379,12 @@ class AuthCubit extends Cubit<AuthState> {
     return false;
   }
 
-  Future<void> refreshSession() async {
-    emit(state.copyWith(status: AuthStatus.loading));
+  Future<void> refreshSession({bool emitAuthentication = true}) async {
+    if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
-      emit(
+      if(emitAuthentication) emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           session: session,
