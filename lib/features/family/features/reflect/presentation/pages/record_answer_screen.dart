@@ -194,7 +194,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   showRedVersion: _isLastTenSeconds(),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: FunButton(
                     rightIcon: FontAwesomeIcons.arrowRight,
                     onTap: () {
@@ -207,12 +207,25 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                     text: buttontext,
                   ),
                 ),
+                if (config.isTestApp) const SizedBox(height: 8),
                 if (config.isTestApp)
-                  FunButton(
-                      onTap: () => setState(() {
-                            _remainingSeconds = 20;
-                          }),
-                      text: 'Test 20 seconds')
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: FunButton(
+                        isTertiary: true,
+                        onTap: () {
+                          if (_remainingSeconds == 60 * 2) {
+                            _startCountdown();
+                            setState(() {
+                              _remainingSeconds = 20;
+                            });
+                            return;
+                          }
+                          _advanceToNextReporter();
+                        },
+                        text: 'Start test 20 seconds'),
+                  ),
+                const SizedBox(height: 24),
               ],
             ),
           ),
