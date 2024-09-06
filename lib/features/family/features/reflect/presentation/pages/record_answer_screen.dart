@@ -88,7 +88,10 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     if (_isLastTenSeconds()) {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
-      // Do nothing for now
+      Vibrator.tryVibratePattern();
+      Navigator.of(context).push(
+        PassThePhone.toSidekick(_currentSidekick).toRoute(context),
+      );
     }
   }
 
