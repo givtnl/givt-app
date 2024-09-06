@@ -30,7 +30,7 @@ class NoChildrenPage extends StatelessWidget {
             onTap: onAddNewChildPressed,
             text: context.l10n.plusAddMembers,
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.addMemerClicked,
+              AmplitudeEvents.addMemberClicked,
             ),
           ),
         ],

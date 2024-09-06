@@ -7,7 +7,7 @@ enum AmplitudeEvents {
   seeMyFamilyClicked('see_my_family_clicked'),
   addChildProfile('add_child_profile'),
   addParentProfile('add_parent_profile'),
-  addMemerClicked('add_member_clicked'),
+  addMemberClicked('add_member_clicked'),
   addMemberDoneClicked('add_member_done_clicked'),
   numberOfMembersSelected('number_of_members_selected'),
   memberCreatedSuccesfully('member_created_succesfully'),
