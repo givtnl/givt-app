@@ -60,12 +60,16 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const error80 = Color(0xFFFFB4A7);
   static const error90 = Color(0xFFFFDAD4);
 
+  static const neutral100 = Color(0xFFFEFFFF);
+
   static const neutralVariant40 = Color(0xFF5B6055);
   static const neutralVariant50 = Color(0xFF74796D);
   static const neutralVariant60 = Color(0xFF8E9286);
   static const neutralVariant80 = Color(0xFFC8C7BF);
   static const neutralVariant90 = Color(0xFFE4E3DB);
   static const neutralVariant95 = Color(0xFFEEF2E4);
+
+  static const opacityWhite75 = Color(0x4CFFFFFF);
 
   static const disabledTileBackground = Color(0xFFF5F4F5);
   static const disabledTileBorder = Color(0xFFC8C6C9);

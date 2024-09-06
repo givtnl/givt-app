@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectIntroScreen extends StatefulWidget {
@@ -74,7 +75,9 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
                           .push(const FamilySelectionScreen().toRoute(context));
                     },
                     text: "Let's start",
-                    amplitudeEvent: AmplitudeEvents.reflectAndShareStartClicked,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareStartClicked,
+                    ),
                   ),
                 ),
               ],

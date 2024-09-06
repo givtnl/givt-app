@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -129,15 +130,15 @@ class _GenerosityChallengeIntroductionState
                       .generosityChallengewasRegisteredBeforeChallengeKey,
                 );
                 context.pop();
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.acceptedGenerosityChallenge,
-                );
                 context.goNamed(
                   FamilyPages.generosityChallengeChat.name,
                   extra: context.read<GenerosityChallengeCubit>(),
                 );
               },
               text: 'Accept the challenge',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.acceptedGenerosityChallengeClicked,
+              ),
             ),
             const SizedBox(height: 8),
           ],

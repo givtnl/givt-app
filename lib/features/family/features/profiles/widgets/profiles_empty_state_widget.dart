@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ProfilesEmptyStateWidget extends StatelessWidget {
   const ProfilesEmptyStateWidget({
@@ -30,12 +32,12 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: FunSecondaryButton(
+                  child: FunButton.secondary(
                     onTap: () => logout(context, fromLogoutBtn: true),
                     text: 'Logout',
-                    leftIcon: SvgPicture.asset(
-                      'assets/family/images/logout.svg',
-                      width: 36,
+                    leftIcon: FontAwesomeIcons.arrowRightFromBracket,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.logoutClicked,
                     ),
                   ),
                 ),
@@ -47,6 +49,9 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
                     onTap: onRetry,
                     text: 'Retry',
                     leftIcon: Icons.refresh_rounded,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.retryClicked,
+                    ),
                   ),
                 ),
               ],

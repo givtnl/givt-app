@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -118,15 +119,14 @@ Widget _getContent({
                   onTap: editProfileState.isSameProfilePicture
                       ? null
                       : () {
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.avatarSaved,
-                            eventProperties: {
-                              'filename':
-                                  editProfileState.selectedProfilePicture,
-                            },
-                          );
                           context.read<EditProfileCubit>().editProfile();
                         },
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.avatarSaved,
+                    parameters: {
+                      'filename': editProfileState.selectedProfilePicture,
+                    },
+                  ),
                 ),
               ),
             ],

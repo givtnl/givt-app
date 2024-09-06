@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/rec
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class StartInterviewScreen extends StatefulWidget {
   const StartInterviewScreen({super.key});
@@ -64,8 +65,9 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                           );
                         },
                         text: 'Interview Superhero',
-                        amplitudeEvent: AmplitudeEvents
-                            .reflectAndShareStartInterviewClicked,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.reflectAndShareStartInterviewClicked,
+                        ),
                       ),
                     ),
                   ],

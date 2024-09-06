@@ -9,12 +9,14 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/utils/family_values_content_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SelectFamilyValues extends StatelessWidget {
-  const SelectFamilyValues({super.key,});
+  const SelectFamilyValues({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,16 +84,15 @@ class SelectFamilyValues extends StatelessWidget {
                         );
 
                     context.pop();
-
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.familyValuesSelected,
-                      eventProperties: {
-                        FamilyValuesCubit.familyValuesKey:
-                            state.selectedValuesString,
-                      },
-                    );
                   },
                   text: 'Continue',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.familyValuesSelected,
+                    parameters: {
+                      FamilyValuesCubit.familyValuesKey:
+                          state.selectedValuesString,
+                    },
+                  ),
                 ),
         );
       },

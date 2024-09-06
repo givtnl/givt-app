@@ -23,7 +23,7 @@ class FunBottomSheet extends StatelessWidget {
   final Widget? headlineContent;
 
   final FunButton? primaryButton;
-  final FunSecondaryButton? secondaryButton;
+  final FunButton? secondaryButton;
 
   final VoidCallback? closeAction;
 
@@ -76,20 +76,18 @@ class FunBottomSheet extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        if(closeAction == null)
-        const SizedBox(height: 24),
+        if (closeAction == null) const SizedBox(height: 24),
+        if (closeAction != null)
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.xmark),
+            onPressed: () {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
+              );
 
-        if(closeAction != null)
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.xmark),
-          onPressed: () {
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.bottomsheetCloseButtonClicked,
-            );
-
-            closeAction!.call();
-          },
-        ),
+              closeAction!.call();
+            },
+          ),
       ],
     );
   }

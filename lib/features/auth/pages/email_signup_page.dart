@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -21,6 +22,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
@@ -265,6 +267,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                       : null,
                   text: locals.continueKey,
                   rightIcon: FontAwesomeIcons.arrowRight,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.emailSignupContinueClicked,
+                  ),
                 ),
             ],
           ),

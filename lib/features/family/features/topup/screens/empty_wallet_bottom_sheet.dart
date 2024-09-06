@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/topup/screens/topup_bottom_she
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +27,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       primaryButton: FunButton(
         text: 'Top up',
         leftIcon: FontAwesomeIcons.plus,
-        amplitudeEvent: AmplitudeEvents.topupStartButtonClicked,
+        analyticsEvent: AnalyticsEvent(AmplitudeEvents.topupStartButtonClicked),
         onTap: () async {
           final user = context.read<ProfilesCubit>().state;
           context.read<TopupCubit>().init(user.activeProfile.id);
@@ -50,16 +51,14 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           );
         },
       ),
-      secondaryButton: FunSecondaryButton(
+      secondaryButton: FunButton.secondary(
         text: 'Go back',
-        leftIcon: const Icon(
-          FontAwesomeIcons.arrowLeft,
-          size: 24,
-        ),
+        leftIcon: FontAwesomeIcons.arrowLeft,
         onTap: () {
           context.pop();
         },
-        amplitudeEvent: AmplitudeEvents.topupGoBackButtonClicked,
+        analyticsEvent:
+            AnalyticsEvent(AmplitudeEvents.topupGoBackButtonClicked),
       ),
       closeAction: () {
         context.pop();

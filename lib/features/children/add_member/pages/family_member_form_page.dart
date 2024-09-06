@@ -13,7 +13,7 @@ import 'package:givt_app/features/children/generosity_challenge/widgets/generosi
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -162,11 +162,12 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
     return FunButton(
       onTap: () => onDone(isChildSelected: isChildSelected),
       text: 'Done!',
+      analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberDoneClicked),
     );
   }
 
   Widget _secondaryButton(bool isChildSelected) {
-    return FunSecondaryButton(
+    return FunButton.secondary(
       onTap: () {
         final member = addMember(isChildSelected: isChildSelected);
         if (member != null) {
@@ -184,10 +185,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
         }
       },
       text: 'Add next member',
-      rightIcon: const Icon(
-        FontAwesomeIcons.arrowRight,
-        color: FamilyAppTheme.defaultTextColor,
-      ),
+      rightIcon: FontAwesomeIcons.arrowRight,
+      analyticsEvent: AnalyticsEvent(AmplitudeEvents.addMemberClicked),
     );
   }
 }
