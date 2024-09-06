@@ -91,9 +91,9 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
 
   // Get button text for current state
   String getButtonText() {
-    if (!hasCountDownStarted) return "Start Interview";
-    if (_nextQuestionIsLast()) return "Finish";
-    return "Next Reporter";
+    if (!hasCountDownStarted) return 'Start Interview';
+    if (_nextQuestionIsLast()) return 'Finish';
+    return _reporters.length == 1 ? 'Next Question' : 'Next Reporter';
   }
 
   void _emitData() {
