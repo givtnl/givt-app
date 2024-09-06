@@ -103,7 +103,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   }
 
   bool _nextQuestionIsLast() {
-    // Check if all reporters have no more questions
     return widget.reporters.every((reporter) {
       final reporterQuestions = (reporter.role! as Reporter).questions!;
       return _currentQuestionIndex + 1 >= reporterQuestions.length;
