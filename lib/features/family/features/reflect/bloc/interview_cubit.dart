@@ -12,4 +12,8 @@ class InterviewCubit extends CommonCubit<List<GameProfile>, dynamic> {
   List<GameProfile> getReporters() {
     return _reflectAndShareRepository.getCurrentReporters();
   }
+
+  GameProfile getSidecick() {
+    return _reflectAndShareRepository.getCurrentSidekick();
+  }
 }

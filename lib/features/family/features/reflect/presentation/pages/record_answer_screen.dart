@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
@@ -31,13 +33,19 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       : _remainingSeconds = startSeconds;
   Timer? _timer;
   int _remainingSeconds;
-  GameProfile? _currentReporter;
+  int _currentQuestionIndex = 0; // Track the current question index globally
+  int _currentReporterIndex = 0; // Track the current reporter index
   String buttontext = 'Start Recording';
+  InterviewCubit cubit = getIt<InterviewCubit>();
+
+  late GameProfile _currentReporter;
+  late GameProfile _currentSidekick;
 
   @override
   void initState() {
     super.initState();
-    _currentReporter = widget.reporters.first;
+    _currentReporter = widget.reporters[_currentReporterIndex];
+    _currentSidekick = cubit.getSidecick();
   }
 
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
@@ -58,7 +66,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
 
   void _startCountdown() {
     setState(() {
-      buttontext = 'Next journalist';
+      buttontext = 'Next';
     });
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_remainingSeconds <= 0) {
@@ -76,7 +84,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     if (_isLastTenSeconds()) {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
-      //    Navigator.pop(context);
+      // Do nothing for now
     }
   }
 
@@ -86,17 +94,52 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     super.dispose();
   }
 
+  bool _allQuestionsAsked() {
+    // Check if all reporters have no more questions
+    return widget.reporters.every((reporter) {
+      final reporterQuestions = (reporter.role! as Reporter).questions!;
+      return _currentQuestionIndex >= reporterQuestions.length;
+    });
+  }
+
+  void _advanceToNextReporter() {
+    setState(() {
+      _currentReporterIndex++;
+      if (_currentReporterIndex >= widget.reporters.length) {
+        // All reporters have asked their question at this index
+        _currentReporterIndex = 0;
+        _currentQuestionIndex++;
+
+        if (_allQuestionsAsked()) {
+          // Move to sidekick screen or end
+          Navigator.of(context).push(
+            PassThePhone.toSidekick(_currentSidekick).toRoute(context),
+          );
+          return;
+        }
+      }
+
+      // Update the current reporter
+      _currentReporter = widget.reporters[_currentReporterIndex];
+      _remainingSeconds = 60 * 2; // Reset the timer
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final reporterQuestions = (_currentReporter.role! as Reporter).questions!;
+    final hasQuestion = _currentQuestionIndex <
+        reporterQuestions
+            .length; // Check if reporter has a question at current index
+
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
-        title: _currentReporter!.firstName!,
-        leading: null,
+        title: _currentReporter.firstName!,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8),
             child: SvgPicture.network(
-              _currentReporter!.pictureURL!,
+              _currentReporter.pictureURL!,
               width: 36,
               height: 36,
             ),
@@ -107,11 +150,16 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         children: [
           const Spacer(),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: TitleMediumText(
-              (_currentReporter!.role! as Reporter).questions!.first,
-              textAlign: TextAlign.center,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: hasQuestion
+                ? TitleMediumText(
+                    reporterQuestions[_currentQuestionIndex],
+                    textAlign: TextAlign.center,
+                  )
+                : TitleMediumText(
+                    '${_currentReporter.firstName!} has no more questions.',
+                    textAlign: TextAlign.center,
+                  ),
           ),
           const Spacer(),
           Container(
@@ -131,44 +179,20 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   minutes: _displayMinutes(),
                   showRedVersion: _isLastTenSeconds(),
                 ),
-                // record button
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: FunButton(
-                    isDisabled: widget.reporters.length == 0,
                     rightIcon: FontAwesomeIcons.arrowRight,
                     onTap: () {
                       if (_remainingSeconds == 60 * 2) {
                         _startCountdown();
+                        //debug
                         setState(() {
                           _remainingSeconds = 20;
                         });
                         return;
                       }
-                      if (_remainingSeconds != 60 * 2 &&
-                          widget.reporters.length > 1) {
-                        setState(() {
-                          _currentReporter = widget.reporters[1];
-                          widget.reporters.removeAt(0);
-                          buttontext = widget.reporters.length == 1
-                              ? 'Finish'
-                              : 'Next journalist';
-                        });
-                      }
-                      if (_remainingSeconds == 0 ||
-                          widget.reporters.length <= 1) {
-                        //TODO tamara will fix this
-                        Navigator.of(context).push(
-                          PassThePhone.toSidekick(GameProfile(
-                                  type: 'Child',
-                                  firstName: 'Test',
-                                  lastName: 'Test',
-                                  pictureURL:
-                                      "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero7.svg",
-                                  role: Role.sidekick()))
-                              .toRoute(context),
-                        );
-                      }
+                      _advanceToNextReporter();
                     },
                     text: buttontext,
                   ),
