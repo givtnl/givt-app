@@ -131,7 +131,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
             ),
           ),
         );
-      case 3:
+      case >= 3:
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(

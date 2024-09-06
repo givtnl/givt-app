@@ -36,7 +36,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   int _remainingSeconds;
   int _currentQuestionIndex = 0; // Track the current question index globally
   int _currentReporterIndex = 0; // Track the current reporter index
-  String buttontext = 'Start Recording';
+  String buttontext = 'Start Interview';
   InterviewCubit cubit = getIt<InterviewCubit>();
   AppConfig config = getIt<AppConfig>();
   bool isTestBtnVisible = false;
@@ -70,7 +70,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
 
   void _startCountdown() {
     setState(() {
-      buttontext = 'Next';
+      buttontext = 'Next reporter';
     });
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_remainingSeconds <= 0) {
