@@ -108,6 +108,9 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<InterviewCubit>(
+      () => InterviewCubit(getIt()),
+    )
     ..registerFactory<FamilyRolesCubit>(
       () => FamilyRolesCubit(
         getIt(),
@@ -117,6 +120,5 @@ void initRepositories() {
       () => FamilySelectionCubit(
         getIt(),
       ),
-    )
-    ..registerFactory<InterviewCubit>(() => InterviewCubit(getIt()));
+    );
 }

@@ -9,11 +9,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -23,9 +20,8 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
-  RecordAnswerScreen({required this.reporters, super.key});
-
-  final List<GameProfile> reporters;
+  const RecordAnswerScreen({required this.uiModel, super.key});
+  final RecordAnswerUIModel uiModel;
 
   @override
   State<RecordAnswerScreen> createState() => _RecordAnswerScreenState();
@@ -36,21 +32,13 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       : _remainingSeconds = startSeconds;
   Timer? _timer;
   int _remainingSeconds;
-  int _currentQuestionIndex = 0; // Track the current question index globally
-  int _currentReporterIndex = 0; // Track the current reporter index
-  String buttontext = 'Start Interview';
   InterviewCubit cubit = getIt<InterviewCubit>();
   AppConfig config = getIt<AppConfig>();
   bool isTestBtnVisible = false;
 
-  late GameProfile _currentReporter;
-  late GameProfile _currentSidekick;
-
   @override
   void initState() {
     super.initState();
-    _currentReporter = widget.reporters[_currentReporterIndex];
-    _currentSidekick = cubit.getSidecick();
     isTestBtnVisible = config.isTestApp;
   }
 
@@ -71,9 +59,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   bool _isLastSecond() => _remainingSeconds % 60 <= 1 && _remainingSeconds <= 1;
 
   void _startCountdown() {
-    setState(() {
-      buttontext = 'Next reporter';
-    });
+    cubit.onCountdownStarted();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_remainingSeconds <= 0) {
         timer.cancel();
@@ -91,9 +77,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
       Vibrator.tryVibratePattern();
-      Navigator.of(context).push(
-        PassThePhone.toSidekick(_currentSidekick).toRoute(context),
-      );
+      cubit.interviewFinished();
     }
   }
 
@@ -103,64 +87,17 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     super.dispose();
   }
 
-  bool _allQuestionsAsked() {
-    // Check if all reporters have no more questions
-    return widget.reporters.every((reporter) {
-      final reporterQuestions = (reporter.role! as Reporter).questions!;
-      return _currentQuestionIndex >= reporterQuestions.length;
-    });
-  }
-
-  bool _nextQuestionIsLast() {
-    return widget.reporters.every((reporter) {
-      final reporterQuestions = (reporter.role! as Reporter).questions!;
-      return _currentQuestionIndex + 1 >= reporterQuestions.length;
-    });
-  }
-
-  void _advanceToNextReporter() {
-    setState(() {
-      _currentReporterIndex++;
-      if (_currentReporterIndex >= widget.reporters.length) {
-        // All reporters have asked their question at this index
-        _currentReporterIndex = 0;
-        _currentQuestionIndex++;
-
-        if (_allQuestionsAsked()) {
-          // Move to sidekick screen or end
-          Navigator.of(context).push(
-            PassThePhone.toSidekick(_currentSidekick).toRoute(context),
-          );
-          return;
-        }
-      }
-
-      if (_nextQuestionIsLast()) {
-        buttontext = 'Finish';
-      }
-
-      // Update the current reporter
-      _currentReporter = widget.reporters[_currentReporterIndex];
-      //_remainingSeconds = 60 * 2; // Reset the timer
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final reporterQuestions = (_currentReporter.role! as Reporter).questions!;
-    final hasQuestion = _currentQuestionIndex <
-        reporterQuestions
-            .length; // Check if reporter has a question at current index
-
     return FunScaffold(
       canPop: false,
       appBar: FunTopAppBar.primary99(
-        title: _currentReporter.firstName!,
+        title: widget.uiModel.reporter.firstName!,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8),
             child: SvgPicture.network(
-              _currentReporter.pictureURL!,
+              widget.uiModel.reporter.pictureURL!,
               width: 36,
               height: 36,
             ),
@@ -171,17 +108,11 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         children: [
           const Spacer(),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: hasQuestion
-                ? TitleMediumText(
-                    reporterQuestions[_currentQuestionIndex],
-                    textAlign: TextAlign.center,
-                  )
-                : TitleMediumText(
-                    '${_currentReporter.firstName!} has no more questions.',
-                    textAlign: TextAlign.center,
-                  ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: TitleMediumText(
+                widget.uiModel.question,
+                textAlign: TextAlign.center,
+              )),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
@@ -212,9 +143,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                         });
                         return;
                       }
-                      _advanceToNextReporter();
+                      cubit.advanceToNext();
                     },
-                    text: buttontext,
+                    text: widget.uiModel.buttonText,
                     analyticsEvent: AnalyticsEvent(
                       AmplitudeEvents.reflectAndShareNextJournalistClicked,
                     ),
@@ -237,7 +168,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                             });
                             return;
                           }
-                          _advanceToNextReporter();
+                          cubit.advanceToNext();
                         },
                         text: 'Start test 20 seconds',
                         analyticsEvent: AnalyticsEvent(

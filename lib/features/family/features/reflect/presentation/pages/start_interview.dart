@@ -7,11 +7,13 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class StartInterviewScreen extends StatefulWidget {
   const StartInterviewScreen({super.key});
@@ -28,6 +30,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   void initState() {
     super.initState();
     reporters = cubit.getReporters();
+    cubit.init();
   }
 
   @override
@@ -59,8 +62,19 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                           // push recording screen
                           Navigator.push(
                             context,
-                            RecordAnswerScreen(
-                              reporters: reporters,
+                            BaseStateConsumer(
+                              cubit: cubit,
+                              onInitial: (context) => const SizedBox.shrink(),
+                              onCustom: (context, sidekick) =>
+                                  Navigator.of(context).push(
+                                PassThePhone.toSidekick(sidekick)
+                                    .toRoute(context),
+                              ),
+                              onData: (context, uiModel) {
+                                return RecordAnswerScreen(
+                                  uiModel: uiModel,
+                                );
+                              },
                             ).toRoute(context),
                           );
                         },
