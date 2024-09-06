@@ -1,19 +1,27 @@
 enum AmplitudeEvents {
   letsGo('lets_go'),
-  login('login'),
+  welcomeContinueClicked('welcome_continue_clicked'),
+  loginClicked('login_clicked'),
+  emailSignupContinueClicked('email_signup_continue_clicked'),
   familyClicked('family_clicked'),
   seeMyFamilyClicked('see_my_family_clicked'),
   addChildProfile('add_child_profile'),
   addParentProfile('add_parent_profile'),
-  addMemerClicked('add_member_clicked'),
+  addMemberClicked('add_member_clicked'),
+  addMemberDoneClicked('add_member_done_clicked'),
   numberOfMembersSelected('number_of_members_selected'),
   memberCreatedSuccesfully('member_created_succesfully'),
+  addMemberContinueClicked('add_member_continue_clicked'),
   failedToCreateMember('failed_to_create_member'),
   failedToGetVpc('failed_to_get_vpc'),
   failedTopUpNoFunds('failed_top_up_no_funds'),
   allowanceNotSuccessful('allowance_not_successful'),
-  topupFailed('topup_failed'),
   backClicked('back_clicked'),
+  cancelClicked('cancel_clicked'),
+  okClicked('ok_clicked'),
+  continueClicked('continue_clicked'),
+  readyClicked('ready_clicked'),
+  retryClicked('retry_clicked'),
   createChildProfileClicked('create_child_profile_clicked'),
   directNoticeClicked('direct_notice_clicked'),
   enterCardDetailsClicked('enter_card_details_clicked'),
@@ -33,8 +41,20 @@ enum AmplitudeEvents {
   childEditMonthlyAllowanceSaveClicked(
     'child_edit_monthly_allowance_save_clicked',
   ),
+
+  // Topup flow
+  topupFailed('topup_failed'),
+  topUpConfirmClicked('top_up_confirm_clicked'),
+
+  // Cancel Recurring Giving allowance flow
   cancelRGA('cancel_reccuring_giving_allowance'),
   failedToCancelRGA('failed_to_cancel_allowance'),
+  cancelRGAYesClicked('cancel_rga_yes_clicked'),
+  cancelRGANoClicked('cancel_rga_no_clicked'),
+
+  // Edit Recurring Giving allowance flow
+  editRGAConfirmClicked('edit_rga_confirm_clicked'),
+
   childEditCancelClicked('child_edit_cancel_clicked'),
   childProfileClicked('child_profile_clicked'),
   adultProfileTileClicked('adult_profile_tile_clicked'),
@@ -61,6 +81,7 @@ enum AmplitudeEvents {
   changePaymentMethodForFailedVPCClicked(
     'change_payment_method_for_failed_vpc_clicked',
   ),
+  vpcReadyClicked('vpc_ready_clicked'),
   tryAgainForFailedVPCClicked('try_again_for_failed_vpc_clicked'),
   failedToCreateMembersFromCache('failed_to_create_members_from_cache'),
   familyGoalCreateClicked('family_goal_create_clicked'),
@@ -85,6 +106,7 @@ enum AmplitudeEvents {
     'invited_to_impact_group_bottom_sheet_shown',
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
+
   // generosity challenge
   openedGenerosityChallengeNotification(
     'opened_generosity_challenge_notification',
@@ -103,7 +125,7 @@ enum AmplitudeEvents {
   ),
   generosityChallengeDonationSuccess('generosity_challenge_donation_success'),
   familyValuesSelected('family_values_selected'),
-  acceptedGenerosityChallenge('accepted_generosity_challenge'),
+  acceptedGenerosityChallengeClicked('accepted_generosity_challenge_clicked'),
   generosityChallengeDay8MaybeLaterClicked(
     'generosity_challenge_day_8_maybe_later_clicked',
   ),
@@ -135,6 +157,11 @@ enum AmplitudeEvents {
   ),
   generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
   generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
+  generosityChallengechatBarButtonClicked(
+    'generosity_challenge_chat_bar_button_clicked',
+  ),
+  generosityChallengeGoToChatClicked('generosity_challenge_go_to_chat_clicked'),
+
   // Registration flow
   continueByEmailSignUpNewUserCliked(
     'continue_by_email_sign_up_new_user_clicked',
@@ -154,7 +181,9 @@ enum AmplitudeEvents {
   registrationSuccesButtonClicked(
     'registration_success_button_clicked',
   ),
-
+  registrationEnterPaymentDetailsClicked(
+    'registration_enter_payment_details_clicked',
+  ),
   // Family
 
   amountPressed('amount_pressed'),
@@ -168,7 +197,7 @@ enum AmplitudeEvents {
   helpMeFindCharityPressed('help_me_find_charity_pressed'),
   askToFindCharityPressed('ask_my_parents_to_find_charity_pressed'),
   loginPressed('login_pressed'),
-  logOutPressed('log_out_pressed'),
+  logoutClicked('log_out_pressed'),
   terminateAccountSuccess('terminate_account_success'),
   profilePressed('profile_pressed'),
   profileSwitchPressed('profile_switch_pressed'),
@@ -186,11 +215,14 @@ enum AmplitudeEvents {
   walletTracker('wallet_tracker'),
   parentProfileIconClicked('parent_profile_icon_clicked'),
   mySettingsClicked('my_settings_clicked'),
-  // coin scan
+
+  // NFC Coin flow
   startScanningCoin('in_app_start_scanning_coin'),
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),
   coinScannedError('in_app_coin_scanned_error'),
   deeplinkCoinScanned('deeplink_coin_scanned'),
+  nfcStartButtonClicked('nfc_start_button_clicked'),
+  nfcGoToSettingsClicked('nfc_go_to_settings_clicked'),
   notAGivtCoinNFCErrorShown('not_a_givt_coin_nfc_error_shown'),
   coinMediumIdNotRecognized('coin_medium_id_not_recognized'),
   notAGivtCoinNFCErrorGoBackHomeClicked(
@@ -222,7 +254,8 @@ enum AmplitudeEvents {
     'school_event_flow_confirm_button_clicked',
   ),
   schoolEventLogOutTriggered('school_event_log_out_triggered'),
-  openAppPermissionsSettings('open_app_permissions_settings'),
+  permissionsGoToSettingsClicked('open_app_permissions_settings'),
+  permissionsNextClicked('next_permissions_clicked'),
   nextPermissionsDialogClicked('next_permissions_dialog_clicked'),
   closePermissionsDialog('close_permissions_dialog'),
   navigationBarPressed('navigation_bar_pressed'),
@@ -236,6 +269,7 @@ enum AmplitudeEvents {
 
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
 
+  // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
   topupGoBackButtonClicked('topup_go_back_button_clicked'),
   topupStartButtonClicked('topup_start_button_clicked'),
@@ -243,11 +277,37 @@ enum AmplitudeEvents {
   topupRecurringCheckboxChanged('topup_recurring_checkbox_changed'),
   topupDoneButtonClicked('topup_done_button_clicked'),
 
-  //parent
+  // Recommendation flow
+  recommendationStartButtonClicked('recommendation_start_button_clicked'),
+  recommendationInterestsSelected('recommendation_interests_selected'),
+
+  // Parent giving flow
   parentGiveTileClicked('parent_give_tile_clicked'),
   parentGivingFlowOrganisationClicked(
       'parent_giving_flow_organization_clicked'),
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
+  parentGiveClicked('parent_give_clicked'),
+
+  // Reflect and Share
+  reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
+  reflectAndShareClicked('reflect_and_share_clicked'),
+  reflectAndShareStartClicked('reflect_and_share_start_clicked'),
+  reflectAndShareSeeRolesClicked('reflect_and_share_see_roles_clicked'),
+  reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
+  reflectAndShareMemberAdded('reflect_and_share_member_added'),
+  reflectAndSharePassThePhoneClicked(
+      'reflect_and_share_pass_the_phone_clicked'),
+  reflectAndShareReadyClicked('reflect_and_share_ready_clicked'),
+  reflectAndShareStartInterviewClicked(
+      'reflect_and_share_start_interview_clicked'),
+  reflectAndShareDoneClicked('reflect_and_share_done_clicked'),
+  reflectAndShareResultGoBackClicked(
+      'reflect_and_share_result_go_back_clicked'),
+  reflectAndShareNextJournalistClicked(
+      'reflect_and_share_next_journalist_clicked'),
+
+  // DEBUG ONLY
+  debugButtonClicked('debug_button_clicked'),
   ;
 
   const AmplitudeEvents(this.value);

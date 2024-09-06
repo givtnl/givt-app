@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -162,20 +163,20 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                   children: gridItems,
                                 ),
                               ),
-                            const Visibility(
-                                visible: false,
-                                child: SizedBox(height: 8)),
-                            Visibility(
-                              visible: false,
-                              child: FunButton(
-                                  isTertiary: true,
-                                  onTap: () => context.goNamed(
-                                        FamilyPages.reflectIntro.name,
-                                      ),
-                                  text: 'Reflect & Share'),
-                            ),
                             const SizedBox(height: 8),
-                            FunSecondaryButton(
+                            if (state.profiles.length >= 3) ...[
+                              FunButton(
+                                onTap: () => context.goNamed(
+                                  FamilyPages.reflectIntro.name,
+                                ),
+                                text: 'Reflect & Share',
+                                analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.reflectAndShareClicked,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                            FunButton.secondary(
                               onTap: () async {
                                 if (!context.mounted) return;
                                 flow.resetFlow();
@@ -193,18 +194,12 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                       },
                                     ),
                                   );
-                                  unawaited(
-                                    AnalyticsHelper.logEvent(
-                                      eventName:
-                                          AmplitudeEvents.manageFamilyPressed,
-                                    ),
-                                  );
                                 }
                               },
                               text: 'Manage Family',
-                              leftIcon: const FaIcon(
-                                FontAwesomeIcons.sliders,
-                                color: FamilyAppTheme.primary30,
+                              leftIcon: FontAwesomeIcons.sliders,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.manageFamilyPressed,
                               ),
                             ),
                           ],

@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/permissions_dialog_ui_model.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -44,18 +45,21 @@ class FamilyAppPermissionDialog extends StatelessWidget {
                   if (model.isSettings)
                     FunButton(
                       onTap: () {
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.openAppPermissionsSettings,
-                        );
                         openAppSettings();
                         context.pop();
                       },
                       text: 'Go to Settings',
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.permissionsGoToSettingsClicked,
+                      ),
                     )
                   else
                     FunButton(
                       onTap: model.onNextTap,
                       text: 'Next',
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.permissionsNextClicked,
+                      ),
                     ),
                 ],
               ),

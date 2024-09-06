@@ -7,13 +7,12 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/utils.dart';
-
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
@@ -120,11 +119,10 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
         onTap: () {
           context.goNamed(FamilyPages.wallet.name);
           context.read<FlowsCubit>().resetFlow();
-
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.returnToHomePressed,
-          );
         },
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.returnToHomePressed,
+        ),
       );
     }
     if (isOnlyChild) {

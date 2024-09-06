@@ -22,7 +22,7 @@ void logout(
 
   if (fromLogoutBtn) {
     AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.logOutPressed,
+      eventName: AmplitudeEvents.logoutClicked,
     );
   }
 

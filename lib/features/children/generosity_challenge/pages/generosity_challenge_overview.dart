@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge_chat/chat_script
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -175,7 +176,7 @@ class _GenerosityChallengeOverviewState
                   },
                 ),
                 const Spacer(),
-                FunSecondaryButton(
+                FunButton.secondary(
                   onTap: () {
                     context.read<FlowsCubit>().startInGenerosityCoinFlow();
                     context.pushNamed(
@@ -184,12 +185,12 @@ class _GenerosityChallengeOverviewState
                         'isGenerosityChallenge': true,
                       },
                     );
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.giveWithCoinInChallengeClicked,
-                    );
                   },
                   leadingImage: coin(width: 32, height: 32),
                   text: 'Give with a coin',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.giveWithCoinInChallengeClicked,
+                  ),
                 ),
               ],
             ),

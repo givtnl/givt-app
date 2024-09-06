@@ -100,7 +100,7 @@ class FamilyOverviewPage extends StatelessWidget {
   ) async {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.addMemerClicked,
+        eventName: AmplitudeEvents.addMemberClicked,
       ),
     );
     await AddMemberUtil.addMemberPushPages(context);

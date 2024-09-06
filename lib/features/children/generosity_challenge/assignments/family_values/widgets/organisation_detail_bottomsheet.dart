@@ -6,13 +6,17 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/organisation_header.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_icon_border_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class OrganisationDetailBottomSheet extends StatelessWidget {
-  const OrganisationDetailBottomSheet({required this.value, super.key,});
+  const OrganisationDetailBottomSheet({
+    required this.value,
+    super.key,
+  });
 
   final FamilyValue value;
   @override
@@ -98,14 +102,6 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             child: FunButton(
               text: 'Continue',
               onTap: () {
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.organisationDetailsContinueClicked,
-                  eventProperties: {
-                    'organisation_name': value.organisation.organisationName,
-                    'family_value': value.displayText,
-                  },
-                );
-
                 context.pushNamed(
                   FamilyPages.chooseAmountSlider.name,
                   extra: [
@@ -114,6 +110,13 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                   ],
                 );
               },
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.organisationDetailsContinueClicked,
+                parameters: {
+                  'organisation_name': value.organisation.organisationName,
+                  'family_value': value.displayText,
+                },
+              ),
             ),
           ),
         ),

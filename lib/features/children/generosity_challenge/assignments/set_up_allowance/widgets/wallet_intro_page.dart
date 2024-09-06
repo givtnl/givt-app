@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class WalletIntroPage extends StatelessWidget {
@@ -63,6 +65,9 @@ class WalletIntroPage extends StatelessWidget {
                 FunButton(
                   onTap: onContinue,
                   text: 'Continue',
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.continueClicked,
+                  ),
                 ),
               ],
             ),

@@ -34,7 +34,7 @@ To use a component you should import it from the `lib/features/family/shared/des
 #### Actions
 
 - Button => `FunButton`
-- Secondary Button => `FunSecondaryButton`
+- Secondary Button => `FunButton.secondary`
 - Tile => `FunTile`
 
 #### Content

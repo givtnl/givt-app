@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class NoChildrenPage extends StatelessWidget {
@@ -27,6 +29,9 @@ class NoChildrenPage extends StatelessWidget {
           FunButton(
             onTap: onAddNewChildPressed,
             text: context.l10n.plusAddMembers,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.addMemberClicked,
+            ),
           ),
         ],
       ),
