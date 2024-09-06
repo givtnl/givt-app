@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
@@ -36,6 +37,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
       ),
@@ -90,6 +92,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 );
               },
               text: 'Ready',
+              amplitudeEvent: AmplitudeEvents.reflectAndShareReadyClicked,
             )
           ],
         ),

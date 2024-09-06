@@ -20,7 +20,6 @@ class _SecretWordInputState extends State<SecretWordInput> {
 
   @override
   Widget build(BuildContext context) {
-    
     focusNodes = List.generate(
       widget.amountOfLetters,
       (index) => FocusNode(),
@@ -35,29 +34,33 @@ class _SecretWordInputState extends State<SecretWordInput> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         for (var i = 0; i < widget.amountOfLetters; i++) ...[
-          SizedBox(
-            width: 16,
-            child: TextField(
-              focusNode: focusNodes[i],
-              controller: controllers[i],
-              autofocus: i == 0,
-              textAlign: TextAlign.center,
-              maxLength: 1,
-              decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-              ),
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  focusNodes[i].unfocus();
-                  if (i < widget.amountOfLetters - 1) {
-                    focusNodes[i + 1].requestFocus();
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
+            child: SizedBox(
+              width: 24,
+              child: TextField(
+                focusNode: focusNodes[i],
+                controller: controllers[i],
+                autofocus: i == 0,
+                textAlign: TextAlign.center,
+                maxLength: 1,
+                decoration: const InputDecoration(
+                  counterText: '',
+                  border: UnderlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    focusNodes[i].unfocus();
+                    if (i < widget.amountOfLetters - 1) {
+                      focusNodes[i + 1].requestFocus();
+                    }
+                  } else {
+                    if (i > 0) focusNodes[i - 1].requestFocus();
                   }
-                } else {
-                  if (i > 0) focusNodes[i - 1].requestFocus();
-                }
-
-                widget.onChanged(getWord());
-              },
+            
+                  widget.onChanged(getWord());
+                },
+              ),
             ),
           ),
           if (i < widget.amountOfLetters - 1) const SizedBox(width: 8),

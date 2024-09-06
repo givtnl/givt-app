@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_sidekick_screen.dart';
@@ -23,6 +24,7 @@ class _ReflectionRuleReporterScreenState
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: const FunTopAppBar(title: 'Reflection rules'),
       body: Center(
         child: FunCard(
@@ -34,12 +36,13 @@ class _ReflectionRuleReporterScreenState
           ),
           button: FunButton(
             onTap: () {
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 ReflectionRuleSidekickScreen(superhero: widget.superhero)
                     .toRoute(context),
               );
             },
             text: 'Next',
+            amplitudeEvent: AmplitudeEvents.reflectAndShareRulesNextClicked,
           ),
         ),
       ),

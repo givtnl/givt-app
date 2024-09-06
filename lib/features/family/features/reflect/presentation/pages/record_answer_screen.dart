@@ -133,6 +133,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
             .length; // Check if reporter has a question at current index
 
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: _currentReporter.firstName!,
         actions: [

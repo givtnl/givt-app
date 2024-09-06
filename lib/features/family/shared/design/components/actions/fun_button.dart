@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -20,6 +22,7 @@ class FunButton extends StatelessWidget {
     this.backgroundColor = AppTheme.primary80,
     this.borderColor = AppTheme.givtGreen40,
     this.amplitudeEvent,
+    this.isDebugOnly = false,
   });
 
   final void Function()? onTap;
@@ -34,9 +37,15 @@ class FunButton extends StatelessWidget {
   final Color backgroundColor;
   final Color borderColor;
   final AmplitudeEvents? amplitudeEvent;
+  final bool isDebugOnly;
 
   @override
   Widget build(BuildContext context) {
+    final appConfig = getIt.get<AppConfig>();
+
+    if (isDebugOnly && !appConfig.isTestApp) {
+      return const SizedBox.shrink();
+    }
     final themeData = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: () {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/result_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -32,6 +32,7 @@ class _ResultScreenState extends State<ResultScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, secretWord) {
@@ -73,17 +74,18 @@ class _ResultScreenState extends State<ResultScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const Spacer(),
+                  // Temporary solution
+                  // Get users out of the flow from
                   FunButton(
                     onTap: () {
-                      final nextSuperhero = _cubit.getNextSuperhero();
-
-                      Navigator.of(context).push(
-                        PassThePhone.toSuperhero(nextSuperhero)
-                            .toRoute(context),
+                      Navigator.of(context).popUntil(
+                        ModalRoute.withName(
+                          FamilyPages.profileSelection.name,
+                        ),
                       );
                     },
-                    text: 'Next round',
-                    rightIcon: FontAwesomeIcons.arrowRight,
+                    text: 'Go back',
+                    amplitudeEvent: AmplitudeEvents.reflectAndShareResultGoBackClicked,
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
@@ -30,6 +31,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: const FunTopAppBar(title: 'Guess the word'),
       body: BaseStateConsumer(
         cubit: _cubit,
@@ -46,12 +48,13 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               ),
               button: FunButton(
                 onTap: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     ResultScreen(success: currentGuessedWord == secretWord)
                         .toRoute(context),
                   );
                 },
                 text: 'Done',
+                amplitudeEvent: AmplitudeEvents.reflectAndShareDoneClicked,
               ),
             ),
           );
