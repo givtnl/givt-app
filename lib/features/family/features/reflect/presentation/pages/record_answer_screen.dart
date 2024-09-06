@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -37,6 +38,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   int _currentReporterIndex = 0; // Track the current reporter index
   String buttontext = 'Start Recording';
   InterviewCubit cubit = getIt<InterviewCubit>();
+  AppConfig config = getIt<AppConfig>();
 
   late GameProfile _currentReporter;
   late GameProfile _currentSidekick;
@@ -198,10 +200,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                     onTap: () {
                       if (_remainingSeconds == 60 * 2) {
                         _startCountdown();
-                        //debug
-                        setState(() {
-                          _remainingSeconds = 20;
-                        });
                         return;
                       }
                       _advanceToNextReporter();
@@ -209,6 +207,12 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                     text: buttontext,
                   ),
                 ),
+                if (config.isTestApp)
+                  FunButton(
+                      onTap: () => setState(() {
+                            _remainingSeconds = 20;
+                          }),
+                      text: 'Test 20 seconds')
               ],
             ),
           ),
