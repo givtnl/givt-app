@@ -109,9 +109,9 @@ class ReflectAndShareRepository {
       final secondReporterQuestions = _pickQuestions(questions, 1, rng);
       list
         ..add(reporters[0]
-          ..copyWith(role: Role.reporter(questions: firstReporterQuestions)))
+            .copyWith(role: Role.reporter(questions: firstReporterQuestions)))
         ..add(reporters[1]
-          ..copyWith(role: Role.reporter(questions: secondReporterQuestions)));
+            .copyWith(role: Role.reporter(questions: secondReporterQuestions)));
     } else {
       for (final reporter in reporters) {
         final reporterQuestion = _pickQuestions(questions, 1, rng);
