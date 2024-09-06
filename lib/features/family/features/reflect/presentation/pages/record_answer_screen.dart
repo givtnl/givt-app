@@ -102,6 +102,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     });
   }
 
+  bool _nextQuestionIsLast() {
+    // Check if all reporters have no more questions
+    return widget.reporters.every((reporter) {
+      final reporterQuestions = (reporter.role! as Reporter).questions!;
+      return _currentQuestionIndex + 1 >= reporterQuestions.length;
+    });
+  }
+
   void _advanceToNextReporter() {
     setState(() {
       _currentReporterIndex++;
@@ -119,9 +127,13 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         }
       }
 
+      if (_nextQuestionIsLast()) {
+        buttontext = 'Finish';
+      }
+
       // Update the current reporter
       _currentReporter = widget.reporters[_currentReporterIndex];
-      _remainingSeconds = 60 * 2; // Reset the timer
+      //_remainingSeconds = 60 * 2; // Reset the timer
     });
   }
 
