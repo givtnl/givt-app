@@ -59,10 +59,11 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   }
 
   bool _nextQuestionIsLast() {
-    return _reporters.every((reporter) {
-      final reporterQuestions = (reporter.role! as Reporter).questions!;
-      return _currentQuestionIndex + 1 >= reporterQuestions.length;
-    });
+    var totalQuestions = _reporters.fold(
+        0,
+        (previous, element) =>
+            previous + (element.role as Reporter).questions!.length);
+    return totalQuestions == _nrOfQuestionsAsked + 1;
   }
 
   // Advance to the next reporter/question
