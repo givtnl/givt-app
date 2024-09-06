@@ -1,14 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -40,20 +38,17 @@ class ImpactGroupRecieveInviteSheet extends StatelessWidget {
           FunButton(
             text: context.l10n.acceptInviteKey,
             onTap: () {
-              unawaited(
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.inviteToImpactGroupAccepted,
-                  eventProperties: {
-                    'group_name': invitdImpactGroup.name,
-                  },
-                ),
-              );
-
               context
                   .read<ImpactGroupsCubit>()
                   .acceptGroupInvite(groupId: invitdImpactGroup.id);
               context.pop();
             },
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.inviteToImpactGroupAccepted,
+              parameters: {
+                'group_name': invitdImpactGroup.name,
+              },
+            ),
           ),
         ],
       ),

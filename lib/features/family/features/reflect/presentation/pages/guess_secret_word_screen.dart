@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/res
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/secret_word_input.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -53,6 +55,9 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                   );
                 },
                 text: 'Done',
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.reflectAndShareDoneClicked,
+                ),
               ),
             ),
           );

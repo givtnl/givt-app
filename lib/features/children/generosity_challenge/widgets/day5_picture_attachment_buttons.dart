@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/gallery_permissions_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class Day5PictureAttachmentButtons extends StatelessWidget {
   const Day5PictureAttachmentButtons({super.key});
@@ -56,15 +56,12 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                     context.read<CameraCubit>().checkCameraPermission(),
                   );
                 }
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.generosityChallengeTakePictureClicked,
-                  ),
-                );
               },
               leftIcon: FontAwesomeIcons.camera,
               text: 'Take Picture',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengeTakePictureClicked,
+              ),
             ),
             const SizedBox(height: 8),
             FunButton.secondary(
@@ -80,8 +77,9 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
               },
               leftIcon: FontAwesomeIcons.image,
               text: 'Upload Picture',
-              amplitudeEvent:
-                  AmplitudeEvents.generosityChallengeUploadPictureClicked,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengeUploadPictureClicked,
+              ),
             ),
           ],
         ),

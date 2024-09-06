@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
@@ -8,8 +6,8 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/registration/widgets/registered_check_animation.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
@@ -38,21 +36,16 @@ class RegistrationSuccessUs extends StatelessWidget {
                 FunButton(
                   text: context.l10n.setUpFamily,
                   onTap: () {
-                    final user = context.read<AuthCubit>().state.user;
-
-                    unawaited(
-                      AnalyticsHelper.logEvent(
-                        eventName:
-                            AmplitudeEvents.registrationSuccesButtonClicked,
-                        eventProperties: {
-                          'id': user.guid,
-                        },
-                      ),
-                    );
                     context.pushReplacementNamed(
                       FamilyPages.profileSelection.name,
                     );
                   },
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.registrationSuccesButtonClicked,
+                    parameters: {
+                      'id': context.read<AuthCubit>().state.user.guid,
+                    },
+                  ),
                 ),
               ],
             ),

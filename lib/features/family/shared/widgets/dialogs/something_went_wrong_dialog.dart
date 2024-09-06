@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -127,12 +128,17 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               rightIcon: widget.primaryBtnRightIcon,
               leadingImage: widget.primaryBtnLeadingImage,
               isLoading: _isLoading,
+              analyticsEvent: AnalyticsEvent(
+                widget.amplitudeEvent,
+              ),
             ),
             const SizedBox(height: 16),
             FunButton.secondary(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
-              amplitudeEvent: widget.amplitudeEvent,
+              analyticsEvent: AnalyticsEvent(
+                widget.amplitudeEvent,
+              ),
             ),
           ],
         ),

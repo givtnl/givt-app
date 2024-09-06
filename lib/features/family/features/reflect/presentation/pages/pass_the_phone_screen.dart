@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
@@ -6,6 +7,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/rev
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class PassThePhone extends StatelessWidget {
   const PassThePhone({
@@ -70,6 +72,9 @@ class PassThePhone extends StatelessWidget {
                       child: FunButton(
                         onTap: () => onTap.call(context),
                         text: buttonText,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.reflectAndSharePassThePhoneClicked,
+                        ),
                       ),
                     ),
                   ],

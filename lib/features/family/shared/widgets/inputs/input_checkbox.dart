@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class InputCheckbox extends StatelessWidget {
@@ -8,13 +8,13 @@ class InputCheckbox extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onChanged,
-    required this.amplitudeEvent,
+    required this.analyticsEvent,
     super.key,
   });
 
   final String label;
   final bool value;
-  final AmplitudeEvents amplitudeEvent;
+  final AnalyticsEvent analyticsEvent;
   final void Function(bool? value)? onChanged;
 
   @override
@@ -25,9 +25,10 @@ class InputCheckbox extends StatelessWidget {
           value: value,
           onChanged: (value) {
             AnalyticsHelper.logEvent(
-              eventName: amplitudeEvent,
+              eventName: analyticsEvent.name,
               eventProperties: {
                 'value': value,
+                ...analyticsEvent.parameters,
               },
             );
 

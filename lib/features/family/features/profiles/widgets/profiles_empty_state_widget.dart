@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ProfilesEmptyStateWidget extends StatelessWidget {
   const ProfilesEmptyStateWidget({
@@ -35,7 +36,9 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
                     onTap: () => logout(context, fromLogoutBtn: true),
                     text: 'Logout',
                     leftIcon: FontAwesomeIcons.arrowRightFromBracket,
-                    amplitudeEvent: AmplitudeEvents.logoutClicked,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.logoutClicked,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -46,6 +49,9 @@ class ProfilesEmptyStateWidget extends StatelessWidget {
                     onTap: onRetry,
                     text: 'Retry',
                     leftIcon: Icons.refresh_rounded,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.retryClicked,
+                    ),
                   ),
                 ),
               ],

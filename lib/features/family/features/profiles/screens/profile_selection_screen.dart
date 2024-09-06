@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -163,12 +164,18 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            FunButton(
+                            if (state.profiles.length >= 3) ...[
+                              FunButton(
                                 onTap: () => context.goNamed(
-                                      FamilyPages.reflectIntro.name,
-                                    ),
-                                text: 'Reflect & Share'),
-                            const SizedBox(height: 8),
+                                  FamilyPages.reflectIntro.name,
+                                ),
+                                text: 'Reflect & Share',
+                                analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.reflectAndShareClicked,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
                             FunButton.secondary(
                               onTap: () async {
                                 if (!context.mounted) return;
@@ -191,8 +198,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                               },
                               text: 'Manage Family',
                               leftIcon: FontAwesomeIcons.sliders,
-                              amplitudeEvent:
-                                  AmplitudeEvents.manageFamilyPressed,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.manageFamilyPressed,
+                              ),
                             ),
                           ],
                         ),

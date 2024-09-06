@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/coin_flow/widgets/coin_search_
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,22 +57,15 @@ class SearchForCoinScreen extends StatelessWidget {
                       ? FunButton(
                           text: 'Assign the coin',
                           onTap: () {
-                            AnalyticsHelper.logEvent(
-                              eventName: AmplitudeEvents.assignCoinPressed,
-                            );
-
-                            // TODO(MAIKEL):  Is it still needed to check?
-                            // final isLoggedIn =
-                            //     context.read<AuthCubit>().state is LoggedInState;
-                            // final pageName = isLoggedIn
-                            //     ? Pages.profileSelection.name
-                            //     : Pages.login.name;
                             final pageName = FamilyPages.profileSelection.name;
 
                             context.read<FlowsCubit>().startDeepLinkCoinFlow();
 
                             context.pushNamed(pageName);
                           },
+                          analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents.assignCoinPressed,
+                          ),
                         )
                       : null,
             );

@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class HowManyTasksWidget extends StatefulWidget {
@@ -19,17 +17,6 @@ class HowManyTasksWidget extends StatefulWidget {
 class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
   late TextEditingController _controller;
   String? _errorText;
-
-  void _logSaveClicked(int? nrOfTasks) {
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.generosityChallengeDay4SaveClicked,
-        eventProperties: {
-          if (nrOfTasks != null) 'nr_of_tasks': nrOfTasks,
-        },
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -93,6 +80,12 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
         FunButton(
           text: 'Save',
           onTap: _handleOnTapSaved,
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.generosityChallengeDay4SaveClicked,
+            parameters: {
+              'nr_of_tasks': _controller.text,
+            },
+          ),
         ),
       ],
     );
@@ -114,7 +107,6 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
       } else {
         widget.onSubmitNrOfTasks?.call(number);
       }
-      _logSaveClicked(number);
     }
   }
 

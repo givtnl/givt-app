@@ -7,6 +7,7 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -89,17 +90,17 @@ class GenerosityDailyCard extends StatelessWidget {
                               '${FamilyPages.generosityChallenge.path}/${task.redirect}',
                               extra: context.read<GenerosityChallengeCubit>(),
                             );
-                            AnalyticsHelper.logEvent(
-                              eventName: AmplitudeEvents
-                                  .startAssignmentFromGenerosityChallenge,
-                              eventProperties: {
-                                'title': task.title,
-                              },
-                            );
                           },
                           isDisabled: isCompleted,
                           text: task.buttonText,
                           rightIcon: FontAwesomeIcons.arrowRight,
+                          analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents
+                                .startAssignmentFromGenerosityChallenge,
+                            parameters: {
+                              'title': task.title,
+                            },
+                          ),
                         ),
                       ),
                     if (task.customBottomWidget != null)

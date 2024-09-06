@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
@@ -9,6 +10,7 @@ import 'package:givt_app/features/family/features/recommendation/widgets/charity
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {
@@ -101,6 +103,14 @@ class InterestsSelectionScreen extends StatelessWidget {
                       context.read<InterestsCubit>().clearSelectedInterests();
                     }
                   : null,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.interestSelected,
+                parameters: {
+                  'interests': state.selectedInterests
+                      .map((e) => e.displayText)
+                      .toList(),
+                },
+              ),
             ),
           ),
         );

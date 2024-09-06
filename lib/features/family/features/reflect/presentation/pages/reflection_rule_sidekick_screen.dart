@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
@@ -6,6 +7,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectionRuleSidekickScreen extends StatefulWidget {
@@ -40,6 +42,9 @@ class _ReflectionRuleSidekickScreenState
               );
             },
             text: 'Next',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.reflectAndShareRulesNextClicked,
+            ),
           ),
         ),
       ),

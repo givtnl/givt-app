@@ -57,18 +57,8 @@ class TagsCubit extends Cubit<TagsState> {
 
   void selectLocation({
     required Tag location,
-    bool logAmplitude = true,
   }) {
     if (state is TagsStateFetched) {
-      if (logAmplitude) {
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.locationSelected,
-          eventProperties: {
-            AnalyticsHelper.locationKey: location.displayText,
-          },
-        );
-      }
-
       emit(
         TagsStateFetched(
           tags: state.tags,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -12,8 +13,10 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class FamilySelectionScreen extends StatefulWidget {
   const FamilySelectionScreen({super.key});
@@ -87,6 +90,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
       },
       isDisabled: selectedProfiles.length < 3,
       text: 'See roles',
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.reflectAndShareSeeRolesClicked,
+      ),
     );
   }
 
@@ -133,6 +139,13 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             return;
           }
 
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.reflectAndShareMemberAdded,
+            eventProperties: {
+              'name': details.data.firstName,
+            },
+          );
+
           setState(() {
             selectedProfiles.add(details.data);
           });
@@ -146,7 +159,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   }
 
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.sizeOf(context).height * 0.35,
       child: Stack(
         alignment: Alignment.bottomCenter,

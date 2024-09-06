@@ -11,6 +11,7 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeDayDetails extends StatelessWidget {
@@ -100,18 +101,17 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                       builder: (context) => FeedbackBannerDialog(task: task),
                     );
 
-                    await AnalyticsHelper.logEvent(
-                      eventName:
-                          AmplitudeEvents.generosityChallengeDayCompleted,
-                      eventProperties: {
-                        'day': challenge.state.detailedDayIndex + 1,
-                      },
-                    );
                     await challenge.completeActiveDay(isDebug);
                   },
                   text: 'Complete',
                   isDisabled: day.isCompleted,
                   leftIcon: FontAwesomeIcons.solidSquareCheck,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.generosityChallengeDayCompleted,
+                    parameters: {
+                      'day': challenge.state.detailedDayIndex + 1,
+                    },
+                  ),
                 ),
             ],
           ),

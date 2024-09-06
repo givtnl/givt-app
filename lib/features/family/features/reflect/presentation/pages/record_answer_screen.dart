@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
@@ -14,6 +15,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -172,6 +174,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                       }
                     },
                     text: buttontext,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareNextJournalistClicked,
+                    ),
                   ),
                 ),
               ],

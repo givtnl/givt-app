@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -9,6 +11,7 @@ class FunButton extends StatelessWidget {
   const FunButton({
     required this.onTap,
     required this.text,
+    required this.analyticsEvent,
     super.key,
     this.isDisabled = false,
     this.isLoading = false,
@@ -19,13 +22,13 @@ class FunButton extends StatelessWidget {
     this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
     this.borderColor = FamilyAppTheme.primary30,
     this.fullBorder = false,
-    this.amplitudeEvent,
+    this.isDebugOnly = false,
   });
 
   factory FunButton.secondary({
     required void Function()? onTap,
     required String text,
-    required AmplitudeEvents amplitudeEvent,
+    required AnalyticsEvent analyticsEvent,
     bool isDisabled = false,
     bool isLoading = false,
     IconData? leftIcon,
@@ -44,14 +47,14 @@ class FunButton extends StatelessWidget {
       disabledBackgroundColor: FamilyAppTheme.neutral100,
       borderColor: FamilyAppTheme.primary80,
       fullBorder: true,
-      amplitudeEvent: amplitudeEvent,
+      analyticsEvent: analyticsEvent,
     );
   }
 
   factory FunButton.tertiary({
     required void Function()? onTap,
     required String text,
-    required AmplitudeEvents amplitudeEvent,
+    required AnalyticsEvent analyticsEvent,
     bool isDisabled = false,
     bool isLoading = false,
     IconData? leftIcon,
@@ -68,7 +71,7 @@ class FunButton extends StatelessWidget {
       leadingImage: leadingImage,
       backgroundColor: FamilyAppTheme.neutral100,
       borderColor: AppTheme.secondary80,
-      amplitudeEvent: amplitudeEvent,
+      analyticsEvent: analyticsEvent,
     );
   }
 
@@ -83,15 +86,23 @@ class FunButton extends StatelessWidget {
   final Color disabledBackgroundColor;
   final Color borderColor;
   final bool fullBorder;
-  final AmplitudeEvents? amplitudeEvent;
+  final bool isDebugOnly;
+  final AnalyticsEvent? analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
+    final appConfig = getIt.get<AppConfig>();
+
+    if (isDebugOnly && !appConfig.isTestApp) {
+      return const SizedBox.shrink();
+    }
     final themeData = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: () {
-        if (amplitudeEvent != null) {
-          AnalyticsHelper.logEvent(eventName: amplitudeEvent!);
+        if (analyticsEvent != null) {
+          AnalyticsHelper.logEvent(
+              eventName: analyticsEvent!.name,
+              eventProperties: analyticsEvent!.parameters);
         }
 
         onTap?.call();

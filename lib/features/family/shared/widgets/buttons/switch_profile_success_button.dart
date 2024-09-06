@@ -7,7 +7,7 @@ import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class SwitchProfileSuccessButton extends StatelessWidget {
@@ -37,7 +37,9 @@ class SwitchProfileSuccessButton extends StatelessWidget {
 
         context.goNamed(FamilyPages.profileSelection.name);
       },
-      amplitudeEvent: AmplitudeEvents.profileSwitchPressed,
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.profileSwitchPressed,
+      ),
     );
   }
 }
