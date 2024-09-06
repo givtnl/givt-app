@@ -93,8 +93,14 @@ class RegistrationStripeInit extends RegistrationEvent {
 }
 
 class RegistrationStripeSuccess extends RegistrationEvent {
-  const RegistrationStripeSuccess();
-}
+  const RegistrationStripeSuccess({
+    this.emitAuthenticated = true,
+  });
+
+  final bool emitAuthenticated;
+
+  @override
+  List<Object> get props => [emitAuthenticated];}
 
 class RegistrationInit extends RegistrationEvent {
   const RegistrationInit();
