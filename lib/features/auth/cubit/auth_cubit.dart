@@ -22,7 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepositoy) : super(const AuthState()) {
     _sessionSubscription =
         _authRepositoy.hasSessionStream().listen((hasSession) {
-      checkAuth();
+      checkAuth(hasSession: hasSession);
     });
   }
 
@@ -150,7 +150,8 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
-  Future<void> checkAuth({bool isAppStartupCheck = false}) async {
+  Future<void> checkAuth(
+      {bool isAppStartupCheck = false, bool? hasSession}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       var (userExt, session, amountPresets) =
@@ -179,14 +180,16 @@ class AuthCubit extends Cubit<AuthState> {
         notificationId: newNotificationId,
       );
 
-      emit(
-        state.copyWith(
-          status: AuthStatus.authenticated,
-          user: userExt,
-          session: session,
-          presets: amountPresets,
-        ),
-      );
+      if (hasSession == null || hasSession != true) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: userExt,
+            session: session,
+            presets: amountPresets,
+          ),
+        );
+      }
       _authRepositoy.setHasSessionInitialValue(true);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
@@ -316,11 +319,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> refreshUser() async {
-    emit(state.copyWith(status: AuthStatus.loading));
+  Future<void> refreshUser({bool emitAuthentication = true}) async {
+    if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
-      emit(
+      if(emitAuthentication) emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           user: userExt,
@@ -379,12 +382,12 @@ class AuthCubit extends Cubit<AuthState> {
     return false;
   }
 
-  Future<void> refreshSession() async {
-    emit(state.copyWith(status: AuthStatus.loading));
+  Future<void> refreshSession({bool emitAuthentication = true}) async {
+    if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
-      emit(
+      if(emitAuthentication) emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           session: session,
