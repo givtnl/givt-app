@@ -21,6 +21,9 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
     _reporters = getReporters();
     _currentReporterIndex = 0;
     _currentQuestionIndex = 0;
+    _nrOfQuestionsAsked = 0;
+    hasCountDownStarted = false;
+
     _emitData();
   }
 

@@ -154,7 +154,9 @@ class ProfilesRepositoryImpl with ProfilesRepository {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
       return _profiles ?? [];
     } finally {
-      _profilesCompleter?.complete([]);
+      if (!_profilesCompleter!.isCompleted) {
+        _profilesCompleter?.complete([]);
+      }
     }
   }
 

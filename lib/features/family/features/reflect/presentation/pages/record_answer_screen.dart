@@ -65,6 +65,8 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         timer.cancel();
       } else {
         _handleEffects();
+
+        if (!mounted) return;
         setState(() {
           _remainingSeconds--;
         });
