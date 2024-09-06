@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/rev
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class PassThePhone extends StatelessWidget {
   const PassThePhone({
@@ -71,8 +72,9 @@ class PassThePhone extends StatelessWidget {
                       child: FunButton(
                         onTap: () => onTap.call(context),
                         text: buttonText,
-                        amplitudeEvent:
-                            AmplitudeEvents.reflectAndSharePassThePhoneClicked,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.reflectAndSharePassThePhoneClicked,
+                        ),
                       ),
                     ),
                   ],

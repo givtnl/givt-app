@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/ref
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectionRuleSuperheroScreen extends StatefulWidget {
@@ -42,7 +43,9 @@ class _ReflectionRuleSuperheroScreenState
               );
             },
             text: 'Next',
-            amplitudeEvent: AmplitudeEvents.reflectAndShareRulesNextClicked,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.reflectAndShareRulesNextClicked,
+            ),
           ),
         ),
       ),

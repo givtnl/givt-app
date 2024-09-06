@@ -17,6 +17,7 @@ import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -203,6 +204,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? _register : null,
           text: locals.enterPaymentDetails,
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.registrationEnterPaymentDetailsClicked,
+          ),
         ),
       ],
     );

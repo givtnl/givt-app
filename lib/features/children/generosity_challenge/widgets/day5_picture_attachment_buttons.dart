@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/gallery_permissions_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class Day5PictureAttachmentButtons extends StatelessWidget {
   const Day5PictureAttachmentButtons({super.key});
@@ -56,18 +56,15 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                     context.read<CameraCubit>().checkCameraPermission(),
                   );
                 }
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.generosityChallengeTakePictureClicked,
-                  ),
-                );
               },
               leftIcon: FontAwesomeIcons.camera,
               text: 'Take Picture',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengeTakePictureClicked,
+              ),
             ),
             const SizedBox(height: 8),
-            FunSecondaryButton(
+            FunButton.secondary(
               onTap: () async {
                 final success = await cubit.submitDay5Picture(
                   takenWithCamera: false,
@@ -77,19 +74,12 @@ class Day5PictureAttachmentButtons extends StatelessWidget {
                     context.read<CameraCubit>().checkGalleryPermission(),
                   );
                 }
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.generosityChallengeUploadPictureClicked,
-                  ),
-                );
               },
-              leftIcon: const Icon(
-                FontAwesomeIcons.image,
-                size: 24,
-                color: AppTheme.givtGreen40,
-              ),
+              leftIcon: FontAwesomeIcons.image,
               text: 'Upload Picture',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengeUploadPictureClicked,
+              ),
             ),
           ],
         ),

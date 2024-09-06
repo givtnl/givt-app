@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/ref
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -68,11 +69,16 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                     isDebugOnly: true,
                     onTap: _cubit.assignRolesForNextRound,
                     text: 'Test: assign roles for next round',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.debugButtonClicked,
+                    ),
                   ),
                   FunButton(
                     onTap: _cubit.onClickStart,
                     text: 'Start',
-                    amplitudeEvent: AmplitudeEvents.reflectAndShareStartClicked,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareStartClicked,
+                    ),
                   ),
                 ],
               ),

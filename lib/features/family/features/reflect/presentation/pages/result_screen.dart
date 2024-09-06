@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:lottie/lottie.dart';
@@ -85,7 +86,9 @@ class _ResultScreenState extends State<ResultScreen> {
                       );
                     },
                     text: 'Go back',
-                    amplitudeEvent: AmplitudeEvents.reflectAndShareResultGoBackClicked,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareResultGoBackClicked,
+                    ),
                   ),
                 ],
               ),

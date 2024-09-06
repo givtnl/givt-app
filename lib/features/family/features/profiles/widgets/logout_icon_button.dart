@@ -20,7 +20,7 @@ class LogoutIconButton extends StatelessWidget {
     return IconButton(
       onPressed: () {
         AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.logOutPressed,
+          eventName: AmplitudeEvents.logoutClicked,
         );
         context.read<AuthCubit>().logout();
         context.read<ProfilesCubit>().clearProfiles();

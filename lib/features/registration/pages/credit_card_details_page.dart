@@ -85,7 +85,7 @@ class CreditCardDetailsPage extends StatelessWidget {
             }
 
             /* Logged as info as stripe is giving exception
-               when for example people close the bottomsheet. 
+               when for example people close the bottomsheet.
                So it's not a real error :)
             */
             LoggingInfo.instance.info(
@@ -101,7 +101,9 @@ class CreditCardDetailsPage extends StatelessWidget {
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
-    context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
+    context
+        .read<RegistrationBloc>()
+        .add(const RegistrationStripeSuccess(emitAuthenticated: false));
     context.pushReplacementNamed(
       FamilyPages.permitUSBiometric.name,
       extra: PermitBiometricRequest.registration(redirect: (context) {

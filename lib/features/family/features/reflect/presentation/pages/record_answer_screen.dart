@@ -8,12 +8,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -144,6 +146,9 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                       cubit.advanceToNext();
                     },
                     text: widget.uiModel.buttonText,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareNextJournalistClicked,
+                    ),
                   ),
                 ),
                 Visibility(
@@ -154,7 +159,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
-                        isTertiary: true,
                         onTap: () {
                           if (_remainingSeconds == 60 * 2) {
                             _startCountdown();
@@ -166,7 +170,10 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                           }
                           cubit.advanceToNext();
                         },
-                        text: 'Start test 20 seconds'),
+                        text: 'Start test 20 seconds',
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.debugButtonClicked,
+                        )),
                   ),
                 ),
                 const SizedBox(height: 24),

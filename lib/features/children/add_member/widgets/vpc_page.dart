@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -71,6 +72,9 @@ class VPCPage extends StatelessWidget {
                       context.read<AddMemberCubit>().createMember();
                     },
                 text: context.l10n.ready,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.vpcReadyClicked,
+                ),
               ),
             ],
           ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
   const AddMemberCounterPage({this.initialAmount, super.key});
@@ -56,6 +58,10 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                   },
                   text: 'Continue',
                   rightIcon: FontAwesomeIcons.arrowRight,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.addMemberContinueClicked,
+                    parameters: {'amount': _amount},
+                  ),
                 ),
               ],
             ),

@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/rec
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class StartInterviewScreen extends StatefulWidget {
@@ -77,8 +78,9 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                           );
                         },
                         text: 'Interview Superhero',
-                        amplitudeEvent: AmplitudeEvents
-                            .reflectAndShareStartInterviewClicked,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.reflectAndShareStartInterviewClicked,
+                        ),
                       ),
                     ),
                   ],
@@ -145,6 +147,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
           ),
         );
       case >= 3:
+        reporters = reporters.take(3).toList();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(

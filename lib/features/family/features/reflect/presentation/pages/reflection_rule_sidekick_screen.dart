@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class ReflectionRuleSidekickScreen extends StatefulWidget {
@@ -41,7 +42,9 @@ class _ReflectionRuleSidekickScreenState
               );
             },
             text: 'Next',
-            amplitudeEvent: AmplitudeEvents.reflectAndShareRulesNextClicked,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.reflectAndShareRulesNextClicked,
+            ),
           ),
         ),
       ),

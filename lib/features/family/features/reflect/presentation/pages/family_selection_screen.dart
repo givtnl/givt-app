@@ -10,10 +10,10 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/a
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -90,7 +90,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
       },
       isDisabled: selectedProfiles.length < 3,
       text: 'See roles',
-      amplitudeEvent: AmplitudeEvents.reflectAndShareSeeRolesClicked,
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.reflectAndShareSeeRolesClicked,
+      ),
     );
   }
 

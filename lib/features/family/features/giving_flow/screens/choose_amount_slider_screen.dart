@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart
 import 'package:givt_app/features/family/shared/widgets/content/wallet.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -102,17 +103,16 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                     await context
                         .read<CreateTransactionCubit>()
                         .createTransaction(transaction: transaction);
-
-                    await AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.giveToThisGoalPressed,
-                      eventProperties: {
-                        AnalyticsHelper.goalKey: organisation.name,
-                        AnalyticsHelper.amountKey: state.amount,
-                        AnalyticsHelper.walletAmountKey:
-                            profilesCubit.state.activeProfile.wallet.balance,
-                      },
-                    );
                   },
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.giveToThisGoalPressed,
+              parameters: {
+                AnalyticsHelper.goalKey: organisation.name,
+                AnalyticsHelper.amountKey: state.amount,
+                AnalyticsHelper.walletAmountKey:
+                    profilesCubit.state.activeProfile.wallet.balance,
+              },
+            ),
           ),
         );
       },

@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/res
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/secret_word_input.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -54,7 +55,9 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                   );
                 },
                 text: 'Done',
-                amplitudeEvent: AmplitudeEvents.reflectAndShareDoneClicked,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.reflectAndShareDoneClicked,
+                ),
               ),
             ),
           );

@@ -9,11 +9,14 @@ import 'package:givt_app/features/children/generosity_challenge/utils/generosity
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class DisplayFamilyValues extends StatelessWidget {
-  const DisplayFamilyValues({super.key,});
+  const DisplayFamilyValues({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +68,6 @@ class DisplayFamilyValues extends StatelessWidget {
           ),
           floatingActionButton: FunButton(
             onTap: () {
-              AnalyticsHelper.logEvent(
-                eventName:
-                    AmplitudeEvents.daySevenFamilyValuesSeenContinueClicked,
-              );
               context.pushNamed(
                 FamilyPages.displayValuesOrganisations.name,
                 extra: {
@@ -79,6 +78,9 @@ class DisplayFamilyValues extends StatelessWidget {
               );
             },
             text: 'Continue',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.daySevenFamilyValuesSeenContinueClicked,
+            ),
           ),
         );
       },
