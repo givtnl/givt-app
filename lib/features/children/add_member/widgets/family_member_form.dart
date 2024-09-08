@@ -19,12 +19,14 @@ class FamilyMemberForm extends StatelessWidget {
     required this.isChildSelected,
     required this.allowanceAmount,
     required this.onAmountChanged,
+    required this.focusNode,
     super.key,
   });
   final GlobalKey<FormState> formKey;
   final TextEditingController nameController;
   final TextEditingController emailController;
   final TextEditingController ageController;
+  final FocusNode focusNode;
   final int allowanceAmount;
   final void Function(int amount) onAmountChanged;
   final bool isChildSelected;
@@ -62,6 +64,7 @@ class FamilyMemberForm extends StatelessWidget {
           controller: nameChildController,
           hintText: context.l10n.firstName,
           textCapitalization: TextCapitalization.sentences,
+          focusNode: focusNode,
         ),
         const SizedBox(height: 16),
         OutlinedTextFormField(

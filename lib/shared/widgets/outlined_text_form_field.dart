@@ -19,10 +19,12 @@ class OutlinedTextFormField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.onTapOutside,
+    this.focusNode,
     super.key,
   });
 
   final TextEditingController controller;
+  final FocusNode? focusNode;
   final String hintText;
   final TextStyle? errorStyle;
   final ValueChanged<String>? onChanged;
@@ -41,6 +43,7 @@ class OutlinedTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      focusNode: primaryFocus,
       onChanged: onChanged,
       style:
           const FamilyAppTheme().toThemeData().textTheme.labelLarge?.copyWith(

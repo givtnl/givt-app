@@ -39,6 +39,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _ageController = TextEditingController();
+  final _focusNode = FocusNode();
   List<bool> selections = [true, false];
   int _amount = 5;
 
@@ -126,6 +127,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 onPressed: (int index) {
                   setState(() {
                     selections = [index == 0, index == 1];
+
+                    FocusScope.of(context).unfocus();
+                    _focusNode.requestFocus();
                   });
                 },
               ),
@@ -136,6 +140,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 emailController: _emailController,
                 ageController: _ageController,
                 allowanceAmount: _amount,
+                focusNode: _focusNode,
                 onAmountChanged: (amount) {
                   setState(() {
                     _amount = amount;
