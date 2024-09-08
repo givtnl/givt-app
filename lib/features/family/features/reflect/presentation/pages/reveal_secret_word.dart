@@ -12,6 +12,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:scratcher/widgets.dart';
 
 class RevealSecretWordScreen extends StatefulWidget {
@@ -112,6 +113,10 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             _isSecondWord = true;
             scratchKey.currentState?.reset();
           });
+
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.reflectAndShareReRollClicked,
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

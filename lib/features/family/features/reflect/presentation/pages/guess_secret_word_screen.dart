@@ -57,6 +57,11 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                 text: 'Done',
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.reflectAndShareDoneClicked,
+                  parameters: {
+                    'success': currentGuessedWord == secretWord,
+                    'guessedWord': currentGuessedWord,
+                    'secretWord': secretWord,
+                  },
                 ),
               ),
             ),
