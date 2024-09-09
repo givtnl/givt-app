@@ -40,7 +40,7 @@ class MobileNumberFormFieldUs extends StatelessWidget {
             menuMaxHeight: size.height * 0.3,
             decoration: InputDecoration(
               contentPadding:
-                  const EdgeInsets.symmetric(vertical: 22, horizontal: 12),
+                  const EdgeInsets.symmetric(vertical: 18, horizontal: 12),
               errorStyle: const TextStyle(
                 height: 0,
               ),
