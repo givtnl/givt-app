@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:go_router/go_router.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:scratcher/widgets.dart';
 
 class RevealSecretWordScreen extends StatefulWidget {
@@ -35,9 +39,9 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
-        leading: null,
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
@@ -84,8 +88,15 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             const SizedBox(height: 8),
             FunButton(
               isDisabled: !_isScratched,
-              onTap: () => context.pop(),
+              onTap: () {
+                Navigator.of(context).push(
+                  const StartInterviewScreen().toRoute(context),
+                );
+              },
               text: 'Ready',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.reflectAndShareReadyClicked,
+              ),
             )
           ],
         ),
@@ -102,15 +113,22 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             _isSecondWord = true;
             scratchKey.currentState?.reset();
           });
+
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.reflectAndShareChangeWordClicked,
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LabelLargeText.primary30('Re-roll (1 times)'),
+            LabelLargeText.primary30('Change'),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
-              child: Icon(FontAwesomeIcons.shuffle,
-                  size: 24, color: FamilyAppTheme.primary30,),
+              child: Icon(
+                FontAwesomeIcons.shuffle,
+                size: 24,
+                color: FamilyAppTheme.primary30,
+              ),
             ),
           ],
         ),

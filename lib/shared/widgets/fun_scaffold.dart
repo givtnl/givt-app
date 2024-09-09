@@ -7,6 +7,7 @@ class FunScaffold extends StatelessWidget {
     this.appBar,
     this.minimumPadding = const EdgeInsets.fromLTRB(24, 24, 24, 40),
     this.floatingActionButton,
+    this.canPop = true,
     super.key,
   });
 
@@ -14,6 +15,7 @@ class FunScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final EdgeInsets minimumPadding;
   final Widget? floatingActionButton;
+  final bool canPop;
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +24,16 @@ class FunScaffold extends StatelessWidget {
       child: GestureDetector(
         // Dismiss keyboard on tap
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-          appBar: appBar,
-          body: SafeArea(
-            minimum: minimumPadding,
-            child: body,
+        child: PopScope(
+          canPop: canPop,
+          child: Scaffold(
+            appBar: appBar,
+            body: SafeArea(
+              minimum: minimumPadding,
+              child: body,
+            ),
+            floatingActionButton: floatingActionButton,
           ),
-          floatingActionButton: floatingActionButton,
         ),
       ),
     );

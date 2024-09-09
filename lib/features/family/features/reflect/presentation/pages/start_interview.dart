@@ -2,14 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
 class StartInterviewScreen extends StatefulWidget {
   const StartInterviewScreen({super.key});
@@ -26,44 +30,62 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   void initState() {
     super.initState();
     reporters = cubit.getReporters();
+    cubit.init();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: reporters.first.role!.color,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Card(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(height: 16),
-                  _getTopWidget(),
-                  const SizedBox(height: 16),
-                  TitleMediumText(
-                    'Pass the phone to the\n ${reporters.first.role!.name} ${reporters.first.firstName}',
-                    textAlign: TextAlign.center,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: FunButton(
-                      onTap: () {
-                        // push recording screen
-                        Navigator.push(
-                          context,
-                          RecordAnswerScreen(
-                            reporters: reporters,
-                          ).toRoute(context),
-                        );
-                      },
-                      text: 'Interview Superhero',
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        backgroundColor: reporters.first.role!.color,
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Card(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 16),
+                    _getTopWidget(),
+                    const SizedBox(height: 16),
+                    TitleMediumText(
+                      'Pass the phone to the\n ${reporters.first.role!.name} ${reporters.first.firstName}',
+                      textAlign: TextAlign.center,
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: FunButton(
+                        onTap: () {
+                          // push recording screen
+                          Navigator.push(
+                            context,
+                            BaseStateConsumer(
+                              cubit: cubit,
+                              onInitial: (context) => const SizedBox.shrink(),
+                              onCustom: (context, sidekick) =>
+                                  Navigator.of(context).pushReplacement(
+                                PassThePhone.toSidekick(sidekick)
+                                    .toRoute(context),
+                              ),
+                              onData: (context, uiModel) {
+                                return RecordAnswerScreen(
+                                  uiModel: uiModel,
+                                );
+                              },
+                            ).toRoute(context),
+                          );
+                        },
+                        text: 'Interview Superhero',
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.reflectAndShareStartInterviewClicked,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -125,7 +147,8 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
             ),
           ),
         );
-      case 3:
+      case >= 3:
+        reporters = reporters.take(3).toList();
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SizedBox(
@@ -174,20 +197,10 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
   }
 
   Widget _getReporterWidget() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(70),
-        border: Border.all(
-          color: reporters.first.role!.color,
-          width: 8,
-        ),
-      ),
-      padding: EdgeInsets.zero,
-      child: SvgPicture.network(
-        reporters.first.pictureURL!,
-        width: 120,
-        height: 120,
-      ),
+    return GameProfileItem(
+      profile: reporters.first,
+      displayName: false,
+      size: 140,
     );
   }
 

@@ -5,14 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/children/add_member/pages/add_member_counter_page.dart';
-import 'package:givt_app/features/children/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/widgets/allowance_warning_dialog.dart';
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -102,33 +100,9 @@ class FamilyOverviewPage extends StatelessWidget {
   ) async {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.addMemerClicked,
+        eventName: AmplitudeEvents.addMemberClicked,
       ),
     );
-
-    final dynamic result = await Navigator.push(
-      context,
-      const AddMemberCounterPage(
-        initialAmount: 1,
-      ).toRoute(context),
-    );
-    if (result != null && result is int && context.mounted) {
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.numberOfMembersSelected,
-          eventProperties: {
-            'nrOfMembers': result,
-          },
-        ),
-      );
-      await Navigator.push(
-        context,
-        FamilyMemberFormPage(
-          index: 1,
-          totalCount: result,
-          membersToCombine: [],
-        ).toRoute(context),
-      );
-    }
+    await AddMemberUtil.addMemberPushPages(context);
   }
 }

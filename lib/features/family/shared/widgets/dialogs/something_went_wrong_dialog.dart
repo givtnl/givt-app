@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,6 +10,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
   const SomethingWentWrongDialog({
     required this.primaryBtnText,
     required this.onClickPrimaryBtn,
+    required this.amplitudeEvent,
     super.key,
     this.secondaryBtnText,
     this.description,
@@ -31,6 +34,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
   final IconData? primaryBtnRightIcon;
   final Widget? primaryBtnLeadingImage;
   final bool? showLoading;
+  final AmplitudeEvents amplitudeEvent;
   final Future<void> Function() onClickPrimaryBtn;
   final void Function()? onClickSecondaryBtn;
 
@@ -38,6 +42,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
     BuildContext context, {
     required String primaryBtnText,
     required Future<void> Function() onClickPrimaryBtn,
+    required AmplitudeEvents amplitudeEvent,
     String? secondaryBtnText = 'Close',
     String? description = 'Oops, something went wrong',
     IconData? icon,
@@ -65,6 +70,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
         iconColor: iconColor,
         circleColor: circleColor,
         showLoading: showLoadingState,
+        amplitudeEvent: amplitudeEvent,
       ),
     );
   }
@@ -122,11 +128,17 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               rightIcon: widget.primaryBtnRightIcon,
               leadingImage: widget.primaryBtnLeadingImage,
               isLoading: _isLoading,
+              analyticsEvent: AnalyticsEvent(
+                widget.amplitudeEvent,
+              ),
             ),
             const SizedBox(height: 16),
-            FunSecondaryButton(
+            FunButton.secondary(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
+              analyticsEvent: AnalyticsEvent(
+                widget.amplitudeEvent,
+              ),
             ),
           ],
         ),

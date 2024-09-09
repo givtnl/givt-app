@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -141,14 +142,14 @@ Widget _getContent({
                   isDisabled: editProfileState.isSameProfilePicture,
                   onTap: () {
                     context.read<EditChildProfileCubit>().editProfile();
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.saveAvatarClicked,
-                      eventProperties: {
-                        AnalyticsHelper.avatarImageKey:
-                            editProfileState.selectedProfilePicture,
-                      },
-                    );
                   },
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.saveAvatarClicked,
+                    parameters: {
+                      AnalyticsHelper.avatarImageKey:
+                          editProfileState.selectedProfilePicture,
+                    },
+                  ),
                 ),
               ),
             ],

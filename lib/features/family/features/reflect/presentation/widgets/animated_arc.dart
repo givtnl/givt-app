@@ -31,7 +31,7 @@ class _AnimatedArcState extends State<AnimatedArc>
           _controller.reverse();
         } else if (status == AnimationStatus.dismissed) {
           Future.delayed(const Duration(seconds: 1), () {
-            _controller.forward();
+            if (!_controller.isCompleted) _controller.forward();
           });
         }
       });

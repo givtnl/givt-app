@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -30,10 +33,21 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: const FunTopAppBar(title: 'Your roles'),
-      body: BaseStateConsumer<List<GameProfile>, dynamic>(
+      appBar: const FunTopAppBar(
+        title: 'Your roles',
+        leading: GivtBackButtonFlat(),
+      ),
+      body: BaseStateConsumer<List<GameProfile>, GameProfile>(
         cubit: _cubit,
+        onCustom: (context, superhero) {
+          Navigator.of(context).push(
+            ReflectionRuleSuperheroScreen(
+              superhero: superhero,
+            ).toRoute(context),
+          );
+        },
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
         onData: (context, profiles) => Stack(
@@ -47,22 +61,24 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       childAspectRatio: 0.9,
                       crossAxisCount: 3,
                       children: createGridItems(
-                        profiles.take(6).toList(),
+                        profiles.take(9).toList(),
                       ),
                     ),
                   ),
-                  if (_appConfig.isTestApp)
-                    FunButton(
-                      onTap: _cubit.assignRolesForNextRound,
-                      text: 'Test: assign roles for next round',
-                    ),
                   FunButton(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        const ReflectionRuleSuperheroScreen().toRoute(context),
-                      );
-                    },
+                    isDebugOnly: true,
+                    onTap: _cubit.assignRolesForNextRound,
+                    text: 'Test: assign roles for next round',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.debugButtonClicked,
+                    ),
+                  ),
+                  FunButton(
+                    onTap: _cubit.onClickStart,
                     text: 'Start',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareStartClicked,
+                    ),
                   ),
                 ],
               ),

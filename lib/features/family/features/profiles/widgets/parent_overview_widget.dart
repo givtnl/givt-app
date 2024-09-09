@@ -127,9 +127,7 @@ class ParentOverviewWidget extends StatelessWidget {
             children: [
               LabelMediumText(
                 firstName,
-                color: isMainUser
-                    ? FamilyAppTheme.defaultTextColor
-                    : FamilyAppTheme.tertiary20,
+                color: FamilyAppTheme.defaultTextColor,
               ),
               const SizedBox(width: 4),
               if (isMainUser)

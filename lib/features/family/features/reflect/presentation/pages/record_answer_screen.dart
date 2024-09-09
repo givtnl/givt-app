@@ -6,18 +6,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
-  RecordAnswerScreen({required this.reporters, super.key});
-  final List<GameProfile> reporters;
+  const RecordAnswerScreen({required this.uiModel, super.key});
+  final RecordAnswerUIModel uiModel;
+
   @override
   State<RecordAnswerScreen> createState() => _RecordAnswerScreenState();
 }
@@ -27,12 +32,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       : _remainingSeconds = startSeconds;
   Timer? _timer;
   int _remainingSeconds;
-  GameProfile? _currentReporter;
-  String buttontext = 'Start Recording';
+  InterviewCubit cubit = getIt<InterviewCubit>();
+  AppConfig config = getIt<AppConfig>();
+  bool isTestBtnVisible = false;
+
   @override
   void initState() {
     super.initState();
-    _currentReporter = widget.reporters.first;
+    isTestBtnVisible = config.isTestApp;
   }
 
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
@@ -52,14 +59,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   bool _isLastSecond() => _remainingSeconds % 60 <= 1 && _remainingSeconds <= 1;
 
   void _startCountdown() {
-    setState(() {
-      buttontext = 'Next journalist';
-    });
+    cubit.onCountdownStarted();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_remainingSeconds <= 0) {
         timer.cancel();
       } else {
         _handleEffects();
+
+        if (!mounted) return;
         setState(() {
           _remainingSeconds--;
         });
@@ -71,7 +78,8 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     if (_isLastTenSeconds()) {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
-      //    Navigator.pop(context);
+      Vibrator.tryVibratePattern();
+      cubit.interviewFinished();
     }
   }
 
@@ -84,14 +92,14 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
-        title: _currentReporter!.firstName!,
-        leading: null,
+        title: widget.uiModel.reporter.firstName!,
         actions: [
           Padding(
             padding: const EdgeInsets.all(8),
             child: SvgPicture.network(
-              _currentReporter!.pictureURL!,
+              widget.uiModel.reporter.pictureURL!,
               width: 36,
               height: 36,
             ),
@@ -102,12 +110,11 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         children: [
           const Spacer(),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24),
-            child: TitleMediumText(
-              (_currentReporter!.role! as Reporter).questions!.first,
-              textAlign: TextAlign.center,
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: TitleMediumText(
+                widget.uiModel.question,
+                textAlign: TextAlign.center,
+              )),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
@@ -126,34 +133,52 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   minutes: _displayMinutes(),
                   showRedVersion: _isLastTenSeconds(),
                 ),
-                // record button
                 Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: FunButton(
-                    isDisabled: widget.reporters.length == 0,
                     rightIcon: FontAwesomeIcons.arrowRight,
                     onTap: () {
                       if (_remainingSeconds == 60 * 2) {
                         _startCountdown();
                         setState(() {
-                          _remainingSeconds = 20;
+                          isTestBtnVisible = false;
                         });
                         return;
                       }
-                      if (_remainingSeconds != 60 * 2 &&
-                          widget.reporters.length > 1) {
-                        setState(() {
-                          _currentReporter = widget.reporters[1];
-                          widget.reporters.removeAt(0);
-                          buttontext = widget.reporters.length == 1
-                              ? 'Finish'
-                              : 'Next journalist';
-                        });
-                      }
+                      cubit.advanceToNext();
                     },
-                    text: buttontext,
+                    text: widget.uiModel.buttonText,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.reflectAndShareNextJournalistClicked,
+                    ),
                   ),
                 ),
+                Visibility(
+                    visible: isTestBtnVisible,
+                    child: const SizedBox(height: 8)),
+                Visibility(
+                  visible: isTestBtnVisible,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: FunButton(
+                        onTap: () {
+                          if (_remainingSeconds == 60 * 2) {
+                            _startCountdown();
+                            setState(() {
+                              _remainingSeconds = 20;
+                              isTestBtnVisible = false;
+                            });
+                            return;
+                          }
+                          cubit.advanceToNext();
+                        },
+                        text: 'Start test 20 seconds',
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.debugButtonClicked,
+                        )),
+                  ),
+                ),
+                const SizedBox(height: 24),
               ],
             ),
           ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/config/app_config.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -8,58 +11,121 @@ class FunButton extends StatelessWidget {
   const FunButton({
     required this.onTap,
     required this.text,
+    required this.analyticsEvent,
     super.key,
     this.isDisabled = false,
     this.isLoading = false,
-    this.isTertiary = false,
     this.leftIcon,
     this.rightIcon,
     this.leadingImage,
-    this.widthMultiplier = .9,
-    this.backgroundColor = AppTheme.primary80,
-    this.borderColor = AppTheme.givtGreen40,
-    this.amplitudeEvent,
+    this.backgroundColor = FamilyAppTheme.primary80,
+    this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
+    this.borderColor = FamilyAppTheme.primary30,
+    this.fullBorder = false,
+    this.isDebugOnly = false,
   });
+
+  factory FunButton.secondary({
+    required void Function()? onTap,
+    required String text,
+    required AnalyticsEvent analyticsEvent,
+    bool isDisabled = false,
+    bool isLoading = false,
+    IconData? leftIcon,
+    IconData? rightIcon,
+    Widget? leadingImage,
+  }) {
+    return FunButton(
+      onTap: onTap,
+      text: text,
+      isDisabled: isDisabled,
+      isLoading: isLoading,
+      leftIcon: leftIcon,
+      rightIcon: rightIcon,
+      leadingImage: leadingImage,
+      backgroundColor: FamilyAppTheme.neutral100,
+      disabledBackgroundColor: FamilyAppTheme.neutral100,
+      borderColor: FamilyAppTheme.primary80,
+      fullBorder: true,
+      analyticsEvent: analyticsEvent,
+    );
+  }
+
+  factory FunButton.tertiary({
+    required void Function()? onTap,
+    required String text,
+    required AnalyticsEvent analyticsEvent,
+    bool isDisabled = false,
+    bool isLoading = false,
+    IconData? leftIcon,
+    IconData? rightIcon,
+    Widget? leadingImage,
+  }) {
+    return FunButton(
+      onTap: onTap,
+      text: text,
+      isDisabled: isDisabled,
+      isLoading: isLoading,
+      leftIcon: leftIcon,
+      rightIcon: rightIcon,
+      leadingImage: leadingImage,
+      backgroundColor: FamilyAppTheme.neutral100,
+      borderColor: AppTheme.secondary80,
+      analyticsEvent: analyticsEvent,
+    );
+  }
 
   final void Function()? onTap;
   final bool isDisabled;
   final String text;
   final bool isLoading;
-  final bool isTertiary;
   final IconData? leftIcon;
   final IconData? rightIcon;
   final Widget? leadingImage;
-  final double widthMultiplier;
   final Color backgroundColor;
+  final Color disabledBackgroundColor;
   final Color borderColor;
-  final AmplitudeEvents? amplitudeEvent;
+  final bool fullBorder;
+  final bool isDebugOnly;
+  final AnalyticsEvent? analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
+    final appConfig = getIt.get<AppConfig>();
+
+    if (isDebugOnly && !appConfig.isTestApp) {
+      return const SizedBox.shrink();
+    }
     final themeData = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: () {
-        if (amplitudeEvent != null) {
-          AnalyticsHelper.logEvent(eventName: amplitudeEvent!);
+        if (analyticsEvent != null) {
+          AnalyticsHelper.logEvent(
+              eventName: analyticsEvent!.name,
+              eventProperties: analyticsEvent!.parameters);
         }
 
         onTap?.call();
       },
-      borderColor: isTertiary == true ? AppTheme.secondary80 : borderColor,
+      borderColor: borderColor,
       isDisabled: isDisabled,
-      borderSize: 0.01,
+      borderSize: fullBorder ? 2 : 0.01,
       baseBorderSize: 4,
       child: Container(
-        height: 58,
-        width: MediaQuery.sizeOf(context).width * widthMultiplier,
+        height: 58 - (fullBorder ? 2 : 0),
+        width: MediaQuery.sizeOf(context).width * 0.9,
         decoration: BoxDecoration(
-          color: isDisabled
-              ? AppTheme.givtGraycece
-              : isTertiary == true
-                  ? FamilyAppTheme.secondary99
-                  : backgroundColor,
+          borderRadius: BorderRadius.circular(10),
+          color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
         ),
-        child: getChild(context, themeData),
+        child: Container(
+          // Inner container to fix the inside border
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: isDisabled ? disabledBackgroundColor : backgroundColor,
+          ),
+          child: getChild(context, themeData),
+        ),
       ),
     );
   }
@@ -68,114 +134,50 @@ class FunButton extends StatelessWidget {
     if (isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (leftIcon != null) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (leadingImage != null) leadingImage!,
+        if (leftIcon != null)
           Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: Icon(
+            child: FaIcon(
               leftIcon,
               size: 24,
-              color: isDisabled ? themeData.colorScheme.outline : borderColor,
+              color: isDisabled
+                  ? FamilyAppTheme.neutralVariant60
+                  : FamilyAppTheme.primary30,
             ),
           ),
-          Text(
-            text,
-            textAlign: TextAlign.center,
-            style: isDisabled == true
-                ? themeData.textTheme.labelLarge?.copyWith(
-                    color: themeData.colorScheme.outline,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Rouna',
-                  )
-                : themeData.textTheme.labelLarge?.copyWith(
-                    color: borderColor,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Rouna',
-                  ),
-          ),
-        ],
-      );
-    }
-    if (rightIcon != null) {
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            text,
-            textAlign: TextAlign.center,
-            style: isDisabled == true
-                ? themeData.textTheme.labelLarge?.copyWith(
-                    color: themeData.colorScheme.outline,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Rouna',
-                  )
-                : themeData.textTheme.labelLarge?.copyWith(
-                    color: borderColor,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Rouna',
-                  ),
-          ),
+        Text(
+          text,
+          textAlign: TextAlign.center,
+          style: isDisabled == true
+              ? themeData.textTheme.labelLarge?.copyWith(
+                  color: FamilyAppTheme.neutralVariant60,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rouna',
+                )
+              : themeData.textTheme.labelLarge?.copyWith(
+                  color: FamilyAppTheme.primary30,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: 'Rouna',
+                ),
+        ),
+        if (rightIcon != null)
           Padding(
             padding: const EdgeInsets.only(left: 12),
-            child: Icon(
+            child: FaIcon(
               rightIcon,
               size: 24,
-              color: isDisabled ? themeData.colorScheme.outline : borderColor,
+              color: isDisabled ? FamilyAppTheme.neutralVariant60 : borderColor,
             ),
           ),
-        ],
-      );
-    }
-    if (leadingImage != null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            leadingImage!,
-            Text(
-              text,
-              textAlign: TextAlign.center,
-              style: isDisabled == true
-                  ? themeData.textTheme.labelLarge?.copyWith(
-                      color: themeData.colorScheme.outline,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    )
-                  : themeData.textTheme.labelLarge?.copyWith(
-                      color: borderColor,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
-            ),
-            // all leading images must be 32 pixels wide
-            // this centers the text
-            const SizedBox(width: 32),
-          ],
-        ),
-      );
-    }
-    return Center(
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: isDisabled == true
-            ? themeData.textTheme.labelLarge?.copyWith(
-                color: themeData.colorScheme.outline,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Rouna',
-              )
-            : themeData.textTheme.labelLarge?.copyWith(
-                color: borderColor,
-                fontWeight: FontWeight.w700,
-                fontFamily: 'Rouna',
-              ),
-      ),
+        // all leading images must be 32 pixels wide
+        // this centers the text
+        if (leadingImage != null) const SizedBox(width: 32),
+      ],
     );
   }
 }

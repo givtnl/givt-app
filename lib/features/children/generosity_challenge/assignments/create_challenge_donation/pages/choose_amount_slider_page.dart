@@ -21,6 +21,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -124,7 +125,6 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
               isDisabled: state.amount == 0 || _isLoading,
               text: 'Donate',
               onTap: () async {
-                _logDonationAnalytics(state);
                 try {
                   _setLoading(true);
                   final stripeResponse =
@@ -149,6 +149,13 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
                   }
                 }
               },
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.chooseAmountDonateClicked,
+                parameters: {
+                  'organisation_name': widget.organisation.organisationName,
+                  'amount': state.amount.toInt(),
+                },
+              ),
             ),
           ),
         );
@@ -170,18 +177,6 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
     setState(() {
       _isLoading = isLoading;
     });
-  }
-
-  void _logDonationAnalytics(CreateChallengeDonationState state) {
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.chooseAmountDonateClicked,
-        eventProperties: {
-          'organisation_name': widget.organisation.organisationName,
-          'amount': state.amount.toInt(),
-        },
-      ),
-    );
   }
 
   void _handleStripeRegistrationSuccess(

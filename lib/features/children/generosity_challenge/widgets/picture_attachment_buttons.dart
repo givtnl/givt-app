@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class PictureAttachmentButtons extends StatelessWidget {
   const PictureAttachmentButtons({super.key});
@@ -21,24 +21,22 @@ class PictureAttachmentButtons extends StatelessWidget {
           ),
           leftIcon: FontAwesomeIcons.camera,
           text: 'Take Picture',
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.generosityChallengeTakePictureClicked,
+          ),
         ),
         const SizedBox(height: 8),
-        FunSecondaryButton(
+        FunButton.secondary(
           onTap: () {
-            AnalyticsHelper.logEvent(
-              eventName:
-                  AmplitudeEvents.generosityChallengeUploadPictureClicked,
-            );
             cubit.submitDay5Picture(
               takenWithCamera: false,
             );
           },
-          leftIcon: const Icon(
-            FontAwesomeIcons.image,
-            size: 24,
-            color: AppTheme.givtGreen40,
-          ),
+          leftIcon: FontAwesomeIcons.image,
           text: 'Upload Picture',
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.generosityChallengeUploadPictureClicked,
+          ),
         ),
       ],
     );

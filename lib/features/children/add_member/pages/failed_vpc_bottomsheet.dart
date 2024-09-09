@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
@@ -14,6 +13,7 @@ import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
@@ -77,23 +77,19 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                           CachedMembersStateStatus.noFundsSuccess ||
                       stripestate.stripeStatus == StripeObjectStatus.loading,
                   text: 'Try again',
-                  amplitudeEvent:
-                      AmplitudeEvents.changePaymentMethodForFailedVPCClicked,
+                  analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.changePaymentMethodForFailedVPCClicked),
                   onTap: () async {
                     await cacheCubit.tryCreateMembersFromCache(members);
                   },
                 ),
-                secondaryButton: FunSecondaryButton(
+                secondaryButton: FunButton.secondary(
                   isDisabled: cachestate.status ==
                           CachedMembersStateStatus.loading ||
                       cachestate.status ==
                           CachedMembersStateStatus.noFundsSuccess ||
                       stripestate.stripeStatus == StripeObjectStatus.loading,
                   text: 'Change payment method',
-                  rightIcon: const FaIcon(
-                    FontAwesomeIcons.arrowsRotate,
-                    size: 24,
-                  ),
                   onTap: () async {
                     if (!context.mounted) return;
                     await context.read<StripeCubit>().fetchSetupIntent();
@@ -120,7 +116,9 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                       );
                     }
                   },
-                  amplitudeEvent: AmplitudeEvents.editPaymentDetailsCanceled,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.editPaymentDetailsCanceled,
+                  ),
                 ),
               );
             },

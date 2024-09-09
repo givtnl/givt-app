@@ -8,10 +8,10 @@ import 'package:givt_app/features/family/features/giving_flow/organisation_detai
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class ImpactGroupDetailsBottomPanel extends StatelessWidget {
@@ -57,10 +57,6 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
                   EmptyWalletBottomSheet.show(context);
                   return;
                 }
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.impactGroupDetailsGiveClicked,
-                  eventProperties: {'name': impactGroup.name},
-                );
 
                 final generatedMediumId =
                     base64.encode(impactGroup.goal.mediumId.codeUnits);
@@ -74,6 +70,10 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
                 );
               },
               text: 'Give',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.impactGroupDetailsGiveClicked,
+                parameters: {'name': impactGroup.name},
+              ),
             ),
           ],
         ),

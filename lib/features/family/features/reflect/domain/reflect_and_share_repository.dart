@@ -18,54 +18,6 @@ class ReflectAndShareRepository {
   List<String> _usedSecretWords = [];
 
   List<GameProfile> getCurrentReporters() {
-    //for quick prototyping/ development
-    return [
-      GameProfile(
-        firstName: "Debbie",
-        lastName: "Doe",
-        pictureURL:
-            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero7.svg",
-        type: "child",
-        role: Role.reporter(questions: [
-          "What is something kind that someone did for you today?",
-        ]),
-      ),
-      GameProfile(
-        firstName: "John",
-        lastName: "Doe",
-        pictureURL:
-            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero2.svg",
-        type: "child",
-        role: Role.reporter(questions: [
-          "What is something you did today that you're proud of?",
-        ]),
-      ),
-      GameProfile(
-        firstName: "Kore",
-        lastName: "Doe",
-        pictureURL:
-            "https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero5.svg",
-        type: "child",
-        role: Role.reporter(questions: [
-          "What is something you wish you could have done for someone else today?",
-        ]),
-      ),
-      // GameProfile(
-      //   firstName: "Jane",
-      //   lastName: "Doe",
-      //   pictureURL: "https://randomuser.me/api/portraits",
-      //   type: "child",
-      //   role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
-      // ),
-      // GameProfile(
-      //   firstName: "John",
-      //   lastName: "Doe",
-      //   pictureURL: "https://randomuser.me/api/portraits",
-      //   type: "child",
-      //   role: Role.reporter(questions: ["what is Gamora?", "why is Gamora?"]),
-      // ),
-    ];
-    //TODO uncomment this if you want to do it based on the actual selection and randomisation
     return _selectedProfiles
         .where((profile) => profile.role is Reporter)
         .toList();
@@ -134,30 +86,77 @@ class ReflectAndShareRepository {
 
   List<GameProfile> _setProfiles(
       int superheroIndex, int sidekickIndex, Random rng) {
-    var questions = _getAllQuestions();
+    final questions = _getAllQuestions();
     final list = <GameProfile>[];
+    final reporters = <GameProfile>[];
+
     _selectedProfiles.asMap().forEach((index, profile) {
       if (index == superheroIndex) {
         list.add(profile.copyWith(role: const Role.superhero()));
       } else if (index == sidekickIndex) {
         list.add(profile.copyWith(role: const Role.sidekick()));
       } else {
-        final question = questions[rng.nextInt(questions.length)];
-        list.add(profile.copyWith(role: Role.reporter(questions: [question])));
-        questions.remove(question);
-        if (questions.isEmpty) {
-          questions = _getAllQuestions();
-        }
+        reporters.add(profile);
       }
     });
+
+    if (reporters.length == 1) {
+      final reporterQuestions = _pickQuestions(questions, 3, rng);
+      list.add(reporters[0]
+          .copyWith(role: Role.reporter(questions: reporterQuestions)));
+    } else if (reporters.length == 2) {
+      final firstReporterQuestions = _pickQuestions(questions, 2, rng);
+      final secondReporterQuestions = _pickQuestions(questions, 1, rng);
+      list
+        ..add(reporters[0]
+            .copyWith(role: Role.reporter(questions: firstReporterQuestions)))
+        ..add(reporters[1]
+            .copyWith(role: Role.reporter(questions: secondReporterQuestions)));
+    } else {
+      for (final reporter in reporters) {
+        final reporterQuestion = _pickQuestions(questions, 1, rng);
+        list.add(
+          reporter.copyWith(
+            role: Role.reporter(questions: reporterQuestion),
+          ),
+        );
+      }
+    }
+
     _selectedProfiles = list;
     randomizeSecretWord();
     return _selectedProfiles;
   }
 
+  List<String> _pickQuestions(
+      List<String> availableQuestions, int count, Random rng) {
+    final selectedQuestions = <String>[];
+    for (var i = 0; i < count; i++) {
+      if (availableQuestions.isEmpty) {
+        // ignore: parameter_assignments
+        availableQuestions = _getAllQuestions();
+      }
+      final question =
+          availableQuestions[rng.nextInt(availableQuestions.length)];
+      selectedQuestions.add(question);
+      availableQuestions.remove(question);
+    }
+    return selectedQuestions;
+  }
+
   int _getCurrentSuperHeroIndex() {
     final index = _selectedProfiles.indexWhere((profile) {
       if (profile.role is SuperHero) {
+        return true;
+      }
+      return false;
+    });
+    return index;
+  }
+
+  int _getCurrentSidekickIndex() {
+    final index = _selectedProfiles.indexWhere((profile) {
+      if (profile.role is Sidekick) {
         return true;
       }
       return false;
@@ -217,6 +216,14 @@ class ReflectAndShareRepository {
       "What is something kind that someone did for you today?",
       "What is something you did today that you're proud of?",
       "What is something you wish you could have done for someone else today?",
+      "What is something that surprised you today?",
+      "What is something we should celebrate today?",
     ];
   }
+
+  GameProfile getCurrentSuperhero() =>
+      _selectedProfiles[_getCurrentSuperHeroIndex()];
+
+  GameProfile getCurrentSidekick() =>
+      _selectedProfiles[_getCurrentSidekickIndex()];
 }
