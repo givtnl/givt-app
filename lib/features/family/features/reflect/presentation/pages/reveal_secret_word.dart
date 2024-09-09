@@ -12,6 +12,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/utils.dart';
 import 'package:scratcher/widgets.dart';
 
 class RevealSecretWordScreen extends StatefulWidget {
@@ -112,11 +113,15 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             _isSecondWord = true;
             scratchKey.currentState?.reset();
           });
+
+          AnalyticsHelper.logEvent(
+            eventName: AmplitudeEvents.reflectAndShareChangeWordClicked,
+          );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LabelLargeText.primary30('Re-roll (1 times)'),
+            LabelLargeText.primary30('Change'),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(

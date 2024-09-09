@@ -305,6 +305,7 @@ enum AmplitudeEvents {
       'reflect_and_share_result_go_back_clicked'),
   reflectAndShareNextJournalistClicked(
       'reflect_and_share_next_journalist_clicked'),
+  reflectAndShareChangeWordClicked('reflect_and_share_change_word_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
