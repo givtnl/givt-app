@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 enum SHA { SHA1, SHA256 }
 
 class HttpCertificatePinning {
-
   factory HttpCertificatePinning() => _sslPinning;
 
   HttpCertificatePinning._internal() {

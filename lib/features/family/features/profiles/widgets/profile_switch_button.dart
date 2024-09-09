@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class ProfileSwitchButton extends StatelessWidget {
   const ProfileSwitchButton({
-    required this.name, required this.onClicked, super.key,
+    required this.name,
+    required this.onClicked,
+    super.key,
   });
   final String name;
   final VoidCallback onClicked;

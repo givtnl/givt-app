@@ -9,7 +9,8 @@ import 'package:go_router/go_router.dart';
 
 class QrGiveButton extends StatelessWidget {
   const QrGiveButton({
-    required this.isActive, super.key,
+    required this.isActive,
+    super.key,
   });
 
   final bool isActive;

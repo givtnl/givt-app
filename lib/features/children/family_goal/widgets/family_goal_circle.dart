@@ -72,11 +72,12 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
                     if (widget.amount > 0) const SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: widget.icon ?? SvgPicture.asset(
-                        'assets/images/family_goal_circle_flag.svg',
-                        width: 64,
-                        height: 64,
-                      ),
+                      child: widget.icon ??
+                          SvgPicture.asset(
+                            'assets/images/family_goal_circle_flag.svg',
+                            width: 64,
+                            height: 64,
+                          ),
                     ),
                     if (widget.amount > 0)
                       Text(

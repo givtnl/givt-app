@@ -4,11 +4,12 @@ import 'package:givt_app/utils/app_theme.dart';
 typedef OnYearChanged = void Function(String selected);
 
 class YearOfDonationsDropdown extends StatelessWidget {
-  const YearOfDonationsDropdown(
-      {required this.donationYears,
-      required this.selectedYear,
-      required this.onYearChanged,
-      super.key,});
+  const YearOfDonationsDropdown({
+    required this.donationYears,
+    required this.selectedYear,
+    required this.onYearChanged,
+    super.key,
+  });
   final List<String> donationYears;
   final String selectedYear;
   final OnYearChanged onYearChanged;

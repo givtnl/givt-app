@@ -224,18 +224,20 @@ class _NFCScanPageState extends State<NFCScanPage> {
   }
 
   void _showNotAGivtCoinDialog(BuildContext context) {
-    SomethingWentWrongDialog.show(context,
-        onClickPrimaryBtn: () async =>
-            _handleNotAGivtCoinTryAgainClicked(context),
-        onClickSecondaryBtn: () {
-          _navigateToHome(context);
-        },
-        icon: FontAwesomeIcons.question,
-        secondaryBtnText: 'Go back home',
-        primaryBtnText: 'Try again',
-        description: 'Uh-oh! We don’t think that was a Givt coin',
-        primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
-        amplitudeEvent: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,);
+    SomethingWentWrongDialog.show(
+      context,
+      onClickPrimaryBtn: () async =>
+          _handleNotAGivtCoinTryAgainClicked(context),
+      onClickSecondaryBtn: () {
+        _navigateToHome(context);
+      },
+      icon: FontAwesomeIcons.question,
+      secondaryBtnText: 'Go back home',
+      primaryBtnText: 'Try again',
+      description: 'Uh-oh! We don’t think that was a Givt coin',
+      primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+      amplitudeEvent: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
+    );
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.notAGivtCoinNFCErrorShown,
@@ -267,18 +269,20 @@ class _NFCScanPageState extends State<NFCScanPage> {
   }
 
   void _showGenericErrorDialog(BuildContext context) {
-    SomethingWentWrongDialog.show(context,
-        showLoadingState: true,
-        onClickPrimaryBtn: () async =>
-            _handleGenericErrorTryAgainClicked(context),
-        onClickSecondaryBtn: () {
-          _navigateToHome(context);
-        },
-        secondaryBtnText: 'Go back home',
-        primaryBtnText: 'Try again',
-        primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
-        amplitudeEvent:
-            AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,);
+    SomethingWentWrongDialog.show(
+      context,
+      showLoadingState: true,
+      onClickPrimaryBtn: () async =>
+          _handleGenericErrorTryAgainClicked(context),
+      onClickSecondaryBtn: () {
+        _navigateToHome(context);
+      },
+      secondaryBtnText: 'Go back home',
+      primaryBtnText: 'Try again',
+      primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+      amplitudeEvent:
+          AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
+    );
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.coinMediumIdNotRecognized,

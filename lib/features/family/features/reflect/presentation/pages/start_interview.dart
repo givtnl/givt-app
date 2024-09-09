@@ -115,11 +115,12 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
               alignment: Alignment.center,
               children: [
                 const Positioned(
-                    left: 1,
-                    child: SizedBox(
-                      height: 100,
-                      width: 100,
-                    ),),
+                  left: 1,
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                  ),
+                ),
                 Positioned(
                   right: 0,
                   child: Container(

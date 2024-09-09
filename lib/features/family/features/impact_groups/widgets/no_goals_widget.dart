@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class NoGoalsWidget extends StatelessWidget {
-  const NoGoalsWidget({super.key,});
+  const NoGoalsWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

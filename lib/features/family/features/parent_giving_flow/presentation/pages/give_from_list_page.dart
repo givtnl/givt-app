@@ -84,14 +84,16 @@ class GiveFromListPage extends StatelessWidget {
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
-      unawaited(AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.parentGiveWithAmountClicked,
-        eventProperties: {
-          'amount': result,
-          'organisation': collectGroup.orgName,
-          'mediumid': collectGroup.nameSpace,
-        },
-      ),);
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.parentGiveWithAmountClicked,
+          eventProperties: {
+            'amount': result,
+            'organisation': collectGroup.orgName,
+            'mediumid': collectGroup.nameSpace,
+          },
+        ),
+      );
       context.read<GiveBloc>().add(
             GiveAmountChanged(
               firstCollectionAmount: result.toDouble(),

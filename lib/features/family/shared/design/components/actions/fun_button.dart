@@ -128,8 +128,9 @@ class FunButton extends StatelessWidget {
       onTap: () {
         if (analyticsEvent != null) {
           AnalyticsHelper.logEvent(
-              eventName: analyticsEvent!.name,
-              eventProperties: analyticsEvent!.parameters,);
+            eventName: analyticsEvent!.name,
+            eventProperties: analyticsEvent!.parameters,
+          );
         }
 
         onTap?.call();
@@ -172,9 +173,7 @@ class FunButton extends StatelessWidget {
             child: FaIcon(
               leftIcon,
               size: 24,
-              color: isDisabled
-                  ? FamilyAppTheme.neutralVariant60
-                  : textColor,
+              color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
             ),
           ),
         Text(

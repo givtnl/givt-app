@@ -16,8 +16,8 @@ class Day8ExtraButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           AnalyticsHelper.logEvent(
-              eventName:
-                  AmplitudeEvents.generosityChallengeDay8MaybeLaterClicked,);
+            eventName: AmplitudeEvents.generosityChallengeDay8MaybeLaterClicked,
+          );
 
           Navigator.of(context).push(
             const GenerosityChallengeVpcSetupPage().toRoute(

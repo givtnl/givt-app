@@ -150,8 +150,10 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
-  Future<void> checkAuth(
-      {bool isAppStartupCheck = false, bool? hasSession,}) async {
+  Future<void> checkAuth({
+    bool isAppStartupCheck = false,
+    bool? hasSession,
+  }) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       var (userExt, session, amountPresets) =
@@ -320,17 +322,17 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> refreshUser({bool emitAuthentication = true}) async {
-    if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
+    if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
-      if(emitAuthentication) {
+      if (emitAuthentication) {
         emit(
-        state.copyWith(
-          status: AuthStatus.authenticated,
-          user: userExt,
-          session: state.session,
-        ),
-      );
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: userExt,
+            session: state.session,
+          ),
+        );
       }
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
@@ -385,17 +387,17 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   Future<void> refreshSession({bool emitAuthentication = true}) async {
-    if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
+    if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
-      if(emitAuthentication) {
+      if (emitAuthentication) {
         emit(
-        state.copyWith(
-          status: AuthStatus.authenticated,
-          session: session,
-        ),
-      );
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            session: session,
+          ),
+        );
       }
     } on SocketException {
       log('No internet connection');

@@ -8,8 +8,11 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class CameraPermissionsDialog extends StatelessWidget {
-  const CameraPermissionsDialog(
-      {required this.cameraCubit, this.isSettings = false, super.key,});
+  const CameraPermissionsDialog({
+    required this.cameraCubit,
+    this.isSettings = false,
+    super.key,
+  });
   final bool isSettings;
   final CameraCubit cameraCubit;
   @override

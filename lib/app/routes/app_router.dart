@@ -720,7 +720,6 @@ class AppRouter {
           );
         }
 
-
         // US should not see the original home page
         return;
       }

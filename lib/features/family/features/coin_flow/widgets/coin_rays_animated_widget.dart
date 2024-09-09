@@ -44,7 +44,8 @@ class _CoinRaysAnimatedWidgetState extends State<CoinRaysAnimatedWidget>
 
 class AnimatedRays extends AnimatedWidget {
   const AnimatedRays({
-    required Animation<double> animation, super.key,
+    required Animation<double> animation,
+    super.key,
   }) : super(listenable: animation);
 
   @override

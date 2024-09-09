@@ -8,7 +8,6 @@ class CertificateNotVerifiedException implements Exception {
 }
 
 class CertificateCouldNotBeVerifiedException implements Exception {
-
   const CertificateCouldNotBeVerifiedException([this.innerException]);
   final Exception? innerException;
 

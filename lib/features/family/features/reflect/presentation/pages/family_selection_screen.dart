@@ -160,8 +160,11 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             selectedProfiles.add(details.data);
           });
         },
-        builder: (BuildContext context, List<Object?> candidateData,
-            List<dynamic> rejectedData,) {
+        builder: (
+          BuildContext context,
+          List<Object?> candidateData,
+          List<dynamic> rejectedData,
+        ) {
           return _dragWidget(context, candidateData);
         },
       ),

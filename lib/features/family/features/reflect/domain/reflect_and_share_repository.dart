@@ -49,7 +49,8 @@ class ReflectAndShareRepository {
   List<GameProfile> randomlyAssignRoles() {
     if (completedLoops > 0) {
       throw Exception(
-          'You are only supposed to call randomlyAssignRoles() once in the beginning!',);
+        'You are only supposed to call randomlyAssignRoles() once in the beginning!',
+      );
     }
     final rng = Random();
     int sidekickIndex;
@@ -85,7 +86,10 @@ class ReflectAndShareRepository {
   }
 
   List<GameProfile> _setProfiles(
-      int superheroIndex, int sidekickIndex, Random rng,) {
+    int superheroIndex,
+    int sidekickIndex,
+    Random rng,
+  ) {
     final questions = _getAllQuestions();
     final list = <GameProfile>[];
     final reporters = <GameProfile>[];
@@ -102,16 +106,22 @@ class ReflectAndShareRepository {
 
     if (reporters.length == 1) {
       final reporterQuestions = _pickQuestions(questions, 3, rng);
-      list.add(reporters[0]
-          .copyWith(role: Role.reporter(questions: reporterQuestions)),);
+      list.add(
+        reporters[0]
+            .copyWith(role: Role.reporter(questions: reporterQuestions)),
+      );
     } else if (reporters.length == 2) {
       final firstReporterQuestions = _pickQuestions(questions, 2, rng);
       final secondReporterQuestions = _pickQuestions(questions, 1, rng);
       list
-        ..add(reporters[0]
-            .copyWith(role: Role.reporter(questions: firstReporterQuestions)),)
-        ..add(reporters[1]
-            .copyWith(role: Role.reporter(questions: secondReporterQuestions)),);
+        ..add(
+          reporters[0]
+              .copyWith(role: Role.reporter(questions: firstReporterQuestions)),
+        )
+        ..add(
+          reporters[1].copyWith(
+              role: Role.reporter(questions: secondReporterQuestions)),
+        );
     } else {
       for (final reporter in reporters) {
         final reporterQuestion = _pickQuestions(questions, 1, rng);
@@ -129,7 +139,10 @@ class ReflectAndShareRepository {
   }
 
   List<String> _pickQuestions(
-      List<String> availableQuestions, int count, Random rng,) {
+    List<String> availableQuestions,
+    int count,
+    Random rng,
+  ) {
     final selectedQuestions = <String>[];
     for (var i = 0; i < count; i++) {
       if (availableQuestions.isEmpty) {

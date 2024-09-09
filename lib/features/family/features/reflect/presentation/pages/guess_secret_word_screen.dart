@@ -34,7 +34,8 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar(title: 'Guess the word',
+      appBar: FunTopAppBar(
+        title: 'Guess the word',
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.xmark),
@@ -42,7 +43,8 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               const LeaveGameDialog().show(context);
             },
           ),
-        ],),
+        ],
+      ),
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, secretWord) {

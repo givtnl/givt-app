@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/features/history/models/donation.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 
 class Profile extends Equatable {
-
   const Profile({
     required this.id,
     required this.firstName,
@@ -58,7 +57,7 @@ class Profile extends Equatable {
           wallet: const Wallet.empty(),
           lastDonationItem: Donation.empty(),
           pictureURL: '',
-    dateOfBirth: '',
+          dateOfBirth: '',
         );
 
   final String id;

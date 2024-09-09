@@ -8,7 +8,10 @@ import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 class AboutGivtBottomSheet extends StatefulWidget {
-  const AboutGivtBottomSheet({this.initialMessage = '', super.key,});
+  const AboutGivtBottomSheet({
+    this.initialMessage = '',
+    super.key,
+  });
 
   final String initialMessage;
 

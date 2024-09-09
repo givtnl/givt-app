@@ -57,8 +57,9 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.magnifyingGlass(
-          [Color circleColor = FamilyAppTheme.primary95,]) =>
+  factory FunIcon.magnifyingGlass([
+    Color circleColor = FamilyAppTheme.primary95,
+  ]) =>
       FunIcon(
         iconData: FontAwesomeIcons.magnifyingGlass,
         circleColor: circleColor,

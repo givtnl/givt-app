@@ -34,7 +34,8 @@ class SliderWidget extends StatelessWidget {
               trackHeight: 7,
               activeTrackColor: Theme.of(context).colorScheme.onInverseSurface,
               thumbShape: const SliderWidgetThumb(thumbRadius: 17),
-              inactiveTrackColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+              inactiveTrackColor:
+                  Theme.of(context).colorScheme.surfaceContainerHighest,
               activeTickMarkColor:
                   Theme.of(context).colorScheme.onInverseSurface,
               inactiveTickMarkColor:

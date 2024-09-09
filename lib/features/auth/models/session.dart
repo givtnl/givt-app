@@ -30,14 +30,14 @@ class Session {
   }
 
   factory Session.fromGenerosityJson(Map<String, dynamic> json) => Session(
-    email: json['email'] as String,
-    userGUID: json['userId'] as String,
-    accessToken: json['accessToken'] as String,
-    refreshToken: json['refreshToken'] as String,
-    expires: json['expirationDate'] as String,
-    expiresIn: json['expiresIn'] as int,
-    isLoggedIn: true,
-  );
+        email: json['email'] as String,
+        userGUID: json['userId'] as String,
+        accessToken: json['accessToken'] as String,
+        refreshToken: json['refreshToken'] as String,
+        expires: json['expirationDate'] as String,
+        expiresIn: json['expiresIn'] as int,
+        isLoggedIn: true,
+      );
 
   factory Session.fromJson(Map<String, dynamic> json) => Session(
         email: json['Email'] as String,
@@ -87,6 +87,7 @@ class Session {
 
   bool get isExpired {
     final now = DateTime.now().toUtc();
+
     /// If the expires date is empty, then ask user to login.
     if (expires.isEmpty) return true;
     final expiresDate = DateTime.parse(expires).subtract(

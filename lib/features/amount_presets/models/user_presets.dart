@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/amount_presets/models/preset.dart';
 
-
-
 class UserPresets extends Equatable {
   const UserPresets({
     required this.guid,

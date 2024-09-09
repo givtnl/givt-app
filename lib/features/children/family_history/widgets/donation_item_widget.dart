@@ -5,7 +5,10 @@ import 'package:givt_app/features/children/family_history/widgets/actioned_donat
 import 'package:givt_app/features/children/family_history/widgets/pending_donation_widget.dart';
 
 class DonationItemWidget extends StatelessWidget {
-  const DonationItemWidget({required this.donation, super.key,});
+  const DonationItemWidget({
+    required this.donation,
+    super.key,
+  });
   final ChildDonation donation;
   @override
   Widget build(BuildContext context) {

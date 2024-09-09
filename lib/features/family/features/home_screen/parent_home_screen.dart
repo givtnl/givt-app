@@ -117,7 +117,8 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
         ),
       );
 
-  FunTopAppBar _topAppBar(Profile profile, BuildContext context) => FunTopAppBar(
+  FunTopAppBar _topAppBar(Profile profile, BuildContext context) =>
+      FunTopAppBar(
         title: profile.firstName,
         color: FamilyAppTheme.secondary99,
         systemNavigationBarColor: FamilyAppTheme.secondary99,

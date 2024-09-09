@@ -57,7 +57,7 @@ class GivingGoalCard extends StatelessWidget {
                     child: const SetupGivingGoalBottomSheet(),
                   ),
                 );
-                
+
                 AnalyticsHelper.logEvent(
                   eventName: AmplitudeEvents.editGivingGoalClicked,
                 );

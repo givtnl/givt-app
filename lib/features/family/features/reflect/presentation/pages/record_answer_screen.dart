@@ -117,11 +117,12 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         children: [
           const Spacer(),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: TitleMediumText(
-                widget.uiModel.question,
-                textAlign: TextAlign.center,
-              ),),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: TitleMediumText(
+              widget.uiModel.question,
+              textAlign: TextAlign.center,
+            ),
+          ),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
@@ -161,28 +162,30 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   ),
                 ),
                 Visibility(
-                    visible: isTestBtnVisible,
-                    child: const SizedBox(height: 8),),
+                  visible: isTestBtnVisible,
+                  child: const SizedBox(height: 8),
+                ),
                 Visibility(
                   visible: isTestBtnVisible,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
-                        onTap: () {
-                          if (_remainingSeconds == 60 * 2) {
-                            _startCountdown();
-                            setState(() {
-                              _remainingSeconds = 20;
-                              isTestBtnVisible = false;
-                            });
-                            return;
-                          }
-                          cubit.advanceToNext();
-                        },
-                        text: 'Start test 20 seconds',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.debugButtonClicked,
-                        ),),
+                      onTap: () {
+                        if (_remainingSeconds == 60 * 2) {
+                          _startCountdown();
+                          setState(() {
+                            _remainingSeconds = 20;
+                            isTestBtnVisible = false;
+                          });
+                          return;
+                        }
+                        cubit.advanceToNext();
+                      },
+                      text: 'Start test 20 seconds',
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.debugButtonClicked,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),

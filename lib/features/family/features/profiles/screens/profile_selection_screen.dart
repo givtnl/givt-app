@@ -237,7 +237,10 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   }
 
   List<Widget> createGridItems(
-      List<Profile> profiles, List<Member> cachedChildren, UserExt user,) {
+    List<Profile> profiles,
+    List<Member> cachedChildren,
+    UserExt user,
+  ) {
     final gridItems = <Widget>[];
     for (var i = 0;
         i < cachedChildren.length &&

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class FunTextStyles {
-
- static const displayLarge = TextStyle(
+  static const displayLarge = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 57,
     fontWeight: FontWeight.w700,
@@ -12,7 +11,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const displayMedium = TextStyle(
+  static const displayMedium = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 45,
     fontWeight: FontWeight.w700,
@@ -20,7 +19,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const displaySmall = TextStyle(
+  static const displaySmall = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 36,
     fontWeight: FontWeight.w700,
@@ -28,7 +27,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const headlineLarge = TextStyle(
+  static const headlineLarge = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 32,
     fontWeight: FontWeight.w700,
@@ -36,7 +35,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const headlineMedium = TextStyle(
+  static const headlineMedium = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 28,
     fontWeight: FontWeight.w700,
@@ -44,7 +43,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const headlineSmall = TextStyle(
+  static const headlineSmall = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 24,
     fontWeight: FontWeight.w700,
@@ -52,7 +51,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const titleLarge = TextStyle(
+  static const titleLarge = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 26,
     fontWeight: FontWeight.w700,
@@ -60,7 +59,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const titleMedium = TextStyle(
+  static const titleMedium = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 22,
     fontWeight: FontWeight.w700,
@@ -69,7 +68,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const titleSmall = TextStyle(
+  static const titleSmall = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 18,
     fontWeight: FontWeight.w700,
@@ -78,7 +77,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const labelLarge = TextStyle(
+  static const labelLarge = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 20,
     fontWeight: FontWeight.w700,
@@ -86,7 +85,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const labelMedium = TextStyle(
+  static const labelMedium = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 16,
     fontWeight: FontWeight.w700,
@@ -94,7 +93,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const labelSmall = TextStyle(
+  static const labelSmall = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 14,
     fontWeight: FontWeight.w700,
@@ -102,7 +101,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const bodyLarge = TextStyle(
+  static const bodyLarge = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 22,
     fontWeight: FontWeight.w500,
@@ -111,7 +110,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const bodyMedium = TextStyle(
+  static const bodyMedium = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 18,
     fontWeight: FontWeight.w500,
@@ -120,7 +119,7 @@ class FunTextStyles {
     fontFamily: 'Rouna',
   );
 
- static const bodySmall = TextStyle(
+  static const bodySmall = TextStyle(
     color: FamilyAppTheme.defaultTextColor,
     fontSize: 15,
     height: 1.4,

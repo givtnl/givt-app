@@ -10,7 +10,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class YearlyDetailBottomSheet extends StatelessWidget {
-  const YearlyDetailBottomSheet({super.key,});
+  const YearlyDetailBottomSheet({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
