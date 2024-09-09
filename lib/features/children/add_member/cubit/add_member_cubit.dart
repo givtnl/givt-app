@@ -29,6 +29,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
     );
     final members = state.members;
     final memberNames = members.map((member) => member.firstName).toList();
+    final memberAges = members.map((member) => member.age).toList();
 
     emit(state.copyWith(status: AddMemberStateStatus.loading));
 
@@ -42,6 +43,7 @@ class AddMemberCubit extends Cubit<AddMemberState> {
           eventProperties: {
             'nrOfMembers': members.length,
             'memberNames': memberNames,
+            'memberAges': memberAges,
           },
         ),
       );
