@@ -8,6 +8,7 @@ class FunScaffold extends StatelessWidget {
     this.minimumPadding = const EdgeInsets.fromLTRB(24, 24, 24, 40),
     this.floatingActionButton,
     this.canPop = true,
+    this.safeAreaBottom = true,
     super.key,
   });
 
@@ -16,6 +17,7 @@ class FunScaffold extends StatelessWidget {
   final EdgeInsets minimumPadding;
   final Widget? floatingActionButton;
   final bool canPop;
+  final bool safeAreaBottom;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +32,7 @@ class FunScaffold extends StatelessWidget {
             appBar: appBar,
             body: SafeArea(
               minimum: minimumPadding,
+              bottom: safeAreaBottom,
               child: body,
             ),
             floatingActionButton: floatingActionButton,
