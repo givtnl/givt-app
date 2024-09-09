@@ -154,6 +154,7 @@ class AuthCubit extends Cubit<AuthState> {
     bool isAppStartupCheck = false,
     bool? hasSession,
   }) async {
+    final currentStatus = state.status;
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       var (userExt, session, amountPresets) =
@@ -192,6 +193,15 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
       }
+
+      if (state.status == AuthStatus.loading) {
+        emit(
+          state.copyWith(
+            status: currentStatus,
+          ),
+        );
+      }
+
       _authRepositoy.setHasSessionInitialValue(true);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
