@@ -127,6 +127,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   setState(() {
                     selections = [index == 0, index == 1];
                   });
+
+                  FocusScope.of(context).unfocus();
                 },
               ),
               const SizedBox(height: 16),
