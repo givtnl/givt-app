@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 
 class CityCard extends StatelessWidget {
   const CityCard({

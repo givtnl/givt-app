@@ -15,6 +15,6 @@ class ChildOrParentSelector extends StatelessWidget {
         selections: selections,
         onPressed: onPressed,
         firstOption: 'Child',
-        secondOption: 'Parent');
+        secondOption: 'Parent',);
   }
 }

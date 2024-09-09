@@ -121,7 +121,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
               child: TitleMediumText(
                 widget.uiModel.question,
                 textAlign: TextAlign.center,
-              )),
+              ),),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
@@ -162,7 +162,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                 ),
                 Visibility(
                     visible: isTestBtnVisible,
-                    child: const SizedBox(height: 8)),
+                    child: const SizedBox(height: 8),),
                 Visibility(
                   visible: isTestBtnVisible,
                   child: Padding(
@@ -182,7 +182,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                         text: 'Start test 20 seconds',
                         analyticsEvent: AnalyticsEvent(
                           AmplitudeEvents.debugButtonClicked,
-                        )),
+                        ),),
                   ),
                 ),
                 const SizedBox(height: 24),

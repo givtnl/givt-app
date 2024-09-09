@@ -129,7 +129,7 @@ class FunButton extends StatelessWidget {
         if (analyticsEvent != null) {
           AnalyticsHelper.logEvent(
               eventName: analyticsEvent!.name,
-              eventProperties: analyticsEvent!.parameters);
+              eventProperties: analyticsEvent!.parameters,);
         }
 
         onTap?.call();

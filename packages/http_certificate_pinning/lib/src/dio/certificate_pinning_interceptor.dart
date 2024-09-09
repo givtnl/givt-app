@@ -6,10 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 
 class CertificatePinningInterceptor extends Interceptor {
-  final List<String> _allowedSHAFingerprints;
-  final int _timeout;
-  final bool callFollowingErrorInterceptor;
-  Future<String>? secure = Future.value('');
 
   CertificatePinningInterceptor({
     List<String>? allowedSHAFingerprints,
@@ -19,6 +15,10 @@ class CertificatePinningInterceptor extends Interceptor {
             ? allowedSHAFingerprints
             : <String>[],
         _timeout = timeout;
+  final List<String> _allowedSHAFingerprints;
+  final int _timeout;
+  final bool callFollowingErrorInterceptor;
+  Future<String>? secure = Future.value('');
 
   @override
   Future onRequest(
@@ -53,7 +53,7 @@ class CertificatePinningInterceptor extends Interceptor {
         handler.reject(
           DioException(
             requestOptions: options,
-            error: CertificateNotVerifiedException(),
+            error: const CertificateNotVerifiedException(),
           ),
           callFollowingErrorInterceptor,
         );

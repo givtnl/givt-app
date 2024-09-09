@@ -8,9 +8,9 @@ class CertificateNotVerifiedException implements Exception {
 }
 
 class CertificateCouldNotBeVerifiedException implements Exception {
-  final Exception? innerException;
 
   const CertificateCouldNotBeVerifiedException([this.innerException]);
+  final Exception? innerException;
 
   @override
   String toString() {

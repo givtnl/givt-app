@@ -54,7 +54,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Recurring Amount',
-        leading: GenerosityBackButton(),
+        leading: const GenerosityBackButton(),
       ),
       body: Center(
         child: Stack(

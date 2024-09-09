@@ -141,7 +141,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   Future<void> _doRegistrationCheck(
-      List<Profile> newProfiles, List<Member> members) async {
+      List<Profile> newProfiles, List<Member> members,) async {
     UserExt? userExternal;
     final (userExt, session, amountPresets) =
         await _authRepository.isAuthenticated() ?? (null, null, null);
@@ -177,7 +177,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   }
 
   void _emitProfilesUpdatedWithCachedMembers(
-      List<Profile> profiles, List<Member> members) {
+      List<Profile> profiles, List<Member> members,) {
     emit(
       ProfilesUpdatedState(
         profiles: profiles,

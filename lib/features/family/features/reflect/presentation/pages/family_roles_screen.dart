@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
@@ -24,7 +23,6 @@ class FamilyRolesScreen extends StatefulWidget {
 
 class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
   final _cubit = getIt<FamilyRolesCubit>();
-  final AppConfig _appConfig = getIt();
 
   @override
   void didChangeDependencies() {

@@ -35,7 +35,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   // Get current reporter's question based on the indices
   String getCurrentQuestion() {
     final reporter = _reporters[_currentReporterIndex];
-    return (reporter.role as Reporter).questions![_currentQuestionIndex];
+    return (reporter.role! as Reporter).questions![_currentQuestionIndex];
   }
 
   // Get current reporter
@@ -51,18 +51,18 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
 
   // Check if it is the last question for all reporters
   bool _isLastQuestion() {
-    var totalQuestions = _reporters.fold(
+    final totalQuestions = _reporters.fold(
         0,
         (previous, element) =>
-            previous + (element.role as Reporter).questions!.length);
+            previous + (element.role! as Reporter).questions!.length,);
     return totalQuestions == _nrOfQuestionsAsked;
   }
 
   bool _nextQuestionIsLast() {
-    var totalQuestions = _reporters.fold(
+    final totalQuestions = _reporters.fold(
         0,
         (previous, element) =>
-            previous + (element.role as Reporter).questions!.length);
+            previous + (element.role! as Reporter).questions!.length,);
     return totalQuestions == _nrOfQuestionsAsked + 1;
   }
 
@@ -102,6 +102,6 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
       reporter: getCurrentReporter(),
       question: getCurrentQuestion(),
       buttonText: getButtonText(),
-    ));
+    ),);
   }
 }

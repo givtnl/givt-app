@@ -29,7 +29,7 @@ class AddMemberUtil {
         FamilyMemberFormPage(
           index: 1,
           totalCount: result,
-          membersToCombine: [],
+          membersToCombine: const [],
         ).toRoute(context),
       );
     }

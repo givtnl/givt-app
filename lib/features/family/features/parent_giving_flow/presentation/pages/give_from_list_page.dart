@@ -91,7 +91,7 @@ class GiveFromListPage extends StatelessWidget {
           'organisation': collectGroup.orgName,
           'mediumid': collectGroup.nameSpace,
         },
-      ));
+      ),);
       context.read<GiveBloc>().add(
             GiveAmountChanged(
               firstCollectionAmount: result.toDouble(),

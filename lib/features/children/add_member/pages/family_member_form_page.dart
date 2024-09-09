@@ -155,9 +155,9 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
         ),
         floatingActionButton: keyboardIsVisible
             ? null
-            : (isLast)
+            : isLast
                 ? _primaryButton(isChildSelected)
-                : _secondaryButton(isChildSelected));
+                : _secondaryButton(isChildSelected),);
   }
 
   Widget _primaryButton(bool isChildSelected) {

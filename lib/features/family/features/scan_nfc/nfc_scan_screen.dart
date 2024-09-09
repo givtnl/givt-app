@@ -235,7 +235,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
         primaryBtnText: 'Try again',
         description: 'Uh-oh! We don’t think that was a Givt coin',
         primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
-        amplitudeEvent: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked);
+        amplitudeEvent: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,);
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.notAGivtCoinNFCErrorShown,
@@ -278,7 +278,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
         primaryBtnText: 'Try again',
         primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
         amplitudeEvent:
-            AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked);
+            AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,);
     unawaited(
       AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.coinMediumIdNotRecognized,

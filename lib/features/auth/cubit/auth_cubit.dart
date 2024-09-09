@@ -151,7 +151,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
 
   Future<void> checkAuth(
-      {bool isAppStartupCheck = false, bool? hasSession}) async {
+      {bool isAppStartupCheck = false, bool? hasSession,}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       var (userExt, session, amountPresets) =
@@ -323,13 +323,15 @@ class AuthCubit extends Cubit<AuthState> {
     if(emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
-      if(emitAuthentication) emit(
+      if(emitAuthentication) {
+        emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           user: userExt,
           session: state.session,
         ),
       );
+      }
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -387,12 +389,14 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
-      if(emitAuthentication) emit(
+      if(emitAuthentication) {
+        emit(
         state.copyWith(
           status: AuthStatus.authenticated,
           session: session,
         ),
       );
+      }
     } on SocketException {
       log('No internet connection');
       emit(state.copyWith(status: AuthStatus.noInternet));

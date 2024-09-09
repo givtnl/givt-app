@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Arc extends StatelessWidget {
-  final double diameter;
-  final Color? color;
 
   const Arc({super.key, this.diameter = 200, this.color});
+  final double diameter;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +17,16 @@ class Arc extends StatelessWidget {
 
 // This is the Painter class
 class MyPainter extends CustomPainter {
-  final Color? color;
   MyPainter(this.color);
+  final Color? color;
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = color ?? Colors.blue;
+    var paint = Paint()..color = color ?? Colors.blue;
     canvas.drawRRect(
         RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.width),
-            Radius.circular(size.width / 2)),
-        paint);
+            Radius.circular(size.width / 2),),
+        paint,);
   }
 
   @override

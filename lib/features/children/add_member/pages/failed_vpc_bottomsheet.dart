@@ -78,7 +78,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
                       stripestate.stripeStatus == StripeObjectStatus.loading,
                   text: 'Try again',
                   analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.changePaymentMethodForFailedVPCClicked),
+                      AmplitudeEvents.changePaymentMethodForFailedVPCClicked,),
                   onTap: () async {
                     await cacheCubit.tryCreateMembersFromCache(members);
                   },
@@ -129,7 +129,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
   }
 
   static void show(BuildContext context, List<Member> cachedMembers,
-      VoidCallback onBottomsheetClosed) {
+      VoidCallback onBottomsheetClosed,) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
