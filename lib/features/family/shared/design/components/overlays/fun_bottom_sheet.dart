@@ -128,15 +128,7 @@ class FunBottomSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => FunBottomSheet(
-        title: title,
-        content: content,
-        icon: icon,
-        headlineContent: headlineContent,
-        primaryButton: primaryButton,
-        secondaryButton: secondaryButton,
-        closeAction: closeAction,
-      ),
+      builder: (context) => this,
     );
   }
 }
