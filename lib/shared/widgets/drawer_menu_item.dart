@@ -1,5 +1,3 @@
-
-
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:givt_app/utils/utils.dart';

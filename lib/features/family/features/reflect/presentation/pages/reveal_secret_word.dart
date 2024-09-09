@@ -106,7 +106,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.reflectAndShareReadyClicked,
               ),
-            )
+            ),
           ],
         ),
       ),

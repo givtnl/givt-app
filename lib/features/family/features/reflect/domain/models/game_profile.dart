@@ -3,7 +3,8 @@ import 'package:givt_app/features/family/features/reflect/domain/models/roles.da
 
 class GameProfile {
   const GameProfile({
-    required this.type, this.firstName,
+    required this.type,
+    this.firstName,
     this.lastName,
     this.pictureURL,
     this.role,

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class YearBanner extends StatelessWidget {
-  const YearBanner(this.year, {super.key,});
+  const YearBanner(
+    this.year, {
+    super.key,
+  });
   final String year;
   @override
   Widget build(BuildContext context) {

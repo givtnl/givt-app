@@ -20,21 +20,25 @@ class TripleAnimatedSwitch extends StatelessWidget {
       current: pageIndex,
       values: const [0, 1, 2],
       height: 40,
-      dif: 1,
+      spacing: 1,
       iconOpacity: 1,
-      innerColor: AppTheme.givtNeutralGrey,
+      style: const ToggleStyle(
+        backgroundColor: AppTheme.givtNeutralGrey,
+        borderColor: AppTheme.givtNeutralGrey,
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+      ),
       indicatorSize: const Size.fromWidth(90),
-      iconBuilder: (int value, Size size) => switch (value) {
+      iconBuilder: (int value) => switch (value) {
         0 => _buildToggleSwitch(context.l10n.discoverSegmentNow, 0),
         1 => _buildToggleSwitch(context.l10n.groups, 1),
         2 => _buildToggleSwitch(context.l10n.discoverSegmentWho, 2),
         _ => _buildToggleSwitch(context.l10n.give, 3),
       },
       borderWidth: 1,
-      borderColor: AppTheme.givtNeutralGrey,
-      borderRadius: const BorderRadius.all(Radius.circular(4)),
       animationCurve: Curves.easeInOut,
-      colorBuilder: (i) => i == pageIndex ? AppTheme.givtBlue : Colors.white,
+      styleBuilder: (i) => i == pageIndex
+          ? const ToggleStyle(backgroundColor: AppTheme.givtBlue)
+          : const ToggleStyle(backgroundColor: Colors.white),
       onChanged: onChanged,
     );
   }

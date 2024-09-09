@@ -12,7 +12,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SignSepaMandatePage extends StatelessWidget {
-  const SignSepaMandatePage({super.key,});
+  const SignSepaMandatePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

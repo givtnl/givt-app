@@ -20,7 +20,7 @@ class WalletIntroPage extends StatelessWidget {
       child: Scaffold(
         appBar: FunTopAppBar.primary99(
           title: 'Gift from the Mayor',
-          leading: GenerosityBackButton(),
+          leading: const GenerosityBackButton(),
         ),
         body: SafeArea(
           child: Padding(

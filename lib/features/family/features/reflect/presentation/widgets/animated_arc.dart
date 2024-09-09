@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
 
 class AnimatedArc extends StatefulWidget {
-  final double diameter;
-  final Color color;
-
   const AnimatedArc({
     super.key,
     required this.diameter,
     required this.color,
   });
+  final double diameter;
+  final Color color;
 
   @override
   State<AnimatedArc> createState() => _AnimatedArcState();

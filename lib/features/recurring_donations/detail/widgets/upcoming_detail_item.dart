@@ -3,7 +3,10 @@ import 'package:givt_app/features/recurring_donations/detail/widgets/detail_year
 import 'package:givt_app/l10n/l10n.dart';
 
 class UpcomingRecurringDonation extends StatelessWidget {
-  const UpcomingRecurringDonation({required this.upcoming, super.key,});
+  const UpcomingRecurringDonation({
+    required this.upcoming,
+    super.key,
+  });
   final Widget upcoming;
   @override
   Widget build(BuildContext context) {

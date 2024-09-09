@@ -6,7 +6,9 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 
 class FAQBottomSheet extends StatelessWidget {
-  const FAQBottomSheet({super.key,});
+  const FAQBottomSheet({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

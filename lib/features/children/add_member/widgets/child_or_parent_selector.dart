@@ -12,9 +12,10 @@ class ChildOrParentSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GivtTabs(
-        selections: selections,
-        onPressed: onPressed,
-        firstOption: 'Child',
-        secondOption: 'Parent');
+      selections: selections,
+      onPressed: onPressed,
+      firstOption: 'Child',
+      secondOption: 'Parent',
+    );
   }
 }

@@ -12,7 +12,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateFamilyGoalCausePage extends StatefulWidget {
-  const CreateFamilyGoalCausePage({super.key,});
+  const CreateFamilyGoalCausePage({
+    super.key,
+  });
 
   @override
   State<CreateFamilyGoalCausePage> createState() =>

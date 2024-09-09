@@ -183,7 +183,9 @@ Error while setting up secure http clients (while having an internet connection)
   }
 
   Future<CertificateResponse> _requestCerts(
-      String apiUrl, String apiUrlAws,) async {
+    String apiUrl,
+    String apiUrlAws,
+  ) async {
     final url = _getCertsUrl(apiUrl);
     final response = await http.get(url);
 

@@ -100,7 +100,8 @@ class RegistrationStripeSuccess extends RegistrationEvent {
   final bool emitAuthenticated;
 
   @override
-  List<Object> get props => [emitAuthenticated];}
+  List<Object> get props => [emitAuthenticated];
+}
 
 class RegistrationInit extends RegistrationEvent {
   const RegistrationInit();

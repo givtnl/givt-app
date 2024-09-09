@@ -1,7 +1,6 @@
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
 class Topup extends HistoryItem {
-
   const Topup({
     required super.amount,
     required super.date,

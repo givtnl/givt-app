@@ -25,7 +25,7 @@ class SelectFamilyValues extends StatelessWidget {
         return Scaffold(
           appBar: FunTopAppBar.primary99(
             title: 'Day 2',
-            leading: GenerosityBackButton(),
+            leading: const GenerosityBackButton(),
           ),
           body: SafeArea(
             child: CustomScrollView(

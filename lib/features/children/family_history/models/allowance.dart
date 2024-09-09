@@ -1,7 +1,6 @@
 import 'package:givt_app/features/children/family_history/models/history_item.dart';
 
 class Allowance extends HistoryItem {
-
   const Allowance({
     required super.amount,
     required super.date,

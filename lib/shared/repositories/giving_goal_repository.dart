@@ -29,7 +29,7 @@ class GivingGoalRepositoryImpl with GivingGoalRepository {
     required Map<String, dynamic> body,
   }) async {
     await apiClient.addGivingGoal(body: body);
-    
+
     return GivingGoal.fromJson(body);
   }
 

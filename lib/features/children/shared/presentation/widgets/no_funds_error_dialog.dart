@@ -5,7 +5,10 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class NoFundsErrorDialog extends StatelessWidget {
-  const NoFundsErrorDialog({this.onClickContinue, super.key,});
+  const NoFundsErrorDialog({
+    this.onClickContinue,
+    super.key,
+  });
 
   final void Function()? onClickContinue;
 
@@ -15,7 +18,8 @@ class NoFundsErrorDialog extends StatelessWidget {
       context: context,
       barrierColor: Colors.white,
       useRootNavigator: false,
-      builder: (context) => NoFundsErrorDialog(onClickContinue: onClickContinue),
+      builder: (context) =>
+          NoFundsErrorDialog(onClickContinue: onClickContinue),
     );
   }
 

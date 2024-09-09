@@ -57,7 +57,7 @@ class _SecretWordInputState extends State<SecretWordInput> {
                   } else {
                     if (i > 0) focusNodes[i - 1].requestFocus();
                   }
-            
+
                   widget.onChanged(getWord());
                 },
               ),

@@ -107,7 +107,7 @@ class CampaignRepositoryImpl with CampaignRepository {
     if (collectGroupList == null) {
       try {
         return _collectGroupRepository.getCollectGroupList();
-      } catch (e, s) {
+      } catch (e) {
         return [];
       }
     }

@@ -15,7 +15,7 @@ class ReflectAndShareRepository {
   List<GameProfile> _selectedProfiles = [];
   String? _currentSecretWord;
 
-  List<String> _usedSecretWords = [];
+  final List<String> _usedSecretWords = [];
 
   List<GameProfile> getCurrentReporters() {
     return _selectedProfiles
@@ -49,7 +49,8 @@ class ReflectAndShareRepository {
   List<GameProfile> randomlyAssignRoles() {
     if (completedLoops > 0) {
       throw Exception(
-          'You are only supposed to call randomlyAssignRoles() once in the beginning!');
+        'You are only supposed to call randomlyAssignRoles() once in the beginning!',
+      );
     }
     final rng = Random();
     int sidekickIndex;
@@ -85,7 +86,10 @@ class ReflectAndShareRepository {
   }
 
   List<GameProfile> _setProfiles(
-      int superheroIndex, int sidekickIndex, Random rng) {
+    int superheroIndex,
+    int sidekickIndex,
+    Random rng,
+  ) {
     final questions = _getAllQuestions();
     final list = <GameProfile>[];
     final reporters = <GameProfile>[];
@@ -102,16 +106,22 @@ class ReflectAndShareRepository {
 
     if (reporters.length == 1) {
       final reporterQuestions = _pickQuestions(questions, 3, rng);
-      list.add(reporters[0]
-          .copyWith(role: Role.reporter(questions: reporterQuestions)));
+      list.add(
+        reporters[0]
+            .copyWith(role: Role.reporter(questions: reporterQuestions)),
+      );
     } else if (reporters.length == 2) {
       final firstReporterQuestions = _pickQuestions(questions, 2, rng);
       final secondReporterQuestions = _pickQuestions(questions, 1, rng);
       list
-        ..add(reporters[0]
-            .copyWith(role: Role.reporter(questions: firstReporterQuestions)))
-        ..add(reporters[1]
-            .copyWith(role: Role.reporter(questions: secondReporterQuestions)));
+        ..add(
+          reporters[0]
+              .copyWith(role: Role.reporter(questions: firstReporterQuestions)),
+        )
+        ..add(
+          reporters[1].copyWith(
+              role: Role.reporter(questions: secondReporterQuestions)),
+        );
     } else {
       for (final reporter in reporters) {
         final reporterQuestion = _pickQuestions(questions, 1, rng);
@@ -129,7 +139,10 @@ class ReflectAndShareRepository {
   }
 
   List<String> _pickQuestions(
-      List<String> availableQuestions, int count, Random rng) {
+    List<String> availableQuestions,
+    int count,
+    Random rng,
+  ) {
     final selectedQuestions = <String>[];
     for (var i = 0; i < count; i++) {
       if (availableQuestions.isEmpty) {
@@ -195,29 +208,29 @@ class ReflectAndShareRepository {
     return list[wordIndex];
   }
 
-  List<String> _secretWords = [
-    "banana",
-    "macarena",
-    "shark",
-    "hungry",
-    "dance",
-    "penguin",
-    "sunset",
-    "moon",
-    "sun",
-    "star",
-    "planet",
-    "earth",
+  final List<String> _secretWords = [
+    'banana',
+    'macarena',
+    'shark',
+    'hungry',
+    'dance',
+    'penguin',
+    'sunset',
+    'moon',
+    'sun',
+    'star',
+    'planet',
+    'earth',
   ];
 
 // get the questions that the reporters can ask
   List<String> _getAllQuestions() {
     return [
-      "What is something kind that someone did for you today?",
+      'What is something kind that someone did for you today?',
       "What is something you did today that you're proud of?",
-      "What is something you wish you could have done for someone else today?",
-      "What is something that surprised you today?",
-      "What is something we should celebrate today?",
+      'What is something you wish you could have done for someone else today?',
+      'What is something that surprised you today?',
+      'What is something we should celebrate today?',
     ];
   }
 

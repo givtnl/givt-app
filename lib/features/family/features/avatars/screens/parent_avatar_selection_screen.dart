@@ -6,9 +6,9 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';

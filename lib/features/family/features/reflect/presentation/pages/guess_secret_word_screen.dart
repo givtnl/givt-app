@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -35,7 +34,8 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar(title: 'Guess the word',
+      appBar: FunTopAppBar(
+        title: 'Guess the word',
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.xmark),
@@ -43,7 +43,8 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               const LeaveGameDialog().show(context);
             },
           ),
-        ],),
+        ],
+      ),
       body: BaseStateConsumer(
         cubit: _cubit,
         onData: (context, secretWord) {

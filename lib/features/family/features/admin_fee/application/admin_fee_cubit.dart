@@ -22,7 +22,7 @@ class AdminFeeCubit extends CommonCubit<AdminFeeUIModel, dynamic> {
   }
 
   void setAmount(double amount) {
-    if(_amount != amount) {
+    if (_amount != amount) {
       _amount = amount;
       final fee = _repository.adminFee;
       emitState(fee);

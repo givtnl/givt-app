@@ -39,7 +39,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
     return Scaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Give',
-        leading: GenerosityBackButton(),
+        leading: const GenerosityBackButton(),
       ),
       body: SafeArea(
         child: Center(

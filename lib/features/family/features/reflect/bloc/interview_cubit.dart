@@ -35,34 +35,28 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   // Get current reporter's question based on the indices
   String getCurrentQuestion() {
     final reporter = _reporters[_currentReporterIndex];
-    return (reporter.role as Reporter).questions![_currentQuestionIndex];
+    return (reporter.role! as Reporter).questions![_currentQuestionIndex];
   }
 
   // Get current reporter
   GameProfile getCurrentReporter() => _reporters[_currentReporterIndex];
 
-  bool _allQuestionsAsked() {
-    // Check if all reporters have no more questions
-    return _reporters.every((reporter) {
-      final reporterQuestions = (reporter.role! as Reporter).questions!;
-      return _currentQuestionIndex >= reporterQuestions.length;
-    });
-  }
-
   // Check if it is the last question for all reporters
   bool _isLastQuestion() {
-    var totalQuestions = _reporters.fold(
-        0,
-        (previous, element) =>
-            previous + (element.role as Reporter).questions!.length);
+    final totalQuestions = _reporters.fold(
+      0,
+      (previous, element) =>
+          previous + (element.role! as Reporter).questions!.length,
+    );
     return totalQuestions == _nrOfQuestionsAsked;
   }
 
   bool _nextQuestionIsLast() {
-    var totalQuestions = _reporters.fold(
-        0,
-        (previous, element) =>
-            previous + (element.role as Reporter).questions!.length);
+    final totalQuestions = _reporters.fold(
+      0,
+      (previous, element) =>
+          previous + (element.role! as Reporter).questions!.length,
+    );
     return totalQuestions == _nrOfQuestionsAsked + 1;
   }
 
@@ -98,10 +92,12 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   }
 
   void _emitData() {
-    emitData(RecordAnswerUIModel(
-      reporter: getCurrentReporter(),
-      question: getCurrentQuestion(),
-      buttonText: getButtonText(),
-    ));
+    emitData(
+      RecordAnswerUIModel(
+        reporter: getCurrentReporter(),
+        question: getCurrentQuestion(),
+        buttonText: getButtonText(),
+      ),
+    );
   }
 }

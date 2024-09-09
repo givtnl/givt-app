@@ -48,9 +48,11 @@ class ParentOverviewWidget extends StatelessWidget {
                           profile.id,
                         ),
                   );
-                  unawaited(AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.parentProfileIconClicked,
-                  ));
+                  unawaited(
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.parentProfileIconClicked,
+                    ),
+                  );
 
                   await FamilyAuthUtils.authenticateUser(
                     context,
@@ -83,7 +85,7 @@ class ParentOverviewWidget extends StatelessWidget {
                   firstName: member.firstName ?? '',
                   isMainUser: false,
                 ),
-              )
+              ),
         ],
       ),
     );

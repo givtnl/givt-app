@@ -4,7 +4,9 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:go_router/go_router.dart';
 
 class RegistrationCompletedPage extends StatelessWidget {
-  const RegistrationCompletedPage({super.key,});
+  const RegistrationCompletedPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -21,15 +21,19 @@ class AnimatedSwitch extends StatelessWidget {
       first: 0,
       second: 1,
       height: 40,
-      dif: 1,
+      spacing: 1,
       indicatorSize: const Size.fromWidth(90),
       borderWidth: 1,
-      borderColor: AppTheme.givtNeutralGrey,
-      borderRadius: const BorderRadius.all(Radius.circular(4)),
+      style: const ToggleStyle(
+        borderColor: AppTheme.givtNeutralGrey,
+        borderRadius: BorderRadius.all(Radius.circular(4)),
+      ),
       animationCurve: Curves.easeInOut,
-      transitionType: ForegroundIndicatorTransitionType.fading,
+      indicatorTransition: const ForegroundIndicatorTransition.fading(),
       textMargin: EdgeInsets.zero,
-      colorBuilder: (i) => i == pageIndex ? AppTheme.givtBlue : Colors.white,
+      styleBuilder: (i) => i == pageIndex
+          ? const ToggleStyle(backgroundColor: AppTheme.givtBlue)
+          : const ToggleStyle(backgroundColor: Colors.white),
       iconBuilder: (value) => value == 0
           ? _buildToggleSwitch(
               0,

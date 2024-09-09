@@ -229,7 +229,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               }
               return null;
             },
-            textInputAction: TextInputAction.next,
             onChanged: (value) => setState(() {
               _formKey.currentState!.validate();
             }),
@@ -255,7 +254,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               }
               return null;
             },
-            textInputAction: TextInputAction.next,
             hintText: AppLocalizations.of(context).surname,
             keyboardType: TextInputType.text,
             textCapitalization: TextCapitalization.sentences,
@@ -323,7 +321,6 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
               height: 0,
             ),
             obscureText: _obscureText,
-            textInputAction: TextInputAction.next,
             hintText: AppLocalizations.of(context).password,
             suffixIcon: IconButton(
               icon: Icon(

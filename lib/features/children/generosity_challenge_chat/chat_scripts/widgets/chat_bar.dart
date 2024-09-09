@@ -4,8 +4,8 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_input_field.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ChatBar extends StatelessWidget {

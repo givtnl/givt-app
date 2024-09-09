@@ -106,9 +106,11 @@ class CreditCardDetailsPage extends StatelessWidget {
         .add(const RegistrationStripeSuccess(emitAuthenticated: false));
     context.pushReplacementNamed(
       FamilyPages.permitUSBiometric.name,
-      extra: PermitBiometricRequest.registration(redirect: (context) {
-        context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
-      }),
+      extra: PermitBiometricRequest.registration(
+        redirect: (context) {
+          context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
+        },
+      ),
     );
   }
 }

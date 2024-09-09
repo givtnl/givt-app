@@ -97,8 +97,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      LoggingInfo.instance
-          .info('Changing address to ${event..toString()}');
+      LoggingInfo.instance.info('Changing address to ${event..toString()}');
       final stateUser = state.loggedInUserExt.copyWith(
         address: event.address,
         city: event.city,

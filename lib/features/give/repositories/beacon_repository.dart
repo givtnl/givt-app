@@ -7,6 +7,7 @@ mixin BeaconRepository {
     required int batteryVoltage,
   });
 }
+
 class BeaconRepositoryImpl with BeaconRepository {
   const BeaconRepositoryImpl(this._apiService);
 
