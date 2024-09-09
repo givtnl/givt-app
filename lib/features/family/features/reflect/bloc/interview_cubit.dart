@@ -41,14 +41,6 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   // Get current reporter
   GameProfile getCurrentReporter() => _reporters[_currentReporterIndex];
 
-  bool _allQuestionsAsked() {
-    // Check if all reporters have no more questions
-    return _reporters.every((reporter) {
-      final reporterQuestions = (reporter.role! as Reporter).questions!;
-      return _currentQuestionIndex >= reporterQuestions.length;
-    });
-  }
-
   // Check if it is the last question for all reporters
   bool _isLastQuestion() {
     final totalQuestions = _reporters.fold(
