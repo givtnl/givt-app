@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -39,9 +41,17 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: const FunTopAppBar(
+      appBar: FunTopAppBar(
         title: 'Who is playing?',
-        leading: GivtBackButtonFlat(),
+        leading: const GivtBackButtonFlat(),
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.xmark),
+            onPressed: () {
+              const LeaveGameDialog().show(context);
+            },
+          ),
+        ],
       ),
       body: BaseStateConsumer<List<GameProfile>, dynamic>(
         cubit: cubit,

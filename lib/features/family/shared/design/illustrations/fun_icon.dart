@@ -70,10 +70,14 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.xmark([Color circleColor = FamilyAppTheme.primary95]) =>
+  factory FunIcon.xmark([
+    Color circleColor = FamilyAppTheme.error90,
+    Color iconColor = FamilyAppTheme.error20,
+  ]) =>
       FunIcon(
         iconData: FontAwesomeIcons.xmark,
         circleColor: circleColor,
+        iconColor: iconColor,
       );
 
   /// The icon to be displayed in the center of the circle.

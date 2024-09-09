@@ -21,6 +21,7 @@ class FunButton extends StatelessWidget {
     this.backgroundColor = FamilyAppTheme.primary80,
     this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
     this.borderColor = FamilyAppTheme.primary30,
+    this.textColor = FamilyAppTheme.primary30,
     this.fullBorder = false,
     this.isDebugOnly = false,
   });
@@ -75,6 +76,31 @@ class FunButton extends StatelessWidget {
     );
   }
 
+  factory FunButton.destructive({
+    required void Function()? onTap,
+    required String text,
+    required AnalyticsEvent analyticsEvent,
+    bool isDisabled = false,
+    bool isLoading = false,
+    IconData? leftIcon,
+    IconData? rightIcon,
+    Widget? leadingImage,
+  }) {
+    return FunButton(
+      onTap: onTap,
+      text: text,
+      isDisabled: isDisabled,
+      isLoading: isLoading,
+      leftIcon: leftIcon,
+      rightIcon: rightIcon,
+      leadingImage: leadingImage,
+      backgroundColor: FamilyAppTheme.error80,
+      borderColor: AppTheme.error30,
+      textColor: AppTheme.error30,
+      analyticsEvent: analyticsEvent,
+    );
+  }
+
   final void Function()? onTap;
   final bool isDisabled;
   final String text;
@@ -85,6 +111,7 @@ class FunButton extends StatelessWidget {
   final Color backgroundColor;
   final Color disabledBackgroundColor;
   final Color borderColor;
+  final Color? textColor;
   final bool fullBorder;
   final bool isDebugOnly;
   final AnalyticsEvent? analyticsEvent;
@@ -147,7 +174,7 @@ class FunButton extends StatelessWidget {
               size: 24,
               color: isDisabled
                   ? FamilyAppTheme.neutralVariant60
-                  : FamilyAppTheme.primary30,
+                  : textColor,
             ),
           ),
         Text(
@@ -160,7 +187,7 @@ class FunButton extends StatelessWidget {
                   fontFamily: 'Rouna',
                 )
               : themeData.textTheme.labelLarge?.copyWith(
-                  color: FamilyAppTheme.primary30,
+                  color: textColor,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Rouna',
                 ),

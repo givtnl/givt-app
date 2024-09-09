@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -42,6 +43,14 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
       canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.xmark),
+            onPressed: () {
+              const LeaveGameDialog().show(context);
+            },
+          ),
+        ],
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
