@@ -115,13 +115,13 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
           });
 
           AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.reflectAndShareReRollClicked,
+            eventName: AmplitudeEvents.reflectAndShareChangeWordClicked,
           );
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LabelLargeText.primary30('Re-roll (1 times)'),
+            LabelLargeText.primary30('Change'),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Icon(
