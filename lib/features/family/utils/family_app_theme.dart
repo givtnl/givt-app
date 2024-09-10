@@ -154,10 +154,11 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.white,
-      bottomSheetTheme: const BottomSheetThemeData(
+      bottomSheetTheme: BottomSheetThemeData(
+        modalBarrierColor: primaryColor.withOpacity(0.5),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -167,11 +168,10 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       fontFamily: 'Rouna',
       textTheme: textTheme,
       primaryColor: colorScheme.primary,
-      bottomSheetTheme: BottomSheetThemeData(
-        modalBarrierColor: primaryColor.withOpacity(0.5),
-      ),
       dialogTheme: DialogTheme(
-        //barierColor: primaryColor.withOpacity(0.5), //TODO required flutter update to 3.22.0
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        barrierColor: primaryColor.withOpacity(0.5),
       ),
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
@@ -207,10 +207,6 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         ),
       ),
       dialogBackgroundColor: Colors.white,
-      dialogTheme: const DialogTheme(
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: Colors.white,
-      ),
       extensions: [this],
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
