@@ -15,7 +15,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -39,7 +39,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
     final user = context.watch<AuthCubit>().state.user;
 
     return Scaffold(
-      appBar: TopAppBar(
+      appBar: FunTopAppBar(
         title: locals.personalInfo,
         leading: const LeadingBackButton(),
       ),
@@ -171,7 +171,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                        when for example people close the bottomsheet.
                        So it's not a real error :)
                     */
-                    await LoggingInfo.instance.info(
+                    LoggingInfo.instance.info(
                       e.toString(),
                       methodName: stackTrace.toString(),
                     );
@@ -285,7 +285,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                   isScrollControlled: true,
                   useSafeArea: true,
                   builder: (_) => Theme(
-                    data: AppTheme.lightTheme,
+                    data: const FamilyAppTheme().toThemeData(),
                     child: const AboutGivtBottomSheet(),
                   ),
                 ),
@@ -295,7 +295,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
               ),
               _buildInfoRow(
                 context,
-                style: Theme.of(context).textTheme.labelSmall,
+                style: Theme.of(context).textTheme.labelMedium,
                 icon: const Icon(
                   FontAwesomeIcons.rightFromBracket,
                 ),
@@ -353,7 +353,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
               leading: icon,
               title: Text(
                 value,
-                style: style ?? Theme.of(context).textTheme.labelSmall,
+                style: style ?? Theme.of(context).textTheme.labelMedium,
               ),
               trailing: onTap != null
                   ? const Icon(

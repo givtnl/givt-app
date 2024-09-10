@@ -1,27 +1,34 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/utils/cached_family_utils.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/parent_overview_widget.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profile_item.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -37,17 +44,49 @@ class ProfileSelectionScreen extends StatefulWidget {
 }
 
 class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
+  bool isCachedMembersBottomsheetUp = false;
+
   @override
   void initState() {
     super.initState();
-    context.read<ProfilesCubit>().fetchAllProfiles();
+    context.read<ProfilesCubit>().doInitialChecks();
   }
 
   @override
   Widget build(BuildContext context) {
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      // @TODO - This is a workaround to navigate to the correct page when
+      // the app is opened from a notification and the user is authenticated,
+      // but it should be refactored to use the GoRouter (or another solution)
+      // In the EU this workaround is in the file home_page.dart
+
+      if (message != null) {
+        NotificationService.instance.navigateFirebaseNotification(message);
+      }
+    });
+    final user = context.read<AuthCubit>().state.user;
+    final flow = context.read<FlowsCubit>();
+
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
-        if (state is ProfilesExternalErrorState) {
+        if (state is ProfilesInvitedToGroup) {
+          await showModalBottomSheet<void>(
+            isScrollControlled: true,
+            context: context,
+            useSafeArea: true,
+            isDismissible: false,
+            enableDrag: false,
+            builder: (_) {
+              return ImpactGroupRecieveInviteSheet(
+                invitdImpactGroup: state.impactGroup,
+              );
+            },
+          );
+        } else if (state is ProfilesUpdatedState) {
+          if (state.cachedMembers.isNotEmpty && !isCachedMembersBottomsheetUp) {
+            showCachedMembersBottomsheet(state);
+          }
+        } else if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
             context,
@@ -55,44 +94,41 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isError: true,
           );
         } else if (state is ProfilesNotSetupState) {
-          if (CachedFamilyUtils.isFamilyCacheExist()) {
-            await context.pushNamed(FamilyPages.cachedChildrenOverview.name);
+          if (state.cachedMembers.isNotEmpty) {
+            showCachedMembersBottomsheet(state);
           } else {
-            await context.pushNamed(FamilyPages.childrenOverview.name);
-          }
-        } else if (state is ProfilesNeedsRegistration) {
-          if (context.read<RegistrationBloc>().state.status ==
-              RegistrationStatus.createStripeAccount) {
-            context.goNamed(
-              FamilyPages.creditCardDetails.name,
-              extra: context.read<RegistrationBloc>(),
-            );
-          } else {
-            context.pushNamed(FamilyPages.registrationUS.name);
+            await AddMemberUtil.addMemberPushPages(context);
           }
         }
       },
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
-          current is ProfilesNeedsRegistration,
+          current is ProfilesInvitedToGroup ||
+          current is ProfilesNeedsRegistration ||
+          current is ProfilesUpdatedState,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
           current is! ProfilesNeedsRegistration,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
+          state.cachedMembers
+              .where((element) => element.type == ProfileType.Child)
+              .toList(),
+          user,
         );
         return Scaffold(
-          appBar: const TopAppBar(
-            title: 'Who would like to give?',
+          appBar: const FunTopAppBar(
+            title: 'Family',
           ),
-          body: state is ProfilesLoadingState
+          body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
               ? const CustomCircularProgressIndicator()
-              : state.children.isEmpty
+              : state.profiles.isEmpty && state.cachedMembers.isEmpty
                   ? ProfilesEmptyStateWidget(
-                      onRetry: () => context
-                          .read<ProfilesCubit>()
-                          .fetchAllProfiles(checkRegistrationAndSetup: true),
+                      onRetry: () =>
+                          context.read<ProfilesCubit>().fetchAllProfiles(
+                                doChecks: true,
+                              ),
                     )
                   : SafeArea(
                       minimum: const EdgeInsets.only(bottom: 40),
@@ -101,6 +137,19 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                         child: Column(
                           children: [
                             const SizedBox(height: 32),
+                            if (!flow.state.isCoin)
+                              Visibility(
+                                child: ParentOverviewWidget(
+                                  profiles: sortedAdults(
+                                    user.guid,
+                                    state.profiles
+                                        .where((p) => p.type == 'Parent')
+                                        .toList(),
+                                  ),
+                                  cachedMembers: state.cachedMembers,
+                                ),
+                              ),
+                            const SizedBox(height: 26),
                             if (gridItems.isNotEmpty)
                               Expanded(
                                 child: GridView.count(
@@ -114,36 +163,42 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            GivtElevatedSecondaryButton(
+                            if (state.profiles.length >= 3) ...[
+                              FunButton(
+                                onTap: () => context.goNamed(
+                                  FamilyPages.reflectIntro.name,
+                                ),
+                                text: 'Reflect & Share',
+                                analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.reflectAndShareClicked,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                            ],
+                            FunButton.secondary(
                               onTap: () async {
                                 if (!context.mounted) return;
-
-                                await FamilyAuthUtils.authenticateUser(
-                                  context,
-                                  checkAuthRequest: CheckAuthRequest(
-                                    navigate: (context, {isUSUser}) async {
-                                      if (CachedFamilyUtils
-                                          .isFamilyCacheExist()) {
-                                        await context.pushNamed(FamilyPages
-                                            .cachedChildrenOverview.name);
-                                      } else {
+                                flow.resetFlow();
+                                if (state.cachedMembers.isNotEmpty) {
+                                  showCachedMembersBottomsheet(state);
+                                } else {
+                                  await FamilyAuthUtils.authenticateUser(
+                                    context,
+                                    checkAuthRequest: CheckAuthRequest(
+                                      navigate: (context, {isUSUser}) async {
                                         await context.pushNamed(
                                           FamilyPages.childrenOverview.name,
                                         );
-                                      }
-                                      _logUser(context);
-                                    },
-                                  ),
-                                );
-                                unawaited(AnalyticsHelper.logEvent(
-                                  eventName:
-                                  AmplitudeEvents.manageFamilyPressed,
-                                ));
+                                        _logUser(context, user);
+                                      },
+                                    ),
+                                  );
+                                }
                               },
                               text: 'Manage Family',
-                              leftIcon: const FaIcon(
-                                FontAwesomeIcons.sliders,
-                                color: AppTheme.primary30,
+                              leftIcon: FontAwesomeIcons.sliders,
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.manageFamilyPressed,
                               ),
                             ),
                           ],
@@ -155,29 +210,62 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     );
   }
 
-  void _logUser(BuildContext context) {
-    final user = context.read<AuthCubit>().state.user;
-    unawaited(AnalyticsHelper.setUserProperties(
-      userId: user.guid,
-      userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
-    ));
+  void _logUser(BuildContext context, UserExt user) {
+    unawaited(
+      AnalyticsHelper.setUserProperties(
+        userId: user.guid,
+        userProperties: AnalyticsHelper.getUserPropertiesFromExt(user),
+      ),
+    );
   }
 
-  List<Widget> createGridItems(List<Profile> profiles) {
+  // The Givt user profile is first in the list
+  static List<Profile> sortedAdults(
+    String givtAccountID,
+    List<Profile> adults,
+  ) {
+    return adults
+      ..sort((a, b) {
+        final compareNames = a.compareNames(b);
+        return a.id == givtAccountID
+            ? -1
+            : b.id == givtAccountID
+                ? 1
+                : compareNames;
+      });
+  }
+
+  List<Widget> createGridItems(
+    List<Profile> profiles,
+    List<Member> cachedChildren,
+    UserExt user,
+  ) {
     final gridItems = <Widget>[];
     for (var i = 0;
-        i < profiles.length && i < ProfileSelectionScreen.maxVivibleProfiles;
+        i < cachedChildren.length &&
+            i < ProfileSelectionScreen.maxVivibleProfiles;
+        i++) {
+      gridItems.add(
+        ProfileItem(
+          name: cachedChildren[i].firstName!,
+          assetImage: 'assets/images/default_hero.svg',
+        ),
+      );
+    }
+
+    for (var i = 0;
+        i < profiles.length &&
+            i <
+                ProfileSelectionScreen.maxVivibleProfiles -
+                    cachedChildren.length;
         i++) {
       gridItems.add(
         GestureDetector(
           onTap: () {
             final flow = context.read<FlowsCubit>().state;
-            var selectedProfile = profiles[i];
-            context
-                .read<ProfilesCubit>()
-                .fetchProfile(selectedProfile.id, true);
+            final selectedProfile = profiles[i];
+            context.read<ProfilesCubit>().setActiveProfile(selectedProfile.id);
 
-            final user = context.read<AuthCubit>().state.user;
             AnalyticsHelper.setUserProperties(
               userId: selectedProfile.id,
               userProperties: {
@@ -191,7 +279,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               eventName: AmplitudeEvents.profilePressed,
               eventProperties: {
                 'profile_name':
-                '${selectedProfile.firstName} ${selectedProfile.lastName}',
+                    '${selectedProfile.firstName} ${selectedProfile.lastName}',
               },
             );
 
@@ -204,15 +292,23 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               return;
             }
             if (flow.flowType == FlowType.deepLinkCoin) {
+              if (selectedProfile.wallet.balance < 1) {
+                EmptyWalletBottomSheet.show(context);
+                return;
+              }
               context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
               return;
             }
             if (flow.isCoin) {
+              if (selectedProfile.wallet.balance < 1) {
+                EmptyWalletBottomSheet.show(context);
+                return;
+              }
               context.goNamed(FamilyPages.scanNFC.name);
               return;
             }
 
-            context.pushReplacementNamed(FamilyPages.wallet.name);
+            context.pushNamed(FamilyPages.wallet.name);
           },
           child: ProfileItem(
             name: profiles[i].firstName,
@@ -222,6 +318,25 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       );
     }
     return gridItems;
+  }
+
+  void clearBottomsheet() {
+    setState(() {
+      isCachedMembersBottomsheetUp = false;
+    });
+  }
+
+  void showCachedMembersBottomsheet(ProfilesState state) {
+    if (!isCachedMembersBottomsheetUp) {
+      setState(() {
+        isCachedMembersBottomsheetUp = true;
+      });
+      VPCFailedCachedMembersBottomsheet.show(
+        context,
+        state.cachedMembers,
+        clearBottomsheet,
+      );
+    }
   }
 
   @override

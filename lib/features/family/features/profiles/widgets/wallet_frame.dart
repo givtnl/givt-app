@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class WalletFrame extends StatelessWidget {
   const WalletFrame({
-    super.key,
     required this.body,
+    super.key,
   });
   final Widget body;
 

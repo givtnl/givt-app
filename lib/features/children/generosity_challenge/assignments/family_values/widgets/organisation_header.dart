@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class OrganisationHeader extends StatelessWidget {
-  const OrganisationHeader({required this.value, super.key,});
+  const OrganisationHeader({
+    required this.value,
+    super.key,
+  });
   final FamilyValue value;
   @override
   Widget build(BuildContext context) {
+    final theme = const FamilyAppTheme().toThemeData();
     return Container(
       padding: const EdgeInsets.only(right: 20),
       child: Row(
@@ -35,12 +40,9 @@ class OrganisationHeader extends StatelessWidget {
                         ),
                         child: Text(
                           tag.displayText,
-                          style:
-                              Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: value.colorCombo.textColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontFamily: 'Rouna',
-                                  ),
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: value.colorCombo.textColor,
+                          ),
                         ),
                       ),
                     ),

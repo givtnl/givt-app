@@ -11,10 +11,12 @@ import 'package:givt_app/features/family/features/giving_flow/organisation_detai
 import 'package:givt_app/features/family/features/giving_flow/widgets/organisation_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/content/wallet.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -64,9 +66,8 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                     children: [
                       OrganisationWidget(organisation),
                       const Spacer(),
-                      Text(
+                      const BodyMediumText(
                         'How much would you like to give?',
-                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 32),
                     ],
@@ -79,7 +80,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: GivtElevatedButton(
+          floatingActionButton: FunButton(
             isDisabled: state.amount == 0,
             text: flow.isCoin
                 ? 'Activate the coin'
@@ -93,7 +94,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                     if (state is CreateTransactionUploadingState) {
                       return;
                     }
-                    var transaction = Transaction(
+                    final transaction = Transaction(
                       userId: profilesCubit.state.activeProfile.id,
                       mediumId: mediumId,
                       amount: state.amount,
@@ -102,17 +103,16 @@ class ChooseAmountSliderScreen extends StatelessWidget {
                     await context
                         .read<CreateTransactionCubit>()
                         .createTransaction(transaction: transaction);
-
-                    await AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.giveToThisGoalPressed,
-                      eventProperties: {
-                        AnalyticsHelper.goalKey: organisation.name,
-                        AnalyticsHelper.amountKey: state.amount,
-                        AnalyticsHelper.walletAmountKey:
-                            profilesCubit.state.activeProfile.wallet.balance,
-                      },
-                    );
                   },
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.giveToThisGoalPressed,
+              parameters: {
+                AnalyticsHelper.goalKey: organisation.name,
+                AnalyticsHelper.amountKey: state.amount,
+                AnalyticsHelper.walletAmountKey:
+                    profilesCubit.state.activeProfile.wallet.balance,
+              },
+            ),
           ),
         );
       },

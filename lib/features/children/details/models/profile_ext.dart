@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/children/details/models/giving_allowance.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/children/overview/models/wallet.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class ProfileExt extends Equatable {
   const ProfileExt({
@@ -12,9 +12,9 @@ class ProfileExt extends Equatable {
     required this.pendingAllowance,
   });
 
-  const ProfileExt.empty()
+  ProfileExt.empty()
       : this(
-          profile: const Profile.empty(),
+          profile: Profile.empty(),
           givingAllowance: const GivingAllowance.empty(),
           dateOfBirth: '',
           firstName: '',

@@ -7,9 +7,8 @@ import 'package:givt_app/features/impact_groups/widgets/impact_group_details_bot
 import 'package:givt_app/features/impact_groups/widgets/impact_group_details_expandable_description.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_details_header.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/dialogs/warning_dialog.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../shared/dialogs/warning_dialog.dart';
 
 class ImpactGroupDetailsPage extends StatelessWidget {
   const ImpactGroupDetailsPage({

@@ -37,7 +37,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
     }
   }
 
-  void readTag({Duration prescanningDelay = Duration.zero}) async {
+  Future<void> readTag({Duration prescanningDelay = Duration.zero}) async {
     // Prescanning delay is to improve the UI animation (not be jarring)
     await Future<void>.delayed(prescanningDelay);
     AnalyticsHelper.logEvent(eventName: AmplitudeEvents.startScanningCoin);
@@ -48,7 +48,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
       ),
     );
     // Check NFC availability
-    final bool isAvailable = await NfcManager.instance.isAvailable();
+    final isAvailable = await NfcManager.instance.isAvailable();
     //only android bc ios has custom error display
     if (!isAvailable && Platform.isAndroid) {
       await Future<void>.delayed(animationDuration);
@@ -93,70 +93,72 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
     }
 
     try {
-      unawaited(NfcManager.instance.startSession(
-        alertMessage: 'Tap your coin to the top\nof the iPhone',
-        onError: (error) async {
-          log('coin read error: ${error.message}');
-          if (error.type != NfcErrorType.systemIsBusy) {
-            cancelScanning();
-          }
-        },
-        onDiscovered: (NfcTag tag) async {
-          log('coin discovered: ${tag.data}');
-          final ndef = Ndef.from(tag);
-          if (ndef != null && ndef.cachedMessage != null) {
-            if (ndef.cachedMessage!.records.isNotEmpty &&
-                ndef.cachedMessage!.records.first.typeNameFormat ==
-                    NdefTypeNameFormat.nfcWellknown) {
-              String mediumId = '';
-              String readData = '';
-              final wellKnownRecord = ndef.cachedMessage!.records.first;
-              if (wellKnownRecord.payload.first == 0x02) {
-                final languageCodeAndContentBytes =
-                    wellKnownRecord.payload.skip(1).toList();
-                final languageCodeAndContentText =
-                    utf8.decode(languageCodeAndContentBytes);
-                final payload = languageCodeAndContentText.substring(2);
-                log('coin payload: $payload');
-                final Uri uri = Uri.parse(payload);
-                mediumId = uri.queryParameters['code'] ?? mediumId;
-                readData = payload;
-              } else {
-                final decoded = utf8.decode(wellKnownRecord.payload);
-                log('coin decoded: $decoded');
-                final Uri uri = Uri.parse(decoded);
-                mediumId = uri.queryParameters['code'] ?? mediumId;
-                readData = decoded;
-              }
-              // on Android we intentionally keep session open
-              // until user triggers stop scanning on another screen
-              if (Platform.isIOS) {
-                await NfcManager.instance.stopSession(alertMessage: ' ');
-              }
-
-              if (mediumId.isEmpty) {
-                _handleException(
-                  Exception('NFC coin decoded error, medium ID is empty'),
-                );
-              } else {
-                emit(
-                  state.copyWith(
-                    mediumId: mediumId,
-                    readData: readData,
-                    scanNFCStatus: ScanNFCStatus.scanned,
-                  ),
-                );
-              }
+      unawaited(
+        NfcManager.instance.startSession(
+          alertMessage: 'Tap your coin to the top\nof the iPhone',
+          onError: (error) async {
+            log('coin read error: ${error.message}');
+            if (error.type != NfcErrorType.systemIsBusy) {
+              cancelScanning();
             }
-          } else {
-            _handleException(
-              Exception(
-                'NFC could not be decoded error, probably not a Givt coin',
-              ),
-            );
-          }
-        },
-      ));
+          },
+          onDiscovered: (NfcTag tag) async {
+            log('coin discovered: ${tag.data}');
+            final ndef = Ndef.from(tag);
+            if (ndef != null && ndef.cachedMessage != null) {
+              if (ndef.cachedMessage!.records.isNotEmpty &&
+                  ndef.cachedMessage!.records.first.typeNameFormat ==
+                      NdefTypeNameFormat.nfcWellknown) {
+                var mediumId = '';
+                var readData = '';
+                final wellKnownRecord = ndef.cachedMessage!.records.first;
+                if (wellKnownRecord.payload.first == 0x02) {
+                  final languageCodeAndContentBytes =
+                      wellKnownRecord.payload.skip(1).toList();
+                  final languageCodeAndContentText =
+                      utf8.decode(languageCodeAndContentBytes);
+                  final payload = languageCodeAndContentText.substring(2);
+                  log('coin payload: $payload');
+                  final uri = Uri.parse(payload);
+                  mediumId = uri.queryParameters['code'] ?? mediumId;
+                  readData = payload;
+                } else {
+                  final decoded = utf8.decode(wellKnownRecord.payload);
+                  log('coin decoded: $decoded');
+                  final uri = Uri.parse(decoded);
+                  mediumId = uri.queryParameters['code'] ?? mediumId;
+                  readData = decoded;
+                }
+                // on Android we intentionally keep session open
+                // until user triggers stop scanning on another screen
+                if (Platform.isIOS) {
+                  await NfcManager.instance.stopSession(alertMessage: ' ');
+                }
+
+                if (mediumId.isEmpty) {
+                  _handleException(
+                    Exception('NFC coin decoded error, medium ID is empty'),
+                  );
+                } else {
+                  emit(
+                    state.copyWith(
+                      mediumId: mediumId,
+                      readData: readData,
+                      scanNFCStatus: ScanNFCStatus.scanned,
+                    ),
+                  );
+                }
+              }
+            } else {
+              _handleException(
+                Exception(
+                  'NFC could not be decoded error, probably not a Givt coin',
+                ),
+              );
+            }
+          },
+        ),
+      );
     } catch (e, stackTrace) {
       _handleException(e, stackTrace: stackTrace);
     }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,12 +33,18 @@ class TopUpFailureDialog extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'We are having trouble getting the funds from your card. Please try again.',
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            GivtElevatedButton(text: 'OK', onTap: () => context.pop()),
+            FunButton(
+              text: 'OK',
+              onTap: () => context.pop(),
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.okClicked,
+              ),
+            ),
           ],
         ),
       ),

@@ -6,10 +6,11 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/family/features/edit_profile/cubit/edit_profile_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/reward_banner_dialog.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +27,6 @@ class KidsAvatarSelectionScreen extends StatelessWidget {
         if (state.status == EditChildProfileStatus.error) {
           SnackBarHelper.showMessage(context, text: state.error, isError: true);
         } else if (state.status == EditChildProfileStatus.edited) {
-          context.read<ProfilesCubit>().fetchActiveProfile();
           context.pop();
           if (state.isRewardAchieved) {
             AnalyticsHelper.logEvent(
@@ -59,9 +59,8 @@ class KidsAvatarSelectionScreen extends StatelessWidget {
         builder: (context, avatarsState) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const TitleLargeText(
                 'Choose your avatar',
-                style: Theme.of(context).textTheme.titleLarge,
               ),
               automaticallyImplyLeading: false,
               leading: editProfileState.status != EditChildProfileStatus.editing
@@ -138,19 +137,19 @@ Widget _getContent({
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
-                child: GivtElevatedButton(
+                child: FunButton(
                   text: 'Save',
                   isDisabled: editProfileState.isSameProfilePicture,
                   onTap: () {
                     context.read<EditChildProfileCubit>().editProfile();
-                    AnalyticsHelper.logEvent(
-                      eventName: AmplitudeEvents.saveAvatarClicked,
-                      eventProperties: {
-                        AnalyticsHelper.avatarImageKey:
-                            editProfileState.selectedProfilePicture,
-                      },
-                    );
                   },
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.saveAvatarClicked,
+                    parameters: {
+                      AnalyticsHelper.avatarImageKey:
+                          editProfileState.selectedProfilePicture,
+                    },
+                  ),
                 ),
               ),
             ],

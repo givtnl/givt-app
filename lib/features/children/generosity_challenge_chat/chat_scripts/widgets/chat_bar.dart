@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_item_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/chat_input_field.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class ChatBar extends StatelessWidget {
   const ChatBar({
@@ -36,7 +38,7 @@ class ChatBar extends StatelessWidget {
           const Spacer(flex: 2),
           Flexible(
             flex: 5,
-            child: GivtElevatedButton(
+            child: FunButton(
               onTap: () {
                 context.read<ChatScriptsCubit>().provideAnswer(
                       context,
@@ -44,6 +46,9 @@ class ChatBar extends StatelessWidget {
                     );
               },
               text: state.currentConditionalItem.text,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengechatBarButtonClicked,
+              ),
             ),
           ),
         ],
@@ -75,16 +80,13 @@ class ChatBar extends StatelessWidget {
               child: Text(
                 state.currentConditionalItem.options[0].text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppTheme.givtGreen40,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Rouna',
-                    ),
+                style:
+                    const FamilyAppTheme().toThemeData().textTheme.labelLarge,
               ),
             ),
           ),
           Expanded(
-            child: GivtElevatedButton(
+            child: FunButton(
               onTap: () {
                 context.read<ChatScriptsCubit>().provideAnswer(
                       context,
@@ -92,6 +94,9 @@ class ChatBar extends StatelessWidget {
                     );
               },
               text: state.currentConditionalItem.options[1].text,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengechatBarButtonClicked,
+              ),
             ),
           ),
         ],

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class FoundNfcAnimation extends StatelessWidget {
   const FoundNfcAnimation({super.key});
@@ -25,15 +27,18 @@ class FoundNfcAnimation extends StatelessWidget {
             padding: const EdgeInsets.only(top: 16, bottom: 32),
             child: SvgPicture.asset('assets/family/images/coin_found.svg'),
           ),
-          const Visibility(
+          Visibility(
             visible: false,
             maintainSize: true,
             maintainAnimation: true,
             maintainState: true,
-            child: GivtElevatedButton(
+            child: FunButton(
               isDisabled: true,
               onTap: null,
               text: '',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.debugButtonClicked,
+              ),
             ),
           ),
         ],

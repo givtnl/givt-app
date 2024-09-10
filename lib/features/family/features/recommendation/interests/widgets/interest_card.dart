@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 
 class InterestCard extends StatelessWidget {
   const InterestCard({
@@ -16,8 +16,7 @@ class InterestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionTile(
-      isDisabled: false,
+    return FunTile(
       titleSmall: interest.displayText,
       iconPath: interest.pictureUrl,
       onTap: onPressed,

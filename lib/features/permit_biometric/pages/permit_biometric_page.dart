@@ -46,6 +46,7 @@ class PermitBiometricPage extends StatelessWidget {
     }
 
     final size = MediaQuery.sizeOf(context);
+    final lightTheme = AppTheme.lightTheme;
 
     return state.status != PermitBiometricStatus.propose
         ? const SizedBox()
@@ -63,19 +64,16 @@ class PermitBiometricPage extends StatelessWidget {
                         text: context.l10n.permitBiometricQuestionWithType(
                           state.biometricType.name,
                         ),
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: lightTheme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                         children: [
                           const TextSpan(text: '\n'),
                           TextSpan(
                             text: context.l10n.permitBiometricExplanation,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.normal,
-                                ),
+                            style: lightTheme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ],
                       ),
@@ -102,7 +100,7 @@ class PermitBiometricPage extends StatelessWidget {
                         context.read<PermitBiometricCubit>().denyBiometric();
                       },
                     ),
-                    CustomGreenElevatedButton(
+                    CustomElevatedButton(
                       title: context.l10n.permitBiometricActivateWithType(
                         state.biometricType.name,
                       ),

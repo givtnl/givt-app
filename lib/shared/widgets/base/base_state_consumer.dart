@@ -6,23 +6,32 @@ import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class BaseStateConsumer<E, K> extends StatelessWidget {
   const BaseStateConsumer({
-    required this.onData,
     required this.cubit,
     super.key,
+    this.onData,
     this.onInitial,
+    this.onError,
     this.onCustom,
     this.onLoading,
   });
 
   final Cubit<BaseState<E, K>> cubit;
+
   // for displaying the widget in an initial state
   // not every widget has an initial state so this is optional
   // but if you call it without defining it it will display an error
   final Widget Function(BuildContext context)? onInitial;
+
+  // for displaying an error with a possible String? message
+  // if called without definining it it will display an error
+  final Widget Function(BuildContext context, String? message)? onError;
+
   // for displaying the widget in a loading state
   final Widget Function(BuildContext context)? onLoading;
+
   // for building UI
-  final Widget Function(BuildContext context, E uiModel) onData;
+  final Widget Function(BuildContext context, E uiModel)? onData;
+
   // for (one-off) methods only, not for building UI!
   // so for example showing a dialog, a bottom sheet, etc.
   final void Function(BuildContext context, K custom)? onCustom;
@@ -49,17 +58,22 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
       },
       // these states will trigger a rebuild of the widget
       buildWhen: (previousState, currentState) {
-        return currentState is InitialState ||
+        return currentState is ErrorState ||
+            currentState is InitialState ||
             currentState is DataState ||
             currentState is LoadingState;
       },
       builder: (context, state) {
         if (state is InitialState) {
           return onInitial?.call(context) ?? const UnrecoverableError();
+        } else if (state is ErrorState<E, K>) {
+          return onError?.call(context, state.message) ??
+              const UnrecoverableError();
         } else if (state is LoadingState) {
           return onLoading?.call(context) ?? const CircularProgressIndicator();
         } else if (state is DataState<E, K>) {
-          return onData(context, state.data);
+          return onData?.call(context, state.data) ??
+              const UnrecoverableError();
         } else {
           return const UnrecoverableError();
         }

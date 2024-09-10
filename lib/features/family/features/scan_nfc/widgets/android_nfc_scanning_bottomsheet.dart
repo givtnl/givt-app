@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
@@ -38,12 +40,15 @@ class ScanningNfcAnimation extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-          child: GivtElevatedSecondaryButton(
+          child: FunButton.secondary(
             onTap: () {
               context.pop();
               scanNfcCubit.cancelScanning();
             },
             text: 'Cancel',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.cancelClicked,
+            ),
           ),
         ),
       ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 
 class CityCard extends StatelessWidget {
   const CityCard({
@@ -18,8 +18,7 @@ class CityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionTile(
-      isDisabled: false,
+    return FunTile(
       titleSmall: cityName,
       subtitle: stateName,
       iconPath: 'assets/family/images/city_arrow.svg',

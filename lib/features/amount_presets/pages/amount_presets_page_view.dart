@@ -32,7 +32,8 @@ class _AmountPresetsPageViewState extends State<AmountPresetsPageView> {
 
   @override
   void initState() {
-    countryCode = Country.fromCode(context.read<AuthCubit>().state.user.country);
+    countryCode =
+        Country.fromCode(context.read<AuthCubit>().state.user.country);
 
     final presets = context.read<AuthCubit>().state.presets;
     firstPreset = TextEditingController(

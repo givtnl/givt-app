@@ -10,7 +10,6 @@ import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/certificate_check_interceptor.dart';
 import 'package:givt_app/core/network/network.dart';
-import 'package:givt_app/core/network/token_interceptor.dart';
 import 'package:givt_app/shared/models/certificate_response.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:http/http.dart' as http;
@@ -85,7 +84,7 @@ class RequestHelper {
       usClient = createClient(client: _secureUsClient);
     } catch (e, s) {
       if (_networkInfo.isConnected) {
-        await LoggingInfo.instance.info(
+        LoggingInfo.instance.info(
           '''
 Error while setting up secure http clients (while having an internet connection): $e\n$s''',
         );
@@ -116,7 +115,7 @@ Error while setting up secure http clients (while having an internet connection)
         );
       }
     } catch (e, s) {
-      await LoggingInfo.instance.info(
+      LoggingInfo.instance.info(
         'Android specific check for trusted certificate failed: $e\n$s',
       );
     }
@@ -184,7 +183,9 @@ Error while setting up secure http clients (while having an internet connection)
   }
 
   Future<CertificateResponse> _requestCerts(
-      String apiUrl, String apiUrlAws) async {
+    String apiUrl,
+    String apiUrlAws,
+  ) async {
     final url = _getCertsUrl(apiUrl);
     final response = await http.get(url);
 

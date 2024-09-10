@@ -29,11 +29,11 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   final bool displayAllowanceInfo;
 
   List<Profile> get children {
-    return profiles.where((p) => p.type == ProfileType.Child).toList();
+    return profiles.where((p) => p.isChild).toList();
   }
 
   List<Profile> get adults {
-    return profiles.where((p) => p.type == ProfileType.Parent).toList();
+    return profiles.where((p) => p.isAdult).toList();
   }
 
   bool get hasChildren {
@@ -45,13 +45,13 @@ class FamilyOverviewUpdatedState extends FamilyOverviewState {
   }
 
   // The Givt user profile is first in the list
-  List<Profile> sortedAdults(String givtACcountName) {
+  List<Profile> sortedAdults(String givtAccountID) {
     return adults
       ..sort((a, b) {
-        final compareNames = a.firstName.compareTo(b.firstName);
-        return a.firstName == givtACcountName
+        final compareNames = a.firstName.compareTo(b.id);
+        return a.id == givtAccountID
             ? -1
-            : b.firstName == givtACcountName
+            : b.id == givtAccountID
                 ? 1
                 : compareNames;
       });

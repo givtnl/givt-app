@@ -11,7 +11,9 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateFamilyGoalOverviewPage extends StatelessWidget {
-  const CreateFamilyGoalOverviewPage({super.key,});
+  const CreateFamilyGoalOverviewPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +86,7 @@ class CreateFamilyGoalOverviewPage extends StatelessWidget {
                       right: 24,
                       bottom: 16,
                     ),
-                    child: CustomGreenElevatedButton(
+                    child: CustomElevatedButton(
                       title: context.l10n.familyGoalCreate,
                       onPressed: () {
                         context.read<CreateFamilyGoalCubit>().showCause();

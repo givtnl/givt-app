@@ -234,7 +234,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   }
 
   void _addRetryRegistrationChatItem(ChatScriptItem currentChatItem) {
-    var retryChatItem = ChatScriptItem.empty().copyWith(
+    final retryChatItem = const ChatScriptItem.empty().copyWith(
       type: ChatScriptItemType.buttonAnswer,
       text: 'Click to retry',
       answerText: 'Can you try again please?',
@@ -252,8 +252,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   void _logRegistrationSucceeded() {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName:
-            AmplitudeEvents.generosityChallengeRegistrationSucceeded,
+        eventName: AmplitudeEvents.generosityChallengeRegistrationSucceeded,
       ),
     );
   }

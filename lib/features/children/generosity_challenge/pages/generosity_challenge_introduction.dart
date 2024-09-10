@@ -4,39 +4,47 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/registration/widgets/acceptPolicyRow.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class GenerosityChallengeIntruduction extends StatefulWidget {
-  const GenerosityChallengeIntruduction({
+class GenerosityChallengeIntroduction extends StatefulWidget {
+  const GenerosityChallengeIntroduction({
     super.key,
   });
 
   @override
-  State<GenerosityChallengeIntruduction> createState() =>
-      _GenerosityChallengeIntruductionState();
+  State<GenerosityChallengeIntroduction> createState() =>
+      _GenerosityChallengeIntroductionState();
 }
 
-class _GenerosityChallengeIntruductionState
-    extends State<GenerosityChallengeIntruduction> {
+class _GenerosityChallengeIntroductionState
+    extends State<GenerosityChallengeIntroduction> {
   bool _acceptPolicy = false;
-  bool isDebugQuickFlowEnabled = false;
   final AppConfig _appConfig = getIt();
 
   @override
   Widget build(BuildContext context) {
-    final challenge = context.read<GenerosityChallengeCubit>();
     const pictureHeight = 150.0;
+    final isAuthenticatedUser =
+        context.read<AuthCubit>().state.status == AuthStatus.authenticated;
     return Scaffold(
-      appBar: const GenerosityAppBar(
+      appBar: FunTopAppBar.primary99(
         title: 'Generosity Challenge',
-        leading: null,
+        leading: isAuthenticatedUser
+            ? GenerosityBackButton(
+                onPressed: () =>
+                    context.goNamed(FamilyPages.profileSelection.name),
+              )
+            : null,
       ),
       backgroundColor: AppTheme.givtLightBackgroundGreen,
       body: SafeArea(
@@ -103,38 +111,6 @@ class _GenerosityChallengeIntruductionState
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (_appConfig.isTestApp)
-              ToggleButtons(
-                borderRadius: const BorderRadius.all(Radius.circular(8)),
-                selectedBorderColor: Colors.blue[700],
-                selectedColor: Colors.white,
-                fillColor: Colors.blue[200],
-                color: Colors.blue[400],
-                constraints: const BoxConstraints(
-                  minHeight: 40,
-                  minWidth: 80,
-                ),
-                isSelected: [
-                  isDebugQuickFlowEnabled == true,
-                  isDebugQuickFlowEnabled == false,
-                ],
-                onPressed: (index) {
-                  challenge.setDebugQuickFlow(enabled: index == 0);
-                  setState(() {
-                    isDebugQuickFlowEnabled = index == 0;
-                  });
-                },
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('Enable quick flow'),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Text('Disable quick flow'),
-                  ),
-                ],
-              ),
             AcceptPolicyRow(
               onTap: (value) {
                 setState(() {
@@ -143,22 +119,26 @@ class _GenerosityChallengeIntruductionState
               },
               checkBoxValue: _acceptPolicy,
             ),
-            GivtElevatedButton(
+            FunButton(
               isDisabled: !_acceptPolicy,
               onTap: () {
                 GenerosityChallengeHelper.activate(
                   isDebug: _appConfig.isTestApp,
                 );
-                context.pop();
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.acceptedGenerosityChallenge,
+                getIt<SharedPreferences>().remove(
+                  GenerosityChallengeHelper
+                      .generosityChallengewasRegisteredBeforeChallengeKey,
                 );
+                context.pop();
                 context.goNamed(
                   FamilyPages.generosityChallengeChat.name,
                   extra: context.read<GenerosityChallengeCubit>(),
                 );
               },
               text: 'Accept the challenge',
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.acceptedGenerosityChallengeClicked,
+              ),
             ),
             const SizedBox(height: 8),
           ],

@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +24,7 @@ class ProfileOverviewTile extends StatelessWidget {
     final currencySymbol = Util.getCurrencySymbol(countryCode: user.country);
     final isGivtAccount = profile.firstName == user.firstName;
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           foregroundColor: _getBorderColor(context, isGivtAccount),
@@ -64,7 +64,7 @@ class ProfileOverviewTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: AppTheme.givtBlue,
                   ),
             ),

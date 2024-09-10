@@ -47,9 +47,9 @@ class _SearchCoinAnimatedWidgetState extends State<SearchCoinAnimatedWidget>
 
 class AnimatedCoin extends AnimatedWidget {
   const AnimatedCoin({
+    required Animation<double> animation,
     super.key,
     this.width = 120,
-    required Animation<double> animation,
   }) : super(listenable: animation);
 
   final double width;
@@ -65,20 +65,21 @@ class AnimatedCoin extends AnimatedWidget {
         children: [
           Positioned(
             bottom: -5,
-            child: SvgPicture.asset('assets/family/images/coin_searching_shadow.svg'),
+            child: SvgPicture.asset(
+                'assets/family/images/coin_searching_shadow.svg'),
           ),
           Positioned(
             child: Stack(
               children: [
                 Opacity(
                   opacity: animation.value,
-                  child:
-                      SvgPicture.asset('assets/family/images/search_coin_state_1.svg'),
+                  child: SvgPicture.asset(
+                      'assets/family/images/search_coin_state_1.svg'),
                 ),
                 Opacity(
                   opacity: 1 - animation.value,
-                  child:
-                      SvgPicture.asset('assets/family/images/search_coin_state_2.svg'),
+                  child: SvgPicture.asset(
+                      'assets/family/images/search_coin_state_2.svg'),
                 ),
               ],
             ),

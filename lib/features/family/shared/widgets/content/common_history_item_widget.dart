@@ -6,9 +6,9 @@ class CommonHistoryItemWidget extends StatelessWidget {
     required this.leadingSvgAsset,
     required this.amount,
     required this.amountColor,
-    this.amountShowPlus = false,
     required this.title,
     required this.dateText,
+    this.amountShowPlus = false,
     this.trailingSvgAsset = '',
     this.trailingSvgAssetOpacity = 0.5,
     this.backgroundColor = Colors.transparent,
@@ -25,10 +25,10 @@ class CommonHistoryItemWidget extends StatelessWidget {
   final Color backgroundColor;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Container(
       padding:
-          EdgeInsets.symmetric(vertical: 10.0, horizontal: size.width * 0.05),
+          EdgeInsets.symmetric(vertical: 10, horizontal: size.width * 0.05),
       color: backgroundColor,
       child: Row(
         children: [
@@ -74,15 +74,16 @@ class CommonHistoryItemWidget extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          trailingSvgAsset.isNotEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Opacity(
-                    opacity: trailingSvgAssetOpacity,
-                    child: SvgPicture.asset(trailingSvgAsset),
-                  ),
-                )
-              : const SizedBox(),
+          if (trailingSvgAsset.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Opacity(
+                opacity: trailingSvgAssetOpacity,
+                child: SvgPicture.asset(trailingSvgAsset),
+              ),
+            )
+          else
+            const SizedBox(),
         ],
       ),
     );

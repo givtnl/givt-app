@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,11 +13,13 @@ class FamilyGoalCircle extends StatefulWidget {
   const FamilyGoalCircle({
     this.amount = 0,
     this.showConfetti = false,
+    this.icon,
     super.key,
   });
 
   final int amount;
   final bool showConfetti;
+  final Widget? icon;
 
   @override
   State<FamilyGoalCircle> createState() => _FamilyGoalCircleState();
@@ -37,7 +39,7 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
   }
 
   Profile get _familyLeader {
-    return _profiles.firstWhere((prifile) => prifile.id == _familyLeaderId);
+    return _profiles.firstWhere((profile) => profile.id == _familyLeaderId);
   }
 
   List<Profile> get _otherMembers {
@@ -70,11 +72,12 @@ class _FamilyGoalCircleState extends State<FamilyGoalCircle> {
                     if (widget.amount > 0) const SizedBox(height: 30),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: SvgPicture.asset(
-                        'assets/images/family_goal_circle_flag.svg',
-                        width: 64,
-                        height: 64,
-                      ),
+                      child: widget.icon ??
+                          SvgPicture.asset(
+                            'assets/images/family_goal_circle_flag.svg',
+                            width: 64,
+                            height: 64,
+                          ),
                     ),
                     if (widget.amount > 0)
                       Text(

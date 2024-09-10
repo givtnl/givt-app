@@ -6,7 +6,7 @@ import 'package:givt_app/features/children/add_member/models/member.dart';
 mixin AddMemberRepository {
   Future<void> addMembers(List<Member> members, {required bool isRGA});
 
-  Stream<void> memberAddedStream();
+  Stream<void> onMemberAdded();
 }
 
 class AddMemberRepositoryImpl with AddMemberRepository {
@@ -25,10 +25,21 @@ class AddMemberRepositoryImpl with AddMemberRepository {
       'allowanceType': isRGA ? 0 : 1,
     };
 
-    await apiService.addMember(body);
-    _memberAddedStreamController.add(null);
+    try {
+      await apiService.addMember(body);
+    } finally {
+      //always add even if there are errors
+      _memberAddedStreamController.add(null);
+
+      // We add this second event to the stream delayed
+      // because money-related calls require an update from Stripe for the BE
+      // which takes a bit of time
+      Future.delayed(const Duration(seconds: 2), () {
+        _memberAddedStreamController.add(null);
+      });
+    }
   }
 
   @override
-  Stream<void> memberAddedStream() => _memberAddedStreamController.stream;
+  Stream<void> onMemberAdded() => _memberAddedStreamController.stream;
 }

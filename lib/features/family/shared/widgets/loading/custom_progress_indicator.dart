@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class CustomCircularProgressIndicator extends StatelessWidget {
   const CustomCircularProgressIndicator({
@@ -10,13 +10,15 @@ class CustomCircularProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(35),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: AppTheme.secondary99,
+          borderRadius: BorderRadius.circular(80),
+          color: FamilyAppTheme.primary95,
         ),
         child: const CircularProgressIndicator(
-          color: AppTheme.secondary80,
+          color: FamilyAppTheme.primary30,
+          strokeWidth: 6,
+          strokeCap: StrokeCap.round,
         ),
       ),
     );

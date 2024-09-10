@@ -18,7 +18,7 @@ import 'package:givt_app/features/children/overview/pages/models/edit_allowance_
 import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
 import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -100,7 +100,7 @@ class ChildDetailsPage extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
-          appBar: TopAppBar(
+          appBar: FunTopAppBar(
             title: (state is ChildDetailsFetchedState)
                 ? state.profileDetails.firstName
                 : '',
@@ -120,8 +120,8 @@ class ChildDetailsPage extends StatelessWidget {
                             AmplitudeEvents.childDetailsEditAppBarClicked,
                         eventProperties: {
                           'child_name': state.profileDetails.firstName,
-                          'giving_allowance':
-                              state.profileDetails.givingAllowance.amount,
+                          'giving_allowance': state
+                              .profileDetails.wallet.givingAllowance.amount,
                         },
                       );
 
@@ -161,14 +161,15 @@ class ChildDetailsPage extends StatelessWidget {
                                     AmplitudeEvents.childDetailsEditCardClicked,
                                 eventProperties: {
                                   'child_name': state.profileDetails.firstName,
-                                  'giving_allowance': state
-                                      .profileDetails.givingAllowance.amount,
+                                  'giving_allowance': state.profileDetails
+                                      .wallet.givingAllowance.amount,
                                 },
                               );
 
                               _navigateToEditAllowanceScreen(
                                 context,
-                                state.profileDetails.givingAllowance.amount
+                                state.profileDetails.wallet.givingAllowance
+                                    .amount
                                     .toInt(),
                               );
                             },
@@ -199,7 +200,7 @@ class ChildDetailsPage extends StatelessWidget {
   }
 
   double getBalance(BuildContext context) {
-    var family = context.watch<FamilyOverviewCubit>().state;
+    final family = context.watch<FamilyOverviewCubit>().state;
     if (family is FamilyOverviewUpdatedState) {
       return family.profiles
           .firstWhere(
@@ -208,7 +209,6 @@ class ChildDetailsPage extends StatelessWidget {
                 (context.watch<ChildDetailsCubit>().state
                         as ChildDetailsFetchedState)
                     .profileDetails
-                    .profile
                     .id,
           )
           .wallet
@@ -217,7 +217,6 @@ class ChildDetailsPage extends StatelessWidget {
     return (context.watch<ChildDetailsCubit>().state
             as ChildDetailsFetchedState)
         .profileDetails
-        .profile
         .wallet
         .balance;
   }

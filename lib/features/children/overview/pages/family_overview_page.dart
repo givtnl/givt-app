@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -9,11 +10,11 @@ import 'package:givt_app/features/children/overview/widgets/allowance_warning_di
 import 'package:givt_app/features/children/overview/widgets/children_loading_page.dart';
 import 'package:givt_app/features/children/overview/widgets/family_available_page.dart';
 import 'package:givt_app/features/children/overview/widgets/no_children_page.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/buttons/leading_back_button.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
-import 'package:go_router/go_router.dart';
 
 class FamilyOverviewPage extends StatelessWidget {
   const FamilyOverviewPage({
@@ -46,9 +47,13 @@ class FamilyOverviewPage extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: TopAppBar(
-            title: 'Manage Family',
+        return FunScaffold(
+          appBar: FunTopAppBar(
+            title: state is FamilyOverviewUpdatedState &&
+                    !state.hasChildren &&
+                    state.isAdultSingle
+                ? 'Set up Family'
+                : 'Manage Family',
             actions: [
               if (state is FamilyOverviewUpdatedState &&
                   (state.hasChildren || !state.isAdultSingle))
@@ -56,14 +61,14 @@ class FamilyOverviewPage extends StatelessWidget {
                   icon: const Icon(
                     FontAwesomeIcons.userPlus,
                   ),
-                  onPressed: () => _addNewChild(context, state),
+                  onPressed: () => addNewMember(
+                    context,
+                  ),
                 ),
             ],
             leading: const LeadingBackButton(),
           ),
-          body: SafeArea(
-            child: buildFamilyOverviewBody(state, context),
-          ),
+          body: buildFamilyOverviewBody(state, context),
         );
       },
     );
@@ -80,7 +85,7 @@ class FamilyOverviewPage extends StatelessWidget {
     if (state is FamilyOverviewUpdatedState) {
       if (!state.hasChildren && state.isAdultSingle) {
         return NoChildrenPage(
-          onAddNewChildPressed: () => _addNewChild(context, state),
+          onAddNewChildPressed: () => addNewMember(context),
         );
       }
 
@@ -90,14 +95,14 @@ class FamilyOverviewPage extends StatelessWidget {
     return const SizedBox();
   }
 
-  void _addNewChild(BuildContext context, FamilyOverviewUpdatedState state) {
-    AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.addMemerClicked,
+  Future<void> addNewMember(
+    BuildContext context,
+  ) async {
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.addMemberClicked,
+      ),
     );
-    final familyExists = state.hasChildren || !state.isAdultSingle;
-    context.pushReplacementNamed(
-      FamilyPages.addMember.name,
-      extra: familyExists,
-    );
+    await AddMemberUtil.addMemberPushPages(context);
   }
 }

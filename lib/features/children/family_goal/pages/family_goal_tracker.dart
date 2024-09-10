@@ -11,7 +11,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class FamilyGoalTracker extends StatelessWidget {
-  const FamilyGoalTracker({super.key,});
+  const FamilyGoalTracker({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,6 @@ class FamilyGoalTracker extends StatelessWidget {
         }
       },
       child: Container(
-        width: double.infinity,
-        margin: const EdgeInsets.all(24),
         decoration: ShapeDecoration(
           color: AppTheme.primary98,
           shape: RoundedRectangleBorder(

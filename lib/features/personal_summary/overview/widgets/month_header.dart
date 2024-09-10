@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/utils/utils.dart';
 
-typedef void OnMonthChanged(bool isLeft);
+typedef OnMonthChanged = void Function(bool isLeft);
 
 class MonthHeader extends StatelessWidget {
   const MonthHeader({

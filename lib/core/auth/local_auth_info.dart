@@ -25,7 +25,7 @@ class LocalAuthInfo with ILocalAuthInfo {
 
   @override
   Future<bool> get canCheckBiometrics async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Checking if biometrics can be checked',
       methodName: 'canCheckBiometrics',
     );
@@ -36,7 +36,7 @@ class LocalAuthInfo with ILocalAuthInfo {
 
   @override
   Future<bool> authenticate() async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Authenticating with biometrics',
       methodName: 'authenticate',
     );
@@ -49,7 +49,7 @@ class LocalAuthInfo with ILocalAuthInfo {
       ),
     )
         .onError((error, _) async {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         'Error authenticating with biometrics: $error',
       );
       return false;
@@ -58,7 +58,7 @@ class LocalAuthInfo with ILocalAuthInfo {
 
   @override
   Future<bool> checkFaceId() async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Checking for face id availability',
       methodName: 'checkFaceId',
     );
@@ -69,7 +69,7 @@ class LocalAuthInfo with ILocalAuthInfo {
 
   @override
   Future<bool> checkFingerprint() async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Checking for fingerprint availability',
       methodName: 'checkFingerprint',
     );
@@ -80,7 +80,7 @@ class LocalAuthInfo with ILocalAuthInfo {
 
   @override
   Future<bool> setCanCheckBiometrics({required bool value}) async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Fingerprint set to: $value',
       methodName: 'setCanCheckBiometrics',
     );

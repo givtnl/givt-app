@@ -11,7 +11,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SignBacsMandatePage extends StatelessWidget {
-  const SignBacsMandatePage({super.key,});
+  const SignBacsMandatePage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

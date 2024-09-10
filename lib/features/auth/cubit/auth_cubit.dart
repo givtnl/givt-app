@@ -22,7 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
   AuthCubit(this._authRepositoy) : super(const AuthState()) {
     _sessionSubscription =
         _authRepositoy.hasSessionStream().listen((hasSession) {
-      checkAuth();
+      checkAuth(hasSession: hasSession);
     });
   }
 
@@ -42,7 +42,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      await LoggingInfo.instance.info('User is trying to login with $email');
+      LoggingInfo.instance.info('User is trying to login with $email');
 
       /// check if user is trying to login with a different account.
       /// if so delete the current user and login with the new one
@@ -66,7 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       }
 
-      await LoggingInfo.instance.info('User logged in with $userExt');
+      LoggingInfo.instance.info('User logged in with $userExt');
 
       final newNotificationId = await _updateNotificationId(
         guid: userExt.guid,
@@ -92,9 +92,10 @@ class AuthCubit extends Cubit<AuthState> {
           navigate: navigate,
         ),
       );
+      _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e.toString().contains('invalid_grant')) {
-        await LoggingInfo.instance.warning(
+        LoggingInfo.instance.warning(
           e.toString(),
           methodName: stackTrace.toString(),
         );
@@ -124,7 +125,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
         return;
       } else {
-        await LoggingInfo.instance.error(
+        LoggingInfo.instance.error(
           e.toString(),
           methodName: stackTrace.toString(),
         );
@@ -149,7 +150,11 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
 
-  Future<void> checkAuth() async {
+  Future<void> checkAuth({
+    bool isAppStartupCheck = false,
+    bool? hasSession,
+  }) async {
+    final currentStatus = state.status;
     emit(state.copyWith(status: AuthStatus.loading));
     try {
       var (userExt, session, amountPresets) =
@@ -157,12 +162,14 @@ class AuthCubit extends Cubit<AuthState> {
 
       if (userExt == null || session == null) {
         emit(state.copyWith(status: AuthStatus.unknown));
+        _authRepositoy.setHasSessionInitialValue(false);
         return;
       }
 
-      await LoggingInfo.instance.info('CheckedAuth for $userExt');
+      LoggingInfo.instance.info('CheckedAuth for $userExt');
       if (!session.isLoggedIn) {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
+        _authRepositoy.setHasSessionInitialValue(false);
         return;
       }
 
@@ -176,26 +183,39 @@ class AuthCubit extends Cubit<AuthState> {
         notificationId: newNotificationId,
       );
 
-      emit(
-        state.copyWith(
-          status: AuthStatus.authenticated,
-          user: userExt,
-          session: session,
-          presets: amountPresets,
-        ),
-      );
+      if (hasSession == null || hasSession != true) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: userExt,
+            session: session,
+            presets: amountPresets,
+          ),
+        );
+      }
+
+      if (state.status == AuthStatus.loading) {
+        emit(
+          state.copyWith(
+            status: currentStatus,
+          ),
+        );
+      }
+
+      _authRepositoy.setHasSessionInitialValue(true);
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: AuthStatus.failure));
+      _authRepositoy.setHasSessionInitialValue(false);
     }
   }
 
   Future<void> logout() async {
     emit(state.copyWith(status: AuthStatus.loading));
-    await LoggingInfo.instance.info('User is logging out');
+    LoggingInfo.instance.info('User is logging out');
 
     ///TODO: I discussed this with @MaikelStuivenberg and will leave it as is for now. Until we will redesign the auth flow
     await _authRepositoy.logout();
@@ -252,19 +272,17 @@ class AuthCubit extends Cubit<AuthState> {
 
       var unRegisteredUserExt = await _authRepositoy.registerUser(
         tempUser: tempUser,
-        isTempUser: true,
+        isNewUser: true,
       );
 
       await AnalyticsHelper.setUserProperties(userId: unRegisteredUserExt.guid);
 
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
-          eventProperties: {
-            'id': unRegisteredUserExt.guid,
-            'profile_country': country.countryCode,
-          },
-        ),
+      await AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.continueByEmailSignUpNewUserCliked,
+        eventProperties: {
+          'id': unRegisteredUserExt.guid,
+          'profile_country': country.countryCode,
+        },
       );
 
       final newNotificationId = await _updateNotificationId(
@@ -282,6 +300,7 @@ class AuthCubit extends Cubit<AuthState> {
           user: unRegisteredUserExt,
         ),
       );
+      _authRepositoy.updateSessionStream(true);
     } catch (e, stackTrace) {
       if (e is SocketException) {
         emit(
@@ -298,13 +317,13 @@ class AuthCubit extends Cubit<AuthState> {
             status: AuthStatus.certificateException,
           ),
         );
-        await LoggingInfo.instance.error(
+        LoggingInfo.instance.error(
           e.toString(),
           methodName: stackTrace.toString(),
         );
         return;
       }
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -312,19 +331,21 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> refreshUser() async {
-    emit(state.copyWith(status: AuthStatus.loading));
+  Future<void> refreshUser({bool emitAuthentication = true}) async {
+    if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
-      emit(
-        state.copyWith(
-          status: AuthStatus.authenticated,
-          user: userExt,
-          session: state.session,
-        ),
-      );
+      if (emitAuthentication) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            user: userExt,
+            session: state.session,
+          ),
+        );
+      }
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -366,7 +387,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       return true;
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -375,22 +396,24 @@ class AuthCubit extends Cubit<AuthState> {
     return false;
   }
 
-  Future<void> refreshSession() async {
-    emit(state.copyWith(status: AuthStatus.loading));
+  Future<void> refreshSession({bool emitAuthentication = true}) async {
+    if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
-      await LoggingInfo.instance.info('Refreshing session');
+      LoggingInfo.instance.info('Refreshing session');
       final session = await _authRepositoy.refreshToken();
-      emit(
-        state.copyWith(
-          status: AuthStatus.authenticated,
-          session: session,
-        ),
-      );
+      if (emitAuthentication) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            session: session,
+          ),
+        );
+      }
     } on SocketException {
       log('No internet connection');
       emit(state.copyWith(status: AuthStatus.noInternet));
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -424,7 +447,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _authRepositoy.resetPassword(email);
       emit(state.copyWith(status: AuthStatus.changePasswordSuccess));
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -435,7 +458,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> updatePresets({required UserPresets presets}) async {
     emit(state.copyWith(status: AuthStatus.loading));
     try {
-      await LoggingInfo.instance.info('Updating user presets');
+      LoggingInfo.instance.info('Updating user presets');
       await _authRepositoy.updateLocalUserPresets(
         newUserPresets: presets.copyWith(
           guid: state.user.guid,
@@ -448,7 +471,7 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -466,7 +489,7 @@ class AuthCubit extends Cubit<AuthState> {
     required String currentNotificationId,
   }) async {
     try {
-      await LoggingInfo.instance.info('Update Notification Id');
+      LoggingInfo.instance.info('Update Notification Id');
 
       if (Platform.isIOS) {
         // On iOS be sure that APNS token is available before asking for a firebase token
@@ -475,10 +498,10 @@ class AuthCubit extends Cubit<AuthState> {
 
       final notificationId = await FirebaseMessaging.instance.getToken();
 
-      await LoggingInfo.instance.info('New FCM token: $notificationId');
+      LoggingInfo.instance.info('New FCM token: $notificationId');
 
       if (currentNotificationId == notificationId) {
-        await LoggingInfo.instance.info(
+        LoggingInfo.instance.info(
           'FCM token: $notificationId is the same as the current one',
         );
 
@@ -486,16 +509,16 @@ class AuthCubit extends Cubit<AuthState> {
       }
 
       if (notificationId == null) {
-        await LoggingInfo.instance.warning(
+        LoggingInfo.instance.warning(
           'FCM token: is null',
         );
         return currentNotificationId;
       }
 
-      await LoggingInfo.instance.info('Updating notification id');
+      LoggingInfo.instance.info('Updating notification id');
 
       if (guid.isEmpty) {
-        await LoggingInfo.instance.warning(
+        LoggingInfo.instance.warning(
           'Tried to update notification id with empty guid',
         );
         return currentNotificationId;
@@ -507,7 +530,7 @@ class AuthCubit extends Cubit<AuthState> {
       );
       return notificationId;
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

@@ -57,18 +57,8 @@ class TagsCubit extends Cubit<TagsState> {
 
   void selectLocation({
     required Tag location,
-    bool logAmplitude = true,
   }) {
     if (state is TagsStateFetched) {
-      if (logAmplitude) {
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.locationSelected,
-          eventProperties: {
-            AnalyticsHelper.locationKey: location.displayText,
-          },
-        );
-      }
-
       emit(
         TagsStateFetched(
           tags: state.tags,
@@ -89,11 +79,9 @@ class TagsCubit extends Cubit<TagsState> {
 
       emit(TagsStateFetched(tags: response));
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching tags: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching tags: $error',
+        methodName: stackTrace.toString(),
       );
       emit(TagsStateError(errorMessage: error.toString()));
     }

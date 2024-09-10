@@ -5,10 +5,10 @@ import 'package:flutter/services.dart';
 
 class GivtFloatingActionButton extends StatefulWidget {
   const GivtFloatingActionButton({
-    super.key,
-    this.isDisabled,
     required this.onTap,
     required this.text,
+    super.key,
+    this.isDisabled,
     this.leftIcon,
     this.rightIcon,
   });
@@ -83,8 +83,6 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).colorScheme.secondary,
-                blurRadius: 0,
-                offset: const Offset(0, 0),
               ),
             ],
           ),
@@ -119,7 +117,7 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
             ),
             Text(
               widget.text,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ],
         ),
@@ -134,7 +132,7 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
           children: [
             Text(
               widget.text,
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context).textTheme.labelLarge,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 8),
@@ -152,7 +150,7 @@ class _GivtFloatingActionButtonState extends State<GivtFloatingActionButton> {
       padding: const EdgeInsets.all(12),
       child: Text(
         widget.text,
-        style: Theme.of(context).textTheme.labelMedium,
+        style: Theme.of(context).textTheme.labelLarge,
       ),
     );
   }

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class SomethingWentWrongDialog extends StatefulWidget {
   const SomethingWentWrongDialog({
     required this.primaryBtnText,
     required this.onClickPrimaryBtn,
+    required this.amplitudeEvent,
     super.key,
     this.secondaryBtnText,
     this.description,
@@ -32,24 +34,29 @@ class SomethingWentWrongDialog extends StatefulWidget {
   final IconData? primaryBtnRightIcon;
   final Widget? primaryBtnLeadingImage;
   final bool? showLoading;
+  final AmplitudeEvents amplitudeEvent;
   final Future<void> Function() onClickPrimaryBtn;
   final void Function()? onClickSecondaryBtn;
 
-  static void show(BuildContext context,
-      {required String primaryBtnText,
-      required Future<void> Function() onClickPrimaryBtn,
-      String? secondaryBtnText = 'Close',
-      String? description = 'Oops, something went wrong',
-      IconData? icon,
-      Color? iconColor,
-      Color? circleColor,
-      IconData? primaryLeftIcon,
-      IconData? primaryRightIcon,
-      Widget? primaryLeadingImage,
-      bool? showLoadingState = false,
-      void Function()? onClickSecondaryBtn}) {
+  static void show(
+    BuildContext context, {
+    required String primaryBtnText,
+    required Future<void> Function() onClickPrimaryBtn,
+    required AmplitudeEvents amplitudeEvent,
+    String? secondaryBtnText = 'Close',
+    String? description = 'Oops, something went wrong',
+    IconData? icon,
+    Color? iconColor,
+    Color? circleColor,
+    IconData? primaryLeftIcon,
+    IconData? primaryRightIcon,
+    Widget? primaryLeadingImage,
+    bool? showLoadingState = false,
+    void Function()? onClickSecondaryBtn,
+  }) {
     showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (context) => SomethingWentWrongDialog(
         primaryBtnText: primaryBtnText,
         onClickPrimaryBtn: onClickPrimaryBtn,
@@ -63,6 +70,7 @@ class SomethingWentWrongDialog extends StatefulWidget {
         iconColor: iconColor,
         circleColor: circleColor,
         showLoading: showLoadingState,
+        amplitudeEvent: amplitudeEvent,
       ),
     );
   }
@@ -98,12 +106,12 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontFamily: 'Raleway',
-                      color: AppTheme.givtBlue,
+                      color: FamilyAppTheme.givtBlue,
                       letterSpacing: 0.25,
                     ),
               ),
             const SizedBox(height: 16),
-            GivtElevatedButton(
+            FunButton(
               text: widget.primaryBtnText,
               onTap: () async {
                 if (true == widget.showLoading) {
@@ -120,11 +128,17 @@ class _SomethingWentWrongDialogState extends State<SomethingWentWrongDialog> {
               rightIcon: widget.primaryBtnRightIcon,
               leadingImage: widget.primaryBtnLeadingImage,
               isLoading: _isLoading,
+              analyticsEvent: AnalyticsEvent(
+                widget.amplitudeEvent,
+              ),
             ),
             const SizedBox(height: 16),
-            GivtElevatedSecondaryButton(
+            FunButton.secondary(
               text: widget.secondaryBtnText!,
               onTap: widget.onClickSecondaryBtn ?? () => context.pop(),
+              analyticsEvent: AnalyticsEvent(
+                widget.amplitudeEvent,
+              ),
             ),
           ],
         ),

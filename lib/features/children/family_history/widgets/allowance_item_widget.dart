@@ -30,40 +30,41 @@ class AllowanceItemWidget extends StatelessWidget {
           else
             SvgPicture.asset('assets/images/donation_states_added.svg'),
           const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: allowance.isNotSuccessful
-                          ? AppTheme.childHistoryPendingDark
-                          : AppTheme.childHistoryAllowance,
-                    ),
-              ),
-              SizedBox(
-                width: size.width * 0.7,
-                child: Text(
-                  allowance.isNotSuccessful
-                      ? locals.allowanceOopsCouldntGetAllowances
-                      : '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
-                  maxLines: 3,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '+ \$${allowance.amount.toStringAsFixed(2)} ${locals.childHistoryTo} ${allowance.name}',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: allowance.isNotSuccessful
+                            ? AppTheme.childHistoryPendingDark
+                            : AppTheme.childHistoryAllowance,
+                      ),
                 ),
-              ),
-              Text(
-                allowance.isNotSuccessful
-                    ? allowance.status == HistoryItemStatus.rejected
-                        ? locals.weWillTryAgainNxtMonth
-                        : locals.weWillTryAgainTmr
-                    : allowance.date.formatDate(locals),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ],
+                SizedBox(
+                  width: size.width * 0.7,
+                  child: Text(
+                    allowance.isNotSuccessful
+                        ? locals.allowanceOopsCouldntGetAllowances
+                        : '${locals.childHistoryYay} ${allowance.name} ${locals.childHistoryCanContinueMakingADifference}',
+                    maxLines: 3,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                ),
+                Text(
+                  allowance.isNotSuccessful
+                      ? allowance.status == HistoryItemStatus.rejected
+                          ? locals.weWillTryAgainNxtMonth
+                          : locals.weWillTryAgainTmr
+                      : allowance.date.formatDate(locals),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
-          const Spacer(),
         ],
       ),
     );

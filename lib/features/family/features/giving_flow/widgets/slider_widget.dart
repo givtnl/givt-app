@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class SliderWidget extends StatelessWidget {
@@ -23,9 +25,8 @@ class SliderWidget extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            child: Text(
+            child: HeadlineLargeText(
               '\$${currentAmount.round()}',
-              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
           SliderTheme(
@@ -33,18 +34,18 @@ class SliderWidget extends StatelessWidget {
               trackHeight: 7,
               activeTrackColor: Theme.of(context).colorScheme.onInverseSurface,
               thumbShape: const SliderWidgetThumb(thumbRadius: 17),
-              inactiveTrackColor: Theme.of(context).colorScheme.surfaceVariant,
+              inactiveTrackColor:
+                  Theme.of(context).colorScheme.surfaceContainerHighest,
               activeTickMarkColor:
                   Theme.of(context).colorScheme.onInverseSurface,
               inactiveTickMarkColor:
-                  Theme.of(context).colorScheme.surfaceVariant,
+                  Theme.of(context).colorScheme.surfaceContainerHighest,
               valueIndicatorColor: Colors.white,
               thumbColor: Theme.of(context).colorScheme.onInverseSurface,
-              disabledThumbColor: AppTheme.secondary30,
+              disabledThumbColor: FamilyAppTheme.secondary30,
             ),
             child: Slider(
               value: currentAmount,
-              min: 0,
               max: maxAmount,
               divisions: maxAmount.round(),
               onChanged: (value) {
@@ -68,12 +69,12 @@ class SliderWidget extends StatelessWidget {
               children: [
                 Text(
                   r'$0',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
                 const Spacer(),
                 Text(
                   '\$${maxAmount.round()}',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: Theme.of(context).textTheme.labelMedium,
                 ),
               ],
             ),
@@ -111,12 +112,12 @@ class SliderWidgetThumb extends SliderComponentShape {
     required Size sizeWithOverflow,
   }) {
     // Draw circle
-    final Paint circleBluePaint = Paint()
+    final circleBluePaint = Paint()
       ..color = sliderTheme.thumbColor!
       ..style = PaintingStyle.fill;
 
-    final Paint circleDarkPaint = Paint()
-      ..color = AppTheme.secondary30
+    final circleDarkPaint = Paint()
+      ..color = FamilyAppTheme.secondary30
       ..style = PaintingStyle.fill;
 
     // Draw shadow

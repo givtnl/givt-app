@@ -18,7 +18,6 @@ class OrganisationHeader extends StatelessWidget {
         children: [
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: organisation.tags
@@ -43,7 +42,7 @@ class OrganisationHeader extends StatelessWidget {
                         child: Text(
                           tag.displayText,
                           style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     color: tag.area.textColor,
                                     fontSize: 13,
                                   ),

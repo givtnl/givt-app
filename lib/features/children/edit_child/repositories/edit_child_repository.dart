@@ -12,7 +12,7 @@ mixin EditChildRepository {
 
   Future<bool> cancelAllowance(String childGUID);
 
-  Stream<String> walletChangedStream();
+  Stream<String> childChangedStream();
 }
 
 class EditChildRepositoryImpl with EditChildRepository {
@@ -26,29 +26,40 @@ class EditChildRepositoryImpl with EditChildRepository {
   @override
   Future<bool> editChild(String childGUID, EditChild child) async {
     final response = await apiService.editChild(childGUID, child.toJson());
+    _childGUIDController.add(childGUID);
     return response;
   }
 
   @override
   Future<bool> editChildAllowance(String childGUID, int allowance) async {
     final response = await apiService.editChildAllowance(childGUID, allowance);
-    _childGUIDController.add(childGUID);
+    _addChildGuidEventAfterOneSecond(childGUID);
     return response;
   }
 
   @override
   Future<bool> topUpChild(String childGUID, int amount) async {
     final response = await apiService.topUpChild(childGUID, amount);
-    _childGUIDController.add(childGUID);
+    _addChildGuidEventAfterOneSecond(childGUID);
     return response;
+  }
+
+  // The reason we are not immediately adding this event to the stream is
+  // because money-related calls require an update from Stripe for the BE
+  // which takes a bit of time
+  void _addChildGuidEventAfterOneSecond(String childGUID) {
+    Future.delayed(const Duration(seconds: 1), () {
+      _childGUIDController.add(childGUID);
+    });
   }
 
   @override
   Future<bool> cancelAllowance(String childGUID) async {
     final response = await apiService.cancelAllowance(childGUID);
+    _addChildGuidEventAfterOneSecond(childGUID);
     return response;
   }
 
   @override
-  Stream<String> walletChangedStream() => _childGUIDController.stream;
+  Stream<String> childChangedStream() => _childGUIDController.stream;
 }

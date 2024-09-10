@@ -31,7 +31,7 @@ class EditChildProfileCubit extends Cubit<EditChildProfileState> {
     if (url.isEmpty) {
       return '';
     }
-    final File file = File(url);
+    final file = File(url);
     return basename(file.path);
   }
 
@@ -84,7 +84,8 @@ class EditChildProfileCubit extends Cubit<EditChildProfileState> {
       );
     } catch (e) {
       emit(
-        state.copyWith(status: EditChildProfileStatus.error, error: e.toString()),
+        state.copyWith(
+            status: EditChildProfileStatus.error, error: e.toString()),
       );
     }
   }

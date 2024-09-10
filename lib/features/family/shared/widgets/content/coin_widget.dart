@@ -16,7 +16,7 @@ class CoinWidget extends StatelessWidget {
       children: [
         Text(
           '\$${user.wallet.balance.round()}',
-          style: Theme.of(context).textTheme.labelMedium,
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(width: 8),
         SvgPicture.asset(

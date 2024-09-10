@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/network/request_helper.dart';
-import 'package:givt_app/features/family/features/admin_fee/repositories/admin_fee_repository.dart';
+import 'package:givt_app/features/family/features/admin_fee/application/admin_fee_cubit.dart';
+import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
@@ -10,6 +11,10 @@ import 'package:givt_app/features/family/features/impact_groups/repository/impac
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 
@@ -21,12 +26,17 @@ Future<void> init() async {
 
   /// Init repositories
   initRepositories();
+  initCubits();
 }
 
 Future<void> initAPIService() async {
   getIt.registerLazySingleton<FamilyAPIService>(
     () => FamilyAPIService(getIt<RequestHelper>()),
   );
+}
+
+void initCubits() {
+  getIt.registerFactory(() => AdminFeeCubit(getIt()));
 }
 
 void initRepositories() {
@@ -38,6 +48,15 @@ void initRepositories() {
     )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
         getIt(),
       ),
     )
@@ -81,6 +100,24 @@ void initRepositories() {
     )
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<ReflectAndShareRepository>(
+      () => ReflectAndShareRepository(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<InterviewCubit>(
+      () => InterviewCubit(getIt()),
+    )
+    ..registerFactory<FamilyRolesCubit>(
+      () => FamilyRolesCubit(
+        getIt(),
+      ),
+    )
+    ..registerFactory<FamilySelectionCubit>(
+      () => FamilySelectionCubit(
         getIt(),
       ),
     );

@@ -21,9 +21,11 @@ mixin GenerosityChallengeRepository {
 
   Future<String> loadFromKey(String key);
 
-  Future<bool> isAlreadyRegistered();
+  Future<bool> wasRegisteredBeforeChallenge();
 
-  Future<void> setAlreadyRegistered({required bool isAlreadyRegistered});
+  Future<void> setAlreadyRegistered({
+    required bool wasRegisteredBeforeChallenge,
+  });
 
   Future<String> submitDay5Picture({required bool takenWithCamera});
 
@@ -39,8 +41,6 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   static const String _generosityChallengeDaysKey = 'generosityChallengeDays';
   static const String _generosityChallengeUserDataKey =
       'generosityChallengeUserDataKey';
-  static const String _generosityChallengeIsAlreadyRegisteredKey =
-      'generosityChallengeIsAlreadyRegisteredKey';
 
   final SharedPreferences sharedPreferences;
   final MediaPickerService mediaPickerService;
@@ -141,18 +141,29 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
   }
 
   @override
-  Future<bool> isAlreadyRegistered() async {
-    return sharedPreferences
-            .getBool(_generosityChallengeIsAlreadyRegisteredKey) ??
+  Future<bool> wasRegisteredBeforeChallenge() async {
+    return sharedPreferences.getBool(
+          GenerosityChallengeHelper
+              .generosityChallengewasRegisteredBeforeChallengeKey,
+        ) ??
         false;
   }
 
   @override
-  Future<void> setAlreadyRegistered({required bool isAlreadyRegistered}) async {
-    await sharedPreferences.setBool(
-      _generosityChallengeIsAlreadyRegisteredKey,
-      isAlreadyRegistered,
+  Future<void> setAlreadyRegistered({
+    required bool wasRegisteredBeforeChallenge,
+  }) async {
+    final bool = sharedPreferences.getBool(
+      GenerosityChallengeHelper
+          .generosityChallengewasRegisteredBeforeChallengeKey,
     );
+    if (bool == null) {
+      await sharedPreferences.setBool(
+        GenerosityChallengeHelper
+            .generosityChallengewasRegisteredBeforeChallengeKey,
+        wasRegisteredBeforeChallenge,
+      );
+    }
   }
 
   @override
@@ -161,7 +172,9 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
         ? await mediaPickerService.takePhoto()
         : await mediaPickerService.uploadPhoto();
     final path = await mediaPickerService.savePhoto(
-        file, GenerosityChallengeHelper.day5PictureKey);
+      file,
+      GenerosityChallengeHelper.day5PictureKey,
+    );
     return path;
   }
 

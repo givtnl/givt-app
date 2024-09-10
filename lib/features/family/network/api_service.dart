@@ -235,4 +235,57 @@ class FamilyAPIService {
     final itemMap = decodedBody['items']! as List<dynamic>;
     return itemMap;
   }
+
+  Future<bool> topUpChild(String childGUID, int amount) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/topup');
+
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: jsonEncode({'amount': amount}),
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
+
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> setupRecurringAmount(String childGUID, int allowance) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode({'amount': allowance}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 300) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+    return response.statusCode == 200;
+  }
 }

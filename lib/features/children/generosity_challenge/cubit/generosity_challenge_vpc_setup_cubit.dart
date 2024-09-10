@@ -7,6 +7,7 @@ import 'package:givt_app/features/children/generosity_challenge/cubit/generosity
 import 'package:givt_app/features/children/generosity_challenge/domain/exceptions/not_logged_in_exception.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_repository.dart';
 import 'package:givt_app/features/children/generosity_challenge/repositories/generosity_challenge_vpc_repository.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -24,12 +25,12 @@ class GenerosityChallengeVpcSetupCubit
 
   Future<void> onClickReadyForVPC() async {
     emitLoading();
-    final isAlreadyRegistered =
-        await _generosityChallengeRepository.isAlreadyRegistered();
-    if (isAlreadyRegistered) {
+    final wasRegisteredBeforeChallenge =
+        await _generosityChallengeRepository.wasRegisteredBeforeChallenge();
+    if (wasRegisteredBeforeChallenge) {
       _skipVPC();
     } else {
-      unawaited(_handleVPC());
+      await _handleVPC();
     }
   }
 
@@ -58,35 +59,52 @@ class GenerosityChallengeVpcSetupCubit
   }
 
   void _skipVPC() {
-    _navigateToLogin();
+    _navigateToWelcome();
   }
 
   Future<void> _handleVPC() async {
     try {
       final userData = _generosityChallengeRepository.loadUserData();
       final children = _retrieveChildrenData(userData);
+      final email = GenerosityChallengeHelper.getChallengeEmail(userData);
+
+      if (email.isEmpty) {
+        _logAndSkipVPC();
+        return;
+      }
+
+      final password = userData[ChatScriptSaveKey.password.value] as String;
+
+      await _vpcRepository.login(email: email, password: password);
       await _vpcRepository.addMembers(children);
+
       _navigateToFamilyOverview();
     } on NotLoggedInException {
-      _navigateToLogin();
+      _navigateToWelcome();
     } catch (e, s) {
       _handleError(e, s);
     }
   }
 
-  void _handleError(Object e, StackTrace s) {
-    _showInitialScreenWithError();
-    unawaited(
-      LoggingInfo.instance.error(
-        'GenerosityChallengeVPCSetupCubit: onClickReadyForVPC\n\n$e',
-        methodName: s.toString(),
-      ),
+  void _logAndSkipVPC() {
+    _skipVPC();
+    LoggingInfo.instance.error(
+      'Error handling VPC and getting user email in Generosity Challenge',
+      methodName: '_handleVPC',
     );
   }
 
-  void _navigateToLogin() {
+  void _handleError(Object e, StackTrace s) {
+    _showInitialScreenWithError();
+    LoggingInfo.instance.error(
+      'GenerosityChallengeVPCSetupCubit: onClickReadyForVPC\n\n$e',
+      methodName: s.toString(),
+    );
+  }
+
+  void _navigateToWelcome() {
     _vpcRepository.completeChallenge();
-    emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToLogin());
+    emitCustom(const GenerosityChallengeVpcSetupCustom.navigateToWelcome());
   }
 
   void _navigateToFamilyOverview() {

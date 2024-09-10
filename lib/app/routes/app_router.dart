@@ -122,8 +122,8 @@ class AppRouter {
         builder: (context, state) {
           final uri = state.uri.queryParameters['uri'];
           return RedirectToBrowserPage(
-              uri:
-                  uri ?? 'https://givt.app/search-for-coin?${state.uri.query}');
+            uri: uri ?? 'https://givt.app/search-for-coin?${state.uri.query}',
+          );
         },
       ),
       GoRoute(
@@ -655,9 +655,7 @@ class AppRouter {
       queryParameters: params,
     ).query;
 
-    if (GenerosityChallengeHelper.isActivated ||
-        (navigatingPage == FamilyPages.generosityChallenge.path &&
-            !GenerosityChallengeHelper.isCompleted)) {
+    if (GenerosityChallengeHelper.isActivated) {
       return FamilyPages.generosityChallenge.path;
     }
 
@@ -686,12 +684,13 @@ class AppRouter {
     GoRouterState routerState,
   ) async {
     if (state.status == AuthStatus.biometricCheck) {
-      context.pushNamed(
+      await context.pushNamed(
         state.user.isUsUser
             ? FamilyPages.permitUSBiometric.name
             : Pages.permitBiometric.name,
         extra: PermitBiometricRequest.login(),
       );
+      return;
     }
 
     if (state.status == AuthStatus.authenticated) {
@@ -701,18 +700,27 @@ class AppRouter {
         return;
       }
 
-      // US users need to select a profile before they can continue
       if (state.user.isUsUser &&
           (!GenerosityChallengeHelper.isActivated ||
               GenerosityChallengeHelper.isCompleted)) {
         if (state.user.needRegistration) {
-          context.goNamed(FamilyPages.generosityChallengeRedirect.name);
-        } else if (routerState.name == Pages.loading.name) {
+          // Prevent that users will see the profileselection page first when
+          // registration is not finished (yet)
+          context.pushReplacementNamed(
+            FamilyPages.registrationUS.name,
+            queryParameters: {
+              'email': state.user.email,
+              'createStripe': state.user.personalInfoRegistered.toString(),
+            },
+          );
+        } else {
           context.goNamed(
             FamilyPages.profileSelection.name,
             queryParameters: routerState.uri.queryParameters,
           );
         }
+
+        // US should not see the original home page
         return;
       }
 

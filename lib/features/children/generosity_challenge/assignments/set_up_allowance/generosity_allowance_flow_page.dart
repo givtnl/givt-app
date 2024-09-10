@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/widgets/wallet_intro_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_vpc_setup_page.dart';
@@ -8,6 +11,7 @@ import 'package:givt_app/features/children/overview/pages/edit_allowance_page.da
 import 'package:givt_app/features/children/overview/pages/edit_allowance_success_page.dart';
 import 'package:givt_app/features/children/overview/pages/models/edit_allowance_success_uimodel.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class GenerosityAllowanceFlowPage extends StatelessWidget {
   const GenerosityAllowanceFlowPage({
@@ -28,15 +32,25 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
   ) async {
     final cubit = context.read<GenerosityChallengeCubit>();
     final nrOfChildren = cubit.getNrOfChildren();
+    var childName = '';
+    if (nrOfChildren == 1) {
+      childName = await cubit.getChildName(1);
+    }
     final dynamic result = await Navigator.push(
       context,
       EditAllowancePage(
-        extraHeader: _allowancesHeader(context),
         currency: r'$',
         isMultipleChildren: nrOfChildren > 1,
+        childName: childName,
       ).toRoute(context),
     );
     if (result != null && result is int && context.mounted) {
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.generosityChallengeAllowanceSet,
+          eventProperties: {'amount': result},
+        ),
+      );
       await context
           .read<GenerosityChallengeCubit>()
           .saveUserDataByKey(
@@ -48,6 +62,7 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
               context,
               EditAllowanceSuccessPage(
                 uiModel: EditAllowanceSuccessUIModel(
+                  isMultipleChildren: nrOfChildren > 1,
                   amountWithCurrencySymbol: '\$$result',
                   onClickButton: () {
                     Navigator.of(context).push(
@@ -59,24 +74,5 @@ class GenerosityAllowanceFlowPage extends StatelessWidget {
             ),
           );
     }
-  }
-
-  Widget _allowancesHeader(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Add an amount',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          "Foster your children's spirit of giving.",
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-      ],
-    );
   }
 }

@@ -74,7 +74,7 @@ Future<void> bootstrap(
   await get_it_injection_family.init();
   await get_it_injection.getIt.allReady();
 
-  await LoggingInfo.instance.info('App started');
+  LoggingInfo.instance.info('App started');
 
   await FirebaseMessaging.instance.requestPermission();
 

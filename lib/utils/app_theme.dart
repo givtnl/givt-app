@@ -31,9 +31,6 @@ class AppTheme {
   static const givtGreen40 = Color(0xFF005231);
   static const softenedGivtPurple = Color(0xFF585479);
   static const presetsButtonColor = Color(0xFF918fa6);
-  static const givtLightYellow = Color(0xFFFFF9E3);
-  static const givtKidsYellow = Color(0xFFFFE075);
-  static const givt4KidsBlue = Color(0xFF54A1EE);
 
   static const sliderIndicatorFilled = Color(0xFF184869);
   static const sliderIndicatorNotFilled = Color(0xFFD9D9D9);
@@ -41,17 +38,6 @@ class AppTheme {
 
   static const inputFieldBorderEnabled = Color(0xFFCCCCCC);
   static const inputFieldBorderSelected = Color(0xFF355070);
-
-  static const childItemBackground = Color(0xFF54A1EE);
-  static const childItemBlueLight = Color(0xFFBFDBFC);
-  static const childItemPendingBackground = Color(0xFFE28D4D);
-
-  static const vpcSuccessBackground = Color(0xFF7DBDA1);
-
-  static const childMonsterPurple = Color(0xFFAD81E1);
-  static const childMonsterGreen = Color(0xFFA7CB42);
-  static const childMonsterOrange = Color(0xFFFEAD1D);
-  static const childMonsterBlue = Color(0xFF69A9D3);
 
   static const childHistoryPending = Color(0xFFA77F2C);
   static const childHistoryPendingLight = Color(0xFFF2DF7F);
@@ -61,9 +47,7 @@ class AppTheme {
   static const childHistoryAllowance = Color(0xFF06509B);
 
   static const childGivingAllowanceCardBorder = Color(0xFFECF1F1);
-
   static const childGivingAllowanceHint = Color(0xFF617793);
-
   static const childParentalApprovalDecline = Color(0xFF9A3F3F);
 
   static const keyboardBackgroundColor = Color(0xFFD2D4D9);
@@ -125,22 +109,6 @@ class AppTheme {
   static const generosityChallangeCardBorder = Color(0xFFEEF2E4);
 
   static const impactGroupDialogBarrierColor = Color(0xBF404A70);
-  static const disabledTileBackground = Color(0xFFF5F4F5);
-  static const disabledTileBorder = Color(0xFFC8C6C9);
-  static const disabledCameraGrey = Color(0xFFD8D8D8);
-  static final historyAllowanceColor =
-      const Color(0xFF89BCEF).withAlpha((255 * 0.1).toInt());
-
-  // static const recommendationItemSelected = Color(0xFFC7DFBC);
-  static const recommendationItemText = Color(0xFF405A66);
-  // static const interestsTallyText = Color(0xFFFBFCFF);
-  // static const interestCardRadio = Color(0xFF7AAA35);
-
-  static const info40 = Color(0xFF914C00);
-  static const info20 = Color(0xFF4E2600);
-
-  // Family features
-  static const defaultTextColor = AppTheme.primary20;
 
   static final ThemeData lightTheme = ThemeData(
     useMaterial3: false,
@@ -177,7 +145,7 @@ class AppTheme {
           top: Radius.circular(30),
         ),
       ),
-      dragHandleColor: lightColorScheme.onBackground,
+      dragHandleColor: lightColorScheme.onSurface,
     ),
     inputDecorationTheme: const InputDecorationTheme(
       hintStyle: TextStyle(
@@ -247,9 +215,9 @@ class AppTheme {
       color: lightColorScheme.primary,
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith(
+      fillColor: WidgetStateProperty.resolveWith(
         (states) {
-          if (states.contains(MaterialState.selected)) {
+          if (states.contains(WidgetState.selected)) {
             return givtLightGreen;
           }
           return Colors.white;
@@ -258,18 +226,18 @@ class AppTheme {
     ),
     elevatedButtonTheme: const ElevatedButtonThemeData(
       style: ButtonStyle(
-        elevation: MaterialStatePropertyAll(0),
-        textStyle: MaterialStatePropertyAll(
+        elevation: WidgetStatePropertyAll(0),
+        textStyle: WidgetStatePropertyAll(
           TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: Colors.white,
           ),
         ),
-        backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
-        foregroundColor: MaterialStatePropertyAll(Colors.white),
-        minimumSize: MaterialStatePropertyAll(Size.fromHeight(45)),
-        shape: MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(Color(0xFF41c98e)),
+        foregroundColor: WidgetStatePropertyAll(Colors.white),
+        minimumSize: WidgetStatePropertyAll(Size.fromHeight(45)),
+        shape: WidgetStatePropertyAll(
           ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(10),

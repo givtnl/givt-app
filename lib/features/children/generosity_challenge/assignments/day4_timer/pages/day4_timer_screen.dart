@@ -3,17 +3,15 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:givt_app/app/injection/injection.dart';
-import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/how_many_tasks_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/widgets/timer_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
@@ -29,7 +27,6 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
   _Day4TimerScreenState({int startSeconds = 5 * 60})
       : _remainingSeconds = startSeconds;
 
-  final AppConfig _appConfig = getIt();
   final _player = AudioPlayer();
   Timer? _timer;
 
@@ -138,7 +135,7 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
     return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             title: 'Day ${challenge.state.detailedDayIndex + 1}',
             leading: GenerosityBackButton(
               onPressed: () {
@@ -181,15 +178,18 @@ class _Day4TimerScreenState extends State<Day4TimerScreen> {
                               showRedVersion:
                                   _isLastTenSeconds() || _isLastSecond(),
                             ),
-                            if (_appConfig.isTestApp)
-                              CustomGreenElevatedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _remainingSeconds = 20;
-                                  });
-                                },
-                                title: 'Debug: set to 20 seconds remaining',
+                            FunButton(
+                              isDebugOnly: true,
+                              onTap: () {
+                                setState(() {
+                                  _remainingSeconds = 20;
+                                });
+                              },
+                              text: 'Debug: set to 20 seconds remaining',
+                              analyticsEvent: AnalyticsEvent(
+                                AmplitudeEvents.debugButtonClicked,
                               ),
+                            ),
                           ],
                         ),
                 ),

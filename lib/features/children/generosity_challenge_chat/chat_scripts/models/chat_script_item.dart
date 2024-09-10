@@ -68,7 +68,8 @@ class ChatScriptItem extends Equatable {
         (map['mediaSourceType'] ?? '').toString(),
       ),
       saveKey: (map['saveKey'] ?? '').toString(),
-      saveInAmplitude: map['saveInAmplitude'] == null || map['saveInAmplitude'] == true,
+      saveInAmplitude:
+          map['saveInAmplitude'] == null || map['saveInAmplitude'] == true,
       next: _readNextFromMap(map, branchesMap: branchesMap),
       postChat: map['postChat'] != null
           ? ChatScriptItem.fromMap(

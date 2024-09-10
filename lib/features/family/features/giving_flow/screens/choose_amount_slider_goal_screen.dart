@@ -12,10 +12,12 @@ import 'package:givt_app/features/family/features/giving_flow/widgets/family_goa
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
-
 import 'package:go_router/go_router.dart';
 
 class ChooseAmountSliderGoalScreen extends StatelessWidget {
@@ -72,9 +74,8 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                     children: [
                       FamilyGoalWidget(group, organisation),
                       const Spacer(),
-                      Text(
+                      const BodyMediumText(
                         'How much would you like to give?',
-                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 32),
                     ],
@@ -103,7 +104,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                       TextSpan(
                         text: '\$$amountLeftWithDonation',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppTheme.primary20,
+                              color: FamilyAppTheme.primary20,
                               fontWeight: FontWeight.w700,
                             ),
                         children: [
@@ -111,7 +112,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                             text: ' to complete the $goalString',
                             style:
                                 Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppTheme.primary20,
+                                      color: FamilyAppTheme.primary20,
                                     ),
                           ),
                         ],
@@ -122,7 +123,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                       TextSpan(
                         text: 'This donation will complete the\n$goalString',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppTheme.primary20,
+                              color: FamilyAppTheme.primary20,
                             ),
                       ),
                     ),
@@ -130,7 +131,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              GivtElevatedButton(
+              FunButton(
                 isDisabled: state.amount == 0,
                 text: 'Donate',
                 isLoading: state is CreateTransactionUploadingState,
@@ -140,7 +141,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                         if (state is CreateTransactionUploadingState) {
                           return;
                         }
-                        var transaction = Transaction(
+                        final transaction = Transaction(
                           userId: profilesCubit.state.activeProfile.id,
                           mediumId: mediumId,
                           amount: state.amount,
@@ -150,18 +151,16 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
                         await context
                             .read<CreateTransactionCubit>()
                             .createTransaction(transaction: transaction);
-
-                        await AnalyticsHelper.logEvent(
-                          eventName:
-                              AmplitudeEvents.donateToThisFamilyGoalPressed,
-                          eventProperties: {
-                            AnalyticsHelper.goalKey: organisation.name,
-                            AnalyticsHelper.amountKey: state.amount,
-                            AnalyticsHelper.walletAmountKey: profilesCubit
-                                .state.activeProfile.wallet.balance,
-                          },
-                        );
                       },
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.donateToThisFamilyGoalPressed,
+                  parameters: {
+                    AnalyticsHelper.goalKey: organisation.name,
+                    AnalyticsHelper.amountKey: state.amount,
+                    AnalyticsHelper.walletAmountKey:
+                        profilesCubit.state.activeProfile.wallet.balance,
+                  },
+                ),
               ),
             ],
           ),

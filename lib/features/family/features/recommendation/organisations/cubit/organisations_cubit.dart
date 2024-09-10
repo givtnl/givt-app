@@ -87,11 +87,9 @@ class OrganisationsCubit extends Cubit<OrganisationsState> {
 
       emit(OrganisationsFetchedState(organisations: response));
     } catch (error, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          'Error while fetching recommended organisations: $error',
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        'Error while fetching recommended organisations: $error',
+        methodName: stackTrace.toString(),
       );
 
       emit(OrganisationsExternalErrorState(errorMessage: error.toString()));

@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
     as FamilyImpactGroupsCubit;
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
+import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -77,12 +78,13 @@ class _AppState extends State<App> {
           BlocProvider(
             create: (_) => AuthCubit(
               getIt(),
-            )..checkAuth(),
+            )..checkAuth(isAppStartupCheck: true),
             lazy: false,
           ),
           BlocProvider(
             create: (_) => InfraCubit(
-              getIt(), getIt(),
+              getIt(),
+              getIt(),
             ),
             lazy: false,
           ),
@@ -90,13 +92,15 @@ class _AppState extends State<App> {
             create: (context) => ImpactGroupsCubit(
               getIt(),
               getIt(),
-              context.read<AuthCubit>(),
             ),
             lazy: false,
           ),
           BlocProvider<ProfilesCubit>(
             create: (BuildContext context) =>
-                ProfilesCubit(getIt(), getIt(), getIt()),
+                ProfilesCubit(getIt(), getIt(), getIt(), getIt()),
+          ),
+          BlocProvider(
+            create: (context) => TopupCubit(getIt()),
           ),
           BlocProvider<OrganisationDetailsCubit>(
             create: (BuildContext context) => OrganisationDetailsCubit(getIt()),
@@ -120,8 +124,11 @@ class _AppState extends State<App> {
         ],
         child: AppThemeSwitcherWidget(
           key: themeKey,
-          builder: (BuildContext context, ThemeData themeData,
-              {required bool isFamilyApp}) {
+          builder: (
+            BuildContext context,
+            ThemeData themeData, {
+            required bool isFamilyApp,
+          }) {
             if (kDebugMode) {
               log('Rebuilding app with theme, isFamilyApp: $isFamilyApp');
             }
@@ -144,7 +151,7 @@ class _AppState extends State<App> {
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView({required this.themeData, super.key});
+  const _AppView({required this.themeData});
 
   final ThemeData themeData;
 

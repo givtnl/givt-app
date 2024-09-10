@@ -1,7 +1,7 @@
 class GenerosityRegistrationResult {
   const GenerosityRegistrationResult({
     this.success = false,
-    this.isAlreadyRegistered = false,
+    this.wasRegisteredBeforeChallenge = false,
   });
 
   factory GenerosityRegistrationResult.success() {
@@ -13,7 +13,7 @@ class GenerosityRegistrationResult {
   factory GenerosityRegistrationResult.alreadyRegistered() {
     return const GenerosityRegistrationResult(
       success: true,
-      isAlreadyRegistered: true,
+      wasRegisteredBeforeChallenge: true,
     );
   }
 
@@ -22,5 +22,5 @@ class GenerosityRegistrationResult {
   }
 
   final bool success;
-  final bool isAlreadyRegistered;
+  final bool wasRegisteredBeforeChallenge;
 }

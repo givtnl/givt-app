@@ -7,10 +7,11 @@ import 'package:givt_app/features/children/generosity_challenge/dialogs/feedback
 import 'package:givt_app/features/children/generosity_challenge/models/day.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/task.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_content_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
+import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_challenge_daily_card.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class GenerosityChallengeDayDetails extends StatelessWidget {
@@ -25,7 +26,6 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     final challenge = context.watch<GenerosityChallengeCubit>();
     final task = GenerosityChallengeContentHelper.getTaskByIndex(
       challenge.state.detailedDayIndex,
-      isDebugQuickFlowEnabled: challenge.state.isDebugQuickFlowEnabled,
     );
     final day = challenge.state.days[challenge.state.detailedDayIndex];
     final isSingleCard = task.partnerCard == null;
@@ -45,8 +45,11 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
     return BlocBuilder<GenerosityChallengeCubit, GenerosityChallengeState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: GenerosityAppBar(
-            title: 'Day ${challenge.state.detailedDayIndex + 1}',
+          appBar: FunTopAppBar.primary99(
+            title: challenge.state.detailedDayIndex + 1 ==
+                    GenerosityChallengeHelper.generosityChallengeDays
+                ? 'Finish'
+                : 'Day ${challenge.state.detailedDayIndex + 1}',
             leading: GenerosityBackButton(onPressed: challenge.overview),
           ),
           body: SafeArea(child: _buildCard(state, task, day)),
@@ -55,9 +58,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
           floatingActionButton: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (day.isCompleted &&
-                  challenge.state.isLastCompleted &&
-                  !challenge.state.hasActiveDay)
+              if (day.isCompleted && challenge.state.isLastCompleted)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
                   child: TextButton.icon(
@@ -88,7 +89,7 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                   ),
                 ),
               if (shouldShowCompleteButton)
-                GivtElevatedButton(
+                FunButton(
                   onTap: () async {
                     await showDialog<void>(
                       context: context,
@@ -100,18 +101,17 @@ class GenerosityChallengeDayDetails extends StatelessWidget {
                       builder: (context) => FeedbackBannerDialog(task: task),
                     );
 
-                    await AnalyticsHelper.logEvent(
-                      eventName:
-                          AmplitudeEvents.generosityChallengeDayCompleted,
-                      eventProperties: {
-                        'day': challenge.state.detailedDayIndex + 1,
-                      },
-                    );
                     await challenge.completeActiveDay(isDebug);
                   },
                   text: 'Complete',
                   isDisabled: day.isCompleted,
                   leftIcon: FontAwesomeIcons.solidSquareCheck,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.generosityChallengeDayCompleted,
+                    parameters: {
+                      'day': challenge.state.detailedDayIndex + 1,
+                    },
+                  ),
                 ),
             ],
           ),

@@ -5,8 +5,11 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_close_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,7 +24,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDonateButtonActive =
-        context.read<ProfilesCubit>().state.activeProfile.wallet.balance > 0;
+        context.watch<ProfilesCubit>().state.activeProfile.wallet.balance > 0;
 
     return FractionallySizedBox(
       heightFactor: 0.9,
@@ -63,22 +66,20 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      TitleMediumText(
                         organisation.name,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 12),
                       Text(
                         organisation.shortDescription,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       const SizedBox(height: 12),
-                      Text(
+                      BodySmallText(
                         organisation.longDescription,
                         textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       const SizedBox(height: 12),
                     ],
@@ -91,18 +92,21 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: GivtElevatedButton(
+            child: FunButton(
               text: 'Donate',
-              isDisabled: !isDonateButtonActive,
               onTap: () {
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.donateToRecommendedCharityPressed,
-                  eventProperties: {
-                    AnalyticsHelper.charityNameKey: organisation.name,
-                  },
-                );
+                if (!isDonateButtonActive) {
+                  EmptyWalletBottomSheet.show(context);
+                  return;
+                }
                 context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
               },
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.donateToRecommendedCharityPressed,
+                parameters: {
+                  AnalyticsHelper.charityNameKey: organisation.name,
+                },
+              ),
             ),
           ),
         ),

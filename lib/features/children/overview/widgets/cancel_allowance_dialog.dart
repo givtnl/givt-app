@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_secondary_button.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +16,7 @@ class CancelAllowanceDialog extends StatelessWidget {
   final VoidCallback onCancel;
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     return Theme(
       data: theme,
       child: Dialog(
@@ -46,7 +47,7 @@ class CancelAllowanceDialog extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  GivtElevatedButton(
+                  FunButton(
                     onTap: () => {
                       onCancel.call(),
                       context
@@ -57,11 +58,17 @@ class CancelAllowanceDialog extends StatelessWidget {
                     leftIcon: FontAwesomeIcons.xmark,
                     backgroundColor: AppTheme.error80,
                     borderColor: AppTheme.error30,
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.cancelRGAYesClicked,
+                    ),
                   ),
                   const SizedBox(height: 8),
-                  GivtElevatedSecondaryButton(
+                  FunButton.secondary(
                     onTap: () => context.pop(),
                     text: 'No, go back',
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.cancelRGANoClicked,
+                    ),
                   ),
                 ],
               ),

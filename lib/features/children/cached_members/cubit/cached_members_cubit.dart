@@ -16,7 +16,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
   CachedMembersCubit(
     this._addMemberRepository,
     this._cachedMembersRepository, {
-    required String familyLeaderName,
+    String familyLeaderName = '',
   }) : super(
           CachedMembersState(
             familyLeader: Member(
@@ -29,7 +29,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
   final CachedMembersRepository _cachedMembersRepository;
   final AddMemberRepository _addMemberRepository;
 
-  Future<void> loadFromCache() async {
+  Future<List<Member>> loadFromCache() async {
     emit(state.copyWith(status: CachedMembersStateStatus.loading));
 
     final members = await _cachedMembersRepository.loadFromCache();
@@ -40,19 +40,29 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
         members: members,
       ),
     );
+
+    return members;
   }
 
-  void overviewCached() {
-    emit(state.copyWith(status: CachedMembersStateStatus.overview));
-  }
-
-  Future<void> tryCreateMembersFromCache() async {
-    emit(state.copyWith(status: CachedMembersStateStatus.noFundsRetrying));
+  Future<void> clearCache() async {
     try {
-      final members = state.members;
+      await _cachedMembersRepository.clearCache();
+      emit(state.copyWith(status: CachedMembersStateStatus.clearedCache));
+    } catch (error, stackTrace) {
+      LoggingInfo.instance
+          .error(error.toString(), methodName: stackTrace.toString());
+      emit(state.copyWith(status: CachedMembersStateStatus.error));
+    }
+  }
+
+  Future<void> tryCreateMembersFromCache(List<Member>? cached) async {
+    emit(state.copyWith(status: CachedMembersStateStatus.loading));
+    try {
+      final members = cached ?? state.members;
       await _addMemberRepository.addMembers(members, isRGA: false);
 
       emit(state.copyWith(status: CachedMembersStateStatus.noFundsSuccess));
+      await clearCache();
 
       final memberNames = members.map((member) => member.firstName).toList();
       unawaited(
@@ -65,7 +75,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
         ),
       );
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
       unawaited(
         AnalyticsHelper.logEvent(
@@ -75,7 +85,7 @@ class CachedMembersCubit extends Cubit<CachedMembersState> {
 
       emit(
         state.copyWith(
-          status: CachedMembersStateStatus.noFundsError,
+          status: CachedMembersStateStatus.error,
         ),
       );
     }

@@ -6,13 +6,17 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class ParentAvatarSelectionScreen extends StatelessWidget {
-  const ParentAvatarSelectionScreen({super.key,});
+  const ParentAvatarSelectionScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +44,8 @@ class ParentAvatarSelectionScreen extends StatelessWidget {
         builder: (context, avatarsState) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(
+              title: const TitleLargeText(
                 'Choose your avatar',
-                style: Theme.of(context).textTheme.titleLarge,
               ),
               automaticallyImplyLeading:
                   editProfileState.status != EditProfileStatus.editing,
@@ -111,20 +114,19 @@ Widget _getContent({
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
-                child: CustomGreenElevatedButton(
-                  title: context.l10n.save,
-                  onPressed: editProfileState.isSameProfilePicture
+                child: FunButton(
+                  text: context.l10n.save,
+                  onTap: editProfileState.isSameProfilePicture
                       ? null
                       : () {
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.avatarSaved,
-                            eventProperties: {
-                              'filename':
-                                  editProfileState.selectedProfilePicture,
-                            },
-                          );
                           context.read<EditProfileCubit>().editProfile();
                         },
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.avatarSaved,
+                    parameters: {
+                      'filename': editProfileState.selectedProfilePicture,
+                    },
+                  ),
                 ),
               ),
             ],

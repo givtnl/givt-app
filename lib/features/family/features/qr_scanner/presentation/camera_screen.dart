@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_screen_frame.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -34,9 +35,10 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.sizeOf(context);
+    final size = MediaQuery.sizeOf(context);
     return BlocConsumer<CameraCubit, CameraState>(
       listener: (context, state) {
+        final cameraCubit = context.read<CameraCubit>();
         log('camera state changed to $state');
         if (state.status == CameraStatus.scanned) {
           log('QR code scanned: ${state.qrValue} \n Getting organisation details');
@@ -48,7 +50,10 @@ class _CameraScreenState extends State<CameraScreen> {
           showDialog<void>(
             context: context,
             builder: (_) {
-              return const CameraPermissionsDialog(isSettings: true);
+              return CameraPermissionsDialog(
+                cameraCubit: cameraCubit,
+                isSettings: true,
+              );
             },
           );
         }
@@ -56,7 +61,7 @@ class _CameraScreenState extends State<CameraScreen> {
           showDialog<void>(
             context: context,
             builder: (_) {
-              return const CameraPermissionsDialog();
+              return CameraPermissionsDialog(cameraCubit: cameraCubit);
             },
           );
         }
@@ -74,7 +79,8 @@ class _CameraScreenState extends State<CameraScreen> {
                 },
               );
               context.pushReplacementNamed(
-                  FamilyPages.familyChooseAmountSlider.name);
+                FamilyPages.familyChooseAmountSlider.name,
+              );
             }
           },
           builder: (context, orgState) {
@@ -117,7 +123,7 @@ class _CameraScreenState extends State<CameraScreen> {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      color: AppTheme.disabledCameraGrey,
+      color: FamilyAppTheme.disabledCameraGrey,
     );
   }
 

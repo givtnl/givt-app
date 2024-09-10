@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:givt_app/app/injection/injection.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
@@ -9,7 +10,9 @@ import 'package:givt_app/features/family/features/recommendation/tags/widgets/ci
 import 'package:givt_app/features/family/features/recommendation/tags/widgets/location_card.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class LocationSelectionScreen extends StatelessWidget {
@@ -34,14 +37,13 @@ class LocationSelectionScreen extends StatelessWidget {
                     backgroundColor: Colors.transparent,
                     forceMaterialTransparency: true,
                     automaticallyImplyLeading: false,
-                    title: Text(
+                    title: TitleSmallText(
                       state is TagsStateFetching
                           ? 'Give me a moment to think'
                           : isCitySelection
                               ? 'Which City?'
                               : 'Where do you want to help?',
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ),
                 ),
@@ -113,7 +115,7 @@ class LocationSelectionScreen extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: state is! TagsStateFetching
-              ? GivtElevatedButton(
+              ? FunButton(
                   isDisabled: state is TagsStateFetched &&
                           state.selectedLocation != const Tag.empty()
                       ? isCitySelection && state.selectedCity.isEmpty
@@ -136,6 +138,12 @@ class LocationSelectionScreen extends StatelessWidget {
                           );
                         }
                       : null,
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.locationSelected,
+                    parameters: {
+                      'location': state.selectedLocation.displayText,
+                    },
+                  ),
                 )
               : null,
         );

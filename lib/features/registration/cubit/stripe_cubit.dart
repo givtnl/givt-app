@@ -14,7 +14,7 @@ class StripeCubit extends Cubit<StripeState> {
   final AuthRepository authRepositoy;
 
   Future<void> fetchSetupIntent() async {
-    emit(state.copyWith(stripeStatus: StripeObjectStatus.initial));
+    emit(state.copyWith(stripeStatus: StripeObjectStatus.loading));
     try {
       final response = await authRepositoy.fetchStripeSetupIntent();
 
@@ -26,7 +26,7 @@ class StripeCubit extends Cubit<StripeState> {
       );
     } catch (e, stackTrace) {
       emit(state.copyWith(stripeStatus: StripeObjectStatus.failure));
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         '$e',
         methodName: stackTrace.toString(),
       );

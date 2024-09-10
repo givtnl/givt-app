@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
@@ -38,17 +39,15 @@ class TokenInterceptor implements InterceptorContract {
         request.headers['Authorization'] = 'Bearer ${session.accessToken}';
       }
     } catch (e, stackTrace) {
-      unawaited(
-        LoggingInfo.instance.error(
-          e.toString(),
-          methodName: stackTrace.toString(),
-        ),
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
       );
     }
 
     unawaited(
       LoggingInfo.instance.logRequest(
-        "API - " + request.method,
+        'API - ${request.method}',
         request.url.toString(),
         correlationId,
       ),

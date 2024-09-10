@@ -14,7 +14,7 @@ class ChildTopUpCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = FamilyAppTheme().toThemeData();
+    final theme = const FamilyAppTheme().toThemeData();
     final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),

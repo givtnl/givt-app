@@ -22,7 +22,6 @@ class GivingPage extends StatefulWidget {
   const GivingPage({
     super.key,
   });
-
   @override
   State<GivingPage> createState() => _GivingPageState();
 }
@@ -42,7 +41,7 @@ class _GivingPageState extends State<GivingPage> {
         if (!url.toString().contains('natived')) {
           return;
         }
-        await LoggingInfo.instance.info(
+        LoggingInfo.instance.info(
           'Closing browser and navigating to home page from $url',
         );
         await _closeBrowser();
@@ -52,7 +51,7 @@ class _GivingPageState extends State<GivingPage> {
 
   Future<void> _closeBrowser() async {
     if (_customInAppBrowser.isOpened()) {
-      await LoggingInfo.instance.info(
+      LoggingInfo.instance.info(
         'Browser is opened, closing browser and navigating to home page',
       );
       await _customInAppBrowser.close();
@@ -77,13 +76,11 @@ class _GivingPageState extends State<GivingPage> {
 
     if (afterGivingRedirection.isNotEmpty) {
       final url = Uri.parse(afterGivingRedirection);
-      unawaited(
-        LoggingInfo.instance.info(
-          'Redirecting after external link donation. Attempting to launch $url',
-        ),
+      LoggingInfo.instance.info(
+        'Redirecting after external link donation. Attempting to launch $url',
       );
       if (!await launchUrl(url)) {
-        await LoggingInfo.instance.error('Could not launch $url');
+        LoggingInfo.instance.error('Could not launch $url');
         throw Exception('Could not launch $url');
       }
     }

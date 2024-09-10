@@ -32,7 +32,7 @@ class Util {
   static final usPhoneNumberRegEx =
       RegExp(r'^(\([0-9]{3}\) |[0-9]{3}-)[0-9]{3}-[0-9]{4}$');
   static final ukSortCodeRegEx = RegExp(r'^\d{6}$');
-  static final emailRegEx = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+  static final emailRegEx = RegExp(r'^[\w-\.\+]*[\w]+@([\w-]+\.)+[\w]+$');
   static final nameFieldsRegEx =
       RegExp(r'^[^0-9_!,¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$');
 
@@ -65,7 +65,7 @@ AgMBAAE=
     return icon;
   }
 
-  // todo remove this
+  // TODOremove this
   static String getCurrencyName({required Country country}) {
     return country == Country.us
         ? 'USD'
@@ -80,6 +80,12 @@ AgMBAAE=
         countryCode,
       ).currency,
     );
+  }
+
+  static String formatPhoneNrUs(String input) {
+    final numericOnly = input.replaceAll(RegExp(r'[^\d]'), '');
+    if (numericOnly.length != 10) return '';
+    return '${numericOnly.substring(0, 3)}-${numericOnly.substring(3, 6)}-${numericOnly.substring(6)}';
   }
 
   static String getCurrencySymbol({required String countryCode}) {

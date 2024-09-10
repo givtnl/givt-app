@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
@@ -14,7 +16,9 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class GPSScanPage extends StatefulWidget {
-  const GPSScanPage({super.key,});
+  const GPSScanPage({
+    super.key,
+  });
 
   @override
   State<GPSScanPage> createState() => _GPSScanPageState();
@@ -42,6 +46,10 @@ class _GPSScanPageState extends State<GPSScanPage> {
         timeLimit: Duration(seconds: 120),
       ),
     ).listen(
+      onError: (Object? error) => LoggingInfo.instance.error(
+        'Error in GPS scan page: $error',
+        methodName: 'initGPS',
+      ),
       (Position? position) {
         if (position == null) {
           return;

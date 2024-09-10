@@ -7,11 +7,12 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/back_home_button.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/switch_profile_success_button.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/utils/utils.dart';
-
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 
@@ -40,12 +41,12 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
       appBar: AppBar(
         toolbarHeight: 0,
         systemOverlayStyle: const SystemUiOverlayStyle(
-          statusBarColor: AppTheme.secondary98,
+          statusBarColor: FamilyAppTheme.secondary98,
           statusBarIconBrightness: Brightness.dark,
         ),
-        backgroundColor: AppTheme.secondary98,
+        backgroundColor: FamilyAppTheme.secondary98,
       ),
-      backgroundColor: AppTheme.secondary98,
+      backgroundColor: FamilyAppTheme.secondary98,
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -89,12 +90,9 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
         padding: const EdgeInsets.only(left: 20, right: 20, top: 70),
         child: Column(
           children: [
-            Text(
+            TitleMediumText(
               widget.isGoal ? 'Well done!' : 'Activated!',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppTheme.defaultTextColor,
-                  ),
             ),
             const SizedBox(
               height: 10,
@@ -105,7 +103,7 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
                   : 'Drop your coin in\nthe giving box.',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppTheme.defaultTextColor,
+                    color: FamilyAppTheme.defaultTextColor,
                   ),
             ),
           ],
@@ -116,16 +114,15 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
 
   Widget _buildFAB(bool isOnlyChild) {
     if (widget.isGoal) {
-      return GivtElevatedButton(
+      return FunButton(
         text: 'Done',
         onTap: () {
           context.goNamed(FamilyPages.wallet.name);
           context.read<FlowsCubit>().resetFlow();
-
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.returnToHomePressed,
-          );
         },
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.returnToHomePressed,
+        ),
       );
     }
     if (isOnlyChild) {

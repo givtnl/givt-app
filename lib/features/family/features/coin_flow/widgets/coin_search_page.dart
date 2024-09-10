@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
 
 class SearchingForCoinPage extends StatelessWidget {
-  const SearchingForCoinPage({super.key,});
+  const SearchingForCoinPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

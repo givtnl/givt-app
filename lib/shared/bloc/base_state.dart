@@ -5,6 +5,8 @@ sealed class BaseState<T, S> {
 
   const factory BaseState.loading() = LoadingState;
 
+  const factory BaseState.error(String? message) = ErrorState;
+
   const factory BaseState.data(T data) = DataState;
 
   const factory BaseState.custom(S custom) = CustomState;
@@ -31,6 +33,11 @@ class InitialState<T, S> extends BaseState<T, S> {
 
 class LoadingState<T, S> extends BaseState<T, S> {
   const LoadingState();
+}
+
+class ErrorState<T, S> extends BaseState<T, S> {
+  const ErrorState(this.message);
+  final String? message;
 }
 
 class DataState<T, S> extends BaseState<T, S> {

@@ -80,7 +80,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
       await authRepositoy.registerUser(
         tempUser: tempUser,
-        isTempUser: false,
+        isNewUser: false,
       );
 
       await authCubit.refreshUser();
@@ -107,7 +107,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
     } catch (e, stackTrace) {
       log(e.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -150,7 +150,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       final statusCode = e.statusCode;
       final body = e.body;
       log(body.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         body.toString(),
         methodName: stackTrace.toString(),
       );
@@ -173,6 +173,15 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       emit(
         state.copyWith(status: RegistrationStatus.failure),
       );
+    } catch (e, stackTrace) {
+      log(e.toString());
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: stackTrace.toString(),
+      );
+      emit(
+        state.copyWith(status: RegistrationStatus.failure),
+      );
     }
   }
 
@@ -180,7 +189,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     RegistrationInit event,
     Emitter<RegistrationState> emit,
   ) async {
-    await LoggingInfo.instance.info(
+    LoggingInfo.instance.info(
       'Registration Init',
       methodName: StackTrace.current.toString(),
     );
@@ -221,7 +230,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     while (user.tempUser && trials < 257) {
       //get current state of user in givt system
       ///and update it in the app
-      await authCubit.refreshUser();
+      await authCubit.refreshUser(emitAuthentication: event.emitAuthenticated);
       user = authCubit.state.user;
       log('trial number $trials, delay time is $delayTime,\n   user is temporary: ${user.tempUser}');
 
@@ -233,7 +242,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
 
     if (user.tempUser == false) {
-      await authCubit.refreshSession();
+      await authCubit.refreshSession(
+          emitAuthentication: event.emitAuthenticated);
       emit(state.copyWith(status: RegistrationStatus.success));
     } else {
       emit(state.copyWith(status: RegistrationStatus.failure));
@@ -262,7 +272,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       );
     } catch (e, stackTrace) {
       log(e.toString());
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

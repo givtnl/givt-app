@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
@@ -75,25 +79,11 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
 
     return BottomSheetLayout(
-      title: Text(
+      title: TitleLargeText(
         locals.login,
-        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-      ),
-      bottomSheet: GivtElevatedButton(
-        onTap: context.watch<AuthCubit>().state.status == AuthStatus.loading
-            ? null
-            : isEnabled
-                ? () => onLogin(context)
-                : null,
-        text: locals.login,
-        isLoading:
-            context.watch<AuthCubit>().state.status == AuthStatus.loading,
       ),
       child: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
@@ -153,16 +143,15 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const SizedBox(height: 24),
+              BodyMediumText(
                 locals.loginText,
-                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: size.height * 0.05),
-              CustomTextFormField(
+              const SizedBox(height: 24),
+              OutlinedTextFormField(
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
-                autocorrect: false,
                 readOnly: true,
                 autofillHints: const [
                   AutofillHints.username,
@@ -183,10 +172,9 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 },
                 hintText: locals.email,
               ),
-              const SizedBox(height: 15),
-              CustomTextFormField(
+              const SizedBox(height: 16),
+              OutlinedTextFormField(
                 controller: passwordController,
-                autocorrect: false,
                 autofillHints: const [AutofillHints.password],
                 keyboardType: TextInputType.visiblePassword,
                 onChanged: (value) {
@@ -225,7 +213,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 15),
+                padding: const EdgeInsets.only(top: 16),
                 child: Align(
                   child: TextButton(
                     onPressed: () => showModalBottomSheet<void>(
@@ -236,13 +224,25 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                         email: emailController.text,
                       ),
                     ),
-                    child: Text(
+                    child: TitleSmallText(
                       locals.forgotPassword,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
                     ),
                   ),
+                ),
+              ),
+              const Spacer(),
+              FunButton(
+                onTap: context.watch<AuthCubit>().state.status ==
+                        AuthStatus.loading
+                    ? null
+                    : isEnabled
+                        ? () => onLogin(context)
+                        : null,
+                text: locals.login,
+                isLoading: context.watch<AuthCubit>().state.status ==
+                    AuthStatus.loading,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.loginClicked,
                 ),
               ),
             ],

@@ -41,7 +41,7 @@ mixin AuthRepository {
 
   Future<UserExt> registerUser({
     required TempUser tempUser,
-    required bool isTempUser,
+    required bool isNewUser,
   });
 
   Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
@@ -49,6 +49,7 @@ mixin AuthRepository {
     required String lastname,
     required String email,
     required String password,
+    String? phoneNumber,
   });
 
   Future<bool> changeGiftAid({
@@ -80,7 +81,11 @@ mixin AuthRepository {
     required String notificationId,
   });
 
+  void updateSessionStream(bool hasSession);
+
   Stream<bool> hasSessionStream();
+
+  void setHasSessionInitialValue(bool hasSession);
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -91,6 +96,7 @@ class AuthRepositoyImpl with AuthRepository {
 
   final SharedPreferences _prefs;
   final APIService _apiService;
+  bool? _hasSession;
 
   // bool hasSession
   final StreamController<bool> _hasSessionStreamController =
@@ -127,15 +133,15 @@ class AuthRepositoyImpl with AuthRepository {
     if (refreshUserExt) {
       try {
         await fetchUserExtension(newSession.userGUID);
+        updateSessionStream(true);
       } catch (e, s) {
-        await LoggingInfo.instance.error(
+        LoggingInfo.instance.error(
           e.toString(),
           methodName: s.toString(),
         );
       }
     }
     await _fetchUserExtension();
-    _hasSessionStreamController.add(true);
     return newSession;
   }
 
@@ -158,7 +164,7 @@ class AuthRepositoyImpl with AuthRepository {
 
       await setUserProperties(newUserExt);
     } catch (e, stacktrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stacktrace.toString(),
       );
@@ -308,6 +314,8 @@ class AuthRepositoyImpl with AuthRepository {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
+    updateSessionStream(false);
+
     // If the data is already gone, just continue :)
     if (sessionString == null) {
       return true;
@@ -350,7 +358,7 @@ class AuthRepositoyImpl with AuthRepository {
   @override
   Future<UserExt> registerUser({
     required TempUser tempUser,
-    required bool isTempUser,
+    required bool isNewUser,
   }) async {
     /// register user
     final userGUID = await _apiService.registerUser(tempUser.toJson());
@@ -365,7 +373,7 @@ class AuthRepositoyImpl with AuthRepository {
       email: tempUser.email,
       guid: userGUID,
       amountLimit: tempUser.amountLimit,
-      tempUser: isTempUser,
+      tempUser: isNewUser,
       country: tempUser.country,
       phoneNumber: tempUser.phoneNumber,
       firstName: tempUser.firstName,
@@ -502,6 +510,7 @@ class AuthRepositoyImpl with AuthRepository {
     required String lastname,
     required String email,
     required String password,
+    String? phoneNumber,
   }) async {
     Map<String, dynamic>? response;
     try {
@@ -515,7 +524,7 @@ class AuthRepositoyImpl with AuthRepository {
           address: Util.defaultAdress,
           city: Util.defaultCity,
           postalCode: Util.defaultPostCode,
-          phoneNumber: Util.defaultUSPhoneNumber,
+          phoneNumber: phoneNumber ?? Util.defaultUSPhoneNumber,
           iban: Util.defaultIban,
           sortCode: Util.empty,
           accountNumber: Util.empty,
@@ -526,7 +535,7 @@ class AuthRepositoyImpl with AuthRepository {
         );
         // updates the user extension with the temp user
         // and updates the session
-        await registerUser(tempUser: tempUser, isTempUser: true);
+        await registerUser(tempUser: tempUser, isNewUser: false);
         return GenerosityRegistrationResult.success();
       }
       if (userStatus.contains('true')) {
@@ -561,12 +570,25 @@ class AuthRepositoyImpl with AuthRepository {
     } catch (e) {
       //failing one of these is non-blocking
     } finally {
-      _hasSessionStreamController.add(true);
+      updateSessionStream(true);
     }
     if (response['errorMessage'] == 'USER_ALREADY_EXISTS') {
       return GenerosityRegistrationResult.alreadyRegistered();
     } else {
       return GenerosityRegistrationResult.success();
     }
+  }
+
+  @override
+  void updateSessionStream(bool hasSession) {
+    if (_hasSession != hasSession) {
+      _hasSession = hasSession;
+      _hasSessionStreamController.add(hasSession);
+    }
+  }
+
+  @override
+  void setHasSessionInitialValue(bool hasSession) {
+    _hasSession = hasSession;
   }
 }

@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_input_answer_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/givt_icon_button.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -47,6 +48,8 @@ class _ChatInputFieldState extends State<ChatInputField> {
     switch (type) {
       case ChatScriptInputAnswerType.email:
         return Util.emailRegEx.hasMatch(input);
+      case ChatScriptInputAnswerType.phone:
+        return Util.usPhoneNumberRegEx.hasMatch(Util.formatPhoneNrUs(input));
       case ChatScriptInputAnswerType.text:
         return Util.nameFieldsRegEx.hasMatch(input);
       case ChatScriptInputAnswerType.password:
@@ -100,7 +103,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
                 focusNode: focusNode,
                 textInputAction: TextInputAction.done,
                 keyboardType: widget.chatItem.inputAnswerType ==
-                        ChatScriptInputAnswerType.number
+                            ChatScriptInputAnswerType.number ||
+                        widget.chatItem.inputAnswerType ==
+                            ChatScriptInputAnswerType.phone
                     ? TextInputType.number
                     : TextInputType.text,
                 obscureText: widget.chatItem.inputAnswerType ==
@@ -173,11 +178,12 @@ class _ChatInputFieldState extends State<ChatInputField> {
     );
   }
 
-  TextStyle? get textStyle => Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontFamily: 'Rouna',
-        fontWeight: FontWeight.w700,
-        color: AppTheme.primary20,
-      );
+  TextStyle? get textStyle =>
+      const FamilyAppTheme().toThemeData().textTheme.titleSmall?.copyWith(
+            fontFamily: 'Rouna',
+            fontWeight: FontWeight.w700,
+            color: AppTheme.primary20,
+          );
 
   BorderSide get borderSide => const BorderSide(
         color: AppTheme.inputFieldBorderSelected,

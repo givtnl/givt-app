@@ -98,7 +98,7 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
         ),
       );
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.body.toString(),
         methodName: stackTrace.toString(),
       );
@@ -125,7 +125,7 @@ class YearlyOverviewCubit extends Cubit<YearlyOverviewState> {
       }
       emit(state.copyWith(status: YearlyOverviewStatus.summaryDownloaded));
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.body.toString(),
         methodName: stackTrace.toString(),
       );

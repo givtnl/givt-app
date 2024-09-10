@@ -22,7 +22,10 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class PersonalInfoEditPage extends StatelessWidget {
-  const PersonalInfoEditPage({this.navigatingFromFamily = false, super.key,});
+  const PersonalInfoEditPage({
+    this.navigatingFromFamily = false,
+    super.key,
+  });
   final bool navigatingFromFamily;
   @override
   Widget build(BuildContext context) {
@@ -244,7 +247,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                        when for example people close the bottomsheet. 
                        So it's not a real error :)
                     */
-                    await LoggingInfo.instance.info(
+                    LoggingInfo.instance.info(
                       e.toString(),
                       methodName: stackTrace.toString(),
                     );

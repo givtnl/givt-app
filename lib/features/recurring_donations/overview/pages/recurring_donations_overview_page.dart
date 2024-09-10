@@ -15,7 +15,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class RecurringDonationsOverviewPage extends StatelessWidget {
-  const RecurringDonationsOverviewPage({super.key,});
+  const RecurringDonationsOverviewPage({
+    super.key,
+  });
 
   Future<void> _fetchRecurringDonations(BuildContext context) async {
     await context

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class NoGoalsWidget extends StatelessWidget {
-  const NoGoalsWidget({super.key,});
+  const NoGoalsWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +15,9 @@ class NoGoalsWidget extends StatelessWidget {
         children: [
           SvgPicture.asset('assets/family/images/family_superheroes.svg'),
           const SizedBox(height: 20),
-          Text(
+          const BodyMediumText(
             'Your Family Group and other\ngroups will appear here',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ],
       ),

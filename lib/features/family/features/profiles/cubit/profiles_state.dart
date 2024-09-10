@@ -4,9 +4,11 @@ abstract class ProfilesState extends Equatable {
   const ProfilesState({
     required this.profiles,
     required this.activeProfileIndex,
+    this.cachedMembers = const [],
   });
+  final List<Member> cachedMembers;
 
-  static const int _noProfileSelected = -1;
+  static const int _loggedInUserSelected = 0;
 
   final List<Profile> profiles;
   final int activeProfileIndex;
@@ -15,11 +17,11 @@ abstract class ProfilesState extends Equatable {
   List<Object> get props => [profiles, activeProfileIndex];
 
   bool get isProfileSelected {
-    return activeProfileIndex != _noProfileSelected;
+    return profiles.isNotEmpty;
   }
 
   Profile get activeProfile {
-    if (activeProfileIndex == _noProfileSelected || profiles.isEmpty) {
+    if (profiles.isEmpty) {
       return Profile.empty();
     } else {
       return profiles[activeProfileIndex];
@@ -44,7 +46,7 @@ abstract class ProfilesState extends Equatable {
 class ProfilesInitialState extends ProfilesState {
   const ProfilesInitialState({
     super.profiles = const [],
-    super.activeProfileIndex = ProfilesState._noProfileSelected,
+    super.activeProfileIndex = ProfilesState._loggedInUserSelected,
   });
 }
 
@@ -52,15 +54,7 @@ class ProfilesLoadingState extends ProfilesState {
   /// This is the state that is emitted when the profiles are being fetched for the first time.
   const ProfilesLoadingState({
     super.profiles = const [],
-    super.activeProfileIndex = ProfilesState._noProfileSelected,
-  });
-}
-
-class ProfilesUpdatingState extends ProfilesState {
-  /// This is the state that is emitted when the profiles are being updated
-  const ProfilesUpdatingState({
-    super.profiles = const [],
-    required super.activeProfileIndex,
+    super.activeProfileIndex = ProfilesState._loggedInUserSelected,
   });
 }
 
@@ -69,19 +63,42 @@ class ProfilesUpdatedState extends ProfilesState {
   const ProfilesUpdatedState({
     required super.profiles,
     required super.activeProfileIndex,
+    super.cachedMembers,
   });
 }
 
 class ProfilesNotSetupState extends ProfilesState {
   /// This is the state that is emitted when profiles have not yet been setup
-  const ProfilesNotSetupState(
-      {required super.profiles, required super.activeProfileIndex});
+  const ProfilesNotSetupState({
+    required super.profiles,
+    required super.activeProfileIndex,
+    super.cachedMembers,
+  });
 }
 
 class ProfilesNeedsRegistration extends ProfilesState {
   /// This is the state that is emitted when the user still needs to register
-  const ProfilesNeedsRegistration(
-      {required super.profiles, required super.activeProfileIndex});
+  const ProfilesNeedsRegistration({
+    required super.profiles,
+    required super.activeProfileIndex,
+    this.hasFamily = false,
+  });
+
+  final bool hasFamily;
+}
+
+class ProfilesInvitedToGroup extends ProfilesState {
+  /// This is the state that is emitted when the user still needs to register
+  const ProfilesInvitedToGroup({
+    required super.profiles,
+    required super.activeProfileIndex,
+    required this.impactGroup,
+  });
+
+  final ImpactGroup impactGroup;
+
+  @override
+  List<Object> get props => [profiles, activeProfileIndex, impactGroup];
 }
 
 class ProfilesExternalErrorState extends ProfilesState {

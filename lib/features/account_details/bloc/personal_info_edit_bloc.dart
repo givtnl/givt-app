@@ -42,7 +42,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      await LoggingInfo.instance.info('Changing email to ${event.email}');
+      LoggingInfo.instance.info('Changing email to ${event.email}');
       if (!await authRepositoy.checkTld(event.email)) {
         emit(state.copyWith(status: PersonalInfoEditStatus.invalidEmail));
         return;
@@ -72,10 +72,10 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e) {
-      await LoggingInfo.instance.error(e.toString());
+      LoggingInfo.instance.error(e.toString());
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e) {
-      await LoggingInfo.instance.warning(e.toString());
+      LoggingInfo.instance.warning(e.toString());
       emit(
         state.copyWith(
           status: PersonalInfoEditStatus.error,
@@ -83,7 +83,7 @@ class PersonalInfoEditBloc
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -97,8 +97,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      await LoggingInfo.instance
-          .info('Changing address to ${event..toString()}');
+      LoggingInfo.instance.info('Changing address to ${event..toString()}');
       final stateUser = state.loggedInUserExt.copyWith(
         address: event.address,
         city: event.city,
@@ -115,13 +114,13 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -140,7 +139,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .info('Changing phone number to ${event.phoneNumber}');
       final stateUser = state.loggedInUserExt.copyWith(
         phoneNumber: event.phoneNumber,
@@ -155,13 +154,13 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -180,7 +179,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      await LoggingInfo.instance.info(
+      LoggingInfo.instance.info(
         'Changing bank details to ${event.iban} ${event.accountNumber} ${event.sortCode}',
       );
       final stateUser = state.loggedInUserExt.copyWith(
@@ -198,13 +197,13 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -223,7 +222,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .info('Changing gift aid to ${event.isGiftAidEnabled}');
 
       final stateUser = state.loggedInUserExt.copyWith(
@@ -241,13 +240,13 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -266,7 +265,7 @@ class PersonalInfoEditBloc
   ) async {
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .info('Changing max amount to ${event.newAmountLimit}');
       final stateUser = state.loggedInUserExt.copyWith(
         amountLimit: event.newAmountLimit,
@@ -285,13 +284,13 @@ class PersonalInfoEditBloc
         ),
       );
     } on SocketException catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
       emit(state.copyWith(status: PersonalInfoEditStatus.noInternet));
     } on GivtServerFailure catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -302,7 +301,7 @@ class PersonalInfoEditBloc
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         e.toString(),
         methodName: stackTrace.toString(),
       );

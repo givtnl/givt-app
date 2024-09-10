@@ -1,10 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 class HowManyTasksWidget extends StatefulWidget {
@@ -19,17 +17,6 @@ class HowManyTasksWidget extends StatefulWidget {
 class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
   late TextEditingController _controller;
   String? _errorText;
-
-  void _logSaveClicked(int? nrOfTasks) {
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.generosityChallengeDay4SaveClicked,
-        eventProperties: {
-          if (nrOfTasks != null) 'nr_of_tasks': nrOfTasks,
-        },
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -84,25 +71,21 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
             filled: true,
             fillColor: Colors.white,
             hintText: 'Number of tasks',
-            hintStyle: textStyle?.copyWith(
-              color: AppTheme.neutralVariant40,
-            ),
-            enabledBorder: buildInputBorder.copyWith(
-              borderSide: borderSide.copyWith(
-                color: AppTheme.inputFieldBorderEnabled,
-              ),
-            ),
-            focusedBorder: buildInputBorder.copyWith(
-              borderSide: borderSide.copyWith(
-                color: AppTheme.inputFieldBorderEnabled,
-              ),
-            ),
+            hintStyle: textStyle,
+            enabledBorder: buildInputBorder,
+            focusedBorder: buildInputBorder,
           ),
         ),
         const SizedBox(height: 16),
-        GivtElevatedButton(
+        FunButton(
           text: 'Save',
           onTap: _handleOnTapSaved,
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.generosityChallengeDay4SaveClicked,
+            parameters: {
+              'nr_of_tasks': _controller.text,
+            },
+          ),
         ),
       ],
     );
@@ -124,23 +107,20 @@ class _HowManyTasksWidgetState extends State<HowManyTasksWidget> {
       } else {
         widget.onSubmitNrOfTasks?.call(number);
       }
-      _logSaveClicked(number);
     }
   }
 
   TextStyle? get textStyle => Theme.of(context).textTheme.titleLarge?.copyWith(
         fontFamily: 'Rouna',
         fontWeight: FontWeight.w700,
-        color: AppTheme.primary20,
-      );
-
-  BorderSide get borderSide => const BorderSide(
-        color: AppTheme.inputFieldBorderSelected,
-        width: 2,
+        color: AppTheme.neutralVariant40,
       );
 
   InputBorder get buildInputBorder => OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: borderSide,
+        borderSide: const BorderSide(
+          color: AppTheme.inputFieldBorderSelected,
+          width: 2,
+        ),
       );
 }

@@ -18,9 +18,9 @@ import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_f
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_not_available_sheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/android_nfc_scanning_bottomsheet.dart';
 import 'package:givt_app/features/family/features/scan_nfc/widgets/start_scan_nfc_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
 import 'package:givt_app/features/family/shared/widgets/dialogs/something_went_wrong_dialog.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/top_app_bar.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -83,7 +83,8 @@ class _NFCScanPageState extends State<NFCScanPage> {
                           );
                         } else {
                           return ScanningNfcAnimation(
-                              scanNfcCubit: scanNfcCubit);
+                            scanNfcCubit: scanNfcCubit,
+                          );
                         }
                       },
                     ),
@@ -124,7 +125,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
         },
         builder: (context, state) {
           return Scaffold(
-            appBar: TopAppBar(
+            appBar: FunTopAppBar(
               leading: GivtBackButton(
                 onPressedExt: () {
                   context.read<FlowsCubit>().resetFlow();
@@ -229,21 +230,19 @@ class _NFCScanPageState extends State<NFCScanPage> {
           _handleNotAGivtCoinTryAgainClicked(context),
       onClickSecondaryBtn: () {
         _navigateToHome(context);
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
-          ),
-        );
       },
       icon: FontAwesomeIcons.question,
       secondaryBtnText: 'Go back home',
       primaryBtnText: 'Try again',
       description: 'Uh-oh! We don’t think that was a Givt coin',
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+      amplitudeEvent: AmplitudeEvents.notAGivtCoinNFCErrorGoBackHomeClicked,
     );
-    unawaited(AnalyticsHelper.logEvent(
-      eventName: AmplitudeEvents.notAGivtCoinNFCError,
-    ));
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.notAGivtCoinNFCErrorShown,
+      ),
+    );
   }
 
   void _navigateToHome(BuildContext context) {
@@ -277,16 +276,12 @@ class _NFCScanPageState extends State<NFCScanPage> {
           _handleGenericErrorTryAgainClicked(context),
       onClickSecondaryBtn: () {
         _navigateToHome(context);
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName:
-                AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
-          ),
-        );
       },
       secondaryBtnText: 'Go back home',
       primaryBtnText: 'Try again',
       primaryLeftIcon: FontAwesomeIcons.arrowsRotate,
+      amplitudeEvent:
+          AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked,
     );
     unawaited(
       AnalyticsHelper.logEvent(

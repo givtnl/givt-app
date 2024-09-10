@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 
 class EditChild extends Equatable {
   const EditChild({
@@ -13,10 +13,10 @@ class EditChild extends Equatable {
           allowance: 0,
         );
 
-  factory EditChild.fromProfileDetails(ProfileExt profileDetails) {
+  factory EditChild.fromProfileDetails(Profile profileDetails) {
     return EditChild(
-      firstName: profileDetails.profile.firstName,
-      allowance: profileDetails.givingAllowance.amount,
+      firstName: profileDetails.firstName,
+      allowance: profileDetails.wallet.givingAllowance.amount,
     );
   }
 

@@ -5,35 +5,65 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
-import 'package:givt_app/features/children/details/repositories/child_details_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
-import 'package:givt_app/features/children/overview/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 part 'child_details_state.dart';
 
 class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   ChildDetailsCubit(
-    this._childDetailsRepository,
     this._editChildRepository,
+    this._profilesRepository,
     this._profile,
-  ) : super(const ChildDetailsInitialState());
+  ) : super(const ChildDetailsInitialState()) {
+    _walletChangedSubscription =
+        _editChildRepository.childChangedStream().listen(
+      (childGUID) {
+        if (childGUID == _profile.id) {
+          fetchChildDetails();
+        }
+      },
+    );
+    _childDetailsChangedSubscription =
+        _profilesRepository.onChildChanged().listen(
+              _onMatchUpdateProfile,
+            );
+  }
 
-  final ChildDetailsRepository _childDetailsRepository;
+  void _onMatchUpdateProfile(Profile profile) {
+    if (profile.id == _profile.id) {
+      _profile = profile;
+      _emitData();
+    }
+  }
+
   final EditChildRepository _editChildRepository;
-  final Profile _profile;
-  ProfileExt? _profileExt;
+  final ProfilesRepository _profilesRepository;
+  Profile _profile;
+
+  StreamSubscription<String>? _walletChangedSubscription;
+  StreamSubscription<List<Profile>>? _profilesChangedSubscription;
+  StreamSubscription<Profile>? _childDetailsChangedSubscription;
+
+  @override
+  Future<void> close() async {
+    await _walletChangedSubscription?.cancel();
+    await _profilesChangedSubscription?.cancel();
+    await _childDetailsChangedSubscription?.cancel();
+    await super.close();
+  }
 
   Future<void> fetchChildDetails() async {
     _emitLoading();
     try {
-      _profileExt = await _childDetailsRepository.fetchChildDetails(
-        _profile,
+      _profile = await _profilesRepository.getChildDetails(
+        _profile.id,
       );
       _emitData();
     } catch (error, stackTrace) {
-      await LoggingInfo.instance
+      LoggingInfo.instance
           .error(error.toString(), methodName: stackTrace.toString());
       emit(ChildDetailsErrorState(errorMessage: error.toString()));
     }
@@ -46,7 +76,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   void _emitData() {
     emit(
       ChildDetailsFetchedState(
-        profileDetails: _profileExt!,
+        profileDetails: _profile,
       ),
     );
   }
@@ -150,14 +180,14 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
   }
 
   Future<void> _handleEditAllowanceApiError(Object e, StackTrace s) async {
-    await LoggingInfo.instance.error(e.toString(), methodName: s.toString());
+    LoggingInfo.instance.error(e.toString(), methodName: s.toString());
     emit(
       ChildDetailsErrorState(errorMessage: e.toString()),
     );
   }
 
   Future<void> _handleTopUpApiError(Object e, StackTrace s) async {
-    await LoggingInfo.instance.error(e.toString(), methodName: s.toString());
+    LoggingInfo.instance.error(e.toString(), methodName: s.toString());
     if (e is GivtServerFailure && e.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
       unawaited(
         AnalyticsHelper.logEvent(
@@ -190,7 +220,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
       eventProperties: {
         'child_name': _profile.firstName,
         'new_giving_allowance': allowance,
-        'old_giving_allowance': _profileExt?.givingAllowance.amount,
+        'old_giving_allowance': _profile.wallet.givingAllowance.amount,
       },
     );
   }

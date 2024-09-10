@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interests_tally.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/utils/utils.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 class InterestsSelectionScreen extends StatelessWidget {
@@ -29,14 +32,13 @@ class InterestsSelectionScreen extends StatelessWidget {
                   sliver: SliverAppBar(
                     pinned: true,
                     backgroundColor: Colors.white,
-                    surfaceTintColor: AppTheme.primary90,
+                    surfaceTintColor: FamilyAppTheme.primary90,
                     automaticallyImplyLeading: false,
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const TitleSmallText(
                           'Select your top 3 choices',
-                          style: Theme.of(context).textTheme.titleSmall,
                         ),
                         InterestsTally(
                           tally: state.selectedInterests.length,
@@ -87,7 +89,7 @@ class InterestsSelectionScreen extends StatelessWidget {
           floatingActionButton: Visibility(
             visible:
                 state.selectedInterests.length == InterestsState.maxInterests,
-            child: GivtElevatedButton(
+            child: FunButton(
               isDisabled:
                   state.selectedInterests.length != InterestsState.maxInterests,
               text: 'Next',
@@ -101,6 +103,14 @@ class InterestsSelectionScreen extends StatelessWidget {
                       context.read<InterestsCubit>().clearSelectedInterests();
                     }
                   : null,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.interestSelected,
+                parameters: {
+                  'interests': state.selectedInterests
+                      .map((e) => e.displayText)
+                      .toList(),
+                },
+              ),
             ),
           ),
         );

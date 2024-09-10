@@ -43,7 +43,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.warning(
+      LoggingInfo.instance.warning(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -111,7 +111,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.warning(
+      LoggingInfo.instance.warning(
         e.toString(),
         methodName: stackTrace.toString(),
       );
@@ -145,7 +145,7 @@ class AddExternalDonationCubit extends Cubit<AddExternalDonationState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.warning(
+      LoggingInfo.instance.warning(
         e.toString(),
         methodName: stackTrace.toString(),
       );

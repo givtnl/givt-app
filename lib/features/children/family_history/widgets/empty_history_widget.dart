@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/l10n/l10n.dart';
 
 class EmptyHistoryWidget extends StatelessWidget {
-  const EmptyHistoryWidget({super.key,});
+  const EmptyHistoryWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,10 +8,11 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/widgets/action_tile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/give_bottomsheet.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,6 +28,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with WidgetsBindingObserver {
   bool isiPad = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
@@ -55,7 +57,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Future<void> refresh() async {
     // Execute tasks in parallel
     await Future.wait([
-      context.read<ProfilesCubit>().fetchActiveProfile(true),
+      context.read<ProfilesCubit>().refresh(),
     ]);
   }
 
@@ -77,7 +79,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget build(BuildContext context) {
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       builder: (context, state) {
-        final isGiveButtonActive = state.activeProfile.wallet.balance > 0;
         final hasDonations = state.activeProfile.hasDonations;
 
         var countdownAmount = 0.0;
@@ -108,8 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(
-                                  child: ActionTile(
-                                    isDisabled: !isGiveButtonActive,
+                                  child: FunTile(
                                     titleBig: 'Give',
                                     iconPath:
                                         'assets/family/images/give_tile.svg',
@@ -147,12 +147,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                                 const SizedBox(width: 16),
                                 Expanded(
-                                  child: ActionTile(
-                                    isDisabled: false,
+                                  child: FunTile(
                                     titleBig: 'Find Charity',
                                     iconPath:
                                         'assets/family/images/find_tile.svg',
-                                    backgroundColor: AppTheme.primary98,
+                                    backgroundColor: FamilyAppTheme.primary98,
                                     borderColor: Theme.of(context)
                                         .colorScheme
                                         .primaryContainer,

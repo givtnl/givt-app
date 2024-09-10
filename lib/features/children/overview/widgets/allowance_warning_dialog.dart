@@ -5,7 +5,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class AllowancesWarningDialog extends StatelessWidget {
-  const AllowancesWarningDialog({super.key,});
+  const AllowancesWarningDialog({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class AllowancesWarningDialog extends StatelessWidget {
           Text(
             context.l10n.noWorriesWeWillTryAgain,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontFamily: 'Raleway',
                   fontWeight: FontWeight.w600,
                   color: AppTheme.childGivingAllowanceHint,

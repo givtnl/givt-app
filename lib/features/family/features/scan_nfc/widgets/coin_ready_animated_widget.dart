@@ -53,9 +53,9 @@ class _CoinReadyAnimatedWidgetState extends State<CoinReadyAnimatedWidget>
 
 class AnimatedCoinTap extends AnimatedWidget {
   const AnimatedCoinTap({
+    required Animation<double> animation,
     super.key,
     this.width = 120,
-    required Animation<double> animation,
   }) : super(listenable: animation);
 
   final double width;

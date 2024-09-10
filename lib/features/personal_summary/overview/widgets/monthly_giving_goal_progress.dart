@@ -8,7 +8,9 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class MonthlyGivingGoalProgress extends StatelessWidget {
-  const MonthlyGivingGoalProgress({super.key,});
+  const MonthlyGivingGoalProgress({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

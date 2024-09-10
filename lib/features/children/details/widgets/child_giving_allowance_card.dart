@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/details/models/profile_ext.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
+import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
@@ -13,14 +13,15 @@ class ChildGivingAllowanceCard extends StatelessWidget {
     super.key,
   });
 
-  final ProfileExt profileDetails;
+  final Profile profileDetails;
   final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final nextTopUpDate =
-        DateTime.parse(profileDetails.givingAllowance.nextGivingAllowanceDate);
-    final theme = FamilyAppTheme().toThemeData();
+    final nextTopUpDate = DateTime.tryParse(
+      profileDetails.wallet.givingAllowance.nextGivingAllowanceDate,
+    );
+    final theme = const FamilyAppTheme().toThemeData();
     final size = MediaQuery.of(context).size;
     return Container(
       margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -40,7 +41,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
           width: double.maxFinite,
           child: getLayout(
             context,
-            hasAllowance: profileDetails.givingAllowance.amount > 0,
+            hasAllowance: profileDetails.wallet.givingAllowance.amount > 0,
             nextTopUpDate: nextTopUpDate,
             theme: theme,
             size: size,
@@ -53,8 +54,8 @@ class ChildGivingAllowanceCard extends StatelessWidget {
   Widget getLayout(
     BuildContext context, {
     required bool hasAllowance,
-    required DateTime nextTopUpDate,
     required Size size,
+    DateTime? nextTopUpDate,
     ThemeData? theme,
   }) {
     if (hasAllowance) {
@@ -64,7 +65,7 @@ class ChildGivingAllowanceCard extends StatelessWidget {
           primaryCircleWithText(
             circleSize: size.width * 0.35,
             text:
-                '\$${profileDetails.givingAllowance.amount.toStringAsFixed(0)}',
+                '\$${profileDetails.wallet.givingAllowance.amount.toStringAsFixed(0)}',
           ),
           const SizedBox(height: 16),
           Text(
@@ -73,12 +74,13 @@ class ChildGivingAllowanceCard extends StatelessWidget {
             style: theme?.textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
-          Text(
-            (profileDetails.pendingAllowance)
-                ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
-                : 'Next due: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
-            style: theme?.textTheme.bodySmall,
-          ),
+          if (nextTopUpDate != null)
+            Text(
+              (profileDetails.wallet.pendingAllowance)
+                  ? '${context.l10n.editChildWeWIllTryAgain}${ChildDateUtils.dateFormatter.format(nextTopUpDate)}'
+                  : 'Next due: ${ChildDateUtils.dateFormatter.format(nextTopUpDate)}',
+              style: theme?.textTheme.bodySmall,
+            ),
         ],
       );
     }

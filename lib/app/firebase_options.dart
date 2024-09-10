@@ -2,7 +2,7 @@
 // ignore_for_file: lines_longer_than_80_chars, avoid_classes_with_only_static_members
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
-    show defaultTargetPlatform, kIsWeb, TargetPlatform;
+    show TargetPlatform, defaultTargetPlatform, kIsWeb;
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -61,7 +61,8 @@ class DefaultFirebaseOptions {
     appId: '1:978122520533:ios:e0fa2cb84f9e7f67882f5c',
     messagingSenderId: '978122520533',
     projectId: 'givtapp-ebde1',
-    iosClientId: '117496805169-u7anlg5v1dtjpa8c7b04d0nsd75ftk83.apps.googleusercontent.com',
+    iosClientId:
+        '117496805169-u7anlg5v1dtjpa8c7b04d0nsd75ftk83.apps.googleusercontent.com',
     iosBundleId: 'net.givtapp.ios',
   );
 }

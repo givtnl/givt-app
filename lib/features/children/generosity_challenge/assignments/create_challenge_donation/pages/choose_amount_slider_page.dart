@@ -13,16 +13,15 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/crea
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/widgets/slider_widget.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_striple_registration_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_save_key.dart';
 import 'package:givt_app/features/children/shared/presentation/widgets/no_funds_initial_dialog.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
-import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
-import 'package:givt_app/shared/widgets/dialogs/card_dialog.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -75,9 +74,9 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
             }
           },
           child: Scaffold(
-            appBar: const GenerosityAppBar(
+            appBar: FunTopAppBar.primary99(
               title: 'Day 7',
-              leading: GenerosityBackButton(),
+              leading: const GenerosityBackButton(),
             ),
             body: SafeArea(
               child: Stack(
@@ -114,32 +113,18 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
                     ],
                   ),
                   if (_isLoading)
-                    Align(
-                      child: CardDialog(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const CircularProgressIndicator(),
-                            const SizedBox(height: 16),
-                            Text(
-                              context.l10n.loadingTitle,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
+                    const Align(
+                      child: CustomCircularProgressIndicator(),
                     ),
                 ],
               ),
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: GivtElevatedButton(
-              isDisabled: state.amount == 0,
+            floatingActionButton: FunButton(
+              isDisabled: state.amount == 0 || _isLoading,
               text: 'Donate',
               onTap: () async {
-                _logDonationAnalytics(state);
                 try {
                   _setLoading(true);
                   final stripeResponse =
@@ -164,6 +149,13 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
                   }
                 }
               },
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.chooseAmountDonateClicked,
+                parameters: {
+                  'organisation_name': widget.organisation.organisationName,
+                  'amount': state.amount.toInt(),
+                },
+              ),
             ),
           ),
         );
@@ -185,18 +177,6 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
     setState(() {
       _isLoading = isLoading;
     });
-  }
-
-  void _logDonationAnalytics(CreateChallengeDonationState state) {
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.chooseAmountDonateClicked,
-        eventProperties: {
-          'organisation_name': widget.organisation.organisationName,
-          'amount': state.amount.toInt(),
-        },
-      ),
-    );
   }
 
   void _handleStripeRegistrationSuccess(

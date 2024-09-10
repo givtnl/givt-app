@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
+Widget microphoneIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/microphone.svg',
+      width: width,
+      height: height,
+    );
+
+Widget sidekickIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/sidekick.svg',
+      width: width,
+      height: height,
+    );
+
+Widget superheroMaskIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/superhero_mask.svg',
+      width: width,
+      height: height,
+    );
+
 Widget walletIcon({double? width, double? height}) =>
-    SvgPicture.asset('assets/images/wallet.svg');
+    SvgPicture.asset('assets/images/wallet.svg', width: width, height: height);
 
 Widget coin({double? width, double? height}) => SvgPicture.asset(
       'assets/images/coin.svg',
@@ -18,16 +37,30 @@ Widget calendarClockIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
 Widget calendarClockAvatarIcon({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/calendar_clock_avatar.svg',
       width: width,
       height: height,
     );
+
 Widget plusIcon({double? size}) => FaIcon(
       FontAwesomeIcons.plus,
       color: AppTheme.givtLightGreen,
       size: size,
+    );
+
+Widget smilePurpleIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/smiley_purple.svg',
+      width: width,
+      height: height,
+    );
+
+Widget smileGreyIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/smiley_grey.svg',
+      width: width,
+      height: height,
     );
 
 Widget registeredCheck({double? width, double? height, Clip? clipBehavior}) =>
@@ -44,6 +77,7 @@ Widget registeredCheckBackground({double? width, double? height}) =>
       width: width,
       height: height,
     );
+
 Widget registeredCheckAvatar({double? width, double? height}) =>
     SvgPicture.asset(
       'assets/images/registered_check_avatar.svg',
@@ -72,8 +106,15 @@ Widget pendingIcon({double? width, double? height}) => SvgPicture.asset(
 Widget warningIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/donation_states_error.svg',
     );
+
 Widget trashAvatarIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/trash_avatar.svg',
+      width: width,
+      height: height,
+    );
+
+Widget secureCardsIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/vpc_secure.svg',
       width: width,
       height: height,
     );
@@ -102,6 +143,32 @@ Widget day4TimerIconRed({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+
+Widget recordMicRedIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/record_mic_red.svg',
+      width: width,
+      height: height,
+    );
+
+Widget recordMicGreenIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/family/images/record_mic_green.svg',
+      width: width,
+      height: height,
+    );
+
+Widget secretWordBackground({double? width, double? height}) =>
+    SvgPicture.asset(
+      'assets/family/images/secret_word_bg.svg',
+      width: width,
+      height: height,
+    );
+
+Widget walletEmptyIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/wallet_empty.svg',
+      width: width,
+      height: height,
+    );
+
 Widget primaryCircleWithText({
   String? text = '',
   double circleSize = 62,
@@ -141,17 +208,50 @@ Widget primaryCircleWithIcon({
     Padding(
       // 14 is what the design has when exporting svgs
       padding: const EdgeInsets.all(14),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: circleSize,
+            height: circleSize,
+            decoration: BoxDecoration(
+              color: circleColor ?? FamilyAppTheme.primary95,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(
+            width: iconSize * 2,
+            child: Icon(
+              iconData,
+              color: iconColor ?? FamilyAppTheme.primary20,
+              size: iconSize,
+            ),
+          ),
+        ],
+      ),
+    );
+
+Widget errorCircleWithIcon({
+  IconData? iconData,
+  double circleSize = 62,
+  double iconSize = 40,
+  Color? circleColor,
+  Color? iconColor,
+}) =>
+    Padding(
+      // 14 is what the design has when exporting svgs
+      padding: const EdgeInsets.all(14),
       child: Container(
         width: circleSize,
         height: circleSize,
         decoration: BoxDecoration(
-          color: circleColor ?? FamilyAppTheme.primary95,
+          color: circleColor ?? FamilyAppTheme.error80,
           shape: BoxShape.circle,
         ),
         child: Center(
           child: Icon(
             iconData,
-            color: iconColor ?? FamilyAppTheme.primary20,
+            color: iconColor ?? FamilyAppTheme.error30,
             size: iconSize,
           ),
         ),

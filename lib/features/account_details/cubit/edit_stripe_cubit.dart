@@ -26,7 +26,7 @@ class EditStripeCubit extends Cubit<EditStripeState> {
         ),
       );
     } catch (e, stackTrace) {
-      await LoggingInfo.instance.error('$e', methodName: stackTrace.toString());
+      LoggingInfo.instance.error('$e', methodName: stackTrace.toString());
       emit(state.copyWith(stripeStatus: StripeObjectStatus.failure));
     }
   }

@@ -10,6 +10,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -101,7 +102,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       children: [
                         const Icon(
                           FontAwesomeIcons.wallet,
-                          color: AppTheme.info40,
+                          color: FamilyAppTheme.info40,
                           size: 20,
                         ),
                         Countup(
@@ -137,7 +138,7 @@ class _WalletWidgetState extends State<WalletWidget> {
                       children: [
                         Text(
                           'My profile',
-                          style: Theme.of(context).textTheme.labelSmall,
+                          style: Theme.of(context).textTheme.labelMedium,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 4),

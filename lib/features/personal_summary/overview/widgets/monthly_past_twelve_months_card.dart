@@ -8,7 +8,9 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class MonthlyPastTwelveMonthsCard extends StatelessWidget {
-  const MonthlyPastTwelveMonthsCard({super.key,});
+  const MonthlyPastTwelveMonthsCard({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

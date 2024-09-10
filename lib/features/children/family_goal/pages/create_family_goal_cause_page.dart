@@ -5,14 +5,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
-import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/bloc/organisation/organisation.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateFamilyGoalCausePage extends StatefulWidget {
-  const CreateFamilyGoalCausePage({super.key,});
+  const CreateFamilyGoalCausePage({
+    super.key,
+  });
 
   @override
   State<CreateFamilyGoalCausePage> createState() =>
@@ -115,7 +117,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
               FloatingActionButtonLocation.centerFloat,
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(left: 24, right: 24),
-            child: CustomGreenElevatedButton(
+            child: CustomElevatedButton(
               title: context.l10n.continueKey,
               onPressed: state.selectedCollectGroup.type ==
                       CollectGroupType.none

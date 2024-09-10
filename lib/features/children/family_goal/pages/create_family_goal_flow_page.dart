@@ -7,12 +7,14 @@ import 'package:givt_app/features/children/family_goal/pages/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_confirmed_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_loading_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_overview_page.dart';
-import 'package:givt_app/features/give/bloc/organisation/organisation_bloc.dart';
+import 'package:givt_app/shared/bloc/organisation/organisation.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
 class CreateFamilyGoalFlowPage extends StatelessWidget {
-  const CreateFamilyGoalFlowPage({super.key,});
+  const CreateFamilyGoalFlowPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,8 @@ class CreateFamilyGoalFlowPage extends StatelessWidget {
                     amount: createGoalState.amount,
                   );
                 case FamilyGoalCreationStatus.confirmation:
-                  return CreateFamilyGoalConfirmationPage(state: createGoalState);
+                  return CreateFamilyGoalConfirmationPage(
+                      state: createGoalState);
                 case FamilyGoalCreationStatus.loading:
                   return const CreateFamilyGoalLoadingPage(
                     stepperStatus: FamilyGoalCreationStatus.confirmation,

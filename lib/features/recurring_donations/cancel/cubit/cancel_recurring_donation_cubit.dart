@@ -23,7 +23,7 @@ class CancelRecurringDonationCubit extends Cubit<CancelRecurringDonationState> {
       );
       emit(CancelRecurringDonationSuccessState());
     } catch (error, stackTrace) {
-      await LoggingInfo.instance.error(
+      LoggingInfo.instance.error(
         error.toString(),
         methodName: stackTrace.toString(),
       );

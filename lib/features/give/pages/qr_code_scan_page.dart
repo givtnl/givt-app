@@ -13,7 +13,9 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class QrCodeScanPage extends StatefulWidget {
-  const QrCodeScanPage({super.key,});
+  const QrCodeScanPage({
+    super.key,
+  });
 
   @override
   State<QrCodeScanPage> createState() => _QrCodeScanPageState();
@@ -147,7 +149,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     final encodedMediumId = isGivtQRCode(barcodeCapture.barcodes);
 
     if (encodedMediumId == null) {
-      await LoggingInfo.instance.info('QR-Code does not contain a medium id');
+      LoggingInfo.instance.info('QR-Code does not contain a medium id');
       await displayErrorDialog();
       return;
     }
@@ -161,7 +163,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
   }
 
   /// Checks if the given barcodes contain a Givt QR code.
-  /// Returns the encoded medium id if it is a Givt QR code, 
+  /// Returns the encoded medium id if it is a Givt QR code,
   /// otherwise null.
   String? isGivtQRCode(List<Barcode> barcodes) {
     for (final barcode in barcodes) {
@@ -183,7 +185,6 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
       }
 
       return encodedMediumId;
-
     }
     return null;
   }
@@ -216,8 +217,7 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     ).then((bool? value) {
       if (value == null) {
         _controller.start();
-      }
-      if (value!) {
+      } else {
         Navigator.of(context).pop();
       }
     });

@@ -6,24 +6,26 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/widgets/family_values_sliver_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_app_bar.dart';
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/shared/widgets/buttons/givt_elevated_button.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class DisplayFamilyValues extends StatelessWidget {
-  const DisplayFamilyValues({super.key,});
+  const DisplayFamilyValues({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FamilyValuesCubit, FamilyValuesState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: const GenerosityAppBar(
+          appBar: FunTopAppBar.primary99(
             title: 'Day 7',
-            leading: GenerosityBackButton(),
+            leading: const GenerosityBackButton(),
           ),
           body: SafeArea(
             child: CustomScrollView(
@@ -64,12 +66,8 @@ class DisplayFamilyValues extends StatelessWidget {
               ],
             ),
           ),
-          floatingActionButton: GivtElevatedButton(
+          floatingActionButton: FunButton(
             onTap: () {
-              AnalyticsHelper.logEvent(
-                eventName:
-                    AmplitudeEvents.daySevenFamilyValuesSeenContinueClicked,
-              );
               context.pushNamed(
                 FamilyPages.displayValuesOrganisations.name,
                 extra: {
@@ -80,6 +78,9 @@ class DisplayFamilyValues extends StatelessWidget {
               );
             },
             text: 'Continue',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.daySevenFamilyValuesSeenContinueClicked,
+            ),
           ),
         );
       },
