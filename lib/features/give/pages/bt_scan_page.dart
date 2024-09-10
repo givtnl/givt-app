@@ -80,7 +80,7 @@ class _BTScanPageState extends State<BTScanPage> {
             }
           case BluetoothAdapterState.unauthorized:
             LoggingInfo.instance.info('Bluetooth adapter is unauthorized');
-            if (!context.mounted) {
+            if (!mounted) {
               return;
             }
             await showDialog<void>(
@@ -90,7 +90,6 @@ class _BTScanPageState extends State<BTScanPage> {
                 content:
                     '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
                 onConfirm: () async {
-                  await startBluetoothScan();
                   if (!context.mounted) {
                     return;
                   }
@@ -135,6 +134,9 @@ class _BTScanPageState extends State<BTScanPage> {
     } catch (e) {
       LoggingInfo.instance
           .error('Error in BT scan page: $e', methodName: 'initBluetooth');
+      if (!mounted) {
+        return;
+      }
       Navigator.of(context).pop();
     }
   }
