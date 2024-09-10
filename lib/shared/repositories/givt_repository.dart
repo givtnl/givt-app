@@ -213,7 +213,7 @@ class GivtRepositoryImpl with GivtRepository {
       return SummaryItem.fromJsonList(
         decodedJson,
       );
-    } catch (e, s) {
+    } catch (e) {
       LoggingInfo.instance.error(
         e.toString(),
         methodName: 'fetchSummary',

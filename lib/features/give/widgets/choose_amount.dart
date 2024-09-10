@@ -337,7 +337,8 @@ class _ChooseAmountState extends State<ChooseAmount> {
                 onPressed: () async => AuthUtils.checkToken(
                   context,
                   checkAuthRequest: CheckAuthRequest(
-                    navigate: (context, {isUSUser}) => showModalBottomSheet<void>(
+                    navigate: (context, {isUSUser}) =>
+                        showModalBottomSheet<void>(
                       context: context,
                       isScrollControlled: true,
                       useSafeArea: true,

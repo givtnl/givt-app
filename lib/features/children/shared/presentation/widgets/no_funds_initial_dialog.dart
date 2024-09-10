@@ -6,7 +6,10 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class NoFundsInitialDialog extends StatelessWidget {
-  const NoFundsInitialDialog({this.onClickContinue, super.key,});
+  const NoFundsInitialDialog({
+    this.onClickContinue,
+    super.key,
+  });
 
   final void Function()? onClickContinue;
 

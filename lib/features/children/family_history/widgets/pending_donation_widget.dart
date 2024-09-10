@@ -97,11 +97,12 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                     children: [
                       Text(
                         '\$${widget.donation.amount.toStringAsFixed(2)} ${locals.childHistoryBy} ${widget.donation.name}',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: DonationState.getAmountColor(
-                                widget.donation.state,
-                              ),
-                            ),
+                        style:
+                            Theme.of(context).textTheme.labelMedium?.copyWith(
+                                  color: DonationState.getAmountColor(
+                                    widget.donation.state,
+                                  ),
+                                ),
                       ),
                       SizedBox(
                         width: widget.donation.medium == DonationMediumType.nfc
@@ -113,9 +114,10 @@ class _PendingDonationWidgetState extends State<PendingDonationWidget> {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           softWrap: true,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: AppTheme.childHistoryPendingDark,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    color: AppTheme.childHistoryPendingDark,
+                                  ),
                         ),
                       ),
                       Text(

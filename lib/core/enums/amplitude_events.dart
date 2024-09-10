@@ -268,6 +268,7 @@ enum AmplitudeEvents {
   ),
 
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
+  modalCloseButtonClicked('modal_close_button_clicked'),
 
   // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
@@ -284,7 +285,8 @@ enum AmplitudeEvents {
   // Parent giving flow
   parentGiveTileClicked('parent_give_tile_clicked'),
   parentGivingFlowOrganisationClicked(
-      'parent_giving_flow_organization_clicked'),
+    'parent_giving_flow_organization_clicked',
+  ),
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   parentGiveClicked('parent_give_clicked'),
 
@@ -296,15 +298,22 @@ enum AmplitudeEvents {
   reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
   reflectAndShareMemberAdded('reflect_and_share_member_added'),
   reflectAndSharePassThePhoneClicked(
-      'reflect_and_share_pass_the_phone_clicked'),
+    'reflect_and_share_pass_the_phone_clicked',
+  ),
   reflectAndShareReadyClicked('reflect_and_share_ready_clicked'),
   reflectAndShareStartInterviewClicked(
-      'reflect_and_share_start_interview_clicked'),
+    'reflect_and_share_start_interview_clicked',
+  ),
   reflectAndShareDoneClicked('reflect_and_share_done_clicked'),
   reflectAndShareResultGoBackClicked(
-      'reflect_and_share_result_go_back_clicked'),
+    'reflect_and_share_result_go_back_clicked',
+  ),
   reflectAndShareNextJournalistClicked(
-      'reflect_and_share_next_journalist_clicked'),
+    'reflect_and_share_next_journalist_clicked',
+  ),
+  reflectAndShareChangeWordClicked('reflect_and_share_change_word_clicked'),
+  reflectAndShareConfirmExitClicked('reflect_and_share_confirm_exit_clicked'),
+  reflectAndShareKeepPlayingClicked('reflect_and_share_keep_playing_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

@@ -7,9 +7,9 @@ import 'package:givt_app/features/family/features/recommendation/interests/cubit
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interest_card.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/widgets/interests_tally.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 

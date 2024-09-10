@@ -120,8 +120,8 @@ class ChildDetailsPage extends StatelessWidget {
                             AmplitudeEvents.childDetailsEditAppBarClicked,
                         eventProperties: {
                           'child_name': state.profileDetails.firstName,
-                          'giving_allowance':
-                              state.profileDetails.wallet.givingAllowance.amount,
+                          'giving_allowance': state
+                              .profileDetails.wallet.givingAllowance.amount,
                         },
                       );
 
@@ -161,14 +161,15 @@ class ChildDetailsPage extends StatelessWidget {
                                     AmplitudeEvents.childDetailsEditCardClicked,
                                 eventProperties: {
                                   'child_name': state.profileDetails.firstName,
-                                  'giving_allowance': state
-                                      .profileDetails.wallet.givingAllowance.amount,
+                                  'giving_allowance': state.profileDetails
+                                      .wallet.givingAllowance.amount,
                                 },
                               );
 
                               _navigateToEditAllowanceScreen(
                                 context,
-                                state.profileDetails.wallet.givingAllowance.amount
+                                state.profileDetails.wallet.givingAllowance
+                                    .amount
                                     .toInt(),
                               );
                             },

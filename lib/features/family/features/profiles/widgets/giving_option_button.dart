@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class GiveOptionButton extends StatelessWidget {
-  const GiveOptionButton(
-      {required this.context,
-      required this.size,
-      required this.text,
-      required this.imageLocation,
-      required this.backgroundColor,
-      required this.secondColor,
-      required this.onPressed,
-      super.key,});
+  const GiveOptionButton({
+    required this.context,
+    required this.size,
+    required this.text,
+    required this.imageLocation,
+    required this.backgroundColor,
+    required this.secondColor,
+    required this.onPressed,
+    super.key,
+  });
   final BuildContext context;
   final Size size;
   final String text;

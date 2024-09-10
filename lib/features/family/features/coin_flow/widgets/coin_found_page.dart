@@ -3,7 +3,9 @@ import 'package:givt_app/features/family/features/coin_flow/widgets/coin_found.d
 import 'package:givt_app/features/family/features/coin_flow/widgets/search_coin_animated_widget.dart';
 
 class CoinFoundPage extends StatelessWidget {
-  const CoinFoundPage({super.key,});
+  const CoinFoundPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

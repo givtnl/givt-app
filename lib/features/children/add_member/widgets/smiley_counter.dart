@@ -23,7 +23,9 @@ class SmileyCounter extends StatelessWidget {
         children: [
           ...List.generate(smileyCount, (_) => _buildSmileyIcon()),
           ...List.generate(
-              remainingCount, (_) => _buildSmileyIcon(isGrey: true)),
+            remainingCount,
+            (_) => _buildSmileyIcon(isGrey: true),
+          ),
         ],
       ),
     );

@@ -5,17 +5,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
-Widget microphoneIcon({double? width, double? height}) =>
-    SvgPicture.asset('assets/images/microphone.svg',
-        width: width, height: height);
+Widget microphoneIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/microphone.svg',
+      width: width,
+      height: height,
+    );
 
-Widget sidekickIcon({double? width, double? height}) =>
-    SvgPicture.asset('assets/images/sidekick.svg',
-        width: width, height: height);
+Widget sidekickIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/sidekick.svg',
+      width: width,
+      height: height,
+    );
 
-Widget superheroMaskIcon({double? width, double? height}) =>
-    SvgPicture.asset('assets/images/superhero_mask.svg',
-        width: width, height: height);
+Widget superheroMaskIcon({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/superhero_mask.svg',
+      width: width,
+      height: height,
+    );
 
 Widget walletIcon({double? width, double? height}) =>
     SvgPicture.asset('assets/images/wallet.svg', width: width, height: height);

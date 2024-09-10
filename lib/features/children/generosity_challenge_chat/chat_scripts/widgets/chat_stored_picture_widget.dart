@@ -5,11 +5,12 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
 
 class ChatStoredPictureWidget extends StatefulWidget {
-  const ChatStoredPictureWidget(
-      {required this.width,
-      required this.height,
-      required this.path,
-      super.key,});
+  const ChatStoredPictureWidget({
+    required this.width,
+    required this.height,
+    required this.path,
+    super.key,
+  });
   final double width;
   final double height;
   final String path;

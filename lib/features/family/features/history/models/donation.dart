@@ -30,8 +30,9 @@ class Donation extends HistoryItem {
       organizationName: map['collectGroupName'] as String? ?? '',
       state: DonationState.getState(map['status'] as String?),
       medium: DonationMediumType.values.firstWhere(
-          (element) => element.type == map['mediumType'],
-          orElse: () => DonationMediumType.unknown,),
+        (element) => element.type == map['mediumType'],
+        orElse: () => DonationMediumType.unknown,
+      ),
       type: HistoryTypes.values.firstWhere(
         (element) => element.value == map['donationType'],
         orElse: () => HistoryTypes.donation,

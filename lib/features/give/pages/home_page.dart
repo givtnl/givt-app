@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
         context.goNamed(routeName.name);
       });
     }
-    
+
     return Scaffold(
       key: _key,
       appBar: AppBar(

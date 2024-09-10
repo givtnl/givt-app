@@ -16,11 +16,12 @@ class Income extends HistoryItem {
 
   factory Income.fromMap(Map<String, dynamic> map) {
     return Income(
-        amount: double.tryParse(map['amount'].toString()) ?? 0,
-        date: DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
-        type: HistoryTypes.values.firstWhere(
-          (element) => element.value == map['donationType'],
-        ),);
+      amount: double.tryParse(map['amount'].toString()) ?? 0,
+      date: DateTime.tryParse(map['donationDate'] as String) ?? DateTime.now(),
+      type: HistoryTypes.values.firstWhere(
+        (element) => element.value == map['donationType'],
+      ),
+    );
   }
 
   @override

@@ -11,7 +11,9 @@ import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class AddExternalDonationPage extends StatelessWidget {
-  const AddExternalDonationPage({super.key,});
+  const AddExternalDonationPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

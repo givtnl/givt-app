@@ -55,6 +55,7 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const highlight98 = Color(0xFFFFF9EB);
   static const highlight99 = Color(0xFFFFFDF7);
 
+  static const error20 = Color(0xFF680300);
   static const error30 = Color(0xFF920700);
   static const error40 = Color(0xFFB91F0F);
   static const error80 = Color(0xFFFFB4A7);
@@ -179,18 +180,18 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       ),
       elevatedButtonTheme: const ElevatedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStatePropertyAll(0),
-          textStyle: MaterialStatePropertyAll(
+          elevation: WidgetStatePropertyAll(0),
+          textStyle: WidgetStatePropertyAll(
             TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
           ),
-          backgroundColor: MaterialStatePropertyAll(Color(0xFF41c98e)),
-          foregroundColor: MaterialStatePropertyAll(Colors.white),
-          minimumSize: MaterialStatePropertyAll(Size.fromHeight(45)),
-          shape: MaterialStatePropertyAll(
+          backgroundColor: WidgetStatePropertyAll(Color(0xFF41c98e)),
+          foregroundColor: WidgetStatePropertyAll(Colors.white),
+          minimumSize: WidgetStatePropertyAll(Size.fromHeight(45)),
+          shape: WidgetStatePropertyAll(
             ContinuousRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(10),
@@ -208,20 +209,20 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       cardTheme: CardTheme(
-        color: colorScheme.background,
+        color: colorScheme.surface,
         surfaceTintColor: Colors.transparent,
       ),
       checkboxTheme: CheckboxThemeData(
-        fillColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.selected)) {
+        fillColor: WidgetStateProperty.resolveWith<Color>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.selected)) {
               return primary80;
             }
 
             return Colors.white;
           },
         ),
-        checkColor: MaterialStateProperty.all(primary20),
+        checkColor: WidgetStateProperty.all(primary20),
       ),
     );
   }
@@ -278,11 +279,9 @@ extension on Scheme {
       onErrorContainer: Color(onErrorContainer),
       outline: Color(outline),
       outlineVariant: Color(outlineVariant),
-      background: Color(surface),
-      onBackground: Color(onSurface),
       surface: Color(surface),
       onSurface: Color(onSurface),
-      surfaceVariant: Color(surfaceVariant),
+      surfaceContainerHighest: Color(surfaceVariant),
       onSurfaceVariant: Color(onSurfaceVariant),
       inverseSurface: Color(inverseSurface),
       onInverseSurface: Color(inverseOnSurface),

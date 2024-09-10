@@ -252,8 +252,7 @@ class ChatScriptsCubit extends Cubit<ChatScriptsState> {
   void _logRegistrationSucceeded() {
     unawaited(
       AnalyticsHelper.logEvent(
-        eventName:
-            AmplitudeEvents.generosityChallengeRegistrationSucceeded,
+        eventName: AmplitudeEvents.generosityChallengeRegistrationSucceeded,
       ),
     );
   }

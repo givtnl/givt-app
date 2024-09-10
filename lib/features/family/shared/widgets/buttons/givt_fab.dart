@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 
 class GivtFloatingActionButton extends StatefulWidget {
   const GivtFloatingActionButton({
-    required this.onTap, required this.text, super.key,
+    required this.onTap,
+    required this.text,
+    super.key,
     this.isDisabled,
     this.leftIcon,
     this.rightIcon,

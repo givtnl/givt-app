@@ -5,7 +5,9 @@ import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class AllowancesWarningDialog extends StatelessWidget {
-  const AllowancesWarningDialog({super.key,});
+  const AllowancesWarningDialog({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

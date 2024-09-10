@@ -4,7 +4,9 @@ import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cu
 import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
 
 class CoinErrorPage extends StatelessWidget {
-  const CoinErrorPage({super.key,});
+  const CoinErrorPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

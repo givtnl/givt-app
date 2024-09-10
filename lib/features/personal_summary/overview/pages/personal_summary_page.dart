@@ -12,7 +12,9 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonalSummary extends StatelessWidget {
-  const PersonalSummary({super.key,});
+  const PersonalSummary({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

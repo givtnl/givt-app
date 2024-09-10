@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -8,6 +9,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -26,8 +28,8 @@ class FamilySelectionScreen extends StatefulWidget {
 }
 
 class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
-  var cubit = getIt<FamilySelectionCubit>();
-  var selectedProfiles = <GameProfile>[];
+  FamilySelectionCubit cubit = getIt<FamilySelectionCubit>();
+  List<GameProfile> selectedProfiles = <GameProfile>[];
 
   @override
   void didChangeDependencies() {
@@ -38,10 +40,20 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: const FunTopAppBar(
+      minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
+      safeAreaBottom: false,
+      appBar: FunTopAppBar(
         title: 'Who is playing?',
-        leading: GivtBackButtonFlat(),
+        leading: const GivtBackButtonFlat(),
+        systemNavigationBarColor: FamilyAppTheme.secondary80,
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.xmark),
+            onPressed: () {
+              const LeaveGameDialog().show(context);
+            },
+          ),
+        ],
       ),
       body: BaseStateConsumer<List<GameProfile>, dynamic>(
         cubit: cubit,
@@ -61,6 +73,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   const SizedBox(height: 8),
                   Expanded(
                     child: GridView.count(
+                      // physics: const NeverScrollableScrollPhysics(),
                       childAspectRatio: 0.9,
                       crossAxisCount: 3,
                       children: createGridItems(
@@ -82,16 +95,20 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
-  FunButton _seeRolesButton(BuildContext context) {
-    return FunButton(
-      onTap: () {
-        cubit.rolesClicked(selectedProfiles);
-        Navigator.of(context).push(const FamilyRolesScreen().toRoute(context));
-      },
-      isDisabled: selectedProfiles.length < 3,
-      text: 'See roles',
-      analyticsEvent: AnalyticsEvent(
-        AmplitudeEvents.reflectAndShareSeeRolesClicked,
+  Widget _seeRolesButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 40),
+      child: FunButton(
+        onTap: () {
+          cubit.rolesClicked(selectedProfiles);
+          Navigator.of(context)
+              .push(const FamilyRolesScreen().toRoute(context));
+        },
+        isDisabled: selectedProfiles.length < 3,
+        text: 'See roles',
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.reflectAndShareSeeRolesClicked,
+        ),
       ),
     );
   }
@@ -150,8 +167,11 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             selectedProfiles.add(details.data);
           });
         },
-        builder: (BuildContext context, List<Object?> candidateData,
-            List<dynamic> rejectedData) {
+        builder: (
+          BuildContext context,
+          List<Object?> candidateData,
+          List<dynamic> rejectedData,
+        ) {
           return _dragWidget(context, candidateData);
         },
       ),
@@ -159,36 +179,33 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   }
 
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
-    return SizedBox(
-      height: MediaQuery.sizeOf(context).height * 0.35,
-      child: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          Positioned(
-            left: -50,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: AnimatedArc(
-                diameter: MediaQuery.sizeOf(context).width + 100,
-                color: _shouldHighlight(candidateDate)
-                    ? FamilyAppTheme.secondary80.withOpacity(0.5)
-                    : FamilyAppTheme.secondary98,
-              ),
-            ),
-          ),
-          Align(
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Positioned(
+          left: -50,
+          child: Align(
             alignment: Alignment.bottomCenter,
-            child: Arc(
-              diameter: MediaQuery.sizeOf(context).width,
+            child: AnimatedArc(
+              diameter: MediaQuery.sizeOf(context).width + 100,
               color: _shouldHighlight(candidateDate)
-                  ? FamilyAppTheme.secondary95.withOpacity(0.5)
-                  : FamilyAppTheme.secondary95,
+                  ? FamilyAppTheme.secondary80.withOpacity(0.5)
+                  : FamilyAppTheme.secondary98,
             ),
           ),
-          Positioned(bottom: 52, child: _selectedProfiles()),
-          _seeRolesButton(context),
-        ],
-      ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Arc(
+            diameter: MediaQuery.sizeOf(context).width,
+            color: _shouldHighlight(candidateDate)
+                ? FamilyAppTheme.secondary95.withOpacity(0.5)
+                : FamilyAppTheme.secondary95,
+          ),
+        ),
+        Positioned(bottom: 96, child: _selectedProfiles()),
+        _seeRolesButton(context),
+      ],
     );
   }
 

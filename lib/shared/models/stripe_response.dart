@@ -14,7 +14,8 @@ class StripeResponse extends Equatable {
 
   factory StripeResponse.fromJson(Map<String, dynamic> json) => StripeResponse(
         customerId: json['customerId'] as String,
-        customerEphemeralKeySecret: json['customerEphemeralKeySecret'] as String,
+        customerEphemeralKeySecret:
+            json['customerEphemeralKeySecret'] as String,
         setupIntentClientSecret: json['setupIntentClientSecret'] as String,
       );
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 
 class InterestCard extends StatelessWidget {
   const InterestCard({

@@ -13,7 +13,10 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeGoalTracker extends StatelessWidget {
-  const HomeGoalTracker({required this.group, super.key,});
+  const HomeGoalTracker({
+    required this.group,
+    super.key,
+  });
   final ImpactGroup group;
   @override
   Widget build(BuildContext context) {

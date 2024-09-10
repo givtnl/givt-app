@@ -23,8 +23,9 @@ mixin GenerosityChallengeRepository {
 
   Future<bool> wasRegisteredBeforeChallenge();
 
-  Future<void> setAlreadyRegistered(
-      {required bool wasRegisteredBeforeChallenge,});
+  Future<void> setAlreadyRegistered({
+    required bool wasRegisteredBeforeChallenge,
+  });
 
   Future<String> submitDay5Picture({required bool takenWithCamera});
 
@@ -141,16 +142,21 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
 
   @override
   Future<bool> wasRegisteredBeforeChallenge() async {
-    return sharedPreferences.getBool(GenerosityChallengeHelper
-            .generosityChallengewasRegisteredBeforeChallengeKey,) ??
+    return sharedPreferences.getBool(
+          GenerosityChallengeHelper
+              .generosityChallengewasRegisteredBeforeChallengeKey,
+        ) ??
         false;
   }
 
   @override
-  Future<void> setAlreadyRegistered(
-      {required bool wasRegisteredBeforeChallenge,}) async {
-    final bool = sharedPreferences.getBool(GenerosityChallengeHelper
-        .generosityChallengewasRegisteredBeforeChallengeKey,);
+  Future<void> setAlreadyRegistered({
+    required bool wasRegisteredBeforeChallenge,
+  }) async {
+    final bool = sharedPreferences.getBool(
+      GenerosityChallengeHelper
+          .generosityChallengewasRegisteredBeforeChallengeKey,
+    );
     if (bool == null) {
       await sharedPreferences.setBool(
         GenerosityChallengeHelper
@@ -166,7 +172,9 @@ class GenerosityChallengeRepositoryImpl with GenerosityChallengeRepository {
         ? await mediaPickerService.takePhoto()
         : await mediaPickerService.uploadPhoto();
     final path = await mediaPickerService.savePhoto(
-        file, GenerosityChallengeHelper.day5PictureKey,);
+      file,
+      GenerosityChallengeHelper.day5PictureKey,
+    );
     return path;
   }
 

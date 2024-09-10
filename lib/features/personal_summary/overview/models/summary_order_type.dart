@@ -7,5 +7,4 @@ enum SummaryOrderType {
   const SummaryOrderType(this.type);
 
   final String type;
-
 }

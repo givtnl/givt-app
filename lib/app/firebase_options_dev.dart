@@ -61,7 +61,8 @@ class DefaultFirebaseOptions {
     appId: '1:847341799623:ios:dbf419704881d64d5156e2',
     messagingSenderId: '847341799623',
     projectId: 'givt-dev-pre',
-    iosClientId: '847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com',
+    iosClientId:
+        '847341799623-17r22pgkoe6j648jiag3c2hvpurt3i7m.apps.googleusercontent.com',
     iosBundleId: 'net.givtapp.ios.test',
   );
 }

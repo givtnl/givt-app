@@ -10,11 +10,11 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/email_signup_page.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -46,7 +46,7 @@ class WelcomePageView extends StatefulWidget {
 
 class _WelcomePageViewState extends State<WelcomePageView> {
   int _current = 0;
-  final CarouselController _controller = CarouselController();
+  final CarouselSliderController _controller = CarouselSliderController();
 
   @override
   Widget build(BuildContext context) {

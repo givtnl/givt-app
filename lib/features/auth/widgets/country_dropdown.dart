@@ -43,19 +43,19 @@ class CountryDropDown extends StatelessWidget {
             ),
         menuHeight: 250,
         menuStyle: MenuStyle(
-          surfaceTintColor: MaterialStateProperty.resolveWith((states) {
+          surfaceTintColor: WidgetStateProperty.resolveWith((states) {
             return Colors.white;
           }),
-          backgroundColor: MaterialStateProperty.resolveWith((states) {
+          backgroundColor: WidgetStateProperty.resolveWith((states) {
             return Colors.white;
           }),
-          side: MaterialStateProperty.resolveWith((states) {
+          side: WidgetStateProperty.resolveWith((states) {
             return const BorderSide(
               color: FamilyAppTheme.neutralVariant80,
               width: 2,
             );
           }),
-          shape: MaterialStateProperty.resolveWith((states) {
+          shape: WidgetStateProperty.resolveWith((states) {
             return const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),
             );

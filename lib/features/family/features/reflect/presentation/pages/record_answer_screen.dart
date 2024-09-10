@@ -1,9 +1,6 @@
-// ignore_for_file: unused_field
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -11,6 +8,7 @@ import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -95,14 +93,20 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       canPop: false,
       appBar: FunTopAppBar.primary99(
         title: widget.uiModel.reporter.firstName!,
+        leading: Padding(
+          padding: const EdgeInsets.all(8),
+          child: SvgPicture.network(
+            widget.uiModel.reporter.pictureURL!,
+            width: 36,
+            height: 36,
+          ),
+        ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: SvgPicture.network(
-              widget.uiModel.reporter.pictureURL!,
-              width: 36,
-              height: 36,
-            ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.xmark),
+            onPressed: () {
+              const LeaveGameDialog().show(context);
+            },
           ),
         ],
       ),
@@ -110,11 +114,12 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
         children: [
           const Spacer(),
           Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: TitleMediumText(
-                widget.uiModel.question,
-                textAlign: TextAlign.center,
-              )),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: TitleMediumText(
+              widget.uiModel.question,
+              textAlign: TextAlign.center,
+            ),
+          ),
           const Spacer(),
           Container(
             decoration: BoxDecoration(
@@ -154,28 +159,30 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   ),
                 ),
                 Visibility(
-                    visible: isTestBtnVisible,
-                    child: const SizedBox(height: 8)),
+                  visible: isTestBtnVisible,
+                  child: const SizedBox(height: 8),
+                ),
                 Visibility(
                   visible: isTestBtnVisible,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: FunButton(
-                        onTap: () {
-                          if (_remainingSeconds == 60 * 2) {
-                            _startCountdown();
-                            setState(() {
-                              _remainingSeconds = 20;
-                              isTestBtnVisible = false;
-                            });
-                            return;
-                          }
-                          cubit.advanceToNext();
-                        },
-                        text: 'Start test 20 seconds',
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.debugButtonClicked,
-                        )),
+                      onTap: () {
+                        if (_remainingSeconds == 60 * 2) {
+                          _startCountdown();
+                          setState(() {
+                            _remainingSeconds = 20;
+                            isTestBtnVisible = false;
+                          });
+                          return;
+                        }
+                        cubit.advanceToNext();
+                      },
+                      text: 'Start test 20 seconds',
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.debugButtonClicked,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),

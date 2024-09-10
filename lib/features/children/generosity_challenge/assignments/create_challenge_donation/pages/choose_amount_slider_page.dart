@@ -76,7 +76,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
           child: Scaffold(
             appBar: FunTopAppBar.primary99(
               title: 'Day 7',
-              leading: GenerosityBackButton(),
+              leading: const GenerosityBackButton(),
             ),
             body: SafeArea(
               child: Stack(

@@ -28,7 +28,7 @@ class ChildDetailsCubit extends Cubit<ChildDetailsState> {
     );
     _childDetailsChangedSubscription =
         _profilesRepository.onChildChanged().listen(
-          _onMatchUpdateProfile,
+              _onMatchUpdateProfile,
             );
   }
 

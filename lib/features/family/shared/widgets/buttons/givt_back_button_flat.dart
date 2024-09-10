@@ -27,7 +27,7 @@ class GivtBackButtonFlat extends StatelessWidget {
         AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.backButtonPressed,
         );
-        
+
         SystemSound.play(SystemSoundType.click);
         onPressedExt?.call();
         context.pop();

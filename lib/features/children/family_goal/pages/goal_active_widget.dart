@@ -5,7 +5,9 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
 
 class GoalActiveWidget extends StatelessWidget {
-  const GoalActiveWidget({super.key,});
+  const GoalActiveWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
