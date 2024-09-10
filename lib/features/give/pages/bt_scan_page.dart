@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -27,6 +28,9 @@ class _BTScanPageState extends State<BTScanPage> {
   bool isVisible = false;
   bool isSearching = false;
 
+  StreamSubscription<List<ScanResult>>? adapterStateStream;
+  StreamSubscription<BluetoothAdapterState>? scanResultsStream;
+
   // Every 30 seconds we will restart the scan for new devices
   final scanTimeout = 30;
 
@@ -55,7 +59,7 @@ class _BTScanPageState extends State<BTScanPage> {
       }
 
       // Set listen method for scan results
-      FlutterBluePlus.scanResults.listen(
+      adapterStateStream = FlutterBluePlus.scanResults.listen(
         _onPeripheralsDetectedData,
         onError: (dynamic e) {
           LoggingInfo.instance
@@ -71,7 +75,8 @@ class _BTScanPageState extends State<BTScanPage> {
       });
 
       // Listen to scan mode changes
-      FlutterBluePlus.adapterState.listen((BluetoothAdapterState state) async {
+      scanResultsStream = FlutterBluePlus.adapterState
+          .listen((BluetoothAdapterState state) async {
         switch (state) {
           case BluetoothAdapterState.on:
             if (!FlutterBluePlus.isScanningNow) {
@@ -220,8 +225,11 @@ class _BTScanPageState extends State<BTScanPage> {
 
   @override
   void dispose() {
-    super.dispose();
     FlutterBluePlus.stopScan();
+    adapterStateStream?.cancel();
+    scanResultsStream?.cancel();
+
+    super.dispose();
   }
 
   @override
