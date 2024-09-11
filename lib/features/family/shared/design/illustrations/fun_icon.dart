@@ -101,12 +101,12 @@ class FunIcon extends StatelessWidget {
         iconColor: iconColor,
       );
 
-  factory FunIcon.box({
+  factory FunIcon.boxOpen({
     Color circleColor = FamilyAppTheme.primary95,
     Color iconColor = FamilyAppTheme.primary20,
   }) =>
       FunIcon(
-        iconData: FontAwesomeIcons.box,
+        iconData: FontAwesomeIcons.boxOpen,
         circleColor: circleColor,
         iconColor: iconColor,
       );

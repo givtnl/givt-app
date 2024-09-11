@@ -145,7 +145,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
         iconColor: FamilyAppTheme.secondary30,
       );
     } else {
-      return FunIcon.box();
+      return FunIcon.boxOpen();
     }
   }
 
