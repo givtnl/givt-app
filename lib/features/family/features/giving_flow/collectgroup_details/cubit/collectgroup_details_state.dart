@@ -1,7 +1,7 @@
 part of 'collectgroup_details_cubit.dart';
 
-abstract class OrganisationDetailsState extends Equatable {
-  const OrganisationDetailsState({
+abstract class CollectGroupDetailsState extends Equatable {
+  const CollectGroupDetailsState({
     required this.collectgroup,
     this.mediumId = '',
   });
@@ -12,26 +12,26 @@ abstract class OrganisationDetailsState extends Equatable {
   List<Object> get props => [collectgroup, mediumId];
 }
 
-class OrganisationDetailsInitialState extends OrganisationDetailsState {
+class OrganisationDetailsInitialState extends CollectGroupDetailsState {
   const OrganisationDetailsInitialState({
     super.collectgroup = const CollectGroupDetails.empty(),
   });
 }
 
-class OrganisationDetailsLoadingState extends OrganisationDetailsState {
+class OrganisationDetailsLoadingState extends CollectGroupDetailsState {
   const OrganisationDetailsLoadingState({
     super.collectgroup = const CollectGroupDetails.empty(),
   });
 }
 
-class OrganisationDetailsErrorState extends OrganisationDetailsState {
+class OrganisationDetailsErrorState extends CollectGroupDetailsState {
   const OrganisationDetailsErrorState({
     super.collectgroup = const CollectGroupDetails.error(),
     super.mediumId,
   });
 }
 
-class OrganisationDetailsSetState extends OrganisationDetailsState {
+class OrganisationDetailsSetState extends CollectGroupDetailsState {
   const OrganisationDetailsSetState({
     required super.collectgroup,
     required super.mediumId,

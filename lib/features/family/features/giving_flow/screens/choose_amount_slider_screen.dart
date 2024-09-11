@@ -6,10 +6,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -19,7 +19,6 @@ import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/models/models.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -60,15 +59,15 @@ class ChooseAmountSliderScreen extends StatelessWidget {
             title: collectgroup.name,
             leading: const GivtBackButtonFlat(),
             actions: [
-              showActionIcon(collectgroup),
+              actionIcon(collectgroup),
             ],
           ),
           body: Column(
             children: [
               const Spacer(),
-              showTitle(state, collectgroup),
+              titleText(state, collectgroup),
               const SizedBox(height: 8),
-              showIcon(state, collectgroup),
+              topIcon(state, collectgroup),
               const SizedBox(height: 32),
               SliderWidget(state.amount, state.maxAmount),
               const Spacer(),
@@ -109,7 +108,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
     );
   }
 
-  Widget showActionIcon(
+  Widget actionIcon(
     CollectGroupDetails collectgroup,
   ) {
     // Default icon for all organisations
@@ -127,7 +126,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
     );
   }
 
-  Widget showIcon(
+  Widget topIcon(
     CreateTransactionState state,
     CollectGroupDetails collectgroup,
   ) {
@@ -149,7 +148,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
     }
   }
 
-  Widget showTitle(
+  Widget titleText(
     CreateTransactionState state,
     CollectGroupDetails collectgroup,
   ) {

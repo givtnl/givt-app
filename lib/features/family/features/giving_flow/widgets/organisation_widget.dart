@@ -34,7 +34,7 @@ class OrganisationWidget extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-          BlocBuilder<CollectGroupDetailsCubit, OrganisationDetailsState>(
+          BlocBuilder<CollectGroupDetailsCubit, CollectGroupDetailsState>(
             builder: (context, state) {
               if (state is OrganisationDetailsLoadingState) {
                 return const SizedBox(

@@ -75,7 +75,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
                     builder: (context, state) {
                       if (state.scanNFCStatus == ScanNFCStatus.scanned) {
                         return BlocBuilder<CollectGroupDetailsCubit,
-                            OrganisationDetailsState>(
+                            CollectGroupDetailsState>(
                           builder: (context, state) {
                             return const FoundNfcAnimation();
                           },

@@ -10,7 +10,7 @@ import 'package:givt_app/utils/utils.dart';
 
 part 'collectgroup_details_state.dart';
 
-class CollectGroupDetailsCubit extends Cubit<OrganisationDetailsState> {
+class CollectGroupDetailsCubit extends Cubit<CollectGroupDetailsState> {
   CollectGroupDetailsCubit(this._organisationRepository)
       : super(const OrganisationDetailsInitialState());
 

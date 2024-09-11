@@ -25,7 +25,7 @@ class SearchForCoinScreen extends StatelessWidget {
     final coinCubit = context.read<SearchCoinCubit>();
     return BlocBuilder<SearchCoinCubit, SearchCoinState>(
       builder: (context, coinState) {
-        return BlocConsumer<CollectGroupDetailsCubit, OrganisationDetailsState>(
+        return BlocConsumer<CollectGroupDetailsCubit, CollectGroupDetailsState>(
           listener: (context, orgState) async {
             if (orgState is OrganisationDetailsSetState) {
               log('Organisation is set: ${orgState.collectgroup.name}');

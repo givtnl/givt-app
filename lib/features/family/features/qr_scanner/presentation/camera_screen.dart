@@ -67,7 +67,7 @@ class _CameraScreenState extends State<CameraScreen> {
         }
       },
       builder: (context, state) {
-        return BlocConsumer<CollectGroupDetailsCubit, OrganisationDetailsState>(
+        return BlocConsumer<CollectGroupDetailsCubit, CollectGroupDetailsState>(
           listener: (context, orgState) {
             log('organisation details state changed to $orgState');
             if (orgState is OrganisationDetailsSetState) {
