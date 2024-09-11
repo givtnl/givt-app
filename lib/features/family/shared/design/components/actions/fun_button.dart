@@ -17,7 +17,7 @@ class FunButton extends StatelessWidget {
     this.isLoading = false,
     this.leftIcon,
     this.rightIcon,
-    this.leadingImage,
+    this.leadingImage,  
     this.backgroundColor = FamilyAppTheme.primary80,
     this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
     this.borderColor = FamilyAppTheme.primary30,
@@ -123,6 +123,7 @@ class FunButton extends StatelessWidget {
     if (isDebugOnly && !appConfig.isTestApp) {
       return const SizedBox.shrink();
     }
+
     final themeData = const FamilyAppTheme().toThemeData();
     return ActionContainer(
       onTap: () {
@@ -141,7 +142,7 @@ class FunButton extends StatelessWidget {
       baseBorderSize: 4,
       child: Container(
         height: 58 - (fullBorder ? 2 : 0),
-        width: MediaQuery.sizeOf(context).width * 0.9,
+        width: MediaQuery.sizeOf(context).width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
@@ -176,20 +177,23 @@ class FunButton extends StatelessWidget {
               color: isDisabled ? FamilyAppTheme.neutralVariant60 : textColor,
             ),
           ),
-        Text(
-          text,
-          textAlign: TextAlign.center,
-          style: isDisabled == true
-              ? themeData.textTheme.labelLarge?.copyWith(
-                  color: FamilyAppTheme.neutralVariant60,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                )
-              : themeData.textTheme.labelLarge?.copyWith(
-                  color: textColor,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Rouna',
-                ),
+        Expanded(
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            style: isDisabled == true
+                ? themeData.textTheme.labelLarge?.copyWith(
+                    color: FamilyAppTheme.neutralVariant60,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  )
+                : themeData.textTheme.labelLarge?.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Rouna',
+                  ),
+          ),
         ),
         if (rightIcon != null)
           Padding(
