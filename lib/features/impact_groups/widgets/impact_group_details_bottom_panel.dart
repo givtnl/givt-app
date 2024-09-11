@@ -62,7 +62,6 @@ class ImpactGroupDetailsBottomPanel extends StatelessWidget {
                     value: giveBloc,
                     child: EnterAmountBottomSheet(
                       collectGroupNameSpace: impactGroup.goal.mediumId,
-                      goalId: impactGroup.goal.id,
                     ),
                   ),
                 );
