@@ -35,11 +35,22 @@ class FunBottomSheet extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            showCloseButton(),
             // Title
-            TitleMediumText(
-              title,
-              textAlign: TextAlign.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 24),
+                  child: TitleMediumText(
+                    title,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Expanded(
+                  child: showCloseButton(),
+                ),
+              ],
             ),
 
             // Icon
