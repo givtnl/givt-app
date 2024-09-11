@@ -7,9 +7,10 @@ import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.da
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,20 +43,15 @@ class ParentAvatarSelectionScreen extends StatelessWidget {
           }
         },
         builder: (context, avatarsState) {
-          return Scaffold(
-            appBar: AppBar(
-              title: const TitleLargeText(
-                'Choose your avatar',
-              ),
-              automaticallyImplyLeading:
-                  editProfileState.status != EditProfileStatus.editing,
+          return FunScaffold(
+            appBar: const FunTopAppBar(
+              title: 'Choose your avatar',
+              leading: GivtBackButtonFlat(),
             ),
-            body: SafeArea(
-              child: _getContent(
-                context: context,
-                avatarsState: avatarsState,
-                editProfileState: editProfileState,
-              ),
+            body: _getContent(
+              context: context,
+              avatarsState: avatarsState,
+              editProfileState: editProfileState,
             ),
           );
         },
@@ -77,33 +73,27 @@ Widget _getContent({
   if (avatarsState.status == AvatarsStatus.loaded) {
     return CustomScrollView(
       slivers: [
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24,
-            vertical: 24,
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return AvatarItem(
+                onSelectProfilePicture: (profilePicture) {
+                  context
+                      .read<EditProfileCubit>()
+                      .selectProfilePicture(profilePicture);
+                },
+                filename: avatarsState.avatars[index].fileName,
+                url: avatarsState.avatars[index].pictureURL,
+                isSelected: avatarsState.avatars[index].fileName ==
+                    editProfileState.selectedProfilePicture,
+              );
+            },
+            childCount: avatarsState.avatars.length,
           ),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return AvatarItem(
-                  onSelectProfilePicture: (profilePicture) {
-                    context
-                        .read<EditProfileCubit>()
-                        .selectProfilePicture(profilePicture);
-                  },
-                  filename: avatarsState.avatars[index].fileName,
-                  url: avatarsState.avatars[index].pictureURL,
-                  isSelected: avatarsState.avatars[index].fileName ==
-                      editProfileState.selectedProfilePicture,
-                );
-              },
-              childCount: avatarsState.avatars.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20,
-            ),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
           ),
         ),
         SliverFillRemaining(
@@ -112,21 +102,18 @@ Widget _getContent({
             mainAxisSize: MainAxisSize.min,
             children: [
               const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 24, left: 24, right: 24),
-                child: FunButton(
-                  text: context.l10n.save,
-                  onTap: editProfileState.isSameProfilePicture
-                      ? null
-                      : () {
-                          context.read<EditProfileCubit>().editProfile();
-                        },
-                  analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.avatarSaved,
-                    parameters: {
-                      'filename': editProfileState.selectedProfilePicture,
-                    },
-                  ),
+              FunButton(
+                text: context.l10n.save,
+                onTap: editProfileState.isSameProfilePicture
+                    ? null
+                    : () {
+                        context.read<EditProfileCubit>().editProfile();
+                      },
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.avatarSaved,
+                  parameters: {
+                    'filename': editProfileState.selectedProfilePicture,
+                  },
                 ),
               ),
             ],
