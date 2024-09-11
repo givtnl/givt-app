@@ -7,7 +7,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/family_goal_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
@@ -29,9 +29,9 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organisationDetailsState =
-        context.watch<OrganisationDetailsCubit>().state;
+        context.watch<CollectGroupDetailsCubit>().state;
     final profilesCubit = context.read<ProfilesCubit>();
-    final organisation = organisationDetailsState.organisation;
+    final organisation = organisationDetailsState.collectgroup;
     final mediumId = organisationDetailsState.mediumId;
     final amountLeftToGoal = group.goal.goalAmount - group.goal.amount;
     final goalString = group.isFamilyGroup ? 'Family Goal' : 'Goal';

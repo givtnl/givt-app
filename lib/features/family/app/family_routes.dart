@@ -43,7 +43,7 @@ import 'package:givt_app/features/family/features/coin_flow/screens/success_coin
 import 'package:givt_app/features/family/features/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
@@ -480,7 +480,7 @@ class FamilyAppRoutes {
           builder: (context, state) {
             final mediumID = state.uri.queryParameters['code'] == null ||
                     state.uri.queryParameters['code']!.contains('null')
-                ? OrganisationDetailsCubit.defaultMediumId
+                ? CollectGroupDetailsCubit.defaultMediumId
                 : state.uri.queryParameters['code']!;
             // THE USECASE FOR THIS BUILDER IS
             // When the user opens the app from in-app coin flow
@@ -493,7 +493,7 @@ class FamilyAppRoutes {
             // & emit the in-app coin flow
 
             context
-                .read<OrganisationDetailsCubit>()
+                .read<CollectGroupDetailsCubit>()
                 .getOrganisationDetails(mediumID);
 
             context.read<FlowsCubit>().startInAppCoinFlow();
@@ -512,11 +512,11 @@ class FamilyAppRoutes {
           name: FamilyPages.outAppCoinFlow.name,
           builder: (context, state) {
             final mediumID = state.uri.queryParameters['code']!.contains('null')
-                ? OrganisationDetailsCubit.defaultMediumId
+                ? CollectGroupDetailsCubit.defaultMediumId
                 : state.uri.queryParameters['code']!;
 
             context
-                .read<OrganisationDetailsCubit>()
+                .read<CollectGroupDetailsCubit>()
                 .getOrganisationDetails(mediumID);
             return BlocProvider<SearchCoinCubit>(
               lazy: false,

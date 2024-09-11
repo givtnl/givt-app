@@ -45,38 +45,68 @@ class FunIcon extends StatelessWidget {
         circleColor: circleColor,
       );
 
-  factory FunIcon.handshake([Color circleColor = FamilyAppTheme.primary95]) =>
+  factory FunIcon.handshake({Color circleColor = FamilyAppTheme.primary95}) =>
       FunIcon(
         iconData: FontAwesomeIcons.solidHandshake,
         circleColor: circleColor,
       );
 
-  factory FunIcon.microphone([Color circleColor = FamilyAppTheme.primary95]) =>
+  factory FunIcon.microphone({Color circleColor = FamilyAppTheme.primary95}) =>
       FunIcon(
         iconData: FontAwesomeIcons.microphone,
         circleColor: circleColor,
       );
 
-  factory FunIcon.magnifyingGlass([
+  factory FunIcon.magnifyingGlass({
     Color circleColor = FamilyAppTheme.primary95,
-  ]) =>
+  }) =>
       FunIcon(
         iconData: FontAwesomeIcons.magnifyingGlass,
         circleColor: circleColor,
       );
 
-  factory FunIcon.checkmark([Color circleColor = FamilyAppTheme.primary95]) =>
+  factory FunIcon.checkmark({Color circleColor = FamilyAppTheme.primary95}) =>
       FunIcon(
         iconData: FontAwesomeIcons.check,
         circleColor: circleColor,
       );
 
-  factory FunIcon.xmark([
+  factory FunIcon.xmark({
     Color circleColor = FamilyAppTheme.error90,
     Color iconColor = FamilyAppTheme.error20,
-  ]) =>
+  }) =>
       FunIcon(
         iconData: FontAwesomeIcons.xmark,
+        circleColor: circleColor,
+        iconColor: iconColor,
+      );
+
+  factory FunIcon.bowlFood({
+    Color circleColor = FamilyAppTheme.primary95,
+    Color iconColor = FamilyAppTheme.primary20,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.bowlFood,
+        circleColor: circleColor,
+        iconColor: iconColor,
+      );
+
+  factory FunIcon.book({
+    Color circleColor = FamilyAppTheme.primary95,
+    Color iconColor = FamilyAppTheme.primary20,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.book,
+        circleColor: circleColor,
+        iconColor: iconColor,
+      );
+
+  factory FunIcon.box({
+    Color circleColor = FamilyAppTheme.primary95,
+    Color iconColor = FamilyAppTheme.primary20,
+  }) =>
+      FunIcon(
+        iconData: FontAwesomeIcons.box,
         circleColor: circleColor,
         iconColor: iconColor,
       );

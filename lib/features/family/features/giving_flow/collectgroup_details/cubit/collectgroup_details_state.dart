@@ -1,39 +1,39 @@
-part of 'organisation_details_cubit.dart';
+part of 'collectgroup_details_cubit.dart';
 
 abstract class OrganisationDetailsState extends Equatable {
   const OrganisationDetailsState({
-    required this.organisation,
+    required this.collectgroup,
     this.mediumId = '',
   });
-  final OrganisationDetails organisation;
+  final CollectGroupDetails collectgroup;
   final String mediumId;
 
   @override
-  List<Object> get props => [organisation, mediumId];
+  List<Object> get props => [collectgroup, mediumId];
 }
 
 class OrganisationDetailsInitialState extends OrganisationDetailsState {
   const OrganisationDetailsInitialState({
-    super.organisation = const OrganisationDetails.empty(),
+    super.collectgroup = const CollectGroupDetails.empty(),
   });
 }
 
 class OrganisationDetailsLoadingState extends OrganisationDetailsState {
   const OrganisationDetailsLoadingState({
-    super.organisation = const OrganisationDetails.empty(),
+    super.collectgroup = const CollectGroupDetails.empty(),
   });
 }
 
 class OrganisationDetailsErrorState extends OrganisationDetailsState {
   const OrganisationDetailsErrorState({
-    super.organisation = const OrganisationDetails.error(),
+    super.collectgroup = const CollectGroupDetails.error(),
     super.mediumId,
   });
 }
 
 class OrganisationDetailsSetState extends OrganisationDetailsState {
   const OrganisationDetailsSetState({
-    required super.organisation,
+    required super.collectgroup,
     required super.mediumId,
   });
 }

@@ -19,68 +19,64 @@ class SliderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: HeadlineLargeText(
-              '\$${currentAmount.round()}',
-            ),
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          child: HeadlineLargeText(
+            '\$${currentAmount.round()}',
           ),
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              trackHeight: 7,
-              activeTrackColor: Theme.of(context).colorScheme.onInverseSurface,
-              thumbShape: const SliderWidgetThumb(thumbRadius: 17),
-              inactiveTrackColor:
-                  Theme.of(context).colorScheme.surfaceContainerHighest,
-              activeTickMarkColor:
-                  Theme.of(context).colorScheme.onInverseSurface,
-              inactiveTickMarkColor:
-                  Theme.of(context).colorScheme.surfaceContainerHighest,
-              valueIndicatorColor: Colors.white,
-              thumbColor: Theme.of(context).colorScheme.onInverseSurface,
-              disabledThumbColor: FamilyAppTheme.secondary30,
-            ),
-            child: Slider(
-              value: currentAmount,
-              max: maxAmount,
-              divisions: maxAmount.round(),
-              onChanged: (value) {
-                HapticFeedback.lightImpact();
-                context.read<ScanNfcCubit>().stopScanningSession();
-                context.read<CreateTransactionCubit>().changeAmount(value);
-              },
-              onChangeEnd: (value) {
-                AnalyticsHelper.logEvent(
-                  eventName: AmplitudeEvents.amountPressed,
-                  eventProperties: {
-                    AnalyticsHelper.amountKey: value.roundToDouble(),
-                  },
-                );
-              },
-            ),
+        ),
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            trackHeight: 7,
+            activeTrackColor: Theme.of(context).colorScheme.onInverseSurface,
+            thumbShape: const SliderWidgetThumb(thumbRadius: 17),
+            inactiveTrackColor:
+                Theme.of(context).colorScheme.surfaceContainerHighest,
+            activeTickMarkColor: Theme.of(context).colorScheme.onInverseSurface,
+            inactiveTickMarkColor:
+                Theme.of(context).colorScheme.surfaceContainerHighest,
+            valueIndicatorColor: Colors.white,
+            thumbColor: Theme.of(context).colorScheme.onInverseSurface,
+            disabledThumbColor: FamilyAppTheme.secondary30,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
-            child: Row(
-              children: [
-                Text(
-                  r'$0',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                const Spacer(),
-                Text(
-                  '\$${maxAmount.round()}',
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ],
-            ),
+          child: Slider(
+            value: currentAmount,
+            max: maxAmount,
+            divisions: maxAmount.round(),
+            onChanged: (value) {
+              HapticFeedback.lightImpact();
+              context.read<ScanNfcCubit>().stopScanningSession();
+              context.read<CreateTransactionCubit>().changeAmount(value);
+            },
+            onChangeEnd: (value) {
+              AnalyticsHelper.logEvent(
+                eventName: AmplitudeEvents.amountPressed,
+                eventProperties: {
+                  AnalyticsHelper.amountKey: value.roundToDouble(),
+                },
+              );
+            },
           ),
-        ],
-      ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: Row(
+            children: [
+              Text(
+                r'$0',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const Spacer(),
+              Text(
+                '\$${maxAmount.round()}',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

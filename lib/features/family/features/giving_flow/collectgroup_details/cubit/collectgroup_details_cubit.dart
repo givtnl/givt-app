@@ -4,14 +4,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/models/organisation_details.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/repositories/organisation_details_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/utils/utils.dart';
 
-part 'organisation_details_state.dart';
+part 'collectgroup_details_state.dart';
 
-class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
-  OrganisationDetailsCubit(this._organisationRepository)
+class CollectGroupDetailsCubit extends Cubit<OrganisationDetailsState> {
+  CollectGroupDetailsCubit(this._organisationRepository)
       : super(const OrganisationDetailsInitialState());
 
   final OrganisationDetailsRepository _organisationRepository;
@@ -28,7 +28,7 @@ class OrganisationDetailsCubit extends Cubit<OrganisationDetailsState> {
 
       emit(
         OrganisationDetailsSetState(
-          organisation: response,
+          collectgroup: response,
           mediumId: mediumId,
         ),
       );

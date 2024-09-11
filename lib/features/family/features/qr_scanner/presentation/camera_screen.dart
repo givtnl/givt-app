@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_permissions_dialog.dart';
 import 'package:givt_app/features/family/features/qr_scanner/widgets/camera_screen_frame.dart';
@@ -43,7 +43,7 @@ class _CameraScreenState extends State<CameraScreen> {
         if (state.status == CameraStatus.scanned) {
           log('QR code scanned: ${state.qrValue} \n Getting organisation details');
           context
-              .read<OrganisationDetailsCubit>()
+              .read<CollectGroupDetailsCubit>()
               .getOrganisationDetails(state.qrValue);
         }
         if (state.status == CameraStatus.permissionPermanentlyDeclined) {
@@ -67,15 +67,15 @@ class _CameraScreenState extends State<CameraScreen> {
         }
       },
       builder: (context, state) {
-        return BlocConsumer<OrganisationDetailsCubit, OrganisationDetailsState>(
+        return BlocConsumer<CollectGroupDetailsCubit, OrganisationDetailsState>(
           listener: (context, orgState) {
             log('organisation details state changed to $orgState');
             if (orgState is OrganisationDetailsSetState) {
-              log('Organisation is set: ${orgState.organisation.name}');
+              log('Organisation is set: ${orgState.collectgroup.name}');
               AnalyticsHelper.logEvent(
                 eventName: AmplitudeEvents.qrCodeScanned,
                 eventProperties: {
-                  'goal_name': orgState.organisation.name,
+                  'goal_name': orgState.collectgroup.name,
                 },
               );
               context.pushReplacementNamed(
@@ -86,7 +86,7 @@ class _CameraScreenState extends State<CameraScreen> {
           builder: (context, orgState) {
             return CameraScreenFrame(
               feedback: orgState is OrganisationDetailsErrorState
-                  ? orgState.organisation.name
+                  ? orgState.collectgroup.name
                   : state.feedback,
               child: Stack(
                 children: [
