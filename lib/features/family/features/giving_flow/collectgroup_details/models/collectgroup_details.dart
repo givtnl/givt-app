@@ -16,7 +16,7 @@ class CollectGroupDetails extends Equatable {
       name: map['title'] as String,
       logoLink: map['organisationLogoLink'] as String?,
       thankYou: map['thankYou'] as String?,
-      type: map['type'] != null ? CollectGroupType.fromInt(map['type'] as int) : CollectGroupType.charities,
+      type: map['type'] != null ? CollectGroupType.fromString(map['type'] as String) : CollectGroupType.charities,
     );
   }
 
