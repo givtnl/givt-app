@@ -17,7 +17,7 @@ class SmileyCounter extends StatelessWidget {
     final remainingCount = totalCount - smileyCount;
 
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
