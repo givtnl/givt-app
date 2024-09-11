@@ -19,7 +19,6 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/give/widgets/triple_animated_switch.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/impact_groups/pages/impact_group_screen.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/infra/infra_cubit.dart';
@@ -413,7 +412,6 @@ class _HomePageViewState extends State<_HomePageView> {
                   },
                 ),
               ),
-              if (auth.user.isUsUser) const ImpactGroupScreen(),
               const ChooseCategory(),
             ],
           ),
