@@ -8,18 +8,15 @@ import 'package:givt_app/features/give/dialogs/give_loading_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/widgets.dart';
-import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
 class EnterAmountBottomSheet extends StatefulWidget {
   const EnterAmountBottomSheet({
     required this.collectGroupNameSpace,
-    this.goalId,
     super.key,
   });
 
   final String collectGroupNameSpace;
-  final String? goalId;
 
   @override
   State<EnterAmountBottomSheet> createState() => _EnterAmountBottomSheetState();
@@ -42,19 +39,9 @@ class _EnterAmountBottomSheetState extends State<EnterAmountBottomSheet> {
                 GiveOrganisationSelected(
                   nameSpace: widget.collectGroupNameSpace,
                   userGUID: auth.user.guid,
-                  goalId: widget.goalId,
                 ),
               );
-
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.giveToFamilyGoalDirectly,
-            eventProperties: {
-              'charity_name': state.organisation.organisationName,
-              'amount': context.read<GiveBloc>().state.collections.first,
-            },
-          );
-        } else if (state.status == GiveStatus.processed &&
-            widget.goalId != null) {
+        } else if (state.status == GiveStatus.processed) {
           context.pop();
         }
       },

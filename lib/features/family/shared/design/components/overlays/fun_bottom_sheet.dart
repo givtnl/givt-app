@@ -30,16 +30,30 @@ class FunBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      minimum: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+      minimum: EdgeInsets.fromLTRB(0, 0, 0, MediaQuery.of(context).viewInsets.bottom + 40),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            showCloseButton(),
             // Title
-            TitleMediumText(
-              title,
-              textAlign: TextAlign.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Spacer(),
+                Container(
+                  width: MediaQuery.of(context).size.width - 96,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: TitleMediumText(
+                      title,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: showCloseButton(),
+                ),
+              ],
             ),
 
             // Icon

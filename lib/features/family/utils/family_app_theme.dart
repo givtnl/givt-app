@@ -154,10 +154,11 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Colors.white,
-      bottomSheetTheme: const BottomSheetThemeData(
+      bottomSheetTheme: BottomSheetThemeData(
+        modalBarrierColor: primaryColor.withOpacity(0.5),
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
@@ -167,6 +168,11 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
       fontFamily: 'Rouna',
       textTheme: textTheme,
       primaryColor: colorScheme.primary,
+      dialogTheme: DialogTheme(
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: Colors.white,
+        barrierColor: primaryColor.withOpacity(0.5),
+      ),
       appBarTheme: const AppBarTheme(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
@@ -201,10 +207,6 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
         ),
       ),
       dialogBackgroundColor: Colors.white,
-      dialogTheme: const DialogTheme(
-        surfaceTintColor: Colors.transparent,
-        backgroundColor: Colors.white,
-      ),
       extensions: [this],
       colorScheme: colorScheme,
       visualDensity: VisualDensity.adaptivePlatformDensity,

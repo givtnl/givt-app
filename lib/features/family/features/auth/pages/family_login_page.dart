@@ -9,7 +9,6 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
-import 'package:givt_app/shared/widgets/widgets.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -51,6 +50,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
               navigate: widget.navigate,
             )
             .whenComplete(() {
+          if (!context.mounted) return;
           final authState = context.read<AuthCubit>().state;
 
           if (authState.status == AuthStatus.authenticated ||
@@ -81,11 +81,10 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
 
-    return BottomSheetLayout(
-      title: TitleLargeText(
-        locals.login,
-      ),
-      child: BlocListener<AuthCubit, AuthState>(
+    return FunBottomSheet(
+      title: locals.login,
+      closeAction: () => context.pop(),
+      content: BlocListener<AuthCubit, AuthState>(
         listener: (context, state) {
           if (state.status == AuthStatus.failure) {
             showDialog<void>(
@@ -230,23 +229,21 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                   ),
                 ),
               ),
-              const Spacer(),
-              FunButton(
-                onTap: context.watch<AuthCubit>().state.status ==
-                        AuthStatus.loading
-                    ? null
-                    : isEnabled
-                        ? () => onLogin(context)
-                        : null,
-                text: locals.login,
-                isLoading: context.watch<AuthCubit>().state.status ==
-                    AuthStatus.loading,
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.loginClicked,
-                ),
-              ),
             ],
           ),
+        ),
+      ),
+      primaryButton: FunButton(
+        onTap: context.watch<AuthCubit>().state.status == AuthStatus.loading
+            ? null
+            : isEnabled
+                ? () => onLogin(context)
+                : null,
+        text: locals.login,
+        isLoading:
+            context.watch<AuthCubit>().state.status == AuthStatus.loading,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.loginClicked,
         ),
       ),
     );

@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/routes.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
-import 'package:givt_app/features/give/widgets/enter_amount_bottom_sheet.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/goal_progress_bar/goal_progress_bar.dart';
@@ -48,26 +47,6 @@ class HomeGoalTracker extends StatelessWidget {
             ),
           ),
           child: _buildGoalCard(context),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _showEnterAmountBottomSheet(
-    BuildContext context,
-    String nameSpace,
-    String goalId,
-  ) {
-    final giveBloc = context.read<GiveBloc>();
-    return showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      builder: (_) => BlocProvider.value(
-        value: giveBloc,
-        child: EnterAmountBottomSheet(
-          collectGroupNameSpace: nameSpace,
-          goalId: goalId,
         ),
       ),
     );
