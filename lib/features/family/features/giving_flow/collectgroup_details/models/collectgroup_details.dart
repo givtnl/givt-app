@@ -1,29 +1,32 @@
 import 'package:equatable/equatable.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 
-class OrganisationDetails extends Equatable {
-  const OrganisationDetails({
+class CollectGroupDetails extends Equatable {
+  const CollectGroupDetails({
     required this.collectGroupId,
     required this.name,
     this.logoLink,
     this.thankYou,
+    this.type
   });
 
-  factory OrganisationDetails.fromMap(Map<String, dynamic> map) {
-    return OrganisationDetails(
+  factory CollectGroupDetails.fromMap(Map<String, dynamic> map) {
+    return CollectGroupDetails(
       collectGroupId: map['collectGroupId'] as String,
       name: map['title'] as String,
       logoLink: map['organisationLogoLink'] as String?,
       thankYou: map['thankYou'] as String?,
+      type: map['type'] != null ? CollectGroupType.fromString(map['type'] as String) : CollectGroupType.charities,
     );
   }
 
-  const OrganisationDetails.empty()
+  const CollectGroupDetails.empty()
       : this(
           collectGroupId: '',
           name: 'Mock Organisation Long Name',
         );
 
-  const OrganisationDetails.error()
+  const CollectGroupDetails.error()
       : this(
           collectGroupId: '',
           name: 'Something went wrong \n Please try again later',
@@ -33,21 +36,24 @@ class OrganisationDetails extends Equatable {
   final String name;
   final String? logoLink;
   final String? thankYou;
+  final CollectGroupType? type;
 
   @override
   List<Object?> get props => [collectGroupId, name];
 
-  OrganisationDetails copyWith({
+  CollectGroupDetails copyWith({
     String? collectGroupId,
     String? name,
     String? logoLink,
     String? thankYou,
+    CollectGroupType? type,
   }) {
-    return OrganisationDetails(
+    return CollectGroupDetails(
       collectGroupId: collectGroupId ?? this.collectGroupId,
       name: name ?? this.name,
       logoLink: logoLink ?? this.logoLink,
       thankYou: thankYou ?? this.thankYou,
+      type: type ?? this.type,
     );
   }
 

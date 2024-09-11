@@ -9,7 +9,7 @@ import 'package:givt_app/features/family/features/coin_flow/widgets/coin_error_p
 import 'package:givt_app/features/family/features/coin_flow/widgets/coin_found_page.dart';
 import 'package:givt_app/features/family/features/coin_flow/widgets/coin_search_page.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -25,10 +25,10 @@ class SearchForCoinScreen extends StatelessWidget {
     final coinCubit = context.read<SearchCoinCubit>();
     return BlocBuilder<SearchCoinCubit, SearchCoinState>(
       builder: (context, coinState) {
-        return BlocConsumer<OrganisationDetailsCubit, OrganisationDetailsState>(
+        return BlocConsumer<CollectGroupDetailsCubit, CollectGroupDetailsState>(
           listener: (context, orgState) async {
             if (orgState is OrganisationDetailsSetState) {
-              log('Organisation is set: ${orgState.organisation.name}');
+              log('Organisation is set: ${orgState.collectgroup.name}');
               coinCubit.stopAnimation();
             }
             if (orgState is OrganisationDetailsErrorState) {

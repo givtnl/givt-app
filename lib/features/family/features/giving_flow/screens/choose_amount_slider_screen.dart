@@ -2,21 +2,24 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/widgets/organisation_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
-import 'package:givt_app/features/family/shared/widgets/content/coin_widget.dart';
-import 'package:givt_app/features/family/shared/widgets/content/wallet.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_give.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -24,14 +27,14 @@ class ChooseAmountSliderScreen extends StatelessWidget {
   const ChooseAmountSliderScreen({
     super.key,
   });
+
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
-    final organisationDetailsState =
-        context.watch<OrganisationDetailsCubit>().state;
-    final organisation = organisationDetailsState.organisation;
+    final collectgroupState = context.watch<CollectGroupDetailsCubit>().state;
+    final collectgroup = collectgroupState.collectgroup;
     final profilesCubit = context.read<ProfilesCubit>();
-    final mediumId = organisationDetailsState.mediumId;
+    final mediumId = collectgroupState.mediumId;
 
     return BlocConsumer<CreateTransactionCubit, CreateTransactionState>(
       listener: (context, state) {
@@ -51,84 +54,119 @@ class ChooseAmountSliderScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            toolbarHeight: flow.isQRCode || flow.isRecommendation ? 85 : null,
-            automaticallyImplyLeading: false,
-            leading: const GivtBackButton(),
-            actions: [_getAppBarAction(flow)],
+        return FunScaffold(
+          appBar: FunTopAppBar(
+            title: collectgroup.name,
+            leading: const GivtBackButtonFlat(),
+            actions: [
+              actionIcon(collectgroup),
+            ],
           ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      OrganisationWidget(organisation),
-                      const Spacer(),
-                      const BodyMediumText(
-                        'How much would you like to give?',
-                      ),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
-                ),
-                SliderWidget(state.amount, state.maxAmount),
-                const Spacer(),
-              ],
-            ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: FunButton(
-            isDisabled: state.amount == 0,
-            text: flow.isCoin
-                ? 'Activate the coin'
-                : flow.isRecommendation
-                    ? 'Finish donation'
-                    : 'Next',
-            isLoading: state is CreateTransactionUploadingState,
-            onTap: state.amount == 0
-                ? null
-                : () async {
-                    if (state is CreateTransactionUploadingState) {
-                      return;
-                    }
-                    final transaction = Transaction(
-                      userId: profilesCubit.state.activeProfile.id,
-                      mediumId: mediumId,
-                      amount: state.amount,
-                    );
+          body: Column(
+            children: [
+              const Spacer(),
+              titleText(state, collectgroup),
+              const SizedBox(height: 8),
+              topIcon(state, collectgroup),
+              const SizedBox(height: 32),
+              SliderWidget(state.amount, state.maxAmount),
+              const Spacer(),
+              FunButton(
+                isDisabled: state.amount == 0,
+                text: 'Give',
+                isLoading: state is CreateTransactionUploadingState,
+                onTap: state.amount == 0
+                    ? null
+                    : () async {
+                        if (state is CreateTransactionUploadingState) {
+                          return;
+                        }
+                        final transaction = Transaction(
+                          userId: profilesCubit.state.activeProfile.id,
+                          mediumId: mediumId,
+                          amount: state.amount,
+                        );
 
-                    await context
-                        .read<CreateTransactionCubit>()
-                        .createTransaction(transaction: transaction);
+                        await context
+                            .read<CreateTransactionCubit>()
+                            .createTransaction(transaction: transaction);
+                      },
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.giveToThisGoalPressed,
+                  parameters: {
+                    AnalyticsHelper.goalKey: collectgroup.name,
+                    AnalyticsHelper.amountKey: state.amount,
+                    AnalyticsHelper.walletAmountKey:
+                        profilesCubit.state.activeProfile.wallet.balance,
                   },
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.giveToThisGoalPressed,
-              parameters: {
-                AnalyticsHelper.goalKey: organisation.name,
-                AnalyticsHelper.amountKey: state.amount,
-                AnalyticsHelper.walletAmountKey:
-                    profilesCubit.state.activeProfile.wallet.balance,
-              },
-            ),
+                ),
+              ),
+            ],
           ),
         );
       },
     );
   }
 
-  Widget _getAppBarAction(FlowsState flow) {
-    if (flow.isQRCode || flow.isRecommendation) {
-      return const Padding(
-        padding: EdgeInsets.only(right: 16),
-        child: Wallet(),
+  Widget actionIcon(
+    CollectGroupDetails collectgroup,
+  ) {
+    // Default icon for all organisations
+    var icon = FontAwesomeIcons.earthAmericas;
+
+    // Only church should have a different icon
+    if (collectgroup.type == CollectGroupType.church) {
+      icon = FontAwesomeIcons.church;
+    }
+
+    // Add some padding to move it away from the side
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: FaIcon(icon),
+    );
+  }
+
+  Widget topIcon(
+    CreateTransactionState state,
+    CollectGroupDetails collectgroup,
+  ) {
+    // Show the default icon always for non-church organisations
+    if (collectgroup.type != CollectGroupType.church || state.amount == 0) {
+      return FunGive.secondary30();
+    } else if (state.amount >= 1 && state.amount <= 10) {
+      return FunIcon.bowlFood(
+        circleColor: FamilyAppTheme.highlight95,
+        iconColor: FamilyAppTheme.info30,
       );
+    } else if (state.amount >= 11 && state.amount <= 20) {
+      return FunIcon.book(
+        circleColor: FamilyAppTheme.secondary95,
+        iconColor: FamilyAppTheme.secondary30,
+      );
+    } else {
+      return FunIcon.boxOpen();
     }
-    if (flow.isCoin) {
-      return const CoinWidget();
+  }
+
+  Widget titleText(
+    CreateTransactionState state,
+    CollectGroupDetails collectgroup,
+  ) {
+    var title = 'How much would you like to give?';
+
+    // Don't show the different amount icons for other types then church
+    if (collectgroup.type != CollectGroupType.church) {
+      return TitleMediumText(title);
     }
-    return const SizedBox();
+
+    if (state.amount >= 1 && state.amount <= 10) {
+      title = 'This could go towards some meals';
+    } else if (state.amount >= 1 && state.amount <= 10) {
+      title = 'This could go towards church supplies';
+    } else if (state.amount >= 1 && state.amount <= 10) {
+      title = 'This could go towards some care packages';
+    }
+
+    return TitleMediumText(title);
   }
 }

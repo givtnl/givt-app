@@ -41,7 +41,7 @@ class _ReflectionRuleSidekickScreenState
       ),
       body: Center(
         child: FunCard(
-          icon: FunIcon.handshake(FamilyAppTheme.tertiary80),
+          icon: FunIcon.handshake(circleColor: FamilyAppTheme.tertiary80),
           title: 'Sidekick',
           content: const BodyMediumText(
             'Listen carefully to the superhero and try to guess the secret word at the end.',
