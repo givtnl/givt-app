@@ -107,57 +107,65 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   Widget build(BuildContext context) {
     final isLast = widget.index == widget.totalCount;
     final isChildSelected = selections[0];
-    final keyboardIsVisible = MediaQuery.of(context).viewInsets.bottom > 0;
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
         leading: const GenerosityBackButton(),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SmileyCounter(
-              totalCount: widget.totalCount,
-              index: widget.index,
-            ),
-            ChildOrParentSelector(
-              selections: selections,
-              onPressed: (int index) {
-                setState(() {
-                  selections = [index == 0, index == 1];
-                });
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SmileyCounter(
+                  totalCount: widget.totalCount,
+                  index: widget.index,
+                ),
+                const SizedBox(height: 40),
+                ChildOrParentSelector(
+                  selections: selections,
+                  onPressed: (int index) {
+                    setState(() {
+                      selections = [index == 0, index == 1];
+                    });
 
-                FocusScope.of(context).unfocus();
-              },
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
+                const SizedBox(height: 24),
+                FamilyMemberForm(
+                  formKey: _formKey,
+                  nameController: _nameController,
+                  emailController: _emailController,
+                  ageController: _ageController,
+                  allowanceAmount: _amount,
+                  onAmountChanged: (amount) {
+                    setState(() {
+                      _amount = amount;
+                    });
+                  },
+                  isChildSelected: isChildSelected,
+                ),
+                const SizedBox(height: 24),
+              ],
             ),
-            const SizedBox(height: 16),
-            FamilyMemberForm(
-              formKey: _formKey,
-              nameController: _nameController,
-              emailController: _emailController,
-              ageController: _ageController,
-              allowanceAmount: _amount,
-              onAmountChanged: (amount) {
-                setState(() {
-                  _amount = amount;
-                });
-              },
-              isChildSelected: isChildSelected,
+          ),
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Spacer(),
+                if (isLast)
+                  _primaryButton(isChildSelected)
+                else 
+                  _secondaryButton(isChildSelected),
+              ],
             ),
-            const SizedBox(height: 40),
-            if (keyboardIsVisible && isLast)
-              _primaryButton(isChildSelected)
-            else if (keyboardIsVisible)
-              _secondaryButton(isChildSelected),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: keyboardIsVisible
-          ? null
-          : isLast
-              ? _primaryButton(isChildSelected)
-              : _secondaryButton(isChildSelected),
     );
   }
 

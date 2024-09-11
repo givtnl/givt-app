@@ -88,19 +88,19 @@ class FamilyMemberForm extends StatelessWidget {
           ],
           textInputAction: TextInputAction.done,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         const BodySmallText(
           "Start your child's giving journey by adding funds to their Wallet",
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         FunCounter(
           currency: r'$',
           initialAmount: allowanceAmount,
           canAmountBeZero: true,
           onAmountChanged: onAmountChanged,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         AdminFeeText(
           amount: allowanceAmount.toDouble(),
           textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,

@@ -15,23 +15,5 @@ class AddMemberUtil {
         initialAmount: 1,
       ).toRoute(context),
     );
-    if (result != null && result is int && context.mounted) {
-      unawaited(
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.numberOfMembersSelected,
-          eventProperties: {
-            'nrOfMembers': result,
-          },
-        ),
-      );
-      await Navigator.push(
-        context,
-        FamilyMemberFormPage(
-          index: 1,
-          totalCount: result,
-          membersToCombine: const [],
-        ).toRoute(context),
-      );
-    }
   }
 }

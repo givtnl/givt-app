@@ -26,8 +26,8 @@ class GivtTabs extends StatelessWidget {
       fillColor: FamilyAppTheme.primary80,
       color: FamilyAppTheme.primary80,
       constraints: BoxConstraints(
-        minHeight: 40,
-        minWidth: MediaQuery.of(context).size.width / 2 - 60,
+        minHeight: 44,
+        minWidth: MediaQuery.of(context).size.width / 2 - 40,
       ),
       isSelected: selections,
       onPressed: onPressed,
