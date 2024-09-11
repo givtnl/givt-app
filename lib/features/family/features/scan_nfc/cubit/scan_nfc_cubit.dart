@@ -95,7 +95,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
     try {
       unawaited(
         NfcManager.instance.startSession(
-          alertMessage: 'Tap your coin to the top\nof the iPhone',
+          alertMessage: 'Place your coin on the back of your phone near the camera',
           onError: (error) async {
             log('coin read error: ${error.message}');
             if (error.type != NfcErrorType.systemIsBusy) {
