@@ -59,6 +59,27 @@ class ReflectAndShareRepository {
     return _setProfiles(superheroIndex, sidekickIndex, rng);
   }
 
+  // assign roles for the next round
+  List<GameProfile> assignRolesForNextRound() {
+    final rng = Random();
+    final superheroIndex = _getCurrentSuperHeroIndex();
+    int newSuperheroIndex;
+    int newSideKickIndex;
+    if (_isLastIndex(superheroIndex)) {
+      newSuperheroIndex = 0;
+      newSideKickIndex = 1;
+    } else {
+      newSuperheroIndex = superheroIndex + 1;
+      if (_isLastIndex(newSuperheroIndex)) {
+        newSideKickIndex = 0;
+      } else {
+        newSideKickIndex = newSuperheroIndex + 1;
+      }
+    }
+
+    return _setProfiles(newSuperheroIndex, newSideKickIndex, rng);
+  }
+
   List<GameProfile> _setProfiles(
     int superheroIndex,
     int sidekickIndex,
