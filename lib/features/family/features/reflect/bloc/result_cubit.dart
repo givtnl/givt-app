@@ -1,4 +1,3 @@
-import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
@@ -13,9 +12,11 @@ class ResultCubit extends CommonCubit<String, dynamic> {
     emitData(_reflectAndShareRepository.getCurrentSecretWord());
   }
 
-  // Just temporary to fetch a superhero.
-  // Needs to be replaced with the actual logic with KIDS-1344.
-  GameProfile getNextSuperhero() {
-    return _reflectAndShareRepository.getCurrentSuperhero();
+  /// Checks if the game is finished.
+  ///
+  /// Returns `true` when all family members have gone as superheroes,
+  /// otherwise returns `false` indicating that a new round can start.
+  bool isGameFinished() {
+    return _reflectAndShareRepository.isGameFinished();
   }
 }

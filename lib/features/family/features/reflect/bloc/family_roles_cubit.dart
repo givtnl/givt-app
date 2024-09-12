@@ -10,17 +10,22 @@ class FamilyRolesCubit extends CommonCubit<List<GameProfile>, GameProfile> {
   final ReflectAndShareRepository _reflectAndShareRepository;
 
   void init() {
-    final list = _reflectAndShareRepository.randomlyAssignRoles();
-    emitData(list);
-  }
+    List<GameProfile> list;
+    
+    if (_reflectAndShareRepository.isFirstRound()) {
+      list = _reflectAndShareRepository.randomlyAssignRoles();
+    } else {
+      list = _reflectAndShareRepository.assignRolesForNextRound();
+    }
 
-  void assignRolesForNextRound() {
-    _reflectAndShareRepository.completeLoop();
-    final list = _reflectAndShareRepository.assignRolesForNextRound();
     emitData(list);
   }
 
   void onClickStart() {
     emitCustom(_reflectAndShareRepository.getCurrentSuperhero());
+  }
+
+  bool isFirstRound() {
+    return _reflectAndShareRepository.isFirstRound();
   }
 }

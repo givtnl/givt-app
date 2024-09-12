@@ -25,9 +25,8 @@ class ReflectAndShareRepository {
 
   // complete a game loop/ round
   // return TRUE when all family members have been the superhero and the game should end, FALSE otherwhise
-  bool completeLoop() {
+  void completeLoop() {
     completedLoops++;
-    return completedLoops == _allProfiles!.length;
   }
 
   // get all possibly family members that can play the game
@@ -42,16 +41,12 @@ class ReflectAndShareRepository {
 
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
+    completedLoops = 0;
     _selectedProfiles = selectedProfiles;
   }
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)
   List<GameProfile> randomlyAssignRoles() {
-    if (completedLoops > 0) {
-      throw Exception(
-        'You are only supposed to call randomlyAssignRoles() once in the beginning!',
-      );
-    }
     final rng = Random();
     int sidekickIndex;
     final superheroIndex = rng.nextInt(_selectedProfiles.length);
@@ -239,4 +234,8 @@ class ReflectAndShareRepository {
 
   GameProfile getCurrentSidekick() =>
       _selectedProfiles[_getCurrentSidekickIndex()];
+
+  bool isFirstRound() => completedLoops == 0;
+
+  bool isGameFinished() => completedLoops >= _selectedProfiles!.length;
 }
