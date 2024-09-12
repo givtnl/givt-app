@@ -161,9 +161,9 @@ class ChooseAmountSliderScreen extends StatelessWidget {
 
     if (state.amount >= 1 && state.amount <= 10) {
       title = 'This could go towards some meals';
-    } else if (state.amount >= 1 && state.amount <= 10) {
+    } else if (state.amount >= 11 && state.amount <= 20) {
       title = 'This could go towards church supplies';
-    } else if (state.amount >= 1 && state.amount <= 10) {
+    } else if (state.amount >= 21 && state.amount <= 30) {
       title = 'This could go towards some care packages';
     }
 
