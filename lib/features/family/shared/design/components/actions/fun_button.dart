@@ -142,7 +142,7 @@ class FunButton extends StatelessWidget {
       baseBorderSize: 4,
       child: Container(
         height: 58 - (fullBorder ? 2 : 0),
-        width: MediaQuery.sizeOf(context).width,
+        width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
