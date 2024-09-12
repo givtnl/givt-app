@@ -4,11 +4,22 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class GuessSecretWordCubit extends CommonCubit<String, dynamic> {
   GuessSecretWordCubit(this._reflectAndShareRepository)
-      : super(const BaseState.loading());
+      : super(const BaseState.initial());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
 
   void init() {
     emitData(_reflectAndShareRepository.getCurrentSecretWord());
+  }
+
+  bool guessSecretWord(String guessedWord) {
+    // Fetch word to compare
+    final secretWord = _reflectAndShareRepository.getCurrentSecretWord();
+
+    // Complete the loop
+    _reflectAndShareRepository.completeLoop();
+    
+    // Check if the guessed word is correct
+    return secretWord.toLowerCase() == guessedWord.toLowerCase();
   }
 }

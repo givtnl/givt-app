@@ -60,9 +60,10 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
               ),
               button: FunButton(
                 onTap: () {
+                  final result = _cubit.guessSecretWord(currentGuessedWord);
+
                   Navigator.of(context).pushReplacement(
-                    ResultScreen(success: currentGuessedWord == secretWord)
-                        .toRoute(context),
+                    ResultScreen(success: result).toRoute(context),
                   );
                 },
                 text: 'Done',

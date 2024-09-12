@@ -17,4 +17,8 @@ class FamilyRolesCubit extends CommonCubit<List<GameProfile>, GameProfile> {
   void onClickStart() {
     emitCustom(_reflectAndShareRepository.getCurrentSuperhero());
   }
+
+  bool isFirstRound() {
+    return _reflectAndShareRepository.isFirstRound();
+  }
 }

@@ -19,8 +19,4 @@ class ResultCubit extends CommonCubit<String, dynamic> {
   bool isGameFinished() {
     return _reflectAndShareRepository.isGameFinished();
   }
-
-  void startNextRound() {
-    _reflectAndShareRepository.completeLoop();
-  }
 }

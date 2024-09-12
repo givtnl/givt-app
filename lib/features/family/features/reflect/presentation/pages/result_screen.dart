@@ -77,10 +77,9 @@ class _ResultScreenState extends State<ResultScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const Spacer(),
-                  if (_cubit.isGameFinished()) ...[
+                  if (!_cubit.isGameFinished()) ...[
                     FunButton(
                       onTap: () {
-                        _cubit.startNextRound();
                         Navigator.of(context).pushReplacement(
                           const FamilyRolesScreen().toRoute(context),
                         );

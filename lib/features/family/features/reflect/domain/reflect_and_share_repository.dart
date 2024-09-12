@@ -29,10 +29,6 @@ class ReflectAndShareRepository {
     completedLoops++;
   }
 
-  bool isGameFinished() {
-    return completedLoops >= _allProfiles!.length;
-  }
-
   // get all possibly family members that can play the game
   Future<List<GameProfile>> getFamilyProfiles() async {
     if (_allProfiles != null) {
@@ -217,4 +213,8 @@ class ReflectAndShareRepository {
 
   GameProfile getCurrentSidekick() =>
       _selectedProfiles[_getCurrentSidekickIndex()];
+
+  bool isFirstRound() => completedLoops == 0;
+
+  bool isGameFinished() => completedLoops >= _selectedProfiles!.length;
 }
