@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/result_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -75,9 +77,23 @@ class _ResultScreenState extends State<ResultScreen> {
                     textAlign: TextAlign.center,
                   ),
                   const Spacer(),
-                  // Temporary solution
-                  // Get users out of the flow from
-                  FunButton(
+                  if (_cubit.isGameFinished()) ...[
+                    FunButton(
+                      onTap: () {
+                        _cubit.startNextRound();
+                        Navigator.of(context).pushReplacement(
+                          const FamilyRolesScreen().toRoute(context),
+                        );
+                      },
+                      text: 'Next round',
+                      rightIcon: FontAwesomeIcons.arrowRight,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.reflectAndShareResultNextRoundClicked,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                  FunButton.secondary(
                     onTap: () {
                       Navigator.of(context).popUntil(
                         ModalRoute.withName(
@@ -85,9 +101,9 @@ class _ResultScreenState extends State<ResultScreen> {
                         ),
                       );
                     },
-                    text: 'Go back',
+                    text: 'Finish reflecting',
                     analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.reflectAndShareResultGoBackClicked,
+                      AmplitudeEvents.reflectAndShareFinishReflectingClicked,
                     ),
                   ),
                 ],

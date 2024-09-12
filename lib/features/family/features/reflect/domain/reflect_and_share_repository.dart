@@ -25,9 +25,12 @@ class ReflectAndShareRepository {
 
   // complete a game loop/ round
   // return TRUE when all family members have been the superhero and the game should end, FALSE otherwhise
-  bool completeLoop() {
+  void completeLoop() {
     completedLoops++;
-    return completedLoops == _allProfiles!.length;
+  }
+
+  bool isGameFinished() {
+    return completedLoops >= _allProfiles!.length;
   }
 
   // get all possibly family members that can play the game
@@ -42,16 +45,12 @@ class ReflectAndShareRepository {
 
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
+    completedLoops = 0;
     _selectedProfiles = selectedProfiles;
   }
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)
   List<GameProfile> randomlyAssignRoles() {
-    if (completedLoops > 0) {
-      throw Exception(
-        'You are only supposed to call randomlyAssignRoles() once in the beginning!',
-      );
-    }
     final rng = Random();
     int sidekickIndex;
     final superheroIndex = rng.nextInt(_selectedProfiles.length);
@@ -62,27 +61,6 @@ class ReflectAndShareRepository {
     }
 
     return _setProfiles(superheroIndex, sidekickIndex, rng);
-  }
-
-  // assign roles for the next round
-  List<GameProfile> assignRolesForNextRound() {
-    final rng = Random();
-    final superheroIndex = _getCurrentSuperHeroIndex();
-    int newSuperheroIndex;
-    int newSideKickIndex;
-    if (_isLastIndex(superheroIndex)) {
-      newSuperheroIndex = 0;
-      newSideKickIndex = 1;
-    } else {
-      newSuperheroIndex = superheroIndex + 1;
-      if (_isLastIndex(newSuperheroIndex)) {
-        newSideKickIndex = 0;
-      } else {
-        newSideKickIndex = newSuperheroIndex + 1;
-      }
-    }
-
-    return _setProfiles(newSuperheroIndex, newSideKickIndex, rng);
   }
 
   List<GameProfile> _setProfiles(

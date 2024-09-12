@@ -74,14 +74,6 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                     ),
                   ),
                   FunButton(
-                    isDebugOnly: true,
-                    onTap: _cubit.assignRolesForNextRound,
-                    text: 'Test: assign roles for next round',
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.debugButtonClicked,
-                    ),
-                  ),
-                  FunButton(
                     onTap: _cubit.onClickStart,
                     text: 'Start',
                     analyticsEvent: AnalyticsEvent(
