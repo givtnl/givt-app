@@ -16,6 +16,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
   const RecordAnswerScreen({required this.uiModel, super.key});
@@ -37,6 +38,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   @override
   void initState() {
     super.initState();
+    WakelockPlus.enable();
     isTestBtnVisible = config.isTestApp;
   }
 
@@ -84,6 +86,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    WakelockPlus.disable();
     super.dispose();
   }
 
