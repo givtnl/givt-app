@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/custom_navigation_bar.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/kids_home_screen_app_bar.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/goal_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_screen.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class KidsHomeScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class KidsHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const KidsHomeScreenAppBar(),
-      bottomNavigationBar: CustomNavigationBar(
+      bottomNavigationBar: FunNavigationBar(
         index: context.watch<NavigationCubit>().state.activeDestination.index,
         onDestinationSelected: (int index) {
           SystemSound.play(SystemSoundType.click);
@@ -39,6 +40,14 @@ class KidsHomeScreen extends StatelessWidget {
             },
           );
         },
+        destinations: NavigationDestinationData.values
+            .map(
+              (destination) => NavigationDestination(
+                icon: SvgPicture.asset(destination.iconPath),
+                label: destination.label,
+              ),
+            )
+            .toList(),
       ),
       body: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {

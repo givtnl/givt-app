@@ -3,8 +3,8 @@ import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class GivtTabs extends StatelessWidget {
-  const GivtTabs({
+class FunTabs extends StatelessWidget {
+  const FunTabs({
     required this.selections,
     required this.onPressed,
     required this.firstOption,
