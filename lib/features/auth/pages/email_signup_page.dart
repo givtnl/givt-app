@@ -113,10 +113,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunScaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        scrolledUnderElevation: 0,
-      ),
+      appBar: FunTopAppBar.white(title: ''),
       body: BlocListener<AuthCubit, AuthState>(
         listenWhen: (previous, current) => previous != current,
         listener: (context, state) {

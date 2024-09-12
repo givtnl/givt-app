@@ -63,9 +63,7 @@ class _WelcomePageViewState extends State<WelcomePageView> {
 
     return FunScaffold(
       appBar: AppBar(
-        leading: const BackButton(
-          color: Colors.transparent,
-        ),
+        automaticallyImplyLeading: false,
         title: Image.asset(
           'assets/images/logo.png',
           height: 30,
