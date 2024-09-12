@@ -156,7 +156,10 @@ class ChooseAmountSliderScreen extends StatelessWidget {
 
     // Don't show the different amount icons for other types then church
     if (collectgroup.type != CollectGroupType.church) {
-      return TitleMediumText(title);
+      return TitleMediumText(
+        title,
+        textAlign: TextAlign.center,
+      );
     }
 
     if (state.amount >= 1 && state.amount <= 10) {
@@ -167,6 +170,9 @@ class ChooseAmountSliderScreen extends StatelessWidget {
       title = 'This could go towards some care packages';
     }
 
-    return TitleMediumText(title);
+    return TitleMediumText(
+      title,
+      textAlign: TextAlign.center,
+    );
   }
 }
