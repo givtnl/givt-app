@@ -43,7 +43,11 @@ class ReflectAndShareRepository {
 
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
+    // Rest game state
     completedLoops = 0;
+    totalQuestionsAsked = 0;
+    totalTimeSpent = 0;
+
     _selectedProfiles = selectedProfiles;
   }
 
