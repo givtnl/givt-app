@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/models/organisation_details.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 
 class OrganisationWidget extends StatelessWidget {
@@ -12,7 +12,7 @@ class OrganisationWidget extends StatelessWidget {
     super.key,
   });
 
-  final OrganisationDetails organisation;
+  final CollectGroupDetails organisation;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class OrganisationWidget extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
             ),
-          BlocBuilder<OrganisationDetailsCubit, OrganisationDetailsState>(
+          BlocBuilder<CollectGroupDetailsCubit, CollectGroupDetailsState>(
             builder: (context, state) {
               if (state is OrganisationDetailsLoadingState) {
                 return const SizedBox(

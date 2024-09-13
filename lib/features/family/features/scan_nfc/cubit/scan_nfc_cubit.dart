@@ -8,7 +8,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
@@ -67,7 +67,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
         Future.delayed(debuggingSuccessDelay, () {
           emit(
             state.copyWith(
-              mediumId: OrganisationDetailsCubit.defaultMediumId,
+              mediumId: CollectGroupDetailsCubit.defaultMediumId,
               readData: '',
               scanNFCStatus: ScanNFCStatus.scanned,
             ),
@@ -82,7 +82,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
         Future.delayed(debuggingSuccessDelay, () {
           emit(
             state.copyWith(
-              mediumId: OrganisationDetailsCubit.defaultMediumId,
+              mediumId: CollectGroupDetailsCubit.defaultMediumId,
               readData: '',
               scanNFCStatus: ScanNFCStatus.scanned,
             ),

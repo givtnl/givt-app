@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_detail_bottomsheet.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
@@ -29,7 +29,7 @@ class OrganisationItem extends StatelessWidget {
         final generatedMediumId =
             base64.encode(organisation.namespace.codeUnits);
         context
-            .read<OrganisationDetailsCubit>()
+            .read<CollectGroupDetailsCubit>()
             .getOrganisationDetails(generatedMediumId);
 
         AnalyticsHelper.logEvent(

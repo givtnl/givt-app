@@ -41,7 +41,7 @@ class _ReflectionRuleReporterScreenState
       ),
       body: Center(
         child: FunCard(
-          icon: FunIcon.microphone(FamilyAppTheme.secondary90),
+          icon: FunIcon.microphone(circleColor: FamilyAppTheme.secondary90),
           title: 'Reporter',
           content: const BodyMediumText(
             'Each reporter takes turns asking one question to the superhero, then passes the turn to the next reporter. ',

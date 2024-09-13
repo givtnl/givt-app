@@ -46,6 +46,15 @@ enum CollectGroupType {
     }
   }
 
+  static CollectGroupType fromString(String value) {
+    for (var type in CollectGroupType.values) {
+      if (type.name.toLowerCase() == value.toLowerCase()) {
+        return type;
+      }
+    }
+    return CollectGroupType.none;
+  }
+
   static ColorCombo getColorComboByType(CollectGroupType type) {
     switch (type) {
       case CollectGroupType.church:

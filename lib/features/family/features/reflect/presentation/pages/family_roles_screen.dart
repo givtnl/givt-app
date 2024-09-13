@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
@@ -50,10 +51,17 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
       body: BaseStateConsumer<List<GameProfile>, GameProfile>(
         cubit: _cubit,
         onCustom: (context, superhero) {
-          Navigator.of(context).push(
-            ReflectionRuleSuperheroScreen(
-              superhero: superhero,
-            ).toRoute(context),
+          if (_cubit.isFirstRound()) {
+            Navigator.of(context).push(
+              ReflectionRuleSuperheroScreen(
+                superhero: superhero,
+              ).toRoute(context),
+            );
+            return;
+          }
+
+          Navigator.of(context).pushReplacement(
+            PassThePhone.toSuperhero(superhero).toRoute(context),
           );
         },
         onLoading: (context) =>
@@ -71,14 +79,6 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                       children: createGridItems(
                         profiles.take(9).toList(),
                       ),
-                    ),
-                  ),
-                  FunButton(
-                    isDebugOnly: true,
-                    onTap: _cubit.assignRolesForNextRound,
-                    text: 'Test: assign roles for next round',
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.debugButtonClicked,
                     ),
                   ),
                   FunButton(

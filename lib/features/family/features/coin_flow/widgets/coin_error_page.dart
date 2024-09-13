@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 
 class CoinErrorPage extends StatelessWidget {
   const CoinErrorPage({
@@ -32,9 +32,9 @@ class CoinErrorPage extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () {
                   final mediumId =
-                      context.read<OrganisationDetailsCubit>().state.mediumId;
+                      context.read<CollectGroupDetailsCubit>().state.mediumId;
                   context
-                      .read<OrganisationDetailsCubit>()
+                      .read<CollectGroupDetailsCubit>()
                       .getOrganisationDetails(mediumId);
                   context.read<SearchCoinCubit>().startAnimation(mediumId);
                 },

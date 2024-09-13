@@ -10,6 +10,8 @@ class ReflectAndShareRepository {
   final ProfilesRepository _profilesRepository;
 
   int completedLoops = 0;
+  int totalQuestionsAsked = 0;
+  int totalTimeSpent = 0;
 
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
@@ -25,9 +27,8 @@ class ReflectAndShareRepository {
 
   // complete a game loop/ round
   // return TRUE when all family members have been the superhero and the game should end, FALSE otherwhise
-  bool completeLoop() {
+  void completeLoop() {
     completedLoops++;
-    return completedLoops == _allProfiles!.length;
   }
 
   // get all possibly family members that can play the game
@@ -42,16 +43,16 @@ class ReflectAndShareRepository {
 
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
+    // Rest game state
+    completedLoops = 0;
+    totalQuestionsAsked = 0;
+    totalTimeSpent = 0;
+
     _selectedProfiles = selectedProfiles;
   }
 
   // randomly assign roles to the selected family members (superhero, sidekick, reporter)
   List<GameProfile> randomlyAssignRoles() {
-    if (completedLoops > 0) {
-      throw Exception(
-        'You are only supposed to call randomlyAssignRoles() once in the beginning!',
-      );
-    }
     final rng = Random();
     int sidekickIndex;
     final superheroIndex = rng.nextInt(_selectedProfiles.length);
@@ -209,8 +210,16 @@ class ReflectAndShareRepository {
   }
 
   final List<String> _secretWords = [
+    'outside',
+    'jump',
+    'laugh',
+    'adventure',
+    'smile',
+    'friendship',
+    'brave',
+    'home',
+    'pizza',
     'banana',
-    'macarena',
     'shark',
     'hungry',
     'dance',
@@ -226,11 +235,25 @@ class ReflectAndShareRepository {
 // get the questions that the reporters can ask
   List<String> _getAllQuestions() {
     return [
-      'What is something kind that someone did for you today?',
-      "What is something you did today that you're proud of?",
-      'What is something you wish you could have done for someone else today?',
-      'What is something that surprised you today?',
-      'What is something we should celebrate today?',
+      'What made you smile today?',
+      'Who is someone who helped you today?',
+      'What’s something fun you did with a friend or family member today?',
+      'What did you learn today that made you feel happy?',
+      'What’s one thing you did today that made someone else happy?',
+      'What’s something new you tried today?',
+      'Who made you feel special today?',
+      'What did you do today that made you feel brave?',
+      'What’s something you saw today that made you feel happy?',
+      'What’s one thing you did today to be kind to yourself?',
+      'What’s something you’re looking forward to tomorrow?',
+      'What did you see today that you thought was really cool or interesting?',
+      'What’s one thing you’re really good at that you used today?',
+      'Who is someone you’re thankful for today, and why?',
+      'What’s something you did today that made you feel helpful?',
+      'What made you laugh today?',
+      'What’s one thing you’re thankful for at home?',
+      'What’s something you enjoyed doing outside today?',
+      'What’s something that made you feel loved today?',
     ];
   }
 
@@ -239,4 +262,8 @@ class ReflectAndShareRepository {
 
   GameProfile getCurrentSidekick() =>
       _selectedProfiles[_getCurrentSidekickIndex()];
+
+  bool isFirstRound() => completedLoops == 0;
+
+  bool isGameFinished() => completedLoops >= _selectedProfiles!.length;
 }

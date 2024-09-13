@@ -5,8 +5,8 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 class ActionContainer extends StatefulWidget {
   const ActionContainer({
     required this.borderColor,
-    required this.onTap,
     required this.child,
+    this.onTap,
     super.key,
     this.isDisabled = false,
     this.isSelected = false,
@@ -15,7 +15,7 @@ class ActionContainer extends StatefulWidget {
     this.borderSize = 2,
     this.baseBorderSize = 6,
   });
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final bool isDisabled;
   final bool isSelected;
   final Color borderColor;
@@ -39,7 +39,10 @@ class _ActionContainerState extends State<ActionContainer> {
   bool _isManualPressed = false;
 
   bool get _isPressed {
-    return _isManualPressed || widget.isDisabled || widget.isSelected;
+    return _isManualPressed ||
+        widget.isDisabled ||
+        widget.isSelected ||
+        widget.onTap == null;
   }
 
   void _setManualPressed(bool value) {
@@ -53,12 +56,12 @@ class _ActionContainerState extends State<ActionContainer> {
     borderColor = widget.isDisabled
         ? FamilyAppTheme.disabledTileBorder
         : widget.borderColor;
-    return widget.isDisabled
+    return widget.isDisabled || widget.onTap == null
         ? _buildContainer(widget.child)
         : GestureDetector(
             onTap: () async {
               await _actionDelay();
-              widget.onTap();
+              widget.onTap!();
             },
             onTapDown: (details) {
               SystemSound.play(SystemSoundType.click);

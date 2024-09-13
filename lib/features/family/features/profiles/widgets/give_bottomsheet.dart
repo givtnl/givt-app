@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
@@ -64,7 +64,7 @@ class GiveBottomSheet extends StatelessWidget {
                           final generatedMediumId = base64
                               .encode(state.familyGoal.mediumId.codeUnits);
                           context
-                              .read<OrganisationDetailsCubit>()
+                              .read<CollectGroupDetailsCubit>()
                               .getOrganisationDetails(generatedMediumId);
                           final group = state.getGoalGroup(state.familyGoal);
                           context.pushNamed(

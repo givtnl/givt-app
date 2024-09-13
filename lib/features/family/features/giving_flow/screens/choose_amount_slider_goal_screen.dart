@@ -7,16 +7,18 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
-import 'package:givt_app/features/family/features/giving_flow/organisation_details/cubit/organisation_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/family_goal_widget.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,9 +31,9 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final organisationDetailsState =
-        context.watch<OrganisationDetailsCubit>().state;
+        context.watch<CollectGroupDetailsCubit>().state;
     final profilesCubit = context.read<ProfilesCubit>();
-    final organisation = organisationDetailsState.organisation;
+    final organisation = organisationDetailsState.collectgroup;
     final mediumId = organisationDetailsState.mediumId;
     final amountLeftToGoal = group.goal.goalAmount - group.goal.amount;
     final goalString = group.isFamilyGroup ? 'Family Goal' : 'Goal';
@@ -61,36 +63,27 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
             amountLeftToGoal - state.amount.round() > 0
                 ? (amountLeftToGoal - state.amount.round()).toInt()
                 : 0;
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            leading: const GivtBackButton(),
+        return FunScaffold(
+          appBar: const FunTopAppBar(
+            leading: GivtBackButtonFlat(),
+            title: 'Give',
           ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      FamilyGoalWidget(group, organisation),
-                      const Spacer(),
-                      const BodyMediumText(
-                        'How much would you like to give?',
-                      ),
-                      const SizedBox(height: 32),
-                    ],
-                  ),
-                ),
-                SliderWidget(state.amount, state.maxAmount),
-                const Spacer(),
-              ],
-            ),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: Column(
-            mainAxisSize: MainAxisSize.min,
+          body: Column(
             children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    FamilyGoalWidget(group, organisation),
+                    const Spacer(),
+                    const BodyMediumText(
+                      'How much would you like to give?',
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                ),
+              ),
+              SliderWidget(state.amount, state.maxAmount),
+              const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -133,7 +126,7 @@ class ChooseAmountSliderGoalScreen extends StatelessWidget {
               const SizedBox(height: 20),
               FunButton(
                 isDisabled: state.amount == 0,
-                text: 'Donate',
+                text: 'Give',
                 isLoading: state is CreateTransactionUploadingState,
                 onTap: state.amount == 0
                     ? null
