@@ -10,6 +10,8 @@ class ReflectAndShareRepository {
   final ProfilesRepository _profilesRepository;
 
   int completedLoops = 0;
+  int totalQuestionsAsked = 0;
+  int totalTimeSpent = 0;
 
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];

@@ -38,7 +38,7 @@ class _ReflectIntroScreenState extends State<ReflectIntroScreen> {
       create: (_) => _cubit,
       child: FunScaffold(
         appBar: const FunTopAppBar(
-          title: 'Reflect and share',
+          title: 'Graditude game',
           leading: GivtBackButtonFlat(),
         ),
         body: BlocConsumer<FamilyOverviewCubit, FamilyOverviewState>(

@@ -168,7 +168,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 onTap: () => context.goNamed(
                                   FamilyPages.reflectIntro.name,
                                 ),
-                                text: 'Reflect & Share',
+                                text: 'Graditude game',
                                 analyticsEvent: AnalyticsEvent(
                                   AmplitudeEvents.reflectAndShareClicked,
                                 ),
