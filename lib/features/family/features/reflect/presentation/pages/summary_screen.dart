@@ -53,8 +53,9 @@ class _SummaryScreenState extends State<SummaryScreen> {
                 children: [
                   Expanded(
                     child: FunTile.gold(
-                      titleBig:
-                          '${secretWord.minutesPlayed} minutes family time',
+                      titleBig: secretWord.minutesPlayed == 1
+                          ? '1 minute family time'
+                          : '${secretWord.minutesPlayed} minutes family time',
                       iconData: FontAwesomeIcons.solidClock,
                       assetSize: 32,
                     ),
