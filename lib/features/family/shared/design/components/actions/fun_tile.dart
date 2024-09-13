@@ -4,129 +4,168 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class FunTile extends StatefulWidget {
+class FunTile extends StatelessWidget {
   const FunTile({
-    required this.onTap,
     required this.borderColor,
     required this.backgroundColor,
     required this.textColor,
     required this.iconPath,
+    this.onTap,
     this.isDisabled = false,
     this.isSelected = false,
-    this.titleBig = '',
-    this.titleSmall = '',
-    this.subtitle = '',
+    this.titleBig,
+    this.titleSmall,
+    this.subtitle,
     this.assetSize,
     this.mainAxisAlignment,
     this.iconData,
+    this.iconColor,
     super.key,
   });
 
-  final VoidCallback onTap;
+  factory FunTile.gold(
+      {String? titleBig,
+      String? titleSmall,
+      String? subtitle,
+      IconData? iconData,
+      VoidCallback? onTap,
+      double? assetSize}) {
+    return FunTile(
+      borderColor: FamilyAppTheme.highlight80,
+      backgroundColor: FamilyAppTheme.highlight98,
+      textColor: FamilyAppTheme.highlight40,
+      iconPath: '',
+      onTap: onTap,
+      titleBig: titleBig,
+      titleSmall: titleSmall,
+      subtitle: subtitle,
+      iconData: iconData,
+      assetSize: assetSize,
+      iconColor: FamilyAppTheme.info20,
+    );
+  }
+
+  factory FunTile.blue(
+      {String? titleBig,
+      String? titleSmall,
+      String? subtitle,
+      IconData? iconData,
+      VoidCallback? onTap,
+      double? assetSize}) {
+    return FunTile(
+      borderColor: FamilyAppTheme.secondary80,
+      backgroundColor: FamilyAppTheme.secondary98,
+      textColor: FamilyAppTheme.secondary40,
+      iconPath: '',
+      onTap: onTap,
+      titleBig: titleBig,
+      titleSmall: titleSmall,
+      subtitle: subtitle,
+      iconData: iconData,
+      assetSize: assetSize,
+      iconColor: FamilyAppTheme.secondary20,
+    );
+  }
+
+  final VoidCallback? onTap;
   final Color borderColor;
   final Color backgroundColor;
   final Color textColor;
   final String iconPath;
   final bool isDisabled;
   final bool isSelected;
-  final String titleBig;
-  final String titleSmall;
-  final String subtitle;
+  final String? titleBig;
+  final String? titleSmall;
+  final String? subtitle;
   final double? assetSize;
   final IconData? iconData;
+  final Color? iconColor;
   final MainAxisAlignment? mainAxisAlignment;
 
   @override
-  State<FunTile> createState() => _FunTileState();
-}
-
-class _FunTileState extends State<FunTile> {
-  late Color backgroundColor;
-  late Color borderColor;
-
-  @override
   Widget build(BuildContext context) {
-    backgroundColor = widget.backgroundColor;
-    borderColor = widget.borderColor;
-    final isOnlineIcon = widget.iconPath.contains('http');
+    final isOnlineIcon = iconPath.startsWith('http');
 
-    if (widget.isDisabled) {
-      backgroundColor = FamilyAppTheme.disabledTileBackground;
-      borderColor = FamilyAppTheme.disabledTileBorder;
+    var newBackgroundColor = backgroundColor;
+    var newBorderColor = borderColor;
+
+    if (isDisabled) {
+      newBackgroundColor = FamilyAppTheme.disabledTileBackground;
+      newBorderColor = FamilyAppTheme.disabledTileBorder;
     }
+
     return ActionContainer(
-      isDisabled: widget.isDisabled,
-      isSelected: widget.isSelected,
-      borderColor: borderColor,
-      onTap: widget.isDisabled ? () {} : () => widget.onTap(),
+      isDisabled: isDisabled,
+      isSelected: isSelected,
+      borderColor: newBorderColor,
+      onTap: isDisabled ? () {} : onTap,
       child: Stack(
         children: [
           Container(
-            color: backgroundColor,
+            color: newBackgroundColor,
             width: double.infinity,
             child: Column(
-              mainAxisAlignment:
-                  widget.mainAxisAlignment ?? MainAxisAlignment.start,
+              mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
-                const SizedBox(height: 10),
+                SizedBox(height: iconData != null ? 24 : 10),
                 Opacity(
-                  opacity: widget.isDisabled ? 0.5 : 1,
-                  child: widget.iconData == null
+                  opacity: isDisabled ? 0.5 : 1,
+                  child: iconData == null
                       ? isOnlineIcon
                           ? SvgPicture.network(
-                              widget.iconPath,
-                              height: widget.assetSize ?? 140,
-                              width: widget.assetSize ?? 140,
+                              iconPath,
+                              height: assetSize ?? 140,
+                              width: assetSize ?? 140,
                             )
                           : SvgPicture.asset(
-                              widget.iconPath,
-                              height: widget.assetSize ?? 140,
-                              width: widget.assetSize ?? 140,
+                              iconPath,
+                              height: assetSize ?? 140,
+                              width: assetSize ?? 140,
                             )
                       : FaIcon(
-                          widget.iconData,
-                          size: widget.assetSize ?? 140,
-                          color: widget.textColor.withOpacity(0.6),
+                          iconData,
+                          size: assetSize ?? 140,
+                          color: iconColor ?? textColor.withOpacity(0.6),
                         ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 8, 10, 16),
                   child: Column(
                     children: [
-                      if (widget.titleBig.isNotEmpty)
+                      if (titleBig != null)
                         Text(
-                          widget.titleBig,
+                          titleBig!,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
-                                    color: widget.isDisabled
+                                    color: isDisabled
                                         ? FamilyAppTheme.disabledTileBorder
-                                        : widget.textColor,
+                                        : textColor,
                                   ),
                         )
                       else
                         const SizedBox(),
-                      if (widget.titleSmall.isNotEmpty)
+                      if (titleSmall != null)
                         Text(
-                          widget.titleSmall,
+                          titleSmall!,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: widget.isDisabled
+                                    color: isDisabled
                                         ? FamilyAppTheme.disabledTileBorder
-                                        : widget.textColor,
+                                        : textColor,
                                   ),
                         )
                       else
                         const SizedBox(),
-                      SizedBox(height: widget.subtitle.isNotEmpty ? 8 : 0),
-                      if (widget.subtitle.isNotEmpty)
+                      const SizedBox(height: 8),
+                      if (subtitle != null)
                         Text(
-                          widget.subtitle,
+                          subtitle!,
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.labelMedium?.copyWith(
-                                    color: widget.textColor.withAlpha(200),
+                                    color: textColor.withAlpha(200),
                                   ),
                         )
                       else
@@ -137,7 +176,7 @@ class _FunTileState extends State<FunTile> {
               ],
             ),
           ),
-          if (widget.isSelected)
+          if (isSelected)
             Positioned(
               top: 0,
               right: 0,

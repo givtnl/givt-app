@@ -62,6 +62,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
 
   // Advance to the next reporter/question
   void advanceToNext() {
+    _reflectAndShareRepository.totalQuestionsAsked++;
     _nrOfQuestionsAsked++;
     if (_isLastQuestion()) {
       interviewFinished();
@@ -99,5 +100,9 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
         buttonText: getButtonText(),
       ),
     );
+  }
+
+  void increaseTimeSpent() {
+    _reflectAndShareRepository.totalTimeSpent++;
   }
 }
