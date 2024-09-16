@@ -68,6 +68,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
 
         if (!mounted) return;
         setState(() {
+          cubit.increaseTimeSpent();
           _remainingSeconds--;
         });
       }
