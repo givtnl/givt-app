@@ -114,7 +114,7 @@ class FunButton extends StatelessWidget {
   final Color? textColor;
   final bool fullBorder;
   final bool isDebugOnly;
-  final AnalyticsEvent? analyticsEvent;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -126,16 +126,8 @@ class FunButton extends StatelessWidget {
     }
 
     return ActionContainer(
-      onTap: () {
-        if (analyticsEvent != null) {
-          AnalyticsHelper.logEvent(
-            eventName: analyticsEvent!.name,
-            eventProperties: analyticsEvent!.parameters,
-          );
-        }
-
-        onTap?.call();
-      },
+      analyticsEvent: analyticsEvent,
+      onTap: onTap,
       borderColor: borderColor,
       isDisabled: isDisabled,
       borderSize: fullBorder ? 2 : 0.01,

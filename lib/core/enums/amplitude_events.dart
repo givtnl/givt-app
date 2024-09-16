@@ -12,6 +12,7 @@ enum AmplitudeEvents {
   numberOfMembersSelected('number_of_members_selected'),
   memberCreatedSuccesfully('member_created_succesfully'),
   addMemberContinueClicked('add_member_continue_clicked'),
+  addMemberTypeSelectorClicked('add_member_type_selector_clicked'),
   failedToCreateMember('failed_to_create_member'),
   failedToGetVpc('failed_to_get_vpc'),
   failedTopUpNoFunds('failed_top_up_no_funds'),
@@ -161,6 +162,10 @@ enum AmplitudeEvents {
     'generosity_challenge_chat_bar_button_clicked',
   ),
   generosityChallengeGoToChatClicked('generosity_challenge_go_to_chat_clicked'),
+  generosityChallengeSendClicked('generosity_challenge_send_clicked'),
+  generosityChallengeFamilyValueClicked(
+    'generosity_challenge_family_value_clicked',
+  ),
 
   // Registration flow
   continueByEmailSignUpNewUserCliked(
@@ -205,6 +210,7 @@ enum AmplitudeEvents {
   qrCodeScanned('qr_code_scanned'),
   seeDonationHistoryPressed('see_donation_history_pressed'),
   locationSelected('location_selected'),
+  locationNextClicked('location_next_clicked'),
   citySelected('city_selected'),
   interestSelected('interest_selected'),
   showCharitiesPressed('show_charities_pressed'),
@@ -289,6 +295,7 @@ enum AmplitudeEvents {
   ),
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   parentGiveClicked('parent_give_clicked'),
+  parentGiveFilterTileClicked('parent_give_filter_tile_clicked'),
 
   // Reflect and Share
   reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
@@ -318,6 +325,15 @@ enum AmplitudeEvents {
     'reflect_and_share_result_next_round_clicked',
   ),
   familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  familyReflectSummaryMinutesPlayedClicked(
+    'family_reflect_summary_minutes_played_clicked',
+  ),
+  familyReflectSummaryQuestionsAskedClicked(
+    'family_reflect_summary_questions_asked_clicked',
+  ),
+
+  funCounterDecrementClicked('fun_counter_decrement_clicked'),
+  funCounterIncrementClicked('fun_counter_increment_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
-import 'package:givt_app/utils/utils.dart';
 
 part 'tags_state.dart';
 
@@ -37,14 +35,6 @@ class TagsCubit extends Cubit<TagsState> {
     final previousCity = (state as TagsStateFetched).selectedCity;
     final currentTapCity = city['cityName'].toString();
 
-    if (previousCity != currentTapCity) {
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.citySelected,
-        eventProperties: {
-          AnalyticsHelper.cityKey: currentTapCity,
-        },
-      );
-    }
     return emit(
       TagsStateFetched(
         tags: state.tags,

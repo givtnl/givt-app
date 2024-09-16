@@ -58,6 +58,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
                           : '${secretWord.minutesPlayed} minutes family time',
                       iconData: FontAwesomeIcons.solidClock,
                       assetSize: 32,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents
+                            .familyReflectSummaryMinutesPlayedClicked,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -66,6 +70,10 @@ class _SummaryScreenState extends State<SummaryScreen> {
                       titleBig: '${secretWord.questionsAsked} questions asked',
                       iconData: FontAwesomeIcons.solidCircleQuestion,
                       assetSize: 32,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents
+                            .familyReflectSummaryQuestionsAskedClicked,
+                      ),
                     ),
                   ),
                 ],
