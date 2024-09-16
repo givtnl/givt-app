@@ -194,7 +194,7 @@ class AuthCubit extends Cubit<AuthState> {
         );
       }
 
-      if (state.status == AuthStatus.loading) {
+      if (state.status == AuthStatus.loading && userExt.isUsUser == false) {
         emit(
           state.copyWith(
             status: currentStatus,
