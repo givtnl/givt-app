@@ -265,5 +265,5 @@ class ReflectAndShareRepository {
 
   bool isFirstRound() => completedLoops == 0;
 
-  bool isGameFinished() => completedLoops >= _selectedProfiles!.length;
+  bool isGameFinished() => completedLoops >= _selectedProfiles.length;
 }

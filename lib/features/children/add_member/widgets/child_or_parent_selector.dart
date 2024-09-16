@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/shared/widgets/givt_tabs.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_tabs.dart';
 
 class ChildOrParentSelector extends StatelessWidget {
   const ChildOrParentSelector({
@@ -11,7 +11,7 @@ class ChildOrParentSelector extends StatelessWidget {
   final void Function(int) onPressed;
   @override
   Widget build(BuildContext context) {
-    return GivtTabs(
+    return FunTabs(
       selections: selections,
       onPressed: onPressed,
       firstOption: 'Child',

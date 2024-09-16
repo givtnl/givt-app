@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class CustomNavigationBar extends StatelessWidget {
-  const CustomNavigationBar({
+class FunNavigationBar extends StatelessWidget {
+  const FunNavigationBar({
     required this.index,
     required this.onDestinationSelected,
+    required this.destinations,
     super.key,
   });
+
   final int index;
   final void Function(int) onDestinationSelected;
+  final List<Widget> destinations;
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -31,14 +33,7 @@ class CustomNavigationBar extends StatelessWidget {
         backgroundColor: FamilyAppTheme.secondary99,
         indicatorColor: FamilyAppTheme.secondary95,
         surfaceTintColor: Colors.transparent,
-        destinations: NavigationDestinationData.values
-            .map(
-              (destination) => NavigationDestination(
-                icon: SvgPicture.asset(destination.iconPath),
-                label: destination.label,
-              ),
-            )
-            .toList(),
+        destinations: destinations,
       ),
     );
   }

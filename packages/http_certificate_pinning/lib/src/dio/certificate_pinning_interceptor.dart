@@ -10,9 +10,7 @@ class CertificatePinningInterceptor extends Interceptor {
     List<String>? allowedSHAFingerprints,
     int timeout = 0,
     this.callFollowingErrorInterceptor = false,
-  })  : _allowedSHAFingerprints = allowedSHAFingerprints != null
-            ? allowedSHAFingerprints
-            : <String>[],
+  })  : _allowedSHAFingerprints = allowedSHAFingerprints ?? <String>[],
         _timeout = timeout;
   final List<String> _allowedSHAFingerprints;
   final int _timeout;

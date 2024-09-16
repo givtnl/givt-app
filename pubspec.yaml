@@ -10,14 +10,12 @@ dependencies:
   amplitude_flutter: ^3.16.0
   animated_toggle_switch: ^0.8.3
   app_settings: ^5.1.1
-  appcheck: ^1.0.6
   audioplayers: ^6.0.0
   badges: ^3.1.1
   bloc: ^8.1.1
   carousel_slider: ^5.0.0
   country_flags: ^3.0.0
   countup: ^0.1.4
-  cupertino_icons: ^1.0.6
   currency_text_input_formatter: ^2.1.10
   dart_jsonwebtoken: ^2.13.0
   device_info_plus: ^10.1.2
@@ -61,7 +59,6 @@ dependencies:
   intl: ^0.19.0
   ios_utsname_ext: ^2.2.0
   jiffy: ^6.2.1
-  keyboard_actions: ^4.2.0
   local_auth: ^2.1.7
   logging: ^1.2.0
   lottie: ^3.0.0
@@ -80,7 +77,6 @@ dependencies:
   url_launcher: ^6.1.12
   uuid: ^4.4.0
   vibration: ^2.0.0
-  flutter_sound: ^9.6.0
   scratcher: ^2.5.0
   wakelock_plus: ^1.2.8
 
