@@ -27,7 +27,7 @@
     },
     "unregisterButton": "Terminate my account",
     "unregisterUnderstood": "I understand",
-    "givtIsBeingProcessed": "Thank you for your Givt to {value0}!\n You can check the status in the overview.",
+    "givtIsBeingProcessed": "Thank you for your Givt to {value0}!",
     "offlineGegevenGivtMessage": "Thank you for your Givt!\n \n\n When there's a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.",
     "offlineGegevenGivtMessageWithOrg": "Thank you for your Givt to {value0}!\n \n\n When there's a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.",
     "pincode": "Passcode",
