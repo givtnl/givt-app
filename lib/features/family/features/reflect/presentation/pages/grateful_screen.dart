@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 
@@ -31,6 +32,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     return Scaffold(
       body: BaseStateConsumer(
         cubit: _cubit,
+        onCustom: _handleCustom,
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
         onData: (context, uiModel) {
@@ -51,5 +53,21 @@ class _GratefulScreenState extends State<GratefulScreen> {
         },
       ),
     );
+  }
+
+  void _handleCustom(BuildContext context, GratefulCustom custom) {
+    switch (custom) {
+      case final GratefulOpenKidDonationFlow data:
+        // TODO: Handle this case.
+        data.organisation;
+        break;
+      case final GratefulOpenParentDonationFlow data:
+        // TODO: Handle this case.
+        data.profile;
+        break;
+      case GratefulGoToGameSummary():
+        // TODO: Handle this case.
+        break;
+    }
   }
 }
