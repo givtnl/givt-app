@@ -82,13 +82,6 @@ class _AppState extends State<App> {
             lazy: false,
           ),
           BlocProvider(
-            create: (_) => InfraCubit(
-              getIt(),
-              getIt(),
-            ),
-            lazy: false,
-          ),
-          BlocProvider(
             create: (context) => ImpactGroupsCubit(
               getIt(),
               getIt(),

@@ -50,6 +50,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CreateChallengeDonationCubit,
         CreateChallengeDonationState>(
+      bloc: getIt<CreateChallengeDonationCubit>(),
       builder: (context, state) {
         return BlocListener<GiveBloc, GiveState>(
           listener: (context, giveState) async {

@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/network/request_helper.dart';
+import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/application/admin_fee_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
@@ -37,7 +38,25 @@ Future<void> initAPIService() async {
 }
 
 void initCubits() {
-  getIt.registerFactory(() => AdminFeeCubit(getIt()));
+  getIt
+    ..registerFactory(() => AdminFeeCubit(getIt()))
+    ..registerLazySingleton<InterviewCubit>(
+      () => InterviewCubit(getIt()),
+    )
+    ..registerFactory<FamilyRolesCubit>(
+      () => FamilyRolesCubit(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<CameraCubit>(
+      CameraCubit.new,
+    )
+    ..registerLazySingleton(CreateChallengeDonationCubit.new)
+    ..registerFactory<FamilySelectionCubit>(
+      () => FamilySelectionCubit(
+        getIt(),
+      ),
+    );
 }
 
 void initRepositories() {
@@ -106,22 +125,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<InterviewCubit>(
-      () => InterviewCubit(getIt()),
-    )
-    ..registerLazySingleton<CameraCubit>(
-      CameraCubit.new,
-    )
-    ..registerFactory<FamilyRolesCubit>(
-      () => FamilyRolesCubit(
-        getIt(),
-      ),
-    )
-    ..registerFactory<FamilySelectionCubit>(
-      () => FamilySelectionCubit(
         getIt(),
       ),
     );

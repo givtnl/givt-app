@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class SliderWidget extends StatelessWidget {
@@ -50,8 +51,7 @@ class SliderWidget extends StatelessWidget {
               divisions: maxAmount.round(),
               onChanged: (value) {
                 HapticFeedback.lightImpact();
-                context
-                    .read<CreateChallengeDonationCubit>()
+                getIt<CreateChallengeDonationCubit>()
                     .updateAmount(value);
               },
               onChangeEnd: (value) {

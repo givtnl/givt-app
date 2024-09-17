@@ -230,9 +230,6 @@ class FamilyAppRoutes {
                     getIt(),
                   ),
                 ),
-                BlocProvider(
-                  create: (context) => CreateChallengeDonationCubit(),
-                ),
                 BlocProvider.value(
                   value: challengeCubit,
                 ),
@@ -256,18 +253,7 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
-      builder: (context, state) => MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            lazy: false,
-            create: (_) => RemoteDataSourceSyncBloc(
-              getIt(),
-              getIt(),
-            )..add(const RemoteDataSourceSyncRequested()),
-          ),
-        ],
-        child: const ProfileSelectionScreen(),
-      ),
+      builder: (context, state) => const ProfileSelectionScreen(),
       routes: [
         GoRoute(
           path: FamilyPages.parentHome.path,
@@ -607,9 +593,6 @@ class FamilyAppRoutes {
           builder: (context, state) {
             return MultiBlocProvider(
               providers: [
-                BlocProvider.value(
-                  value: state.extra! as RegistrationBloc,
-                ),
                 BlocProvider(
                   create: (_) => StripeCubit(
                     authRepositoy: getIt(),
