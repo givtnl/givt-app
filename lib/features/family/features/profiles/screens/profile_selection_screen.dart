@@ -25,6 +25,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -99,6 +100,14 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             showCachedMembersBottomsheet(state);
           } else {
             await AddMemberUtil.addMemberPushPages(context);
+          }
+        } else if (state is ProfilesNeedsRegistration) {
+          if (context.read<RegistrationBloc>().state.status ==
+              RegistrationStatus.createStripeAccount) {
+            context.pushNamed(
+              FamilyPages.creditCardDetails.name,
+              extra: context.read<RegistrationBloc>(),
+            );
           }
         }
       },
