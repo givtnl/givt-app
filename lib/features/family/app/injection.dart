@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
@@ -110,6 +111,9 @@ void initRepositories() {
     )
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
+    )
+    ..registerLazySingleton<CameraCubit>(
+      CameraCubit.new,
     )
     ..registerFactory<FamilyRolesCubit>(
       () => FamilyRolesCubit(

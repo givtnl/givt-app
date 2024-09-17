@@ -2,15 +2,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/give/widgets/camera_permission_eu_dialog.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class QrCodeScanPage extends StatefulWidget {
   const QrCodeScanPage({
@@ -23,43 +25,12 @@ class QrCodeScanPage extends StatefulWidget {
 
 class _QrCodeScanPageState extends State<QrCodeScanPage> {
   final _controller = MobileScannerController();
+  final _cubit = getIt<CameraCubit>();
 
-  Future<void> isAllowed() async {
-    final isAllowed = await Permission.camera.isGranted;
-    if (!mounted) return;
-    if (isAllowed) {
-      await _controller.start();
-      return;
-    }
-
-    final isCameraAllowed = await showDialog<bool>(
-      context: context,
-      builder: (context) => PermissionDialog(
-        title: context.l10n.accessDenied,
-        content: context.l10n.cameraPermission,
-        onTryAgain: () async {
-          await Permission.camera.request();
-          if (!mounted) return;
-          Navigator.of(context).pop(true);
-        },
-        onCancel: () => Navigator.of(context).pop(false),
-      ),
-    );
-
-    if (!context.mounted) {
-      return;
-    }
-
-    if (isCameraAllowed == null) {
-      Navigator.of(context).pop();
-      return;
-    }
-    if (isCameraAllowed) {
-      await _controller.start();
-      setState(() {});
-      return;
-    }
-    Navigator.of(context).pop();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit.checkCameraPermission();
   }
 
   @override
@@ -73,58 +44,77 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final userGuid = context.read<AuthCubit>().state.user.guid;
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(),
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(locals.giveDifferentScan),
-            Text(
-              locals.giveDiffQrText,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ],
-        ),
-        toolbarHeight: size.height * 0.1,
-      ),
-      body: BlocConsumer<GiveBloc, GiveState>(
-        listenWhen: (previous, current) => previous != current,
+    return BlocProvider.value(
+      value: _cubit,
+      child: BlocListener<CameraCubit, CameraState>(
         listener: (context, state) {
-          if (state.status == GiveStatus.error) {
-            displayErrorDialog();
+          if (state.status == CameraStatus.permissionPermanentlyDeclined) {
+            showDialog<void>(
+              context: context,
+              builder: (_) {
+                return CameraPermissionSettingsEuDialog(
+                  cameraCubit: _cubit,
+                  onCancel: () => context.pop(),
+                );
+              },
+            );
           }
         },
-        builder: (context, state) {
-          return Stack(
-            children: [
-              MobileScanner(
-                controller: _controller,
-                onDetect: (BarcodeCapture barcodeCapture) async =>
-                    _processBarcode(
-                  barcodeCapture: barcodeCapture,
-                  userGuid: userGuid,
+        child: Scaffold(
+          appBar: AppBar(
+            leading: const BackButton(),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(locals.giveDifferentScan),
+                Text(
+                  locals.giveDiffQrText,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-              ),
-              const Positioned.fill(
-                child: QrCodeTarget(),
-              ),
-              if (state.status == GiveStatus.loading)
-                const Opacity(
-                  opacity: 0.8,
-                  child: ModalBarrier(dismissible: false, color: Colors.black),
-                ),
-              if (state.status == GiveStatus.loading)
-                const Positioned.fill(
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppTheme.givtLightGreen,
+              ],
+            ),
+            toolbarHeight: size.height * 0.1,
+          ),
+          body: BlocConsumer<GiveBloc, GiveState>(
+            listenWhen: (previous, current) => previous != current,
+            listener: (context, state) {
+              if (state.status == GiveStatus.error) {
+                displayErrorDialog();
+              }
+            },
+            builder: (context, state) {
+              return Stack(
+                children: [
+                  MobileScanner(
+                    controller: _controller,
+                    onDetect: (BarcodeCapture barcodeCapture) async =>
+                        _processBarcode(
+                      barcodeCapture: barcodeCapture,
+                      userGuid: userGuid,
                     ),
                   ),
-                ),
-            ],
-          );
-        },
+                  const Positioned.fill(
+                    child: QrCodeTarget(),
+                  ),
+                  if (state.status == GiveStatus.loading)
+                    const Opacity(
+                      opacity: 0.8,
+                      child:
+                          ModalBarrier(dismissible: false, color: Colors.black),
+                    ),
+                  if (state.status == GiveStatus.loading)
+                    const Positioned.fill(
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: AppTheme.givtLightGreen,
+                        ),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }
