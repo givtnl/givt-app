@@ -331,7 +331,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> refreshUser({bool emitAuthentication = true}) async {
+  Future<void> refreshUser({bool emitAuthentication = true, bool forceAuthUpdate = false}) async {
     if (emitAuthentication) emit(state.copyWith(status: AuthStatus.loading));
     try {
       final userExt = await _authRepositoy.fetchUserExtension(state.user.guid);
@@ -344,6 +344,7 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
       }
+      _authRepositoy.updateSessionStream(true, force: forceAuthUpdate);
     } catch (e, stackTrace) {
       LoggingInfo.instance.error(
         e.toString(),

@@ -144,27 +144,34 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     List<Profile> newProfiles,
     List<Member> members,
   ) async {
-    UserExt? userExternal;
-    final (userExt, session, amountPresets) =
-        await _authRepository.isAuthenticated() ?? (null, null, null);
-    userExternal = userExt;
+    try {
+      UserExt? userExternal;
+      final (userExt, session, amountPresets) =
+          await _authRepository.isAuthenticated() ?? (null, null, null);
+      userExternal = userExt;
 
-    if (userExternal?.needRegistration ?? false) {
-      emit(
-        ProfilesNeedsRegistration(
-          profiles: newProfiles,
-          activeProfileIndex: state.activeProfileIndex,
-          hasFamily:
-              newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
-        ),
-      );
-    } else if (newProfiles.length <= 1) {
-      emit(
-        ProfilesNotSetupState(
-          profiles: newProfiles,
-          activeProfileIndex: state.activeProfileIndex,
-          cachedMembers: members,
-        ),
+      if (userExternal?.needRegistration ?? false) {
+        emit(
+          ProfilesNeedsRegistration(
+            profiles: newProfiles,
+            activeProfileIndex: state.activeProfileIndex,
+            hasFamily:
+            newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
+          ),
+        );
+      } else if (newProfiles.length <= 1) {
+        emit(
+          ProfilesNotSetupState(
+            profiles: newProfiles,
+            activeProfileIndex: state.activeProfileIndex,
+            cachedMembers: members,
+          ),
+        );
+      }
+    } catch (e,s) {
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
       );
     }
   }
