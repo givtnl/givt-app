@@ -133,10 +133,7 @@ class LocationSelectionScreen extends StatelessWidget {
                                   }
                                 : null,
                             analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents.locationSelected,
-                              parameters: {
-                                'location': state.selectedLocation.displayText,
-                              },
+                              AmplitudeEvents.locationNextClicked,
                             ),
                           ),
                         ],

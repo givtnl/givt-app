@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/impact_groups/pages/goal_scree
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class KidsHomeScreen extends StatelessWidget {
@@ -48,6 +49,10 @@ class KidsHomeScreen extends StatelessWidget {
               ),
             )
             .toList(),
+        analyticsEvent: (int index) =>
+            AnalyticsEvent(AmplitudeEvents.navigationBarPressed, parameters: {
+          'destination': NavigationDestinationData.values[index].name,
+        }),
       ),
       body: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {

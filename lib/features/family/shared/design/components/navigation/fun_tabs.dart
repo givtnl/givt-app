@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class FunTabs extends StatelessWidget {
@@ -9,12 +12,16 @@ class FunTabs extends StatelessWidget {
     required this.onPressed,
     required this.firstOption,
     required this.secondOption,
+    required this.analyticsEvent,
     super.key,
   });
+
   final String firstOption;
   final String secondOption;
   final List<bool> selections;
   final void Function(int) onPressed;
+  final AnalyticsEvent analyticsEvent;
+
   @override
   Widget build(BuildContext context) {
     return ToggleButtons(
@@ -30,7 +37,15 @@ class FunTabs extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width / 2 - 40,
       ),
       isSelected: selections,
-      onPressed: onPressed,
+      onPressed: (index) {
+        unawaited(
+          AnalyticsHelper.logEvent(
+            eventName: analyticsEvent.name,
+            eventProperties: analyticsEvent.parameters,
+          ),
+        );
+        onPressed.call(index);
+      },
       children: [
         LabelMediumText(firstOption),
         LabelMediumText(secondOption),

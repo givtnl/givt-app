@@ -13,6 +13,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/wallet_widget
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -121,28 +122,24 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         .onInverseSurface,
                                     textColor:
                                         Theme.of(context).colorScheme.secondary,
-                                    onTap: () {
-                                      AnalyticsHelper.logEvent(
-                                        eventName:
-                                            AmplitudeEvents.iWantToGivePressed,
-                                        eventProperties: {
-                                          AnalyticsHelper.walletAmountKey: state
-                                              .activeProfile.wallet.balance,
-                                        },
-                                      );
-                                      showModalBottomSheet<void>(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        backgroundColor: Colors.white,
-                                        builder: (context) => GiveBottomSheet(
-                                          isiPad: isiPad,
-                                        ),
-                                      );
-                                    },
+                                    analyticsEvent: AnalyticsEvent(
+                                      AmplitudeEvents.iWantToGivePressed,
+                                      parameters: {
+                                        AnalyticsHelper.walletAmountKey:
+                                            state.activeProfile.wallet.balance,
+                                      },
+                                    ),
+                                    onTap: () => showModalBottomSheet<void>(
+                                      context: context,
+                                      isScrollControlled: true,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      backgroundColor: Colors.white,
+                                      builder: (context) => GiveBottomSheet(
+                                        isiPad: isiPad,
+                                      ),
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 16),
@@ -158,6 +155,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     textColor: Theme.of(context)
                                         .colorScheme
                                         .onPrimaryContainer,
+                                    analyticsEvent: AnalyticsEvent(
+                                      AmplitudeEvents.helpMeFindCharityPressed,
+                                    ),
                                     onTap: () {
                                       context
                                           .read<FlowsCubit>()
@@ -165,11 +165,6 @@ class _ProfileScreenState extends State<ProfileScreen>
 
                                       context.pushNamed(
                                         FamilyPages.recommendationStart.name,
-                                      );
-
-                                      AnalyticsHelper.logEvent(
-                                        eventName: AmplitudeEvents
-                                            .helpMeFindCharityPressed,
                                       );
                                     },
                                   ),

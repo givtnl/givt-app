@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -30,6 +32,13 @@ class FamilyValueContainer extends StatelessWidget {
               context.read<FamilyValuesCubit>().selectValue(familyValue);
             },
       isPressedDown: isPressed,
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.generosityChallengeFamilyValueClicked,
+        parameters: {
+          'familyValue': familyValue.displayText,
+          'isSelected': isSelected,
+        },
+      ),
       child: Stack(
         children: [
           Container(

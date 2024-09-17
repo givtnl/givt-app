@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 
 class CustomIconBorderButton extends StatelessWidget {
   const CustomIconBorderButton({
     required this.child,
     required this.onTap,
+    required this.analyticsEvent,
     this.onTapCancel,
     this.onTapUp,
     this.onTapDown,
@@ -18,6 +20,7 @@ class CustomIconBorderButton extends StatelessWidget {
   final VoidCallback? onTapDown;
   final bool isMuted;
   final Widget child;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +32,7 @@ class CustomIconBorderButton extends StatelessWidget {
       isMuted: isMuted,
       borderColor: ColorCombo.primary.borderColor,
       baseBorderSize: 4,
+      analyticsEvent: analyticsEvent,
       child: Container(
         color: Colors.white,
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
