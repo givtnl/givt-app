@@ -27,7 +27,7 @@
     },
     "unregisterButton": "Terminate my account",
     "unregisterUnderstood": "I understand",
-    "givtIsBeingProcessed": "Thank you for your Givt to {value0}!\n You can check the status in the overview.",
+    "givtIsBeingProcessed": "Thank you for your Givt to {value0}!",
     "offlineGegevenGivtMessage": "Thank you for your Givt!\n \n\n When there's a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.",
     "offlineGegevenGivtMessageWithOrg": "Thank you for your Givt to {value0}!\n \n\n When there's a good connection with the Givt-server, your Givt will be processed.\n You can check the status in the overview.",
     "pincode": "Passcode",
@@ -1550,5 +1550,7 @@
     "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
     "topUpFundsFailureText": "We are having trouble getting the\nfunds from your card.\nPlease try again.",
     "topUpSuccessText": "{value0} has been added to\nyour child’s Wallet",
-    "plusAddMembers": "+ Add members"
+    "plusAddMembers": "+ Add members",
+    "goToSettings": "Go to Settings",
+    "goToSettingsBody": "To scan the QR Code we need to turn on the camera. Go to Settings to allow that."
 }

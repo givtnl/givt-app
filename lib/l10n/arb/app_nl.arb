@@ -1550,5 +1550,7 @@
     "topUpScreenInfo": "How much would you like to add to\nyour child's Wallet?",
     "topUpFundsFailureText": "We are having trouble getting the\nfunds from your card.\nPlease try again.",
     "topUpSuccessText": "{value0} has been added to\nyour child’s Wallet",
-    "plusAddMembers": "+ Add members"
+    "plusAddMembers": "+ Add members",
+    "goToSettings": "Ga naar Instellingen",
+    "goToSettingsBody": "Om de QR-code te scannen, moeten we de camera inschakelen. Ga naar Instellingen om dat toe te staan."
 }
