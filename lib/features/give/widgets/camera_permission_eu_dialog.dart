@@ -18,8 +18,7 @@ class CameraPermissionSettingsEuDialog extends StatelessWidget {
       title: Text(
         context.l10n.accessDenied,
       ),
-      content: const Text(
-          'To scan the QR Code we need to turn on the camera. Go to Settings to allow that.'),
+      content: Text(context.l10n.goToSettings),
       actions: [
         TextButton(
           onPressed: onCancel,
@@ -31,7 +30,7 @@ class CameraPermissionSettingsEuDialog extends StatelessWidget {
             cameraCubit.grantAccess();
             context.pop();
           },
-          child: Text('Go to Settings'),
+          child: Text(context.l10n.goToSettingsBody),
         ),
       ],
     );

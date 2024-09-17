@@ -44,76 +44,74 @@ class _QrCodeScanPageState extends State<QrCodeScanPage> {
     final size = MediaQuery.sizeOf(context);
     final locals = context.l10n;
     final userGuid = context.read<AuthCubit>().state.user.guid;
-    return BlocProvider.value(
-      value: _cubit,
-      child: BlocListener<CameraCubit, CameraState>(
-        listener: (context, state) {
-          if (state.status == CameraStatus.permissionPermanentlyDeclined) {
-            showDialog<void>(
-              context: context,
-              builder: (_) {
-                return CameraPermissionSettingsEuDialog(
-                  cameraCubit: _cubit,
-                  onCancel: () => context.pop(),
-                );
-              },
-            );
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            leading: const BackButton(),
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(locals.giveDifferentScan),
-                Text(
-                  locals.giveDiffQrText,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-            toolbarHeight: size.height * 0.1,
-          ),
-          body: BlocConsumer<GiveBloc, GiveState>(
-            listenWhen: (previous, current) => previous != current,
-            listener: (context, state) {
-              if (state.status == GiveStatus.error) {
-                displayErrorDialog();
-              }
-            },
-            builder: (context, state) {
-              return Stack(
-                children: [
-                  MobileScanner(
-                    controller: _controller,
-                    onDetect: (BarcodeCapture barcodeCapture) async =>
-                        _processBarcode(
-                      barcodeCapture: barcodeCapture,
-                      userGuid: userGuid,
-                    ),
-                  ),
-                  const Positioned.fill(
-                    child: QrCodeTarget(),
-                  ),
-                  if (state.status == GiveStatus.loading)
-                    const Opacity(
-                      opacity: 0.8,
-                      child:
-                          ModalBarrier(dismissible: false, color: Colors.black),
-                    ),
-                  if (state.status == GiveStatus.loading)
-                    const Positioned.fill(
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          color: AppTheme.givtLightGreen,
-                        ),
-                      ),
-                    ),
-                ],
+    return BlocListener<CameraCubit, CameraState>(
+      bloc: _cubit,
+      listener: (context, state) {
+        if (state.status == CameraStatus.permissionPermanentlyDeclined) {
+          showDialog<void>(
+            context: context,
+            builder: (_) {
+              return CameraPermissionSettingsEuDialog(
+                cameraCubit: _cubit,
+                onCancel: () => context.pop(),
               );
             },
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: const BackButton(),
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(locals.giveDifferentScan),
+              Text(
+                locals.giveDiffQrText,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
           ),
+          toolbarHeight: size.height * 0.1,
+        ),
+        body: BlocConsumer<GiveBloc, GiveState>(
+          listenWhen: (previous, current) => previous != current,
+          listener: (context, state) {
+            if (state.status == GiveStatus.error) {
+              displayErrorDialog();
+            }
+          },
+          builder: (context, state) {
+            return Stack(
+              children: [
+                MobileScanner(
+                  controller: _controller,
+                  onDetect: (BarcodeCapture barcodeCapture) async =>
+                      _processBarcode(
+                    barcodeCapture: barcodeCapture,
+                    userGuid: userGuid,
+                  ),
+                ),
+                const Positioned.fill(
+                  child: QrCodeTarget(),
+                ),
+                if (state.status == GiveStatus.loading)
+                  const Opacity(
+                    opacity: 0.8,
+                    child:
+                        ModalBarrier(dismissible: false, color: Colors.black),
+                  ),
+                if (state.status == GiveStatus.loading)
+                  const Positioned.fill(
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppTheme.givtLightGreen,
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );
