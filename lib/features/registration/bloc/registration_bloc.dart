@@ -83,7 +83,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         isNewUser: false,
       );
 
-      await authCubit.refreshUser();
+      await authCubit.refreshUser(forceAuthUpdate: true);
       if (event.country.toUpperCase() == Country.us.countryCode) {
         emit(
           state.copyWith(
