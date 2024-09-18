@@ -1,3 +1,4 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/areas.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
@@ -106,7 +107,7 @@ class GratitudeTagsData {
     const GratitudeCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'People',
-      pictureLink: 'assets/family/images/people.svg',
+      iconData: FontAwesomeIcons.peopleGroup,
       tags: [
         Tag(
           key: 'AFTERADISASTER',
@@ -129,7 +130,7 @@ class GratitudeTagsData {
     const GratitudeCategory(
       colorCombo: ColorCombo.primary,
       displayText: 'Nature',
-      pictureLink: 'assets/family/images/nature.svg',
+      iconData: FontAwesomeIcons.tree,
       tags: [
         Tag(
           key: 'CLEANOCEANS',
@@ -160,7 +161,7 @@ class GratitudeTagsData {
     const GratitudeCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'Learning',
-      pictureLink: 'assets/family/images/learning.svg',
+      iconData: FontAwesomeIcons.graduationCap,
       tags: [
         Tag(
           key: 'GOTOSCHOOL',
@@ -183,7 +184,7 @@ class GratitudeTagsData {
     const GratitudeCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'Healthy',
-      pictureLink: 'assets/family/images/healthy.svg',
+      iconData: FontAwesomeIcons.heartPulse,
       tags: [
         Tag(
           key: 'STAYHEALTHY',
@@ -206,7 +207,7 @@ class GratitudeTagsData {
     const GratitudeCategory(
       colorCombo: ColorCombo.tertiary,
       displayText: 'Home',
-      pictureLink: 'assets/family/images/home.svg',
+      iconData: FontAwesomeIcons.house,
       tags: [
         Tag(
           key: 'THATAREHOMELESS',
@@ -229,7 +230,7 @@ class GratitudeTagsData {
     const GratitudeCategory(
       colorCombo: ColorCombo.secondary,
       displayText: 'Help',
-      pictureLink: 'assets/family/images/help.svg',
+      iconData: FontAwesomeIcons.handshakeAngle,
       tags: [
         Tag(
           key: 'WITHDISABILITIES',

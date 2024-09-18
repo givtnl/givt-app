@@ -10,11 +10,12 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeSelectionScreen extends StatelessWidget {
-  const GratitudeSelectionScreen(
-      {required this.uimodel,
-      required this.onClickTile,
-      required this.onNext,
-      super.key});
+  const GratitudeSelectionScreen({
+    required this.uimodel,
+    required this.onClickTile,
+    required this.onNext,
+    super.key,
+  });
   final GratitudeSelectionUimodel uimodel;
   final void Function(GratitudeCategory? gratitude) onClickTile;
   final VoidCallback onNext;
@@ -46,9 +47,11 @@ class GratitudeSelectionScreen extends StatelessWidget {
                 SizedBox(
                   height: 90,
                   child: FunTile(
+                    shrink: true,
                     titleSmall: uimodel.gratitudeList[i].displayText,
                     assetSize: 27,
-                    iconPath: uimodel.gratitudeList[i].pictureLink,
+                    iconPath: '',
+                    iconData: uimodel.gratitudeList[i].iconData,
                     iconColor: uimodel.gratitudeList[i].colorCombo.darkColor,
                     onTap: () {
                       onClickTile(uimodel.gratitudeList[i]);
