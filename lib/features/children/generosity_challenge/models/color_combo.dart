@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/features/family/utils/utils.dart';
 
 enum ColorCombo {
   primary(
-    borderColor: AppTheme.primary80,
-    backgroundColor: AppTheme.primary98,
-    accentColor: AppTheme.primary95,
-    textColor: AppTheme.primary40,
+    borderColor: FamilyAppTheme.primary80,
+    backgroundColor: FamilyAppTheme.primary98,
+    accentColor: FamilyAppTheme.primary95,
+    textColor: FamilyAppTheme.primary40,
+    darkColor: FamilyAppTheme.primary20,
   ),
   secondary(
-    borderColor: AppTheme.secondary80,
-    backgroundColor: AppTheme.secondary98,
-    accentColor: AppTheme.secondary95,
-    textColor: AppTheme.secondary40,
+    borderColor: FamilyAppTheme.secondary80,
+    backgroundColor: FamilyAppTheme.secondary98,
+    accentColor: FamilyAppTheme.secondary95,
+    textColor: FamilyAppTheme.secondary40,
+    darkColor: FamilyAppTheme.secondary20,
   ),
   highlight(
-    borderColor: AppTheme.highlight80,
-    backgroundColor: AppTheme.highlight98,
-    accentColor: AppTheme.highlight95,
-    textColor: AppTheme.highlight40,
+    borderColor: FamilyAppTheme.highlight80,
+    backgroundColor: FamilyAppTheme.highlight98,
+    accentColor: FamilyAppTheme.highlight95,
+    textColor: FamilyAppTheme.highlight40,
+    darkColor: FamilyAppTheme.highlight20,
   ),
   tertiary(
-    borderColor: AppTheme.tertiary80,
-    backgroundColor: AppTheme.tertiary98,
-    accentColor: AppTheme.tertiary95,
-    textColor: AppTheme.tertiary40,
+    borderColor: FamilyAppTheme.tertiary80,
+    backgroundColor: FamilyAppTheme.tertiary98,
+    accentColor: FamilyAppTheme.tertiary95,
+    textColor: FamilyAppTheme.tertiary40,
+    darkColor: FamilyAppTheme.tertiary20,
   ),
   ;
 
@@ -32,11 +36,13 @@ enum ColorCombo {
   final Color textColor;
   final Color accentColor;
   final Color borderColor;
+  final Color darkColor;
 
   const ColorCombo({
     required this.backgroundColor,
     required this.textColor,
     required this.accentColor,
     required this.borderColor,
+    required this.darkColor,
   });
 }

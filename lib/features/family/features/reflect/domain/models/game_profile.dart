@@ -1,5 +1,5 @@
 import 'package:givt_app/features/children/shared/profile_type.dart';
-import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
+import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 
 class GameProfile {
@@ -9,7 +9,7 @@ class GameProfile {
     this.lastName,
     this.pictureURL,
     this.role,
-    this.gratitudeInterests,
+    this.gratitude,
   });
 
   final String? firstName;
@@ -17,7 +17,7 @@ class GameProfile {
   final String? pictureURL;
   final Role? role;
   final String type;
-  final List<Tag>? gratitudeInterests;
+  final GratitudeCategory? gratitude;
 
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
@@ -31,7 +31,7 @@ class GameProfile {
     String? pictureURL,
     Role? role,
     String? type,
-    List<Tag>? gratitudeInterests,
+    GratitudeCategory? gratitude,
   }) {
     return GameProfile(
       firstName: firstName ?? this.firstName,
@@ -39,7 +39,7 @@ class GameProfile {
       pictureURL: pictureURL ?? this.pictureURL,
       role: role ?? this.role,
       type: type ?? this.type,
-      gratitudeInterests: gratitudeInterests ?? this.gratitudeInterests,
+      gratitude: gratitude ?? this.gratitude,
     );
   }
 }
