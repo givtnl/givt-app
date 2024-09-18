@@ -1,7 +1,6 @@
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_uimodel.dart';
 
 class GameProfile {
   const GameProfile({
@@ -25,18 +24,6 @@ class GameProfile {
   bool get isAdult => profileType == ProfileType.Parent;
 
   bool get isChild => profileType == ProfileType.Child;
-
-  GratefulAvatarUIModel toGratefulAvatarUIModel({
-    bool isSelected = false,
-    bool hasDonated = false,
-  }) {
-    return GratefulAvatarUIModel(
-      hasDonated: hasDonated,
-      isSelected: isSelected,
-      avatarUrl: pictureURL!,
-      text: gratitude?.displayText ?? '',
-    );
-  }
 
   GameProfile copyWith({
     String? firstName,
