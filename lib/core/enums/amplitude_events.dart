@@ -318,6 +318,7 @@ enum AmplitudeEvents {
     'reflect_and_share_result_next_round_clicked',
   ),
   familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  gratefulForNextClicked('grateful_for_next_clicked'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

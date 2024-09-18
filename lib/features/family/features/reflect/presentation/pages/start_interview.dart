@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
@@ -67,8 +68,10 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                               onInitial: (context) => const SizedBox.shrink(),
                               onCustom: (context, sidekick) =>
                                   Navigator.of(context).pushReplacement(
-                                PassThePhone.toSidekick(sidekick)
+                                const GratitudeSelectionScreen()
                                     .toRoute(context),
+                                // PassThePhone.toSidekick(sidekick)
+                                //     .toRoute(context),
                               ),
                               onData: (context, uiModel) {
                                 return RecordAnswerScreen(

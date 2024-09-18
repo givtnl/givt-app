@@ -121,6 +121,7 @@ class FunTile extends StatelessWidget {
                               iconPath,
                               height: assetSize ?? 140,
                               width: assetSize ?? 140,
+                              color: iconColor,
                             )
                       : FaIcon(
                           iconData,
@@ -129,7 +130,8 @@ class FunTile extends StatelessWidget {
                         ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 16),
+                  padding: EdgeInsets.fromLTRB(10, 8, 10,
+                      titleSmall != null && titleBig != null ? 16 : 0),
                   child: Column(
                     children: [
                       if (titleBig != null)
