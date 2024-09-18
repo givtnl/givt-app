@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_tags_data.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -56,6 +58,12 @@ class GratitudeSelectionScreen extends StatelessWidget {
                         .gratitudeCategories[i].colorCombo.backgroundColor,
                     textColor: GratitudeTagsData
                         .gratitudeCategories[i].colorCombo.textColor,
+                    analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.gratefulTileSelected,
+                        parameters: {
+                          //  selectedTag display name
+                          'gratefulFor': 'Text',
+                        }),
                   ),
                 ),
             ],
@@ -65,11 +73,13 @@ class GratitudeSelectionScreen extends StatelessWidget {
             //isDisabled if one of the tags is selected
             isDisabled: false,
             onTap: () {
-              // push guess the word screen
+              Navigator.of(context).pushReplacement(
+                const GuessSecretWordScreen().toRoute(context),
+              );
             },
             text: 'Next',
             analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.gratefulForNextClicked,
+                AmplitudeEvents.gratefulTileSubmitted,
                 parameters: {
                   //  selectedTag disolay name
                   'gratefulFor': 'Text',
