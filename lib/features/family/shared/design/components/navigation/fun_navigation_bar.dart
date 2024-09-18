@@ -1,16 +1,24 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'dart:async';
 
-class CustomNavigationBar extends StatelessWidget {
-  const CustomNavigationBar({
+import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/utils.dart';
+
+class FunNavigationBar extends StatelessWidget {
+  const FunNavigationBar({
     required this.index,
     required this.onDestinationSelected,
+    required this.destinations,
+    required this.analyticsEvent,
     super.key,
   });
+
   final int index;
   final void Function(int) onDestinationSelected;
+  final List<Widget> destinations;
+  final AnalyticsEvent Function(int) analyticsEvent;
+
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -27,18 +35,20 @@ class CustomNavigationBar extends StatelessWidget {
       child: NavigationBar(
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         selectedIndex: index,
-        onDestinationSelected: onDestinationSelected,
+        onDestinationSelected: (index) {
+          final analyticsEvent = this.analyticsEvent(index);
+          unawaited(
+            AnalyticsHelper.logEvent(
+              eventName: analyticsEvent.name,
+              eventProperties: analyticsEvent.parameters,
+            ),
+          );
+          onDestinationSelected.call(index);
+        },
         backgroundColor: FamilyAppTheme.secondary99,
         indicatorColor: FamilyAppTheme.secondary95,
         surfaceTintColor: Colors.transparent,
-        destinations: NavigationDestinationData.values
-            .map(
-              (destination) => NavigationDestination(
-                icon: SvgPicture.asset(destination.iconPath),
-                label: destination.label,
-              ),
-            )
-            .toList(),
+        destinations: destinations,
       ),
     );
   }

@@ -8,8 +8,9 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_detail_bottomsheet.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_header.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class OrganisationItem extends StatelessWidget {
@@ -32,12 +33,6 @@ class OrganisationItem extends StatelessWidget {
             .read<CollectGroupDetailsCubit>()
             .getOrganisationDetails(generatedMediumId);
 
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.charityCardPressed,
-          eventProperties: {
-            AnalyticsHelper.charityNameKey: organisation.name,
-          },
-        );
         context.read<ScanNfcCubit>().stopScanningSession();
 
         showModalBottomSheet<void>(
@@ -49,6 +44,12 @@ class OrganisationItem extends StatelessWidget {
           ),
         );
       },
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.charityCardPressed,
+        parameters: {
+          AnalyticsHelper.charityNameKey: organisation.name,
+        },
+      ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         color: Colors.white,

@@ -78,6 +78,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       },
       builder: (context, state) {
         return FunScaffold(
+          canPop: false,
           appBar: FunTopAppBar.primary99(
             leading: GenerosityBackButton(
               onPressed: () {

@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:givt_app/utils/app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/utils/utils.dart';
 
 class ActionContainer extends StatefulWidget {
   const ActionContainer({
     required this.borderColor,
     required this.onTap,
     required this.child,
+    required this.analyticsEvent,
     this.isDisabled = false,
     this.isSelected = false,
     this.isPressedDown = false,
@@ -20,6 +24,7 @@ class ActionContainer extends StatefulWidget {
     this.onTapUp,
     super.key,
   });
+
   final VoidCallback? onTap;
   final VoidCallback? onTapCancel;
   final VoidCallback? onTapUp;
@@ -34,6 +39,7 @@ class ActionContainer extends StatefulWidget {
   final EdgeInsets? margin;
   final double borderSize;
   final double baseBorderSize;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   State<ActionContainer> createState() => _ActionContainerState();
@@ -71,6 +77,12 @@ class _ActionContainerState extends State<ActionContainer> {
         ? _buildContainer(widget.child)
         : GestureDetector(
             onTap: () async {
+              unawaited(
+                AnalyticsHelper.logEvent(
+                  eventName: widget.analyticsEvent.name,
+                  eventProperties: widget.analyticsEvent.parameters,
+                ),
+              );
               widget.onTap?.call();
               await _actionDelay();
             },

@@ -67,24 +67,13 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                 children: [
                   const Center(child: TitleMediumText('Drag to add players')),
                   const SizedBox(height: 20),
-                  createAdultGrid(
+                  profileGrid(
                     profiles.where((profile) => profile.isAdult).toList(),
                   ),
-                  const SizedBox(height: 8),
-                  Expanded(
-                    child: GridView.count(
-                      // physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 0.9,
-                      crossAxisCount: 3,
-                      children: createGridItems(
-                        profiles
-                            .where((profile) => profile.isChild)
-                            .take(6)
-                            .toList(),
-                      ),
-                    ),
+                  const SizedBox(height: 12),
+                  profileGrid(
+                    profiles.where((profile) => profile.isChild).take(6).toList(),
                   ),
-                  _selectedProfiles(),
                 ],
               ),
             ),
@@ -98,16 +87,19 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   Widget _seeRolesButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 40),
-      child: FunButton(
-        onTap: () {
-          cubit.rolesClicked(selectedProfiles);
-          Navigator.of(context)
-              .push(const FamilyRolesScreen().toRoute(context));
-        },
-        isDisabled: selectedProfiles.length < 3,
-        text: 'See roles',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.reflectAndShareSeeRolesClicked,
+      child: SizedBox(
+        width: MediaQuery.sizeOf(context).width - 48,
+        child: FunButton(
+          onTap: () {
+            cubit.rolesClicked(selectedProfiles);
+            Navigator.of(context)
+                .push(const FamilyRolesScreen().toRoute(context));
+          },
+          isDisabled: selectedProfiles.length < 3,
+          text: 'See roles',
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.reflectAndShareSeeRolesClicked,
+          ),
         ),
       ),
     );
@@ -209,17 +201,16 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
-  Widget createAdultGrid(List<GameProfile> profiles) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+  Widget profileGrid(List<GameProfile> profiles) {
+    return Wrap(
+      alignment: WrapAlignment.center,
+      spacing: 36,
+      runSpacing: 12,
       children: [
         for (var i = 0; i < profiles.length; i++)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: isSelected(profiles[i])
-                ? getEmptyProfileItem()
-                : ProfileItem(profile: profiles[i]),
-          ),
+          isSelected(profiles[i])
+              ? getEmptyProfileItem()
+              : ProfileItem(profile: profiles[i]),
       ],
     );
   }
@@ -248,7 +239,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   Widget getEmptyProfileItem() {
     return Container(
       width: 80,
-      height: 100,
+      height: 113,
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(16),

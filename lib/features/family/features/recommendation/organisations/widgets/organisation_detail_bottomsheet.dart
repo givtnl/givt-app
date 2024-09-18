@@ -91,7 +91,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
             child: FunButton(
               text: 'Donate',
               onTap: () {

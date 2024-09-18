@@ -89,27 +89,30 @@ class InterestsSelectionScreen extends StatelessWidget {
           floatingActionButton: Visibility(
             visible:
                 state.selectedInterests.length == InterestsState.maxInterests,
-            child: FunButton(
-              isDisabled:
-                  state.selectedInterests.length != InterestsState.maxInterests,
-              text: 'Next',
-              onTap: state.selectedInterests.length ==
-                      InterestsState.maxInterests
-                  ? () {
-                      context.pushNamed(
-                        FamilyPages.recommendedOrganisations.name,
-                        extra: state,
-                      );
-                      context.read<InterestsCubit>().clearSelectedInterests();
-                    }
-                  : null,
-              analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.interestSelected,
-                parameters: {
-                  'interests': state.selectedInterests
-                      .map((e) => e.displayText)
-                      .toList(),
-                },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: FunButton(
+                isDisabled:
+                    state.selectedInterests.length != InterestsState.maxInterests,
+                text: 'Next',
+                onTap: state.selectedInterests.length ==
+                        InterestsState.maxInterests
+                    ? () {
+                        context.pushNamed(
+                          FamilyPages.recommendedOrganisations.name,
+                          extra: state,
+                        );
+                        context.read<InterestsCubit>().clearSelectedInterests();
+                      }
+                    : null,
+                analyticsEvent: AnalyticsEvent(
+                  AmplitudeEvents.interestSelected,
+                  parameters: {
+                    'interests': state.selectedInterests
+                        .map((e) => e.displayText)
+                        .toList(),
+                  },
+                ),
               ),
             ),
           ),

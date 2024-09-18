@@ -114,34 +114,27 @@ class FunButton extends StatelessWidget {
   final Color? textColor;
   final bool fullBorder;
   final bool isDebugOnly;
-  final AnalyticsEvent? analyticsEvent;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
     final appConfig = getIt.get<AppConfig>();
+    final themeData = const FamilyAppTheme().toThemeData();
 
     if (isDebugOnly && !appConfig.isTestApp) {
       return const SizedBox.shrink();
     }
-    final themeData = const FamilyAppTheme().toThemeData();
-    return ActionContainer(
-      onTap: () {
-        if (analyticsEvent != null) {
-          AnalyticsHelper.logEvent(
-            eventName: analyticsEvent!.name,
-            eventProperties: analyticsEvent!.parameters,
-          );
-        }
 
-        onTap?.call();
-      },
+    return ActionContainer(
+      analyticsEvent: analyticsEvent,
+      onTap: onTap,
       borderColor: borderColor,
       isDisabled: isDisabled,
       borderSize: fullBorder ? 2 : 0.01,
       baseBorderSize: 4,
       child: Container(
         height: 58 - (fullBorder ? 2 : 0),
-        width: MediaQuery.sizeOf(context).width * 0.9,
+        width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
@@ -179,6 +172,7 @@ class FunButton extends StatelessWidget {
         Text(
           text,
           textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
           style: isDisabled == true
               ? themeData.textTheme.labelLarge?.copyWith(
                   color: FamilyAppTheme.neutralVariant60,

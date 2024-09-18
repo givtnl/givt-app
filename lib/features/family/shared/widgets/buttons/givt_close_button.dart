@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:go_router/go_router.dart';
 
+@Deprecated(
+  'Only used in OrganisationDetailBottomsheet, will be migrated to FunBottomSheet soon',
+)
 class GivtCloseButton extends StatelessWidget {
   const GivtCloseButton({
     super.key,
@@ -19,6 +24,9 @@ class GivtCloseButton extends StatelessWidget {
       baseBorderSize: 4,
       isDisabled: isDisabled,
       onTap: () => context.pop(),
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.bottomsheetCloseButtonClicked,
+      ),
       child: Container(
         width: 40,
         height: 40,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/chat_script_item.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/models/enums/chat_script_input_answer_type.dart';
 import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/widgets/givt_icon_button.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -171,6 +173,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   !_isValidInput(inputText, widget.chatItem.inputAnswerType),
               iconData: FontAwesomeIcons.paperPlane,
               onTap: _onComplete,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.generosityChallengeSendClicked,
+              ),
             ),
           ],
         ),

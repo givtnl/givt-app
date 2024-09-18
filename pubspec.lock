@@ -70,14 +70,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.1.1"
-  appcheck:
-    dependency: "direct main"
-    description:
-      name: appcheck
-      sha256: "0fcbe15b6bba67027c6f94bd177b9b319e019b51e0b49e9cd80486448c4a1909"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.5.2"
   archive:
     dependency: transitive
     description:
@@ -318,14 +310,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.5"
-  cupertino_icons:
-    dependency: "direct main"
-    description:
-      name: cupertino_icons
-      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   currency_text_input_formatter:
     dependency: "direct main"
     description:
@@ -639,30 +623,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.22"
-  flutter_sound:
-    dependency: "direct main"
-    description:
-      name: flutter_sound
-      sha256: "1f40b26b92907a433afe877c927cd48f5a2e4d0f7188e5d39eb5756008aa51ab"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.6.0"
-  flutter_sound_platform_interface:
-    dependency: transitive
-    description:
-      name: flutter_sound_platform_interface
-      sha256: "2e218521d8187b9a4c65063ad9c79bfe88119531ff68047a2eaa6b027cb276bb"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.6.0"
-  flutter_sound_web:
-    dependency: transitive
-    description:
-      name: flutter_sound_web
-      sha256: "5013a15e4e69a4bdc8badd729130eef43c3305e30ba8e6933f863436ce969932"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.6.0"
   flutter_stripe:
     dependency: "direct main"
     description:
@@ -1024,14 +984,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.9.0"
-  keyboard_actions:
-    dependency: "direct main"
-    description:
-      name: keyboard_actions
-      sha256: "31e0ab2a706ac8f58887efa60efc1f19aecdf37d8ab0f665a0f156d1fbeab650"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -1096,14 +1048,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.11"
-  logger:
-    dependency: transitive
-    description:
-      name: logger
-      sha256: "697d067c60c20999686a0add96cf6aba723b3aa1f83ecf806a8097231529ec32"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.0"
   logging:
     dependency: "direct main"
     description:
@@ -1472,14 +1416,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.2"
-  recase:
-    dependency: transitive
-    description:
-      name: recase
-      sha256: e4eb4ec2dcdee52dcf99cb4ceabaffc631d7424ee55e56f280bc039737f89213
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.1.0"
   scratcher:
     dependency: "direct main"
     description:

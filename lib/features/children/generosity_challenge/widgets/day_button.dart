@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -36,6 +38,12 @@ class DayButton extends StatelessWidget {
             ? ColorCombo.values[dayIndex % ColorCombo.values.length].borderColor
             : AppTheme.neutralVariant80,
         onTap: onPressed,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.generosityChallengeDayClicked,
+          parameters: {
+            'day': dayIndex + 1,
+          },
+        ),
         child: ColoredBox(
           color: isActive || isCompleted
               ? ColorCombo

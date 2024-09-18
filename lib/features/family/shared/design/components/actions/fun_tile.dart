@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/shared/widgets/layout/action_container.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/action_container.dart';
 
 class FunTile extends StatelessWidget {
   const FunTile({
@@ -10,6 +11,7 @@ class FunTile extends StatelessWidget {
     required this.backgroundColor,
     required this.textColor,
     required this.iconPath,
+    required this.analyticsEvent,
     this.onTap,
     this.isDisabled = false,
     this.isSelected = false,
@@ -23,13 +25,15 @@ class FunTile extends StatelessWidget {
     super.key,
   });
 
-  factory FunTile.gold(
-      {String? titleBig,
-      String? titleSmall,
-      String? subtitle,
-      IconData? iconData,
-      VoidCallback? onTap,
-      double? assetSize}) {
+  factory FunTile.gold({
+    required AnalyticsEvent analyticsEvent,
+    String? titleBig,
+    String? titleSmall,
+    String? subtitle,
+    IconData? iconData,
+    VoidCallback? onTap,
+    double? assetSize,
+  }) {
     return FunTile(
       borderColor: FamilyAppTheme.highlight80,
       backgroundColor: FamilyAppTheme.highlight98,
@@ -42,16 +46,19 @@ class FunTile extends StatelessWidget {
       iconData: iconData,
       assetSize: assetSize,
       iconColor: FamilyAppTheme.info20,
+      analyticsEvent: analyticsEvent,
     );
   }
 
-  factory FunTile.blue(
-      {String? titleBig,
-      String? titleSmall,
-      String? subtitle,
-      IconData? iconData,
-      VoidCallback? onTap,
-      double? assetSize}) {
+  factory FunTile.blue({
+    required AnalyticsEvent analyticsEvent,
+    String? titleBig,
+    String? titleSmall,
+    String? subtitle,
+    IconData? iconData,
+    VoidCallback? onTap,
+    double? assetSize,
+  }) {
     return FunTile(
       borderColor: FamilyAppTheme.secondary80,
       backgroundColor: FamilyAppTheme.secondary98,
@@ -64,6 +71,7 @@ class FunTile extends StatelessWidget {
       iconData: iconData,
       assetSize: assetSize,
       iconColor: FamilyAppTheme.secondary20,
+      analyticsEvent: analyticsEvent,
     );
   }
 
@@ -81,6 +89,7 @@ class FunTile extends StatelessWidget {
   final IconData? iconData;
   final Color? iconColor;
   final MainAxisAlignment? mainAxisAlignment;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +107,7 @@ class FunTile extends StatelessWidget {
       isDisabled: isDisabled,
       isSelected: isSelected,
       borderColor: newBorderColor,
+      analyticsEvent: analyticsEvent,
       onTap: isDisabled ? () {} : onTap,
       child: Stack(
         children: [

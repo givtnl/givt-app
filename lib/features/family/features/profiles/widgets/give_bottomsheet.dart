@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -49,11 +50,10 @@ class GiveBottomSheet extends StatelessWidget {
                             Theme.of(context).colorScheme.primaryContainer,
                         backgroundColor: FamilyAppTheme.primary98,
                         textColor: Theme.of(context).colorScheme.inversePrimary,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.choseGiveToFamilyGoal,
+                        ),
                         onTap: () {
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.choseGiveToFamilyGoal,
-                          );
-
                           if (profile.wallet.balance == 0) {
                             showEmptyWalletBottomSheet(context);
                             return;
@@ -93,11 +93,10 @@ class GiveBottomSheet extends StatelessWidget {
                         backgroundColor: FamilyAppTheme.highlight98,
                         borderColor: FamilyAppTheme.highlight80,
                         textColor: FamilyAppTheme.highlight40,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.choseGiveWithCoin,
+                        ),
                         onTap: () {
-                          AnalyticsHelper.logEvent(
-                            eventName: AmplitudeEvents.choseGiveWithCoin,
-                          );
-
                           if (profile.wallet.balance == 0) {
                             showEmptyWalletBottomSheet(context);
                             return;
@@ -119,11 +118,10 @@ class GiveBottomSheet extends StatelessWidget {
                           Theme.of(context).colorScheme.tertiaryContainer,
                       backgroundColor: Theme.of(context).colorScheme.onTertiary,
                       textColor: Theme.of(context).colorScheme.tertiary,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.choseGiveWithQRCode,
+                      ),
                       onTap: () {
-                        AnalyticsHelper.logEvent(
-                          eventName: AmplitudeEvents.choseGiveWithQRCode,
-                        );
-
                         if (profile.wallet.balance == 0) {
                           showEmptyWalletBottomSheet(context);
                           return;

@@ -37,6 +37,9 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 12, top: 12),
                 child: CustomIconBorderButton(
+                  analyticsEvent: AnalyticsEvent(
+                    AmplitudeEvents.bottomsheetCloseButtonClicked,
+                  ),
                   child: const FaIcon(
                     FontAwesomeIcons.xmark,
                     color: AppTheme.primary40,
