@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -24,52 +23,26 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
   Future<void> init() async {
     //TODO
-    _initProfiles();
-    /*await _gratefulRecommendationsRepository
+    _profiles = _reflectAndShareRepository.getPlayers();
+    await _gratefulRecommendationsRepository
         .getGratefulRecommendationsForMultipleProfiles(_profiles);
     _currentRecommendations = await _gratefulRecommendationsRepository
-        .getGratefulRecommendations(_getCurrentProfile());*/
+        .getGratefulRecommendations(_getCurrentProfile());
     _emitData();
-  }
-
-  void _initProfiles() {
-    _profiles = _reflectAndShareRepository.getPlayers();
-    _profiles
-      ..sort((a, b) => a.isChild ? -1 : 1)
-      ..removeWhere(
-        (element) => !element.isChild || element.gratitude == null,
-      ); //in the future we don't need to remove the adults
-    if (_profiles.isEmpty) {
-      _onEveryoneDonated();
-    }
+    //TODO sort kids first, then parents
   }
 
   GameProfile _getCurrentProfile() => _profiles[_currentProfileIndex];
 
   void _emitData() {
     //TODO map above fields to uimodels
-    emitData(
-      GratefulUIModel(
-        avatarBarUIModel: GratefulAvatarBarUIModel(
-          avatarUIModels: _profiles
-              .mapIndexed((
-                index,
-                profile,
-              ) =>
-                  profile.toGratefulAvatarUIModel(
-                    isSelected: index == _currentProfileIndex,
-                    hasDonated: _profilesThatDonated.contains(profile),
-                  ))
-              .toList(),
-        ),
-        recommendationsUIModel: null,
-      ),
-    );
+    emitData(GratefulUIModel(
+        avatarBarUIModel: GratefulAvatarBarUIModel(),
+        recommendationsUIModel: null));
   }
 
   void onAvatarTapped(int index) {
-    _currentProfileIndex = index;
-    _emitData();
+    //TODO
   }
 
   void onRecommendationTapped(int index) {
