@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/reflect/data/gratitude_tags_data.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
+import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/gratitude_selection_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -11,8 +10,14 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratitudeSelectionScreen extends StatelessWidget {
-  const GratitudeSelectionScreen({super.key});
-
+  const GratitudeSelectionScreen(
+      {required this.uimodel,
+      required this.onClickTile,
+      required this.onNext,
+      super.key});
+  final GratitudeSelectionUimodel uimodel;
+  final void Function(GratitudeCategory? gratitude) onClickTile;
+  final VoidCallback onNext;
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
@@ -37,32 +42,28 @@ class GratitudeSelectionScreen extends StatelessWidget {
             columnGap: 16,
             rowGap: 16,
             children: [
-              for (int i = 0;
-                  i < GratitudeTagsData.gratitudeCategories.length;
-                  i++)
+              for (int i = 0; i < uimodel.gratitudeList.length; i++)
                 SizedBox(
                   height: 90,
                   child: FunTile(
-                    titleSmall:
-                        GratitudeTagsData.gratitudeCategories[i].displayText,
+                    titleSmall: uimodel.gratitudeList[i].displayText,
                     assetSize: 27,
-                    iconPath:
-                        GratitudeTagsData.gratitudeCategories[i].pictureLink,
-                    iconColor: GratitudeTagsData
-                        .gratitudeCategories[i].colorCombo.darkColor,
-                    onTap: () {},
-                    isSelected: false,
-                    borderColor: GratitudeTagsData
-                        .gratitudeCategories[i].colorCombo.borderColor,
-                    backgroundColor: GratitudeTagsData
-                        .gratitudeCategories[i].colorCombo.backgroundColor,
-                    textColor: GratitudeTagsData
-                        .gratitudeCategories[i].colorCombo.textColor,
+                    iconPath: uimodel.gratitudeList[i].pictureLink,
+                    iconColor: uimodel.gratitudeList[i].colorCombo.darkColor,
+                    onTap: () {
+                      onClickTile(uimodel.gratitudeList[i]);
+                    },
+                    isSelected:
+                        uimodel.selectedGratitude == uimodel.gratitudeList[i],
+                    borderColor:
+                        uimodel.gratitudeList[i].colorCombo.borderColor,
+                    backgroundColor:
+                        uimodel.gratitudeList[i].colorCombo.backgroundColor,
+                    textColor: uimodel.gratitudeList[i].colorCombo.textColor,
                     analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.gratefulTileSelected,
                         parameters: {
-                          //  selectedTag display name
-                          'gratefulFor': 'Text',
+                          'gratefulFor': uimodel.selectedGratitude?.displayText,
                         }),
                   ),
                 ),
@@ -70,20 +71,15 @@ class GratitudeSelectionScreen extends StatelessWidget {
           ),
           const Spacer(),
           FunButton(
-            //isDisabled if one of the tags is selected
-            isDisabled: false,
-            onTap: () {
-              Navigator.of(context).pushReplacement(
-                const GuessSecretWordScreen().toRoute(context),
-              );
-            },
+            isDisabled: uimodel.selectedGratitude == null,
+            onTap: onNext,
             text: 'Next',
             analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.gratefulTileSubmitted,
-                parameters: {
-                  //  selectedTag disolay name
-                  'gratefulFor': 'Text',
-                }),
+              AmplitudeEvents.gratefulTileSubmitted,
+              parameters: {
+                'gratefulFor': uimodel.selectedGratitude?.displayText,
+              },
+            ),
           ),
         ],
       ),
