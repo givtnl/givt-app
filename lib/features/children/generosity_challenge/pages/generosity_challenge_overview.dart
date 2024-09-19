@@ -150,14 +150,6 @@ class _GenerosityChallengeOverviewState
                       onPressed: day.isCompleted ||
                               challenge.state.activeDayIndex == index
                           ? () {
-                              AnalyticsHelper.logEvent(
-                                eventName: AmplitudeEvents
-                                    .generosityChallengeDayClicked,
-                                eventProperties: {
-                                  'day': index + 1,
-                                },
-                              );
-
                               // If the (pre)chat is available for the day, navigate to the chat screen
                               if (challenge.state.hasAvailableChat &&
                                   challenge.state.availableChatDayIndex ==

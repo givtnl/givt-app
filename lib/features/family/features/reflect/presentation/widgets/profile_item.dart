@@ -28,12 +28,15 @@ class ProfileItem extends StatelessWidget {
             height: 80,
           ),
           const SizedBox(height: 12),
-          Text(
-            profile.firstName!,
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-            style: Theme.of(context).textTheme.labelMedium,
+          Container(
+            width: 80,
+            child: Text(
+              profile.firstName!,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
           ),
         ],
       ),

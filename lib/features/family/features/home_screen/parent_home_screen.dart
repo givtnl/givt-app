@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -103,17 +104,15 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
   Widget _giveTile(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
         child: FunTile(
-          onTap: () {
-            context.pushNamed(FamilyPages.giveByListFamily.name);
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.parentGiveTileClicked,
-            );
-          },
+          onTap: () => context.pushNamed(FamilyPages.giveByListFamily.name),
           borderColor: ColorCombo.secondary.borderColor,
           backgroundColor: ColorCombo.secondary.backgroundColor,
           textColor: ColorCombo.secondary.textColor,
           iconPath: 'assets/family/images/give_tile.svg',
           titleBig: 'Give',
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.parentGiveTileClicked,
+          ),
         ),
       );
 

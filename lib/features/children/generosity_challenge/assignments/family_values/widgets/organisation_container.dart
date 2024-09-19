@@ -7,8 +7,8 @@ import 'package:givt_app/features/children/generosity_challenge/assignments/fami
 import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/action_container.dart';
-import 'package:givt_app/utils/utils.dart';
 
 class OrganisationContainer extends StatelessWidget {
   const OrganisationContainer({
@@ -23,27 +23,24 @@ class OrganisationContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionContainer(
-      onTap: () {
-        AnalyticsHelper.logEvent(
-          eventName: AmplitudeEvents.organisationCardClicked,
-          eventProperties: {
-            'organisation_name': familyValue.organisation.organisationName,
-            'family_value': familyValue.displayText,
-          },
-        );
-
-        showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (_) => BlocProvider.value(
-            value: context.read<GenerosityChallengeCubit>(),
-            child: OrganisationDetailBottomSheet(
-              value: familyValue,
-            ),
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.organisationCardClicked,
+        parameters: {
+          'organisation_name': familyValue.organisation.organisationName,
+          'family_value': familyValue.displayText,
+        },
+      ),
+      onTap: () => showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (_) => BlocProvider.value(
+          value: context.read<GenerosityChallengeCubit>(),
+          child: OrganisationDetailBottomSheet(
+            value: familyValue,
           ),
-        );
-      },
+        ),
+      ),
       borderColor: ColorCombo.primary.borderColor,
       baseBorderSize: 4,
       child: Container(

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 
@@ -18,6 +19,16 @@ class ReflectAndShareRepository {
   String? _currentSecretWord;
 
   final List<String> _usedSecretWords = [];
+
+  void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
+    _selectedProfiles[_getCurrentSuperHeroIndex()] =
+        _selectedProfiles[_getCurrentSuperHeroIndex()]
+            .copyWith(gratitude: gratitude);
+  }
+
+  GratitudeCategory? getGratitudeInterestsForCurrentSuperhero() {
+    return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
+  }
 
   List<GameProfile> getCurrentReporters() {
     return _selectedProfiles
@@ -265,5 +276,5 @@ class ReflectAndShareRepository {
 
   bool isFirstRound() => completedLoops == 0;
 
-  bool isGameFinished() => completedLoops >= _selectedProfiles!.length;
+  bool isGameFinished() => completedLoops >= _selectedProfiles.length;
 }

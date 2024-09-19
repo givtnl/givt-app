@@ -25,8 +25,10 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -99,6 +101,14 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           } else {
             await AddMemberUtil.addMemberPushPages(context);
           }
+        } else if (state is ProfilesNeedsRegistration) {
+          if (context.read<RegistrationBloc>().state.status ==
+              RegistrationStatus.createStripeAccount) {
+            context.pushNamed(
+              FamilyPages.creditCardDetails.name,
+              extra: context.read<RegistrationBloc>(),
+            );
+          }
         }
       },
       listenWhen: (previous, current) =>
@@ -117,7 +127,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               .toList(),
           user,
         );
-        return Scaffold(
+        return FunScaffold(
           appBar: const FunTopAppBar(
             title: 'Family',
           ),
@@ -130,80 +140,72 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                                 doChecks: true,
                               ),
                     )
-                  : SafeArea(
-                      minimum: const EdgeInsets.only(bottom: 40),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 32),
-                            if (!flow.state.isCoin)
-                              Visibility(
-                                child: ParentOverviewWidget(
-                                  profiles: sortedAdults(
-                                    user.guid,
-                                    state.profiles
-                                        .where((p) => p.type == 'Parent')
-                                        .toList(),
-                                  ),
-                                  cachedMembers: state.cachedMembers,
-                                ),
+                  : Column(
+                      children: [
+                        if (!flow.state.isCoin)
+                          Visibility(
+                            child: ParentOverviewWidget(
+                              profiles: sortedAdults(
+                                user.guid,
+                                state.profiles
+                                    .where((p) => p.type == 'Parent')
+                                    .toList(),
                               ),
-                            const SizedBox(height: 26),
-                            if (gridItems.isNotEmpty)
-                              Expanded(
-                                child: GridView.count(
-                                  childAspectRatio: 0.74,
-                                  crossAxisCount: gridItems.length < 3
-                                      ? gridItems.length
-                                      : 3,
-                                  mainAxisSpacing: 20,
-                                  crossAxisSpacing: 20,
-                                  children: gridItems,
-                                ),
-                              ),
-                            const SizedBox(height: 8),
-                            if (state.profiles.length >= 3) ...[
-                              FunButton(
-                                onTap: () => context.goNamed(
-                                  FamilyPages.reflectIntro.name,
-                                ),
-                                text: 'Gratitude game',
-                                analyticsEvent: AnalyticsEvent(
-                                  AmplitudeEvents.reflectAndShareClicked,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                            ],
-                            FunButton.secondary(
-                              onTap: () async {
-                                if (!context.mounted) return;
-                                flow.resetFlow();
-                                if (state.cachedMembers.isNotEmpty) {
-                                  showCachedMembersBottomsheet(state);
-                                } else {
-                                  await FamilyAuthUtils.authenticateUser(
-                                    context,
-                                    checkAuthRequest: CheckAuthRequest(
-                                      navigate: (context, {isUSUser}) async {
-                                        await context.pushNamed(
-                                          FamilyPages.childrenOverview.name,
-                                        );
-                                        _logUser(context, user);
-                                      },
-                                    ),
-                                  );
-                                }
-                              },
-                              text: 'Manage Family',
-                              leftIcon: FontAwesomeIcons.sliders,
-                              analyticsEvent: AnalyticsEvent(
-                                AmplitudeEvents.manageFamilyPressed,
-                              ),
+                              cachedMembers: state.cachedMembers,
                             ),
-                          ],
+                          ),
+                        const SizedBox(height: 26),
+                        if (gridItems.isNotEmpty)
+                          Expanded(
+                            child: GridView.count(
+                              childAspectRatio: 0.74,
+                              crossAxisCount:
+                                  gridItems.length < 3 ? gridItems.length : 3,
+                              mainAxisSpacing: 20,
+                              crossAxisSpacing: 20,
+                              children: gridItems,
+                            ),
+                          ),
+                        const SizedBox(height: 8),
+                        if (state.profiles.length >= 3) ...[
+                          FunButton(
+                            onTap: () => context.goNamed(
+                              FamilyPages.reflectIntro.name,
+                            ),
+                            text: 'Reflect & Share',
+                            analyticsEvent: AnalyticsEvent(
+                              AmplitudeEvents.reflectAndShareClicked,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                        FunButton.secondary(
+                          onTap: () async {
+                            if (!context.mounted) return;
+                            flow.resetFlow();
+                            if (state.cachedMembers.isNotEmpty) {
+                              showCachedMembersBottomsheet(state);
+                            } else {
+                              await FamilyAuthUtils.authenticateUser(
+                                context,
+                                checkAuthRequest: CheckAuthRequest(
+                                  navigate: (context, {isUSUser}) async {
+                                    await context.pushNamed(
+                                      FamilyPages.childrenOverview.name,
+                                    );
+                                    _logUser(context, user);
+                                  },
+                                ),
+                              );
+                            }
+                          },
+                          text: 'Manage Family',
+                          leftIcon: FontAwesomeIcons.sliders,
+                          analyticsEvent: AnalyticsEvent(
+                            AmplitudeEvents.manageFamilyPressed,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
         );
       },

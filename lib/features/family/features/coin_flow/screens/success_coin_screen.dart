@@ -80,7 +80,10 @@ class _SuccessCoinScreenState extends State<SuccessCoinScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _buildFAB(profilesState.isOnlyChild),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: _buildFAB(profilesState.isOnlyChild),
+      ),
     );
   }
 

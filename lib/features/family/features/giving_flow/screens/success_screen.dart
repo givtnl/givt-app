@@ -92,16 +92,19 @@ class _SuccessScreenState extends State<SuccessScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: profilesState.isOnlyChild
-          ? const BackHomeButton()
-          : const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                BackHomeButton(),
-                SizedBox(height: 12),
-                SwitchProfileSuccessButton(),
-              ],
-            ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: profilesState.isOnlyChild
+            ? const BackHomeButton()
+            : const Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  BackHomeButton(),
+                  SizedBox(height: 12),
+                  SwitchProfileSuccessButton(),
+                ],
+              ),
+      ),
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 
 class QuickTile extends StatelessWidget {
   const QuickTile({
+    required this.analyticsEvent,
     super.key,
     this.iconData,
     this.iconPath = '',
@@ -23,6 +25,7 @@ class QuickTile extends StatelessWidget {
   final ColorCombo colorCombo;
   final IconData? iconData;
   final void Function(BuildContext context)? onClick;
+  final AnalyticsEvent analyticsEvent;
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -41,6 +44,7 @@ class QuickTile extends StatelessWidget {
             titleBig: titleBig,
             titleSmall: titleSmall,
             mainAxisAlignment: MainAxisAlignment.center,
+            analyticsEvent: analyticsEvent,
           ),
         ),
       );
