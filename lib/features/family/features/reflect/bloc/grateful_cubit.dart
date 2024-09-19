@@ -108,13 +108,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   Future<void> onDonated(GameProfile profile) async {
-    emitLoading();
-
-    //TODO
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
     } else {
+      emitLoading();
+
       //TODO (this does not work because in the design you can switch profiles and donate out of order)
       _currentProfileIndex++;
 
