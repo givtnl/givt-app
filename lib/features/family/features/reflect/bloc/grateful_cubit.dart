@@ -28,11 +28,11 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
     await _gratefulRecommendationsRepository
         .getGratefulRecommendationsForMultipleProfiles(_profiles);
-        
+
     final _currentRecommendations = await _gratefulRecommendationsRepository
         .getGratefulRecommendations(_getCurrentProfile());
 
-    _emitData();
+    _emitData(_currentRecommendations);
   }
 
   void _initProfiles() {
@@ -52,7 +52,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
   GameProfile _getCurrentProfile() => _profiles[_currentProfileIndex];
 
-  void _emitData() {
+  void _emitData(List<Organisation> currentRecommendations) {
     //TODO map above fields to uimodels
     emitData(
       GratefulUIModel(
@@ -75,9 +75,13 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     );
   }
 
-  void onAvatarTapped(int index) {
+  Future<void> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
-    _emitData();
+
+    final _currentRecommendations = await _gratefulRecommendationsRepository
+        .getGratefulRecommendations(_getCurrentProfile());
+
+    _emitData(_currentRecommendations);
   }
 
   void onRecommendationTapped(int index) {
@@ -100,7 +104,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
-  void onDonated(GameProfile profile) {
+  Future<void> onDonated(GameProfile profile) async {
     //TODO
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
@@ -108,7 +112,11 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     } else {
       //TODO (this does not work because in the design you can switch profiles and donate out of order)
       _currentProfileIndex++;
-      _emitData();
+
+      final _currentRecommendations = await _gratefulRecommendationsRepository
+          .getGratefulRecommendations(_getCurrentProfile());
+
+      _emitData(_currentRecommendations);
     }
   }
 
