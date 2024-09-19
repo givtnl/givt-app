@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -42,17 +43,12 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
       safeAreaBottom: false,
-      appBar: FunTopAppBar(
+      appBar: const FunTopAppBar(
         title: 'Who is playing?',
-        leading: const GivtBackButtonFlat(),
+        leading: GivtBackButtonFlat(),
         systemNavigationBarColor: FamilyAppTheme.secondary80,
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+          LeaveGameButton(),
         ],
       ),
       body: BaseStateConsumer<List<GameProfile>, dynamic>(

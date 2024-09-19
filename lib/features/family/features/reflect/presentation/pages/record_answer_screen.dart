@@ -8,7 +8,7 @@ import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -106,12 +106,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+          LeaveGameButton(),
         ],
       ),
       body: Column(
