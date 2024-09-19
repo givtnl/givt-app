@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -36,16 +37,11 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
     return FunScaffold(
       canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: FunTopAppBar(
+      appBar: const FunTopAppBar(
         title: 'Your roles',
-        leading: const GivtBackButtonFlat(),
+        leading: GivtBackButtonFlat(),
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+          LeaveGameButton(),
         ],
       ),
       body: BaseStateConsumer<List<GameProfile>, GameProfile>(

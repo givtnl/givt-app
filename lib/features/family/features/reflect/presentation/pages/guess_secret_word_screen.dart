@@ -5,6 +5,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/result_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/secret_word_input.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -34,15 +35,10 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar(
+      appBar: const FunTopAppBar(
         title: 'Guess the word',
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+          LeaveGameButton(),
         ],
       ),
       body: BaseStateConsumer(
