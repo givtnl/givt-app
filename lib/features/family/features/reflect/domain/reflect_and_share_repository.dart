@@ -132,7 +132,7 @@ class ReflectAndShareRepository {
         )
         ..add(
           reporters[1].copyWith(
-              role: Role.reporter(questions: secondReporterQuestions)),
+              role: Role.reporter(questions: secondReporterQuestions),),
         );
     } else {
       for (final reporter in reporters) {

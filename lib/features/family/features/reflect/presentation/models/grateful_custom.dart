@@ -6,18 +6,18 @@ sealed class GratefulCustom {
 
   const factory GratefulCustom.openKidDonationFlow(
       {required GameProfile profile,
-      required Organisation organisation}) = GratefulOpenKidDonationFlow;
+      required Organisation organisation,}) = GratefulOpenKidDonationFlow;
 
   const factory GratefulCustom.openParentDonationFlow(
       {required GameProfile profile,
-      required Organisation organisation}) = GratefulOpenParentDonationFlow;
+      required Organisation organisation,}) = GratefulOpenParentDonationFlow;
 
   const factory GratefulCustom.goToGameSummary() = GratefulGoToGameSummary;
 }
 
 class GratefulOpenKidDonationFlow extends GratefulCustom {
   const GratefulOpenKidDonationFlow(
-      {required this.profile, required this.organisation});
+      {required this.profile, required this.organisation,});
 
   final GameProfile profile;
   final Organisation organisation;
@@ -25,7 +25,7 @@ class GratefulOpenKidDonationFlow extends GratefulCustom {
 
 class GratefulOpenParentDonationFlow extends GratefulCustom {
   const GratefulOpenParentDonationFlow(
-      {required this.profile, required this.organisation});
+      {required this.profile, required this.organisation,});
 
   final GameProfile profile;
   final Organisation organisation;

@@ -85,7 +85,7 @@ class EditChildProfileCubit extends Cubit<EditChildProfileState> {
     } catch (e) {
       emit(
         state.copyWith(
-            status: EditChildProfileStatus.error, error: e.toString()),
+            status: EditChildProfileStatus.error, error: e.toString(),),
       );
     }
   }

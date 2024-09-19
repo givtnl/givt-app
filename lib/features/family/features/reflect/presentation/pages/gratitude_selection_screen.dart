@@ -67,7 +67,7 @@ class GratitudeSelectionScreen extends StatelessWidget {
                         AmplitudeEvents.gratefulTileSelected,
                         parameters: {
                           'gratefulFor': uimodel.selectedGratitude?.displayText,
-                        }),
+                        },),
                   ),
                 ),
             ],
