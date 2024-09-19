@@ -102,12 +102,13 @@ class ReflectAndShareRepository {
     int sidekickIndex,
     Random rng,
   ) {
-    final memory = _selectedProfiles;
+    final previousTurnList = _selectedProfiles;
     // Assign superhero and sidekick roles
-    _selectedProfiles[superheroIndex] = memory[superheroIndex].copyWith(
+    _selectedProfiles[superheroIndex] =
+        previousTurnList[superheroIndex].copyWith(
       role: const Role.superhero(),
     );
-    _selectedProfiles[sidekickIndex] = memory[sidekickIndex].copyWith(
+    _selectedProfiles[sidekickIndex] = previousTurnList[sidekickIndex].copyWith(
       role: const Role.sidekick(),
     );
 
