@@ -78,8 +78,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   Future<void> onAvatarTapped(int index) async {
-    _currentProfileIndex = index;
+    emitLoading();
 
+    _currentProfileIndex = index;
     _currentRecommendations = await _gratefulRecommendationsRepository
         .getGratefulRecommendations(_getCurrentProfile());
 
@@ -107,6 +108,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   Future<void> onDonated(GameProfile profile) async {
+    emitLoading();
+
     //TODO
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
