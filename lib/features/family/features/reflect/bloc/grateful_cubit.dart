@@ -28,7 +28,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
     await _gratefulRecommendationsRepository
         .getGratefulRecommendationsForMultipleProfiles(_profiles);
-
+        
     final _currentRecommendations = await _gratefulRecommendationsRepository
         .getGratefulRecommendations(_getCurrentProfile());
 
@@ -36,6 +36,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void _initProfiles() {
+    // Make copy of list to avoid mutation of original repository list
     _profiles = List.from(_reflectAndShareRepository.getPlayers());
 
     _profiles
@@ -43,6 +44,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       ..removeWhere(
         (element) => !element.isChild || element.gratitude == null,
       ); //in the future we don't need to remove the adults
+
     if (_profiles.isEmpty) {
       _onEveryoneDonated();
     }
