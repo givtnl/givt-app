@@ -9,17 +9,17 @@ import 'package:http_certificate_pinning/http_certificate_pinning.dart';
 
 class SecureHttpClient extends http.BaseClient {
   SecureHttpClient._internal(
-      {required this.allowedSHAFingerprints, http.BaseClient? customClient}) {
+      {required this.allowedSHAFingerprints, http.BaseClient? customClient,}) {
     if (customClient != null) {
       _client = customClient;
     }
   }
 
   factory SecureHttpClient.build(List<String> allowedSHAFingerprints,
-      {http.BaseClient? customClient}) {
+      {http.BaseClient? customClient,}) {
     return SecureHttpClient._internal(
         allowedSHAFingerprints: allowedSHAFingerprints,
-        customClient: customClient);
+        customClient: customClient,);
   }
   List<String> allowedSHAFingerprints;
 

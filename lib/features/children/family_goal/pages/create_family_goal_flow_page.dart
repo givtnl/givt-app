@@ -49,7 +49,7 @@ class CreateFamilyGoalFlowPage extends StatelessWidget {
                   );
                 case FamilyGoalCreationStatus.confirmation:
                   return CreateFamilyGoalConfirmationPage(
-                      state: createGoalState);
+                      state: createGoalState,);
                 case FamilyGoalCreationStatus.loading:
                   return const CreateFamilyGoalLoadingPage(
                     stepperStatus: FamilyGoalCreationStatus.confirmation,

@@ -31,7 +31,7 @@ class HttpCertificatePinning {
           allowedSHAFingerprints.map((a) => a.replaceAll(':', '')).toList(),
       'timeout': timeout,
     };
-    var resp = await _channel.invokeMethod('check', params) as String;
+    final resp = await _channel.invokeMethod('check', params) as String;
     return resp;
   }
 

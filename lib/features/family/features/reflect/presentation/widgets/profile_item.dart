@@ -28,7 +28,7 @@ class ProfileItem extends StatelessWidget {
             height: 80,
           ),
           const SizedBox(height: 12),
-          Container(
+          SizedBox(
             width: 80,
             child: Text(
               profile.firstName!,

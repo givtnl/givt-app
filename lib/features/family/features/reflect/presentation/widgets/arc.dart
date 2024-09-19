@@ -21,7 +21,7 @@ class MyPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint()..color = color ?? Colors.blue;
+    final paint = Paint()..color = color ?? Colors.blue;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         Rect.fromLTWH(-50, 0, size.width + 100, size.width + 100),

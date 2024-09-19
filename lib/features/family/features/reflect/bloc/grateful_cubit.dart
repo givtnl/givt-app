@@ -11,16 +11,16 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   GratefulCubit(
-      this._reflectAndShareRepository, this._gratefulRecommendationsRepository)
+      this._reflectAndShareRepository, this._gratefulRecommendationsRepository,)
       : super(const BaseState.loading());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final GratefulRecommendationsRepository _gratefulRecommendationsRepository;
 
   List<GameProfile> _profiles = [];
-  List<GameProfile> _profilesThatDonated = [];
+  final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
-  List<Organisation> _currentRecommendations = [];
+  final List<Organisation> _currentRecommendations = [];
 
   Future<void> init() async {
     //TODO
@@ -60,7 +60,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
                   profile.toGratefulAvatarUIModel(
                     isSelected: index == _currentProfileIndex,
                     hasDonated: _profilesThatDonated.contains(profile),
-                  ))
+                  ),)
               .toList(),
         ),
         recommendationsUIModel: null,
@@ -78,10 +78,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     final organisation = _currentRecommendations[index];
     if (isCurrentProfileChild()) {
       emitCustom(GratefulCustom.openKidDonationFlow(
-          profile: _getCurrentProfile(), organisation: organisation));
+          profile: _getCurrentProfile(), organisation: organisation,),);
     } else {
       emitCustom(GratefulCustom.openParentDonationFlow(
-          profile: _getCurrentProfile(), organisation: organisation));
+          profile: _getCurrentProfile(), organisation: organisation,),);
     }
   }
 

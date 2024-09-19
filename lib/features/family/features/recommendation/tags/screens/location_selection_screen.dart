@@ -139,7 +139,7 @@ class LocationSelectionScreen extends StatelessWidget {
                         ],
                       )
                     : null,
-              )
+              ),
             ],
           ),
         );
