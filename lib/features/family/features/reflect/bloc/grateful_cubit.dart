@@ -11,8 +11,9 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   GratefulCubit(
-      this._reflectAndShareRepository, this._gratefulRecommendationsRepository,)
-      : super(const BaseState.loading());
+    this._reflectAndShareRepository,
+    this._gratefulRecommendationsRepository,
+  ) : super(const BaseState.loading());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final GratefulRecommendationsRepository _gratefulRecommendationsRepository;
@@ -20,26 +21,30 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
-  final List<Organisation> _currentRecommendations = [];
+  List<Organisation> _currentRecommendations = [];
 
   Future<void> init() async {
-    //TODO
     _initProfiles();
-    /*await _gratefulRecommendationsRepository
-        .getGratefulRecommendationsForMultipleProfiles(_profiles);
-        
+
+    await _gratefulRecommendationsRepository
+        .fetchGratefulRecommendationsForMultipleProfiles(_profiles);
+
     _currentRecommendations = await _gratefulRecommendationsRepository
-        .getGratefulRecommendations(_getCurrentProfile());*/
+        .getGratefulRecommendations(_getCurrentProfile());
+
     _emitData();
   }
 
   void _initProfiles() {
-    _profiles = _reflectAndShareRepository.getPlayers();
+    // Make copy of list to avoid mutation of original repository list
+    _profiles = List.from(_reflectAndShareRepository.getPlayers());
+
     _profiles
       ..sort((a, b) => a.isChild ? -1 : 1)
       ..removeWhere(
         (element) => !element.isChild || element.gratitude == null,
       ); //in the future we don't need to remove the adults
+
     if (_profiles.isEmpty) {
       _onEveryoneDonated();
     }
@@ -49,18 +54,22 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
   void _emitData() {
     //TODO map above fields to uimodels
+    //_currentRecommendations
+
     emitData(
       GratefulUIModel(
         avatarBarUIModel: GratefulAvatarBarUIModel(
           avatarUIModels: _profiles
-              .mapIndexed((
-                index,
-                profile,
-              ) =>
-                  profile.toGratefulAvatarUIModel(
-                    isSelected: index == _currentProfileIndex,
-                    hasDonated: _profilesThatDonated.contains(profile),
-                  ),)
+              .mapIndexed(
+                (
+                  index,
+                  profile,
+                ) =>
+                    profile.toGratefulAvatarUIModel(
+                  isSelected: index == _currentProfileIndex,
+                  hasDonated: _profilesThatDonated.contains(profile),
+                ),
+              )
               .toList(),
         ),
         recommendationsUIModel: null,
@@ -68,8 +77,13 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     );
   }
 
-  void onAvatarTapped(int index) {
+  Future<void> onAvatarTapped(int index) async {
+    emitLoading();
+
     _currentProfileIndex = index;
+    _currentRecommendations = await _gratefulRecommendationsRepository
+        .getGratefulRecommendations(_getCurrentProfile());
+
     _emitData();
   }
 
@@ -77,22 +91,35 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     //TODO
     final organisation = _currentRecommendations[index];
     if (isCurrentProfileChild()) {
-      emitCustom(GratefulCustom.openKidDonationFlow(
-          profile: _getCurrentProfile(), organisation: organisation,),);
+      emitCustom(
+        GratefulCustom.openKidDonationFlow(
+          profile: _getCurrentProfile(),
+          organisation: organisation,
+        ),
+      );
     } else {
-      emitCustom(GratefulCustom.openParentDonationFlow(
-          profile: _getCurrentProfile(), organisation: organisation,),);
+      emitCustom(
+        GratefulCustom.openParentDonationFlow(
+          profile: _getCurrentProfile(),
+          organisation: organisation,
+        ),
+      );
     }
   }
 
-  void onDonated(GameProfile profile) {
-    //TODO
+  Future<void> onDonated(GameProfile profile) async {
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
     } else {
+      emitLoading();
+
       //TODO (this does not work because in the design you can switch profiles and donate out of order)
       _currentProfileIndex++;
+
+      _currentRecommendations = await _gratefulRecommendationsRepository
+          .getGratefulRecommendations(_getCurrentProfile());
+
       _emitData();
     }
   }
