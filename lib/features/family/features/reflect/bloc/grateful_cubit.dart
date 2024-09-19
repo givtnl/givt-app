@@ -27,7 +27,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     _initProfiles();
 
     await _gratefulRecommendationsRepository
-        .getGratefulRecommendationsForMultipleProfiles(_profiles);
+        .fetchGratefulRecommendationsForMultipleProfiles(_profiles);
 
     _currentRecommendations = await _gratefulRecommendationsRepository
         .getGratefulRecommendations(_getCurrentProfile());
