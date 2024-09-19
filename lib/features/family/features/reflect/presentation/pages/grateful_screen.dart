@@ -58,16 +58,9 @@ class _GratefulScreenState extends State<GratefulScreen> {
         onData: (context, uiModel) {
           return Column(
             children: [
-              Container(
-                color: FamilyAppTheme.primary99,
-                child: Column(
-                  children: [
-                    GratefulAvatarBar(
-                      uiModel: uiModel.avatarBarUIModel,
-                      onAvatarTapped: _cubit.onAvatarTapped,
-                    ),
-                  ],
-                ),
+              GratefulAvatarBar(
+                uiModel: uiModel.avatarBarUIModel,
+                onAvatarTapped: _cubit.onAvatarTapped,
               ),
               //TODO recommendations (pass uimodel.recommendationsUIModel)
               /*
