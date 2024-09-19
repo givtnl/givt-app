@@ -21,7 +21,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
-  final List<Organisation> _currentRecommendations = [];
+  List<Organisation> _currentRecommendations = [];
 
   Future<void> init() async {
     _initProfiles();
@@ -29,10 +29,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     await _gratefulRecommendationsRepository
         .getGratefulRecommendationsForMultipleProfiles(_profiles);
 
-    final _currentRecommendations = await _gratefulRecommendationsRepository
+    _currentRecommendations = await _gratefulRecommendationsRepository
         .getGratefulRecommendations(_getCurrentProfile());
 
-    _emitData(_currentRecommendations);
+    _emitData();
   }
 
   void _initProfiles() {
@@ -52,8 +52,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
   GameProfile _getCurrentProfile() => _profiles[_currentProfileIndex];
 
-  void _emitData(List<Organisation> currentRecommendations) {
+  void _emitData() {
     //TODO map above fields to uimodels
+    //_currentRecommendations
+
     emitData(
       GratefulUIModel(
         avatarBarUIModel: GratefulAvatarBarUIModel(
@@ -78,10 +80,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   Future<void> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
 
-    final _currentRecommendations = await _gratefulRecommendationsRepository
+    _currentRecommendations = await _gratefulRecommendationsRepository
         .getGratefulRecommendations(_getCurrentProfile());
 
-    _emitData(_currentRecommendations);
+    _emitData();
   }
 
   void onRecommendationTapped(int index) {
@@ -113,10 +115,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       //TODO (this does not work because in the design you can switch profiles and donate out of order)
       _currentProfileIndex++;
 
-      final _currentRecommendations = await _gratefulRecommendationsRepository
+      _currentRecommendations = await _gratefulRecommendationsRepository
           .getGratefulRecommendations(_getCurrentProfile());
 
-      _emitData(_currentRecommendations);
+      _emitData();
     }
   }
 
