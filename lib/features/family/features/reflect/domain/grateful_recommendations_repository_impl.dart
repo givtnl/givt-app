@@ -42,6 +42,8 @@ class GratefulRecommendationsRepositoryImpl
     GameProfile profile,
   ) async {
     return _gratefulRecommendations[profile] ??
-        []; //_organisationsRepository.getRecommendedOrganisations() instead of []
+        (await getGratefulRecommendationsForMultipleProfiles([profile]))
+            .values
+            .first;
   }
 }
