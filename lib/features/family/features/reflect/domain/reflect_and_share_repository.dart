@@ -102,52 +102,75 @@ class ReflectAndShareRepository {
     int sidekickIndex,
     Random rng,
   ) {
-    final questions = _getAllQuestions();
-    final list = <GameProfile>[];
-    final reporters = <GameProfile>[];
+    final memory = _selectedProfiles;
+    // Assign superhero and sidekick roles
+    _selectedProfiles[superheroIndex] = memory[superheroIndex].copyWith(
+      role: const Role.superhero(),
+    );
+    _selectedProfiles[sidekickIndex] = memory[sidekickIndex].copyWith(
+      role: const Role.sidekick(),
+    );
 
+    // Get all the rest as reporters
+    final preReporters = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
-      if (index == superheroIndex) {
-        list.add(profile.copyWith(role: const Role.superhero()));
-      } else if (index == sidekickIndex) {
-        list.add(profile.copyWith(role: const Role.sidekick()));
-      } else {
-        reporters.add(profile);
+      if (index != superheroIndex && index != sidekickIndex) {
+        preReporters.add(profile);
       }
     });
 
-    if (reporters.length == 1) {
+    final reportersWithQuestions =
+        _assignQuestionsToReporters(preReporters, rng);
+
+    // Assign the reporter roles with questions
+    _selectedProfiles.asMap().forEach((index, profile) {
+      if (index != superheroIndex && index != sidekickIndex) {
+        final reporter = reportersWithQuestions.firstWhere(
+            (element) => element.userId == profile.userId, orElse: () {
+          throw Exception('Reporter not found');
+        });
+        _selectedProfiles[index] = reporter;
+      }
+    });
+
+    randomizeSecretWord();
+    return _selectedProfiles;
+  }
+
+  List<GameProfile> _assignQuestionsToReporters(
+      List<GameProfile> preReporters, Random rng) {
+    final reportersWithQuestions = <GameProfile>[];
+
+    final questions = _getAllQuestions();
+    if (preReporters.length == 1) {
       final reporterQuestions = _pickQuestions(questions, 3, rng);
-      list.add(
-        reporters[0]
+      reportersWithQuestions.add(
+        preReporters[0]
             .copyWith(role: Role.reporter(questions: reporterQuestions)),
       );
-    } else if (reporters.length == 2) {
+    } else if (preReporters.length == 2) {
       final firstReporterQuestions = _pickQuestions(questions, 2, rng);
       final secondReporterQuestions = _pickQuestions(questions, 1, rng);
-      list
+      reportersWithQuestions
         ..add(
-          reporters[0]
+          preReporters[0]
               .copyWith(role: Role.reporter(questions: firstReporterQuestions)),
         )
         ..add(
-          reporters[1].copyWith(
+          preReporters[1].copyWith(
               role: Role.reporter(questions: secondReporterQuestions)),
         );
     } else {
-      for (final reporter in reporters) {
+      for (final reporter in preReporters) {
         final reporterQuestion = _pickQuestions(questions, 1, rng);
-        list.add(
+        reportersWithQuestions.add(
           reporter.copyWith(
             role: Role.reporter(questions: reporterQuestion),
           ),
         );
       }
     }
-
-    _selectedProfiles = list;
-    randomizeSecretWord();
-    return _selectedProfiles;
+    return reportersWithQuestions;
   }
 
   List<String> _pickQuestions(

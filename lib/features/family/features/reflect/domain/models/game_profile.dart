@@ -3,15 +3,16 @@ import 'package:givt_app/features/family/features/reflect/data/gratitude_categor
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 
 class GameProfile {
-  const GameProfile({
+  GameProfile({
     required this.type,
+    required this.userId,
     this.firstName,
     this.lastName,
     this.pictureURL,
     this.role,
     this.gratitude,
   });
-
+  final String userId;
   final String? firstName;
   final String? lastName;
   final String? pictureURL;
@@ -26,6 +27,7 @@ class GameProfile {
   bool get isChild => profileType == ProfileType.Child;
 
   GameProfile copyWith({
+    String? userId,
     String? firstName,
     String? lastName,
     String? pictureURL,
@@ -34,6 +36,7 @@ class GameProfile {
     GratitudeCategory? gratitude,
   }) {
     return GameProfile(
+      userId: userId ?? this.userId,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       pictureURL: pictureURL ?? this.pictureURL,
