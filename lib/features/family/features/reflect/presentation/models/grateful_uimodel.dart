@@ -1,4 +1,5 @@
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 
 class GratefulUIModel {
   const GratefulUIModel({
@@ -7,5 +8,5 @@ class GratefulUIModel {
   });
 
   final GratefulAvatarBarUIModel avatarBarUIModel;
-  final dynamic recommendationsUIModel;
+  final RecommendationsUIModel recommendationsUIModel;
 }

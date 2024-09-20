@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -6,6 +7,7 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_uimodel.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -22,6 +24,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
   List<Organisation> _currentRecommendations = [];
+  bool _hasRecommendationsError = false;
+  bool _isLoadingRecommendations = false;
 
   Future<void> init() async {
     _initProfiles();
@@ -29,10 +33,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     await _gratefulRecommendationsRepository
         .fetchGratefulRecommendationsForMultipleProfiles(_profiles);
 
-    _currentRecommendations = await _gratefulRecommendationsRepository
-        .getGratefulRecommendations(_getCurrentProfile());
-
-    _emitData();
+    await _fetchRecommendationsForCurrentProfile();
   }
 
   void _initProfiles() {
@@ -72,23 +73,40 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               )
               .toList(),
         ),
-        recommendationsUIModel: null,
+        recommendationsUIModel: RecommendationsUIModel(
+          isLoading: _isLoadingRecommendations,
+          hasError: _hasRecommendationsError,
+          organisations: _currentRecommendations,
+          name: _getCurrentProfile().firstName,
+        ),
       ),
     );
   }
 
   Future<void> onAvatarTapped(int index) async {
-    emitLoading();
-
     _currentProfileIndex = index;
-    _currentRecommendations = await _gratefulRecommendationsRepository
-        .getGratefulRecommendations(_getCurrentProfile());
-
-    _emitData();
+    await _fetchRecommendationsForCurrentProfile();
   }
 
-  void onRecommendationTapped(int index) {
-    //TODO
+  Future<void> _fetchRecommendationsForCurrentProfile() async {
+    try {
+      _isLoadingRecommendations = true;
+      _emitData();
+      _currentRecommendations = await _gratefulRecommendationsRepository
+          .getGratefulRecommendations(_getCurrentProfile());
+      _hasRecommendationsError = false;
+    } catch (e, s) {
+      _hasRecommendationsError = true;
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
+      );
+    } finally {
+      _emitData();
+    }
+  }
+
+  void onRecommendationChosen(int index) {
     final organisation = _currentRecommendations[index];
     if (isCurrentProfileChild()) {
       emitCustom(
@@ -112,15 +130,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
     } else {
-      emitLoading();
-
       //TODO (this does not work because in the design you can switch profiles and donate out of order)
       _currentProfileIndex++;
 
-      _currentRecommendations = await _gratefulRecommendationsRepository
-          .getGratefulRecommendations(_getCurrentProfile());
-
-      _emitData();
+      await _fetchRecommendationsForCurrentProfile();
     }
   }
 
@@ -128,8 +141,5 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     emitCustom(const GratefulCustom.goToGameSummary());
   }
 
-  bool isCurrentProfileChild() {
-    //TODO
-    return true;
-  }
+  bool isCurrentProfileChild() => _getCurrentProfile().isChild;
 }

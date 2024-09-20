@@ -20,17 +20,8 @@ class GratefulRecommendationsRepositoryImpl
     try {
       final results = await Future.wait(
         profiles.map((profile) async {
-          final interests = profile.gratitude?.tags;
-          final response = await _familyApiService.getRecommendedOrganisations(
-            {
-              'pageSize': 10,
-              'tags': interests?.map((tag) => tag.key).toList(),
-            },
-          );
-
-          final orgsList = response
-              .map((org) => Organisation.fromMap(org as Map<String, dynamic>));
-          return MapEntry(profile, orgsList.toList());
+          final orgsList = await _getOrganisationsForProfile(profile);
+          return MapEntry(profile, orgsList);
         }),
       );
 
@@ -43,12 +34,28 @@ class GratefulRecommendationsRepositoryImpl
     }
   }
 
+  Future<List<Organisation>> _getOrganisationsForProfile(
+      GameProfile profile) async {
+    final interests = profile.gratitude?.tags;
+    final response = await _familyApiService.getRecommendedOrganisations(
+      {
+        'pageSize': 10,
+        'tags': interests?.map((tag) => tag.key).toList(),
+      },
+    );
+
+    final orgsList = response
+        .map((org) => Organisation.fromMap(org as Map<String, dynamic>));
+    return orgsList.toList();
+  }
+
   @override
   Future<List<Organisation>> getGratefulRecommendations(
     GameProfile profile,
   ) async {
     if (!_gratefulRecommendations.containsKey(profile)) {
-      await fetchGratefulRecommendationsForMultipleProfiles([profile]);
+      _gratefulRecommendations[profile] =
+          await _getOrganisationsForProfile(profile);
     }
 
     return _gratefulRecommendations[profile] ?? [];

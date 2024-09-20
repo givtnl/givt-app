@@ -6,8 +6,11 @@ import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.da
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class GratefulScreen extends StatefulWidget {
   const GratefulScreen({super.key});
@@ -33,44 +36,44 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: FunTopAppBar(
-        title: "You're grateful for",
-        actions: [
-          GestureDetector(
-            onTap: () => _navigateToSummary(context),
-            child: const Padding(
-              padding: EdgeInsets.only(right: 16),
-              child: FaIcon(
-                FontAwesomeIcons.xmark,
-                size: 24,
+    return BaseStateConsumer(
+      cubit: _cubit,
+      onCustom: _handleCustom,
+      onLoading: (context) => const GratefulLoading(),
+      onData: (context, uiModel) {
+        return FunScaffold(
+          withSafeArea: false,
+          appBar: FunTopAppBar(
+            title: "You're grateful for",
+            actions: [
+              GestureDetector(
+                onTap: () => _navigateToSummary(context),
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 16),
+                  child: FaIcon(
+                    FontAwesomeIcons.xmark,
+                    size: 24,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
-      body: BaseStateConsumer(
-        cubit: _cubit,
-        onCustom: _handleCustom,
-        onLoading: (context) =>
-            const Center(child: CircularProgressIndicator()),
-        onData: (context, uiModel) {
-          return Column(
+          body: Column(
             children: [
               GratefulAvatarBar(
                 uiModel: uiModel.avatarBarUIModel,
                 onAvatarTapped: _cubit.onAvatarTapped,
               ),
-              //TODO recommendations (pass uimodel.recommendationsUIModel)
-              /*
-              Recommendations(
-                uiModel: uiModel.recommendationsUIModel,
-                onRecommendationTapped: _cubit.onRecommendationTapped,
-               */
+              Flexible(
+                child: RecommendationsWidget(
+                  uiModel: uiModel.recommendationsUIModel,
+                  onRecommendationChosen: _cubit.onRecommendationChosen,
+                ),
+              ),
             ],
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
