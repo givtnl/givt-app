@@ -2,8 +2,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 
 abstract class GratefulRecommendationsRepository {
-  Future<Map<GameProfile, List<Organisation>>>
-      getGratefulRecommendationsForMultipleProfiles(
+  Future<void> fetchGratefulRecommendationsForMultipleProfiles(
     List<GameProfile> profiles,
   );
 

@@ -52,7 +52,7 @@ class KidsHomeScreen extends StatelessWidget {
         analyticsEvent: (int index) =>
             AnalyticsEvent(AmplitudeEvents.navigationBarPressed, parameters: {
           'destination': NavigationDestinationData.values[index].name,
-        }),
+        },),
       ),
       body: BlocBuilder<NavigationCubit, NavigationState>(
         builder: (context, state) {

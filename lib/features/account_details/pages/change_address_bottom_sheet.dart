@@ -123,7 +123,7 @@ class _ChangeAddressBottomSheetState extends State<ChangeAddressBottomSheet> {
                   menuMaxHeight: size.height * 0.3,
                   items: Country.sortedCountries()
                       .where((element) =>
-                          element.currency == selectedCountry.currency)
+                          element.currency == selectedCountry.currency,)
                       .map(
                         (Country country) => DropdownMenuItem(
                           value: country,
