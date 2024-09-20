@@ -42,6 +42,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
       onLoading: (context) => const GratefulLoading(),
       onData: (context, uiModel) {
         return FunScaffold(
+          withSafeArea: false,
           appBar: const FunTopAppBar(
             title: "You're grateful for",
             actions: [
