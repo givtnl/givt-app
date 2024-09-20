@@ -77,6 +77,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
           organisations: _currentRecommendations,
+          name: _getCurrentProfile().firstName,
         ),
       ),
     );

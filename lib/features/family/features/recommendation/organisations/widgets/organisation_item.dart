@@ -16,10 +16,12 @@ import 'package:givt_app/utils/utils.dart';
 class OrganisationItem extends StatelessWidget {
   const OrganisationItem({
     required this.organisation,
+    this.onDonateClicked,
     super.key,
   });
 
   final Organisation organisation;
+  final void Function()? onDonateClicked;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class OrganisationItem extends StatelessWidget {
           backgroundColor: Colors.transparent,
           builder: (context) => OrganisationDetailBottomSheet(
             organisation: organisation,
+            onDonateClicked: onDonateClicked,
           ),
         );
       },
