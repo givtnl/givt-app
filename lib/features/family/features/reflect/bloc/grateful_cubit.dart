@@ -83,9 +83,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     );
   }
 
-  Future<void> onAvatarTapped(int index) async {
+  Future<String> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
     await _fetchRecommendationsForCurrentProfile();
+    return _profiles[index].userId;
   }
 
   Future<void> _fetchRecommendationsForCurrentProfile() async {
@@ -130,9 +131,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
     } else {
-      //TODO (this does not work because in the design you can switch profiles and donate out of order)
-      _currentProfileIndex++;
-
+      final nextGiver = _profiles.firstWhere(
+        (profile) => !_profilesThatDonated.contains(profile),
+      );
+      _currentProfileIndex = _profiles.indexOf(nextGiver);
       await _fetchRecommendationsForCurrentProfile();
     }
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -9,7 +8,6 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/pas
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
