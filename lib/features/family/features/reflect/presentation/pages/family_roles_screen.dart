@@ -70,7 +70,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                 children: [
                   Expanded(
                     child: GridView.count(
-                      childAspectRatio: 0.9,
+                      childAspectRatio: 0.85,
                       crossAxisCount: 3,
                       children: createGridItems(
                         profiles.take(9).toList(),
