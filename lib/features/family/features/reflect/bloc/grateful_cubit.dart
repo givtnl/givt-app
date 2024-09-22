@@ -133,6 +133,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     } else {
       final nextGiver = _profiles.firstWhere(
         (profile) => !_profilesThatDonated.contains(profile),
+        orElse: () {
+          _onEveryoneDonated();
+          throw Exception('No next giver found');
+        },
       );
       _currentProfileIndex = _profiles.indexOf(nextGiver);
       await _fetchRecommendationsForCurrentProfile();

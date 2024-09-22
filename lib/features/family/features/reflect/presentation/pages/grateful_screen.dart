@@ -77,8 +77,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
                 child: RecommendationsWidget(
                   uiModel: uiModel.recommendationsUIModel,
                   onRecommendationChosen: (int i) {
-                    context.pop();
                     _cubit.onRecommendationChosen(i);
+                    context.pop();
                   },
                 ),
               ),
@@ -98,8 +98,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
                 CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
             child: ChooseAmountSliderScreen(
               onCustomSuccess: () {
-                context.pop();
                 _cubit.onDonated(data.profile);
+                context.pop();
               },
             ),
           ).toRoute(context),
