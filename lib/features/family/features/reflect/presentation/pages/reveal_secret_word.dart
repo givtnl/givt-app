@@ -58,28 +58,36 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               color: FamilyAppTheme.primary30,
             ),
             const Spacer(),
-            Scratcher(
-              key: scratchKey,
-              brushSize: 30,
-              threshold: 50,
-              color: Colors.grey,
-              onChange: (value) => setState(() {
-                _isScratched = value > 20;
-              }),
-              //  onThreshold: () => print("Threshold reached, you won!"),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  secretWordBackground(
-                    width: MediaQuery.sizeOf(context).width,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                secretWordBackground(
+                  width: MediaQuery.sizeOf(context).width,
+                ),
+                Scratcher(
+                  key: scratchKey,
+                  brushSize: 30,
+                  threshold: 50,
+                  color: Colors.grey,
+                  onChange: (value) => setState(() {
+                    _isScratched = value > 20;
+                  }),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width - 120,
+                        height: 100,
+                      ),
+                      DisplayMediumText(
+                        secretWord,
+                        textAlign: TextAlign.center,
+                        color: FamilyAppTheme.primary30,
+                      ),
+                    ],
                   ),
-                  DisplayMediumText(
-                    secretWord,
-                    textAlign: TextAlign.center,
-                    color: FamilyAppTheme.primary30,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             const Spacer(),
             Visibility(
