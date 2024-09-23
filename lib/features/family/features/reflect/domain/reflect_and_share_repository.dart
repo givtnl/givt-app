@@ -12,6 +12,7 @@ class ReflectAndShareRepository {
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
+  int _generousDeeds = 0;
   int totalTimeSpent = 0;
 
   List<GameProfile>? _allProfiles;
@@ -19,6 +20,12 @@ class ReflectAndShareRepository {
   String? _currentSecretWord;
 
   final List<String> _usedSecretWords = [];
+
+  int getAmountOfGenerousDeeds() => _generousDeeds;
+
+  void incrementGenerousDeeds() {
+    _generousDeeds++;
+  }
 
   void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
     _selectedProfiles[_getCurrentSuperHeroIndex()] =
