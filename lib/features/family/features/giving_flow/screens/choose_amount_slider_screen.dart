@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
-import 'package:givt_app/features/family/features/coin_flow/screens/success_coin_screen.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
@@ -23,6 +23,7 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
+import 'package:go_router/go_router.dart';
 
 class ChooseAmountSliderScreen extends StatelessWidget {
   const ChooseAmountSliderScreen({
@@ -48,11 +49,16 @@ class ChooseAmountSliderScreen extends StatelessWidget {
             isError: true,
           );
         } else if (state is CreateTransactionSuccessState) {
-          Navigator.of(context).pushReplacement(
+          if (onCustomSuccess != null) {
+            Navigator.of(context).pushReplacement(
+              SuccessScreen(onCustomSuccess: onCustomSuccess).toRoute(context),
+            );
+            return;
+          }
+          context.pushReplacementNamed(
             flow.isCoin
-                ? const SuccessCoinScreen(isGoal: false).toRoute(context)
-                : SuccessScreen(onCustomSuccess: onCustomSuccess)
-                    .toRoute(context),
+                ? FamilyPages.successCoin.name
+                : FamilyPages.success.name,
           );
         }
       },
