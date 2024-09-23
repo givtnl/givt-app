@@ -45,12 +45,12 @@ Future<void> initAPIService() async {
 void initCubits() {
   getIt
     ..registerFactory(() => AdminFeeCubit(getIt()))
-    ..registerFactory(() => GratefulCubit(getIt(), getIt()))
+    ..registerLazySingleton(() => GratefulCubit(getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
     ..registerLazySingleton<GratitudeSelectionCubit>(
-      () => GratitudeSelectionCubit(getIt()),
+          () => GratitudeSelectionCubit(getIt()),
     )
     ..registerLazySingleton<CameraCubit>(
       CameraCubit.new,

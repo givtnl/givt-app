@@ -62,8 +62,10 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const error20 = Color(0xFF680300);
   static const error30 = Color(0xFF920700);
   static const error40 = Color(0xFFB91F0F);
+  static const error50 = Color.fromRGBO(220,58,38,1);
   static const error80 = Color(0xFFFFB4A7);
   static const error90 = Color(0xFFFFDAD4);
+  static const error98 = Color.fromRGBO(255, 248, 246, 1);
 
   static const neutral100 = Color(0xFFFEFFFF);
 

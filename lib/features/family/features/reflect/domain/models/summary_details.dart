@@ -1,6 +1,6 @@
 class SummaryDetails {
-  SummaryDetails({required this.minutesPlayed, required this.questionsAsked});
+  SummaryDetails({required this.minutesPlayed, required this.generousDeeds});
 
   int minutesPlayed;
-  int questionsAsked;
+  int generousDeeds;
 }
