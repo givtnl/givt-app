@@ -75,6 +75,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                     _cubit.onRecommendationChosen(i);
                     context.pop();
                   },
+                  onTapRetry: _cubit.onRetry,
                 ),
               ),
             ],

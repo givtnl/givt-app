@@ -54,9 +54,6 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   GameProfile _getCurrentProfile() => _profiles[_currentProfileIndex];
 
   void _emitData() {
-    //TODO map above fields to uimodels
-    //_currentRecommendations
-
     emitData(
       GratefulUIModel(
         avatarBarUIModel: GratefulAvatarBarUIModel(
@@ -102,6 +99,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         stacktrace: s,
       );
     } finally {
+      _isLoadingRecommendations = false;
       _emitData();
     }
   }
@@ -147,4 +145,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   bool isCurrentProfileChild() => _getCurrentProfile().isChild;
+
+  void onRetry() {
+    _fetchRecommendationsForCurrentProfile();
+  }
 }
