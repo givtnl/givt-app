@@ -124,6 +124,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   Future<void> onDonated(GameProfile profile) async {
+    _reflectAndShareRepository.incrementGenerousDeeds();
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
