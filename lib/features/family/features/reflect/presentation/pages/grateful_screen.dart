@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
@@ -9,6 +8,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_buttton.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
@@ -48,19 +48,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
       onData: (context, uiModel) {
         return FunScaffold(
           withSafeArea: false,
-          appBar: FunTopAppBar(
+          appBar: const FunTopAppBar(
             title: "You're grateful for",
             actions: [
-              GestureDetector(
-                onTap: () => _navigateToSummary(context),
-                child: const Padding(
-                  padding: EdgeInsets.only(right: 16),
-                  child: FaIcon(
-                    FontAwesomeIcons.xmark,
-                    size: 24,
-                  ),
-                ),
-              ),
+              FinishReflectingButton(),
             ],
           ),
           body: Column(
