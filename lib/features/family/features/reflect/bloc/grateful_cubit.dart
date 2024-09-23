@@ -124,7 +124,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   Future<void> onParentDonated(String userId) async {
-    final parent = _profiles.firstWhere((e) => e.userId == userId);
+    final parent = _profiles.firstWhere(
+      (e) => e.userId == userId,
+      orElse: () => throw Exception('Parent profile not found for userId: $userId'),
+    );
     await onDonated(parent);
   }
 

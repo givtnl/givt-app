@@ -203,7 +203,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
       await Navigator.push(
         context,
         const FullScreenLoadingWidget(
-          text: 'Setting up your donatiom',
+          text: 'Setting up your donation',
         ).toRoute(context),
       );
     }
