@@ -65,7 +65,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
     );
 
     final afterGivingRedirection = give.state.afterGivingRedirection;
-    context.pop();
+    context.pop(true);
 
     if (afterGivingRedirection.isNotEmpty) {
       final url = Uri.parse(afterGivingRedirection);
