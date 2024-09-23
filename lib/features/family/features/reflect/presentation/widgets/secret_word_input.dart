@@ -20,8 +20,6 @@ class _SecretWordInputState extends State<SecretWordInput> {
 
   @override
   Widget build(BuildContext context) {
-    final isLongWord = widget.amountOfLetters > 6;
-
     focusNodes = List.generate(
       widget.amountOfLetters,
       (index) => FocusNode(),
@@ -37,11 +35,9 @@ class _SecretWordInputState extends State<SecretWordInput> {
       children: [
         for (var i = 0; i < widget.amountOfLetters; i++) ...[
           Padding(
-            padding: isLongWord
-                ? const EdgeInsets.fromLTRB(0, 0, 1, 0)
-                : const EdgeInsets.fromLTRB(2, 0, 2, 0),
+            padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
             child: SizedBox(
-              width: isLongWord ? 20 : 24,
+              width: 24,
               child: TextField(
                 focusNode: focusNodes[i],
                 controller: controllers[i],
