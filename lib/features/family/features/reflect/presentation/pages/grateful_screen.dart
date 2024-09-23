@@ -8,9 +8,10 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_buttton.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -48,10 +49,12 @@ class _GratefulScreenState extends State<GratefulScreen> {
       onData: (context, uiModel) {
         return FunScaffold(
           withSafeArea: false,
-          appBar: const FunTopAppBar(
+          appBar: FunTopAppBar(
             title: "You're grateful for",
             actions: [
-              FinishReflectingButton(),
+              LeaveGameButton(
+                onPressed: () => FinishReflectionDialog().show(context),
+              ),
             ],
           ),
           body: Column(
