@@ -175,6 +175,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     final dynamic result = await Navigator.push(
       context,
       ParentAmountPage(
+        authcheck: true,
         currency: r'$',
         organisationName: org.name,
         colorCombo:
