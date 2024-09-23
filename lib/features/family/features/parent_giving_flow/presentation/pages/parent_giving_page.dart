@@ -28,6 +28,7 @@ class ParentGivingPage extends StatefulWidget {
 class _ParentGivingPageState extends State<ParentGivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
   bool browserIsOpened = false;
+  final give = getIt<GiveBloc>();
 
   @override
   void initState() {
@@ -63,8 +64,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
       context.read<ImpactGroupsCubit>().fetchImpactGroups(),
     );
 
-    final afterGivingRedirection =
-        context.read<GiveBloc>().state.afterGivingRedirection;
+    final afterGivingRedirection = give.state.afterGivingRedirection;
     context.pop();
 
     if (afterGivingRedirection.isNotEmpty) {
@@ -82,14 +82,13 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
   Map<String, dynamic> _buildGivt(
     BuildContext context,
   ) {
-    final giveBlocState = context.read<GiveBloc>().state;
     final user = context.read<AuthCubit>().state.user;
     final format = NumberFormat.simpleCurrency(
-      name: giveBlocState.organisation.currency,
+      name: give.state.organisation.currency,
     );
-    var orgName = giveBlocState.organisation.organisationName!;
-    final instanceName = giveBlocState.instanceName;
-    if (giveBlocState.instanceName.isNotEmpty && instanceName != orgName) {
+    var orgName = give.state.organisation.organisationName!;
+    final instanceName = give.state.instanceName;
+    if (give.state.instanceName.isNotEmpty && instanceName != orgName) {
       orgName = '$orgName: $instanceName';
     }
     return WebViewInput(
@@ -97,13 +96,13 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
       apiUrl: Uri.https(getIt<RequestHelper>().apiURL).toString(),
       guid: user.guid,
       organisation: orgName,
-      givtObj: GivtTransaction.toJsonList(giveBlocState.givtTransactions),
+      givtObj: GivtTransaction.toJsonList(give.state.givtTransactions),
       confirmBtn: context.l10n.next,
       cancel: context.l10n.cancel,
       areYouSureToCancelGivts: context.l10n.areYouSureToCancelGivts,
       message: context.l10n.safariGivtTransaction,
       thanks: context.l10n.givtIsBeingProcessed(
-        giveBlocState.organisation.organisationName.toString(),
+        give.state.organisation.organisationName.toString(),
       ),
       yesSuccess: context.l10n.yesSuccess,
       close: context.l10n.close,

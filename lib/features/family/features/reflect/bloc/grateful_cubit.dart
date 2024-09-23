@@ -43,8 +43,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     _profiles
       ..sort((a, b) => a.isChild ? -1 : 1)
       ..removeWhere(
-        (element) => !element.isChild || element.gratitude == null,
-      ); //in the future we don't need to remove the adults
+        (element) => element.gratitude == null,
+      );
 
     if (_profiles.isEmpty) {
       _onEveryoneDonated();
@@ -121,6 +121,14 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
         ),
       );
     }
+  }
+
+  Future<void> onParentDonated(String userId) async {
+    final parent = _profiles.firstWhere(
+      (e) => e.userId == userId,
+      orElse: () => throw Exception('Parent profile not found for userId: $userId'),
+    );
+    await onDonated(parent);
   }
 
   Future<void> onDonated(GameProfile profile) async {

@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
@@ -22,6 +23,7 @@ import 'package:givt_app/features/family/features/reflect/domain/grateful_recomm
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -52,6 +54,15 @@ void initCubits() {
     )
     ..registerLazySingleton<CameraCubit>(
       CameraCubit.new,
+    )
+    ..registerLazySingleton<MediumCubit>(MediumCubit.new)
+    ..registerLazySingleton<GiveBloc>(
+      () => GiveBloc(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
     )
     ..registerFactory<FamilyRolesCubit>(
       () => FamilyRolesCubit(
