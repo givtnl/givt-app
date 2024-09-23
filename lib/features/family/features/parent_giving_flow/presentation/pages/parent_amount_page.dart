@@ -78,13 +78,17 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
           ),
         ),
       ),
-      floatingActionButton: FunButton(
-        onTap: () {
-          Navigator.of(context).pop(_amount);
-        },
-        text: 'Give',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.parentGiveClicked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: FunButton(
+          onTap: () {
+            Navigator.of(context).pop(_amount);
+          },
+          text: 'Give',
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.parentGiveClicked,
+          ),
         ),
       ),
     );
