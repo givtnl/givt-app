@@ -72,11 +72,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
         }
         if (state.status == GiveStatus.readyToGive) {
           // we assume the parent confirms on browser
-          _cubit.onParentDonated(userGUID);
-          Navigator.pushReplacement(
-            context,
-            const ParentGivingPage().toRoute(context),
-          );
+          _handleParentBrowser(userGUID);
         }
         if (state.status == GiveStatus.error) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -207,6 +203,16 @@ class _GratefulScreenState extends State<GratefulScreen> {
           text: 'Setting up your donation',
         ).toRoute(context),
       );
+    }
+  }
+
+  Future<void> _handleParentBrowser(String guid) async {
+    final dynamic result = await Navigator.pushReplacement(
+      context,
+      const ParentGivingPage().toRoute(context),
+    );
+    if (result != null && result == true && context.mounted) {
+      await _cubit.onParentDonated(guid);
     }
   }
 
