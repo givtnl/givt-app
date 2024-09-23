@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
@@ -16,6 +15,7 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
@@ -126,18 +126,9 @@ class _GratefulScreenState extends State<GratefulScreen> {
   void _handleCustom(BuildContext context, GratefulCustom custom) {
     switch (custom) {
       case final GratefulOpenKidDonationFlow data:
-        context.read<ProfilesCubit>().setActiveProfile(data.profile.userId);
-        Navigator.of(context).push(
-          BlocProvider(
-            create: (BuildContext context) =>
-                CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
-            child: ChooseAmountSliderScreen(
-              onCustomSuccess: () {
-                _cubit.onDonated(data.profile);
-                context.pop();
-              },
-            ),
-          ).toRoute(context),
+        _navigateToChildGivingScreen(
+          context,
+          data.profile,
         );
       case final GratefulOpenParentDonationFlow data:
         _navigateToParentGivingScreen(
@@ -147,6 +138,25 @@ class _GratefulScreenState extends State<GratefulScreen> {
       case GratefulGoToGameSummary():
         _navigateToSummary(context);
     }
+  }
+
+  Future<void> _navigateToChildGivingScreen(
+    BuildContext context,
+    GameProfile profile,
+  ) async {
+    await context.read<ProfilesCubit>().setActiveProfile(profile.userId);
+    await Navigator.of(context).push(
+      BlocProvider(
+        create: (BuildContext context) =>
+            CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+        child: ChooseAmountSliderScreen(
+          onCustomSuccess: () {
+            _cubit.onDonated(profile);
+            context.pop();
+          },
+        ),
+      ).toRoute(context),
+    );
   }
 
   Future<void> _navigateToParentGivingScreen(
