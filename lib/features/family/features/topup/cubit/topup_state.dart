@@ -8,7 +8,7 @@ class InitialState extends TopupState {
   const InitialState();
 }
 
-class SuccessState<T> extends TopupState {
+class SuccessState extends TopupState {
   const SuccessState(this.amount, this.recurring);
 
   final int amount;
