@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/auth/models/models.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -15,10 +17,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   GratefulCubit(
     this._reflectAndShareRepository,
     this._gratefulRecommendationsRepository,
+    this._authRepository,
   ) : super(const BaseState.loading());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final GratefulRecommendationsRepository _gratefulRecommendationsRepository;
+  final AuthRepository _authRepository;
 
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
@@ -26,8 +30,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   List<Organisation> _currentRecommendations = [];
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
+  Session? _session;
 
   Future<void> init() async {
+    _session = await _authRepository.getStoredSession();
     _initProfiles();
 
     await _gratefulRecommendationsRepository
@@ -43,7 +49,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     _profiles
       ..sort((a, b) => a.isChild ? -1 : 1)
       ..removeWhere(
-        (element) => element.gratitude == null,
+        (element) => element.gratitude == null || _isNonLoggedInParent(element),
       );
 
     if (_profiles.isEmpty) {
@@ -126,7 +132,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   Future<void> onParentDonated(String userId) async {
     final parent = _profiles.firstWhere(
       (e) => e.userId == userId,
-      orElse: () => throw Exception('Parent profile not found for userId: $userId'),
+      orElse: () =>
+          throw Exception('Parent profile not found for userId: $userId'),
     );
     await onDonated(parent);
   }
@@ -157,5 +164,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
 
   void onRetry() {
     _fetchRecommendationsForCurrentProfile();
+  }
+
+  bool _isNonLoggedInParent(GameProfile element) {
+    return !element.isChild && element.userId != _session?.userGUID;
   }
 }
