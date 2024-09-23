@@ -67,7 +67,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: FunTile.red(
-                      titleBig: '${secretWord.generousDeeds} generous deeds',
+                      titleBig: secretWord.generousDeeds == 1 ? '1 generous deed' : '${secretWord.generousDeeds} generous deeds',
                       iconData: FontAwesomeIcons.solidHeart,
                       assetSize: 32,
                       analyticsEvent: AnalyticsEvent(
