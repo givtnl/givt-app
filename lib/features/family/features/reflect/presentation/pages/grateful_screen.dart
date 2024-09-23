@@ -1,10 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
@@ -14,8 +24,12 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
+import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class GratefulScreen extends StatefulWidget {
@@ -27,6 +41,8 @@ class GratefulScreen extends StatefulWidget {
 
 class _GratefulScreenState extends State<GratefulScreen> {
   final _cubit = getIt<GratefulCubit>();
+  final _give = getIt<GiveBloc>();
+  final _medium = getIt<MediumCubit>();
 
   @override
   void didChangeDependencies() {
@@ -42,39 +58,68 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BaseStateConsumer(
-      cubit: _cubit,
-      onCustom: _handleCustom,
-      onLoading: (context) => const GratefulLoading(),
-      onData: (context, uiModel) {
-        return FunScaffold(
-          withSafeArea: false,
-          appBar: FunTopAppBar(
-            title: "You're grateful for",
-            actions: [
-              LeaveGameButton(
-                onPressed: () => FinishReflectionDialog().show(context),
-              ),
-            ],
-          ),
-          body: Column(
-            children: [
-              GratefulAvatarBar(
-                  uiModel: uiModel.avatarBarUIModel,
-                  onAvatarTapped: _cubit.onAvatarTapped),
-              Flexible(
-                child: RecommendationsWidget(
-                  uiModel: uiModel.recommendationsUIModel,
-                  onRecommendationChosen: (int i) {
-                    _cubit.onRecommendationChosen(i);
-                    context.pop();
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
+    return BlocListener<GiveBloc, GiveState>(
+      bloc: _give,
+      listener: (context, state) {
+        final userGUID = context.read<AuthCubit>().state.user.guid;
+        if (state.status == GiveStatus.success) {
+          _give.add(
+            GiveOrganisationSelected(
+              nameSpace: _medium.state.mediumId,
+              userGUID: userGUID,
+            ),
+          );
+        }
+        if (state.status == GiveStatus.readyToGive) {
+          // we assume the parent confirms on browser
+          _cubit.onParentDonated(userGUID);
+          Navigator.pushReplacement(
+            context,
+            const ParentGivingPage().toRoute(context),
+          );
+        }
+        if (state.status == GiveStatus.error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(context.l10n.somethingWentWrong),
+            ),
+          );
+        }
       },
+      child: BaseStateConsumer(
+        cubit: _cubit,
+        onCustom: _handleCustom,
+        onLoading: (context) => const GratefulLoading(),
+        onData: (context, uiModel) {
+          return FunScaffold(
+            withSafeArea: false,
+            appBar: FunTopAppBar(
+              title: "You're grateful for",
+              actions: [
+                LeaveGameButton(
+                  onPressed: () => const FinishReflectionDialog().show(context),
+                ),
+              ],
+            ),
+            body: Column(
+              children: [
+                GratefulAvatarBar(
+                    uiModel: uiModel.avatarBarUIModel,
+                    onAvatarTapped: _cubit.onAvatarTapped),
+                Flexible(
+                  child: RecommendationsWidget(
+                    uiModel: uiModel.recommendationsUIModel,
+                    onRecommendationChosen: (int i) {
+                      _cubit.onRecommendationChosen(i);
+                      context.pop();
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -95,10 +140,62 @@ class _GratefulScreenState extends State<GratefulScreen> {
           ).toRoute(context),
         );
       case final GratefulOpenParentDonationFlow data:
-        // TODO: Handle this case.
-        data.profile;
+        _navigateToParentGivingScreen(
+          context,
+          data.organisation,
+        );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);
+    }
+  }
+
+  Future<void> _navigateToParentGivingScreen(
+    BuildContext context,
+    Organisation org,
+  ) async {
+    _medium.setMediumId(org.namespace);
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.parentReflectionFlowOrganisationClicked,
+        eventProperties: {
+          'organisation': org.name,
+        },
+      ),
+    );
+    final dynamic result = await Navigator.push(
+      context,
+      ParentAmountPage(
+        currency: r'$',
+        organisationName: org.name,
+        colorCombo:
+            CollectGroupType.getColorComboByType(CollectGroupType.charities),
+        icon: CollectGroupType.getIconByTypeUS(CollectGroupType.charities),
+      ).toRoute(context),
+    );
+    if (result != null && result is int && context.mounted) {
+      unawaited(
+        AnalyticsHelper.logEvent(
+          eventName: AmplitudeEvents.parentGiveWithAmountClicked,
+          eventProperties: {
+            'amount': result,
+            'organisation': org.name,
+            'mediumid': org.namespace,
+          },
+        ),
+      );
+      _give.add(
+        GiveAmountChanged(
+          firstCollectionAmount: result.toDouble(),
+          secondCollectionAmount: 0,
+          thirdCollectionAmount: 0,
+        ),
+      );
+      await Navigator.push(
+        context,
+        const FullScreenLoadingWidget(
+          text: 'Setting up your donatiom',
+        ).toRoute(context),
+      );
     }
   }
 

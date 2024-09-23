@@ -333,6 +333,8 @@ enum AmplitudeEvents {
   familyReflectSummaryQuestionsAskedClicked(
     'family_reflect_summary_questions_asked_clicked',
   ),
+  parentReflectionFlowOrganisationClicked(
+      'parent_reflection_flow_organisation_clicked'),
 
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),

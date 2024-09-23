@@ -40,7 +40,7 @@ class ChooseAmountSliderPage extends StatefulWidget {
 
 class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
   bool _isLoading = false;
-
+  final give = getIt<GiveBloc>();
   String _createAssignmentDescription(String organisationName, double amount) {
     final intAmount = amount.toInt();
     return 'You gave $intAmount dollar${intAmount > 1 ? 's' : ''} to the $organisationName. Awesome!';
@@ -52,6 +52,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
         CreateChallengeDonationState>(
       builder: (context, state) {
         return BlocListener<GiveBloc, GiveState>(
+          bloc: give,
           listener: (context, giveState) async {
             if (giveState.status == GiveStatus.processed) {
               _setLoading(false);
@@ -186,7 +187,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
     final decodedMediumId =
         utf8.decode(base64.decode(widget.organisation.mediumId!));
 
-    context.read<GiveBloc>()
+    give
       ..add(
         GiveAmountChanged(
           firstCollectionAmount: state.amount,
@@ -211,7 +212,7 @@ class _ChooseAmountSliderPageState extends State<ChooseAmountSliderPage> {
     if (e is StripeException && e.error.code == FailureCode.Canceled) {
       // do nothing
     } else {
-      context.read<GiveBloc>().add(const GiveStripeRegistrationError());
+      give.add(const GiveStripeRegistrationError());
       LoggingInfo.instance.info(
         e.toString(),
         methodName: stackTrace.toString(),
