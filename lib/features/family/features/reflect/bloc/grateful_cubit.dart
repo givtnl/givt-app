@@ -83,10 +83,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     );
   }
 
-  Future<String> onAvatarTapped(int index) async {
+  Future<void> onAvatarTapped(int index) async {
     _currentProfileIndex = index;
     await _fetchRecommendationsForCurrentProfile();
-    return _profiles[index].userId;
   }
 
   Future<void> _fetchRecommendationsForCurrentProfile() async {

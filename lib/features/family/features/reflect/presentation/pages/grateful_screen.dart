@@ -66,13 +66,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
           body: Column(
             children: [
               GratefulAvatarBar(
-                uiModel: uiModel.avatarBarUIModel,
-                onAvatarTapped: (int i) async {
-                  final userId = await _cubit.onAvatarTapped(i);
-                  if (!context.mounted) return;
-                  await context.read<ProfilesCubit>().setActiveProfile(userId);
-                },
-              ),
+                  uiModel: uiModel.avatarBarUIModel,
+                  onAvatarTapped: _cubit.onAvatarTapped),
               Flexible(
                 child: RecommendationsWidget(
                   uiModel: uiModel.recommendationsUIModel,
@@ -92,6 +87,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
   void _handleCustom(BuildContext context, GratefulCustom custom) {
     switch (custom) {
       case final GratefulOpenKidDonationFlow data:
+        context.read<ProfilesCubit>().setActiveProfile(data.profile.userId);
         Navigator.of(context).push(
           BlocProvider(
             create: (BuildContext context) =>
