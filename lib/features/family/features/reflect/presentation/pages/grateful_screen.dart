@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
@@ -11,6 +15,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:go_router/go_router.dart';
 
 class GratefulScreen extends StatefulWidget {
   const GratefulScreen({super.key});
@@ -61,13 +66,15 @@ class _GratefulScreenState extends State<GratefulScreen> {
           body: Column(
             children: [
               GratefulAvatarBar(
-                uiModel: uiModel.avatarBarUIModel,
-                onAvatarTapped: _cubit.onAvatarTapped,
-              ),
+                  uiModel: uiModel.avatarBarUIModel,
+                  onAvatarTapped: _cubit.onAvatarTapped),
               Flexible(
                 child: RecommendationsWidget(
                   uiModel: uiModel.recommendationsUIModel,
-                  onRecommendationChosen: _cubit.onRecommendationChosen,
+                  onRecommendationChosen: (int i) {
+                    _cubit.onRecommendationChosen(i);
+                    context.pop();
+                  },
                 ),
               ),
             ],
@@ -80,8 +87,19 @@ class _GratefulScreenState extends State<GratefulScreen> {
   void _handleCustom(BuildContext context, GratefulCustom custom) {
     switch (custom) {
       case final GratefulOpenKidDonationFlow data:
-        // TODO: Handle this case.
-        data.organisation;
+        context.read<ProfilesCubit>().setActiveProfile(data.profile.userId);
+        Navigator.of(context).push(
+          BlocProvider(
+            create: (BuildContext context) =>
+                CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
+            child: ChooseAmountSliderScreen(
+              onCustomSuccess: () {
+                _cubit.onDonated(data.profile);
+                context.pop();
+              },
+            ),
+          ).toRoute(context),
+        );
       case final GratefulOpenParentDonationFlow data:
         // TODO: Handle this case.
         data.profile;
