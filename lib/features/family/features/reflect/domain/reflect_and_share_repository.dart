@@ -121,10 +121,9 @@ class ReflectAndShareRepository {
 
     if (_selectedProfiles.length == 2) {
       return _setReportersWithTwoPlayers(sidekickIndex, rng);
-    } else {
-      return _setReportersWithMoreThanTwoPlayers(
-          superheroIndex, sidekickIndex, rng);
     }
+    return _setReportersWithMoreThanTwoPlayers(
+        superheroIndex, sidekickIndex, rng);
   }
 
   List<GameProfile> _setReportersWithMoreThanTwoPlayers(
