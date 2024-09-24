@@ -37,7 +37,7 @@ class GratitudeSelectionScreen extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
-          const BodyMediumText('Choose one thats fits the best'),
+          const BodyMediumText('Choose one that fits the best'),
           const SizedBox(height: 24),
           LayoutGrid(
             columnSizes: [1.fr, 1.fr],
