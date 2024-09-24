@@ -39,7 +39,7 @@ class ReflectAndShareRepository {
 
   List<GameProfile> getCurrentReporters() {
     return _selectedProfiles
-        .where((profile) => profile.role is Reporter)
+        .where((profile) => profile.roles.whereType<Reporter>().isNotEmpty)
         .toList();
   }
 
@@ -119,6 +119,15 @@ class ReflectAndShareRepository {
       role: const Role.sidekick(),
     );
 
+    if (_selectedProfiles.length == 2) {
+      return _setReportersWithTwoPlayers(sidekickIndex, rng);
+    }
+    return _setReportersWithMoreThanTwoPlayers(
+        superheroIndex, sidekickIndex, rng);
+  }
+
+  List<GameProfile> _setReportersWithMoreThanTwoPlayers(
+      int superheroIndex, int sidekickIndex, Random rng) {
     // Get all the rest as reporters
     final preReporters = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
@@ -141,6 +150,17 @@ class ReflectAndShareRepository {
       }
     });
 
+    randomizeSecretWord();
+    return _selectedProfiles;
+  }
+
+  List<GameProfile> _setReportersWithTwoPlayers(int sidekickIndex, Random rng) {
+    final currentSideKick = _selectedProfiles[sidekickIndex];
+    final reportersWithQuestions =
+        _assignQuestionsToReporters([_selectedProfiles[sidekickIndex]], rng);
+    _selectedProfiles[sidekickIndex] = currentSideKick.copyWith(
+      roles: [...reportersWithQuestions[0].roles, ...currentSideKick.roles],
+    );
     randomizeSecretWord();
     return _selectedProfiles;
   }
@@ -212,7 +232,7 @@ class ReflectAndShareRepository {
 
   int _getCurrentSidekickIndex() {
     final index = _selectedProfiles.indexWhere((profile) {
-      if (profile.role is Sidekick) {
+      if (profile.roles.whereType<Sidekick>().isNotEmpty) {
         return true;
       }
       return false;

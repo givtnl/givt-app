@@ -50,16 +50,23 @@ class GameProfileItem extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: profile.role?.color ?? Colors.red,
-                  ),
-                  child: Icon(
-                    _getIconPerRole(),
-                    color: FamilyAppTheme.primary20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  children: List.generate(
+                    profile.roles.length,
+                    (i) => Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: profile.roles[i].color,
+                      ),
+                      child: Icon(
+                        _getIconPerRole(profile.roles[i]),
+                        color: FamilyAppTheme.primary20,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -79,8 +86,8 @@ class GameProfileItem extends StatelessWidget {
     );
   }
 
-  IconData _getIconPerRole() {
-    switch (profile.role.runtimeType) {
+  IconData _getIconPerRole(Role? role) {
+    switch (role.runtimeType) {
       case SuperHero:
         return FontAwesomeIcons.mask;
       case Sidekick:

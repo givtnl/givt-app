@@ -52,7 +52,9 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                     _getTopWidget(),
                     const SizedBox(height: 16),
                     TitleMediumText(
-                      'Pass the phone to the\n ${reporters.first.role!.name} ${reporters.first.firstName}',
+                      reporters.first.roles.length > 1
+                          ? 'Pass the phone to the\n ${reporters.first.roles.first.name} and ${reporters.first.roles.last.name} ${reporters.first.firstName}'
+                          : 'Pass the phone to the\n ${reporters.first.role!.name} ${reporters.first.firstName}',
                       textAlign: TextAlign.center,
                     ),
                     Padding(

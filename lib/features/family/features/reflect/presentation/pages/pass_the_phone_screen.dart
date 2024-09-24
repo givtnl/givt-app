@@ -78,7 +78,9 @@ class PassThePhone extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     TitleMediumText(
-                      'Pass the phone to the\n ${user.role!.name} ${user.firstName}',
+                      user.roles.length > 1
+                          ? 'Pass the phone to the\n ${user.roles.first.name} and ${user.roles.last.name} ${user.firstName}'
+                          : 'Pass the phone to the\n ${user.role!.name} ${user.firstName}',
                       textAlign: TextAlign.center,
                     ),
                     Padding(
