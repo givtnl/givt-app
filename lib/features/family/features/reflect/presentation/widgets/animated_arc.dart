@@ -3,9 +3,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/a
 
 class AnimatedArc extends StatefulWidget {
   const AnimatedArc({
-    super.key,
-    required this.diameter,
-    required this.color,
+    required this.diameter, required this.color, super.key,
   });
   final double diameter;
   final Color color;

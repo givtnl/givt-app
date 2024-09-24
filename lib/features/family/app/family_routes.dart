@@ -42,8 +42,8 @@ import 'package:givt_app/features/family/features/coin_flow/screens/search_for_c
 import 'package:givt_app/features/family/features/coin_flow/screens/success_coin_screen.dart';
 import 'package:givt_app/features/family/features/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_goal_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
@@ -56,7 +56,6 @@ import 'package:givt_app/features/family/features/impact_groups/cubit/impact_gro
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/impact_group_details_page.dart';
-import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/give_from_list_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -73,7 +72,6 @@ import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
-import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
@@ -223,14 +221,6 @@ class FamilyAppRoutes {
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (_) => GiveBloc(
-                    getIt(),
-                    getIt(),
-                    getIt(),
-                    getIt(),
-                  ),
-                ),
-                BlocProvider(
                   create: (context) => CreateChallengeDonationCubit(),
                 ),
                 BlocProvider.value(
@@ -287,17 +277,6 @@ class FamilyAppRoutes {
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (_) => GiveBloc(
-                    getIt(),
-                    getIt(),
-                    getIt(),
-                    getIt(),
-                  ),
-                ),
-                BlocProvider(
-                  create: (_) => MediumCubit(),
-                ),
-                BlocProvider(
                   create: (_) => OrganisationBloc(
                     getIt(),
                     getIt(),
@@ -316,10 +295,7 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.parentGive.path,
           name: FamilyPages.parentGive.name,
-          builder: (context, state) => BlocProvider.value(
-            value: state.extra! as GiveBloc,
-            child: const ParentGivingPage(),
-          ),
+          builder: (context, state) => const ParentGivingPage(),
         ),
         GoRoute(
           path: FamilyPages.wallet.path,

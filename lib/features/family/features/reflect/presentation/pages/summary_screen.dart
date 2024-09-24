@@ -43,7 +43,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
             children: [
               const Spacer(),
               const TitleMediumText(
-                'Your mission to connect through conversation was a success!',
+                'Your mission to turn your gratitude into generosity was a success!',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),
@@ -66,13 +66,15 @@ class _SummaryScreenState extends State<SummaryScreen> {
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: FunTile.blue(
-                      titleBig: '${secretWord.questionsAsked} questions asked',
-                      iconData: FontAwesomeIcons.solidCircleQuestion,
+                    child: FunTile.red(
+                      titleBig: secretWord.generousDeeds == 1
+                          ? '1 generous deed'
+                          : '${secretWord.generousDeeds} generous deeds',
+                      iconData: FontAwesomeIcons.solidHeart,
                       assetSize: 32,
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents
-                            .familyReflectSummaryQuestionsAskedClicked,
+                            .familyReflectSummaryGenerousDeedsClicked,
                       ),
                     ),
                   ),

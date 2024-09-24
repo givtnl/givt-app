@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
+import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/widgets/slider_widget.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -26,8 +28,9 @@ import 'package:go_router/go_router.dart';
 class ChooseAmountSliderScreen extends StatelessWidget {
   const ChooseAmountSliderScreen({
     super.key,
+    this.onCustomSuccess,
   });
-
+  final void Function()? onCustomSuccess;
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
@@ -46,6 +49,12 @@ class ChooseAmountSliderScreen extends StatelessWidget {
             isError: true,
           );
         } else if (state is CreateTransactionSuccessState) {
+          if (onCustomSuccess != null) {
+            Navigator.of(context).pushReplacement(
+              SuccessScreen(onCustomSuccess: onCustomSuccess).toRoute(context),
+            );
+            return;
+          }
           context.pushReplacementNamed(
             flow.isCoin
                 ? FamilyPages.successCoin.name

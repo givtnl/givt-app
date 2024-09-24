@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/result_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/grateful_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -95,7 +95,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   FunButton.secondary(
                     onTap: () {
                       Navigator.of(context)
-                          .push(const SummaryScreen().toRoute(context));
+                          .push(const GratefulScreen().toRoute(context));
                     },
                     text: 'Finish reflecting',
                     analyticsEvent: AnalyticsEvent(

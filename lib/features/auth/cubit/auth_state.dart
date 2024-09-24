@@ -38,7 +38,7 @@ class AuthState extends Equatable {
   final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
 
   static Future<void> _emptyNavigate(BuildContext context,
-      {bool? isUSUser}) async {}
+      {bool? isUSUser,}) async {}
 
   bool get hasNavigation {
     return navigate != _emptyNavigate;

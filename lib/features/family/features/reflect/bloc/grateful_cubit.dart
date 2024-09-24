@@ -1,3 +1,7 @@
+import 'package:collection/collection.dart';
+import 'package:givt_app/core/logging/logging.dart';
+import 'package:givt_app/features/auth/models/models.dart';
+import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -5,67 +9,150 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_uimodel.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   GratefulCubit(
-      this._reflectAndShareRepository, this._gratefulRecommendationsRepository)
-      : super(const BaseState.loading());
+    this._reflectAndShareRepository,
+    this._gratefulRecommendationsRepository,
+    this._authRepository,
+  ) : super(const BaseState.loading());
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final GratefulRecommendationsRepository _gratefulRecommendationsRepository;
+  final AuthRepository _authRepository;
 
   List<GameProfile> _profiles = [];
-  List<GameProfile> _profilesThatDonated = [];
+  final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
   List<Organisation> _currentRecommendations = [];
+  bool _hasRecommendationsError = false;
+  bool _isLoadingRecommendations = false;
+  Session? _session;
 
   Future<void> init() async {
-    //TODO
-    _profiles = _reflectAndShareRepository.getPlayers();
+    _session = await _authRepository.getStoredSession();
+    _initProfiles();
+
     await _gratefulRecommendationsRepository
-        .getGratefulRecommendationsForMultipleProfiles(_profiles);
-    _currentRecommendations = await _gratefulRecommendationsRepository
-        .getGratefulRecommendations(_getCurrentProfile());
-    _emitData();
-    //TODO sort kids first, then parents
+        .fetchGratefulRecommendationsForMultipleProfiles(_profiles);
+
+    await _fetchRecommendationsForCurrentProfile();
+  }
+
+  void _initProfiles() {
+    // Make copy of list to avoid mutation of original repository list
+    _profiles = List.from(_reflectAndShareRepository.getPlayers());
+
+    _profiles
+      ..sort((a, b) => a.isChild ? -1 : 1)
+      ..removeWhere(
+        (element) => element.gratitude == null || _isNonLoggedInParent(element),
+      );
+
+    if (_profiles.isEmpty) {
+      _onEveryoneDonated();
+    }
   }
 
   GameProfile _getCurrentProfile() => _profiles[_currentProfileIndex];
 
   void _emitData() {
-    //TODO map above fields to uimodels
-    emitData(GratefulUIModel(
-        avatarBarUIModel: GratefulAvatarBarUIModel(),
-        recommendationsUIModel: null));
+    emitData(
+      GratefulUIModel(
+        avatarBarUIModel: GratefulAvatarBarUIModel(
+          avatarUIModels: _profiles
+              .mapIndexed(
+                (
+                  index,
+                  profile,
+                ) =>
+                    profile.toGratefulAvatarUIModel(
+                  isSelected: index == _currentProfileIndex,
+                  hasDonated: _profilesThatDonated.contains(profile),
+                ),
+              )
+              .toList(),
+        ),
+        recommendationsUIModel: RecommendationsUIModel(
+          isLoading: _isLoadingRecommendations,
+          hasError: _hasRecommendationsError,
+          organisations: _currentRecommendations,
+          name: _getCurrentProfile().firstName,
+        ),
+      ),
+    );
   }
 
-  void onAvatarTapped(int index) {
-    //TODO
+  Future<void> onAvatarTapped(int index) async {
+    _currentProfileIndex = index;
+    await _fetchRecommendationsForCurrentProfile();
   }
 
-  void onRecommendationTapped(int index) {
-    //TODO
-    final organisation = _currentRecommendations[index];
-    if (isCurrentProfileChild()) {
-      emitCustom(GratefulCustom.openKidDonationFlow(
-          profile: _getCurrentProfile(), organisation: organisation));
-    } else {
-      emitCustom(GratefulCustom.openParentDonationFlow(
-          profile: _getCurrentProfile(), organisation: organisation));
+  Future<void> _fetchRecommendationsForCurrentProfile() async {
+    try {
+      _isLoadingRecommendations = true;
+      _emitData();
+      _currentRecommendations = await _gratefulRecommendationsRepository
+          .getGratefulRecommendations(_getCurrentProfile());
+      _hasRecommendationsError = false;
+    } catch (e, s) {
+      _hasRecommendationsError = true;
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
+      );
+    } finally {
+      _isLoadingRecommendations = false;
+      _emitData();
     }
   }
 
-  void onDonated(GameProfile profile) {
-    //TODO
+  void onRecommendationChosen(int index) {
+    final organisation = _currentRecommendations[index];
+    if (isCurrentProfileChild()) {
+      emitCustom(
+        GratefulCustom.openKidDonationFlow(
+          profile: _getCurrentProfile(),
+          organisation: organisation,
+        ),
+      );
+    } else {
+      emitCustom(
+        GratefulCustom.openParentDonationFlow(
+          profile: _getCurrentProfile(),
+          organisation: organisation,
+        ),
+      );
+    }
+  }
+
+  Future<void> onParentDonated(String userId) async {
+    final parent = _profiles.firstWhere(
+      (e) => e.userId == userId,
+      orElse: () =>
+          throw Exception('Parent profile not found for userId: $userId'),
+    );
+    await onDonated(parent);
+  }
+
+  Future<void> onDonated(GameProfile profile) async {
+    _reflectAndShareRepository.incrementGenerousDeeds();
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
       _onEveryoneDonated();
     } else {
-      //TODO (this does not work because in the design you can switch profiles and donate out of order)
-      _currentProfileIndex++;
-      _emitData();
+      final nextGiver = _profiles.firstWhere(
+        (profile) => !_profilesThatDonated.contains(profile),
+        orElse: () {
+          _onEveryoneDonated();
+          throw Exception('No next giver found');
+        },
+      );
+      _currentProfileIndex = _profiles.indexOf(nextGiver);
+      await _fetchRecommendationsForCurrentProfile();
     }
   }
 
@@ -73,8 +160,13 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     emitCustom(const GratefulCustom.goToGameSummary());
   }
 
-  bool isCurrentProfileChild() {
-    //TODO
-    return true;
+  bool isCurrentProfileChild() => _getCurrentProfile().isChild;
+
+  void onRetry() {
+    _fetchRecommendationsForCurrentProfile();
+  }
+
+  bool _isNonLoggedInParent(GameProfile element) {
+    return !element.isChild && element.userId != _session?.userGUID;
   }
 }

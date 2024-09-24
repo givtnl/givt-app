@@ -5,7 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -43,13 +43,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
       canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Secret Word',
-        actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+        actions: const [
+          LeaveGameButton(),
         ],
       ),
       body: BaseStateConsumer(
@@ -63,28 +58,36 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               color: FamilyAppTheme.primary30,
             ),
             const Spacer(),
-            Scratcher(
-              key: scratchKey,
-              brushSize: 30,
-              threshold: 50,
-              color: Colors.grey,
-              onChange: (value) => setState(() {
-                _isScratched = value > 20;
-              }),
-              //  onThreshold: () => print("Threshold reached, you won!"),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  secretWordBackground(
-                    width: MediaQuery.sizeOf(context).width,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                secretWordBackground(
+                  width: MediaQuery.sizeOf(context).width,
+                ),
+                Scratcher(
+                  key: scratchKey,
+                  brushSize: 30,
+                  threshold: 50,
+                  color: Colors.grey,
+                  onChange: (value) => setState(() {
+                    _isScratched = value > 20;
+                  }),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.sizeOf(context).width - 120,
+                        height: 100,
+                      ),
+                      DisplayMediumText(
+                        secretWord,
+                        textAlign: TextAlign.center,
+                        color: FamilyAppTheme.primary30,
+                      ),
+                    ],
                   ),
-                  DisplayMediumText(
-                    secretWord,
-                    textAlign: TextAlign.center,
-                    color: FamilyAppTheme.primary30,
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
             const Spacer(),
             Visibility(

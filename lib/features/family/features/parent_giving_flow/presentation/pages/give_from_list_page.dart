@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -23,22 +24,22 @@ class GiveFromListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-
+    final give = getIt<GiveBloc>();
     return BlocConsumer<GiveBloc, GiveState>(
+      bloc: give,
       listener: (context, state) {
         final userGUID = context.read<AuthCubit>().state.user.guid;
         if (state.status == GiveStatus.success) {
-          context.read<GiveBloc>().add(
-                GiveOrganisationSelected(
-                  nameSpace: context.read<MediumCubit>().state.mediumId,
-                  userGUID: userGUID,
-                ),
-              );
+          give.add(
+            GiveOrganisationSelected(
+              nameSpace: getIt<MediumCubit>().state.mediumId,
+              userGUID: userGUID,
+            ),
+          );
         }
         if (state.status == GiveStatus.readyToGive) {
           context.pushReplacementNamed(
             FamilyPages.parentGive.name,
-            extra: context.read<GiveBloc>(),
           );
         }
         if (state.status == GiveStatus.error) {
@@ -73,7 +74,7 @@ class GiveFromListPage extends StatelessWidget {
         },
       ),
     );
-    context.read<MediumCubit>().setMediumId(collectGroup.nameSpace);
+    getIt<MediumCubit>().setMediumId(collectGroup.nameSpace);
     final dynamic result = await Navigator.push(
       context,
       ParentAmountPage(
@@ -94,13 +95,13 @@ class GiveFromListPage extends StatelessWidget {
           },
         ),
       );
-      context.read<GiveBloc>().add(
-            GiveAmountChanged(
-              firstCollectionAmount: result.toDouble(),
-              secondCollectionAmount: 0,
-              thirdCollectionAmount: 0,
-            ),
-          );
+      getIt<GiveBloc>().add(
+        GiveAmountChanged(
+          firstCollectionAmount: result.toDouble(),
+          secondCollectionAmount: 0,
+          thirdCollectionAmount: 0,
+        ),
+      );
     }
   }
 }

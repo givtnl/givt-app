@@ -4,6 +4,7 @@ import 'package:givt_app/features/children/generosity_challenge/models/color_com
 import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
@@ -13,6 +14,7 @@ class ParentAmountPage extends StatefulWidget {
     required this.organisationName,
     required this.colorCombo,
     required this.icon,
+    this.authcheck = false,
     super.key,
   });
 
@@ -20,6 +22,7 @@ class ParentAmountPage extends StatefulWidget {
   final String organisationName;
   final ColorCombo colorCombo;
   final IconData icon;
+  final bool authcheck;
 
   @override
   State<ParentAmountPage> createState() => _ParentAmountPageState();
@@ -78,13 +81,28 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
           ),
         ),
       ),
-      floatingActionButton: FunButton(
-        onTap: () {
-          Navigator.of(context).pop(_amount);
-        },
-        text: 'Give',
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.parentGiveClicked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: FunButton(
+          onTap: widget.authcheck
+              ? () async {
+                  await FamilyAuthUtils.authenticateUser(
+                    context,
+                    checkAuthRequest: CheckAuthRequest(
+                      navigate: (context, {isUSUser}) async {
+                        Navigator.of(context).pop(_amount);
+                      },
+                    ),
+                  );
+                }
+              : () {
+                  Navigator.of(context).pop(_amount);
+                },
+          text: 'Give',
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.parentGiveClicked,
+          ),
         ),
       ),
     );

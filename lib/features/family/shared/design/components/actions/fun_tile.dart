@@ -76,6 +76,31 @@ class FunTile extends StatelessWidget {
     );
   }
 
+  factory FunTile.red({
+    required AnalyticsEvent analyticsEvent,
+    String? titleBig,
+    String? titleSmall,
+    String? subtitle,
+    IconData? iconData,
+    VoidCallback? onTap,
+    double? assetSize,
+  }) {
+    return FunTile(
+      borderColor: FamilyAppTheme.error80,
+      backgroundColor: FamilyAppTheme.error98,
+      textColor: FamilyAppTheme.error40,
+      iconPath: '',
+      onTap: onTap,
+      titleBig: titleBig,
+      titleSmall: titleSmall,
+      subtitle: subtitle,
+      iconData: iconData,
+      assetSize: assetSize,
+      iconColor: FamilyAppTheme.error50,
+      analyticsEvent: analyticsEvent,
+    );
+  }
+
   final VoidCallback? onTap;
   final Color borderColor;
   final Color backgroundColor;

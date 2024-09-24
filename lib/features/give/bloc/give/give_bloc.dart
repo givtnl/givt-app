@@ -49,6 +49,8 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     on<GiveToLastOrganisation>(_onGiveToLastOrganisation);
 
     on<GiveStripeRegistrationError>(_onStripeRegistrationError);
+
+    on<GiveReset>(_onGiveReset);
   }
 
   final CampaignRepository _campaignRepository;
@@ -609,5 +611,12 @@ class GiveBloc extends Bloc<GiveEvent, GiveState> {
     Emitter<GiveState> emit,
   ) {
     emit(state.copyWith(status: GiveStatus.error));
+  }
+
+  FutureOr<void> _onGiveReset(
+    GiveReset event,
+    Emitter<GiveState> emit,
+  ) {
+    emit(const GiveState());
   }
 }

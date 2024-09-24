@@ -66,7 +66,7 @@ class AnimatedCoin extends AnimatedWidget {
           Positioned(
             bottom: -5,
             child: SvgPicture.asset(
-                'assets/family/images/coin_searching_shadow.svg'),
+                'assets/family/images/coin_searching_shadow.svg',),
           ),
           Positioned(
             child: Stack(
@@ -74,12 +74,12 @@ class AnimatedCoin extends AnimatedWidget {
                 Opacity(
                   opacity: animation.value,
                   child: SvgPicture.asset(
-                      'assets/family/images/search_coin_state_1.svg'),
+                      'assets/family/images/search_coin_state_1.svg',),
                 ),
                 Opacity(
                   opacity: 1 - animation.value,
                   child: SvgPicture.asset(
-                      'assets/family/images/search_coin_state_2.svg'),
+                      'assets/family/images/search_coin_state_2.svg',),
                 ),
               ],
             ),

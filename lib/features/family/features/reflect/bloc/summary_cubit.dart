@@ -12,13 +12,13 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
   void init() {
     final totalMinutesPlayed =
         (_reflectAndShareRepository.totalTimeSpent / 60).round();
-    final amountOfQuestionsAsked =
-        _reflectAndShareRepository.totalQuestionsAsked;
+    final generousDeeds =
+        _reflectAndShareRepository.getAmountOfGenerousDeeds();
 
     emitData(
       SummaryDetails(
         minutesPlayed: totalMinutesPlayed,
-        questionsAsked: amountOfQuestionsAsked,
+        generousDeeds: generousDeeds,
       ),
     );
   }
