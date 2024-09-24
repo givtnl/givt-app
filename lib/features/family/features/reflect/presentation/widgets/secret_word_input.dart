@@ -18,18 +18,24 @@ class _SecretWordInputState extends State<SecretWordInput> {
   List<FocusNode> focusNodes = [];
   List<TextEditingController> controllers = [];
 
+
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     focusNodes = List.generate(
       widget.amountOfLetters,
-      (index) => FocusNode(),
+          (index) => FocusNode(),
     );
 
     controllers = List.generate(
       widget.amountOfLetters,
-      (index) => TextEditingController(),
+          (index) => TextEditingController(),
     );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
