@@ -23,6 +23,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
+import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
@@ -141,7 +142,12 @@ class _GratefulScreenState extends State<GratefulScreen> {
     BuildContext context,
     GameProfile profile,
   ) async {
-    await context.read<ProfilesCubit>().setActiveProfile(profile.userId);
+    final profiles = context.read<ProfilesCubit>();
+    await profiles.setActiveProfile(profile.userId);
+    if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
+      EmptyWalletBottomSheet.show(context);
+      return;
+    }
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) =>
