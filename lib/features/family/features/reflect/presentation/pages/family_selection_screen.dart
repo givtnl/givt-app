@@ -92,7 +92,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             Navigator.of(context)
                 .push(const FamilyRolesScreen().toRoute(context));
           },
-          isDisabled: selectedProfiles.length < 3,
+          isDisabled: selectedProfiles.length < 2,
           text: 'See roles',
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.reflectAndShareSeeRolesClicked,

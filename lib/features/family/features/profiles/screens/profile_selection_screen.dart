@@ -167,7 +167,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             ),
                           ),
                         const SizedBox(height: 8),
-                        if (state.profiles.length >= 3) ...[
+                        if (state.profiles.length >= 2) ...[
                           FunButton(
                             onTap: () => context.goNamed(
                               FamilyPages.reflectIntro.name,
