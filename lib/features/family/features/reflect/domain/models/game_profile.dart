@@ -10,14 +10,15 @@ class GameProfile {
     this.firstName,
     this.lastName,
     this.pictureURL,
-    this.role,
+    this.roles = const [],
     this.gratitude,
   });
+
   final String userId;
   final String? firstName;
   final String? lastName;
   final String? pictureURL;
-  final Role? role;
+  final List<Role> roles;
   final String type;
   final GratitudeCategory? gratitude;
 
@@ -26,6 +27,8 @@ class GameProfile {
   bool get isAdult => profileType == ProfileType.Parent;
 
   bool get isChild => profileType == ProfileType.Child;
+
+  Role? get role => roles.firstOrNull;
 
   GratefulAvatarUIModel toGratefulAvatarUIModel({
     bool isSelected = false,
@@ -45,6 +48,7 @@ class GameProfile {
     String? lastName,
     String? pictureURL,
     Role? role,
+    List<Role>? roles,
     String? type,
     GratitudeCategory? gratitude,
   }) {
@@ -53,7 +57,7 @@ class GameProfile {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       pictureURL: pictureURL ?? this.pictureURL,
-      role: role ?? this.role,
+      roles: role != null ? [role] : roles ?? this.roles,
       type: type ?? this.type,
       gratitude: gratitude ?? this.gratitude,
     );
