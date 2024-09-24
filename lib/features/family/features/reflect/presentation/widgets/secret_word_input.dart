@@ -18,6 +18,16 @@ class _SecretWordInputState extends State<SecretWordInput> {
   List<FocusNode> focusNodes = [];
   List<TextEditingController> controllers = [];
 
+  @override
+  void dispose() {
+    for (final controller in controllers) {
+      controller.dispose();
+    }
+    for (final focusNode in focusNodes) {
+      focusNode.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -25,12 +35,12 @@ class _SecretWordInputState extends State<SecretWordInput> {
 
     focusNodes = List.generate(
       widget.amountOfLetters,
-          (index) => FocusNode(),
+      (index) => FocusNode(),
     );
 
     controllers = List.generate(
       widget.amountOfLetters,
-          (index) => TextEditingController(),
+      (index) => TextEditingController(),
     );
   }
 
