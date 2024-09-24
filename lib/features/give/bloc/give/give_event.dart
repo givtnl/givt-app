@@ -148,3 +148,10 @@ class GiveStripeRegistrationError extends GiveEvent {
   @override
   List<Object> get props => [];
 }
+
+class GiveReset extends GiveEvent {
+  const GiveReset();
+
+  @override
+  List<Object> get props => [];
+}
