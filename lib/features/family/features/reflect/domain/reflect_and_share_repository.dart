@@ -160,7 +160,7 @@ class ReflectAndShareRepository {
     final reportersWithQuestions =
         _assignQuestionsToReporters([_selectedProfiles[sidekickIndex]], rng);
     _selectedProfiles[sidekickIndex] = currentSideKick.copyWith(
-      roles: [...currentSideKick.roles, ...reportersWithQuestions[0].roles],
+      roles: [...reportersWithQuestions[0].roles, ...currentSideKick.roles],
     );
     randomizeSecretWord();
     return _selectedProfiles;
