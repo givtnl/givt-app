@@ -35,7 +35,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   // Get current reporter's question based on the indices
   String getCurrentQuestion() {
     final reporter = _reporters[_currentReporterIndex];
-    return (reporter.role! as Reporter).questions![_currentQuestionIndex];
+    return reporter.reporterRole!.questions![_currentQuestionIndex];
   }
 
   // Get current reporter
@@ -46,7 +46,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
     final totalQuestions = _reporters.fold(
       0,
       (previous, element) =>
-          previous + (element.role! as Reporter).questions!.length,
+          previous + (element.reporterRole!).questions!.length,
     );
     return totalQuestions == _nrOfQuestionsAsked;
   }
@@ -55,7 +55,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
     final totalQuestions = _reporters.fold(
       0,
       (previous, element) =>
-          previous + (element.role! as Reporter).questions!.length,
+          previous + (element.reporterRole!).questions!.length,
     );
     return totalQuestions == _nrOfQuestionsAsked + 1;
   }

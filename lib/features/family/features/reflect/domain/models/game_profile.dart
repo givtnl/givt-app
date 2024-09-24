@@ -30,6 +30,8 @@ class GameProfile {
 
   Role? get role => roles.firstOrNull;
 
+  Reporter? get reporterRole => roles.whereType<Reporter>().firstOrNull;
+
   GratefulAvatarUIModel toGratefulAvatarUIModel({
     bool isSelected = false,
     bool hasDonated = false,
