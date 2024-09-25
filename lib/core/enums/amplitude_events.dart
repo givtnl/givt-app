@@ -344,6 +344,8 @@ enum AmplitudeEvents {
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
 
+  preferredChurchSuccessDialogDone('preferred_church_success_dialog_done'),
+
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),
   ;
