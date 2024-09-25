@@ -22,6 +22,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profile_item.
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
@@ -104,18 +105,21 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         } else if (state is ProfilesNeedsRegistration) {
           if (context.read<RegistrationBloc>().state.status ==
               RegistrationStatus.createStripeAccount) {
-            context.pushNamed(
+            await context.pushNamed(
               FamilyPages.creditCardDetails.name,
               extra: context.read<RegistrationBloc>(),
             );
           }
+        } else if (state is ProfilesNoChurchSelected) {
+          showPreferredChurchModal();
         }
       },
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
           current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration ||
-          current is ProfilesUpdatedState,
+          current is ProfilesUpdatedState ||
+          current is ProfilesNoChurchSelected,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
           current is! ProfilesNeedsRegistration,
@@ -320,6 +324,37 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       );
     }
     return gridItems;
+  }
+
+  void showPreferredChurchModal() {
+    context.read<ProfilesCubit>().setPreferredChurchModalShown();
+    FunModal(
+      title: 'Choose your church',
+      icon: const FunIcon(
+        iconData: FontAwesomeIcons.church,
+        circleColor: FamilyAppTheme.primary95,
+      ),
+      subtitle: "Let's link your church to make giving easier",
+      buttons: [
+        FunButton(
+          text: 'Continue',
+          onTap: () {
+            // TODO: kids-1447 - navigate to church selection
+            context.pop(); //for now
+          },
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.continueChooseChurchClicked,
+          ),
+        ),
+        FunButton.secondary(
+          text: "I don't go to church",
+          onTap: () => context.pop(),
+          analyticsEvent: AnalyticsEvent(
+            AmplitudeEvents.dontGoToChurchClicked,
+          ),
+        ),
+      ],
+    ).show(context);
   }
 
   void clearBottomsheet() {

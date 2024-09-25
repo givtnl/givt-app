@@ -10,7 +10,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 class FunModal extends StatelessWidget {
   const FunModal({
     required this.title,
-    this.description,
+    this.subtitle,
     this.buttons = const [],
     this.icon,
     this.closeAction,
@@ -19,15 +19,15 @@ class FunModal extends StatelessWidget {
 
   final FunIcon? icon;
   final String title;
-  final String? description;
+  final String? subtitle;
   final List<FunButton> buttons;
 
   final VoidCallback? closeAction;
 
-  static Future<void> show(
+  static Future<void> showAsDialog(
     BuildContext context, {
     required String title,
-    String? description,
+    String? subtitle,
     List<FunButton> buttons = const [],
     FunIcon? icon,
     VoidCallback? closeAction,
@@ -37,7 +37,7 @@ class FunModal extends StatelessWidget {
       barrierDismissible: false,
       builder: (context) => FunModal(
         title: title,
-        description: description,
+        subtitle: subtitle,
         buttons: buttons,
         icon: icon,
         closeAction: closeAction,
@@ -75,13 +75,16 @@ class FunModal extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
 
-                    if (description.isNotNullAndNotEmpty())
-                      const SizedBox(height: 8),
-                    if (description.isNotNullAndNotEmpty())
-                      BodyMediumText(
-                        description!,
-                        textAlign: TextAlign.center,
+                    // Subtitle
+                    if (subtitle != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: BodyMediumText(
+                          subtitle!,
+                          textAlign: TextAlign.center,
+                        ),
                       ),
+
                     const SizedBox(height: 16),
 
                     showButtons(),
@@ -124,6 +127,14 @@ class FunModal extends StatelessWidget {
             child: buttons[i],
           ),
       ],
+    );
+  }
+
+  void show(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => this,
     );
   }
 }
