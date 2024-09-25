@@ -32,9 +32,7 @@ Future<void> showPreferredChurchErrorDialog(
     buttons: [
       FunButton(
         text: 'Retry',
-        onTap: () {
-          context.pop();
-        },
+        onTap: () => context.pop(),
         leftIcon: Icons.refresh_rounded,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.retryClicked,
