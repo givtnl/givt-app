@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
@@ -24,6 +25,8 @@ mixin ImpactGroupsRepository {
   Future<List<ImpactGroup>> refreshImpactGroups();
 
   Future<ImpactGroup?> isInvitedToGroup();
+
+  Future<bool> setPreferredChurch(String churchId);
 
   Organisation? getPreferredChurch();
 
@@ -139,6 +142,28 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
       }
     }
     return null;
+  }
+
+  @override
+  Future<bool> setPreferredChurch(String churchMediumId) async {
+    try {
+      await _apiService.setPreferredChurch(
+        churchMediumId: churchMediumId,
+        groupId: _impactGroups!.firstWhere(
+          (element) => element.type == ImpactGroupType.family,
+          orElse: () {
+            throw Exception('No family group found');
+          },
+        ).id,
+      );
+      await _fetchImpactGroups();
+      return true;
+    } catch (e) {
+      LoggingInfo.instance.error(
+        'Error while setting preferred church: $e',
+      );
+      return false;
+    }
   }
 
   @override

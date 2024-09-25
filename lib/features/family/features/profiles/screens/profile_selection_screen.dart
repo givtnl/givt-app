@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -13,8 +14,10 @@ import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomshe
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/parent_overview_widget.dart';
@@ -25,6 +28,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -111,7 +115,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             );
           }
         } else if (state is ProfilesNoChurchSelected) {
-          showPreferredChurchModal();
+          showPreferredChurchModal(user);
         }
       },
       listenWhen: (previous, current) =>
@@ -326,21 +330,45 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     return gridItems;
   }
 
-  void showPreferredChurchModal() {
-    context.read<ProfilesCubit>().setPreferredChurchModalShown();
+  void showPreferredChurchModal(UserExt user) {
+    //context.read<ProfilesCubit>().setPreferredChurchModalShown();
     FunModal(
       title: 'Choose your church',
       icon: const FunIcon(
         iconData: FontAwesomeIcons.church,
-        circleColor: FamilyAppTheme.primary95,
       ),
       subtitle: "Let's link your church to make giving easier",
       buttons: [
         FunButton(
           text: 'Continue',
-          onTap: () {
-            // TODO: kids-1447 - navigate to church selection
-            context.pop(); //for now
+          onTap: () async {
+            //  context.pop(); // close modal
+            getIt<OrganisationBloc>().add(
+              OrganisationFetch(
+                Country.fromCode(user.country),
+                type: CollectGroupType.church.index,
+              ),
+            );
+            final dynamic result = await Navigator.push(
+              context,
+              PreferredChurchSelectionPage(
+                onTap: (collectGroup) async {
+                  final success =
+                      await context.read<ProfilesCubit>().setPreferredChurch(
+                            collectGroup.nameSpace,
+                          );
+
+                  context.pop(success);
+                },
+              ).toRoute(context),
+            );
+            if (result != null && result == true && context.mounted) {
+              //handle success
+              // return;
+            } else {
+              //handle error
+              // return;
+            }
           },
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.continueChooseChurchClicked,

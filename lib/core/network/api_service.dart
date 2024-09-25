@@ -1026,6 +1026,31 @@ class APIService {
     return itemMap;
   }
 
+  Future<bool> setPreferredChurch(
+      {required String churchMediumId, required String groupId}) async {
+    final url =
+        Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/preferred-church');
+
+    final response = await client.put(
+      url,
+      body: jsonEncode({'CollectGroupNamespace': churchMediumId}),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
+
   Future<void> createFamilyGoal(Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/goal/family');
 

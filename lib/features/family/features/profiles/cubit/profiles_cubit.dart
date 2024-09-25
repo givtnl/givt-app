@@ -116,6 +116,19 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     }
   }
 
+  Future<bool> setPreferredChurch(String churchId) async {
+    try {
+      await _impactGroupsRepository.setPreferredChurch(churchId);
+      return true;
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        'Error while setting preferred church: $e',
+        methodName: s.toString(),
+      );
+      return false;
+    }
+  }
+
   Future<void> _doChecks(List<Profile> list, List<Member> members) async {
     final group = await _impactGroupsRepository.isInvitedToGroup();
     final preferredChurchModalWasShown =

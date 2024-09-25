@@ -9,6 +9,7 @@ class FunScaffold extends StatelessWidget {
     this.canPop = true,
     this.safeAreaBottom = true,
     this.withSafeArea = true,
+    this.floatingActionButton,
     super.key,
   });
 
@@ -18,6 +19,7 @@ class FunScaffold extends StatelessWidget {
   final bool canPop;
   final bool safeAreaBottom;
   final bool withSafeArea;
+  final Widget? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +32,16 @@ class FunScaffold extends StatelessWidget {
           canPop: canPop,
           child: Scaffold(
             appBar: appBar,
-            body: withSafeArea ? SafeArea(
-              minimum: minimumPadding,
-              bottom: safeAreaBottom,
-              child: body,
-            ) : body,
+            body: withSafeArea
+                ? SafeArea(
+                    minimum: minimumPadding,
+                    bottom: safeAreaBottom,
+                    child: body,
+                  )
+                : body,
+            floatingActionButton: floatingActionButton,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
           ),
         ),
       ),
