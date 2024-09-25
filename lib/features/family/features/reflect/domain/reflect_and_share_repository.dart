@@ -65,6 +65,7 @@ class ReflectAndShareRepository {
     completedLoops = 0;
     totalQuestionsAsked = 0;
     totalTimeSpent = 0;
+    _generousDeeds = 0;
 
     _selectedProfiles = selectedProfiles;
   }
