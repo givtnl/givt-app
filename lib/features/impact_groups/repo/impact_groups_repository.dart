@@ -10,7 +10,6 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
-import 'package:givt_app/utils/util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ImpactGroupsRepository {
@@ -31,6 +30,8 @@ mixin ImpactGroupsRepository {
   void setPreferredChurchModalShown();
 
   Future<bool> wasPreferredChurchModalShown();
+
+  void clearPreferredChurchModalShown();
 
   Stream<List<ImpactGroup>> onImpactGroupsChanged();
 }
@@ -55,6 +56,8 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final AuthRepository _authRepository;
   final CreateTransactionRepository _createTransactionRepository;
   final SharedPreferences _prefs;
+
+  final String preferredChurchModalShownKey = 'preferredChurchModalShown';
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
@@ -140,12 +143,17 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
 
   @override
   void setPreferredChurchModalShown() {
-    _prefs.setBool(Util.preferredChurchModalShown, true);
+    _prefs.setBool(preferredChurchModalShownKey, true);
   }
 
   @override
   Future<bool> wasPreferredChurchModalShown() async {
-    return _prefs.getBool(Util.preferredChurchModalShown) ?? false;
+    return _prefs.getBool(preferredChurchModalShownKey) ?? false;
+  }
+
+  @override
+  void clearPreferredChurchModalShown() {
+    _prefs.remove(preferredChurchModalShownKey);
   }
 
   @override

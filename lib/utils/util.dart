@@ -23,7 +23,6 @@ class Util {
   static const String empty = '';
   static const String countryIso = 'countryIso';
 
-  static const String preferredChurchModalShown = 'preferredChurchModalShown';
   static final ukPostCodeRegEx = RegExp(
     r'^(([A-Z][0-9]{1,2})|(([A-Z][A-HJ-Y][0-9]{1,2})|(([A-Z][0-9][A-Z])|([A-Z][A-HJ-Y][0-9]?[A-Z])))) [0-9][A-Z]{2}$',
   );

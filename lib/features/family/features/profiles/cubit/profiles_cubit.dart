@@ -220,7 +220,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
   }
 
-  void setPreferredChrurchModalShown() {
+  void setPreferredChurchModalShown() {
     _impactGroupsRepository.setPreferredChurchModalShown();
   }
 
@@ -254,6 +254,11 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         ),
       );
     }
+  }
+
+  void logout() {
+    clearProfiles();
+    _impactGroupsRepository.clearPreferredChurchModalShown();
   }
 
   void clearProfiles({bool clearIndex = true}) {
