@@ -9,6 +9,7 @@ import 'package:givt_app/utils/analytics_helper.dart';
 class FunModal extends StatelessWidget {
   const FunModal({
     required this.title,
+    this.subtitle,
     this.buttons = const [],
     this.icon,
     this.closeAction,
@@ -17,6 +18,7 @@ class FunModal extends StatelessWidget {
 
   final FunIcon? icon;
   final String title;
+  final String? subtitle;
   final List<FunButton> buttons;
 
   final VoidCallback? closeAction;
@@ -50,6 +52,16 @@ class FunModal extends StatelessWidget {
                       title,
                       textAlign: TextAlign.center,
                     ),
+
+                    // Subtitle
+                    if (subtitle != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: BodyMediumText(
+                          subtitle!,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
 
                     const SizedBox(height: 16),
 
@@ -93,6 +105,14 @@ class FunModal extends StatelessWidget {
             child: buttons[i],
           ),
       ],
+    );
+  }
+
+  void show(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => this,
     );
   }
 }

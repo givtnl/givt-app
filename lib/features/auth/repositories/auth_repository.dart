@@ -326,6 +326,7 @@ class AuthRepositoyImpl with AuthRepository {
   @override
   Future<bool> logout() async {
     // _prefs.clear();
+    await _prefs.remove(Util.preferredChurchModalShown);
     final sessionString = _prefs.getString(Session.tag);
 
     updateSessionStream(false);

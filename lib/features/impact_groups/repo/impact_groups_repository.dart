@@ -7,8 +7,11 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
+import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:givt_app/utils/util.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ImpactGroupsRepository {
   Future<void> acceptGroupInvite({
@@ -23,6 +26,12 @@ mixin ImpactGroupsRepository {
 
   Future<ImpactGroup?> isInvitedToGroup();
 
+  Organisation? getPreferredChurch();
+
+  void setPreferredChurchModalShown();
+
+  Future<bool> wasPreferredChurchModalShown();
+
   Stream<List<ImpactGroup>> onImpactGroupsChanged();
 }
 
@@ -34,6 +43,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     this._parentalApprovalRepository,
     this._authRepository,
     this._createTransactionRepository,
+    this._prefs,
   ) {
     _init();
   }
@@ -44,11 +54,13 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final ParentalApprovalRepository _parentalApprovalRepository;
   final AuthRepository _authRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final SharedPreferences _prefs;
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
 
   List<ImpactGroup>? _impactGroups;
+  Organisation? _preferredChurch;
 
   Future<void> _init() async {
     _givtRepository.onGivtsChanged().listen(
@@ -100,6 +112,15 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
         .toList();
     _impactGroups = list;
     _impactGroupsStreamController.add(list);
+    final preferredChurchMap = result.firstWhere(
+      (element) => element['PreferredChurch'] != null,
+      orElse: () => null,
+    );
+    if (preferredChurchMap != null) {
+      _preferredChurch = Organisation.fromImpactGroupsMap(
+        preferredChurchMap as Map<String, dynamic>,
+      );
+    }
     return list;
   }
 
@@ -116,6 +137,19 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     }
     return null;
   }
+
+  @override
+  void setPreferredChurchModalShown() {
+    _prefs.setBool(Util.preferredChurchModalShown, true);
+  }
+
+  @override
+  Future<bool> wasPreferredChurchModalShown() async {
+    return _prefs.getBool(Util.preferredChurchModalShown) ?? false;
+  }
+
+  @override
+  Organisation? getPreferredChurch() => _preferredChurch;
 
   @override
   Future<List<ImpactGroup>> refreshImpactGroups() => _fetchImpactGroups();

@@ -118,10 +118,20 @@ class ProfilesCubit extends Cubit<ProfilesState> {
 
   Future<void> _doChecks(List<Profile> list, List<Member> members) async {
     final group = await _impactGroupsRepository.isInvitedToGroup();
+    final preferredChurchModalWasShown =
+        await _impactGroupsRepository.wasPreferredChurchModalShown();
+    final preferredChurch = _impactGroupsRepository.getPreferredChurch();
+    var needsRegistration = false;
     if (group != null) {
       _showInviteSheet(group);
     } else {
-      await _doRegistrationCheck(list, members);
+      needsRegistration = await _doRegistrationCheck(list, members);
+    }
+    if (preferredChurch == null &&
+        !preferredChurchModalWasShown &&
+        !needsRegistration &&
+        group == null) {
+      _emitChurchNotSelected();
     }
   }
 
@@ -140,7 +150,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     return cachedMembers;
   }
 
-  Future<void> _doRegistrationCheck(
+  Future<bool> _doRegistrationCheck(
     List<Profile> newProfiles,
     List<Member> members,
   ) async {
@@ -156,9 +166,10 @@ class ProfilesCubit extends Cubit<ProfilesState> {
             profiles: newProfiles,
             activeProfileIndex: state.activeProfileIndex,
             hasFamily:
-            newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
+                newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
           ),
         );
+        return true;
       } else if (newProfiles.length <= 1) {
         emit(
           ProfilesNotSetupState(
@@ -167,13 +178,15 @@ class ProfilesCubit extends Cubit<ProfilesState> {
             cachedMembers: members,
           ),
         );
+        return true;
       }
-    } catch (e,s) {
+    } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(
         e,
         stacktrace: s,
       );
     }
+    return false;
   }
 
   void _emitLoadingState() {
@@ -196,6 +209,19 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         cachedMembers: members,
       ),
     );
+  }
+
+  void _emitChurchNotSelected() {
+    emit(
+      ProfilesNoChurchSelected(
+        profiles: state.profiles,
+        activeProfileIndex: state.activeProfileIndex,
+      ),
+    );
+  }
+
+  void setPreferedChrurchModalShown() {
+    _impactGroupsRepository.setPreferredChurchModalShown();
   }
 
   Future<void> refresh() async => _profilesRepository.refreshProfiles();
