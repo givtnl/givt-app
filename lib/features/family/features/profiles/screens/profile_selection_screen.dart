@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -342,14 +343,14 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
         FunButton(
           text: 'Continue',
           onTap: () async {
-            //  context.pop(); // close modal
+            context.pop(); // close modal
             getIt<OrganisationBloc>().add(
               OrganisationFetch(
                 Country.fromCode(user.country),
                 type: CollectGroupType.church.index,
               ),
             );
-            final dynamic result = await Navigator.push(
+            await Navigator.push(
               context,
               PreferredChurchSelectionPage(
                 onTap: (collectGroup) async {
@@ -358,17 +359,16 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                             collectGroup.nameSpace,
                           );
 
-                  context.pop(success);
+                  if (success) {
+                    context.pop();
+                  } else {
+                    const FunModal(
+                      title: 'Oops, something went wrong...',
+                    ).show(context);
+                  }
                 },
               ).toRoute(context),
             );
-            if (result != null && result == true && context.mounted) {
-              //handle success
-              // return;
-            } else {
-              //handle error
-              // return;
-            }
           },
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.continueChooseChurchClicked,
