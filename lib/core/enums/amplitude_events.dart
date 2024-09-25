@@ -275,6 +275,8 @@ enum AmplitudeEvents {
 
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
   modalCloseButtonClicked('modal_close_button_clicked'),
+  continueChooseChurchClicked('continue_choose_church_clicked'),
+  dontGoToChurchClicked('dont_go_to_church_clicked'),
 
   // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
