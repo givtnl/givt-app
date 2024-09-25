@@ -1,11 +1,11 @@
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
+class InterviewCubit extends CommonCubit<RecordAnswerUIModel, InterviewCustom> {
   InterviewCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
@@ -77,7 +77,16 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   }
 
   void interviewFinished() {
-    emitCustom(getSidekick());
+    final sidekick = getSidekick();
+    if (sidekick.roles.length > 1) {
+      emitCustom(
+        const InterviewCustom.goToGratitudeSelection(),
+      );
+    } else {
+      emitCustom(
+        InterviewCustom.goToPassThePhoneToSidekick(profile: sidekick),
+      );
+    }
   }
 
   void onCountdownStarted() {
