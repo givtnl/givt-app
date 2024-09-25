@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
+import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
 import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
@@ -26,7 +27,6 @@ import 'package:givt_app/features/family/features/profiles/widgets/profiles_empt
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
@@ -332,7 +332,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   }
 
   void showPreferredChurchModal(UserExt user) {
-    //context.read<ProfilesCubit>().setPreferredChurchModalShown();
+    context.read<ProfilesCubit>().setPreferredChurchModalShown();
     FunModal(
       title: 'Choose your church',
       icon: const FunIcon(
@@ -361,10 +361,12 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
 
                   if (success) {
                     context.pop();
+                    await showPreferredChurchSuccessDialog(
+                      context,
+                      collectGroup.orgName,
+                    );
                   } else {
-                    const FunModal(
-                      title: 'Oops, something went wrong...',
-                    ).show(context);
+                    await showPreferredChurchErrorDialog(context);
                   }
                 },
               ).toRoute(context),

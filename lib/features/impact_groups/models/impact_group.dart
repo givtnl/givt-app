@@ -15,6 +15,7 @@ class ImpactGroup extends Equatable {
     required this.organiser,
     required this.goal,
     required this.organisation,
+    this.preferredChurch,
   });
 
   const ImpactGroup.empty()
@@ -29,6 +30,7 @@ class ImpactGroup extends Equatable {
           organiser: const GroupOrganiser.empty(),
           goal: const Goal.empty(),
           organisation: const Organisation.empty(),
+          preferredChurch: null,
         );
 
   factory ImpactGroup.fromMap(Map<String, dynamic> map) {
@@ -47,6 +49,11 @@ class ImpactGroup extends Equatable {
           ? Goal.fromMap(map['goal'] as Map<String, dynamic>)
           : const Goal.empty(),
       organisation: const Organisation.empty(),
+      preferredChurch: map['preferredChurch'] != null
+          ? Organisation.fromImpactGroupsMap(
+              map['preferredChurch'] as Map<String, dynamic>,
+            )
+          : null,
     );
   }
 
@@ -62,6 +69,7 @@ class ImpactGroup extends Equatable {
   final GroupOrganiser organiser;
   final Goal goal;
   final Organisation organisation;
+  final Organisation? preferredChurch;
 
   ImpactGroup copyWith({
     String? id,
@@ -74,6 +82,7 @@ class ImpactGroup extends Equatable {
     GroupOrganiser? organiser,
     Goal? goal,
     Organisation? organisation,
+    Organisation? preferredChurch,
   }) {
     return ImpactGroup(
       id: id ?? this.id,
@@ -86,6 +95,7 @@ class ImpactGroup extends Equatable {
       organiser: organiser ?? this.organiser,
       goal: goal ?? this.goal,
       organisation: organisation ?? this.organisation,
+      preferredChurch: preferredChurch ?? this.preferredChurch,
     );
   }
 
@@ -101,6 +111,7 @@ class ImpactGroup extends Equatable {
         organiser,
         goal,
         organisation,
+        preferredChurch,
       ];
 }
 

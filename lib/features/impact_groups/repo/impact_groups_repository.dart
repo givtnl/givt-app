@@ -66,7 +66,6 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
       StreamController.broadcast();
 
   List<ImpactGroup>? _impactGroups;
-  Organisation? _preferredChurch;
 
   Future<void> _init() async {
     _givtRepository.onGivtsChanged().listen(
@@ -118,15 +117,6 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
         .toList();
     _impactGroups = list;
     _impactGroupsStreamController.add(list);
-    final preferredChurchMap = result.firstWhere(
-      (element) => element['PreferredChurch'] != null,
-      orElse: () => null,
-    );
-    if (preferredChurchMap != null) {
-      _preferredChurch = Organisation.fromImpactGroupsMap(
-        preferredChurchMap as Map<String, dynamic>,
-      );
-    }
     return list;
   }
 
@@ -182,7 +172,12 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Organisation? getPreferredChurch() => _preferredChurch;
+  Organisation? getPreferredChurch() => _impactGroups?.firstWhere(
+        (element) => element.type == ImpactGroupType.family,
+        orElse: () {
+          throw Exception('No family group found');
+        },
+      ).preferredChurch;
 
   @override
   Future<List<ImpactGroup>> refreshImpactGroups() => _fetchImpactGroups();
