@@ -6,10 +6,10 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 
 Future<void> showPreferredChurchSuccessDialog(
     BuildContext context, String churchName) async {
-  return FunModal.show(
+  return FunModal.showAsDialog(
     context,
     title: churchName,
-    description: 'Added as your church',
+    subtitle: 'Added as your church',
     icon: FunIcon.checkmark(),
     buttons: [
       FunButton(
