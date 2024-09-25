@@ -220,7 +220,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
   }
 
-  void setPreferedChrurchModalShown() {
+  void setPreferredChrurchModalShown() {
     _impactGroupsRepository.setPreferredChurchModalShown();
   }
 

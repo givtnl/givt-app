@@ -327,7 +327,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   }
 
   void showPreferredChurchModal() {
-    context.read<ProfilesCubit>().setPreferedChrurchModalShown();
+    context.read<ProfilesCubit>().setPreferredChrurchModalShown();
     FunModal(
       title: 'Choose your church',
       icon: const FunIcon(
