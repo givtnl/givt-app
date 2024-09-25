@@ -4,6 +4,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
 class FunModal extends StatelessWidget {
@@ -22,6 +23,27 @@ class FunModal extends StatelessWidget {
   final List<FunButton> buttons;
 
   final VoidCallback? closeAction;
+
+  static Future<void> showAsDialog(
+    BuildContext context, {
+    required String title,
+    String? subtitle,
+    List<FunButton> buttons = const [],
+    FunIcon? icon,
+    VoidCallback? closeAction,
+  }) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => FunModal(
+        title: title,
+        subtitle: subtitle,
+        buttons: buttons,
+        icon: icon,
+        closeAction: closeAction,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
