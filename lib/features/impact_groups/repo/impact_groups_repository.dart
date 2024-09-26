@@ -172,12 +172,17 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Organisation? getPreferredChurch() => _impactGroups?.firstWhere(
-        (element) => element.type == ImpactGroupType.family,
-        orElse: () {
-          throw Exception('No family group found');
-        },
-      ).preferredChurch;
+  Organisation? getPreferredChurch() {
+    try {
+      return _impactGroups
+          ?.firstWhere((element) => element.type == ImpactGroupType.family)
+          .preferredChurch;
+    } catch (e) {
+      LoggingInfo.instance
+          .error('No family group found when getting preferred church');
+      return null;
+    }
+  }
 
   @override
   Future<List<ImpactGroup>> refreshImpactGroups() => _fetchImpactGroups();
