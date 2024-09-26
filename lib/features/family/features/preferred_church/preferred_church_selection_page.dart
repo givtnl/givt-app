@@ -8,6 +8,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -56,6 +57,7 @@ class _PreferredChurchSelectionPageState
     final bloc = getIt<OrganisationBloc>();
     return FunScaffold(
       appBar: const FunTopAppBar(
+        leading: GivtBackButtonFlat(),
         title: 'Choose your church',
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
