@@ -64,6 +64,12 @@ void initCubits() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<OrganisationBloc>(
+      () => OrganisationBloc(
+        getIt(),
+        getIt(),
+      ),
+    )
     ..registerFactory<FamilyRolesCubit>(
       () => FamilyRolesCubit(
         getIt(),

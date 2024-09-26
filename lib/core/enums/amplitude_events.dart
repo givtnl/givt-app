@@ -274,9 +274,12 @@ enum AmplitudeEvents {
   ),
 
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
+
+  // Preferred church flow
   modalCloseButtonClicked('modal_close_button_clicked'),
   continueChooseChurchClicked('continue_choose_church_clicked'),
   dontGoToChurchClicked('dont_go_to_church_clicked'),
+  preferredChurchSelected('preferred_church_selected'),
 
   // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
