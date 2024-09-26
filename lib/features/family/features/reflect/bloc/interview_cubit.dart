@@ -1,11 +1,11 @@
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
+class InterviewCubit extends CommonCubit<RecordAnswerUIModel, InterviewCustom> {
   InterviewCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
@@ -35,7 +35,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   // Get current reporter's question based on the indices
   String getCurrentQuestion() {
     final reporter = _reporters[_currentReporterIndex];
-    return (reporter.role! as Reporter).questions![_currentQuestionIndex];
+    return reporter.reporterRole!.questions![_currentQuestionIndex];
   }
 
   // Get current reporter
@@ -46,7 +46,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
     final totalQuestions = _reporters.fold(
       0,
       (previous, element) =>
-          previous + (element.role! as Reporter).questions!.length,
+          previous + (element.reporterRole!).questions!.length,
     );
     return totalQuestions == _nrOfQuestionsAsked;
   }
@@ -55,7 +55,7 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
     final totalQuestions = _reporters.fold(
       0,
       (previous, element) =>
-          previous + (element.role! as Reporter).questions!.length,
+          previous + (element.reporterRole!).questions!.length,
     );
     return totalQuestions == _nrOfQuestionsAsked + 1;
   }
@@ -77,7 +77,16 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, GameProfile> {
   }
 
   void interviewFinished() {
-    emitCustom(getSidekick());
+    final sidekick = getSidekick();
+    if (sidekick.roles.length > 1) {
+      emitCustom(
+        const InterviewCustom.goToGratitudeSelection(),
+      );
+    } else {
+      emitCustom(
+        InterviewCustom.goToPassThePhoneToSidekick(profile: sidekick),
+      );
+    }
   }
 
   void onCountdownStarted() {

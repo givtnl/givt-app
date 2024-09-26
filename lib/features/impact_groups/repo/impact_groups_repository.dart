@@ -2,13 +2,16 @@
 
 import 'dart:async';
 
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
+import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ImpactGroupsRepository {
   Future<void> acceptGroupInvite({
@@ -23,6 +26,16 @@ mixin ImpactGroupsRepository {
 
   Future<ImpactGroup?> isInvitedToGroup();
 
+  Future<bool> setPreferredChurch(String churchId);
+
+  Organisation? getPreferredChurch();
+
+  void setPreferredChurchModalShown();
+
+  Future<bool> wasPreferredChurchModalShown();
+
+  void clearPreferredChurchModalShown();
+
   Stream<List<ImpactGroup>> onImpactGroupsChanged();
 }
 
@@ -34,6 +47,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     this._parentalApprovalRepository,
     this._authRepository,
     this._createTransactionRepository,
+    this._prefs,
   ) {
     _init();
   }
@@ -44,6 +58,9 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final ParentalApprovalRepository _parentalApprovalRepository;
   final AuthRepository _authRepository;
   final CreateTransactionRepository _createTransactionRepository;
+  final SharedPreferences _prefs;
+
+  final String preferredChurchModalShownKey = 'preferredChurchModalShown';
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
@@ -115,6 +132,56 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
       }
     }
     return null;
+  }
+
+  @override
+  Future<bool> setPreferredChurch(String churchMediumId) async {
+    try {
+      await _apiService.setPreferredChurch(
+        churchMediumId: churchMediumId,
+        groupId: _impactGroups!.firstWhere(
+          (element) => element.type == ImpactGroupType.family,
+          orElse: () {
+            throw Exception('No family group found');
+          },
+        ).id,
+      );
+      await _fetchImpactGroups();
+      return true;
+    } catch (e) {
+      LoggingInfo.instance.error(
+        'Error while setting preferred church: $e',
+      );
+      return false;
+    }
+  }
+
+  @override
+  void setPreferredChurchModalShown() {
+    _prefs.setBool(preferredChurchModalShownKey, true);
+  }
+
+  @override
+  Future<bool> wasPreferredChurchModalShown() async {
+    return _prefs.getBool(preferredChurchModalShownKey) ?? false;
+  }
+
+  @override
+  void clearPreferredChurchModalShown() {
+    _prefs.remove(preferredChurchModalShownKey);
+  }
+
+  @override
+  Organisation? getPreferredChurch() {
+    try {
+      return _impactGroups
+          ?.firstWhere((element) => element.type == ImpactGroupType.family)
+          .preferredChurch;
+    } catch (e) {
+      LoggingInfo.instance
+          .error('No family group found when getting preferred church');
+      return null;
+    }
   }
 
   @override

@@ -81,11 +81,13 @@ mixin AuthRepository {
     required String notificationId,
   });
 
-  void updateSessionStream(bool hasSession);
+  void updateSessionStream(bool hasSession, {bool force = false});
 
   Stream<bool> hasSessionStream();
 
   void setHasSessionInitialValue(bool hasSession);
+
+  Future<Session> getStoredSession();
 }
 
 class AuthRepositoyImpl with AuthRepository {
@@ -224,6 +226,18 @@ class AuthRepositoyImpl with AuthRepository {
 
     await setUserProperties(userExt);
     return userExt;
+  }
+
+  @override
+  Future<Session> getStoredSession() async {
+    final sessionString = _prefs.getString(Session.tag);
+    if (sessionString == null) {
+      return const Session.empty();
+    }
+    final session = Session.fromJson(
+      jsonDecode(sessionString) as Map<String, dynamic>,
+    );
+    return session;
   }
 
   @override
@@ -580,8 +594,8 @@ class AuthRepositoyImpl with AuthRepository {
   }
 
   @override
-  void updateSessionStream(bool hasSession) {
-    if (_hasSession != hasSession) {
+  void updateSessionStream(bool hasSession, {bool force = false}) {
+    if (force || _hasSession != hasSession) {
       _hasSession = hasSession;
       _hasSessionStreamController.add(hasSession);
     }

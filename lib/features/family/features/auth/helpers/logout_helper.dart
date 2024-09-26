@@ -28,7 +28,7 @@ void logout(
 
   try {
     context.read<AuthCubit>().logout();
-    context.read<ProfilesCubit>().clearProfiles();
+    context.read<ProfilesCubit>().logout();
     context.read<FlowsCubit>().resetFlow();
     AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
   } catch (e) {

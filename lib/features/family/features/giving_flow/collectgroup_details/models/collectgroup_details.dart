@@ -7,7 +7,7 @@ class CollectGroupDetails extends Equatable {
     required this.name,
     this.logoLink,
     this.thankYou,
-    this.type
+    this.type,
   });
 
   factory CollectGroupDetails.fromMap(Map<String, dynamic> map) {

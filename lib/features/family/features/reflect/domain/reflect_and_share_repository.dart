@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
 
@@ -11,6 +12,7 @@ class ReflectAndShareRepository {
 
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
+  int _generousDeeds = 0;
   int totalTimeSpent = 0;
 
   List<GameProfile>? _allProfiles;
@@ -19,9 +21,25 @@ class ReflectAndShareRepository {
 
   final List<String> _usedSecretWords = [];
 
+  int getAmountOfGenerousDeeds() => _generousDeeds;
+
+  void incrementGenerousDeeds() {
+    _generousDeeds++;
+  }
+
+  void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {
+    _selectedProfiles[_getCurrentSuperHeroIndex()] =
+        _selectedProfiles[_getCurrentSuperHeroIndex()]
+            .copyWith(gratitude: gratitude);
+  }
+
+  GratitudeCategory? getGratitudeInterestsForCurrentSuperhero() {
+    return _selectedProfiles[_getCurrentSuperHeroIndex()].gratitude;
+  }
+
   List<GameProfile> getCurrentReporters() {
     return _selectedProfiles
-        .where((profile) => profile.role is Reporter)
+        .where((profile) => profile.roles.whereType<Reporter>().isNotEmpty)
         .toList();
   }
 
@@ -47,6 +65,7 @@ class ReflectAndShareRepository {
     completedLoops = 0;
     totalQuestionsAsked = 0;
     totalTimeSpent = 0;
+    _generousDeeds = 0;
 
     _selectedProfiles = selectedProfiles;
   }
@@ -91,52 +110,96 @@ class ReflectAndShareRepository {
     int sidekickIndex,
     Random rng,
   ) {
-    final questions = _getAllQuestions();
-    final list = <GameProfile>[];
-    final reporters = <GameProfile>[];
+    final previousTurnList = _selectedProfiles;
+    // Assign superhero and sidekick roles
+    _selectedProfiles[superheroIndex] =
+        previousTurnList[superheroIndex].copyWith(
+      role: const Role.superhero(),
+    );
+    _selectedProfiles[sidekickIndex] = previousTurnList[sidekickIndex].copyWith(
+      role: const Role.sidekick(),
+    );
 
+    if (_selectedProfiles.length == 2) {
+      return _setReportersWithTwoPlayers(sidekickIndex, rng);
+    }
+    return _setReportersWithMoreThanTwoPlayers(
+        superheroIndex, sidekickIndex, rng);
+  }
+
+  List<GameProfile> _setReportersWithMoreThanTwoPlayers(
+      int superheroIndex, int sidekickIndex, Random rng) {
+    // Get all the rest as reporters
+    final preReporters = <GameProfile>[];
     _selectedProfiles.asMap().forEach((index, profile) {
-      if (index == superheroIndex) {
-        list.add(profile.copyWith(role: const Role.superhero()));
-      } else if (index == sidekickIndex) {
-        list.add(profile.copyWith(role: const Role.sidekick()));
-      } else {
-        reporters.add(profile);
+      if (index != superheroIndex && index != sidekickIndex) {
+        preReporters.add(profile);
       }
     });
 
-    if (reporters.length == 1) {
+    final reportersWithQuestions =
+        _assignQuestionsToReporters(preReporters, rng);
+
+    // Assign the reporter roles with questions
+    _selectedProfiles.asMap().forEach((index, profile) {
+      if (index != superheroIndex && index != sidekickIndex) {
+        final reporter = reportersWithQuestions.firstWhere(
+            (element) => element.userId == profile.userId, orElse: () {
+          throw Exception('Reporter not found');
+        });
+        _selectedProfiles[index] = reporter;
+      }
+    });
+
+    randomizeSecretWord();
+    return _selectedProfiles;
+  }
+
+  List<GameProfile> _setReportersWithTwoPlayers(int sidekickIndex, Random rng) {
+    final currentSideKick = _selectedProfiles[sidekickIndex];
+    final reportersWithQuestions =
+        _assignQuestionsToReporters([_selectedProfiles[sidekickIndex]], rng);
+    _selectedProfiles[sidekickIndex] = currentSideKick.copyWith(
+      roles: [...reportersWithQuestions[0].roles, ...currentSideKick.roles],
+    );
+    randomizeSecretWord();
+    return _selectedProfiles;
+  }
+
+  List<GameProfile> _assignQuestionsToReporters(
+      List<GameProfile> preReporters, Random rng) {
+    final reportersWithQuestions = <GameProfile>[];
+
+    final questions = _getAllQuestions();
+    if (preReporters.length == 1) {
       final reporterQuestions = _pickQuestions(questions, 3, rng);
-      list.add(
-        reporters[0]
+      reportersWithQuestions.add(
+        preReporters[0]
             .copyWith(role: Role.reporter(questions: reporterQuestions)),
       );
-    } else if (reporters.length == 2) {
+    } else if (preReporters.length == 2) {
       final firstReporterQuestions = _pickQuestions(questions, 2, rng);
       final secondReporterQuestions = _pickQuestions(questions, 1, rng);
-      list
+      reportersWithQuestions
         ..add(
-          reporters[0]
+          preReporters[0]
               .copyWith(role: Role.reporter(questions: firstReporterQuestions)),
         )
         ..add(
-          reporters[1].copyWith(
+          preReporters[1].copyWith(
               role: Role.reporter(questions: secondReporterQuestions)),
         );
     } else {
-      for (final reporter in reporters) {
+      for (final reporter in preReporters) {
         final reporterQuestion = _pickQuestions(questions, 1, rng);
-        list.add(
+        reportersWithQuestions.add(
           reporter.copyWith(
             role: Role.reporter(questions: reporterQuestion),
           ),
         );
       }
     }
-
-    _selectedProfiles = list;
-    randomizeSecretWord();
-    return _selectedProfiles;
+    return reportersWithQuestions;
   }
 
   List<String> _pickQuestions(
@@ -170,7 +233,7 @@ class ReflectAndShareRepository {
 
   int _getCurrentSidekickIndex() {
     final index = _selectedProfiles.indexWhere((profile) {
-      if (profile.role is Sidekick) {
+      if (profile.roles.whereType<Sidekick>().isNotEmpty) {
         return true;
       }
       return false;
@@ -213,9 +276,7 @@ class ReflectAndShareRepository {
     'outside',
     'jump',
     'laugh',
-    'adventure',
     'smile',
-    'friendship',
     'brave',
     'home',
     'pizza',

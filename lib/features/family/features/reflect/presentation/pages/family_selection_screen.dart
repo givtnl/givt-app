@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -9,7 +8,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/profile_item.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -42,17 +41,12 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
       safeAreaBottom: false,
-      appBar: FunTopAppBar(
+      appBar: const FunTopAppBar(
         title: 'Who is playing?',
-        leading: const GivtBackButtonFlat(),
+        leading: GivtBackButtonFlat(),
         systemNavigationBarColor: FamilyAppTheme.secondary80,
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+          LeaveGameButton(),
         ],
       ),
       body: BaseStateConsumer<List<GameProfile>, dynamic>(
@@ -72,7 +66,10 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                   ),
                   const SizedBox(height: 12),
                   profileGrid(
-                    profiles.where((profile) => profile.isChild).take(6).toList(),
+                    profiles
+                        .where((profile) => profile.isChild)
+                        .take(6)
+                        .toList(),
                   ),
                 ],
               ),
@@ -95,7 +92,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             Navigator.of(context)
                 .push(const FamilyRolesScreen().toRoute(context));
           },
-          isDisabled: selectedProfiles.length < 3,
+          isDisabled: selectedProfiles.length < 2,
           text: 'See roles',
           analyticsEvent: AnalyticsEvent(
             AmplitudeEvents.reflectAndShareSeeRolesClicked,

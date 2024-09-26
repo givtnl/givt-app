@@ -5,20 +5,26 @@ import 'package:givt_app/features/family/features/admin_fee/application/admin_fe
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
-import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/repositories/organisations_repository.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/repositories/tags_repository.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
+import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 
 final getIt = GetIt.instance;
 
@@ -40,18 +46,37 @@ Future<void> initAPIService() async {
 void initCubits() {
   getIt
     ..registerFactory(() => AdminFeeCubit(getIt()))
+    ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
+    )
+    ..registerLazySingleton<GratitudeSelectionCubit>(
+      () => GratitudeSelectionCubit(getIt()),
+    )
+    ..registerLazySingleton<CameraCubit>(
+      CameraCubit.new,
+    )
+    ..registerLazySingleton(CreateChallengeDonationCubit.new)
+    ..registerLazySingleton<MediumCubit>(MediumCubit.new)
+    ..registerLazySingleton<GiveBloc>(
+      () => GiveBloc(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<OrganisationBloc>(
+      () => OrganisationBloc(
+        getIt(),
+        getIt(),
+      ),
     )
     ..registerFactory<FamilyRolesCubit>(
       () => FamilyRolesCubit(
         getIt(),
       ),
     )
-    ..registerLazySingleton<CameraCubit>(
-      CameraCubit.new,
-    )
-    ..registerLazySingleton(CreateChallengeDonationCubit.new)
     ..registerFactory<FamilySelectionCubit>(
       () => FamilySelectionCubit(
         getIt(),
@@ -120,6 +145,11 @@ void initRepositories() {
     )
     ..registerLazySingleton<ImpactGroupsRepository>(
       () => ImpactGroupsRepositoryImpl(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<GratefulRecommendationsRepository>(
+      () => GratefulRecommendationsRepositoryImpl(
         getIt(),
       ),
     )

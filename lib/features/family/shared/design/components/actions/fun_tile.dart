@@ -15,6 +15,7 @@ class FunTile extends StatelessWidget {
     this.onTap,
     this.isDisabled = false,
     this.isSelected = false,
+    this.shrink = false,
     this.titleBig,
     this.titleSmall,
     this.subtitle,
@@ -75,6 +76,31 @@ class FunTile extends StatelessWidget {
     );
   }
 
+  factory FunTile.red({
+    required AnalyticsEvent analyticsEvent,
+    String? titleBig,
+    String? titleSmall,
+    String? subtitle,
+    IconData? iconData,
+    VoidCallback? onTap,
+    double? assetSize,
+  }) {
+    return FunTile(
+      borderColor: FamilyAppTheme.error80,
+      backgroundColor: FamilyAppTheme.error98,
+      textColor: FamilyAppTheme.error40,
+      iconPath: '',
+      onTap: onTap,
+      titleBig: titleBig,
+      titleSmall: titleSmall,
+      subtitle: subtitle,
+      iconData: iconData,
+      assetSize: assetSize,
+      iconColor: FamilyAppTheme.error50,
+      analyticsEvent: analyticsEvent,
+    );
+  }
+
   final VoidCallback? onTap;
   final Color borderColor;
   final Color backgroundColor;
@@ -82,6 +108,7 @@ class FunTile extends StatelessWidget {
   final String iconPath;
   final bool isDisabled;
   final bool isSelected;
+  final bool shrink;
   final String? titleBig;
   final String? titleSmall;
   final String? subtitle;
@@ -117,7 +144,7 @@ class FunTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
-                SizedBox(height: iconData != null ? 24 : 10),
+                SizedBox(height: iconData != null && !shrink ? 24 : 10),
                 Opacity(
                   opacity: isDisabled ? 0.5 : 1,
                   child: iconData == null
@@ -131,6 +158,7 @@ class FunTile extends StatelessWidget {
                               iconPath,
                               height: assetSize ?? 140,
                               width: assetSize ?? 140,
+                              color: iconColor,
                             )
                       : FaIcon(
                           iconData,
@@ -139,7 +167,7 @@ class FunTile extends StatelessWidget {
                         ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 16),
+                  padding: EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16),
                   child: Column(
                     children: [
                       if (titleBig != null)

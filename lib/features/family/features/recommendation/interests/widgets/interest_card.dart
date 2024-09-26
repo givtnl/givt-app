@@ -30,7 +30,7 @@ class InterestCard extends StatelessWidget {
         AmplitudeEvents.interestSelected,
         parameters: {
           'interest': interest.displayText,
-          'isSelected': isSelected
+          'isSelected': isSelected,
         },
       ),
     );

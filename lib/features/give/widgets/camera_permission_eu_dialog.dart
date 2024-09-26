@@ -18,7 +18,7 @@ class CameraPermissionSettingsEuDialog extends StatelessWidget {
       title: Text(
         context.l10n.accessDenied,
       ),
-      content: Text(context.l10n.goToSettings),
+      content: Text(context.l10n.goToSettingsBody),
       actions: [
         TextButton(
           onPressed: onCancel,
@@ -30,7 +30,7 @@ class CameraPermissionSettingsEuDialog extends StatelessWidget {
             cameraCubit.grantAccess();
             context.pop();
           },
-          child: Text(context.l10n.goToSettingsBody),
+          child: Text(context.l10n.goToSettings),
         ),
       ],
     );

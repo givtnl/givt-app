@@ -274,7 +274,12 @@ enum AmplitudeEvents {
   ),
 
   bottomsheetCloseButtonClicked('bottomsheet_close_button_clicked'),
+
+  // Preferred church flow
   modalCloseButtonClicked('modal_close_button_clicked'),
+  continueChooseChurchClicked('continue_choose_church_clicked'),
+  dontGoToChurchClicked('dont_go_to_church_clicked'),
+  preferredChurchSelected('preferred_church_selected'),
 
   // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
@@ -325,15 +330,24 @@ enum AmplitudeEvents {
     'reflect_and_share_result_next_round_clicked',
   ),
   familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
+  gratefulTileSubmitted('grateful_tile_submitted'),
+  gratefulTileSelected('grateful_tile_selected'),
   familyReflectSummaryMinutesPlayedClicked(
     'family_reflect_summary_minutes_played_clicked',
   ),
   familyReflectSummaryQuestionsAskedClicked(
     'family_reflect_summary_questions_asked_clicked',
   ),
+  parentReflectionFlowOrganisationClicked(
+      'parent_reflection_flow_organisation_clicked'),
+  familyReflectSummaryGenerousDeedsClicked(
+    'family_reflect_summary_generous_deeds_clicked',
+  ),
 
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
+
+  preferredChurchSuccessDialogDone('preferred_church_success_dialog_done'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

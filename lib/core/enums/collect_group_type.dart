@@ -47,7 +47,7 @@ enum CollectGroupType {
   }
 
   static CollectGroupType fromString(String value) {
-    for (var type in CollectGroupType.values) {
+    for (final type in CollectGroupType.values) {
       if (type.name.toLowerCase() == value.toLowerCase()) {
         return type;
       }

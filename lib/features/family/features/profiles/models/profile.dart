@@ -130,6 +130,7 @@ class Profile extends Equatable {
 
   GameProfile toGameProfile() {
     return GameProfile(
+      userId: id,
       firstName: firstName,
       lastName: lastName,
       pictureURL: pictureURL,

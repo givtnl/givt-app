@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -8,7 +7,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_dialog.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -36,16 +35,11 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
     return FunScaffold(
       canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: FunTopAppBar(
+      appBar: const FunTopAppBar(
         title: 'Your roles',
-        leading: const GivtBackButtonFlat(),
+        leading: GivtBackButtonFlat(),
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.xmark),
-            onPressed: () {
-              const LeaveGameDialog().show(context);
-            },
-          ),
+          LeaveGameButton(),
         ],
       ),
       body: BaseStateConsumer<List<GameProfile>, GameProfile>(
@@ -74,7 +68,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
                 children: [
                   Expanded(
                     child: GridView.count(
-                      childAspectRatio: 0.9,
+                      childAspectRatio: 0.85,
                       crossAxisCount: 3,
                       children: createGridItems(
                         profiles.take(9).toList(),
