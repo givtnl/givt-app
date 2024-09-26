@@ -19,7 +19,20 @@ class _SecretWordInputState extends State<SecretWordInput> {
   List<TextEditingController> controllers = [];
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    for (final controller in controllers) {
+      controller.dispose();
+    }
+    for (final focusNode in focusNodes) {
+      focusNode.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     focusNodes = List.generate(
       widget.amountOfLetters,
       (index) => FocusNode(),
@@ -29,7 +42,10 @@ class _SecretWordInputState extends State<SecretWordInput> {
       widget.amountOfLetters,
       (index) => TextEditingController(),
     );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

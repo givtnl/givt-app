@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 enum Areas {
+  church(
+    borderColor: FamilyAppTheme.primary70,
+    backgroundColor: FamilyAppTheme.primary98,
+    accentColor: FamilyAppTheme.primary95,
+    textColor: FamilyAppTheme.primary40,
+  ),
   environment(
     borderColor: FamilyAppTheme.primary70,
     backgroundColor: FamilyAppTheme.primary98,

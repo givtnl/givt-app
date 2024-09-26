@@ -50,18 +50,21 @@ class GameProfileItem extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: profile.role?.color ?? Colors.red,
+                child: profile.roles.length == 2 ? SizedBox(
+                  height: 36,width: (36*2)-4,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: 0,
+                        child: _icon(profile.roles[1]),
+                      ),
+                      Positioned(
+                        left: 0,
+                        child: _icon(profile.roles[0]),
+                      ),
+                    ],
                   ),
-                  child: Icon(
-                    _getIconPerRole(),
-                    color: FamilyAppTheme.primary20,
-                  ),
-                ),
+                ) : _iconRow(),
               ),
             ],
           ),
@@ -79,8 +82,34 @@ class GameProfileItem extends StatelessWidget {
     );
   }
 
-  IconData _getIconPerRole() {
-    switch (profile.role.runtimeType) {
+  Row _iconRow() {
+    return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  profile.roles.length,
+                  (i) => _icon(profile.roles[i]),
+                ),
+              );
+  }
+
+  Container _icon(Role role) {
+    return Container(
+      width: 36,
+      height: 36,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: role.color,
+      ),
+      child: Icon(
+        _getIconPerRole(role),
+        size: 16,
+        color: FamilyAppTheme.primary20,
+      ),
+    );
+  }
+
+  IconData _getIconPerRole(Role? role) {
+    switch (role.runtimeType) {
       case SuperHero:
         return FontAwesomeIcons.mask;
       case Sidekick:
