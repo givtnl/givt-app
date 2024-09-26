@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:equatable/equatable.dart';
@@ -198,11 +199,9 @@ class OrganisationBloc extends Bloc<OrganisationEvent, OrganisationState> {
     Emitter<OrganisationState> emit,
   ) async {
     var orgs = state.organisations;
-    if (state.selectedType != event.type) {
-      orgs = state.organisations
-          .where((organisation) => organisation.type.index == event.type)
-          .toList();
-    }
+    orgs = state.organisations
+        .where((organisation) => organisation.type.index == event.type)
+        .toList();
 
     if (state.previousSearchQuery.isNotEmpty) {
       orgs = orgs

@@ -31,8 +31,9 @@ class PreferredChurchSelectionPage extends StatefulWidget {
 class _PreferredChurchSelectionPageState
     extends State<PreferredChurchSelectionPage> {
   final TextEditingController controller = TextEditingController();
+  final bloc = getIt<OrganisationBloc>();
   int selectedIndex = -1;
-  bool isLoanding = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -54,7 +55,6 @@ class _PreferredChurchSelectionPageState
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final bloc = getIt<OrganisationBloc>();
     return FunScaffold(
       appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
@@ -115,12 +115,12 @@ class _PreferredChurchSelectionPageState
       floatingActionButton: FunButton(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         isDisabled: selectedIndex == -1,
-        isLoading: isLoanding,
+        isLoading: isLoading,
         text: 'Confirm',
         onTap: () async {
           if (selectedIndex != -1) {
             setState(() {
-              isLoanding = true;
+              isLoading = true;
             });
             final success =
                 await context.read<ProfilesCubit>().setPreferredChurch(
@@ -129,7 +129,7 @@ class _PreferredChurchSelectionPageState
 
             if (success) {
               setState(() {
-                isLoanding = false;
+                isLoading = false;
               });
               await showPreferredChurchSuccessDialog(
                 context,
@@ -141,7 +141,7 @@ class _PreferredChurchSelectionPageState
             } else {
               await showPreferredChurchErrorDialog(context);
               setState(() {
-                isLoanding = false;
+                isLoading = false;
               });
             }
           }
