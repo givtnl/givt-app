@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -11,15 +15,13 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class PreferredChurchSelectionPage extends StatefulWidget {
   const PreferredChurchSelectionPage({
-    required this.onTap,
     super.key,
   });
-  final void Function(CollectGroup) onTap;
+
   @override
   State<PreferredChurchSelectionPage> createState() =>
       _PreferredChurchSelectionPageState();
@@ -29,6 +31,19 @@ class _PreferredChurchSelectionPageState
     extends State<PreferredChurchSelectionPage> {
   final TextEditingController controller = TextEditingController();
   int selectedIndex = -1;
+  bool isLoanding = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getIt<OrganisationBloc>().add(
+      OrganisationFetch(
+        Country.fromCode(context.read<AuthCubit>().state.user.country),
+        type: CollectGroupType.church.index,
+      ),
+    );
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -95,21 +110,42 @@ class _PreferredChurchSelectionPageState
           );
         },
       ),
-      floatingActionButton: Padding(
+      floatingActionButton: FunButton(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: FunButton(
-          isDisabled: selectedIndex == -1,
-          text: 'Confirm',
-          onTap: () {
-            if (selectedIndex != -1) {
-              widget.onTap(
-                bloc.state.filteredOrganisations[selectedIndex],
+        isDisabled: selectedIndex == -1,
+        isLoading: isLoanding,
+        text: 'Confirm',
+        onTap: () async {
+          if (selectedIndex != -1) {
+            setState(() {
+              isLoanding = true;
+            });
+            final success =
+                await context.read<ProfilesCubit>().setPreferredChurch(
+                      bloc.state.filteredOrganisations[selectedIndex].nameSpace,
+                    );
+
+            if (success) {
+              setState(() {
+                isLoanding = false;
+              });
+              await showPreferredChurchSuccessDialog(
+                context,
+                bloc.state.filteredOrganisations[selectedIndex].orgName,
+                onTap: () => Navigator.of(context)
+                  ..pop()
+                  ..pop(),
               );
+            } else {
+              await showPreferredChurchErrorDialog(context);
+              setState(() {
+                isLoanding = false;
+              });
             }
-          },
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.preferredChurchSelected,
-          ),
+          }
+        },
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.preferredChurchSelected,
         ),
       ),
     );

@@ -6,7 +6,8 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
 Future<void> showPreferredChurchSuccessDialog(
-    BuildContext context, String churchName) async {
+    BuildContext context, String churchName,
+    {void Function()? onTap}) async {
   return FunModal.showAsDialog(
     context,
     title: churchName,
@@ -15,7 +16,7 @@ Future<void> showPreferredChurchSuccessDialog(
     buttons: [
       FunButton(
         text: 'Done',
-        onTap: () => Navigator.of(context).pop(),
+        onTap: onTap ?? () => Navigator.of(context).pop(),
         analyticsEvent:
             AnalyticsEvent(AmplitudeEvents.preferredChurchSuccessDialogDone),
       ),

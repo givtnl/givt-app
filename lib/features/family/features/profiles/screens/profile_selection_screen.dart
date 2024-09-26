@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
@@ -17,7 +16,6 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
 import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
@@ -29,7 +27,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -332,7 +329,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   }
 
   void showPreferredChurchModal(UserExt user) {
-    context.read<ProfilesCubit>().setPreferredChurchModalShown();
+    //context.read<ProfilesCubit>().setPreferredChurchModalShown();
     FunModal(
       title: 'Choose your church',
       icon: const FunIcon(
@@ -344,32 +341,9 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           text: 'Continue',
           onTap: () async {
             context.pop(); // close modal
-            getIt<OrganisationBloc>().add(
-              OrganisationFetch(
-                Country.fromCode(user.country),
-                type: CollectGroupType.church.index,
-              ),
-            );
             await Navigator.push(
               context,
-              PreferredChurchSelectionPage(
-                onTap: (collectGroup) async {
-                  final success =
-                      await context.read<ProfilesCubit>().setPreferredChurch(
-                            collectGroup.nameSpace,
-                          );
-
-                  if (success) {
-                    context.pop();
-                    await showPreferredChurchSuccessDialog(
-                      context,
-                      collectGroup.orgName,
-                    );
-                  } else {
-                    await showPreferredChurchErrorDialog(context);
-                  }
-                },
-              ).toRoute(context),
+              const PreferredChurchSelectionPage().toRoute(context),
             );
           },
           analyticsEvent: AnalyticsEvent(

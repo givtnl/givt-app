@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
 class FunScaffold extends StatelessWidget {
@@ -19,7 +20,7 @@ class FunScaffold extends StatelessWidget {
   final bool canPop;
   final bool safeAreaBottom;
   final bool withSafeArea;
-  final Widget? floatingActionButton;
+  final FunButton? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
