@@ -135,9 +135,6 @@ class _PreferredChurchSelectionPageState
           );
 
       if (success) {
-        setState(() {
-          isLoading = false;
-        });
         await showPreferredChurchSuccessDialog(
           context,
           bloc.state.filteredOrganisations[selectedIndex].orgName,
@@ -149,16 +146,10 @@ class _PreferredChurchSelectionPageState
         await showPreferredChurchErrorDialog(
           context,
           onTap: () {
-            setState(() {
-              isLoading = true;
-            });
             Navigator.of(context).pop();
             _onTapConfirm(context);
           },
         );
-        setState(() {
-          isLoading = true;
-        });
       }
     }
   }
