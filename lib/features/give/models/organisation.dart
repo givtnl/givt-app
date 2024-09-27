@@ -54,8 +54,8 @@ class Organisation extends Equatable {
 
   factory Organisation.fromImpactGroupsMap(Map<String, dynamic> json) =>
       Organisation(
-        organisationName: json['CollectGroupName'] as String?,
-        mediumId: json['CollectGroupId'] as String?,
+        organisationName: json['collectGroupName'] as String?,
+        mediumId: json['collectGroupId'] as String?,
       );
 
   final String? campaignId;
