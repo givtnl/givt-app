@@ -22,7 +22,6 @@ class FunButton extends StatelessWidget {
     this.disabledBackgroundColor = FamilyAppTheme.neutralVariant90,
     this.borderColor = FamilyAppTheme.primary30,
     this.textColor = FamilyAppTheme.primary30,
-    this.padding = EdgeInsets.zero,
     this.fullBorder = false,
     this.isDebugOnly = false,
   });
@@ -113,7 +112,6 @@ class FunButton extends StatelessWidget {
   final Color disabledBackgroundColor;
   final Color borderColor;
   final Color? textColor;
-  final EdgeInsets padding;
   final bool fullBorder;
   final bool isDebugOnly;
   final AnalyticsEvent analyticsEvent;
@@ -127,31 +125,27 @@ class FunButton extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    return Padding(
-      padding: padding,
-      child: ActionContainer(
-        analyticsEvent: analyticsEvent,
-        onTap: onTap,
-        borderColor: borderColor,
-        isDisabled: isDisabled,
-        borderSize: fullBorder ? 2 : 0.01,
-        baseBorderSize: 4,
+    return ActionContainer(
+      analyticsEvent: analyticsEvent,
+      onTap: onTap,
+      borderColor: borderColor,
+      isDisabled: isDisabled,
+      borderSize: fullBorder ? 2 : 0.01,
+      baseBorderSize: 4,
+      child: Container(
+        height: 58 - (fullBorder ? 2 : 0),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
+        ),
         child: Container(
-          height: 58 - (fullBorder ? 2 : 0),
-          width: double.infinity,
+          // Inner container to fix the inside border
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color:
-                isDisabled ? FamilyAppTheme.neutralVariant60 : backgroundColor,
+            borderRadius: BorderRadius.circular(8),
+            color: isDisabled ? disabledBackgroundColor : backgroundColor,
           ),
-          child: Container(
-            // Inner container to fix the inside border
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: isDisabled ? disabledBackgroundColor : backgroundColor,
-            ),
-            child: getChild(context, themeData),
-          ),
+          child: getChild(context, themeData),
         ),
       ),
     );
