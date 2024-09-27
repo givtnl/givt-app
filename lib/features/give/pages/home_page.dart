@@ -54,12 +54,13 @@ class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
   final _key = GlobalKey<ScaffoldState>();
   final AppConfig _appConfig = getIt();
+  final _infraCubit = getIt<InfraCubit>();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<InfraCubit>().checkForUpdate();
+      _infraCubit.checkForUpdate();
     });
   }
 
@@ -195,6 +196,7 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           BlocListener<InfraCubit, InfraState>(
+            bloc: _infraCubit,
             listener: (context, state) {
               if (state is InfraUpdateAvailable) {
                 _displayUpdateDialog(

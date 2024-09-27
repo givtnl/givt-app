@@ -14,7 +14,6 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/pages/day4_timer_screen.dart';
 import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
@@ -85,7 +84,6 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation.dart';
-import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -259,23 +257,7 @@ class FamilyAppRoutes {
           path: FamilyPages.giveByListFamily.path,
           name: FamilyPages.giveByListFamily.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => OrganisationBloc(
-                    getIt(),
-                    getIt(),
-                  )..add(
-                      OrganisationFetch(
-                        Country.fromCode(user.country),
-                        type: CollectGroupType.none.index,
-                      ),
-                    ),
-                ),
-              ],
-              child: const GiveFromListPage(),
-            );
+            return const GiveFromListPage();
           },
         ),
         GoRoute(
@@ -610,22 +592,10 @@ class FamilyAppRoutes {
           path: FamilyPages.createFamilyGoal.path,
           name: FamilyPages.createFamilyGoal.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(
                   value: state.extra! as FamilyOverviewCubit,
-                ),
-                BlocProvider(
-                  create: (_) => OrganisationBloc(
-                    getIt(),
-                    getIt(),
-                  )..add(
-                      OrganisationFetch(
-                        Country.fromCode(user.country),
-                        type: CollectGroupType.none.index,
-                      ),
-                    ),
                 ),
                 BlocProvider(
                   create: (_) => CreateFamilyGoalCubit(getIt()),

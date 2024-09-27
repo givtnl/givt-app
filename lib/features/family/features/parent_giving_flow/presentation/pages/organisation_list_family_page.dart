@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
@@ -27,6 +28,9 @@ class OrganisationListFamilyPage extends StatefulWidget {
 class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
+  final bloc = getIt<OrganisationBloc>();
+
+
   @override
   void dispose() {
     controller.dispose();
@@ -36,13 +40,13 @@ class _OrganisationListFamilyPageState
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final bloc = context.read<OrganisationBloc>();
     return Scaffold(
       appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
         title: 'Give',
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
+        bloc: bloc,
         listener: (context, state) {
           if (state.status == OrganisationStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -67,9 +71,7 @@ class _OrganisationListFamilyPageState
                 child: FamilySearchField(
                   autocorrect: false,
                   controller: controller,
-                  onChanged: (value) => context
-                      .read<OrganisationBloc>()
-                      .add(OrganisationFilterQueryChanged(value)),
+                  onChanged: (value) => bloc.add(OrganisationFilterQueryChanged(value)),
                 ),
               ),
               if (state.status == OrganisationStatus.filtered)

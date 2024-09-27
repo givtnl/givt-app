@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/cubit/organisations_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/recommendation/widgets/charity_finder_app_bar.dart';
@@ -11,14 +12,22 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class OrganisationsScreen extends StatelessWidget {
+class OrganisationsScreen extends StatefulWidget {
   const OrganisationsScreen({
     super.key,
   });
 
   @override
+  State<OrganisationsScreen> createState() => _OrganisationsScreenState();
+}
+
+class _OrganisationsScreenState extends State<OrganisationsScreen> {
+  final bloc = getIt<OrganisationsCubit>();
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<OrganisationsCubit, OrganisationsState>(
+      bloc: bloc,
       listener: (context, state) {
         if (state is OrganisationsExternalErrorState) {
           log(state.errorMessage);

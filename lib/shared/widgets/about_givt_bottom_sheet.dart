@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -20,6 +21,7 @@ class AboutGivtBottomSheet extends StatefulWidget {
 }
 
 class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
+  final _infraCubit = getIt<InfraCubit>();
   final _formKey = GlobalKey<FormState>();
 
   final messageController = TextEditingController();
@@ -63,6 +65,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
             minHeight: size.height,
           ),
           child: BlocConsumer<InfraCubit, InfraState>(
+            bloc: _infraCubit,
             listener: (context, state) {
               if (state is InfraSuccess) {
                 showDialog<void>(
@@ -140,8 +143,7 @@ class _AboutGivtBottomSheetState extends State<AboutGivtBottomSheet> {
                                   if (!_formKey.currentState!.validate()) {
                                     return;
                                   }
-                                  await context
-                                      .read<InfraCubit>()
+                                  await _infraCubit
                                       .contactSupport(
                                         message: messageController.text,
                                         appLanguage: locals.localeName,

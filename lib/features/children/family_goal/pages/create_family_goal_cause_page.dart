@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/widgets/family_goal_creation_stepper.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation.dart';
 import 'package:givt_app/shared/widgets/buttons/custom_green_elevated_button.dart';
@@ -23,6 +24,7 @@ class CreateFamilyGoalCausePage extends StatefulWidget {
 
 class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
   final focusNode = FocusNode();
+  final OrganisationBloc organisationBloc = getIt<OrganisationBloc>();
 
   @override
   void dispose() {
@@ -74,9 +76,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                   child: CupertinoSearchTextField(
                     autocorrect: false,
                     focusNode: focusNode,
-                    onChanged: (value) => context
-                        .read<OrganisationBloc>()
-                        .add(OrganisationFilterQueryChanged(value)),
+                    onChanged: (value) => organisationBloc.add(OrganisationFilterQueryChanged(value)),
                     placeholder: locals.searchHere,
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: const Icon(Icons.close),
@@ -97,7 +97,7 @@ class _CreateFamilyGoalCausePageState extends State<CreateFamilyGoalCausePage> {
                           isSelected: state.selectedCollectGroup.nameSpace ==
                               state.filteredOrganisations[index].nameSpace,
                           onTap: () {
-                            context.read<OrganisationBloc>().add(
+                            organisationBloc.add(
                                   OrganisationSelectionChanged(
                                     state
                                         .filteredOrganisations[index].nameSpace,

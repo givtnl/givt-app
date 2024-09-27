@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_amount_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_cause_page.dart';
@@ -7,14 +10,23 @@ import 'package:givt_app/features/children/family_goal/pages/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_confirmed_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_loading_page.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_overview_page.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 
-class CreateFamilyGoalFlowPage extends StatelessWidget {
+class CreateFamilyGoalFlowPage extends StatefulWidget {
   const CreateFamilyGoalFlowPage({
     super.key,
   });
+
+  @override
+  State<CreateFamilyGoalFlowPage> createState() =>
+      _CreateFamilyGoalFlowPageState();
+}
+
+class _CreateFamilyGoalFlowPageState extends State<CreateFamilyGoalFlowPage> {
+  final organisationBloc = getIt<OrganisationBloc>();
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +61,8 @@ class CreateFamilyGoalFlowPage extends StatelessWidget {
                   );
                 case FamilyGoalCreationStatus.confirmation:
                   return CreateFamilyGoalConfirmationPage(
-                      state: createGoalState,);
+                    state: createGoalState,
+                  );
                 case FamilyGoalCreationStatus.loading:
                   return const CreateFamilyGoalLoadingPage(
                     stepperStatus: FamilyGoalCreationStatus.confirmation,
@@ -60,6 +73,18 @@ class CreateFamilyGoalFlowPage extends StatelessWidget {
             },
           );
         },
+      ),
+    );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = context.read<AuthCubit>().state.user;
+    organisationBloc.add(
+      OrganisationFetch(
+        Country.fromCode(user.country),
+        type: CollectGroupType.none.index,
       ),
     );
   }

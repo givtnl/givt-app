@@ -9,6 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/routes/pages.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/widgets/widgets.dart';
 import 'package:givt_app/features/recurring_donations/create/widgets/create_recurring_donation_bottom_sheet.dart';
@@ -35,6 +36,7 @@ class OrganizationListPage extends StatefulWidget {
 
 class _OrganizationListPageState extends State<OrganizationListPage> {
   final focusNode = FocusNode();
+  final bloc = getIt<OrganisationBloc>();
 
   @override
   void dispose() {
@@ -45,7 +47,6 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final bloc = context.read<OrganisationBloc>();
     return BlocListener<GiveBloc, GiveState>(
       listener: (context, state) {
         if (state.status == GiveStatus.noInternetConnection) {
@@ -79,154 +80,154 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
           );
         }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const BackButton(),
-          title: Text(
-            _buildTitle(
-              context.watch<OrganisationBloc>().state.selectedType,
-              locals,
-            ),
-            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+      child: BlocConsumer<OrganisationBloc, OrganisationState>(
+        bloc: bloc,
+        listener: (context, state) {
+          if (state.status == OrganisationStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(locals.somethingWentWrong),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: const BackButton(),
+              title: Text(
+                _buildTitle(
+                  state.selectedType,
+                  locals,
                 ),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+              ),
+            ),
+            body: _layout(state, locals, context),
+          );
+        },
+      ),
+    );
+  }
+
+  Column _layout(
+      OrganisationState state, AppLocalizations locals, BuildContext context) {
+    if (state.selectedType == CollectGroupType.none.index) {
+      focusNode.requestFocus();
+    }
+    return Column(
+      children: [
+        _buildFilterType(bloc, locals),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: CupertinoSearchTextField(
+            autocorrect: false,
+            focusNode: focusNode,
+            onChanged: (value) => context
+                .read<OrganisationBloc>()
+                .add(OrganisationFilterQueryChanged(value)),
+            placeholder: locals.searchHere,
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: const Icon(Icons.close),
           ),
         ),
-        body: BlocConsumer<OrganisationBloc, OrganisationState>(
-          listener: (context, state) {
-            if (state.status == OrganisationStatus.error) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(locals.somethingWentWrong),
-                ),
-              );
-            }
-          },
-          builder: (context, state) {
-            if (state.selectedType == CollectGroupType.none.index) {
-              focusNode.requestFocus();
-            }
-            return Column(
-              children: [
-                _buildFilterType(bloc, locals),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: CupertinoSearchTextField(
-                    autocorrect: false,
-                    focusNode: focusNode,
-                    onChanged: (value) => context
-                        .read<OrganisationBloc>()
-                        .add(OrganisationFilterQueryChanged(value)),
-                    placeholder: locals.searchHere,
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: const Icon(Icons.close),
-                  ),
-                ),
-                if (state.status == OrganisationStatus.filtered)
-                  Expanded(
-                    child: ListView.separated(
-                      separatorBuilder: (_, index) => const Divider(
-                        height: 0.1,
+        if (state.status == OrganisationStatus.filtered)
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (_, index) => const Divider(
+                height: 0.1,
+              ),
+              shrinkWrap: true,
+              itemCount: state.filteredOrganisations.length + 1,
+              itemBuilder: (context, index) {
+                if (index == state.filteredOrganisations.length) {
+                  return ListTile(
+                    key: UniqueKey(),
+                    onTap: () => showModalBottomSheet<void>(
+                      context: context,
+                      isScrollControlled: true,
+                      useSafeArea: true,
+                      builder: (_) => AboutGivtBottomSheet(
+                        initialMessage:
+                            locals.reportMissingOrganisationPrefilledText,
                       ),
-                      shrinkWrap: true,
-                      itemCount: state.filteredOrganisations.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == state.filteredOrganisations.length) {
-                          return ListTile(
-                            key: UniqueKey(),
-                            onTap: () => showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              useSafeArea: true,
-                              builder: (_) => AboutGivtBottomSheet(
-                                initialMessage: locals
-                                    .reportMissingOrganisationPrefilledText,
-                              ),
-                            ),
-
-                            /// To keep the symetry of the list
-                            leading: const Icon(
-                              Icons.add,
-                              color: Colors.transparent,
-                            ),
-                            trailing: const Icon(
-                              Icons.add,
-                              color: AppTheme.givtBlue,
-                            ),
-                            title: Text(
-                              locals.reportMissingOrganisationListItem,
-                              style: const TextStyle(
-                                color: AppTheme.givtBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          );
-                        }
-                        return _buildListTile(
-                          type: state.filteredOrganisations[index].type,
-                          title: state.filteredOrganisations[index].orgName,
-                          isSelected: state.selectedCollectGroup.nameSpace ==
-                              state.filteredOrganisations[index].nameSpace,
-                          onTap: () {
-                            if (widget.isChooseCategory) {
-                              _buildActionSheet(
-                                context,
-                                state.filteredOrganisations[index],
-                              );
-                              return;
-                            }
-                            context.read<OrganisationBloc>().add(
-                                  OrganisationSelectionChanged(
-                                    state
-                                        .filteredOrganisations[index].nameSpace,
-                                  ),
-                                );
-                          },
-                        );
-                      },
                     ),
-                  )
-                else
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                _buildGivingButton(
-                  title: widget.isSelection
-                      ? locals.selectReceiverButton
-                      : locals.give,
-                  isLoading: context.watch<GiveBloc>().state.status ==
-                      GiveStatus.loading,
-                  onPressed:
-                      state.selectedCollectGroup.type == CollectGroupType.none
-                          ? null
-                          : () {
-                              final userGUID =
-                                  context.read<AuthCubit>().state.user.guid;
-                              if (widget.isSelection) {
-                                context.pop(
-                                  state.filteredOrganisations.firstWhere(
-                                    (element) =>
-                                        element.nameSpace ==
-                                        state.selectedCollectGroup.nameSpace,
-                                  ),
-                                );
-                                return;
-                              }
-                              context.read<GiveBloc>().add(
-                                    GiveOrganisationSelected(
-                                      nameSpace:
-                                          state.selectedCollectGroup.nameSpace,
-                                      userGUID: userGUID,
-                                    ),
-                                  );
-                            },
-                ),
-              ],
-            );
-          },
+
+                    /// To keep the symetry of the list
+                    leading: const Icon(
+                      Icons.add,
+                      color: Colors.transparent,
+                    ),
+                    trailing: const Icon(
+                      Icons.add,
+                      color: AppTheme.givtBlue,
+                    ),
+                    title: Text(
+                      locals.reportMissingOrganisationListItem,
+                      style: const TextStyle(
+                        color: AppTheme.givtBlue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                }
+                return _buildListTile(
+                  type: state.filteredOrganisations[index].type,
+                  title: state.filteredOrganisations[index].orgName,
+                  isSelected: state.selectedCollectGroup.nameSpace ==
+                      state.filteredOrganisations[index].nameSpace,
+                  onTap: () {
+                    if (widget.isChooseCategory) {
+                      _buildActionSheet(
+                        context,
+                        state.filteredOrganisations[index],
+                      );
+                      return;
+                    }
+                    bloc.add(
+                      OrganisationSelectionChanged(
+                        state.filteredOrganisations[index].nameSpace,
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          )
+        else
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        _buildGivingButton(
+          title: widget.isSelection ? locals.selectReceiverButton : locals.give,
+          isLoading:
+              context.watch<GiveBloc>().state.status == GiveStatus.loading,
+          onPressed: state.selectedCollectGroup.type == CollectGroupType.none
+              ? null
+              : () {
+                  final userGUID = context.read<AuthCubit>().state.user.guid;
+                  if (widget.isSelection) {
+                    context.pop(
+                      state.filteredOrganisations.firstWhere(
+                        (element) =>
+                            element.nameSpace ==
+                            state.selectedCollectGroup.nameSpace,
+                      ),
+                    );
+                    return;
+                  }
+                  context.read<GiveBloc>().add(
+                        GiveOrganisationSelected(
+                          nameSpace: state.selectedCollectGroup.nameSpace,
+                          userGUID: userGUID,
+                        ),
+                      );
+                },
         ),
-      ),
+      ],
     );
   }
 

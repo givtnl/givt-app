@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
@@ -12,19 +13,26 @@ import 'package:givt_app/features/family/features/parent_giving_flow/cubit/mediu
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
-import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
+import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
-class GiveFromListPage extends StatelessWidget {
+class GiveFromListPage extends StatefulWidget {
   const GiveFromListPage({super.key});
+
+  @override
+  State<GiveFromListPage> createState() => _GiveFromListPageState();
+}
+
+class _GiveFromListPageState extends State<GiveFromListPage> {
+  final give = getIt<GiveBloc>();
+  final organisationBloc = getIt<OrganisationBloc>();
 
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final give = getIt<GiveBloc>();
     return BlocConsumer<GiveBloc, GiveState>(
       bloc: give,
       listener: (context, state) {
@@ -95,7 +103,7 @@ class GiveFromListPage extends StatelessWidget {
           },
         ),
       );
-      getIt<GiveBloc>().add(
+      give.add(
         GiveAmountChanged(
           firstCollectionAmount: result.toDouble(),
           secondCollectionAmount: 0,
@@ -103,5 +111,15 @@ class GiveFromListPage extends StatelessWidget {
         ),
       );
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final user = context.read<AuthCubit>().state.user;
+    organisationBloc.add(OrganisationFetch(
+      Country.fromCode(user.country),
+      type: CollectGroupType.none.index,
+    ));
   }
 }
