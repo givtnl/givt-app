@@ -72,8 +72,9 @@ class GratefulRecommendationsRepositoryImpl
     GameProfile profile,
   ) async {
     if (!_gratefulRecommendations.containsKey(profile)) {
-      _gratefulRecommendations[profile] =
-          await _getOrganisationsForProfile(profile);
+      final result = await _getOrganisationsForProfile(profile);
+      final sortedList = sortOrganisationsByChurchTag(result);
+      _gratefulRecommendations[profile] = sortedList;
     }
 
     return _gratefulRecommendations[profile] ?? [];
