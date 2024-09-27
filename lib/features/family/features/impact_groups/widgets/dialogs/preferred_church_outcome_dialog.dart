@@ -24,16 +24,15 @@ Future<void> showPreferredChurchSuccessDialog(
   );
 }
 
-Future<void> showPreferredChurchErrorDialog(
-  BuildContext context,
-) async {
+Future<void> showPreferredChurchErrorDialog(BuildContext context,
+    {void Function()? onTap}) async {
   return FunModal.showAsDialog(
     context,
     title: 'Oops, something went wrong...',
     buttons: [
       FunButton(
         text: 'Retry',
-        onTap: () => context.pop(),
+        onTap: onTap ?? () => context.pop(),
         leftIcon: Icons.refresh_rounded,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.retryClicked,
