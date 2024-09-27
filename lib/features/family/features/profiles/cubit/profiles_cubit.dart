@@ -118,8 +118,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
 
   Future<bool> setPreferredChurch(String churchId) async {
     try {
-      await _impactGroupsRepository.setPreferredChurch(churchId);
-      return true;
+      return await _impactGroupsRepository.setPreferredChurch(churchId);
     } catch (e, s) {
       LoggingInfo.instance.error(
         'Error while setting preferred church: $e',
