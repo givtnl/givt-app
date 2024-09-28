@@ -60,6 +60,8 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
       return;
     }
 
+    give.add(const GiveReset());
+
     unawaited(
       context.read<ImpactGroupsCubit>().fetchImpactGroups(),
     );

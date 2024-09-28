@@ -45,7 +45,7 @@ Future<void> initAPIService() async {
 void initCubits() {
   getIt
     ..registerFactory(() => AdminFeeCubit(getIt()))
-    ..registerFactory(() => GratefulCubit(getIt(), getIt()))
+    ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
       () => InterviewCubit(getIt()),
     )
@@ -60,6 +60,12 @@ void initCubits() {
       () => GiveBloc(
         getIt(),
         getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<OrganisationBloc>(
+      () => OrganisationBloc(
         getIt(),
         getIt(),
       ),

@@ -21,7 +21,8 @@ class GratefulRecommendationsRepositoryImpl
       final results = await Future.wait(
         profiles.map((profile) async {
           final orgsList = await _getOrganisationsForProfile(profile);
-          return MapEntry(profile, orgsList);
+          final sortedList = sortOrganisationsByChurchTag(orgsList);
+          return MapEntry(profile, sortedList);
         }),
       );
 
@@ -34,6 +35,22 @@ class GratefulRecommendationsRepositoryImpl
     }
   }
 
+  List<Organisation> sortOrganisationsByChurchTag(
+      List<Organisation> organisations) {
+    organisations.sort((a, b) {
+      final aHasChurchTag = a.tags.any((tag) => tag.key == "CHURCH");
+      final bHasChurchTag = b.tags.any((tag) => tag.key == "CHURCH");
+      if (aHasChurchTag && !bHasChurchTag) {
+        return -1;
+      } else if (!aHasChurchTag && bHasChurchTag) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    return organisations;
+  }
+
   Future<List<Organisation>> _getOrganisationsForProfile(
       GameProfile profile) async {
     final interests = profile.gratitude?.tags;
@@ -41,6 +58,7 @@ class GratefulRecommendationsRepositoryImpl
       {
         'pageSize': 10,
         'tags': interests?.map((tag) => tag.key).toList(),
+        'includePreferredChurch': true,
       },
     );
 
@@ -54,8 +72,9 @@ class GratefulRecommendationsRepositoryImpl
     GameProfile profile,
   ) async {
     if (!_gratefulRecommendations.containsKey(profile)) {
-      _gratefulRecommendations[profile] =
-          await _getOrganisationsForProfile(profile);
+      final result = await _getOrganisationsForProfile(profile);
+      final sortedList = sortOrganisationsByChurchTag(result);
+      _gratefulRecommendations[profile] = sortedList;
     }
 
     return _gratefulRecommendations[profile] ?? [];
