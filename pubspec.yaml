@@ -31,7 +31,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.2
   flutter_blue_plus: ^1.30.5
-  flutter_inappwebview: ^6.1.0
+  flutter_inappwebview: ^6.1.2
   flutter_layout_grid: ^2.0.5
   flutter_local_notifications: ^17.2.2
   flutter_localizations:
@@ -77,11 +77,12 @@ dependencies:
   vibration: ^2.0.0
   wakelock_plus: ^1.2.8
 
-# Override needed because inappwebview 6.1.0 requires this version
+# Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)
 # MLKit is used in mobile_scanner
 # So its a bit of a mess but this is the only way to make it work
 # _-(ツ)_/¯
+# https://github.com/juliansteenbakker/mobile_scanner/issues/1165
 dependency_overrides:
   web: 1.0.0
 
