@@ -40,7 +40,10 @@ class FunScaffold extends StatelessWidget {
                     child: body,
                   )
                 : body,
-            floatingActionButton: floatingActionButton,
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: floatingActionButton,
+            ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerFloat,
           ),
