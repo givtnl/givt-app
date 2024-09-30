@@ -34,8 +34,9 @@ import 'package:givt_app/features/family/features/giving_flow/screens/choose_amo
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
-import 'package:givt_app/features/family/features/home_screen/kids_home_screen.dart';
-import 'package:givt_app/features/family/features/home_screen/parent_home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
@@ -43,7 +44,6 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/presentation/camera_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
@@ -87,8 +87,27 @@ class FamilyAppRoutes {
               getIt(),
             )..add(const RemoteDataSourceSyncRequested()),
           ),
+          BlocProvider(
+            create: (context) => PersonalInfoEditBloc(
+              loggedInUserExt: context.read<AuthCubit>().state.user,
+              authRepositoy: getIt(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => StripeCubit(
+              authRepositoy: getIt(),
+            ),
+          ),
+          BlocProvider(
+            create: (_) => FamilyOverviewCubit(getIt())..fetchFamilyProfiles(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
+          ),
         ],
-        child: const ProfileSelectionScreen(),
+        //child: const ProfileSelectionScreen(),
+        child: const NavigationBarHomeScreen(),
       ),
       routes: [
         GoRoute(
