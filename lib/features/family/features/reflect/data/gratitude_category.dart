@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
 
 class GratitudeCategory extends Equatable {

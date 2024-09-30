@@ -79,43 +79,6 @@ enum FamilyPages {
     path: 'choose-amount-slider-goal',
     name: 'CHOOSE_AMOUNT_SLIDER_GOAL',
   ),
-  generosityChallenge(
-    path: '/generosity-challenge',
-    name: 'GENEROSITY-CHALLENGE',
-  ),
-  generosityChallengeChat(
-    path: 'generosity-challenge-chat',
-    name: 'GENEROSITY-CHALLENGE-CHAT',
-  ),
-  generosityChallengeIntroduction(
-    path: 'generosity-challenge-introduction',
-    name: 'GENEROSITY-CHALLENGE-INTRODUCTION',
-  ),
-  selectValues(
-    path: 'select-values',
-    name: 'SELECT-VALUES',
-  ),
-  displayValues(
-    path: 'display-values',
-    name: 'DISPLAY-VALUES',
-  ),
-  displayValuesOrganisations(
-    path: 'display-values-organisations',
-    name: 'DISPLAY-VALUES-ORGANISATIONS',
-  ),
-  chooseAmountSlider(
-    path: 'choose-amount-slider',
-    name: 'CHOOSE-AMOUNT-SLIDER',
-  ),
-  allowanceFlow(
-    path: 'allowance-flow',
-    name: 'ALLOWANCE-FLOW',
-  ),
-  day4Timer(
-    path: 'day-4-timer',
-    name: 'DAY-4-TIMER',
-  ),
-
   //school event mode
   familyNameLogin(path: 'family-name-login', name: 'FAMILY_NAME_LOGIN'),
   schoolEventInfo(path: 'school-event-info', name: 'SCHOOL_EVENT_INFO'),

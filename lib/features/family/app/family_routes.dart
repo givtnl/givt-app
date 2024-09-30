@@ -14,21 +14,6 @@ import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit
 import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_cubit.dart';
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/cubit/create_challenge_donation_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/create_challenge_donation/pages/choose_amount_slider_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/day4_timer/pages/day4_timer_screen.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/cubit/family_values_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/models/family_value.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_family_values_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/display_organisations_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/family_values/pages/select_family_values_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/assignments/set_up_allowance/generosity_allowance_flow_page.dart';
-import 'package:givt_app/features/children/generosity_challenge/cubit/generosity_challenge_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge.dart';
-import 'package:givt_app/features/children/generosity_challenge/pages/generosity_challenge_introduction.dart';
-import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/cubit/chat_scripts_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge_chat/chat_scripts/pages/chat_script_page.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
@@ -72,7 +57,6 @@ import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
-import 'package:givt_app/features/give/models/organisation.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
@@ -93,156 +77,6 @@ class FamilyAppRoutes {
   static List<RouteBase> get routes => _routes;
 
   static final List<RouteBase> _routes = [
-    GoRoute(
-      path: FamilyPages.generosityChallenge.path,
-      name: FamilyPages.generosityChallenge.name,
-      builder: (context, state) {
-        return BlocProvider(
-          create: (_) => GenerosityChallengeCubit(
-            getIt(),
-            getIt(),
-            getIt(),
-          )..loadFromCache(),
-          child: const GenerosityChallenge(),
-        );
-      },
-      routes: [
-        GoRoute(
-          path: FamilyPages.day4Timer.path,
-          name: FamilyPages.day4Timer.name,
-          builder: (context, state) {
-            final challengeCubit = state.extra! as GenerosityChallengeCubit;
-            return BlocProvider.value(
-              value: challengeCubit,
-              child: const Day4TimerScreen(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.generosityChallengeIntroduction.path,
-          name: FamilyPages.generosityChallengeIntroduction.name,
-          builder: (context, state) {
-            final challengeCubit = state.extra! as GenerosityChallengeCubit;
-            return BlocProvider.value(
-              value: challengeCubit,
-              child: const PopScope(
-                canPop: false,
-                child: GenerosityChallengeIntroduction(),
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.generosityChallengeChat.path,
-          name: FamilyPages.generosityChallengeChat.name,
-          builder: (context, state) {
-            final challengeCubit = state.extra! as GenerosityChallengeCubit;
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: challengeCubit,
-                ),
-                BlocProvider(
-                  create: (_) => ChatScriptsCubit(
-                    getIt(),
-                    challengeCubit: challengeCubit,
-                  )..init(context),
-                ),
-              ],
-              child: const ChatScriptPage(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.selectValues.path,
-          name: FamilyPages.selectValues.name,
-          builder: (context, state) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: state.extra! as GenerosityChallengeCubit,
-                ),
-                BlocProvider(
-                  create: (context) => FamilyValuesCubit(
-                    generosityChallengeRepository: getIt(),
-                  ),
-                ),
-              ],
-              child: const SelectFamilyValues(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.displayValues.path,
-          name: FamilyPages.displayValues.name,
-          builder: (context, state) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: state.extra! as GenerosityChallengeCubit,
-                ),
-                BlocProvider(
-                  create: (context) => FamilyValuesCubit(
-                    generosityChallengeRepository: getIt(),
-                  )..getSavedValues(),
-                ),
-              ],
-              child: const DisplayFamilyValues(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.displayValuesOrganisations.path,
-          name: FamilyPages.displayValuesOrganisations.name,
-          builder: (context, state) {
-            final extra = state.extra! as Map<String, dynamic>;
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: extra[GenerosityChallengeHelper.generosityChallengeKey]
-                      as GenerosityChallengeCubit,
-                ),
-              ],
-              child: DisplayOrganisations(
-                familyValues: extra[FamilyValuesCubit.familyValuesKey]
-                    as List<FamilyValue>,
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.chooseAmountSlider.path,
-          name: FamilyPages.chooseAmountSlider.name,
-          builder: (context, state) {
-            final extras = state.extra! as List;
-            final organisation = extras[0] as Organisation;
-            final challengeCubit = extras[1] as GenerosityChallengeCubit;
-
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => CreateChallengeDonationCubit(),
-                ),
-                BlocProvider.value(
-                  value: challengeCubit,
-                ),
-              ],
-              child: ChooseAmountSliderPage(
-                organisation: organisation,
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.allowanceFlow.path,
-          name: FamilyPages.allowanceFlow.name,
-          builder: (context, state) => BlocProvider.value(
-            value: state.extra! as GenerosityChallengeCubit,
-            child: const GenerosityAllowanceFlowPage(),
-          ),
-        ),
-      ],
-    ),
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
