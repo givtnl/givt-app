@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
-import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
-import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_destination_data.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
-import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/profiles/screens/profile_screen.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -104,20 +99,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         },
       ),
     );
-  }
-
-  Widget getPage(NavigationDestinationData destination, BuildContext context) {
-    final user = context.read<ProfilesCubit>().state.activeProfile;
-    switch (destination) {
-      case NavigationDestinationData.home:
-        return const ProfileScreen();
-      case NavigationDestinationData.groups:
-        context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id);
-        return const GoalScreen();
-      case NavigationDestinationData.myGivts:
-        context.read<HistoryCubit>().fetchHistory(user.id, fromBeginning: true);
-        return const HistoryScreen();
-    }
   }
 
   @override
