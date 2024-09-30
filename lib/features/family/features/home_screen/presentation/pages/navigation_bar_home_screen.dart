@@ -3,36 +3,53 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
-import 'package:givt_app/features/family/features/home_screen/widgets/kids_home_screen_app_bar.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/widgets/kids_home_screen_app_bar.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/goal_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_screen.dart';
+import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class KidsHomeScreen extends StatelessWidget {
-  const KidsHomeScreen({
+class NavigationBarHomeScreen extends StatefulWidget {
+  const NavigationBarHomeScreen({
     super.key,
   });
+
+  @override
+  State<NavigationBarHomeScreen> createState() =>
+      _NavigationBarHomeScreenState();
+}
+
+class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
+  final _cubit = getIt<NavigationBarHomeCubit>();
+
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const KidsHomeScreenAppBar(),
       bottomNavigationBar: FunNavigationBar(
-        index: context.watch<NavigationCubit>().state.activeDestination.index,
+        index: _currentIndex,
         onDestinationSelected: (int index) {
           SystemSound.play(SystemSoundType.click);
           HapticFeedback.selectionClick();
 
-          context
-              .read<NavigationCubit>()
-              .changePage(NavigationDestinationData.values[index]);
+          setState(() {
+            _currentIndex = index;
+          });
 
           AnalyticsHelper.logEvent(
             eventName: AmplitudeEvents.navigationBarPressed,
@@ -49,13 +66,17 @@ class KidsHomeScreen extends StatelessWidget {
               ),
             )
             .toList(),
-        analyticsEvent: (int index) =>
-            AnalyticsEvent(AmplitudeEvents.navigationBarPressed, parameters: {
-          'destination': NavigationDestinationData.values[index].name,
-        },),
+        analyticsEvent: (int index) => AnalyticsEvent(
+          AmplitudeEvents.navigationBarPressed,
+          parameters: {
+            'destination': NavigationDestinationData.values[index].name,
+          },
+        ),
       ),
-      body: BlocBuilder<NavigationCubit, NavigationState>(
-        builder: (context, state) {
+      body: BaseStateConsumer(
+        cubit: _cubit,
+        onCustom: _handleCustom,
+        onInitial: (context) {
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 300),
             child: AnimatedSwitcher(
@@ -71,7 +92,11 @@ class KidsHomeScreen extends StatelessWidget {
                   child: child,
                 );
               },
-              child: getPage(state.activeDestination, context),
+              child: <Widget>[
+                const ProfileSelectionScreen(),
+                const FamilyOverviewPage(),
+                const USPersonalInfoEditPage(),
+              ][_currentIndex],
             ),
           );
         },
@@ -91,5 +116,15 @@ class KidsHomeScreen extends StatelessWidget {
         context.read<HistoryCubit>().fetchHistory(user.id, fromBeginning: true);
         return const HistoryScreen();
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _cubit.onDidChangeDependencies();
+  }
+
+  void _handleCustom(BuildContext context, NavigationBarHomeCustom custom) {
+    //TODO
   }
 }
