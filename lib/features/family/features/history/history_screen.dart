@@ -54,43 +54,41 @@ class HistoryScreen extends StatelessWidget {
           }
 
           // Display List of donations and allowances in descending date order
-          return SafeArea(
-            child: Stack(
-              children: [
-                ListView.separated(
-                  padding: EdgeInsets.zero,
-                  controller: scrollController,
-                  itemCount: state.history.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (state.history[index].type != HistoryTypes.donation) {
-                      return IncomeItemWidget(
-                        uimodel: IncomeItemUIModel(
-                          income: state.history[index] as Income,
-                        ),
-                      );
-                    }
-
-                    return DonationItemWidget(
-                      uimodel: DonationItemUIModel(
-                        donation: state.history[index] as Donation,
+          return Stack(
+            children: [
+              ListView.separated(
+                padding: EdgeInsets.zero,
+                controller: scrollController,
+                itemCount: state.history.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (state.history[index].type != HistoryTypes.donation) {
+                    return IncomeItemWidget(
+                      uimodel: IncomeItemUIModel(
+                        income: state.history[index] as Income,
                       ),
                     );
-                  },
-                  separatorBuilder: (BuildContext context, int index) =>
-                      const Divider(
-                    thickness: 1,
-                    height: 1,
-                    endIndent: 0,
-                    indent: 0,
-                  ),
-                ),
+                  }
 
-                // Overlay loading indicator on top of list when loading (more) data
-                if (state.status == HistoryStatus.loading &&
-                    state.history.isNotEmpty)
-                  const CustomCircularProgressIndicator(),
-              ],
-            ),
+                  return DonationItemWidget(
+                    uimodel: DonationItemUIModel(
+                      donation: state.history[index] as Donation,
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(
+                  thickness: 1,
+                  height: 1,
+                  endIndent: 0,
+                  indent: 0,
+                ),
+              ),
+
+              // Overlay loading indicator on top of list when loading (more) data
+              if (state.status == HistoryStatus.loading &&
+                  state.history.isNotEmpty)
+                const CustomCircularProgressIndicator(),
+            ],
           );
         },
       ),
