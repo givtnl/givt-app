@@ -40,7 +40,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const KidsHomeScreenAppBar(),
       bottomNavigationBar: FunNavigationBar(
         index: _currentIndex,
         onDestinationSelected: (int index) {
