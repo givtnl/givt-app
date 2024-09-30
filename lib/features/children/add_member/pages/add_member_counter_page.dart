@@ -3,9 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/pages/family_member_form_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -31,7 +31,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
     return FunScaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
-        leading: const GenerosityBackButton(),
+        leading: const GivtBackButtonFlat(),
       ),
       body: Column(
         children: [

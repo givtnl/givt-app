@@ -9,7 +9,6 @@ import 'package:givt_app/features/children/details/widgets/child_details_item.da
 import 'package:givt_app/features/children/details/widgets/child_giving_allowance_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_card.dart';
 import 'package:givt_app/features/children/details/widgets/child_top_up_failure_dialog.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/overview/pages/add_top_up_page.dart';
 import 'package:givt_app/features/children/overview/pages/edit_allowance_page.dart';
@@ -19,6 +18,7 @@ import 'package:givt_app/features/children/overview/pages/models/top_up_success_
 import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
@@ -104,7 +104,7 @@ class ChildDetailsPage extends StatelessWidget {
             title: (state is ChildDetailsFetchedState)
                 ? state.profileDetails.firstName
                 : '',
-            leading: const GenerosityBackButton(),
+            leading: const GivtBackButtonFlat(),
             actions: [
               if (state is ChildDetailsFetchedState)
                 Padding(
