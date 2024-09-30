@@ -1,24 +1,3 @@
-part of 'navigation_cubit.dart';
-
-class NavigationState extends Equatable {
-  const NavigationState({
-    this.activeDestination = NavigationDestinationData.home,
-  });
-
-  final NavigationDestinationData activeDestination;
-
-  NavigationState copyWith({
-    NavigationDestinationData? activeDestination,
-  }) {
-    return NavigationState(
-      activeDestination: activeDestination ?? this.activeDestination,
-    );
-  }
-
-  @override
-  List<Object> get props => [activeDestination];
-}
-
 enum NavigationDestinationData {
   home(
     iconPath: 'assets/family/images/duotone_house.svg',

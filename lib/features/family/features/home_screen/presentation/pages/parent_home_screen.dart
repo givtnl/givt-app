@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
+
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -44,7 +44,6 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
               ],
             ),
           ),
-          bottomNavigationBar: _fakeAppBar(context),
         );
       },
     );
@@ -66,40 +65,6 @@ class _ParentHomeScreenState extends State<ParentHomeScreen> {
       eventName: AmplitudeEvents.profileSwitchPressed,
     );
   }
-
-  Widget _fakeAppBar(BuildContext context) => SafeArea(
-        child: Container(
-          color: FamilyAppTheme.secondary99,
-          width: MediaQuery.sizeOf(context).width,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: FamilyAppTheme.secondary95,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 6,
-                  ),
-                  child: SvgPicture.asset(
-                    NavigationDestinationData.home.iconPath,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                NavigationDestinationData.home.label,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ),
-      );
 
   Widget _giveTile(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),

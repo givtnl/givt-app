@@ -102,6 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             countdownAmount: countdownAmount,
                             hasDonations: hasDonations,
                             avatarUrl: state.activeProfile.pictureURL,
+                            kidid: state.activeProfile.id,
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),

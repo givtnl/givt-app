@@ -34,19 +34,16 @@ import 'package:givt_app/features/family/features/giving_flow/screens/choose_amo
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
-import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
-import 'package:givt_app/features/family/features/impact_groups/pages/impact_group_details_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/give_from_list_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/presentation/camera_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
@@ -102,13 +99,11 @@ class FamilyAppRoutes {
             ),
           ),
           BlocProvider(
-            create: (_) => FamilyOverviewCubit(getIt())
-              ..fetchFamilyProfiles(),
+            create: (_) => FamilyOverviewCubit(getIt())..fetchFamilyProfiles(),
           ),
           BlocProvider(
             create: (context) =>
-            FamilyHistoryCubit(getIt(), getIt(), getIt())
-              ..fetchHistory(),
+                FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
           ),
         ],
         //child: const ProfileSelectionScreen(),
@@ -157,20 +152,7 @@ class FamilyAppRoutes {
           path: FamilyPages.wallet.path,
           name: FamilyPages.wallet.name,
           builder: (context, state) {
-            final user = context.read<ProfilesCubit>().state.activeProfile;
-            context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => NavigationCubit(),
-                ),
-                BlocProvider(
-                  create: (context) =>
-                      HistoryCubit(getIt())..fetchHistory(user.id),
-                ),
-              ],
-              child: const KidsHomeScreen(),
-            );
+            return const KidsHomeScreen();
           },
           routes: [
             GoRoute(
@@ -413,14 +395,6 @@ class FamilyAppRoutes {
               ],
               child: const KidsAvatarSelectionScreen(),
             );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.impactGroupDetails.path,
-          name: FamilyPages.impactGroupDetails.name,
-          builder: (context, state) {
-            final impactGroup = state.extra! as ImpactGroup;
-            return ImpactGroupDetailsPage(impactGroup: impactGroup);
           },
         ),
         GoRoute(
