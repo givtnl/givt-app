@@ -6,7 +6,9 @@ import 'package:givt_app/features/family/features/avatars/repositories/avatars_r
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -70,13 +72,15 @@ void initCubits() {
         getIt(),
       ),
     )
+    ..registerLazySingleton(() => HistoryCubit(getIt()))
     ..registerFactory<FamilyRolesCubit>(
       () => FamilyRolesCubit(
         getIt(),
       ),
     )
+    ..registerLazySingleton<NavigationBarHomeCubit>(NavigationBarHomeCubit.new)
     ..registerFactory<FamilySelectionCubit>(
-      () => FamilySelectionCubit(
+          () => FamilySelectionCubit(
         getIt(),
       ),
     );

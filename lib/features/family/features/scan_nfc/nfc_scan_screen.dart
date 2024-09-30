@@ -235,11 +235,7 @@ class _NFCScanPageState extends State<NFCScanPage> {
   }
 
   void _navigateToHome(BuildContext context) {
-    if (widget.isFromGenerosityChallenge) {
-      context.goNamed(FamilyPages.generosityChallenge.name);
-    } else {
-      context.goNamed(FamilyPages.wallet.name);
-    }
+    context.goNamed(FamilyPages.wallet.name);
   }
 
   void _handleNotAGivtCoinTryAgainClicked(BuildContext context) {

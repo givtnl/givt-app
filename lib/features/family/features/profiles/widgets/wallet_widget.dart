@@ -8,9 +8,12 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
+import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +23,7 @@ class WalletWidget extends StatefulWidget {
     required this.hasDonations,
     super.key,
     this.avatarUrl = '',
+    this.kidid = '',
     this.countdownAmount = 0,
   });
 
@@ -27,6 +31,7 @@ class WalletWidget extends StatefulWidget {
   final bool hasDonations;
   final double countdownAmount;
   final String avatarUrl;
+  final String kidid;
 
   @override
   State<WalletWidget> createState() => _WalletWidgetState();
@@ -86,10 +91,21 @@ class _WalletWidgetState extends State<WalletWidget> {
                             text: appInfoString,
                           );
                         },
-                        child: SvgPicture.network(
-                          widget.avatarUrl,
-                          width: 100,
-                        ),
+                        child: Stack(children: [
+                          SvgPicture.network(
+                            widget.avatarUrl,
+                            width: 100,
+                          ),
+                          const Positioned(
+                            top: 0,
+                            right: 0,
+                            child: FaIcon(
+                              FontAwesomeIcons.pen,
+                              size: 20,
+                              color: AppTheme.primary20,
+                            ),
+                          ),
+                        ]),
                       ),
                     ),
                   ),
@@ -127,17 +143,22 @@ class _WalletWidgetState extends State<WalletWidget> {
                     ),
                     onPressed: () {
                       SystemSound.play(SystemSoundType.click);
-                      context.pushNamed(FamilyPages.kidsAvatarSelection.name);
                       AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.editAvatarIconClicked,
+                        eventName: AmplitudeEvents.seeDonationHistoryPressed,
                       );
+                      getIt<HistoryCubit>().fetchHistory(
+                        widget.kidid,
+                        fromBeginning: true,
+                      );
+                      Navigator.of(context)
+                          .push(const HistoryScreen().toRoute(context));
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'My profile',
+                          'My givts',
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                         Padding(

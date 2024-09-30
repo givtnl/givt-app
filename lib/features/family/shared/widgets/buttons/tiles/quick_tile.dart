@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/models/color_combo.dart';
 
 class QuickTile extends StatelessWidget {
   const QuickTile({

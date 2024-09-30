@@ -113,7 +113,6 @@ class _PreferredChurchSelectionPageState
         },
       ),
       floatingActionButton: FunButton(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
         isDisabled: selectedIndex == -1,
         isLoading: isLoading,
         text: 'Confirm',

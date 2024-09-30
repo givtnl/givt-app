@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
+import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
 enum CollectGroupType {
