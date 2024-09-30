@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -11,7 +11,6 @@ import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
-import 'package:givt_app/features/family/features/home_screen/presentation/widgets/kids_home_screen_app_bar.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/pages/goal_screen.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -57,14 +56,20 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             },
           );
         },
-        destinations: NavigationDestinationData.values
-            .map(
-              (destination) => NavigationDestination(
-                icon: SvgPicture.asset(destination.iconPath),
-                label: destination.label,
-              ),
-            )
-            .toList(),
+        destinations: const [
+          NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.house),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.mask),
+            label: 'My Family',
+          ),
+          NavigationDestination(
+            icon: FaIcon(FontAwesomeIcons.person),
+            label: 'My Profile',
+          ),
+        ],
         analyticsEvent: (int index) => AnalyticsEvent(
           AmplitudeEvents.navigationBarPressed,
           parameters: {

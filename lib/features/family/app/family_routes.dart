@@ -90,6 +90,26 @@ class FamilyAppRoutes {
               getIt(),
             )..add(const RemoteDataSourceSyncRequested()),
           ),
+          BlocProvider(
+            create: (context) => PersonalInfoEditBloc(
+              loggedInUserExt: context.read<AuthCubit>().state.user,
+              authRepositoy: getIt(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => StripeCubit(
+              authRepositoy: getIt(),
+            ),
+          ),
+          BlocProvider(
+            create: (_) => FamilyOverviewCubit(getIt())
+              ..fetchFamilyProfiles(),
+          ),
+          BlocProvider(
+            create: (context) =>
+            FamilyHistoryCubit(getIt(), getIt(), getIt())
+              ..fetchHistory(),
+          ),
         ],
         //child: const ProfileSelectionScreen(),
         child: const NavigationBarHomeScreen(),
