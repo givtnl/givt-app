@@ -9,12 +9,14 @@ class GameProfileItem extends StatelessWidget {
   const GameProfileItem({
     required this.profile,
     this.displayName = true,
+    this.displayRole = true,
     this.size = 80,
     super.key,
   });
 
   final GameProfile profile;
   final bool displayName;
+  final bool displayRole;
   final double size;
 
   @override
@@ -33,7 +35,7 @@ class GameProfileItem extends StatelessWidget {
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: profile.role?.color ?? Colors.red,
+                    color: profile.role?.color.accentColor ?? Colors.red,
                   ),
                   child: Container(
                     decoration: const BoxDecoration(
@@ -48,24 +50,28 @@ class GameProfileItem extends StatelessWidget {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: profile.roles.length == 2 ? SizedBox(
-                  height: 36,width: (36*2)-4,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        right: 0,
-                        child: _icon(profile.roles[1]),
-                      ),
-                      Positioned(
-                        left: 0,
-                        child: _icon(profile.roles[0]),
-                      ),
-                    ],
-                  ),
-                ) : _iconRow(),
-              ),
+              if (displayRole)
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: profile.roles.length == 2
+                      ? SizedBox(
+                          height: 36,
+                          width: (36 * 2) - 4,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                right: 0,
+                                child: _icon(profile.roles[1]),
+                              ),
+                              Positioned(
+                                left: 0,
+                                child: _icon(profile.roles[0]),
+                              ),
+                            ],
+                          ),
+                        )
+                      : _iconRow(),
+                ),
             ],
           ),
         ),
@@ -84,12 +90,12 @@ class GameProfileItem extends StatelessWidget {
 
   Row _iconRow() {
     return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(
-                  profile.roles.length,
-                  (i) => _icon(profile.roles[i]),
-                ),
-              );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        profile.roles.length,
+        (i) => _icon(profile.roles[i]),
+      ),
+    );
   }
 
   Container _icon(Role role) {
@@ -98,7 +104,7 @@ class GameProfileItem extends StatelessWidget {
       height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: role.color,
+        color: role.color.accentColor,
       ),
       child: Icon(
         _getIconPerRole(role),

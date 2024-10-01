@@ -35,10 +35,10 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
     return FunScaffold(
       canPop: false,
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 40),
-      appBar: const FunTopAppBar(
+      appBar: FunTopAppBar(
         title: 'Your roles',
-        leading: GivtBackButtonFlat(),
-        actions: [
+        leading: (_cubit.isFirstRound()) ? const GivtBackButtonFlat() : null,
+        actions: const [
           LeaveGameButton(),
         ],
       ),
