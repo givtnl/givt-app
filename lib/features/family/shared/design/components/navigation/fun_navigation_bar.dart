@@ -45,9 +45,14 @@ class FunNavigationBar extends StatelessWidget {
           );
           onDestinationSelected.call(index);
         },
-        backgroundColor: FamilyAppTheme.secondary99,
-        indicatorColor: FamilyAppTheme.secondary95,
-        surfaceTintColor: Colors.transparent,
+        indicatorShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        indicatorColor: FamilyAppTheme.primary95,
+        surfaceTintColor: Colors.white,
         destinations: destinations,
       ),
     );
