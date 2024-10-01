@@ -19,8 +19,15 @@ import 'package:go_router/go_router.dart';
 
 class NavigationBarHomeScreen extends StatefulWidget {
   const NavigationBarHomeScreen({
+    this.index,
     super.key,
   });
+
+  final int? index;
+
+  static const int homeIndex = 0;
+  static const int familyIndex = 1;
+  static const int profileIndex = 2;
 
   @override
   State<NavigationBarHomeScreen> createState() =>
@@ -127,6 +134,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.onDidChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    _currentIndex = widget.index ?? 0;
+    super.initState();
   }
 
   @override

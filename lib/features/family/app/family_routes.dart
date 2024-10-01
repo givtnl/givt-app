@@ -15,10 +15,8 @@ import 'package:givt_app/features/children/family_goal/cubit/create_family_goal_
 import 'package:givt_app/features/children/family_goal/pages/create_family_goal_flow_page.dart';
 import 'package:givt_app/features/children/family_history/family_history_cubit/family_history_cubit.dart';
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
-import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
@@ -106,8 +104,9 @@ class FamilyAppRoutes {
                 FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
           ),
         ],
-        //child: const ProfileSelectionScreen(),
-        child: const NavigationBarHomeScreen(),
+        child: NavigationBarHomeScreen(
+          index: state.extra as int?,
+        ),
       ),
       routes: [
         GoRoute(
@@ -449,7 +448,9 @@ class FamilyAppRoutes {
                   ),
                 ),
               ],
-              child: const USPersonalInfoEditPage(),
+              child: const NavigationBarHomeScreen(
+                index: NavigationBarHomeScreen.profileIndex,
+              ),
             );
           },
         ),
@@ -558,7 +559,9 @@ class FamilyAppRoutes {
                         ..fetchHistory(),
                 ),
               ],
-              child: const FamilyOverviewPage(),
+              child: const NavigationBarHomeScreen(
+                index: NavigationBarHomeScreen.familyIndex,
+              ),
             );
           },
         ),
