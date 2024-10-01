@@ -116,34 +116,12 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     }
   }
 
-  Future<bool> setPreferredChurch(String churchId) async {
-    try {
-      return await _impactGroupsRepository.setPreferredChurch(churchId);
-    } catch (e, s) {
-      LoggingInfo.instance.error(
-        'Error while setting preferred church: $e',
-        methodName: s.toString(),
-      );
-      return false;
-    }
-  }
-
   Future<void> _doChecks(List<Profile> list, List<Member> members) async {
     final group = await _impactGroupsRepository.isInvitedToGroup();
-    final preferredChurchModalWasShown =
-        await _impactGroupsRepository.wasPreferredChurchModalShown();
-    final preferredChurch = _impactGroupsRepository.getPreferredChurch();
-    var needsRegistration = false;
     if (group != null) {
       _showInviteSheet(group);
     } else {
-      needsRegistration = await _doRegistrationCheck(list, members);
-    }
-    if (preferredChurch == null &&
-        !preferredChurchModalWasShown &&
-        !needsRegistration &&
-        group == null) {
-      _emitChurchNotSelected();
+      await _doRegistrationCheck(list, members);
     }
   }
 
@@ -221,19 +199,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         cachedMembers: members,
       ),
     );
-  }
-
-  void _emitChurchNotSelected() {
-    emit(
-      ProfilesNoChurchSelected(
-        profiles: state.profiles,
-        activeProfileIndex: state.activeProfileIndex,
-      ),
-    );
-  }
-
-  void setPreferredChurchModalShown() {
-    _impactGroupsRepository.setPreferredChurchModalShown();
   }
 
   Future<void> refresh() async => _profilesRepository.refreshProfiles();

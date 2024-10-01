@@ -13,10 +13,8 @@ import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomshe
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
-import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/parent_overview_widget.dart';
@@ -24,7 +22,6 @@ import 'package:givt_app/features/family/features/profiles/widgets/profile_item.
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
@@ -112,16 +109,13 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               extra: context.read<RegistrationBloc>(),
             );
           }
-        } else if (state is ProfilesNoChurchSelected) {
-          showPreferredChurchModal(user);
         }
       },
       listenWhen: (previous, current) =>
           current is ProfilesNotSetupState ||
           current is ProfilesInvitedToGroup ||
           current is ProfilesNeedsRegistration ||
-          current is ProfilesUpdatedState ||
-          current is ProfilesNoChurchSelected,
+          current is ProfilesUpdatedState,
       buildWhen: (previous, current) =>
           current is! ProfilesNotSetupState &&
           current is! ProfilesNeedsRegistration,
@@ -326,39 +320,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       );
     }
     return gridItems;
-  }
-
-  void showPreferredChurchModal(UserExt user) {
-    context.read<ProfilesCubit>().setPreferredChurchModalShown();
-    FunModal(
-      title: 'Choose your church',
-      icon: const FunIcon(
-        iconData: FontAwesomeIcons.church,
-      ),
-      subtitle: "Let's link your church to make giving easier",
-      buttons: [
-        FunButton(
-          text: 'Continue',
-          onTap: () async {
-            context.pop(); // close modal
-            await Navigator.push(
-              context,
-              const PreferredChurchSelectionPage().toRoute(context),
-            );
-          },
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.continueChooseChurchClicked,
-          ),
-        ),
-        FunButton.secondary(
-          text: "I don't go to church",
-          onTap: () => context.pop(),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.dontGoToChurchClicked,
-          ),
-        ),
-      ],
-    ).show(context);
   }
 
   void clearBottomsheet() {

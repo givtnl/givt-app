@@ -6,7 +6,6 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -20,11 +19,11 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class PreferredChurchSelectionPage extends StatefulWidget {
   const PreferredChurchSelectionPage({
-    this.setPreferredChurch,
+    required this.setPreferredChurch,
     super.key,
   });
 
-  final Future<bool> Function(String id)? setPreferredChurch;
+  final Future<bool> Function(String id) setPreferredChurch;
 
   @override
   State<PreferredChurchSelectionPage> createState() =>
@@ -134,10 +133,7 @@ class _PreferredChurchSelectionPageState
       });
       final churchId =
           bloc.state.filteredOrganisations[selectedIndex].nameSpace;
-      final success = await widget.setPreferredChurch?.call(churchId) ??
-          await context.read<ProfilesCubit>().setPreferredChurch(
-                churchId,
-              );
+      final success = await widget.setPreferredChurch(churchId);
 
       if (success) {
         await showPreferredChurchSuccessDialog(
