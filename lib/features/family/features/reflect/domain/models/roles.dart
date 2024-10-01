@@ -12,14 +12,14 @@ sealed class Role {
 
   const factory Role.sidekick() = Sidekick;
 
-  final ColorCombo color;
+  final RoleColors color;
   final String name;
 }
 
 class SuperHero extends Role {
   const SuperHero({
     this.secretWord,
-    super.color = ColorCombo.primary,
+    super.color = RoleColors.primary,
     super.name = 'superhero',
   });
 
@@ -29,7 +29,7 @@ class SuperHero extends Role {
 class Reporter extends Role {
   const Reporter({
     this.questions,
-    super.color = ColorCombo.secondary,
+    super.color = RoleColors.secondary,
     super.name = 'reporter',
   });
 
@@ -38,12 +38,12 @@ class Reporter extends Role {
 
 class Sidekick extends Role {
   const Sidekick({
-    super.color = ColorCombo.tertiary,
+    super.color = RoleColors.tertiary,
     super.name = 'sidekick',
   });
 }
 
-enum ColorCombo {
+enum RoleColors {
   primary(
     backgroundColor: FamilyAppTheme.primary90,
     accentColor: FamilyAppTheme.primary80,
@@ -65,7 +65,7 @@ enum ColorCombo {
   final Color backgroundColor;
   final Color accentColor;
 
-  const ColorCombo({
+  const RoleColors({
     required this.backgroundColor,
     required this.accentColor,
   });
