@@ -20,8 +20,11 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class PreferredChurchSelectionPage extends StatefulWidget {
   const PreferredChurchSelectionPage({
+    this.setPreferredChurch,
     super.key,
   });
+
+  final Future<bool> Function(String id)? setPreferredChurch;
 
   @override
   State<PreferredChurchSelectionPage> createState() =>
@@ -129,9 +132,12 @@ class _PreferredChurchSelectionPageState
       setState(() {
         isLoading = true;
       });
-      final success = await context.read<ProfilesCubit>().setPreferredChurch(
-            bloc.state.filteredOrganisations[selectedIndex].nameSpace,
-          );
+      final churchId =
+          bloc.state.filteredOrganisations[selectedIndex].nameSpace;
+      final success = await widget.setPreferredChurch?.call(churchId) ??
+          await context.read<ProfilesCubit>().setPreferredChurch(
+                churchId,
+              );
 
       if (success) {
         await showPreferredChurchSuccessDialog(

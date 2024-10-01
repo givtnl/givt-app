@@ -3,13 +3,15 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
+import 'package:givt_app/features/family/features/home_screen/usecases/preferred_church_usecase.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class NavigationBarHomeCubit
-    extends CommonCubit<String?, NavigationBarHomeCustom> {
+    extends CommonCubit<String?, NavigationBarHomeCustom>
+    with PreferredChurchUseCase {
   NavigationBarHomeCubit(this._profilesRepository, this._authRepository)
       : super(const BaseState.initial());
 
@@ -24,6 +26,18 @@ class NavigationBarHomeCubit
         .onProfilesChanged()
         .listen((_) => _getProfilePictureUrl());
     _getProfilePictureUrl();
+    checkForPreferredChurch();
+  }
+
+  Future<void> checkForPreferredChurch() async {
+    try {
+      if (await shouldShowPreferredChurchModal()) {
+        emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
+        setPreferredChurchModalShown();
+      }
+    } catch (e, s) {
+      //logfordebug
+    }
   }
 
   @override
