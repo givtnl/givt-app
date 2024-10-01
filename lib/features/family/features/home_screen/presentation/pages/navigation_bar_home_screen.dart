@@ -125,6 +125,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     _cubit.onDidChangeDependencies();
   }
 
+  @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
   void _handleCustom(BuildContext context, NavigationBarHomeCustom custom) {
     //TODO
   }
