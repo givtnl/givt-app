@@ -101,7 +101,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             FunButton(
               isDisabled: !_isScratched,
               onTap: () {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   const StartInterviewScreen().toRoute(context),
                 );
               },

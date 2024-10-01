@@ -64,7 +64,7 @@ class _StartInterviewScreenState extends State<StartInterviewScreen> {
                       child: FunButton(
                         onTap: () {
                           // push recording screen
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             BaseStateConsumer(
                               cubit: cubit,
