@@ -30,11 +30,14 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    namespace 'net.givtapp.droid'
     compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {
-        // sourceCompatibility JavaVersion.VERSION_1_8
-        // targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+
+        coreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
@@ -87,3 +90,7 @@ flutter {
     source '../..'
 }
 
+dependencies {
+    // For AGP 7.4+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+}
