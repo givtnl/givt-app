@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/children/edit_child/models/edit_child.dart';
 
 mixin EditChildRepository {
-  Future<bool> editChild(String childGUID, EditChild child);
+  Future<bool> editChildName(String childGUID, String name);
 
   Future<bool> editChildAllowance(String childGUID, int allowance);
 
@@ -24,8 +23,12 @@ class EditChildRepositoryImpl with EditChildRepository {
       StreamController.broadcast();
 
   @override
-  Future<bool> editChild(String childGUID, EditChild child) async {
-    final response = await apiService.editChild(childGUID, child.toJson());
+  Future<bool> editChildName(String childGUID, String name) async {
+    final response = await apiService.editChild(childGUID, {
+      'childProfile': {
+        'firstName': name,
+      },
+    });
     _childGUIDController.add(childGUID);
     return response;
   }
