@@ -41,11 +41,16 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     return FunScaffold(
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
       safeAreaBottom: false,
-      appBar: const FunTopAppBar(
+      appBar: FunTopAppBar(
         title: 'Who is playing?',
-        leading: GivtBackButtonFlat(),
+        leading: GivtBackButtonFlat(
+          onPressedExt: () {
+            Navigator.of(context).pop();
+            cubit.emptyAllProfiles();
+          },
+        ),
         systemNavigationBarColor: FamilyAppTheme.secondary80,
-        actions: [
+        actions: const [
           LeaveGameButton(),
         ],
       ),

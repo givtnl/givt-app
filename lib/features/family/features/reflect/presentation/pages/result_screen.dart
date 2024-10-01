@@ -94,6 +94,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   ],
                   FunButton.secondary(
                     onTap: () {
+                      _cubit.finishGame();
                       Navigator.of(context)
                           .push(const GratefulScreen().toRoute(context));
                     },

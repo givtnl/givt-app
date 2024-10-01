@@ -12,6 +12,10 @@ class ResultCubit extends CommonCubit<String, dynamic> {
     emitData(_reflectAndShareRepository.getCurrentSecretWord());
   }
 
+  void finishGame() {
+    _reflectAndShareRepository.emptyAllProfiles();
+  }
+
   /// Checks if the game is finished.
   ///
   /// Returns `true` when all family members have gone as superheroes,
