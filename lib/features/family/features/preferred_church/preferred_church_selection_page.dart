@@ -113,44 +113,44 @@ class _PreferredChurchSelectionPageState
         },
       ),
       floatingActionButton: FunButton(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
         isDisabled: selectedIndex == -1,
         isLoading: isLoading,
         text: 'Confirm',
-        onTap: () async {
-          if (selectedIndex != -1) {
-            setState(() {
-              isLoading = true;
-            });
-            final success =
-                await context.read<ProfilesCubit>().setPreferredChurch(
-                      bloc.state.filteredOrganisations[selectedIndex].nameSpace,
-                    );
-
-            if (success) {
-              setState(() {
-                isLoading = false;
-              });
-              await showPreferredChurchSuccessDialog(
-                context,
-                bloc.state.filteredOrganisations[selectedIndex].orgName,
-                onTap: () => Navigator.of(context)
-                  ..pop()
-                  ..pop(),
-              );
-            } else {
-              await showPreferredChurchErrorDialog(context);
-              setState(() {
-                isLoading = false;
-              });
-            }
-          }
-        },
+        onTap: () => _onTapConfirm(context),
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.preferredChurchSelected,
         ),
       ),
     );
+  }
+
+  Future<void> _onTapConfirm(BuildContext context) async {
+    if (selectedIndex != -1) {
+      setState(() {
+        isLoading = true;
+      });
+      final success = await context.read<ProfilesCubit>().setPreferredChurch(
+            bloc.state.filteredOrganisations[selectedIndex].nameSpace,
+          );
+
+      if (success) {
+        await showPreferredChurchSuccessDialog(
+          context,
+          bloc.state.filteredOrganisations[selectedIndex].orgName,
+          onTap: () => Navigator.of(context)
+            ..pop()
+            ..pop(),
+        );
+      } else {
+        await showPreferredChurchErrorDialog(
+          context,
+          onTap: () {
+            Navigator.of(context).pop();
+            _onTapConfirm(context);
+          },
+        );
+      }
+    }
   }
 
   Widget _buildListTile({

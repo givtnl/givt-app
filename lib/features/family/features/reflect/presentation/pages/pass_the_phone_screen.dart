@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
@@ -14,8 +15,13 @@ class PassThePhone extends StatelessWidget {
     required this.user,
     required this.onTap,
     required this.buttonText,
+    this.customHeader,
+    this.customTitle,
     super.key,
   });
+
+  final Widget? customHeader;
+  final Widget? customTitle;
 
   factory PassThePhone.toSuperhero(GameProfile superhero) {
     return PassThePhone(
@@ -46,43 +52,50 @@ class PassThePhone extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Scaffold(
-        backgroundColor: user.role!.color,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Card(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 16),
-                    GameProfileItem(
-                      profile: user,
-                      size: 120,
-                      displayName: false,
-                    ),
-                    const SizedBox(height: 16),
-                    TitleMediumText(
-                      user.roles.length > 1
-                          ? 'Pass the phone to the\n ${user.roles.first.name} and ${user.roles.last.name} ${user.firstName}'
-                          : 'Pass the phone to the\n ${user.role!.name} ${user.firstName}',
-                      textAlign: TextAlign.center,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: FunButton(
-                        onTap: () => onTap.call(context),
-                        text: buttonText,
-                        analyticsEvent: AnalyticsEvent(
-                          AmplitudeEvents.reflectAndSharePassThePhoneClicked,
-                        ),
-                      ),
-                    ),
-                  ],
+        backgroundColor: user.role!.color.backgroundColor,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: SvgPicture.asset(
+                  'assets/family/images/pass-the-phone.svg',
+                  fit: BoxFit.cover,
+                  width: MediaQuery.sizeOf(context).width,
                 ),
               ),
-            ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Spacer(),
+                  customHeader ??
+                      GameProfileItem(
+                        profile: user,
+                        size: 120,
+                        displayName: false,
+                        displayRole: false,
+                      ),
+                  const SizedBox(height: 16),
+                  customTitle ??
+                      TitleMediumText(
+                        user.roles.length > 1
+                            ? 'Pass the phone to the\n ${user.roles.first.name} and ${user.roles.last.name} ${user.firstName}'
+                            : 'Pass the phone to the\n ${user.role!.name} ${user.firstName}',
+                        textAlign: TextAlign.center,
+                      ),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: FunButton.secondary(
+                      onTap: () => onTap.call(context),
+                      text: buttonText,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.reflectAndSharePassThePhoneClicked,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

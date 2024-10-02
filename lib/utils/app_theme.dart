@@ -80,7 +80,7 @@ class AppTheme {
   static const tertiary50 = Color(0xFF8E63C0);
   static const tertiary80 = Color(0xFFDAB9FF);
   static const tertiary90 = Color(0xFFEEDBFF);
-  static const tertiary95 = Color(0xFFEEDBFF);
+  static const tertiary95 = Color(0xFFF9EDFF);
   static const tertiary98 = Color(0xFFFFF7FF);
 
   static const highlight30 = Color(0xFF514700);

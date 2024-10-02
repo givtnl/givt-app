@@ -27,8 +27,7 @@ class CommonHistoryItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Container(
-      padding:
-          EdgeInsets.symmetric(vertical: 10, horizontal: size.width * 0.05),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       color: backgroundColor,
       child: Row(
         children: [

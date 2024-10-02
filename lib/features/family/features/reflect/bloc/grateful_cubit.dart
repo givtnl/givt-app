@@ -33,13 +33,34 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   Session? _session;
 
   Future<void> init() async {
-    _session = await _authRepository.getStoredSession();
-    _initProfiles();
+    try {
+      await _getSession();
+      _initProfiles();
 
-    await _gratefulRecommendationsRepository
-        .fetchGratefulRecommendationsForMultipleProfiles(_profiles);
+      await _gratefulRecommendationsRepository
+          .fetchGratefulRecommendationsForMultipleProfiles(_profiles);
 
-    await _fetchRecommendationsForCurrentProfile();
+      await _fetchRecommendationsForCurrentProfile();
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+      _hasRecommendationsError = true;
+      _emitData();
+    }
+  }
+
+  Future<void> _getSession() async {
+    try {
+      _session = await _authRepository.getStoredSession();
+    } catch (e, s) {
+      //it's ok if we can't get the session
+      // as a fallback we don't show any parent profiles
+      // as we can't distinguish between logged in and
+      // non-logged in parents without the session object
+      LoggingInfo.instance.logExceptionForDebug(
+        e,
+        stacktrace: s,
+      );
+    }
   }
 
   void _initProfiles() {
@@ -57,7 +78,17 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
-  GameProfile _getCurrentProfile() => _profiles[_currentProfileIndex];
+  GameProfile _getCurrentProfile() {
+    try {
+      final profile = _profiles[_currentProfileIndex];
+      return profile;
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+      _initProfiles();
+      _currentProfileIndex = 0;
+      return _profiles[_currentProfileIndex];
+    }
+  }
 
   void _emitData() {
     emitData(
@@ -80,7 +111,8 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           isLoading: _isLoadingRecommendations,
           hasError: _hasRecommendationsError,
           organisations: _currentRecommendations,
-          name: _getCurrentProfile().firstName,
+          name:
+              _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ?? '',
         ),
       ),
     );
@@ -167,6 +199,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   bool _isNonLoggedInParent(GameProfile element) {
-    return !element.isChild && element.userId != _session?.userGUID;
+    return !element.isChild &&
+        (_session?.userGUID == null || element.userId != _session?.userGUID);
   }
 }

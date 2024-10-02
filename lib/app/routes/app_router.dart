@@ -10,7 +10,6 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/generosity_challenge/utils/generosity_challenge_helper.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
 import 'package:givt_app/features/first_use/pages/welcome_page.dart';
@@ -84,7 +83,7 @@ class AppRouter {
               // do nothing
               return;
             }
-            if (state.status == AuthStatus.authenticated && !_isInChallenge()) {
+            if (state.status == AuthStatus.authenticated) {
               context.go(
                 '${FamilyPages.profileSelection.path}/${FamilyPages.searchForCoin.path}?${routerState.uri.query}',
               );
@@ -592,11 +591,6 @@ class AppRouter {
     ],
   );
 
-  static bool _isInChallenge() {
-    return GenerosityChallengeHelper.isActivated &&
-        !GenerosityChallengeHelper.isCompleted;
-  }
-
   /// This method is used to redirect the user to the correct page after
   /// clicking on a link in an email
   static FutureOr<String?> _redirectFromExternalLink(
@@ -645,19 +639,9 @@ class AppRouter {
 
     params['afterGivingRedirection'] = afterGivingRedirection;
 
-    if (navigatingPage == FamilyPages.generosityChallenge.path &&
-        GenerosityChallengeHelper.isCompleted) {
-      navigatingPage = '';
-      params.remove('page');
-    }
-
     final query = Uri(
       queryParameters: params,
     ).query;
-
-    if (GenerosityChallengeHelper.isActivated) {
-      return FamilyPages.generosityChallenge.path;
-    }
 
     /// Display the splash screen while checking the auth status
     if (auth.status == AuthStatus.loading) {
@@ -700,9 +684,7 @@ class AppRouter {
         return;
       }
 
-      if (state.user.isUsUser &&
-          (!GenerosityChallengeHelper.isActivated ||
-              GenerosityChallengeHelper.isCompleted)) {
+      if (state.user.isUsUser) {
         if (state.user.needRegistration) {
           // Prevent that users will see the profileselection page first when
           // registration is not finished (yet)

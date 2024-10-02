@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/children/generosity_challenge/models/color_combo.dart';
-import 'package:givt_app/features/children/generosity_challenge/widgets/generosity_back_button.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/shared/models/color_combo.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
@@ -42,7 +42,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
     return Scaffold(
       appBar: FunTopAppBar.primary99(
         title: 'Give',
-        leading: const GenerosityBackButton(),
+        leading: const GivtBackButtonFlat(),
       ),
       body: SafeArea(
         child: Center(

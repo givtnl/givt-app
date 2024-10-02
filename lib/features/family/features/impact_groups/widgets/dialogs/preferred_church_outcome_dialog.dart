@@ -8,8 +8,7 @@ import 'package:go_router/go_router.dart';
 Future<void> showPreferredChurchSuccessDialog(
     BuildContext context, String churchName,
     {void Function()? onTap}) async {
-  return FunModal.showAsDialog(
-    context,
+  await FunModal(
     title: churchName,
     subtitle: 'Added as your church',
     icon: FunIcon.checkmark(),
@@ -21,24 +20,22 @@ Future<void> showPreferredChurchSuccessDialog(
             AnalyticsEvent(AmplitudeEvents.preferredChurchSuccessDialogDone),
       ),
     ],
-  );
+  ).show(context);
 }
 
-Future<void> showPreferredChurchErrorDialog(
-  BuildContext context,
-) async {
-  return FunModal.showAsDialog(
-    context,
+Future<void> showPreferredChurchErrorDialog(BuildContext context,
+    {void Function()? onTap}) async {
+  await FunModal(
     title: 'Oops, something went wrong...',
     buttons: [
       FunButton(
         text: 'Retry',
-        onTap: () => context.pop(),
+        onTap: onTap ?? () => context.pop(),
         leftIcon: Icons.refresh_rounded,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.retryClicked,
         ),
       ),
     ],
-  );
+  ).show(context);
 }

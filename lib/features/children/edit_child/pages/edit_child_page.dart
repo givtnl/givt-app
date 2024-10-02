@@ -11,7 +11,13 @@ import 'package:givt_app/features/children/edit_child/widgets/create_child_text_
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/children/utils/child_date_utils.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
+import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,31 +33,15 @@ class EditChildPage extends StatefulWidget {
 class _EditChildPageState extends State<EditChildPage> {
   final _nameController = TextEditingController();
   final _dateOfBirthController = TextEditingController();
-  final _allowanceController = TextEditingController();
 
   void _editChild() {
-    final name = _nameController.text.trim();
-
-    final allowance = _allowanceController.text.isNotEmpty
-        ? int.parse(
-            _allowanceController.text
-                .trim()
-                .substring(1), // removing currency sign
-          )
-        : 0;
-
-    final child = EditChild(
-      firstName: name,
-      allowance: allowance,
-    );
-    context.read<EditChildCubit>().editChild(child: child);
+    context.read<EditChildCubit>().editChild(name: _nameController.text.trim());
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _dateOfBirthController.dispose();
-    _allowanceController.dispose();
     super.dispose();
   }
 
@@ -64,9 +54,6 @@ class _EditChildPageState extends State<EditChildPage> {
     _dateOfBirthController.text = ChildDateUtils.dateFormatter.format(
       DateTime.parse(profileDetails.dateOfBirth),
     );
-    final allowanceText =
-        '$currencySymbol${child.allowance.toStringAsFixed(0)}';
-    _allowanceController.text = allowanceText;
   }
 
   void _refreshProfiles() {
@@ -110,109 +97,48 @@ class _EditChildPageState extends State<EditChildPage> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            actions: [
-              Expanded(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.arrow_back_ios_new_sharp),
-                    label: Text(
-                      context.l10n.cancel,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: AppTheme.inputFieldBorderSelected,
-                          ),
-                    ),
-                    onPressed: () {
-                      context.pop();
-                      AnalyticsHelper.logEvent(
-                        eventName: AmplitudeEvents.childEditCancelClicked,
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    context.l10n.childEditProfile,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-              ),
-              const Spacer(),
-            ],
+        return FunScaffold(
+          appBar: FunTopAppBar(
+            title: context.l10n.childEditProfile,
+            leading: const GivtBackButtonFlat(),
           ),
           body: state is EditChildUploadingState
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: AppTheme.sliderIndicatorFilled,
-                  ),
-                )
+              ? const FullScreenLoadingWidget()
               : state is EditChildInputState ||
                       state is EditChildInputErrorState
-                  ? SizedBox(
-                      width: double.infinity,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CreateChildTextField(
-                                    maxLength: 20,
-                                    errorText: state is EditChildInputErrorState
-                                        ? state.nameErrorMessage
-                                        : null,
-                                    controller: _nameController,
-                                    labelText: context.l10n.firstName,
-                                    textInputAction: TextInputAction.next,
-                                    keyboardType: TextInputType.name,
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  CreateChildTextField(
-                                    enabled: false,
-                                    controller: _dateOfBirthController,
-                                    labelText: context.l10n.dateOfBirth,
-                                    showCursor: true,
-                                    textInputAction: TextInputAction.next,
-                                    readOnly: true,
-                                  ),
-                                  const SizedBox(
-                                    height: 80,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          CreateChildTextField(
+                            maxLength: 20,
+                            errorText: state is EditChildInputErrorState
+                                ? state.nameErrorMessage
+                                : null,
+                            controller: _nameController,
+                            labelText: context.l10n.firstName,
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.name,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          CreateChildTextField(
+                            enabled: false,
+                            controller: _dateOfBirthController,
+                            labelText: context.l10n.dateOfBirth,
+                            showCursor: true,
+                            textInputAction: TextInputAction.next,
+                            readOnly: true,
+                          ),
+                        ],
                       ),
                     )
                   : Container(),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.only(left: 35, right: 35, bottom: 30),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                disabledBackgroundColor: Colors.grey,
-              ),
-              onPressed: state is! EditChildUploadingState ? _editChild : null,
-              child: Text(
-                context.l10n.save,
-                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                      color: Colors.white,
-                    ),
-              ),
+          floatingActionButton: FunButton(
+            onTap: state is! EditChildUploadingState ? _editChild : null,
+            text: context.l10n.save,
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.childEditSaveClicked,
             ),
           ),
         );

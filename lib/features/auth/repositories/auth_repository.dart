@@ -8,7 +8,6 @@ import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/amount_presets/models/models.dart';
 import 'package:givt_app/features/auth/models/session.dart';
-import 'package:givt_app/features/children/generosity_challenge/domain/models/generosity_registration_result.dart';
 import 'package:givt_app/shared/models/stripe_response.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -42,14 +41,6 @@ mixin AuthRepository {
   Future<UserExt> registerUser({
     required TempUser tempUser,
     required bool isNewUser,
-  });
-
-  Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
-    required String firstname,
-    required String lastname,
-    required String email,
-    required String password,
-    String? phoneNumber,
   });
 
   Future<bool> changeGiftAid({
@@ -516,81 +507,6 @@ class AuthRepositoyImpl with AuthRepository {
       userId: newUserExt.guid,
       userProperties: AnalyticsHelper.getUserPropertiesFromExt(newUserExt),
     );
-  }
-
-  @override
-  Future<GenerosityRegistrationResult> registerGenerosityChallengeUser({
-    required String firstname,
-    required String lastname,
-    required String email,
-    required String password,
-    String? phoneNumber,
-  }) async {
-    Map<String, dynamic>? response;
-    try {
-      final userStatus = await _apiService.checkEmail(email);
-      if (userStatus.contains('temp')) {
-        final tempUser = TempUser(
-          email: email,
-          country: Country.us.countryCode,
-          appLanguage: 'en',
-          timeZoneId: await FlutterTimezone.getLocalTimezone(),
-          address: Util.defaultAdress,
-          city: Util.defaultCity,
-          postalCode: Util.defaultPostCode,
-          phoneNumber: phoneNumber ?? Util.defaultUSPhoneNumber,
-          iban: Util.defaultIban,
-          sortCode: Util.empty,
-          accountNumber: Util.empty,
-          amountLimit: 4999,
-          firstName: firstname,
-          lastName: lastname,
-          password: password,
-        );
-        // updates the user extension with the temp user
-        // and updates the session
-        await registerUser(tempUser: tempUser, isNewUser: false);
-        return GenerosityRegistrationResult.success();
-      }
-      if (userStatus.contains('true')) {
-        return GenerosityRegistrationResult.alreadyRegistered();
-      }
-    } catch (e) {
-      return GenerosityRegistrationResult.failure();
-    }
-    try {
-      response = await _apiService.registerGenerosityChallengeUser(
-        {
-          'firstname': firstname,
-          'lastname': lastname,
-          'email': email,
-          'password': password,
-        },
-      );
-    } catch (e) {
-      return GenerosityRegistrationResult.failure();
-    }
-
-    try {
-      final newSession =
-          Session.fromGenerosityJson(response['item'] as Map<String, dynamic>);
-      await _prefs.setString(
-        Session.tag,
-        jsonEncode(
-          newSession.toJson(),
-        ),
-      );
-      await fetchUserExtension(newSession.userGUID);
-    } catch (e) {
-      //failing one of these is non-blocking
-    } finally {
-      updateSessionStream(true);
-    }
-    if (response['errorMessage'] == 'USER_ALREADY_EXISTS') {
-      return GenerosityRegistrationResult.alreadyRegistered();
-    } else {
-      return GenerosityRegistrationResult.success();
-    }
   }
 
   @override

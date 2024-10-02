@@ -23,27 +23,6 @@ class FunModal extends StatelessWidget {
 
   final VoidCallback? closeAction;
 
-  static Future<void> showAsDialog(
-    BuildContext context, {
-    required String title,
-    String? subtitle,
-    List<FunButton> buttons = const [],
-    FunIcon? icon,
-    VoidCallback? closeAction,
-  }) {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => FunModal(
-        title: title,
-        subtitle: subtitle,
-        buttons: buttons,
-        icon: icon,
-        closeAction: closeAction,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -129,8 +108,8 @@ class FunModal extends StatelessWidget {
     );
   }
 
-  void show(BuildContext context) {
-    showDialog<void>(
+  Future<void> show(BuildContext context) {
+    return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (context) => this,
