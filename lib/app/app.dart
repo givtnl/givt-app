@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -54,7 +53,6 @@ class _AppState extends State<App> {
     AnalyticsHelper.init(const String.fromEnvironment('AMPLITUDE_KEY'));
 
     initializeStripe();
-    resetAppBadge();
 
     /// Setup firebase messaging for background notifications
     final notificationService = getIt<NotificationService>();
@@ -141,12 +139,6 @@ class _AppState extends State<App> {
     Stripe.publishableKey = const String.fromEnvironment('STRIPE_PK');
     Stripe.merchantIdentifier =
         const String.fromEnvironment('STRIPE_MERCHANT_ID');
-  }
-
-  Future<void> resetAppBadge() async {
-    if (await FlutterAppBadger.isAppBadgeSupported()) {
-      await FlutterAppBadger.removeBadge();
-    }
   }
 }
 

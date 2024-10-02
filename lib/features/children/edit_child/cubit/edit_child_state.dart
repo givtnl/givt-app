@@ -26,7 +26,7 @@ class EditChildInputState extends EditChildState {
 class EditChildInputErrorState extends EditChildState {
   const EditChildInputErrorState({
     required this.profileDetails,
-    required super.child,
+    super.child,
     this.nameErrorMessage,
     this.allowanceErrorMessage,
   });

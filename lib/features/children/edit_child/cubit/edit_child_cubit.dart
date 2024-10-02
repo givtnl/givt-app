@@ -32,19 +32,14 @@ class EditChildCubit extends Cubit<EditChildState>
   final AppLocalizations _locals;
   final Profile _profileDetails;
 
-  bool _validateInput(EditChild child) {
-    final nameErrorMessage =
-        validateName(locals: _locals, name: child.firstName);
-    final allowanceErrorMessage =
-        validateGivingAllowance(locals: _locals, allowance: child.allowance);
+  bool _validateInput(String name) {
+    final nameErrorMessage = validateName(locals: _locals, name: name);
 
-    if (nameErrorMessage != null || allowanceErrorMessage != null) {
+    if (nameErrorMessage != null) {
       emit(
         EditChildInputErrorState(
           profileDetails: _profileDetails,
-          child: child,
           nameErrorMessage: nameErrorMessage,
-          allowanceErrorMessage: allowanceErrorMessage,
         ),
       );
       return false;
@@ -52,24 +47,23 @@ class EditChildCubit extends Cubit<EditChildState>
     return true;
   }
 
-  Future<void> editChild({required EditChild child}) async {
-    if (!_validateInput(child)) {
+  Future<void> editChild({required String name}) async {
+    if (!_validateInput(name)) {
       return;
     }
 
     await AnalyticsHelper.logEvent(
       eventName: AmplitudeEvents.childEditSaveClicked,
       eventProperties: {
-        'child_name': child.firstName,
-        'giving_allowance': child.allowance,
+        'child_name': name,
       },
     );
 
     emit(const EditChildUploadingState());
     try {
-      final isChildUpdated = await _editChildRepository.editChild(
+      final isChildUpdated = await _editChildRepository.editChildName(
         _profileDetails.id,
-        child,
+        name,
       );
       if (isChildUpdated) {
         emit(
