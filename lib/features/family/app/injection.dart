@@ -82,6 +82,7 @@ void initCubits() {
       () => NavigationBarHomeCubit(
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(

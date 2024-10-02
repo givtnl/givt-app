@@ -10,8 +10,8 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ImpactGroupRecieveInviteSheet extends StatelessWidget {
-  const ImpactGroupRecieveInviteSheet({
+class ImpactGroupReceiveInviteSheet extends StatelessWidget {
+  const ImpactGroupReceiveInviteSheet({
     required this.invitdImpactGroup,
     super.key,
   });

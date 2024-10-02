@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
@@ -16,6 +20,8 @@ import 'package:givt_app/features/family/features/profiles/screens/profile_selec
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
+import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:go_router/go_router.dart';
@@ -164,15 +170,55 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     super.dispose();
   }
 
-  void _handleCustom(BuildContext context, NavigationBarHomeCustom custom) {
+  Future<void> _handleCustom(
+    BuildContext context,
+    NavigationBarHomeCustom custom,
+  ) async {
     switch (custom) {
       case PreferredChurchDialog():
         showPreferredChurchModal(context);
       case UserNeedsRegistration():
-      // TODO: Handle this case.
+        await _continueRegistration(context);
       case FamilyNotSetup():
-      // TODO: Handle this case.
+        await _showSetupFamily(context);
+      case final ShowCachedMembersDialog data:
+        _showCachedMembersDialog(context, data);
+      case final ShowFamilyInvite data:
+        _showFamilyInvite(context, data);
     }
+  }
+
+  Future<void> _continueRegistration(BuildContext context) async {
+    await context.pushNamed(
+      FamilyPages.creditCardDetails.name,
+      extra: context.read<RegistrationBloc>(),
+    );
+  }
+
+  Future<void> _showSetupFamily(BuildContext context) async {
+    await AddMemberUtil.addMemberPushPages(context);
+  }
+
+  void _showCachedMembersDialog(
+      BuildContext context, ShowCachedMembersDialog data) {
+    VPCFailedCachedMembersBottomsheet.show(
+      context,
+      data.cachedMembers,
+    );
+  }
+
+  void _showFamilyInvite(BuildContext context, ShowFamilyInvite data) {
+    unawaited(
+      showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return ImpactGroupReceiveInviteSheet(
+            invitdImpactGroup: data.group,
+          );
+        },
+      ),
+    );
   }
 
   void showPreferredChurchModal(BuildContext context) {

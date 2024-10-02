@@ -97,9 +97,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
         }
       }
       final cachedMembers = await cachedMembersCheck();
-      if (doChecks) {
-        unawaited(_doChecks(newProfiles, cachedMembers));
-      }
       _emitProfilesUpdatedWithCachedMembers(newProfiles, cachedMembers);
     } catch (error, stackTrace) {
       LoggingInfo.instance.error(

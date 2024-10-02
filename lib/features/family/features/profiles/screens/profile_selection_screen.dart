@@ -79,7 +79,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
             isDismissible: false,
             enableDrag: false,
             builder: (_) {
-              return ImpactGroupRecieveInviteSheet(
+              return ImpactGroupReceiveInviteSheet(
                 invitdImpactGroup: state.impactGroup,
               );
             },
@@ -336,7 +336,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
       VPCFailedCachedMembersBottomsheet.show(
         context,
         state.cachedMembers,
-        clearBottomsheet,
+        onBottomsheetClosed: clearBottomsheet,
       );
     }
   }

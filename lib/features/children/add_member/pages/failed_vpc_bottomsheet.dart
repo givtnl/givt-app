@@ -20,6 +20,7 @@ import 'package:givt_app/utils/stripe_helper.dart';
 
 class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
   VPCFailedCachedMembersBottomsheet({required this.members, super.key});
+
   final List<Member> members;
   final cacheCubit = getIt<CachedMembersCubit>();
 
@@ -131,9 +132,9 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
 
   static void show(
     BuildContext context,
-    List<Member> cachedMembers,
-    VoidCallback onBottomsheetClosed,
-  ) {
+    List<Member> cachedMembers, {
+    VoidCallback? onBottomsheetClosed,
+  }) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -143,6 +144,6 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (context) =>
           VPCFailedCachedMembersBottomsheet(members: cachedMembers),
-    ).then((value) => onBottomsheetClosed());
+    ).then((value) => onBottomsheetClosed?.call());
   }
 }
