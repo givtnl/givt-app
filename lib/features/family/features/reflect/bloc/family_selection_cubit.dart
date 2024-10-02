@@ -11,13 +11,11 @@ class FamilySelectionCubit extends CommonCubit<List<GameProfile>, dynamic> {
 
   void init() {
     emit(const BaseState.loading());
-    _reflectAndShareRepository.getFamilyProfiles().then((profiles) {
-      emit(BaseState.data(profiles));
-    });
-  }
-
-  void emptyAllProfiles() {
-    _reflectAndShareRepository.emptyAllProfiles();
+    _reflectAndShareRepository
+      ..emptyAllProfiles()
+      ..getFamilyProfiles().then((profiles) {
+        emit(BaseState.data(profiles));
+      });
   }
 
   void rolesClicked(List<GameProfile> profiles) {

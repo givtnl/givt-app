@@ -21,7 +21,6 @@ class LeaveGameDialog extends StatelessWidget {
       buttons: [
         FunButton.destructive(
           onTap: () {
-            getIt<FamilySelectionCubit>().emptyAllProfiles();
             Navigator.of(context).popUntil(
               ModalRoute.withName(
                 FamilyPages.profileSelection.name,

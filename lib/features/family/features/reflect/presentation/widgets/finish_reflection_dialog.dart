@@ -28,7 +28,6 @@ class FinishReflectionDialog extends StatelessWidget {
       buttons: [
         FunButton(
           onTap: () {
-            getIt<FamilySelectionCubit>().emptyAllProfiles();
             Navigator.of(context).push(const SummaryScreen().toRoute(context));
           },
           text: 'Yes, finish',

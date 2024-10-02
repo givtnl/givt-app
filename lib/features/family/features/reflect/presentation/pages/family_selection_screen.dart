@@ -46,7 +46,6 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         leading: GivtBackButtonFlat(
           onPressedExt: () {
             Navigator.of(context).pop();
-            cubit.emptyAllProfiles();
           },
         ),
         systemNavigationBarColor: FamilyAppTheme.secondary80,
