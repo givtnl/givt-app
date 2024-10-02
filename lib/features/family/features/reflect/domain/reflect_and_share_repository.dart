@@ -59,6 +59,10 @@ class ReflectAndShareRepository {
     return _allProfiles!;
   }
 
+  void emptyAllProfiles() {
+    _allProfiles = null;
+  }
+
   // select the family members that will participate in the game
   void selectProfiles(List<GameProfile> selectedProfiles) {
     // Rest game state

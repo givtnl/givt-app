@@ -137,20 +137,28 @@ class _GivingPageState extends State<GivingPage> {
           browserIsOpened = true;
           _customInAppBrowser.openUrlRequest(
             urlRequest: URLRequest(
-              url: Uri.https(
-                getIt<RequestHelper>().apiURL,
-                'confirm.html',
-                {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+              url: WebUri.uri(
+                Uri.https(
+                  getIt<RequestHelper>().apiURL,
+                  'confirm.html',
+                  {'msg': base64.encode(utf8.encode(jsonEncode(givt)))},
+                ),
               ),
             ),
-            options: InAppBrowserClassOptions(
-              crossPlatform: InAppBrowserOptions(
-                toolbarTopBackgroundColor: Colors.white,
-              ),
-              ios: IOSInAppBrowserOptions(
-                toolbarBottomBackgroundColor: Colors.white,
+            settings: InAppBrowserClassSettings(
+              browserSettings: InAppBrowserSettings(
+                hideCloseButton: true,
+                hideUrlBar: true,
+                hideTitleBar: true,
                 hideToolbarBottom: true,
+                hideToolbarTop: true,
+                toolbarTopBackgroundColor: Colors.white,
+                toolbarTopTintColor: Colors.white,
+                toolbarBottomBackgroundColor: Colors.white,
               ),
+              webViewSettings: InAppWebViewSettings(
+                underPageBackgroundColor: Colors.white,
+              )
             ),
           );
 
