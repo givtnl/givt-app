@@ -61,8 +61,8 @@ class RuleCard extends StatelessWidget {
         ),
       ),
       Positioned(top: 0, child: icon),
-      const Positioned(
-        top: 66,
+      Positioned(
+        top: icon.circleSize,
         child: TitleMediumText('Read out loud'),
       ),
     ]);

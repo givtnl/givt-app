@@ -71,29 +71,7 @@ class RuleScreen extends StatelessWidget {
     );
   }
   factory RuleScreen.toReporters(List<GameProfile> reporters) {
-    String getReportersText(int reportersCount) {
-      if (reportersCount == 1) {
-        return 'As the reporter you will ask the superhero 3 questions about their day';
-      } else {
-        return 'The reporters will ask the superhero 3 questions about their day';
-      }
-    }
-
     final cubit = getIt<InterviewCubit>();
-
-    void handleCustom(BuildContext context, InterviewCustom custom) {
-      switch (custom) {
-        case final PassThePhoneToSidekick data:
-          Navigator.pushReplacement(
-            context,
-            PassThePhone.toSidekick(data.profile).toRoute(context),
-          );
-        case GratitudeSelection():
-          Navigator.of(context).pushReplacement(
-            const GratitudeSelectionScreen().toRoute(context),
-          );
-      }
-    }
 
     return RuleScreen(
       user: reporters.first,
@@ -101,7 +79,7 @@ class RuleScreen extends StatelessWidget {
       iconData: FontAwesomeIcons.microphone,
       bodyText: getReportersText(reporters.length),
       buttonText: 'Next',
-      onTap: (context) => {
+      onTap: (context) {
         Navigator.pushReplacement(
           context,
           BaseStateConsumer(
@@ -114,9 +92,30 @@ class RuleScreen extends StatelessWidget {
               );
             },
           ).toRoute(context),
-        ),
+        );
       },
     );
+  }
+  static void handleCustom(BuildContext context, InterviewCustom custom) {
+    switch (custom) {
+      case final PassThePhoneToSidekick data:
+        Navigator.pushReplacement(
+          context,
+          PassThePhone.toSidekick(data.profile).toRoute(context),
+        );
+      case GratitudeSelection():
+        Navigator.of(context).pushReplacement(
+          const GratitudeSelectionScreen().toRoute(context),
+        );
+    }
+  }
+
+  static String getReportersText(int reportersCount) {
+    if (reportersCount == 1) {
+      return 'As the reporter you will ask the superhero 3 questions about their day';
+    } else {
+      return 'The reporters will ask the superhero 3 questions about their day';
+    }
   }
 
   final GameProfile user;
