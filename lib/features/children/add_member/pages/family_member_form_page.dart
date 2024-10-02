@@ -53,6 +53,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
           ? Member(
               firstName: _nameController.text,
               age: int.parse(_ageController.text),
+              dateOfBirth: dateOfBirth(),
               allowance: _amount,
               type: ProfileType.Child,
             )
@@ -64,6 +65,15 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
       return newMember;
     }
     return null;
+  }
+
+  DateTime dateOfBirth() {
+    final age = int.parse(_ageController.text);
+    return DateTime(
+      DateTime.now().year - age,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
   }
 
   void onDone({bool isChildSelected = false}) {
