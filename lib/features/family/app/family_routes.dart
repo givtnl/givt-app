@@ -44,6 +44,7 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
+import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/presentation/camera_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
@@ -106,8 +107,8 @@ class FamilyAppRoutes {
                 FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
           ),
         ],
-        //child: const ProfileSelectionScreen(),
-        child: const NavigationBarHomeScreen(),
+        child: const ProfileSelectionScreen(),
+        // child: const NavigationBarHomeScreen(),
       ),
       routes: [
         GoRoute(
