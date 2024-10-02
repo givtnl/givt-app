@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -10,6 +8,7 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 
 class LeaveGameDialog extends StatelessWidget {
   const LeaveGameDialog({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FunModal(
