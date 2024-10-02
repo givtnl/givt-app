@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
@@ -10,9 +16,9 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/rule_card.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -55,13 +61,16 @@ class RuleScreen extends StatelessWidget {
       iconData: FontAwesomeIcons.solidHandshake,
       bodyText:
           "Listen to the superhero. Pick what they're grateful for. Guess the secret word",
-      onTap: (context) => {
-        // TODO: KIDS-1475
+      onTap: (context) {
+        final reporters = getIt<InterviewCubit>().getReporters();
+        Navigator.of(context).pushReplacement(
+          PassThePhone.toReporters(reporters).toRoute(context),
+        );
       },
       buttonText: 'Next',
     );
   }
-  factory RuleScreen.toReporter(List<GameProfile> reporters) {
+  factory RuleScreen.toReporters(List<GameProfile> reporters) {
     String getReportersText(int reportersCount) {
       if (reportersCount == 1) {
         return 'As the reporter you will ask the superhero 3 questions about their day';
@@ -70,15 +79,43 @@ class RuleScreen extends StatelessWidget {
       }
     }
 
+    final cubit = getIt<InterviewCubit>();
+
+    void handleCustom(BuildContext context, InterviewCustom custom) {
+      switch (custom) {
+        case final PassThePhoneToSidekick data:
+          Navigator.pushReplacement(
+            context,
+            PassThePhone.toSidekick(data.profile).toRoute(context),
+          );
+        case GratitudeSelection():
+          Navigator.of(context).pushReplacement(
+            const GratitudeSelectionScreen().toRoute(context),
+          );
+      }
+    }
+
     return RuleScreen(
       user: reporters.first,
       header: ReportersWidget(reporters: reporters),
       iconData: FontAwesomeIcons.microphone,
       bodyText: getReportersText(reporters.length),
-      onTap: (context) => {
-        // TODO: KIDS-1475
-      },
       buttonText: 'Next',
+      onTap: (context) => {
+        Navigator.pushReplacement(
+          context,
+          BaseStateConsumer(
+            cubit: cubit..init(),
+            onInitial: (context) => const SizedBox.shrink(),
+            onCustom: handleCustom,
+            onData: (context, uiModel) {
+              return RecordAnswerScreen(
+                uiModel: uiModel,
+              );
+            },
+          ).toRoute(context),
+        ),
+      },
     );
   }
 
@@ -92,35 +129,37 @@ class RuleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      canPop: true,
+      canPop: false,
       appBar: FunTopAppBar(
         title: user.role!.name.capitalize(),
-        leading: const GivtBackButtonFlat(),
         actions: const [
           LeaveGameButton(),
         ],
       ),
       body: Center(
-        child: RuleCard(
-          color: user.role!.color.backgroundColor,
-          icon: FunIcon(
-            iconData: iconData,
-            circleColor: user.role!.color.backgroundColor,
-            circleSize: 64,
-            iconSize: 32,
-          ),
-          header: header,
-          content: BodyMediumText(
-            bodyText,
-            textAlign: TextAlign.center,
-          ),
-          button: FunButton(
-            onTap: () {
-              onTap(context);
-            },
-            text: buttonText,
-            analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.reflectAndShareRulesNextClicked,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 56),
+          child: RuleCard(
+            color: user.role!.color.backgroundColor,
+            icon: FunIcon(
+              iconData: iconData,
+              circleColor: user.role!.color.backgroundColor,
+              circleSize: 64,
+              iconSize: 32,
+            ),
+            header: header,
+            content: BodyMediumText(
+              bodyText,
+              textAlign: TextAlign.center,
+            ),
+            button: FunButton(
+              onTap: () {
+                onTap(context);
+              },
+              text: buttonText,
+              analyticsEvent: AnalyticsEvent(
+                AmplitudeEvents.reflectAndShareRulesNextClicked,
+              ),
             ),
           ),
         ),

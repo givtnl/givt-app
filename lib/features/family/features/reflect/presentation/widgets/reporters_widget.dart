@@ -3,17 +3,23 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 
 class ReportersWidget extends StatelessWidget {
-  const ReportersWidget({required this.reporters, super.key});
+  const ReportersWidget(
+      {required this.reporters,
+      this.circleSize = 100,
+      this.displayName = true,
+      super.key});
   final List<GameProfile> reporters;
+  final double circleSize;
+  final bool displayName;
   @override
   Widget build(BuildContext context) {
     switch (reporters.length) {
       case 1:
         return GameProfileItem(
           profile: reporters.first,
-          displayName: false,
           displayRole: false,
-          size: 140,
+          displayName: displayName,
+          size: circleSize,
         );
       case 2:
         return Padding(
@@ -23,27 +29,27 @@ class ReportersWidget extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                const Positioned(
+                Positioned(
                   left: 1,
                   child: SizedBox(
-                    height: 100,
-                    width: 100,
+                    height: circleSize - 28,
+                    width: circleSize - 28,
                   ),
                 ),
                 Positioned(
-                  right: 0,
+                  right: 8,
                   child: GameProfileItem(
                     profile: reporters[1],
-                    displayName: false,
-                    size: 120,
+                    size: circleSize - 20,
                     displayRole: false,
+                    displayName: displayName,
                   ),
                 ),
                 GameProfileItem(
                   profile: reporters.first,
-                  displayName: false,
                   displayRole: false,
-                  size: 140,
+                  displayName: displayName,
+                  size: circleSize,
                 ),
               ],
             ),
@@ -58,20 +64,20 @@ class ReportersWidget extends StatelessWidget {
             children: [
               ...reportersShort.reversed.map((reporter) {
                 return Positioned(
-                  right: reportersShort.indexOf(reporter) == 1 ? 36 : null,
-                  left: reportersShort.indexOf(reporter) == 2 ? 36 : null,
+                  right: reportersShort.indexOf(reporter) == 1 ? 28 : null,
+                  left: reportersShort.indexOf(reporter) == 2 ? 28 : null,
                   child: reportersShort.indexOf(reporter) == 0
                       ? GameProfileItem(
                           profile: reporter,
-                          displayName: false,
-                          size: 140,
+                          size: circleSize,
                           displayRole: false,
+                          displayName: displayName,
                         )
                       : GameProfileItem(
                           profile: reporter,
-                          displayName: false,
-                          size: 120,
+                          size: circleSize - 20,
                           displayRole: false,
+                          displayName: displayName,
                         ),
                 );
               }),
@@ -81,8 +87,9 @@ class ReportersWidget extends StatelessWidget {
       default:
         return GameProfileItem(
           profile: reporters.first,
-          displayName: false,
-          size: 140,
+          displayName: displayName,
+          displayRole: false,
+          size: circleSize,
         );
     }
   }
