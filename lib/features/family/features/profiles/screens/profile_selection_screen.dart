@@ -9,9 +9,7 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/notification/notification_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
-import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
-import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flow_type.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
@@ -24,8 +22,6 @@ import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bot
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
-import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
-import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -71,54 +67,17 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
 
     return BlocConsumer<ProfilesCubit, ProfilesState>(
       listener: (context, state) async {
-        if (state is ProfilesInvitedToGroup) {
-          await showModalBottomSheet<void>(
-            isScrollControlled: true,
-            context: context,
-            useSafeArea: true,
-            isDismissible: false,
-            enableDrag: false,
-            builder: (_) {
-              return ImpactGroupReceiveInviteSheet(
-                invitdImpactGroup: state.impactGroup,
-              );
-            },
-          );
-        } else if (state is ProfilesUpdatedState) {
-          if (state.cachedMembers.isNotEmpty && !isCachedMembersBottomsheetUp) {
-            showCachedMembersBottomsheet(state);
-          }
-        } else if (state is ProfilesExternalErrorState) {
+        if (state is ProfilesExternalErrorState) {
           log(state.errorMessage);
           SnackBarHelper.showMessage(
             context,
             text: 'Cannot download profiles. Please try again later.',
             isError: true,
           );
-        } else if (state is ProfilesNotSetupState) {
-          if (state.cachedMembers.isNotEmpty) {
-            showCachedMembersBottomsheet(state);
-          } else {
-            await AddMemberUtil.addMemberPushPages(context);
-          }
-        } else if (state is ProfilesNeedsRegistration) {
-          if (context.read<RegistrationBloc>().state.status ==
-              RegistrationStatus.createStripeAccount) {
-            await context.pushNamed(
-              FamilyPages.creditCardDetails.name,
-              extra: context.read<RegistrationBloc>(),
-            );
-          }
         }
       },
-      listenWhen: (previous, current) =>
-          current is ProfilesNotSetupState ||
-          current is ProfilesInvitedToGroup ||
-          current is ProfilesNeedsRegistration ||
-          current is ProfilesUpdatedState,
-      buildWhen: (previous, current) =>
-          current is! ProfilesNotSetupState &&
-          current is! ProfilesNeedsRegistration,
+      listenWhen: (previous, current) => current is ProfilesExternalErrorState,
+      buildWhen: (previous, current) => true,
       builder: (context, state) {
         final gridItems = createGridItems(
           state.profiles.where((e) => e.type == 'Child').toList(),
@@ -131,7 +90,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
           appBar: const FunTopAppBar(
             title: 'Family',
           ),
-          body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
+          body: state is ProfilesLoadingState
               ? const CustomCircularProgressIndicator()
               : state.profiles.isEmpty && state.cachedMembers.isEmpty
                   ? ProfilesEmptyStateWidget(
@@ -183,21 +142,17 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
                           onTap: () async {
                             if (!context.mounted) return;
                             flow.resetFlow();
-                            if (state.cachedMembers.isNotEmpty) {
-                              showCachedMembersBottomsheet(state);
-                            } else {
-                              await FamilyAuthUtils.authenticateUser(
-                                context,
-                                checkAuthRequest: CheckAuthRequest(
-                                  navigate: (context, {isUSUser}) async {
-                                    await context.pushNamed(
-                                      FamilyPages.childrenOverview.name,
-                                    );
-                                    _logUser(context, user);
-                                  },
-                                ),
-                              );
-                            }
+                            await FamilyAuthUtils.authenticateUser(
+                              context,
+                              checkAuthRequest: CheckAuthRequest(
+                                navigate: (context, {isUSUser}) async {
+                                  await context.pushNamed(
+                                    FamilyPages.childrenOverview.name,
+                                  );
+                                  _logUser(context, user);
+                                },
+                              ),
+                            );
                           },
                           text: 'Manage Family',
                           leftIcon: FontAwesomeIcons.sliders,
@@ -326,19 +281,6 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
     setState(() {
       isCachedMembersBottomsheetUp = false;
     });
-  }
-
-  void showCachedMembersBottomsheet(ProfilesState state) {
-    if (!isCachedMembersBottomsheetUp) {
-      setState(() {
-        isCachedMembersBottomsheetUp = true;
-      });
-      VPCFailedCachedMembersBottomsheet.show(
-        context,
-        state.cachedMembers,
-        onBottomsheetClosed: clearBottomsheet,
-      );
-    }
   }
 
   @override

@@ -4,12 +4,9 @@ import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
-import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
-import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
-import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'profiles_state.dart';
@@ -20,7 +17,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
-    this._cachedMembersRepository,
   ) : super(const ProfilesInitialState()) {
     _init();
   }
@@ -28,22 +24,14 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
-  final CachedMembersRepository _cachedMembersRepository;
 
   StreamSubscription<List<Profile>>? _profilesSubscription;
   StreamSubscription<bool>? _hasSessionSubscription;
-  StreamSubscription<List<Member>>? _cachedMembersSubscription;
 
   void _init() {
     _profilesSubscription = _profilesRepository.onProfilesChanged().listen(
       (profiles) {
         fetchAllProfiles();
-      },
-    );
-    _cachedMembersSubscription =
-        _cachedMembersRepository.onCachedMembersChanged().listen(
-      (members) {
-        _emitProfilesUpdatedWithCachedMembers(state.profiles, members);
       },
     );
     _hasSessionSubscription = _authRepository.hasSessionStream().listen(
@@ -60,16 +48,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
 
   Future<void> doInitialChecks() async {
     await fetchAllProfiles(doChecks: true);
-  }
-
-  void _showInviteSheet(ImpactGroup impactGroup) {
-    emit(
-      ProfilesInvitedToGroup(
-        profiles: state.profiles,
-        activeProfileIndex: state.activeProfileIndex,
-        impactGroup: impactGroup,
-      ),
-    );
   }
 
   Future<void> fetchAllProfiles({
@@ -96,8 +74,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
           newProfiles[state.profiles.indexOf(oldProfile)] = updatedProfile;
         }
       }
-      final cachedMembers = await cachedMembersCheck();
-      _emitProfilesUpdatedWithCachedMembers(newProfiles, cachedMembers);
+      _emitProfilesUpdated(newProfiles);
     } catch (error, stackTrace) {
       LoggingInfo.instance.error(
         'Error while fetching profiles: $error',
@@ -113,69 +90,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     }
   }
 
-  Future<void> _doChecks(List<Profile> list, List<Member> members) async {
-    final group = await _impactGroupsRepository.isInvitedToGroup();
-    if (group != null) {
-      _showInviteSheet(group);
-    } else {
-      await _doRegistrationCheck(list, members);
-    }
-  }
-
-  Future<List<Member>> cachedMembersCheck() async {
-    var cachedMembers = <Member>[];
-
-    try {
-      final members = await _cachedMembersRepository.loadFromCache();
-      cachedMembers = members;
-    } on Exception catch (e, s) {
-      LoggingInfo.instance.error(
-        'Error while fetching profiles: $e',
-        methodName: s.toString(),
-      );
-    }
-    return cachedMembers;
-  }
-
-  Future<bool> _doRegistrationCheck(
-    List<Profile> newProfiles,
-    List<Member> members,
-  ) async {
-    try {
-      UserExt? userExternal;
-      final (userExt, session, amountPresets) =
-          await _authRepository.isAuthenticated() ?? (null, null, null);
-      userExternal = userExt;
-
-      if (userExternal?.needRegistration ?? false) {
-        emit(
-          ProfilesNeedsRegistration(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-            hasFamily:
-                newProfiles.where((p) => p.type.contains('Child')).isNotEmpty,
-          ),
-        );
-        return true;
-      } else if (newProfiles.length <= 1) {
-        emit(
-          ProfilesNotSetupState(
-            profiles: newProfiles,
-            activeProfileIndex: state.activeProfileIndex,
-            cachedMembers: members,
-          ),
-        );
-        return true;
-      }
-    } catch (e, s) {
-      LoggingInfo.instance.logExceptionForDebug(
-        e,
-        stacktrace: s,
-      );
-    }
-    return false;
-  }
-
   void _emitLoadingState() {
     emit(
       ProfilesLoadingState(
@@ -185,15 +99,13 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
   }
 
-  void _emitProfilesUpdatedWithCachedMembers(
+  void _emitProfilesUpdated(
     List<Profile> profiles,
-    List<Member> members,
   ) {
     emit(
       ProfilesUpdatedState(
         profiles: profiles,
         activeProfileIndex: state.activeProfileIndex,
-        cachedMembers: members,
       ),
     );
   }
@@ -249,7 +161,6 @@ class ProfilesCubit extends Cubit<ProfilesState> {
   Future<void> close() {
     _profilesSubscription?.cancel();
     _hasSessionSubscription?.cancel();
-    _cachedMembersSubscription?.cancel();
     return super.close();
   }
 }
