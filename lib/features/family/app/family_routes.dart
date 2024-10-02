@@ -76,38 +76,60 @@ class FamilyAppRoutes {
     GoRoute(
       path: FamilyPages.profileSelection.path,
       name: FamilyPages.profileSelection.name,
-      builder: (context, state) => MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            lazy: false,
-            create: (_) => RemoteDataSourceSyncBloc(
-              getIt(),
-              getIt(),
-            )..add(const RemoteDataSourceSyncRequested()),
-          ),
-          BlocProvider(
-            create: (context) => PersonalInfoEditBloc(
-              loggedInUserExt: context.read<AuthCubit>().state.user,
-              authRepositoy: getIt(),
+      builder: (context, state) {
+        final index = int.tryParse(state.uri.queryParameters['index'] ?? '');
+        final showAllowanceWarning = bool.tryParse(
+            state.uri.queryParameters['showAllowanceWarning'] ?? '');
+        return MultiBlocProvider(
+          providers: [
+            // profile selection (home screen, for now)
+            BlocProvider(
+              lazy: false,
+              create: (_) => RemoteDataSourceSyncBloc(
+                getIt(),
+                getIt(),
+              )..add(const RemoteDataSourceSyncRequested()),
             ),
-          ),
-          BlocProvider(
-            create: (context) => StripeCubit(
-              authRepositoy: getIt(),
+            BlocProvider(
+              create: (context) => PersonalInfoEditBloc(
+                loggedInUserExt: context.read<AuthCubit>().state.user,
+                authRepositoy: getIt(),
+              ),
             ),
+            BlocProvider(
+              create: (context) => StripeCubit(
+                authRepositoy: getIt(),
+              ),
+            ),
+            // manage family
+            BlocProvider(
+              create: (_) => FamilyOverviewCubit(getIt())
+                ..fetchFamilyProfiles(
+                  showAllowanceWarning: showAllowanceWarning ?? false,
+                ),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
+            ),
+            // us personal info edit page
+            BlocProvider(
+              create: (context) => PersonalInfoEditBloc(
+                loggedInUserExt: context.read<AuthCubit>().state.user,
+                authRepositoy: getIt(),
+              ),
+            ),
+            BlocProvider(
+              create: (context) => StripeCubit(
+                authRepositoy: getIt(),
+              ),
+            ),
+          ],
+          child: NavigationBarHomeScreen(
+            index: index,
           ),
-          BlocProvider(
-            create: (_) => FamilyOverviewCubit(getIt())..fetchFamilyProfiles(),
-          ),
-          BlocProvider(
-            create: (context) =>
-                FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
-          ),
-        ],
-        child: NavigationBarHomeScreen(
-          index: state.extra as int?,
-        ),
-      ),
+        );
+      },
       routes: [
         GoRoute(
           path: FamilyPages.parentHome.path,
@@ -433,25 +455,8 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.familyPersonalInfoEdit.path,
           name: FamilyPages.familyPersonalInfoEdit.name,
-          builder: (context, state) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (context) => PersonalInfoEditBloc(
-                    loggedInUserExt: context.read<AuthCubit>().state.user,
-                    authRepositoy: getIt(),
-                  ),
-                ),
-                BlocProvider(
-                  create: (context) => StripeCubit(
-                    authRepositoy: getIt(),
-                  ),
-                ),
-              ],
-              child: const NavigationBarHomeScreen(
-                index: NavigationBarHomeScreen.profileIndex,
-              ),
-            );
+          redirect: (context, state) {
+            return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.profileIndex}';
           },
         ),
         GoRoute(
@@ -538,31 +543,14 @@ class FamilyAppRoutes {
         GoRoute(
           path: FamilyPages.childrenOverview.path,
           name: FamilyPages.childrenOverview.name,
-          builder: (context, state) {
+          redirect: (context, state) {
             var showAllowanceWarning = false;
             if (state.extra != null) {
               showAllowanceWarning = state.extra!.toString().contains('true');
             }
             final user = context.read<ProfilesCubit>().state.activeProfile;
             context.read<ImpactGroupsCubit>().fetchImpactGroups(user.id, true);
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => FamilyOverviewCubit(getIt())
-                    ..fetchFamilyProfiles(
-                      showAllowanceWarning: showAllowanceWarning,
-                    ),
-                ),
-                BlocProvider(
-                  create: (context) =>
-                      FamilyHistoryCubit(getIt(), getIt(), getIt())
-                        ..fetchHistory(),
-                ),
-              ],
-              child: const NavigationBarHomeScreen(
-                index: NavigationBarHomeScreen.familyIndex,
-              ),
-            );
+            return '${FamilyPages.profileSelection.path}?index=${NavigationBarHomeScreen.familyIndex}&showAllowanceWarning=$showAllowanceWarning';
           },
         ),
         GoRoute(

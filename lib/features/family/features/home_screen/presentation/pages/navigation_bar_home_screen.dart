@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,6 +15,7 @@ import 'package:givt_app/features/family/features/preferred_church/preferred_chu
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:go_router/go_router.dart';
@@ -122,12 +125,25 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     );
   }
 
-  void _onDestinationSelected(int index) {
-    SystemSound.play(SystemSoundType.click);
-    HapticFeedback.selectionClick();
-    setState(() {
-      _currentIndex = index;
-    });
+  Future<void> _onDestinationSelected(int index) async {
+    unawaited(SystemSound.play(SystemSoundType.click));
+    unawaited(HapticFeedback.selectionClick());
+    if (index == NavigationBarHomeScreen.homeIndex) {
+      setState(() {
+        _currentIndex = index;
+      });
+    } else {
+      await FamilyAuthUtils.authenticateUser(
+        context,
+        checkAuthRequest: CheckAuthRequest(
+          navigate: (context, {isUSUser}) async {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
+      );
+    }
   }
 
   @override
