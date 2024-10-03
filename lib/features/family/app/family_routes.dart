@@ -34,6 +34,7 @@ import 'package:givt_app/features/family/features/giving_flow/screens/choose_amo
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
@@ -107,7 +108,7 @@ class FamilyAppRoutes {
                 FamilyHistoryCubit(getIt(), getIt(), getIt())..fetchHistory(),
           ),
         ],
-        child: const ProfileSelectionScreen(),
+        child: const FamilyHomeScreen(),
         // child: const NavigationBarHomeScreen(),
       ),
       routes: [

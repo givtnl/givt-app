@@ -344,6 +344,14 @@ enum AmplitudeEvents {
     'family_reflect_summary_generous_deeds_clicked',
   ),
 
+  // Family Home Screen
+  FamilyHomeScreenGratitudeGameButtonClicked(
+    'family_home_screen_gratitude_game_button_clicked',
+  ),
+  FamilyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
+
+
+  // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
 
