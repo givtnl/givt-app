@@ -35,7 +35,6 @@ import 'package:givt_app/features/family/features/giving_flow/screens/success_sc
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
-import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
