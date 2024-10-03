@@ -13,6 +13,10 @@ class SecretWordCubit extends CommonCubit<String, dynamic> {
     emitData(_reflectAndShareRepository.getCurrentSecretWord());
   }
 
+  GameProfile getSidekick() {
+    return _reflectAndShareRepository.getCurrentSidekick();
+  }
+
   void onShuffleClicked() {
     emitData(_reflectAndShareRepository.randomizeSecretWord());
   }

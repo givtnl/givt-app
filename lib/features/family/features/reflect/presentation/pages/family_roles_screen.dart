@@ -5,7 +5,6 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_roles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/reflection_rule_superhero_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -47,9 +46,7 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
         onCustom: (context, superhero) {
           if (_cubit.isFirstRound()) {
             Navigator.of(context).push(
-              ReflectionRuleSuperheroScreen(
-                superhero: superhero,
-              ).toRoute(context),
+              PassThePhone.toSuperhero(superhero).toRoute(context),
             );
             return;
           }

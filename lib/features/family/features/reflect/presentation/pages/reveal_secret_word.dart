@@ -4,7 +4,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -102,8 +102,9 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             FunButton(
               isDisabled: !_isScratched,
               onTap: () {
+                final sidekick = _cubit.getSidekick();
                 Navigator.of(context).pushReplacement(
-                  const StartInterviewScreen().toRoute(context),
+                  PassThePhone.toSidekick(sidekick).toRoute(context),
                 );
               },
               text: 'Next',
