@@ -3,7 +3,10 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
+import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/family_setup_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/preferred_church_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/registration_use_case.dart';
@@ -15,43 +18,61 @@ import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class NavigationBarHomeCubit
-    extends CommonCubit<String?, NavigationBarHomeCustom>
+    extends CommonCubit<NavigationBarHomeScreenUIModel, NavigationBarHomeCustom>
     with PreferredChurchUseCase, RegistrationUseCase, FamilySetupUseCase {
   NavigationBarHomeCubit(
     this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
+    this._cachedMembersRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
+  final CachedMembersRepository _cachedMembersRepository;
 
   StreamSubscription<List<Profile>>? _profilesSubscription;
   String? profilePictureUrl;
   List<Profile> _profiles = [];
+  List<Member>? cachedMembers;
+  ImpactGroup? _familyInviteGroup;
 
-  void init() {
+  Future<void> init() async {
     _profilesSubscription =
-        _profilesRepository.onProfilesChanged().listen((profiles) {
-      _profiles = profiles;
-      _getProfilePictureUrl();
-    });
+        _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
+    _cachedMembersRepository
+        .onCachedMembersChanged()
+        .listen(_onCachedMembersChanged);
+    await refreshData();
+  }
+
+  Future<void> refreshData() async {
+    _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
+    cachedMembers = await getCachedMembers();
+    unawaited(_getProfilePictureUrl());
+    unawaited(doInitialChecks());
+  }
+
+  void _onCachedMembersChanged(List<Member> members) {
+    cachedMembers = members;
+    _emitData();
+  }
+
+  void _onProfilesChanged(List<Profile> profiles) {
+    _profiles = profiles;
     _getProfilePictureUrl();
-    doInitialChecks();
   }
 
   Future<void> doInitialChecks() async {
-    final group = await isInvitedToGroup();
-    if (group != null) {
-      emitCustom(NavigationBarHomeCustom.showFamilyInvite(group));
+    if (_familyInviteGroup != null) {
+      return;
     } else if (await userNeedsRegistration()) {
       emitCustom(const NavigationBarHomeCustom.userNeedsRegistration());
     } else if (await hasNoFamilySetup()) {
-      final cachedMembers = await getCachedMembers();
-      if (cachedMembers.isNotEmpty) {
+      if (true == cachedMembers?.isNotEmpty) {
         emitCustom(
-          NavigationBarHomeCustom.showCachedMembersDialog(cachedMembers),
+          NavigationBarHomeCustom.showCachedMembersDialog(cachedMembers!),
         );
       } else {
         emitCustom(const NavigationBarHomeCustom.familyNotSetup());
@@ -91,7 +112,13 @@ class NavigationBarHomeCubit
 
   void _emitData() {
     if (_profiles.length > 1) {
-      emitData(profilePictureUrl);
+      emitData(
+        NavigationBarHomeScreenUIModel(
+          cachedMembers: cachedMembers,
+          profilePictureUrl: profilePictureUrl,
+          familyInviteGroup: _familyInviteGroup,
+        ),
+      );
     } else {
       emitError(null);
     }

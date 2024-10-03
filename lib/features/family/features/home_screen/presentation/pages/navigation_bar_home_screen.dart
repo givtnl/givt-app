@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
+import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
@@ -15,11 +16,13 @@ import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
@@ -75,17 +78,23 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     return BaseStateConsumer(
       cubit: _cubit,
       onCustom: _handleCustom,
+      onLoading: (context) => const Scaffold(
+        body: Center(child: CustomCircularProgressIndicator()),
+      ),
       onError: (context, error) => Scaffold(
         body: ProfilesEmptyStateWidget(
-          onRetry: () => _cubit.init(),
+          onRetry: _cubit.refreshData,
         ),
       ),
-      onInitial: (context) => _layout(),
-      onData: (context, data) => _layout(profilePictureUrl: data),
+      onInitial: (context) => _regularLayout(),
+      onData: (context, data) => data.familyInviteGroup == null
+          ? _regularLayout(uiModel: data)
+          : ImpactGroupReceiveInviteSheet(
+              invitdImpactGroup: data.familyInviteGroup!),
     );
   }
 
-  Scaffold _layout({String? profilePictureUrl}) {
+  Scaffold _regularLayout({NavigationBarHomeScreenUIModel? uiModel}) {
     return Scaffold(
       bottomNavigationBar: FunNavigationBar(
         index: _currentIndex,
@@ -100,12 +109,12 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             label: 'My Family',
           ),
           NavigationDestination(
-            icon: profilePictureUrl == null
+            icon: uiModel?.profilePictureUrl == null
                 ? const FaIcon(FontAwesomeIcons.person)
                 : SizedBox(
                     width: 28,
                     height: 28,
-                    child: SvgPicture.network(profilePictureUrl),
+                    child: SvgPicture.network(uiModel!.profilePictureUrl!),
                   ),
             label: 'My Profile',
           ),
@@ -137,25 +146,35 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     );
   }
 
-  Future<void> _onDestinationSelected(int index) async {
+  Future<void> _onDestinationSelected(
+    int index, {
+    NavigationBarHomeScreenUIModel? uiModel,
+  }) async {
     unawaited(SystemSound.play(SystemSoundType.click));
     unawaited(HapticFeedback.selectionClick());
     if (index == NavigationBarHomeScreen.homeIndex) {
-      setState(() {
-        _currentIndex = index;
-      });
+      _setIndex(index);
     } else {
       await FamilyAuthUtils.authenticateUser(
         context,
         checkAuthRequest: CheckAuthRequest(
           navigate: (context, {isUSUser}) async {
-            setState(() {
-              _currentIndex = index;
-            });
+            if (index == NavigationBarHomeScreen.familyIndex &&
+                true == uiModel?.cachedMembers?.isNotEmpty) {
+              _showCachedMembersDialog(context, uiModel!.cachedMembers!);
+            } else {
+              _setIndex(index);
+            }
           },
         ),
       );
     }
+  }
+
+  void _setIndex(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 
   @override
@@ -182,9 +201,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       case FamilyNotSetup():
         await _showSetupFamily(context);
       case final ShowCachedMembersDialog data:
-        _showCachedMembersDialog(context, data);
-      case final ShowFamilyInvite data:
-        _showFamilyInvite(context, data);
+        _showCachedMembersDialog(context, data.cachedMembers);
     }
   }
 
@@ -203,24 +220,10 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }
 
   void _showCachedMembersDialog(
-      BuildContext context, ShowCachedMembersDialog data) {
+      BuildContext context, List<Member> cachedMembers) {
     VPCFailedCachedMembersBottomsheet.show(
       context,
-      data.cachedMembers,
-    );
-  }
-
-  void _showFamilyInvite(BuildContext context, ShowFamilyInvite data) {
-    unawaited(
-      showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) {
-          return ImpactGroupReceiveInviteSheet(
-            invitdImpactGroup: data.group,
-          );
-        },
-      ),
+      cachedMembers,
     );
   }
 

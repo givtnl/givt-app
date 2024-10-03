@@ -15,9 +15,6 @@ sealed class NavigationBarHomeCustom {
   const factory NavigationBarHomeCustom.showCachedMembersDialog(
     List<Member> cachedMembers,
   ) = ShowCachedMembersDialog;
-
-  const factory NavigationBarHomeCustom.showFamilyInvite(ImpactGroup group) =
-      ShowFamilyInvite;
 }
 
 class PreferredChurchDialog extends NavigationBarHomeCustom {
@@ -36,10 +33,4 @@ class ShowCachedMembersDialog extends NavigationBarHomeCustom {
 
 class FamilyNotSetup extends NavigationBarHomeCustom {
   const FamilyNotSetup();
-}
-
-class ShowFamilyInvite extends NavigationBarHomeCustom {
-  const ShowFamilyInvite(this.group);
-
-  final ImpactGroup group;
 }
