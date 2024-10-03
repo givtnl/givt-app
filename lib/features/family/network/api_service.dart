@@ -288,4 +288,28 @@ class FamilyAPIService {
     }
     return response.statusCode == 200;
   }
+
+  Future<bool> saveGratitudeStats(
+    int duration,
+  ) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game');
+
+    final response = await client.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'type': 'Gratitude',
+        'duration': duration,
+      }),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    return response.statusCode == 200;
+  }
 }
