@@ -99,6 +99,9 @@ class FamilyHomeScreen extends StatelessWidget {
                               GiveButton(
                                 onPressed: () {
                                   //TODO: KIDS-1461
+                                  //path to logout during dev
+                                  context.goNamed(
+                                      FamilyPages.childrenOverview.name);
                                 },
                               ),
                             ],
@@ -118,10 +121,9 @@ class FamilyHomeScreen extends StatelessWidget {
     if (profilesLength > 5) {
       return 0;
     } else {
-      return (MediaQuery.sizeOf(context).width -
-              (circleSize + 24) * profilesLength -
-              48) /
-          2;
+      final width = MediaQuery.of(context).size.width;
+      final value = (width - (circleSize + 24) * profilesLength - 24) / 2;
+      return value;
     }
   }
 }

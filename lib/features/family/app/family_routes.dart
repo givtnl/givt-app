@@ -36,7 +36,6 @@ import 'package:givt_app/features/family/features/history/history_cubit/history_
 import 'package:givt_app/features/family/features/history/history_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/kids_home_screen.dart';
-import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/parent_home_screen.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/model/goal.dart';
@@ -45,7 +44,6 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
 import 'package:givt_app/features/family/features/qr_scanner/cubit/camera_cubit.dart';
 import 'package:givt_app/features/family/features/qr_scanner/presentation/camera_screen.dart';
 import 'package:givt_app/features/family/features/recommendation/interests/cubit/interests_cubit.dart';
