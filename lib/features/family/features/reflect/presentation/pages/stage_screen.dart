@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/l
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class StageScreen extends StatelessWidget {
   const StageScreen({
@@ -17,7 +18,8 @@ class StageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return FunScaffold(
+      withSafeArea: false,
       appBar: const FunTopAppBar(
         title: '',
         actions: [LeaveGameButton()],
@@ -31,15 +33,11 @@ class StageScreen extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: FunButton(
-            onTap: onClickButton,
-            text: buttonText,
-            analyticsEvent:
-                AnalyticsEvent(AmplitudeEvents.reflectAndShareStartClicked)),
-      ),
+      floatingActionButton: FunButton(
+          onTap: onClickButton,
+          text: buttonText,
+          analyticsEvent:
+              AnalyticsEvent(AmplitudeEvents.reflectAndShareStartClicked)),
     );
   }
 }
