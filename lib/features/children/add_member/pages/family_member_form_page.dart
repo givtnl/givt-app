@@ -69,11 +69,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
 
   DateTime dateOfBirth() {
     final age = int.parse(_ageController.text);
-    return DateTime(
-      DateTime.now().year - age,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
+    final currentYear = DateTime.now().year;
+    return DateTime(currentYear - age, 7); //july 1st, mid-year
   }
 
   void onDone({bool isChildSelected = false}) {
@@ -169,7 +166,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 const Spacer(),
                 if (isLast)
                   _primaryButton(isChildSelected)
-                else 
+                else
                   _secondaryButton(isChildSelected),
               ],
             ),
