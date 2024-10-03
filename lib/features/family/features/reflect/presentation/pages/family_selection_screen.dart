@@ -39,6 +39,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      backgroundColor: FamilyAppTheme.primary99,
       minimumPadding: const EdgeInsets.fromLTRB(0, 24, 0, 0),
       safeAreaBottom: false,
       appBar: FunTopAppBar(
@@ -59,6 +60,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             const Center(child: CircularProgressIndicator()),
         onData: (context, profiles) => Stack(
           children: [
+            Align(alignment: Alignment.bottomCenter, child: _totalDragTarget()),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
@@ -78,7 +80,6 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
                 ],
               ),
             ),
-            Align(alignment: Alignment.bottomCenter, child: _totalDragTarget()),
           ],
         ),
       ),
@@ -171,6 +172,9 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
     );
   }
 
+  final mainColor = FamilyAppTheme.stageColorPulse;
+  final pulseColor = FamilyAppTheme.stageColorPodium;
+
   Widget _dragWidget(BuildContext context, List<Object?> candidateDate) {
     return Stack(
       alignment: Alignment.bottomCenter,
@@ -181,9 +185,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
             alignment: Alignment.bottomCenter,
             child: AnimatedArc(
               diameter: MediaQuery.sizeOf(context).width + 100,
-              color: _shouldHighlight(candidateDate)
-                  ? FamilyAppTheme.secondary80.withOpacity(0.5)
-                  : FamilyAppTheme.secondary98,
+              color: _shouldHighlight(candidateDate) ? pulseColor : mainColor,
             ),
           ),
         ),
@@ -191,9 +193,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           alignment: Alignment.bottomCenter,
           child: Arc(
             diameter: MediaQuery.sizeOf(context).width,
-            color: _shouldHighlight(candidateDate)
-                ? FamilyAppTheme.secondary95.withOpacity(0.5)
-                : FamilyAppTheme.secondary95,
+            color: _shouldHighlight(candidateDate) ? mainColor : pulseColor,
           ),
         ),
         Positioned(bottom: 96, child: _selectedProfiles()),

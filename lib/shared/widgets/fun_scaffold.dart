@@ -11,6 +11,7 @@ class FunScaffold extends StatelessWidget {
     this.safeAreaBottom = true,
     this.withSafeArea = true,
     this.floatingActionButton,
+    this.backgroundColor = Colors.white,
     super.key,
   });
 
@@ -20,6 +21,7 @@ class FunScaffold extends StatelessWidget {
   final bool canPop;
   final bool safeAreaBottom;
   final bool withSafeArea;
+  final Color backgroundColor;
   final FunButton? floatingActionButton;
 
   @override
@@ -32,6 +34,7 @@ class FunScaffold extends StatelessWidget {
         child: PopScope(
           canPop: canPop,
           child: Scaffold(
+            backgroundColor: backgroundColor,
             appBar: appBar,
             body: withSafeArea
                 ? SafeArea(
