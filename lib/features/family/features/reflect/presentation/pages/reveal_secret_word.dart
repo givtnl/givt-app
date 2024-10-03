@@ -30,7 +30,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   final scratchKey = GlobalKey<ScratcherState>();
   bool _isScratched = false;
   bool _isSecondWord = false;
-
+  String text = 'Scratch to reveal\nyour secret word';
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -52,8 +52,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
         onData: (context, secretWord) => Column(
           children: [
             const SizedBox(height: 8),
-            const TitleLargeText(
-              'Scratch to reveal\nyour secret word!',
+            TitleLargeText(
+              text,
               textAlign: TextAlign.center,
               color: FamilyAppTheme.primary30,
             ),
@@ -70,7 +70,8 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                   threshold: 50,
                   color: Colors.grey,
                   onChange: (value) => setState(() {
-                    _isScratched = value > 20;
+                    _isScratched = value > 25;
+                    text = 'Sneak your secret word\ninto ONE of your answers!';
                   }),
                   child: Stack(
                     alignment: Alignment.center,
@@ -105,7 +106,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                   const StartInterviewScreen().toRoute(context),
                 );
               },
-              text: 'Ready',
+              text: 'Next',
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.reflectAndShareReadyClicked,
               ),
@@ -118,28 +119,37 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
 
   Widget shuffleButton() => GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: () {
-          _cubit.onShuffleClicked();
-          setState(() {
-            _isScratched = false;
-            _isSecondWord = true;
-            scratchKey.currentState?.reset();
-          });
+        onTap: _isScratched
+            ? () {
+                _cubit.onShuffleClicked();
+                setState(() {
+                  _isScratched = false;
+                  _isSecondWord = true;
+                  scratchKey.currentState?.reset();
+                });
 
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.reflectAndShareChangeWordClicked,
-          );
-        },
+                AnalyticsHelper.logEvent(
+                  eventName: AmplitudeEvents.reflectAndShareChangeWordClicked,
+                );
+              }
+            : null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            LabelLargeText.primary30('Change'),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+            LabelLargeText(
+              'Change',
+              color: _isScratched
+                  ? FamilyAppTheme.primary30
+                  : FamilyAppTheme.neutralVariant60,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Icon(
                 FontAwesomeIcons.shuffle,
                 size: 24,
-                color: FamilyAppTheme.primary30,
+                color: _isScratched
+                    ? FamilyAppTheme.primary30
+                    : FamilyAppTheme.neutralVariant60,
               ),
             ),
           ],
