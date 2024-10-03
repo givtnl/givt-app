@@ -80,7 +80,7 @@ void initCubits() {
     )
     ..registerLazySingleton<NavigationBarHomeCubit>(NavigationBarHomeCubit.new)
     ..registerFactory<FamilySelectionCubit>(
-          () => FamilySelectionCubit(
+      () => FamilySelectionCubit(
         getIt(),
       ),
     );
@@ -157,6 +157,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
       ),
     );
