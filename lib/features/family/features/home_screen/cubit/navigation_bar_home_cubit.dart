@@ -32,18 +32,19 @@ class NavigationBarHomeCubit
   final ImpactGroupsRepository _impactGroupsRepository;
   final CachedMembersRepository _cachedMembersRepository;
 
-  StreamSubscription<List<Profile>>? _profilesSubscription;
   String? profilePictureUrl;
   List<Profile> _profiles = [];
   List<Member>? cachedMembers;
   ImpactGroup? _familyInviteGroup;
 
   Future<void> init() async {
-    _profilesSubscription =
-        _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
+    _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _cachedMembersRepository
         .onCachedMembersChanged()
         .listen(_onCachedMembersChanged);
+    _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
+      unawaited(refreshData());
+    });
     await refreshData();
   }
 
@@ -89,12 +90,6 @@ class NavigationBarHomeCubit
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
       return null;
     }
-  }
-
-  @override
-  Future<void> close() async {
-    await _profilesSubscription?.cancel();
-    return super.close();
   }
 
   Future<void> _getProfilePictureUrl() async {
