@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/family_setup_usecase.dart';
@@ -16,9 +17,11 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 class NavigationBarHomeCubit
     extends CommonCubit<String?, NavigationBarHomeCustom>
     with PreferredChurchUseCase, RegistrationUseCase, FamilySetupUseCase {
-  NavigationBarHomeCubit(this._profilesRepository, this._authRepository,
-      this._impactGroupsRepository)
-      : super(const BaseState.initial());
+  NavigationBarHomeCubit(
+    this._profilesRepository,
+    this._authRepository,
+    this._impactGroupsRepository,
+  ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
@@ -26,16 +29,19 @@ class NavigationBarHomeCubit
 
   StreamSubscription<List<Profile>>? _profilesSubscription;
   String? profilePictureUrl;
+  List<Profile> _profiles = [];
 
-  void onDidChangeDependencies() {
-    _profilesSubscription = _profilesRepository
-        .onProfilesChanged()
-        .listen((_) => _getProfilePictureUrl());
+  void init() {
+    _profilesSubscription =
+        _profilesRepository.onProfilesChanged().listen((profiles) {
+      _profiles = profiles;
+      _getProfilePictureUrl();
+    });
     _getProfilePictureUrl();
-    _doInitialChecks();
+    doInitialChecks();
   }
 
-  Future<void> _doInitialChecks() async {
+  Future<void> doInitialChecks() async {
     final group = await isInvitedToGroup();
     if (group != null) {
       emitCustom(NavigationBarHomeCustom.showFamilyInvite(group));
@@ -59,6 +65,7 @@ class NavigationBarHomeCubit
     try {
       return _impactGroupsRepository.isInvitedToGroup();
     } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
       return null;
     }
   }
@@ -71,16 +78,22 @@ class NavigationBarHomeCubit
 
   Future<void> _getProfilePictureUrl() async {
     try {
-      final profiles = await _profilesRepository.getProfiles();
       final session = await _authRepository.getStoredSession();
-      final profile = profiles
-          .firstWhereOrNull((element) => element.id == session?.userGUID);
+      final profile = _profiles
+          .firstWhereOrNull((element) => element.id == session.userGUID);
       profilePictureUrl = profile?.pictureURL;
-      _emitData();
     } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+    } finally {
       _emitData();
     }
   }
 
-  void _emitData() => emitData(profilePictureUrl);
+  void _emitData() {
+    if (_profiles.length > 1) {
+      emitData(profilePictureUrl);
+    } else {
+      emitError(null);
+    }
+  }
 }

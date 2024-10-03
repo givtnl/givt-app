@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/home_screen/cubit/navigation_b
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/screens/profile_selection_screen.dart';
+import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
@@ -74,6 +75,11 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     return BaseStateConsumer(
       cubit: _cubit,
       onCustom: _handleCustom,
+      onError: (context, error) => Scaffold(
+        body: ProfilesEmptyStateWidget(
+          onRetry: () => _cubit.init(),
+        ),
+      ),
       onInitial: (context) => _layout(),
       onData: (context, data) => _layout(profilePictureUrl: data),
     );
@@ -155,19 +161,13 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _cubit.onDidChangeDependencies();
+    _cubit.init();
   }
 
   @override
   void initState() {
     _currentIndex = widget.index ?? 0;
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _cubit.close();
-    super.dispose();
   }
 
   Future<void> _handleCustom(
@@ -189,10 +189,13 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   }
 
   Future<void> _continueRegistration(BuildContext context) async {
-    await context.pushNamed(
-      FamilyPages.creditCardDetails.name,
-      extra: context.read<RegistrationBloc>(),
-    );
+    if (context.read<RegistrationBloc>().state.status ==
+        RegistrationStatus.createStripeAccount) {
+      await context.pushNamed(
+        FamilyPages.creditCardDetails.name,
+        extra: context.read<RegistrationBloc>(),
+      );
+    }
   }
 
   Future<void> _showSetupFamily(BuildContext context) async {

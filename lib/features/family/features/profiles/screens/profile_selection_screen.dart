@@ -47,7 +47,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfilesCubit>().doInitialChecks();
+    context.read<ProfilesCubit>().fetchAllProfiles();
   }
 
   @override
@@ -95,9 +95,7 @@ class _ProfileSelectionScreenState extends State<ProfileSelectionScreen> {
               : state.profiles.isEmpty && state.cachedMembers.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
-                          context.read<ProfilesCubit>().fetchAllProfiles(
-                                doChecks: true,
-                              ),
+                          context.read<ProfilesCubit>().fetchAllProfiles(),
                     )
                   : Column(
                       children: [

@@ -78,7 +78,7 @@ void initCubits() {
         getIt(),
       ),
     )
-    ..registerFactory<NavigationBarHomeCubit>(
+    ..registerLazySingleton<NavigationBarHomeCubit>(
       () => NavigationBarHomeCubit(
         getIt(),
         getIt(),

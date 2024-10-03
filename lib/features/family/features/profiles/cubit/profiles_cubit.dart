@@ -46,13 +46,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
   }
 
-  Future<void> doInitialChecks() async {
-    await fetchAllProfiles(doChecks: true);
-  }
-
-  Future<void> fetchAllProfiles({
-    bool doChecks = false,
-  }) async {
+  Future<void> fetchAllProfiles() async {
     _emitLoadingState();
 
     try {

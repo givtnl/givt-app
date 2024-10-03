@@ -6,7 +6,8 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
@@ -81,7 +82,7 @@ class CreditCardDetailsPage extends StatelessWidget {
                   },
                 ),
               );
-              context.read<ProfilesCubit>().fetchAllProfiles(doChecks: true);
+              getIt<NavigationBarHomeCubit>().init();
             }
 
             /* Logged as info as stripe is giving exception
