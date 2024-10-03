@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/network/request_helper.dart';
@@ -84,29 +83,6 @@ class FamilyAPIService {
     } else {
       final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
       return decodedBody['item'] as Map<String, dynamic>;
-    }
-  }
-
-  Future<void> createTransaction({required Transaction transaction}) async {
-    final url = Uri.https(
-      _apiURL,
-      '/givtservice/v1/transaction',
-    );
-
-    final response = await client.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(transaction.toJson()),
-    );
-
-    if (response.statusCode >= 400) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    } else {
-      final decodedBody = jsonDecode(response.body);
-      log(decodedBody.toString());
     }
   }
 
@@ -236,38 +212,6 @@ class FamilyAPIService {
     return itemMap;
   }
 
-  Future<bool> topUpChild(String childGUID, int amount) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/topup');
-
-    final response = await client.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: jsonEncode({'amount': amount}),
-    );
-
-    if (response.statusCode >= 300) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: response.body.isNotEmpty
-            ? jsonDecode(response.body) as Map<String, dynamic>
-            : null,
-      );
-    }
-    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
-    final isError = decodedBody['isError'] as bool;
-
-    if (response.statusCode == 200 && isError) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: decodedBody,
-      );
-    }
-    return response.statusCode == 200;
-  }
-
   Future<bool> setupRecurringAmount(String childGUID, int allowance) async {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/profiles/$childGUID/allowance');
@@ -289,27 +233,52 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> saveGratitudeStats(
-    int duration,
-  ) async {
-    final url = Uri.https(_apiURL, '/givtservice/v1/game');
+  Future<bool> createTransaction({required Transaction transaction}) async {
+    return _postRequest(
+      '/givtservice/v1/transaction',
+      transaction.toJson(),
+    );
+  }
 
+  Future<bool> topUpChild(String childGUID, int amount) async {
+    return _postRequest(
+      '/givtservice/v1/profiles/$childGUID/topup',
+      {'amount': amount},
+    );
+  }
+
+  Future<bool> saveGratitudeStats(int duration) async {
+    return _postRequest('/givtservice/v1/game', {
+      'type': 'Gratitude',
+      'duration': duration,
+    });
+  }
+
+  Future<bool> _postRequest(String endpoint, Map<String, dynamic> body) async {
+    final url = Uri.https(_apiURL, endpoint);
     final response = await client.post(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'type': 'Gratitude',
-        'duration': duration,
-      }),
+      body: jsonEncode(body),
     );
 
-    if (response.statusCode >= 400) {
+    if (response.statusCode >= 300) {
       throw GivtServerFailure(
         statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
+        body: response.body.isNotEmpty
+            ? jsonDecode(response.body) as Map<String, dynamic>
+            : null,
       );
     }
+    final decodedBody = jsonDecode(response.body) as Map<String, dynamic>;
+    final isError = decodedBody['isError'] as bool;
 
+    if (response.statusCode == 200 && isError) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: decodedBody,
+      );
+    }
     return response.statusCode == 200;
   }
 }
