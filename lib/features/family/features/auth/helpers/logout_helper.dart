@@ -5,6 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
@@ -30,6 +31,7 @@ void logout(
     context.read<AuthCubit>().logout();
     context.read<ProfilesCubit>().logout();
     context.read<FlowsCubit>().resetFlow();
+    context.read<RegistrationBloc>().add(const RegistrationReset());
     AppThemeSwitcher.of(context).switchTheme(isFamilyApp: false);
   } catch (e) {
     // do nothing, even if logging out fails, from welcome page user can re-login

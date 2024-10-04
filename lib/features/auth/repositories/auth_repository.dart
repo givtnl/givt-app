@@ -72,7 +72,7 @@ mixin AuthRepository {
     required String notificationId,
   });
 
-  void updateSessionStream(bool hasSession, {bool force = false});
+  void updateSessionStream(bool hasSession);
 
   Stream<bool> hasSessionStream();
 
@@ -510,8 +510,8 @@ class AuthRepositoyImpl with AuthRepository {
   }
 
   @override
-  void updateSessionStream(bool hasSession, {bool force = false}) {
-    if (force || _hasSession != hasSession) {
+  void updateSessionStream(bool hasSession) {
+    if (_hasSession != hasSession) {
       _hasSession = hasSession;
       _hasSessionStreamController.add(hasSession);
     }

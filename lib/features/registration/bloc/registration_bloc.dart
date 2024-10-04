@@ -31,6 +31,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     on<RegistrationStripeSuccess>(_onStripeSuccess);
 
     on<RegistrationStripeInit>(_onStripeInit);
+
+    on<RegistrationReset>(_onReset);
   }
 
   final AuthRepository authRepositoy;
@@ -83,7 +85,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         isNewUser: false,
       );
 
-      await authCubit.refreshUser(forceAuthUpdate: true);
+      await authCubit.refreshUser();
       if (event.country.toUpperCase() == Country.us.countryCode) {
         emit(
           state.copyWith(
@@ -243,7 +245,8 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
     if (user.tempUser == false) {
       await authCubit.refreshSession(
-          emitAuthentication: event.emitAuthenticated,);
+        emitAuthentication: event.emitAuthenticated,
+      );
       emit(state.copyWith(status: RegistrationStatus.success));
     } else {
       emit(state.copyWith(status: RegistrationStatus.failure));
@@ -280,5 +283,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         state.copyWith(status: RegistrationStatus.failure),
       );
     }
+  }
+
+  FutureOr<void> _onReset(RegistrationReset event, Emitter<RegistrationState> emit) {
+    emit(const RegistrationState());
   }
 }
