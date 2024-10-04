@@ -71,7 +71,10 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                   color: Colors.grey,
                   onChange: (value) => setState(() {
                     _isScratched = value > 25;
-                    text = 'Sneak your secret word\ninto ONE of your answers!';
+                    if (_isScratched) {
+                      text =
+                          'Sneak your secret word\ninto ONE of your answers!';
+                    }
                   }),
                   child: Stack(
                     alignment: Alignment.center,
@@ -104,7 +107,10 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               onTap: () {
                 final sidekick = _cubit.getSidekick();
                 Navigator.of(context).pushReplacement(
-                  PassThePhone.toSidekick(sidekick).toRoute(context),
+                  PassThePhone.toSidekick(
+                    sidekick,
+                    toRules: true,
+                  ).toRoute(context),
                 );
               },
               text: 'Next',
@@ -126,6 +132,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                 setState(() {
                   _isScratched = false;
                   _isSecondWord = true;
+                  text = 'Scratch to reveal\nyour secret word';
                   scratchKey.currentState?.reset();
                 });
 
