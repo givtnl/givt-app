@@ -16,8 +16,20 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:go_router/go_router.dart';
 
-class FamilyHomeScreen extends StatelessWidget {
+class FamilyHomeScreen extends StatefulWidget {
   const FamilyHomeScreen({super.key});
+
+  @override
+  State<FamilyHomeScreen> createState() => _FamilyHomeScreenState();
+}
+
+class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<ProfilesCubit>().fetchAllProfiles();
+  }
+
   @override
   Widget build(BuildContext context) {
     final name = context.read<AuthCubit>().state.user.lastName;
@@ -27,14 +39,12 @@ class FamilyHomeScreen extends StatelessWidget {
         return FunScaffold(
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(title: null),
-          body: state is ProfilesLoadingState || state is ProfilesInvitedToGroup
+          body: state is ProfilesLoadingState
               ? const CustomCircularProgressIndicator()
               : state.profiles.isEmpty && state.cachedMembers.isEmpty
                   ? ProfilesEmptyStateWidget(
                       onRetry: () =>
-                          context.read<ProfilesCubit>().fetchAllProfiles(
-                                doChecks: true,
-                              ),
+                          context.read<ProfilesCubit>().fetchAllProfiles(),
                     )
                   : Column(
                       children: [
@@ -59,27 +69,20 @@ class FamilyHomeScreen extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                   ),
                                   const SizedBox(height: 16),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: getBarPadding(
-                                            context: context,
-                                            circleSize: 58,
-                                            profilesLength: proiles.length)),
-                                    child: GratefulAvatarBar(
-                                      circleSize: 58,
-                                      uiModel: GratefulAvatarBarUIModel(
-                                        avatarUIModels: proiles
-                                            .map((e) => GratefulAvatarUIModel(
-                                                  avatarUrl: e.pictureURL,
-                                                  text: e.firstName,
-                                                ))
-                                            .toList(),
-                                      ),
-                                      withLeftPadding: false,
-                                      onAvatarTapped: (index) {
-                                        //TODO: KIDS-1461
-                                      },
+                                  GratefulAvatarBar(
+                                    circleSize: 58,
+                                    uiModel: GratefulAvatarBarUIModel(
+                                      avatarUIModels: proiles
+                                          .map((e) => GratefulAvatarUIModel(
+                                                avatarUrl: e.pictureURL,
+                                                text: e.firstName,
+                                              ))
+                                          .toList(),
                                     ),
+                                    withLeftPadding: false,
+                                    onAvatarTapped: (index) {
+                                      //TODO: KIDS-1461
+                                    },
                                   ),
                                 ],
                               ),
@@ -99,9 +102,6 @@ class FamilyHomeScreen extends StatelessWidget {
                               GiveButton(
                                 onPressed: () {
                                   //TODO: KIDS-1461
-                                  //path to logout during dev
-                                  context.goNamed(
-                                      FamilyPages.childrenOverview.name);
                                 },
                               ),
                             ],
@@ -112,18 +112,5 @@ class FamilyHomeScreen extends StatelessWidget {
         );
       },
     );
-  }
-
-  double getBarPadding(
-      {required BuildContext context,
-      required int circleSize,
-      required int profilesLength}) {
-    if (profilesLength > 5) {
-      return 0;
-    } else {
-      final width = MediaQuery.of(context).size.width;
-      final value = (width - (circleSize + 24) * profilesLength - 24) / 2;
-      return value;
-    }
   }
 }

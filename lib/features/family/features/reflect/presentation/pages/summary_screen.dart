@@ -21,7 +21,7 @@ class SummaryScreen extends StatefulWidget {
 }
 
 class _SummaryScreenState extends State<SummaryScreen> {
-  final _cubit = SummaryCubit(getIt());
+  final _cubit = getIt<SummaryCubit>();
 
   @override
   void didChangeDependencies() {

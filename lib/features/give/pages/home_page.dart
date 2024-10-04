@@ -222,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                   isDismissible: false,
                   enableDrag: false,
                   builder: (_) {
-                    return ImpactGroupRecieveInviteSheet(
+                    return ImpactGroupReceiveInviteSheet(
                       invitdImpactGroup: impactGroup,
                     );
                   },

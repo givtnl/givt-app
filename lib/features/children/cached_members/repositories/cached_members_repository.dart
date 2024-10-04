@@ -7,9 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 mixin CachedMembersRepository {
   Future<void> saveToCache(List<Member> members);
+
   Future<List<Member>> loadFromCache();
+
   Future<void> clearCache();
+
   bool isCacheExist();
+
   Stream<List<Member>> onCachedMembersChanged();
 }
 
@@ -18,6 +22,7 @@ class CachedMembersRepositoryImpl with CachedMembersRepository {
     this.apiService,
     this.sharedPreferences,
   );
+
   final StreamController<List<Member>> _cachedMembersStreamController =
       StreamController<List<Member>>.broadcast();
   static const String _cachedMembersKey = 'cachedMembers';
@@ -55,6 +60,7 @@ class CachedMembersRepositoryImpl with CachedMembersRepository {
   @override
   Future<void> clearCache() async {
     await sharedPreferences.remove(_cachedMembersKey);
+    _cachedMembersStreamController.add([]);
   }
 
   @override
