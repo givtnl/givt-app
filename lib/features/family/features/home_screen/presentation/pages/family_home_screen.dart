@@ -45,11 +45,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     if (overlayEntry != null && overlayEntry!.mounted) {
       closeOverlay();
