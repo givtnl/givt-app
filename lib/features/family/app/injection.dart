@@ -80,7 +80,14 @@ void initCubits() {
       ),
     )
     ..registerLazySingleton(() => SummaryCubit(getIt()))
-    ..registerLazySingleton<NavigationBarHomeCubit>(NavigationBarHomeCubit.new)
+    ..registerLazySingleton<NavigationBarHomeCubit>(
+      () => NavigationBarHomeCubit(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
     ..registerFactory<FamilySelectionCubit>(
       () => FamilySelectionCubit(
         getIt(),

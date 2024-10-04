@@ -66,7 +66,6 @@ class FamilyOverviewPage extends StatelessWidget {
                   ),
                 ),
             ],
-            leading: const LeadingBackButton(),
           ),
           body: buildFamilyOverviewBody(state, context),
         );

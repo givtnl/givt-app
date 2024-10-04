@@ -8,15 +8,15 @@ part 'stripe_state.dart';
 
 class StripeCubit extends Cubit<StripeState> {
   StripeCubit({
-    required this.authRepositoy,
+    required this.authRepository,
   }) : super(const StripeState());
 
-  final AuthRepository authRepositoy;
+  final AuthRepository authRepository;
 
   Future<void> fetchSetupIntent() async {
     emit(state.copyWith(stripeStatus: StripeObjectStatus.loading));
     try {
-      final response = await authRepositoy.fetchStripeSetupIntent();
+      final response = await authRepository.fetchStripeSetupIntent();
 
       emit(
         state.copyWith(

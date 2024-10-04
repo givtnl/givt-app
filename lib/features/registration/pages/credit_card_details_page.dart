@@ -6,7 +6,8 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
@@ -16,13 +17,8 @@ import 'package:go_router/go_router.dart';
 
 class CreditCardDetailsPage extends StatelessWidget {
   const CreditCardDetailsPage({
-    this.onRegistrationSuccess,
-    this.onRegistrationFailed,
     super.key,
   });
-
-  final void Function()? onRegistrationSuccess;
-  final void Function()? onRegistrationFailed;
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +41,6 @@ class CreditCardDetailsPage extends StatelessWidget {
           }
 
           StripeHelper(context).showPaymentSheet().then((value) {
-            if (onRegistrationSuccess != null) {
-              context.pop();
-              onRegistrationSuccess!.call();
-            } else {
               _handleStripeRegistrationSuccess(context);
               final user = context.read<AuthCubit>().state.user;
               AnalyticsHelper.setUserProperties(
@@ -62,12 +54,7 @@ class CreditCardDetailsPage extends StatelessWidget {
                   ),
                 ),
               );
-            }
           }).onError((e, stackTrace) {
-            if (onRegistrationFailed != null) {
-              context.pop();
-              onRegistrationFailed!.call();
-            } else {
               context.pop();
               final user = context.read<AuthCubit>().state.user;
 
@@ -81,8 +68,7 @@ class CreditCardDetailsPage extends StatelessWidget {
                   },
                 ),
               );
-              context.read<ProfilesCubit>().fetchAllProfiles(doChecks: true);
-            }
+              getIt<NavigationBarHomeCubit>().refreshData();
 
             /* Logged as info as stripe is giving exception
                when for example people close the bottomsheet.

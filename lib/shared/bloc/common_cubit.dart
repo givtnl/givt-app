@@ -10,9 +10,11 @@ class CommonCubit<T, S> extends Cubit<BaseState<T, S>> {
   // also fixes the problem where even if you use equatable
   // and there are no props it still wouldn't emit the state one after another
   void emitWithClear(BaseState<T, S> state) {
-    emit(const BaseState.clear());
+    emitClear();
     emit(state);
   }
+
+  void emitClear() => emit(const BaseState.clear());
 
   void emitInitial() {
     emitWithClear(const BaseState.initial());
@@ -28,6 +30,10 @@ class CommonCubit<T, S> extends Cubit<BaseState<T, S>> {
 
   void emitCustom(S custom) {
     emitWithClear(BaseState.custom(custom));
+  }
+
+  void emitError(String? message) {
+    emitWithClear(BaseState.error(message));
   }
 
   void emitSnackbarMessage(String text, {bool isError = false}) {

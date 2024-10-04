@@ -23,7 +23,7 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
   final Widget Function(BuildContext context)? onInitial;
 
   // for displaying an error with a possible String? message
-  // if called without definining it it will display an error
+  // if called without defining it it will display an error
   final Widget Function(BuildContext context, String? message)? onError;
 
   // for displaying the widget in a loading state

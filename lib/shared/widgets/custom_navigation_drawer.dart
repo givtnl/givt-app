@@ -13,7 +13,6 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/features/amount_presets/pages/change_amount_presets_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/children/utils/cached_family_utils.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
@@ -119,13 +118,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     context,
                     checkAuthRequest: CheckAuthRequest(
                       navigate: (context, {isUSUser}) async {
-                        if (CachedFamilyUtils.isFamilyCacheExist()) {
-                          context.goNamed(
-                            FamilyPages.cachedChildrenOverview.name,
-                          );
-                        } else {
-                          context.goNamed(FamilyPages.childrenOverview.name);
-                        }
+                        context.goNamed(FamilyPages.childrenOverview.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
                             eventName: AmplitudeEvents.familyClicked,
