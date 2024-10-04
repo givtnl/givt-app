@@ -246,12 +246,12 @@ class AppRouter {
                   BlocProvider(
                     create: (context) => PersonalInfoEditBloc(
                       loggedInUserExt: context.read<AuthCubit>().state.user,
-                      authRepositoy: getIt(),
+                      authRepository: getIt(),
                     ),
                   ),
                   BlocProvider(
                     create: (context) => StripeCubit(
-                      authRepositoy: getIt(),
+                      authRepository: getIt(),
                     ),
                   ),
                 ],
@@ -290,7 +290,7 @@ class AppRouter {
                 providers: [
                   BlocProvider(
                     create: (_) => StripeCubit(
-                      authRepositoy: getIt(),
+                      authRepository: getIt(),
                     ),
                   ),
                 ],

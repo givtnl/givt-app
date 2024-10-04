@@ -14,7 +14,7 @@ part 'personal_info_edit_state.dart';
 class PersonalInfoEditBloc
     extends Bloc<PersonalInfoEditEvent, PersonalInfoEditState> {
   PersonalInfoEditBloc({
-    required this.authRepositoy,
+    required this.authRepository,
     required UserExt loggedInUserExt,
   }) : super(
           PersonalInfoEditState(
@@ -34,7 +34,7 @@ class PersonalInfoEditBloc
     on<PersonalInfoEditChangeMaxAmount>(_onMaxAmountChanged);
   }
 
-  final AuthRepository authRepositoy;
+  final AuthRepository authRepository;
 
   FutureOr<void> _onEmailChanged(
     PersonalInfoEditEmail event,
@@ -43,12 +43,12 @@ class PersonalInfoEditBloc
     emit(state.copyWith(status: PersonalInfoEditStatus.loading));
     try {
       LoggingInfo.instance.info('Changing email to ${event.email}');
-      if (!await authRepositoy.checkTld(event.email)) {
+      if (!await authRepository.checkTld(event.email)) {
         emit(state.copyWith(status: PersonalInfoEditStatus.invalidEmail));
         return;
       }
 
-      final result = await authRepositoy.checkEmail(event.email);
+      final result = await authRepository.checkEmail(event.email);
       if (result.contains('temp')) {
         emit(state.copyWith(status: PersonalInfoEditStatus.invalidEmail));
         return;
@@ -58,7 +58,7 @@ class PersonalInfoEditBloc
         return;
       }
       final stateUser = state.loggedInUserExt.copyWith(email: event.email);
-      await authRepositoy.updateUser(
+      await authRepository.updateUser(
         guid: state.loggedInUserExt.guid,
         newUserExt: {
           'amountLimit': state.loggedInUserExt.amountLimit,
@@ -104,7 +104,7 @@ class PersonalInfoEditBloc
         country: event.country,
         postalCode: event.postalCode,
       );
-      await authRepositoy.updateUserExt(
+      await authRepository.updateUserExt(
         stateUser.toUpdateJson(),
       );
       emit(
@@ -144,7 +144,7 @@ class PersonalInfoEditBloc
       final stateUser = state.loggedInUserExt.copyWith(
         phoneNumber: event.phoneNumber,
       );
-      await authRepositoy.updateUserExt(
+      await authRepository.updateUserExt(
         stateUser.toUpdateJson(),
       );
       emit(
@@ -187,7 +187,7 @@ class PersonalInfoEditBloc
         accountNumber: event.accountNumber,
         sortCode: event.sortCode,
       );
-      await authRepositoy.updateUserExt(
+      await authRepository.updateUserExt(
         stateUser.toUpdateJson(),
       );
       emit(
@@ -228,7 +228,7 @@ class PersonalInfoEditBloc
       final stateUser = state.loggedInUserExt.copyWith(
         isGiftAidEnabled: event.isGiftAidEnabled,
       );
-      await authRepositoy.changeGiftAid(
+      await authRepository.changeGiftAid(
         guid: stateUser.guid,
         giftAid: event.isGiftAidEnabled,
       );
@@ -270,7 +270,7 @@ class PersonalInfoEditBloc
       final stateUser = state.loggedInUserExt.copyWith(
         amountLimit: event.newAmountLimit,
       );
-      await authRepositoy.updateUser(
+      await authRepository.updateUser(
         guid: state.loggedInUserExt.guid,
         newUserExt: {
           'amountLimit': event.newAmountLimit,
