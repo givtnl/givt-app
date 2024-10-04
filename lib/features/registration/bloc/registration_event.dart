@@ -107,6 +107,11 @@ class RegistrationInit extends RegistrationEvent {
   const RegistrationInit();
 }
 
+class RegistrationReset extends RegistrationEvent {
+  const RegistrationReset();
+}
+
+
 class RegistrationGiftAidChanged extends RegistrationEvent {
   const RegistrationGiftAidChanged({
     required this.isGiftAidEnabled,
