@@ -98,7 +98,7 @@ class FamilyAppRoutes {
             ),
             BlocProvider(
               create: (context) => StripeCubit(
-                authRepositoy: getIt(),
+                authRepository: getIt(),
               ),
             ),
             // manage family
@@ -434,7 +434,7 @@ class FamilyAppRoutes {
                 ),
                 BlocProvider(
                   create: (_) => StripeCubit(
-                    authRepositoy: getIt(),
+                    authRepository: getIt(),
                   ),
                 ),
               ],
@@ -568,7 +568,7 @@ class FamilyAppRoutes {
               providers: [
                 BlocProvider(
                   create: (_) => StripeCubit(
-                    authRepositoy: getIt(),
+                    authRepository: getIt(),
                   ),
                 ),
               ],

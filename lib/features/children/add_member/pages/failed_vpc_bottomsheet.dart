@@ -30,7 +30,7 @@ class VPCFailedCachedMembersBottomsheet extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) =>
-              StripeCubit(authRepositoy: getIt<AuthRepository>()),
+              StripeCubit(authRepository: getIt<AuthRepository>()),
         ),
         BlocProvider.value(value: cacheCubit),
       ],
