@@ -119,11 +119,6 @@ class FamilyAppRoutes {
                 authRepositoy: getIt(),
               ),
             ),
-            BlocProvider(
-              create: (context) => StripeCubit(
-                authRepositoy: getIt(),
-              ),
-            ),
           ],
           child: NavigationBarHomeScreen(
             index: index,
