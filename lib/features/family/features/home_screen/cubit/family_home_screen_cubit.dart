@@ -1,6 +1,4 @@
-import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
-import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/family_setup_usecase.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/preferred_church_usecase.dart';
@@ -24,16 +22,14 @@ class FamilyHomeScreenCubit
   final ProfilesRepository _profilesRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
 
-  String? profilePictureUrl;
-  List<Profile> _profiles = [];
-  List<Member>? cachedMembers;
+  List<Profile> profiles = [];
   ImpactGroup? _familyGroup;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
 
-    _profiles = await _profilesRepository.getProfiles();
+    profiles = await _profilesRepository.getProfiles();
     _familyGroup = (await _impactGroupsRepository.getImpactGroups()).firstWhere(
       (element) => element.isFamilyGroup,
     );
@@ -42,7 +38,7 @@ class FamilyHomeScreenCubit
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
-    _profiles = profiles;
+    this.profiles = profiles;
 
     _updateUiModel();
   }
@@ -58,7 +54,7 @@ class FamilyHomeScreenCubit
   void _updateUiModel() {
     emitData(
       FamilyHomeScreenUIModel(
-        avatars: _profiles
+        avatars: profiles
             .map((e) => GratefulAvatarUIModel(
                   avatarUrl: e.pictureURL,
                   text: e.firstName,

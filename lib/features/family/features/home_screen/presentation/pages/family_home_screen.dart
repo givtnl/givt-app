@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
@@ -14,8 +18,10 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/g
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:go_router/go_router.dart';
 
 class FamilyHomeScreen extends StatefulWidget {
@@ -34,6 +40,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    context.read<ProfilesCubit>().fetchAllProfiles();
     _cubit.init();
   }
 
@@ -75,27 +82,26 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Column(
-                      children: [
-                        TitleLargeText(
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: TitleLargeText(
                           overlayVisible
                               ? ''
                               : 'Hey ${uiModel.familyGroupName}!',
                           textAlign: TextAlign.center,
                         ),
-                        const SizedBox(height: 16),
-                        GratefulAvatarBar(
-                          circleSize: 58,
-                          uiModel: GratefulAvatarBarUIModel(
-                            avatarUIModels: uiModel.avatars,
-                          ),
-                          withLeftPadding: false,
-                          onAvatarTapped: onAvatarTapped,
+                      ),
+                      const SizedBox(height: 16),
+                      GratefulAvatarBar(
+                        circleSize: 58,
+                        uiModel: GratefulAvatarBarUIModel(
+                          avatarUIModels: uiModel.avatars,
                         ),
-                      ],
-                    ),
+                        onAvatarTapped: onAvatarTapped,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -140,10 +146,50 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
   }
 
-  void onAvatarTapped(int index) {
-    if (overlayVisible) {}
+  Future<void> onAvatarTapped(int index) async {
+    if (overlayVisible) {
+      closeOverlay();
+    }
 
-    context.goNamed(FamilyPages.reflectIntro.name);
+    var profile = _cubit.profiles[index];
+
+    unawaited(
+      context.read<ProfilesCubit>().setActiveProfile(
+            profile.id,
+          ),
+    );
+
+    unawaited(
+      AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.profilePressed,
+        eventProperties: {
+          'profile_id': profile.id,
+          'profile_name': profile.firstName,
+        },
+      ),
+    );
+
+    if (profile.profileType == ProfileType.Parent) {
+      await FamilyAuthUtils.authenticateUser(
+        context,
+        checkAuthRequest: CheckAuthRequest(
+          navigate: (context, {isUSUser}) async {
+            await context.pushNamed(
+              FamilyPages.parentHome.name,
+              extra: profile,
+            );
+            await AnalyticsHelper.setUserProperties(
+              userId: profile.id,
+            );
+          },
+        ),
+      );
+    } else {
+      context.goNamed(
+        FamilyPages.wallet.name,
+        extra: profile,
+      );
+    }
   }
 
   void closeOverlay() {

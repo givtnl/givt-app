@@ -1,11 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
@@ -43,32 +40,33 @@ class FamilyHomeOverlay extends StatelessWidget {
           onTap: onDismiss,
           child: SizedBox(
             width: double.infinity,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                children: [
-                  TitleLargeText('Who would like to give?',
-                      textAlign: TextAlign.center,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(0, 4),
-                          blurRadius: 4,
-                          color: Colors.black.withOpacity(0.25),
-                        ),
-                      ]),
-                  const SizedBox(height: 16),
-                  GratefulAvatarBar(
-                    circleSize: 58,
-                    textColor: Colors.white,
-                    uiModel: GratefulAvatarBarUIModel(
-                      avatarUIModels: uiModel.avatars,
-                    ),
-                    withLeftPadding: false,
-                    onAvatarTapped: onAvatarTapped,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: TitleLargeText(
+                    'Who would like to give?',
+                    textAlign: TextAlign.center,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        offset: const Offset(0, 4),
+                        blurRadius: 4,
+                        color: Colors.black.withOpacity(0.25),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16),
+                GratefulAvatarBar(
+                  circleSize: 58,
+                  textColor: Colors.white,
+                  uiModel: GratefulAvatarBarUIModel(
+                    avatarUIModels: uiModel.avatars,
+                  ),
+                  onAvatarTapped: onAvatarTapped,
+                ),
+              ],
             ),
           ),
         ),
