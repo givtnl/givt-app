@@ -19,6 +19,7 @@ class TitleLargeText extends StatelessWidget {
     this.selectionColor,
     this.textWidthBasis,
     this.strutStyle,
+    this.shadows,
   });
 
   factory TitleLargeText.primary30(String text) =>
@@ -56,6 +57,7 @@ class TitleLargeText extends StatelessWidget {
   final Color? selectionColor;
   final TextWidthBasis? textWidthBasis;
   final StrutStyle? strutStyle;
+  final List<Shadow>? shadows;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,10 @@ class TitleLargeText extends StatelessWidget {
       selectionColor: selectionColor,
       textWidthBasis: textWidthBasis,
       strutStyle: strutStyle,
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(color: color),
+      style: Theme.of(context)
+          .textTheme
+          .titleLarge
+          ?.copyWith(color: color, shadows: shadows),
     );
   }
 }

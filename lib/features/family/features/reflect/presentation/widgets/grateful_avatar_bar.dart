@@ -9,6 +9,7 @@ class GratefulAvatarBar extends StatelessWidget {
     this.backgroundColor = Colors.transparent,
     this.withLeftPadding = true,
     this.circleSize = 64,
+    this.textColor,
     super.key,
   });
 
@@ -17,6 +18,7 @@ class GratefulAvatarBar extends StatelessWidget {
   final Color backgroundColor;
   final bool withLeftPadding;
   final double circleSize;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class GratefulAvatarBar extends StatelessWidget {
                 uiModel: avatarUIModel,
                 onTap: () => onAvatarTapped(index),
                 circleSize: circleSize,
+                textColor: textColor,
               ),
             );
           },

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/give_button.dart';
 import 'package:givt_app/features/family/features/home_screen/widgets/gratitude_game_button.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
@@ -24,10 +25,30 @@ class FamilyHomeScreen extends StatefulWidget {
 }
 
 class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
+  OverlayEntry? overlayEntry;
+  bool overlayVisible = false;
+
   @override
   void initState() {
     super.initState();
     context.read<ProfilesCubit>().fetchAllProfiles();
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => FamilyHomeOverlay(
+        onDismiss: closeOverlay,
+        onAvatarTapped: onAvatarTapped,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    if (overlayEntry != null && overlayEntry!.mounted) {
+      closeOverlay();
+      overlayEntry?.dispose();
+    }
+
+    super.dispose();
   }
 
   @override
@@ -65,7 +86,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               child: Column(
                                 children: [
                                   TitleLargeText(
-                                    'Hey ${name} Family!',
+                                    overlayVisible ? '' : 'Hey $name Family!',
                                     textAlign: TextAlign.center,
                                   ),
                                   const SizedBox(height: 16),
@@ -80,9 +101,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                                           .toList(),
                                     ),
                                     withLeftPadding: false,
-                                    onAvatarTapped: (index) {
-                                      //TODO: KIDS-1461
-                                    },
+                                    onAvatarTapped: onAvatarTapped,
                                   ),
                                 ],
                               ),
@@ -101,7 +120,11 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                               const SizedBox(height: 24),
                               GiveButton(
                                 onPressed: () {
-                                  //TODO: KIDS-1461
+                                  setState(() {
+                                    overlayVisible = true;
+                                  });
+
+                                  Overlay.of(context).insert(overlayEntry!);
                                 },
                               ),
                             ],
@@ -112,5 +135,18 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
         );
       },
     );
+  }
+
+  void onAvatarTapped(int index) {
+    if (overlayVisible) {}
+
+    context.goNamed(FamilyPages.reflectIntro.name);
+  }
+
+  void closeOverlay() {
+    setState(() {
+      overlayVisible = false;
+    });
+    overlayEntry?.remove();
   }
 }

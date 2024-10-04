@@ -11,11 +11,13 @@ class GratefulAvatar extends StatelessWidget {
       {required this.uiModel,
       required this.onTap,
       this.circleSize = 64,
+      this.textColor,
       super.key});
 
   final GratefulAvatarUIModel uiModel;
   final void Function() onTap;
   final double circleSize;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +83,7 @@ class GratefulAvatar extends StatelessWidget {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
+                color: textColor,
               ),
             ),
           ],
