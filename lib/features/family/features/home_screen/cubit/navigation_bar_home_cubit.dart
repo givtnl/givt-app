@@ -67,18 +67,17 @@ class NavigationBarHomeCubit
   }
 
   Future<void> doInitialChecks() async {
+    final hasCachedMembers = true == cachedMembers?.isNotEmpty;
     if (_familyInviteGroup != null) {
       return;
     } else if (await userNeedsRegistration()) {
       emitCustom(const NavigationBarHomeCustom.userNeedsRegistration());
+    } else if (hasCachedMembers) {
+      emitCustom(
+        NavigationBarHomeCustom.showCachedMembersDialog(cachedMembers!),
+      );
     } else if (await hasNoFamilySetup()) {
-      if (true == cachedMembers?.isNotEmpty) {
-        emitCustom(
-          NavigationBarHomeCustom.showCachedMembersDialog(cachedMembers!),
-        );
-      } else {
-        emitCustom(const NavigationBarHomeCustom.familyNotSetup());
-      }
+      emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowPreferredChurchModal()) {
       setPreferredChurchModalShown();
     }
