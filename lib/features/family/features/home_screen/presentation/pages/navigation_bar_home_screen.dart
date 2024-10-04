@@ -98,7 +98,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     return Scaffold(
       bottomNavigationBar: FunNavigationBar(
         index: _currentIndex,
-        onDestinationSelected: _onDestinationSelected,
+        onDestinationSelected: (int index) =>
+            _onDestinationSelected(index, uiModel: uiModel),
         destinations: [
           const NavigationDestination(
             icon: FaIcon(FontAwesomeIcons.house),

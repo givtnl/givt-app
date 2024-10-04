@@ -58,6 +58,7 @@ class NavigationBarHomeCubit
   void _onCachedMembersChanged(List<Member> members) {
     cachedMembers = members;
     _emitData();
+    doInitialChecks();
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
