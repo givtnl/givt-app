@@ -251,7 +251,7 @@ class AppRouter {
                   ),
                   BlocProvider(
                     create: (context) => StripeCubit(
-                      authRepositoy: getIt(),
+                      authRepository: getIt(),
                     ),
                   ),
                 ],
@@ -290,7 +290,7 @@ class AppRouter {
                 providers: [
                   BlocProvider(
                     create: (_) => StripeCubit(
-                      authRepositoy: getIt(),
+                      authRepository: getIt(),
                     ),
                   ),
                 ],
