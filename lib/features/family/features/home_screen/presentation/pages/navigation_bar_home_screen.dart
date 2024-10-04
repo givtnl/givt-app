@@ -28,6 +28,7 @@ import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_inv
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
+import 'package:givt_app/shared/widgets/theme/app_theme_switcher.dart';
 import 'package:go_router/go_router.dart';
 
 class NavigationBarHomeScreen extends StatefulWidget {
@@ -182,6 +183,9 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      AppThemeSwitcher.of(context).switchTheme(isFamilyApp: true);
+    });
   }
 
   @override
