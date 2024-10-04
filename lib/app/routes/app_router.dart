@@ -246,7 +246,7 @@ class AppRouter {
                   BlocProvider(
                     create: (context) => PersonalInfoEditBloc(
                       loggedInUserExt: context.read<AuthCubit>().state.user,
-                      authRepositoy: getIt(),
+                      authRepository: getIt(),
                     ),
                   ),
                   BlocProvider(

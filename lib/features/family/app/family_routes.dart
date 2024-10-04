@@ -93,7 +93,7 @@ class FamilyAppRoutes {
             BlocProvider(
               create: (context) => PersonalInfoEditBloc(
                 loggedInUserExt: context.read<AuthCubit>().state.user,
-                authRepositoy: getIt(),
+                authRepository: getIt(),
               ),
             ),
             BlocProvider(
@@ -116,7 +116,7 @@ class FamilyAppRoutes {
             BlocProvider(
               create: (context) => PersonalInfoEditBloc(
                 loggedInUserExt: context.read<AuthCubit>().state.user,
-                authRepositoy: getIt(),
+                authRepository: getIt(),
               ),
             ),
           ],
