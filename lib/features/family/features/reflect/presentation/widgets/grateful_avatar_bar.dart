@@ -7,7 +7,6 @@ class GratefulAvatarBar extends StatelessWidget {
     required this.uiModel,
     required this.onAvatarTapped,
     this.backgroundColor = Colors.transparent,
-    this.withLeftPadding = true,
     this.circleSize = 64,
     this.textColor,
     super.key,
@@ -16,7 +15,6 @@ class GratefulAvatarBar extends StatelessWidget {
   final GratefulAvatarBarUIModel uiModel;
   final void Function(int index) onAvatarTapped;
   final Color backgroundColor;
-  final bool withLeftPadding;
   final double circleSize;
   final Color? textColor;
 
@@ -24,8 +22,7 @@ class GratefulAvatarBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: backgroundColor,
-      padding:
-          EdgeInsets.only(left: withLeftPadding ? 24 : 0, top: 8, bottom: 16),
+      padding: const EdgeInsets.only(left: 24, top: 8, bottom: 16),
       child: SizedBox(
         height: 92,
         child: ListView.builder(
