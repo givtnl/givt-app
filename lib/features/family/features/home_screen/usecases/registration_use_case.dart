@@ -7,11 +7,12 @@ mixin class RegistrationUseCase {
 
   Future<bool> userNeedsRegistration() async {
     try {
+      UserExt? userExternal;
       final (userExt, session, amountPresets) =
-          await _authRepository.isAuthenticated();
-      return userExt?.needRegistration ?? false;
+          await _authRepository.isAuthenticated() ?? (null, null, null);
+      userExternal = userExt;
+      return userExternal?.needRegistration ?? false;
     } catch (e, s) {
-      // TODO: Consider logging the error or handling specific exceptions
       return false;
     }
   }
