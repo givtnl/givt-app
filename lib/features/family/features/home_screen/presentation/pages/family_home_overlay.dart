@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_uimodel.dart';
@@ -13,18 +14,18 @@ import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class FamilyHomeOverlay extends StatelessWidget {
   const FamilyHomeOverlay({
+    required this.uiModel,
     required this.onDismiss,
     required this.onAvatarTapped,
     super.key,
   });
 
+  final FamilyHomeScreenUIModel uiModel;
   final void Function() onDismiss;
   final void Function(int index) onAvatarTapped;
 
   @override
   Widget build(BuildContext context) {
-    final profiles = context.watch<ProfilesCubit>().state.profiles;
-
     return BackdropFilter(
       filter: ImageFilter.blur(
         sigmaX: 4,
@@ -61,14 +62,7 @@ class FamilyHomeOverlay extends StatelessWidget {
                     circleSize: 58,
                     textColor: Colors.white,
                     uiModel: GratefulAvatarBarUIModel(
-                      avatarUIModels: profiles
-                          .map(
-                            (e) => GratefulAvatarUIModel(
-                              avatarUrl: e.pictureURL,
-                              text: e.firstName,
-                            ),
-                          )
-                          .toList(),
+                      avatarUIModels: uiModel.avatars,
                     ),
                     withLeftPadding: false,
                     onAvatarTapped: onAvatarTapped,
