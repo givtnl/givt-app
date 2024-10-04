@@ -1,15 +1,17 @@
 import 'dart:math';
 
+import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
+import 'package:givt_app/features/family/network/api_service.dart';
 
 class ReflectAndShareRepository {
-  ReflectAndShareRepository(this._profilesRepository);
+  ReflectAndShareRepository(this._profilesRepository, this._familyApiService);
 
   final ProfilesRepository _profilesRepository;
-
+  final FamilyAPIService _familyApiService;
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
   int _generousDeeds = 0;
@@ -25,6 +27,17 @@ class ReflectAndShareRepository {
 
   void incrementGenerousDeeds() {
     _generousDeeds++;
+  }
+
+  void saveSummaryStats() {
+    try {
+      _familyApiService.saveGratitudeStats(totalTimeSpent);
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+    }
   }
 
   void saveGratitudeInterestsForCurrentSuperhero(GratitudeCategory? gratitude) {

@@ -20,6 +20,7 @@ import 'package:givt_app/features/family/features/reflect/bloc/family_selection_
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
@@ -78,6 +79,7 @@ void initCubits() {
         getIt(),
       ),
     )
+    ..registerLazySingleton(() => SummaryCubit(getIt()))
     ..registerLazySingleton<NavigationBarHomeCubit>(
       () => NavigationBarHomeCubit(
         getIt(),
@@ -164,6 +166,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
       ),
     );
