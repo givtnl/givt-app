@@ -113,6 +113,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           organisations: _currentRecommendations,
           name:
               _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ?? '',
+          category: _profiles.elementAt(_currentProfileIndex).gratitude
         ),
       ),
     );
