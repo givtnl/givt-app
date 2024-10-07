@@ -26,6 +26,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/widgets/r
 import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
+import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -101,8 +102,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
             body: Column(
               children: [
                 GratefulAvatarBar(
-                    uiModel: uiModel.avatarBarUIModel,
-                    onAvatarTapped: _cubit.onAvatarTapped),
+                  backgroundColor: FamilyAppTheme.primary99,
+                  uiModel: uiModel.avatarBarUIModel,
+                  onAvatarTapped: _cubit.onAvatarTapped,
+                ),
                 Flexible(
                   child: RecommendationsWidget(
                     uiModel: uiModel.recommendationsUIModel,

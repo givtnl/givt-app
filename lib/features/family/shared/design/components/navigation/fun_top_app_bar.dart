@@ -41,7 +41,7 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
         systemNavigationBarColor: systemNavigationBarColor,
       );
 
-  final String title;
+  final String? title;
   final List<Widget> actions;
   final Widget? leading;
   final Color? color;
@@ -50,9 +50,11 @@ class FunTopAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: TitleMediumText.primary30(
-        title,
-      ),
+      title: title == null
+          ? null
+          : TitleMediumText.primary30(
+              title!,
+            ),
       backgroundColor: color ?? Theme.of(context).colorScheme.onPrimary,
       actionsIconTheme: const IconThemeData(
         color: FamilyAppTheme.primary30,
