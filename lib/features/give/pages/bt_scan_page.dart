@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/utils/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sprintf/sprintf.dart';
 
 class BTScanPage extends StatefulWidget {
@@ -80,6 +82,13 @@ class _BTScanPageState extends State<BTScanPage> {
         switch (state) {
           case BluetoothAdapterState.on:
             if (!FlutterBluePlus.isScanningNow) {
+              if (Platform.isAndroid) {
+                final status = await Permission.bluetooth.status;
+                if (status.isDenied || status.isPermanentlyDenied) {
+                  await showBluetoothDeniedDialog();
+                  return;
+                }
+              }
               LoggingInfo.instance.info('Start Scan');
               await startBluetoothScan();
             }
@@ -88,20 +97,7 @@ class _BTScanPageState extends State<BTScanPage> {
             if (!mounted) {
               return;
             }
-            await showDialog<void>(
-              context: context,
-              builder: (_) => WarningDialog(
-                title: context.l10n.authoriseBluetooth,
-                content:
-                    '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
-                onConfirm: () async {
-                  if (!context.mounted) {
-                    return;
-                  }
-                  Navigator.of(context).pop();
-                },
-              ),
-            );
+            await showBluetoothDeniedDialog();
           case BluetoothAdapterState.unavailable:
           case BluetoothAdapterState.off:
             LoggingInfo.instance.info('Bluetooth adapter is off');
@@ -153,6 +149,23 @@ class _BTScanPageState extends State<BTScanPage> {
         title: context.l10n.turnOnBluetooth,
         content: context.l10n.bluetoothErrorMessage,
         onConfirm: () async {
+          Navigator.of(context).pop();
+        },
+      ),
+    );
+  }
+
+  Future<void> showBluetoothDeniedDialog() {
+    return showDialog<void>(
+      context: context,
+      builder: (_) => WarningDialog(
+        title: context.l10n.authoriseBluetooth,
+        content:
+            '''${context.l10n.authoriseBluetoothErrorMessage}\n ${context.l10n.authoriseBluetoothExtraText}''',
+        onConfirm: () async {
+          if (!context.mounted) {
+            return;
+          }
           Navigator.of(context).pop();
         },
       ),
