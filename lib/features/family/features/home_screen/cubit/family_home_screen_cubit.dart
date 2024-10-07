@@ -25,6 +25,7 @@ class FamilyHomeScreenCubit
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
 
     profiles = await _profilesRepository.getProfiles();
+
     _familyGroup = (await _impactGroupsRepository.getImpactGroups()).firstWhere(
       (element) => element.isFamilyGroup,
     );
@@ -33,8 +34,6 @@ class FamilyHomeScreenCubit
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
-    this.profiles = profiles;
-
     _updateUiModel();
   }
 
@@ -47,13 +46,17 @@ class FamilyHomeScreenCubit
   }
 
   void _updateUiModel() {
+    profiles.sort((a, b) => a.isChild ? -1 : 1);
+
     emitData(
       FamilyHomeScreenUIModel(
         avatars: profiles
-            .map((e) => GratefulAvatarUIModel(
-                  avatarUrl: e.pictureURL,
-                  text: e.firstName,
-                ))
+            .map(
+              (e) => GratefulAvatarUIModel(
+                avatarUrl: e.pictureURL,
+                text: e.firstName,
+              ),
+            )
             .toList(),
         familyGroupName: _familyGroup?.name ?? '',
       ),

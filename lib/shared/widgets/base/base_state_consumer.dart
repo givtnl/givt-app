@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/widgets/errors/unrecoverable_error.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
@@ -70,7 +71,7 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
           return onError?.call(context, state.message) ??
               const UnrecoverableError();
         } else if (state is LoadingState) {
-          return onLoading?.call(context) ?? const CircularProgressIndicator();
+          return onLoading?.call(context) ?? const CustomCircularProgressIndicator();
         } else if (state is DataState<E, K>) {
           return onData?.call(context, state.data) ??
               const UnrecoverableError();
