@@ -121,6 +121,11 @@ class _PreferredChurchSelectionPageState
         onTap: () => _onTapConfirm(context),
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.preferredChurchSelected,
+          parameters: {
+            'namespace':
+                bloc.state.filteredOrganisations[selectedIndex].nameSpace,
+            'name': bloc.state.filteredOrganisations[selectedIndex].orgName,
+          },
         ),
       ),
     );
