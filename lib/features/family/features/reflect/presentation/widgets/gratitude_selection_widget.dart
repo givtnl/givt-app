@@ -24,6 +24,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Gratitude',
         actions: const [
