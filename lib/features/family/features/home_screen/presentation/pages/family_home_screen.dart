@@ -57,7 +57,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onLoading: (context) => const CustomCircularProgressIndicator(),
       onData: (context, uiModel) {
         createOverlay(uiModel);
 
