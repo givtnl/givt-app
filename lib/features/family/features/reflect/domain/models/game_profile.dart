@@ -40,7 +40,7 @@ class GameProfile {
       hasDonated: hasDonated,
       isSelected: isSelected,
       avatarUrl: pictureURL!,
-      text: gratitude?.displayText ?? '',
+      text: firstName!,
     );
   }
 

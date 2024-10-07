@@ -92,7 +92,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
           return FunScaffold(
             withSafeArea: false,
             appBar: FunTopAppBar(
-              title: "You're grateful for",
+              title: 'Share your gratitude',
               actions: [
                 LeaveGameButton(
                   onPressed: () => const FinishReflectionDialog().show(context),
