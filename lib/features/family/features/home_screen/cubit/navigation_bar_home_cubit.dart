@@ -49,6 +49,7 @@ class NavigationBarHomeCubit
   }
 
   Future<void> refreshData() async {
+    _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     cachedMembers = await getCachedMembers();
     unawaited(_getProfilePictureUrl());
