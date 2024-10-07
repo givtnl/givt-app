@@ -3,6 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/rule_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
@@ -29,11 +31,14 @@ class PassThePhone extends StatelessWidget {
     );
   }
 
-  factory PassThePhone.toSidekick(GameProfile sidekick) {
+  factory PassThePhone.toSidekick(GameProfile sidekick,
+      {bool toRules = false}) {
     return PassThePhone(
       user: sidekick,
       onTap: (context) => Navigator.of(context).pushReplacement(
-        RuleScreen.toSidekick(sidekick).toRoute(context),
+        toRules
+            ? RuleScreen.toSidekick(sidekick).toRoute(context)
+            : const GratitudeSelectionScreen().toRoute(context),
       ),
     );
   }
