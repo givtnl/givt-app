@@ -85,6 +85,16 @@ class _BTScanPageState extends State<BTScanPage> {
               if (Platform.isAndroid) {
                 final status = await Permission.bluetoothConnect.status;
                 if (status.isDenied || status.isPermanentlyDenied) {
+                  try {
+                    final newStatus =
+                        await Permission.bluetoothConnect.request();
+                    if (newStatus.isGranted) {
+                      await startBluetoothScan();
+                      return;
+                    }
+                  } catch (_) {
+                    await showBluetoothDeniedDialog();
+                  }
                   await showBluetoothDeniedDialog();
                   return;
                 }
