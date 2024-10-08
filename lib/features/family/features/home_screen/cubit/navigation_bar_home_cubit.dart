@@ -80,6 +80,7 @@ class NavigationBarHomeCubit
     } else if (await hasNoFamilySetup()) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowPreferredChurchModal()) {
+      emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
       setPreferredChurchModalShown();
     }
   }
