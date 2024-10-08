@@ -3,9 +3,9 @@ import 'package:givt_app/features/family/features/reflect/presentation/models/gr
 class FamilyHomeScreenUIModel {
   const FamilyHomeScreenUIModel({
     required this.avatars,
-    required this.familyGroupName,
+    this.familyGroupName,
   });
 
   final List<GratefulAvatarUIModel> avatars;
-  final String familyGroupName;
+  final String? familyGroupName;
 }

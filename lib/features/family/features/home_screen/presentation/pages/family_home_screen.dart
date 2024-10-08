@@ -82,7 +82,9 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         child: TitleLargeText(
                           overlayVisible
                               ? ''
-                              : 'Hey ${uiModel.familyGroupName}!',
+                              : uiModel.familyGroupName == null
+                                  ? 'Welcome!'
+                                  : 'Hey ${uiModel.familyGroupName}!',
                           textAlign: TextAlign.center,
                         ),
                       ),

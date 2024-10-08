@@ -60,7 +60,7 @@ class FamilyHomeScreenCubit
               ),
             )
             .toList(),
-        familyGroupName: _familyGroup?.name ?? '',
+        familyGroupName: _familyGroup?.name,
       ),
     );
   }
