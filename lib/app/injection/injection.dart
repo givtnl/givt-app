@@ -10,8 +10,6 @@ import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/cubit/add_member_cubit.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
-import 'package:givt_app/features/children/cached_members/cubit/cached_members_cubit.dart';
-import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/children/edit_child/repositories/edit_child_repository.dart';
 import 'package:givt_app/features/children/edit_profile/repositories/edit_parent_profile_repository.dart';
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
@@ -203,12 +201,6 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<CachedMembersRepository>(
-      () => CachedMembersRepositoryImpl(
-        getIt(),
-        getIt(),
-      ),
-    )
     ..registerLazySingleton<CreateFamilyGoalRepository>(
       () => CreateFamilyGoalRepositoryImpl(
         getIt(),
@@ -227,13 +219,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<AddMemberCubit>(
       () => AddMemberCubit(
-        getIt(),
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<CachedMembersCubit>(
-      () => CachedMembersCubit(
-        getIt(),
         getIt(),
       ),
     )

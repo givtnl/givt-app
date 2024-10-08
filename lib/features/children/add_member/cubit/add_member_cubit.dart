@@ -6,7 +6,6 @@ import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
-import 'package:givt_app/features/children/cached_members/repositories/cached_members_repository.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
@@ -15,11 +14,9 @@ part 'add_member_state.dart';
 class AddMemberCubit extends Cubit<AddMemberState> {
   AddMemberCubit(
     this._addMemberRepository,
-    this._cachedMembersRepository,
   ) : super(const AddMemberState());
 
   final AddMemberRepository _addMemberRepository;
-  final CachedMembersRepository _cachedMembersRepository;
 
   Future<void> createMember() async {
     emit(state.copyWith(status: AddMemberStateStatus.loading));
@@ -51,15 +48,6 @@ class AddMemberCubit extends Cubit<AddMemberState> {
       LoggingInfo.instance.error(error.toString());
 
       if (error is GivtServerFailure &&
-          error.type == FailureType.VPC_NOT_SUCCESSFUL) {
-        await _saveMembersToCache();
-
-        unawaited(
-          AnalyticsHelper.logEvent(
-            eventName: AmplitudeEvents.failedToGetVpc,
-          ),
-        );
-      } else if (error is GivtServerFailure &&
           error.type == FailureType.TOPUP_NOT_SUCCESSFUL) {
         unawaited(
           AnalyticsHelper.logEvent(
@@ -84,21 +72,5 @@ class AddMemberCubit extends Cubit<AddMemberState> {
 
   void addAllMembers(List<Member> members) {
     emit(state.copyWith(members: members));
-  }
-
-  Future<void> _saveMembersToCache() async {
-    await _cachedMembersRepository.saveToCache(state.members);
-    emit(state.copyWith(status: AddMemberStateStatus.successCached));
-    final memberNames =
-        state.members.map((member) => member.firstName).toList();
-
-    unawaited(
-      AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.cacheMembersDueToNoFunds,
-        eventProperties: {
-          'memberNames': memberNames,
-        },
-      ),
-    );
   }
 }
