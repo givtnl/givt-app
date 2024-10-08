@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -16,6 +18,7 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class PreferredChurchSelectionPage extends StatefulWidget {
   const PreferredChurchSelectionPage({
@@ -121,11 +124,6 @@ class _PreferredChurchSelectionPageState
         onTap: () => _onTapConfirm(context),
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.preferredChurchSelected,
-          parameters: {
-            'namespace':
-                bloc.state.filteredOrganisations[selectedIndex].nameSpace,
-            'name': bloc.state.filteredOrganisations[selectedIndex].orgName,
-          },
         ),
       ),
     );
@@ -138,6 +136,16 @@ class _PreferredChurchSelectionPageState
       });
       final churchId =
           bloc.state.filteredOrganisations[selectedIndex].nameSpace;
+      unawaited(AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.preferredChurchSelected,
+        eventProperties: {
+          'namespace':
+              bloc.state.filteredOrganisations[selectedIndex].nameSpace,
+          'orgname': bloc.state.filteredOrganisations[selectedIndex].orgName,
+          'churchId': churchId,
+        },
+      ));
+
       final success = await widget.setPreferredChurch(churchId);
 
       if (success) {

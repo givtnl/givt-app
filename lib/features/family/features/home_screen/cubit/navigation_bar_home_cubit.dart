@@ -36,6 +36,7 @@ class NavigationBarHomeCubit
   List<Profile> _profiles = [];
   List<Member>? cachedMembers;
   ImpactGroup? _familyInviteGroup;
+  bool _hasShownPreferredChurchDialog = false;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
@@ -53,18 +54,19 @@ class NavigationBarHomeCubit
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     cachedMembers = await getCachedMembers();
     unawaited(_getProfilePictureUrl());
-    unawaited(doInitialChecks());
+    await doInitialChecks();
   }
 
-  void _onCachedMembersChanged(List<Member> members) {
+  Future<void> _onCachedMembersChanged(List<Member> members) async {
     cachedMembers = members;
     _emitData();
-    doInitialChecks();
+    await doInitialChecks();
   }
 
-  void _onProfilesChanged(List<Profile> profiles) {
+  Future<void> _onProfilesChanged(List<Profile> profiles) async {
     _profiles = profiles;
-    _getProfilePictureUrl();
+    unawaited(_getProfilePictureUrl());
+    await doInitialChecks();
   }
 
   Future<void> doInitialChecks() async {
@@ -77,11 +79,14 @@ class NavigationBarHomeCubit
       emitCustom(
         NavigationBarHomeCustom.showCachedMembersDialog(cachedMembers!),
       );
-    } else if (await hasNoFamilySetup()) {
+    } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
-    } else if (await shouldShowPreferredChurchModal()) {
+    } else if (!_hasShownPreferredChurchDialog &&
+        await shouldShowPreferredChurchModal()) {
+      // Prevent showing the dialog multiple times due to async calls to doInitialChecks
+      _hasShownPreferredChurchDialog = true;
+      await setPreferredChurchModalShown();
       emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
-      setPreferredChurchModalShown();
     }
   }
 

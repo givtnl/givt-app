@@ -30,7 +30,7 @@ mixin ImpactGroupsRepository {
 
   Organisation? getPreferredChurch();
 
-  void setPreferredChurchModalShown();
+  Future<void> setPreferredChurchModalShown();
 
   Future<bool> wasPreferredChurchModalShown();
 
@@ -107,6 +107,9 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
 
   @override
   Future<List<ImpactGroup>> getImpactGroups() async {
+    if (true == _impactGroups?.isEmpty) {
+      _impactGroups = await _fetchImpactGroups();
+    }
     return _impactGroups ??= await _fetchImpactGroups();
   }
 
@@ -137,6 +140,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   @override
   Future<bool> setPreferredChurch(String churchMediumId) async {
     try {
+      await getImpactGroups();
       await _apiService.setPreferredChurch(
         churchMediumId: churchMediumId,
         groupId: _impactGroups!.firstWhere(
@@ -157,8 +161,8 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  void setPreferredChurchModalShown() {
-    _prefs.setBool(preferredChurchModalShownKey, true);
+  Future<void> setPreferredChurchModalShown() async {
+    await _prefs.setBool(preferredChurchModalShownKey, true);
   }
 
   @override

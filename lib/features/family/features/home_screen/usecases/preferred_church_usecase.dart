@@ -18,13 +18,13 @@ mixin class PreferredChurchUseCase {
     }
   }
 
-  void setPreferredChurchModalShown() {
-    _impactGroupsRepository.setPreferredChurchModalShown();
+  Future<void> setPreferredChurchModalShown() async {
+    await _impactGroupsRepository.setPreferredChurchModalShown();
   }
 
   Future<bool> shouldShowPreferredChurchModal() async {
     try {
-      return await _impactGroupsRepository.wasPreferredChurchModalShown() &&
+      return !(await _impactGroupsRepository.wasPreferredChurchModalShown()) &&
           _impactGroupsRepository.getPreferredChurch() == null;
     } catch (e, s) {
       return false;
