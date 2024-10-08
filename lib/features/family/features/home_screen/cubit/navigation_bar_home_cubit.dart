@@ -43,7 +43,7 @@ class NavigationBarHomeCubit
         .onCachedMembersChanged()
         .listen(_onCachedMembersChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
-      unawaited(refreshData());
+      _onImpactGroupsChanged();
     });
     await refreshData();
   }
@@ -62,10 +62,22 @@ class NavigationBarHomeCubit
     await doInitialChecks();
   }
 
-  Future<void> _onProfilesChanged(List<Profile> profiles) async {
-    _profiles = profiles;
-    unawaited(_getProfilePictureUrl());
+  Future<void> _onImpactGroupsChanged() async {
+    _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
+    _emitData();
     await doInitialChecks();
+  }
+
+  Future<void> _onProfilesChanged(List<Profile> profiles) async {
+    if (_areProfilesDifferent(profiles)) {
+      _profiles = profiles;
+      unawaited(_getProfilePictureUrl());
+      await doInitialChecks();
+    }
+  }
+
+  bool _areProfilesDifferent(List<Profile> profiles) {
+    return !const ListEquality<Profile>().equals(_profiles, profiles);
   }
 
   Future<void> doInitialChecks() async {
