@@ -66,17 +66,26 @@ class BaseStateConsumer<E, K> extends StatelessWidget {
       },
       builder: (context, state) {
         if (state is InitialState) {
-          return onInitial?.call(context) ?? const UnrecoverableError();
+          return onInitial?.call(context) ??
+              UnrecoverableError(
+                testString: 'baseconsumer onInitial: $state',
+              );
         } else if (state is ErrorState<E, K>) {
           return onError?.call(context, state.message) ??
-              const UnrecoverableError();
+              UnrecoverableError(
+                testString: 'baseconsumer onError: $state',
+              );
         } else if (state is LoadingState) {
-          return onLoading?.call(context) ?? const CustomCircularProgressIndicator();
+          return onLoading?.call(context) ??
+              const CustomCircularProgressIndicator();
         } else if (state is DataState<E, K>) {
           return onData?.call(context, state.data) ??
-              const UnrecoverableError();
+              UnrecoverableError(
+                testString: 'baseconsumer onData: $state',
+              );
         } else {
-          return const UnrecoverableError();
+          return onLoading?.call(context) ??
+              const CustomCircularProgressIndicator();
         }
       },
     );
