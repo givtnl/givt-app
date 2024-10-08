@@ -52,6 +52,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
 
   int _currentIndex = 0;
+  bool _isShowingPreferredChurch = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -200,7 +201,13 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   ) async {
     switch (custom) {
       case PreferredChurchDialog():
-        showPreferredChurchModal(context);
+        if (_isShowingPreferredChurch) {
+          // do nothing, dialog is already showing
+        } else {
+          _isShowingPreferredChurch = true;
+          await showPreferredChurchModal(context);
+          _isShowingPreferredChurch = false;
+        }
       case UserNeedsRegistration():
         await _continueRegistration(context);
       case FamilyNotSetup():
@@ -232,8 +239,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     );
   }
 
-  void showPreferredChurchModal(BuildContext context) {
-    FunModal(
+  Future<void> showPreferredChurchModal(BuildContext context) async {
+    await FunModal(
       title: 'Choose your church',
       icon: const FunIcon(
         iconData: FontAwesomeIcons.church,

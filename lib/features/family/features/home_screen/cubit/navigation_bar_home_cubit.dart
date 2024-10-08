@@ -36,7 +36,6 @@ class NavigationBarHomeCubit
   List<Profile> _profiles = [];
   List<Member>? cachedMembers;
   ImpactGroup? _familyInviteGroup;
-  bool _hasShownPreferredChurchDialog = false;
 
   Future<void> init() async {
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
@@ -81,10 +80,7 @@ class NavigationBarHomeCubit
       );
     } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
-    } else if (!_hasShownPreferredChurchDialog &&
-        await shouldShowPreferredChurchModal()) {
-      // Prevent showing the dialog multiple times due to async calls to doInitialChecks
-      _hasShownPreferredChurchDialog = true;
+    } else if (await shouldShowPreferredChurchModal()) {
       await setPreferredChurchModalShown();
       emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
     }
