@@ -69,15 +69,9 @@ class NavigationBarHomeCubit
   }
 
   Future<void> _onProfilesChanged(List<Profile> profiles) async {
-    if (_areProfilesDifferent(profiles)) {
-      _profiles = profiles;
-      unawaited(_getProfilePictureUrl());
-      await doInitialChecks();
-    }
-  }
-
-  bool _areProfilesDifferent(List<Profile> profiles) {
-    return !const ListEquality<Profile>().equals(_profiles, profiles);
+    _profiles = profiles;
+    unawaited(_getProfilePictureUrl());
+    await doInitialChecks();
   }
 
   Future<void> doInitialChecks() async {

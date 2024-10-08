@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
@@ -26,7 +27,8 @@ class FamilyHomeScreenCubit
 
     profiles = await _profilesRepository.getProfiles();
 
-    _familyGroup = (await _impactGroupsRepository.getImpactGroups()).firstWhere(
+    _familyGroup =
+        (await _impactGroupsRepository.getImpactGroups()).firstWhereOrNull(
       (element) => element.isFamilyGroup,
     );
 
@@ -38,7 +40,7 @@ class FamilyHomeScreenCubit
   }
 
   void _onGroupsChanged(List<ImpactGroup> profiles) {
-    _familyGroup = profiles.firstWhere(
+    _familyGroup = profiles.firstWhereOrNull(
       (element) => element.isFamilyGroup,
     );
 

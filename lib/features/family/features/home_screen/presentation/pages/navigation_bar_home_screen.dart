@@ -52,7 +52,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
 
   int _currentIndex = 0;
-  bool _isShowingPreferredChurch = false;
+  static bool _isShowingPreferredChurch = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
