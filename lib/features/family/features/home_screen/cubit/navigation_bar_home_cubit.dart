@@ -63,6 +63,7 @@ class NavigationBarHomeCubit
   }
 
   Future<void> _onImpactGroupsChanged() async {
+    _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     _emitData();
     await doInitialChecks();

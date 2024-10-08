@@ -48,6 +48,7 @@ class FamilyOverviewPage extends StatelessWidget {
       },
       builder: (context, state) {
         return FunScaffold(
+          minimumPadding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
           appBar: FunTopAppBar(
             title: state is FamilyOverviewUpdatedState &&
                     !state.hasChildren &&
