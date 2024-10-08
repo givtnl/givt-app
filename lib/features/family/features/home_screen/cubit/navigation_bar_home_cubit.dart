@@ -43,7 +43,7 @@ class NavigationBarHomeCubit
         .onCachedMembersChanged()
         .listen(_onCachedMembersChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
-      unawaited(refreshData());
+      _onImpactGroupsChanged();
     });
     await refreshData();
   }
@@ -53,18 +53,25 @@ class NavigationBarHomeCubit
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
     cachedMembers = await getCachedMembers();
     unawaited(_getProfilePictureUrl());
-    unawaited(doInitialChecks());
+    await doInitialChecks();
   }
 
-  void _onCachedMembersChanged(List<Member> members) {
+  Future<void> _onCachedMembersChanged(List<Member> members) async {
     cachedMembers = members;
     _emitData();
-    doInitialChecks();
+    await doInitialChecks();
   }
 
-  void _onProfilesChanged(List<Profile> profiles) {
+  Future<void> _onImpactGroupsChanged() async {
+    _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
+    _emitData();
+    await doInitialChecks();
+  }
+
+  Future<void> _onProfilesChanged(List<Profile> profiles) async {
     _profiles = profiles;
-    _getProfilePictureUrl();
+    unawaited(_getProfilePictureUrl());
+    await doInitialChecks();
   }
 
   Future<void> doInitialChecks() async {
@@ -77,10 +84,11 @@ class NavigationBarHomeCubit
       emitCustom(
         NavigationBarHomeCustom.showCachedMembersDialog(cachedMembers!),
       );
-    } else if (await hasNoFamilySetup()) {
+    } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowPreferredChurchModal()) {
-      setPreferredChurchModalShown();
+      await setPreferredChurchModalShown();
+      emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
     }
   }
 

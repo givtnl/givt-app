@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
@@ -147,8 +148,11 @@ class ProfilesRepositoryImpl with ProfilesRepository {
       for (final profileMap in response) {
         result.add(Profile.fromMap(profileMap as Map<String, dynamic>));
       }
-      _profiles = result;
-      _profilesStreamController.add(result);
+      if (!const ListEquality<Profile>().equals(_profiles, result)) {
+        _profiles = result;
+        _profilesStreamController.add(result);
+      }
+
       return result;
     } catch (e, s) {
       LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);

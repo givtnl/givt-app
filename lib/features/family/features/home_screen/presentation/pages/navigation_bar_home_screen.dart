@@ -52,6 +52,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
 
   int _currentIndex = 0;
+  static bool _isShowingPreferredChurch = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
     AnalyticsEvent(
@@ -200,7 +201,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   ) async {
     switch (custom) {
       case PreferredChurchDialog():
-        showPreferredChurchModal(context);
+        await _showPreferredChurchModal(context);
       case UserNeedsRegistration():
         await _continueRegistration(context);
       case FamilyNotSetup():
@@ -232,37 +233,43 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     );
   }
 
-  void showPreferredChurchModal(BuildContext context) {
-    FunModal(
-      title: 'Choose your church',
-      icon: const FunIcon(
-        iconData: FontAwesomeIcons.church,
-      ),
-      subtitle: "Let's link your church to make giving easier",
-      buttons: [
-        FunButton(
-          text: 'Continue',
-          onTap: () async {
-            context.pop(); // close modal
-            await Navigator.push(
-              context,
-              PreferredChurchSelectionPage(
-                      setPreferredChurch: _cubit.setPreferredChurch)
-                  .toRoute(context),
-            );
-          },
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.continueChooseChurchClicked,
-          ),
+  Future<void> _showPreferredChurchModal(BuildContext context) async {
+    if (_isShowingPreferredChurch) {
+      // do nothing, dialog is already showing
+    } else {
+      _isShowingPreferredChurch = true;
+      await FunModal(
+        title: 'Choose your church',
+        icon: const FunIcon(
+          iconData: FontAwesomeIcons.church,
         ),
-        FunButton.secondary(
-          text: "I don't go to church",
-          onTap: () => context.pop(),
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.dontGoToChurchClicked,
+        subtitle: "Let's link your church to make giving easier",
+        buttons: [
+          FunButton(
+            text: 'Continue',
+            onTap: () async {
+              context.pop(); // close modal
+              await Navigator.push(
+                context,
+                PreferredChurchSelectionPage(
+                        setPreferredChurch: _cubit.setPreferredChurch)
+                    .toRoute(context),
+              );
+            },
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.continueChooseChurchClicked,
+            ),
           ),
-        ),
-      ],
-    ).show(context);
+          FunButton.secondary(
+            text: "I don't go to church",
+            onTap: () => context.pop(),
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.dontGoToChurchClicked,
+            ),
+          ),
+        ],
+      ).show(context);
+      _isShowingPreferredChurch = false;
+    }
   }
 }
