@@ -6,8 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/children/add_member/models/member.dart';
-import 'package:givt_app/features/children/add_member/pages/failed_vpc_bottomsheet.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
@@ -163,12 +161,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         context,
         checkAuthRequest: CheckAuthRequest(
           navigate: (context, {isUSUser}) async {
-            if (index == NavigationBarHomeScreen.familyIndex &&
-                true == uiModel?.cachedMembers?.isNotEmpty) {
-              _showCachedMembersDialog(context, uiModel!.cachedMembers!);
-            } else {
-              _setIndex(index);
-            }
+            _setIndex(index);
           },
         ),
       );
@@ -207,8 +200,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
         await _continueRegistration(context);
       case FamilyNotSetup():
         await _showSetupFamily(context);
-      case final ShowCachedMembersDialog data:
-        _showCachedMembersDialog(context, data.cachedMembers);
     }
   }
 
@@ -224,14 +215,6 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
 
   Future<void> _showSetupFamily(BuildContext context) async {
     await AddMemberUtil.addMemberPushPages(context);
-  }
-
-  void _showCachedMembersDialog(
-      BuildContext context, List<Member> cachedMembers) {
-    VPCFailedCachedMembersBottomsheet.show(
-      context,
-      cachedMembers,
-    );
   }
 
   Future<void> _showPreferredChurchModal(BuildContext context) async {
