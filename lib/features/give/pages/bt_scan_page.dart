@@ -83,8 +83,18 @@ class _BTScanPageState extends State<BTScanPage> {
           case BluetoothAdapterState.on:
             if (!FlutterBluePlus.isScanningNow) {
               if (Platform.isAndroid) {
-                final status = await Permission.bluetooth.status;
+                final status = await Permission.bluetoothConnect.status;
                 if (status.isDenied || status.isPermanentlyDenied) {
+                  try {
+                    final newStatus =
+                        await Permission.bluetoothConnect.request();
+                    if (newStatus.isGranted) {
+                      await startBluetoothScan();
+                      return;
+                    }
+                  } catch (_) {
+                    await showBluetoothDeniedDialog();
+                  }
                   await showBluetoothDeniedDialog();
                   return;
                 }
