@@ -1,6 +1,6 @@
 name: givt_app
 description: Givt App
-version: 4.4.13
+version: 4.5.0
 publish_to: none
 
 environment:
@@ -75,6 +75,7 @@ dependencies:
   uuid: ^4.4.0
   vibration: ^2.0.0
   wakelock_plus: ^1.2.8
+  collection: ^1.18.0
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)
@@ -149,5 +150,6 @@ flutter:
     - assets/lotties/
     - assets/ca/
     - assets/family/images/
+    - assets/family/images/home_screen/
     - assets/family/lotties/
     - assets/fun/illustrations/

@@ -239,7 +239,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<StripeCubit>(
       () => StripeCubit(
-        authRepositoy: getIt<AuthRepository>(),
+        authRepository: getIt<AuthRepository>(),
       ),
     );
 }

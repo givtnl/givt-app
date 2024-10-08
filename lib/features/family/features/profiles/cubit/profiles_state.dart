@@ -67,49 +67,6 @@ class ProfilesUpdatedState extends ProfilesState {
   });
 }
 
-class ProfilesNoChurchSelected extends ProfilesState {
-  /// This is the state that is emitted when the user has not selected a church
-  const ProfilesNoChurchSelected({
-    required super.profiles,
-    required super.activeProfileIndex,
-    super.cachedMembers,
-  });
-}
-
-class ProfilesNotSetupState extends ProfilesState {
-  /// This is the state that is emitted when profiles have not yet been setup
-  const ProfilesNotSetupState({
-    required super.profiles,
-    required super.activeProfileIndex,
-    super.cachedMembers,
-  });
-}
-
-class ProfilesNeedsRegistration extends ProfilesState {
-  /// This is the state that is emitted when the user still needs to register
-  const ProfilesNeedsRegistration({
-    required super.profiles,
-    required super.activeProfileIndex,
-    this.hasFamily = false,
-  });
-
-  final bool hasFamily;
-}
-
-class ProfilesInvitedToGroup extends ProfilesState {
-  /// This is the state that is emitted when the user still needs to register
-  const ProfilesInvitedToGroup({
-    required super.profiles,
-    required super.activeProfileIndex,
-    required this.impactGroup,
-  });
-
-  final ImpactGroup impactGroup;
-
-  @override
-  List<Object> get props => [profiles, activeProfileIndex, impactGroup];
-}
-
 class ProfilesExternalErrorState extends ProfilesState {
   const ProfilesExternalErrorState({
     required super.profiles,

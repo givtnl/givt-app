@@ -25,7 +25,7 @@ class ChangeMaxAmountBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PersonalInfoEditBloc(
-        authRepositoy: getIt(),
+        authRepository: getIt(),
         loggedInUserExt: context.read<AuthCubit>().state.user,
       ),
       child: _ChangeMaxAmountBottomSheetView(

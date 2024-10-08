@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 
 class RecommendationsListWidget extends StatelessWidget {
   const RecommendationsListWidget(
@@ -18,9 +17,7 @@ class RecommendationsListWidget extends StatelessWidget {
       children: [
         const SizedBox(height: 24),
         TitleMediumText(
-          true == uiModel.name?.isNotNullAndNotEmpty()
-              ? "${uiModel.name}, here's some non-profits you could support!"
-              : "Here's some non-profits you could support!",
+          '${uiModel.name} you were grateful for ${uiModel.category!.displayText}, here are some ways to help',
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),

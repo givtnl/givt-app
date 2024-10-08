@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
@@ -6,7 +8,6 @@ import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
-import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -17,11 +18,15 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class PreferredChurchSelectionPage extends StatefulWidget {
   const PreferredChurchSelectionPage({
+    required this.setPreferredChurch,
     super.key,
   });
+
+  final Future<bool> Function(String id) setPreferredChurch;
 
   @override
   State<PreferredChurchSelectionPage> createState() =>
@@ -129,9 +134,19 @@ class _PreferredChurchSelectionPageState
       setState(() {
         isLoading = true;
       });
-      final success = await context.read<ProfilesCubit>().setPreferredChurch(
-            bloc.state.filteredOrganisations[selectedIndex].nameSpace,
-          );
+      final churchId =
+          bloc.state.filteredOrganisations[selectedIndex].nameSpace;
+      unawaited(AnalyticsHelper.logEvent(
+        eventName: AmplitudeEvents.preferredChurchSelected,
+        eventProperties: {
+          'namespace':
+              bloc.state.filteredOrganisations[selectedIndex].nameSpace,
+          'orgname': bloc.state.filteredOrganisations[selectedIndex].orgName,
+          'churchId': churchId,
+        },
+      ));
+
+      final success = await widget.setPreferredChurch(churchId);
 
       if (success) {
         await showPreferredChurchSuccessDialog(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/utils/utils.dart';
@@ -20,6 +22,7 @@ class LeaveGameDialog extends StatelessWidget {
       buttons: [
         FunButton.destructive(
           onTap: () {
+            getIt<SummaryCubit>().saveSummary();
             Navigator.of(context).popUntil(
               ModalRoute.withName(
                 FamilyPages.profileSelection.name,

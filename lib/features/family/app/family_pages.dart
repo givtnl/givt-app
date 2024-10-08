@@ -42,10 +42,6 @@ enum FamilyPages {
   editChild(path: 'edit-child', name: 'EDIT-CHILD'),
   createChild(path: 'create-child', name: 'CREATE-CHILD'),
   createFamilyGoal(path: 'create-family-goal', name: 'CREATE-FAMILY-GOAL'),
-  cachedChildrenOverview(
-    path: 'cached-children-overview',
-    name: 'CACHED-CHILDREN-OVERVIEW',
-  ),
 
   //recommendation flow
   recommendationStart(

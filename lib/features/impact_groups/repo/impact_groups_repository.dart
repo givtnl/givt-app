@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/api_service.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
@@ -30,7 +31,7 @@ mixin ImpactGroupsRepository {
 
   Organisation? getPreferredChurch();
 
-  void setPreferredChurchModalShown();
+  Future<void> setPreferredChurchModalShown();
 
   Future<bool> wasPreferredChurchModalShown();
 
@@ -94,7 +95,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
 
   void _clearData() {
     _impactGroups = null;
-    _impactGroupsStreamController.add([]);
+    _update([]);
   }
 
   @override
@@ -106,7 +107,11 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Future<List<ImpactGroup>> getImpactGroups() async {
+  Future<List<ImpactGroup>> getImpactGroups(
+      {bool fetchWhenEmpty = false}) async {
+    if (fetchWhenEmpty && true == _impactGroups?.isEmpty) {
+      _impactGroups = await _fetchImpactGroups();
+    }
     return _impactGroups ??= await _fetchImpactGroups();
   }
 
@@ -115,9 +120,15 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
     final list = result
         .map((e) => ImpactGroup.fromMap(e as Map<String, dynamic>))
         .toList();
-    _impactGroups = list;
-    _impactGroupsStreamController.add(list);
+    _update(list);
     return list;
+  }
+
+  void _update(List<ImpactGroup> newGroups) {
+    if (!const ListEquality<ImpactGroup>().equals(newGroups, _impactGroups)) {
+      _impactGroups = newGroups;
+      _impactGroupsStreamController.add(newGroups);
+    }
   }
 
   @override
@@ -137,6 +148,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   @override
   Future<bool> setPreferredChurch(String churchMediumId) async {
     try {
+      await getImpactGroups(fetchWhenEmpty: true);
       await _apiService.setPreferredChurch(
         churchMediumId: churchMediumId,
         groupId: _impactGroups!.firstWhere(
@@ -157,8 +169,8 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  void setPreferredChurchModalShown() {
-    _prefs.setBool(preferredChurchModalShownKey, true);
+  Future<void> setPreferredChurchModalShown() async {
+    await _prefs.setBool(preferredChurchModalShownKey, true);
   }
 
   @override

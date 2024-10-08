@@ -4,7 +4,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/start_interview.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -28,13 +28,16 @@ class RevealSecretWordScreen extends StatefulWidget {
 class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   final SecretWordCubit _cubit = SecretWordCubit(getIt());
   final scratchKey = GlobalKey<ScratcherState>();
-  bool _isScratched = false;
+  bool _isSecretWordVisible = false;
   bool _isSecondWord = false;
-  String text = 'Scratch to reveal\nyour secret word';
+  String wordNotVisibleText = 'Scratch to reveal\nyour secret word';
+  String wordVisibleText = 'Sneak your secret word\ninto ONE of your answers!';
+  late String text;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _cubit.init();
+    text = wordNotVisibleText;
   }
 
   @override
@@ -70,8 +73,10 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
                   threshold: 50,
                   color: Colors.grey,
                   onChange: (value) => setState(() {
-                    _isScratched = value > 25;
-                    text = 'Sneak your secret word\ninto ONE of your answers!';
+                    _isSecretWordVisible = value > 25;
+                    if (_isSecretWordVisible) {
+                      text = wordVisibleText;
+                    }
                   }),
                   child: Stack(
                     alignment: Alignment.center,
@@ -100,10 +105,14 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             ),
             const SizedBox(height: 8),
             FunButton(
-              isDisabled: !_isScratched,
+              isDisabled: !_isSecretWordVisible,
               onTap: () {
+                final sidekick = _cubit.getSidekick();
                 Navigator.of(context).pushReplacement(
-                  const StartInterviewScreen().toRoute(context),
+                  PassThePhone.toSidekick(
+                    sidekick,
+                    toRules: true,
+                  ).toRoute(context),
                 );
               },
               text: 'Next',
@@ -119,12 +128,13 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
 
   Widget shuffleButton() => GestureDetector(
         behavior: HitTestBehavior.translucent,
-        onTap: _isScratched
+        onTap: _isSecretWordVisible
             ? () {
                 _cubit.onShuffleClicked();
                 setState(() {
-                  _isScratched = false;
+                  _isSecretWordVisible = false;
                   _isSecondWord = true;
+                  text = wordNotVisibleText;
                   scratchKey.currentState?.reset();
                 });
 
@@ -138,7 +148,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
           children: [
             LabelLargeText(
               'Change',
-              color: _isScratched
+              color: _isSecretWordVisible
                   ? FamilyAppTheme.primary30
                   : FamilyAppTheme.neutralVariant60,
             ),
@@ -147,7 +157,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
               child: Icon(
                 FontAwesomeIcons.shuffle,
                 size: 24,
-                color: _isScratched
+                color: _isSecretWordVisible
                     ? FamilyAppTheme.primary30
                     : FamilyAppTheme.neutralVariant60,
               ),

@@ -68,6 +68,8 @@ class FamilyAppTheme extends ThemeExtension<FamilyAppTheme> {
   static const error90 = Color(0xFFFFDAD4);
   static const error98 = Color.fromRGBO(255, 248, 246, 1);
 
+  static const stageColorPulse = Color(0xFFFFD669);
+  static const stageColorPodium = Color(0xFFF5A563);
   static const neutral100 = Color(0xFFFEFFFF);
 
   static const neutralVariant40 = Color(0xFF5B6055);

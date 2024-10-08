@@ -8,6 +8,7 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/history/history_cubit/history_cubit.dart';
 import 'package:givt_app/features/family/features/history/history_repository/history_repository.dart';
+import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/repository/impact_groups_repository.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
@@ -20,6 +21,7 @@ import 'package:givt_app/features/family/features/reflect/bloc/family_selection_
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/gratitude_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
@@ -78,9 +80,23 @@ void initCubits() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<NavigationBarHomeCubit>(NavigationBarHomeCubit.new)
+    ..registerLazySingleton(() => SummaryCubit(getIt()))
+    ..registerLazySingleton<NavigationBarHomeCubit>(
+      () => NavigationBarHomeCubit(
+        getIt(),
+        getIt(),
+        getIt(),
+        getIt(),
+      ),
+    )
     ..registerFactory<FamilySelectionCubit>(
-          () => FamilySelectionCubit(
+      () => FamilySelectionCubit(
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<FamilyHomeScreenCubit>(
+      () => FamilyHomeScreenCubit(
+        getIt(),
         getIt(),
       ),
     );
@@ -157,6 +173,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
+        getIt(),
         getIt(),
       ),
     );
