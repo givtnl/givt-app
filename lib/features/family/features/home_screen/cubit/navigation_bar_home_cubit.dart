@@ -30,7 +30,6 @@ class NavigationBarHomeCubit
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
-  List<Member>? cachedMembers;
   ImpactGroup? _familyInviteGroup;
 
   Future<void> init() async {
@@ -62,7 +61,6 @@ class NavigationBarHomeCubit
   }
 
   Future<void> doInitialChecks() async {
-    final hasCachedMembers = true == cachedMembers?.isNotEmpty;
     if (_familyInviteGroup != null) {
       return;
     } else if (await userNeedsRegistration()) {
