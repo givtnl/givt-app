@@ -11,8 +11,9 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
-  const AddMemberCounterPage({this.initialAmount, super.key});
+  const AddMemberCounterPage({this.initialAmount, this.showTopUp = false, super.key});
   final int? initialAmount;
+  final bool showTopUp;
   @override
   State<AddMemberCounterPage> createState() => _AddMemberCounterPageState();
 }
@@ -60,6 +61,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
                   index: 1,
                   totalCount: _amount,
                   membersToCombine: const [],
+                  showTopUp: widget.showTopUp,
                 ).toRoute(context),
               );
             },

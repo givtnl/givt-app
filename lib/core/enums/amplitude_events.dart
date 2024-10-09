@@ -189,6 +189,9 @@ enum AmplitudeEvents {
   registrationEnterPaymentDetailsClicked(
     'registration_enter_payment_details_clicked',
   ),
+  registrationContinueAfterPersonalInfoClicked(
+    'registration_continue_after_personal_info_clicked',
+  ),
   // Family
 
   amountPressed('amount_pressed'),

@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
@@ -196,20 +194,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     switch (custom) {
       case PreferredChurchDialog():
         await _showPreferredChurchModal(context);
-      case UserNeedsRegistration():
-        await _continueRegistration(context);
       case FamilyNotSetup():
         await _showSetupFamily(context);
-    }
-  }
-
-  Future<void> _continueRegistration(BuildContext context) async {
-    if (context.read<RegistrationBloc>().state.status ==
-        RegistrationStatus.createStripeAccount) {
-      await context.pushNamed(
-        FamilyPages.creditCardDetails.name,
-        extra: context.read<RegistrationBloc>(),
-      );
     }
   }
 

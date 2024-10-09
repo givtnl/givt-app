@@ -23,12 +23,14 @@ class FamilyMemberFormPage extends StatefulWidget {
     required this.index,
     required this.totalCount,
     required this.membersToCombine,
+    this.showTopUp = false,
     super.key,
   });
 
   final int index;
   final int totalCount;
   final List<Member> membersToCombine;
+  final bool showTopUp;
 
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
@@ -40,10 +42,11 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   final _emailController = TextEditingController();
   final _ageController = TextEditingController();
   List<bool> selections = [true, false];
-  int _amount = 5;
+  late int _amount;
 
   @override
   void initState() {
+    _amount = widget.showTopUp ? 5 : 0;
     super.initState();
   }
 
@@ -198,6 +201,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ...widget.membersToCombine,
                 member,
               ],
+              showTopUp: widget.showTopUp,
             ).toRoute(context),
           );
         }
