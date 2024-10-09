@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
+import 'package:givt_app/features/family/features/topup/screens/enter_details_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -33,21 +35,17 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           context.read<TopupCubit>().init(user.activeProfile.id);
           await FamilyAuthUtils.authenticateUser(
             context,
-            checkAuthRequest: CheckAuthRequest(
-              navigate: (context, {isUSUser}) async {
-                context.pop();
-
-                await showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  backgroundColor: Colors.white,
-                  builder: (context) => const TopupWalletBottomSheet(),
-                );
-              },
-            ),
+            checkAuthRequest:
+                CheckAuthRequest(navigate: (context, {isUSUser}) async {
+              context.pop();
+              final isMissingCardDetails =
+                  context.read<AuthCubit>().state.user.isMissingcardDetails;
+              if (isMissingCardDetails) {
+                EnterDetailsBottomSheet.show(context);
+                return;
+              }
+              TopupWalletBottomSheet.show(context);
+            }),
           );
         },
       ),

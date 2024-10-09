@@ -57,7 +57,6 @@ import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/registration/pages/us_signup_page.dart';
@@ -96,11 +95,7 @@ class FamilyAppRoutes {
                 authRepository: getIt(),
               ),
             ),
-            BlocProvider(
-              create: (context) => StripeCubit(
-                authRepository: getIt(),
-              ),
-            ),
+
             // manage family
             BlocProvider(
               create: (_) => FamilyOverviewCubit(getIt())
@@ -432,13 +427,8 @@ class FamilyAppRoutes {
                 BlocProvider.value(
                   value: state.extra! as RegistrationBloc,
                 ),
-                BlocProvider(
-                  create: (_) => StripeCubit(
-                    authRepository: getIt(),
-                  ),
-                ),
               ],
-              child: const CreditCardDetailsPage(),
+              child: const CreditCardDetails(),
             );
           },
         ),
@@ -564,17 +554,8 @@ class FamilyAppRoutes {
                   .add(const RegistrationStripeInit());
             }
 
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => StripeCubit(
-                    authRepository: getIt(),
-                  ),
-                ),
-              ],
-              child: UsSignUpPage(
-                email: email,
-              ),
+            return UsSignUpPage(
+              email: email,
             );
           },
         ),
