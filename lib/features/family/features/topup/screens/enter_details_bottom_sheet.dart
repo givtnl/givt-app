@@ -7,6 +7,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:go_router/go_router.dart';
 
 class EnterDetailsBottomSheet extends StatelessWidget {
@@ -16,7 +17,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final name = context.read<ProfilesCubit>().state.activeProfile.firstName;
     return FunBottomSheet(
-      title: "Top up ${name}'s empty Wallet",
+      title: 'Top up ${name.possessiveName()} empty Wallet',
       icon: walletEmptyIcon(),
       content: const BodyMediumText(
         "To top up your child's account we need your payment details ",

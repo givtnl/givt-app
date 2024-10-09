@@ -15,4 +15,12 @@ extension StringExtensions on String? {
   String capitalize() {
     return '${this![0].toUpperCase()}${this!.substring(1).toLowerCase()}';
   }
+
+  String possessiveName() {
+    if (this!.endsWith('s')) {
+      return "$this'";
+    } else {
+      return "$this's";
+    }
+  }
 }
