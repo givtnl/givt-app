@@ -20,13 +20,19 @@ import 'package:go_router/go_router.dart';
 class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
     this.shrink = false,
+    this.navigate = true,
     super.key,
   });
   final bool shrink;
+  final bool navigate;
   @override
   State<CreditCardDetails> createState() => _CreditCardDetailsState();
 
-  static void show(BuildContext context, {bool shrink = false}) {
+  static void show(
+    BuildContext context, {
+    bool shrink = false,
+    bool navigate = true,
+  }) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -34,7 +40,10 @@ class CreditCardDetails extends StatefulWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => CreditCardDetails(shrink: shrink),
+      builder: (context) => CreditCardDetails(
+        shrink: shrink,
+        navigate: navigate,
+      ),
     );
   }
 }
@@ -44,80 +53,92 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
   void initState() {
     super.initState();
     getIt<StripeCubit>().fetchSetupIntent();
+    context.read<RegistrationBloc>().add(const RegistrationInit());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<StripeCubit, StripeState>(
-      bloc: getIt<StripeCubit>(),
-      builder: (_, state) {
-        if (state.stripeStatus == StripeObjectStatus.failure) {
-          return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: RetryErrorWidget(
-              onTapPrimaryButton: () => getIt<StripeCubit>().fetchSetupIntent(),
-            ),
-          );
-        }
+    return BlocListener<RegistrationBloc, RegistrationState>(
+        listener: (context, state) {
+          if (state.status == RegistrationStatus.success && !widget.navigate) {
+            context.pop();
+          }
+        },
+        child: BlocBuilder<StripeCubit, StripeState>(
+            bloc: getIt<StripeCubit>(),
+            builder: (_, state) {
+              if (state.stripeStatus == StripeObjectStatus.failure) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.5,
+                  child: RetryErrorWidget(
+                    onTapPrimaryButton: () =>
+                        getIt<StripeCubit>().fetchSetupIntent(),
+                  ),
+                );
+              }
 
-        StripeHelper(context).showPaymentSheet().then((value) {
-          _handleStripeRegistrationSuccess(context);
-          final user = context.read<AuthCubit>().state.user;
-          AnalyticsHelper.setUserProperties(
-            userId: user.guid,
-          );
-          unawaited(
-            AnalyticsHelper.logEvent(
-              eventName: AmplitudeEvents.registrationStripeSheetFilled,
-              eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
-                user,
-              ),
-            ),
-          );
-        }).onError((e, stackTrace) {
-          context.pop();
-          final user = context.read<AuthCubit>().state.user;
+              StripeHelper(context).showPaymentSheet().then((value) {
+                _handleStripeRegistrationSuccess(context);
+                final user = context.read<AuthCubit>().state.user;
+                AnalyticsHelper.setUserProperties(
+                  userId: user.guid,
+                );
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName: AmplitudeEvents.registrationStripeSheetFilled,
+                    eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
+                      user,
+                    ),
+                  ),
+                );
+              }).onError((e, stackTrace) {
+                context.pop();
+                final user = context.read<AuthCubit>().state.user;
 
-          unawaited(
-            AnalyticsHelper.logEvent(
-              eventName:
-                  AmplitudeEvents.registrationStripeSheetIncompleteClosed,
-              eventProperties: {
-                'id': user.guid,
-                'profile_country': user.country,
-              },
-            ),
-          );
-          getIt<NavigationBarHomeCubit>().refreshData();
+                unawaited(
+                  AnalyticsHelper.logEvent(
+                    eventName:
+                        AmplitudeEvents.registrationStripeSheetIncompleteClosed,
+                    eventProperties: {
+                      'id': user.guid,
+                      'profile_country': user.country,
+                    },
+                  ),
+                );
+                getIt<NavigationBarHomeCubit>().refreshData();
 
-          /* Logged as info as stripe is giving exception
-               when for example people close the bottomsheet.
-               So it's not a real error :)
-            */
-          LoggingInfo.instance.info(
-            e.toString(),
-            methodName: stackTrace.toString(),
-          );
-        });
-
-        return widget.shrink
-            ? const SizedBox()
-            : const FullScreenLoadingWidget();
-      },
-    );
+                /* Logged as info as stripe is giving exception
+                   when for example people close the bottomsheet.
+                   So it's not a real error :)
+                */
+                LoggingInfo.instance.info(
+                  e.toString(),
+                  methodName: stackTrace.toString(),
+                );
+              });
+              return widget.shrink
+                  ? SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      child: const FullScreenLoadingWidget(
+                        text: 'Hold on, we are saving your card details...',
+                      ),
+                    )
+                  : const FullScreenLoadingWidget();
+            }));
   }
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
-    context
-        .read<RegistrationBloc>()
-        .add(const RegistrationStripeSuccess(emitAuthenticated: false));
-    context.pushReplacementNamed(
-      FamilyPages.permitUSBiometric.name,
-      extra: PermitBiometricRequest.registration(
-        redirect: (context) {
-          context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
-        },
-      ),
-    );
+    context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
+    if (widget.navigate) {
+      context.pushReplacementNamed(
+        FamilyPages.permitUSBiometric.name,
+        extra: PermitBiometricRequest.registration(
+          redirect: (context) {
+            context
+                .pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
+          },
+        ),
+      );
+    }
   }
 }

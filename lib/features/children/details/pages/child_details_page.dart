@@ -172,7 +172,8 @@ class ChildDetailsPage extends StatelessWidget {
                                   .state
                                   .user
                                   .isMissingcardDetails) {
-                                CreditCardDetails.show(context, shrink: true);
+                                CreditCardDetails.show(context,
+                                    shrink: true, navigate: false);
                                 return;
                               }
                               _navigateToEditAllowanceScreen(
@@ -200,7 +201,8 @@ class ChildDetailsPage extends StatelessWidget {
                                   .state
                                   .user
                                   .isMissingcardDetails) {
-                                CreditCardDetails.show(context, shrink: true);
+                                CreditCardDetails.show(context,
+                                    shrink: true, navigate: false);
                                 return;
                               }
                               _navigateToTopUpScreen(context);
