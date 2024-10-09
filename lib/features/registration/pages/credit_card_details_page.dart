@@ -17,22 +17,40 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/stripe_helper.dart';
 import 'package:go_router/go_router.dart';
 
-class CreditCardDetails extends StatelessWidget {
+class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
     this.shrink = false,
     super.key,
   });
   final bool shrink;
   @override
+  State<CreditCardDetails> createState() => _CreditCardDetailsState();
+
+  static void show(BuildContext context, {bool shrink = false}) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => CreditCardDetails(shrink: shrink),
+    );
+  }
+}
+
+class _CreditCardDetailsState extends State<CreditCardDetails> {
+  @override
+  void initState() {
+    super.initState();
+    getIt<StripeCubit>().fetchSetupIntent();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<StripeCubit, StripeState>(
       bloc: getIt<StripeCubit>(),
       builder: (_, state) {
-        if (state.stripeStatus == StripeObjectStatus.initial) {
-          getIt<StripeCubit>().fetchSetupIntent();
-          return shrink ? const SizedBox() : const FullScreenLoadingWidget();
-        }
-
         if (state.stripeStatus == StripeObjectStatus.failure) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
@@ -82,7 +100,9 @@ class CreditCardDetails extends StatelessWidget {
           );
         });
 
-        return shrink ? const SizedBox() : const FullScreenLoadingWidget();
+        return widget.shrink
+            ? const SizedBox()
+            : const FullScreenLoadingWidget();
       },
     );
   }
@@ -98,18 +118,6 @@ class CreditCardDetails extends StatelessWidget {
           context.pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
         },
       ),
-    );
-  }
-
-  static void show(BuildContext context, {bool shrink = false}) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      backgroundColor: Colors.white,
-      builder: (context) => CreditCardDetails(shrink: shrink),
     );
   }
 }

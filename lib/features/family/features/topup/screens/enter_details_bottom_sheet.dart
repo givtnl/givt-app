@@ -8,7 +8,6 @@ import 'package:givt_app/features/registration/pages/credit_card_details_page.da
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
-import 'package:go_router/go_router.dart';
 
 class EnterDetailsBottomSheet extends StatelessWidget {
   const EnterDetailsBottomSheet({super.key});
@@ -29,7 +28,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
         onTap: () => CreditCardDetails.show(context, shrink: true),
       ),
       closeAction: () {
-        context.pop();
+        Navigator.of(context).pop();
       },
     );
   }
