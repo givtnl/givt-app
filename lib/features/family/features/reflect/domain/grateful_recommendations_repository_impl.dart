@@ -11,22 +11,29 @@ class GratefulRecommendationsRepositoryImpl
   );
 
   final FamilyAPIService _familyApiService;
-  final Map<GameProfile, List<Organisation>> _gratefulRecommendations = {};
+  final Map<GameProfile, List<Organisation>> _organisationRecommendations = {};
+  final Map<GameProfile, List<Organisation>> _actsRecommendations = {};
 
   @override
   Future<void> fetchGratefulRecommendationsForMultipleProfiles(
     List<GameProfile> profiles,
   ) async {
     try {
-      final results = await Future.wait(
-        profiles.map((profile) async {
-          final orgsList = await _getOrganisationsForProfile(profile);
-          final sortedList = sortOrganisationsByChurchTag(orgsList);
-          return MapEntry(profile, sortedList);
-        }),
+      final organisations = await Future.wait(
+        profiles.map(
+          (profile) => _fetchAndSortRecommendations(
+              profile, _getOrganisationsForProfile),
+        ),
       );
+      _organisationRecommendations.addEntries(organisations);
 
-      _gratefulRecommendations.addEntries(results);
+      final acts = await Future.wait(
+        profiles.map(
+          (profile) =>
+              _fetchAndSortRecommendations(profile, _getActsForProfile),
+        ),
+      );
+      _actsRecommendations.addEntries(acts);
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -35,8 +42,19 @@ class GratefulRecommendationsRepositoryImpl
     }
   }
 
-  List<Organisation> sortOrganisationsByChurchTag(
-      List<Organisation> organisations) {
+  Future<MapEntry<GameProfile, List<Organisation>>>
+      _fetchAndSortRecommendations(
+    GameProfile profile,
+    Future<List<Organisation>> Function(GameProfile) fetchFunction,
+  ) async {
+    final recommendationsList = await fetchFunction(profile);
+    final sortedList = sortRecommendationsByChurchTag(recommendationsList);
+    return MapEntry(profile, sortedList);
+  }
+
+  List<Organisation> sortRecommendationsByChurchTag(
+    List<Organisation> organisations,
+  ) {
     organisations.sort((a, b) {
       final aHasChurchTag = a.tags.any((tag) => tag.key == "CHURCH");
       final bHasChurchTag = b.tags.any((tag) => tag.key == "CHURCH");
@@ -67,16 +85,53 @@ class GratefulRecommendationsRepositoryImpl
     return orgsList.toList();
   }
 
+  Future<List<Organisation>> _getActsForProfile(GameProfile profile) async {
+    final interests = profile.gratitude?.tags;
+    final response = await _familyApiService.getRecommendedAOS(
+      {
+        'pageSize': 10,
+        'tags': interests?.map((tag) => tag.key).toList(),
+        'includePreferredChurch': true,
+      },
+    );
+
+    final actsList = response
+        .map((org) => Organisation.fromMap(org as Map<String, dynamic>));
+    return actsList.toList();
+  }
+
+  Future<List<Organisation>> _getRecommendations(
+    GameProfile profile,
+    Map<GameProfile, List<Organisation>> cache,
+    Future<List<Organisation>> Function(GameProfile) fetchFunction,
+  ) async {
+    if (!cache.containsKey(profile)) {
+      final result = await fetchFunction(profile);
+      final sortedList = sortRecommendationsByChurchTag(result);
+      cache[profile] = sortedList;
+    }
+    return cache[profile] ?? [];
+  }
+
   @override
-  Future<List<Organisation>> getGratefulRecommendations(
+  Future<List<Organisation>> getOrganisationsRecommendations(
     GameProfile profile,
   ) async {
-    if (!_gratefulRecommendations.containsKey(profile)) {
-      final result = await _getOrganisationsForProfile(profile);
-      final sortedList = sortOrganisationsByChurchTag(result);
-      _gratefulRecommendations[profile] = sortedList;
-    }
+    return _getRecommendations(
+      profile,
+      _organisationRecommendations,
+      _getOrganisationsForProfile,
+    );
+  }
 
-    return _gratefulRecommendations[profile] ?? [];
+  @override
+  Future<List<Organisation>> getActsRecommendations(
+    GameProfile profile,
+  ) async {
+    return _getRecommendations(
+      profile,
+      _actsRecommendations,
+      _getActsForProfile,
+    );
   }
 }
