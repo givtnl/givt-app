@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -165,6 +166,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
 
     if (profile.profileType == ProfileType.Parent) {
+      if (profile.id != context.read<AuthCubit>().state.user.guid) {
+        return;
+      }
+
       await FamilyAuthUtils.authenticateUser(
         context,
         checkAuthRequest: CheckAuthRequest(
