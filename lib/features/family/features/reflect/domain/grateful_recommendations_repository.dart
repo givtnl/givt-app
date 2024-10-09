@@ -6,7 +6,11 @@ abstract class GratefulRecommendationsRepository {
     List<GameProfile> profiles,
   );
 
-  Future<List<Organisation>> getGratefulRecommendations(
+  Future<List<Organisation>> getOrganisationsRecommendations(
+    GameProfile profile,
+  );
+
+  Future<List<Organisation>> getActsRecommendations(
     GameProfile profile,
   );
 }

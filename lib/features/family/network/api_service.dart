@@ -154,6 +154,28 @@ class FamilyAPIService {
     return decodedBody['items'] as List<dynamic>;
   }
 
+  Future<List<dynamic>> getRecommendedAOS(
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.https(_apiURL, '/givtservice/v1/game/aos-recommendation');
+
+    final response = await client.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+
+    if (response.statusCode >= 400) {
+      throw GivtServerFailure(
+        statusCode: response.statusCode,
+        body: jsonDecode(response.body) as Map<String, dynamic>,
+      );
+    }
+
+    final decodedBody = json.decode(response.body) as Map<String, dynamic>;
+    return decodedBody['items'] as List<dynamic>;
+  }
+
   Future<List<dynamic>> fetchAvatars() async {
     final url = Uri.https(_apiURL, '/givtservice/v1/profiles/avatars');
 

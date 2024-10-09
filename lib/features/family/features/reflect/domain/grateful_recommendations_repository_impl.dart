@@ -11,22 +11,30 @@ class GratefulRecommendationsRepositoryImpl
   );
 
   final FamilyAPIService _familyApiService;
-  final Map<GameProfile, List<Organisation>> _gratefulRecommendations = {};
+  final Map<GameProfile, List<Organisation>> _organisationRecommendations = {};
+  final Map<GameProfile, List<Organisation>> _actsRecommendations = {};
 
   @override
   Future<void> fetchGratefulRecommendationsForMultipleProfiles(
     List<GameProfile> profiles,
   ) async {
     try {
-      final results = await Future.wait(
+      final organisations = await Future.wait(
         profiles.map((profile) async {
           final orgsList = await _getOrganisationsForProfile(profile);
-          final sortedList = sortOrganisationsByChurchTag(orgsList);
+          final sortedList = sortRecommendationsByChurchTag(orgsList);
           return MapEntry(profile, sortedList);
         }),
       );
-
-      _gratefulRecommendations.addEntries(results);
+      _organisationRecommendations.addEntries(organisations);
+      final acts = await Future.wait(
+        profiles.map((profile) async {
+          final actsList = await _getActsForProfile(profile);
+          final sortedActsList = sortRecommendationsByChurchTag(actsList);
+          return MapEntry(profile, sortedActsList);
+        }),
+      );
+      _actsRecommendations.addEntries(acts);
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -35,8 +43,9 @@ class GratefulRecommendationsRepositoryImpl
     }
   }
 
-  List<Organisation> sortOrganisationsByChurchTag(
-      List<Organisation> organisations) {
+  List<Organisation> sortRecommendationsByChurchTag(
+    List<Organisation> organisations,
+  ) {
     organisations.sort((a, b) {
       final aHasChurchTag = a.tags.any((tag) => tag.key == "CHURCH");
       final bHasChurchTag = b.tags.any((tag) => tag.key == "CHURCH");
@@ -67,16 +76,44 @@ class GratefulRecommendationsRepositoryImpl
     return orgsList.toList();
   }
 
+  Future<List<Organisation>> _getActsForProfile(GameProfile profile) async {
+    final interests = profile.gratitude?.tags;
+    final response = await _familyApiService.getRecommendedAOS(
+      {
+        'pageSize': 10,
+        'tags': interests?.map((tag) => tag.key).toList(),
+        'includePreferredChurch': true,
+      },
+    );
+
+    final actsList = response
+        .map((org) => Organisation.fromMap(org as Map<String, dynamic>));
+    return actsList.toList();
+  }
+
   @override
-  Future<List<Organisation>> getGratefulRecommendations(
+  Future<List<Organisation>> getOrganisationsRecommendations(
     GameProfile profile,
   ) async {
-    if (!_gratefulRecommendations.containsKey(profile)) {
+    if (!_organisationRecommendations.containsKey(profile)) {
       final result = await _getOrganisationsForProfile(profile);
-      final sortedList = sortOrganisationsByChurchTag(result);
-      _gratefulRecommendations[profile] = sortedList;
+      final sortedList = sortRecommendationsByChurchTag(result);
+      _organisationRecommendations[profile] = sortedList;
     }
 
-    return _gratefulRecommendations[profile] ?? [];
+    return _organisationRecommendations[profile] ?? [];
+  }
+
+  @override
+  Future<List<Organisation>> getActsRecommendations(
+    GameProfile profile,
+  ) async {
+    if (!_actsRecommendations.containsKey(profile)) {
+      final result = await _getActsForProfile(profile);
+      final sortedList = sortRecommendationsByChurchTag(result);
+      _actsRecommendations[profile] = sortedList;
+    }
+
+    return _actsRecommendations[profile] ?? [];
   }
 }
