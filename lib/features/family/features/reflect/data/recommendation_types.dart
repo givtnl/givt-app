@@ -1,5 +1,5 @@
 enum RecommendationTypes {
-  organisation('organisation'),
+  organisation('collectgroup'),
   church('church'),
   actOfService('actsofservice');
 
@@ -8,8 +8,9 @@ enum RecommendationTypes {
   final String value;
 
   static RecommendationTypes fromString(String value) {
+    final lowercaseValue = value.toLowerCase();
     return RecommendationTypes.values.firstWhere(
-      (element) => element.value == value,
+      (element) => element.value == lowercaseValue,
       orElse: () => RecommendationTypes.organisation,
     );
   }

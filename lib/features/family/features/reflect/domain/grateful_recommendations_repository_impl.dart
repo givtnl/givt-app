@@ -20,19 +20,18 @@ class GratefulRecommendationsRepositoryImpl
   ) async {
     try {
       final organisations = await Future.wait(
-        profiles.map((profile) async {
-          final orgsList = await _getOrganisationsForProfile(profile);
-          final sortedList = sortRecommendationsByChurchTag(orgsList);
-          return MapEntry(profile, sortedList);
-        }),
+        profiles.map(
+          (profile) => _fetchAndSortRecommendations(
+              profile, _getOrganisationsForProfile),
+        ),
       );
       _organisationRecommendations.addEntries(organisations);
+
       final acts = await Future.wait(
-        profiles.map((profile) async {
-          final actsList = await _getActsForProfile(profile);
-          final sortedActsList = sortRecommendationsByChurchTag(actsList);
-          return MapEntry(profile, sortedActsList);
-        }),
+        profiles.map(
+          (profile) =>
+              _fetchAndSortRecommendations(profile, _getActsForProfile),
+        ),
       );
       _actsRecommendations.addEntries(acts);
     } catch (e, s) {
@@ -41,6 +40,16 @@ class GratefulRecommendationsRepositoryImpl
         methodName: s.toString(),
       );
     }
+  }
+
+  Future<MapEntry<GameProfile, List<Organisation>>>
+      _fetchAndSortRecommendations(
+    GameProfile profile,
+    Future<List<Organisation>> Function(GameProfile) fetchFunction,
+  ) async {
+    final recommendationsList = await fetchFunction(profile);
+    final sortedList = sortRecommendationsByChurchTag(recommendationsList);
+    return MapEntry(profile, sortedList);
   }
 
   List<Organisation> sortRecommendationsByChurchTag(
@@ -91,29 +100,38 @@ class GratefulRecommendationsRepositoryImpl
     return actsList.toList();
   }
 
+  Future<List<Organisation>> _getRecommendations(
+    GameProfile profile,
+    Map<GameProfile, List<Organisation>> cache,
+    Future<List<Organisation>> Function(GameProfile) fetchFunction,
+  ) async {
+    if (!cache.containsKey(profile)) {
+      final result = await fetchFunction(profile);
+      final sortedList = sortRecommendationsByChurchTag(result);
+      cache[profile] = sortedList;
+    }
+    return cache[profile] ?? [];
+  }
+
   @override
   Future<List<Organisation>> getOrganisationsRecommendations(
     GameProfile profile,
   ) async {
-    if (!_organisationRecommendations.containsKey(profile)) {
-      final result = await _getOrganisationsForProfile(profile);
-      final sortedList = sortRecommendationsByChurchTag(result);
-      _organisationRecommendations[profile] = sortedList;
-    }
-
-    return _organisationRecommendations[profile] ?? [];
+    return _getRecommendations(
+      profile,
+      _organisationRecommendations,
+      _getOrganisationsForProfile,
+    );
   }
 
   @override
   Future<List<Organisation>> getActsRecommendations(
     GameProfile profile,
   ) async {
-    if (!_actsRecommendations.containsKey(profile)) {
-      final result = await _getActsForProfile(profile);
-      final sortedList = sortRecommendationsByChurchTag(result);
-      _actsRecommendations[profile] = sortedList;
-    }
-
-    return _actsRecommendations[profile] ?? [];
+    return _getRecommendations(
+      profile,
+      _actsRecommendations,
+      _getActsForProfile,
+    );
   }
 }
