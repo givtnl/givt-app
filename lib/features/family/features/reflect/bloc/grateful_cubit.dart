@@ -108,13 +108,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
-          isLoading: _isLoadingRecommendations,
-          hasError: _hasRecommendationsError,
-          organisations: _currentRecommendations,
-          name:
-              _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ?? '',
-          category: _profiles.elementAt(_currentProfileIndex).gratitude
-        ),
+            isLoading: _isLoadingRecommendations,
+            hasError: _hasRecommendationsError,
+            organisations: _currentRecommendations,
+            name: _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ??
+                '',
+            category: _profiles.elementAt(_currentProfileIndex).gratitude),
       ),
     );
   }
@@ -129,7 +128,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       _isLoadingRecommendations = true;
       _emitData();
       _currentRecommendations = await _gratefulRecommendationsRepository
-          .getGratefulRecommendations(_getCurrentProfile());
+          .getOrganisationsRecommendations(_getCurrentProfile());
       _hasRecommendationsError = false;
     } catch (e, s) {
       _hasRecommendationsError = true;

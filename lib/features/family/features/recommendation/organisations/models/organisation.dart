@@ -2,32 +2,35 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
+import 'package:givt_app/features/family/features/reflect/data/recommendation_types.dart';
 
 class Organisation extends Equatable {
   const Organisation({
     required this.guid,
-    required this.collectGroupId,
+    required this.type,
     required this.name,
-    required this.namespace,
-    required this.qrCodeURL,
     required this.organisationLogoURL,
     required this.promoPictureUrl,
     required this.shortDescription,
     required this.longDescription,
     required this.tags,
+    required this.collectGroupId,
+    required this.namespace,
+    required this.qrCodeURL,
   });
 
   factory Organisation.fromMap(Map<String, dynamic> map) {
     return Organisation(
-      guid: map['guid'] as String,
-      collectGroupId: map['collectGroupId'] as String,
-      name: map['name'] as String,
-      namespace: map['namespace'] as String,
-      qrCodeURL: map['qrCodeURL'] as String,
-      organisationLogoURL: map['organisationLogoURL'] as String,
-      promoPictureUrl: map['promoPictureUrl'] as String,
-      shortDescription: map['shortDescription'] as String,
-      longDescription: map['longDescription'] as String,
+      guid: (map['guid'] ?? '') as String,
+      name: (map['name'] ?? 'Organisation Name') as String,
+      organisationLogoURL: (map['organisationLogoURL'] ?? '') as String,
+      promoPictureUrl: (map['promoPictureUrl'] ?? '') as String,
+      shortDescription: (map['shortDescription'] ?? '') as String,
+      longDescription: (map['longDescription'] ?? '') as String,
+      collectGroupId: (map['collectGroupId'] ?? '') as String,
+      namespace: (map['namespace'] ?? '') as String,
+      qrCodeURL: (map['qrCodeURL'] ?? '') as String,
+      type: RecommendationTypes.fromString((map['type'] ?? '') as String),
       tags: List<Tag>.from(
         (map['tags'] as List<dynamic>)
             .map((e) => Tag.fromMap(e as Map<String, dynamic>)),
@@ -36,21 +39,22 @@ class Organisation extends Equatable {
   }
 
   final String guid;
-  final String collectGroupId;
+  final RecommendationTypes type;
   final String name;
-  final String namespace;
-  final String qrCodeURL;
   final String organisationLogoURL;
   final String promoPictureUrl;
   final String shortDescription;
   final String longDescription;
   final List<Tag> tags;
-
+  final String collectGroupId;
+  final String namespace;
+  final String qrCodeURL;
   @override
   List<Object?> get props => [
         guid,
         collectGroupId,
         name,
+        type,
         namespace,
         qrCodeURL,
         organisationLogoURL,
@@ -61,6 +65,7 @@ class Organisation extends Equatable {
       ];
 
   Organisation copyWith({
+    RecommendationTypes? type,
     String? guid,
     String? collectGroupId,
     String? name,
@@ -73,6 +78,7 @@ class Organisation extends Equatable {
     List<Tag>? tags,
   }) =>
       Organisation(
+        type: type ?? this.type,
         guid: guid ?? this.guid,
         collectGroupId: collectGroupId ?? this.collectGroupId,
         name: name ?? this.name,
@@ -89,6 +95,7 @@ class Organisation extends Equatable {
     return {
       'guid': guid,
       'collectGroupId': collectGroupId,
+      'type': type.value,
       'name': name,
       'namespace': namespace,
       'qrCodeURL': qrCodeURL,
