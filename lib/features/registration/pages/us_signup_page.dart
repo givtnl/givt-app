@@ -243,6 +243,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
           ),
           const SizedBox(height: 16),
@@ -265,6 +266,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
           ),
           const SizedBox(height: 16),
@@ -325,6 +327,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             },
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
             obscureText: _obscureText,
             hintText: AppLocalizations.of(context).password,
