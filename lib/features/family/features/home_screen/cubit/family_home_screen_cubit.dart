@@ -25,22 +25,19 @@ class FamilyHomeScreenCubit
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
 
-    profiles = await _profilesRepository.getProfiles();
-
-    _familyGroup =
-        (await _impactGroupsRepository.getImpactGroups()).firstWhereOrNull(
-      (element) => element.isFamilyGroup,
+    _onProfilesChanged(await _profilesRepository.getProfiles());
+    _onGroupsChanged(
+      await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
-
-    _emitData();
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
+    this.profiles = profiles;
     _emitData();
   }
 
-  void _onGroupsChanged(List<ImpactGroup> profiles) {
-    _familyGroup = profiles.firstWhereOrNull(
+  void _onGroupsChanged(List<ImpactGroup> groups) {
+    _familyGroup = groups.firstWhereOrNull(
       (element) => element.isFamilyGroup,
     );
 
