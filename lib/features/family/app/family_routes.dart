@@ -57,7 +57,7 @@ import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details_page.dart';
+import 'package:givt_app/features/registration/pages/credit_card_details.dart';
 import 'package:givt_app/features/registration/pages/registration_success_us.dart';
 import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
