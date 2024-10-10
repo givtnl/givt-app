@@ -109,6 +109,7 @@ class FamilyOverviewPage extends StatelessWidget {
     await AddMemberUtil.addMemberPushPages(
       context,
       showTopUp: !isMissingCardDetails,
+      canPop: true,
     );
   }
 }
