@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
@@ -71,8 +72,12 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       listener: (context, state) {
         if (state.status == RegistrationStatus.createStripeAccount) {
           context.pushReplacementNamed(
-            FamilyPages.creditCardDetails.name,
-            extra: context.read<RegistrationBloc>(),
+            FamilyPages.permitUSBiometric.name,
+            extra: PermitBiometricRequest.registration(
+              redirect: (context) {
+                context.pushReplacementNamed(FamilyPages.profileSelection.name);
+              },
+            ),
           );
         }
       },
@@ -204,9 +209,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         FunButton(
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? _register : null,
-          text: locals.enterPaymentDetails,
+          text: 'Continue',
           analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.registrationEnterPaymentDetailsClicked,
+            AmplitudeEvents.registrationContinueAfterPersonalInfoClicked,
           ),
         ),
       ],

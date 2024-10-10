@@ -57,8 +57,7 @@ import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details.dart';
-import 'package:givt_app/features/registration/pages/registration_success_us.dart';
+import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
@@ -419,25 +418,6 @@ class FamilyAppRoutes {
           ),
         ),
         GoRoute(
-          path: FamilyPages.creditCardDetails.path,
-          name: FamilyPages.creditCardDetails.name,
-          builder: (context, state) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider.value(
-                  value: state.extra! as RegistrationBloc,
-                ),
-              ],
-              child: const CreditCardDetails(),
-            );
-          },
-        ),
-        GoRoute(
-          path: FamilyPages.registrationSuccessUs.path,
-          name: FamilyPages.registrationSuccessUs.name,
-          builder: (_, state) => const RegistrationSuccessUs(),
-        ),
-        GoRoute(
           path: FamilyPages.familyPersonalInfoEdit.path,
           name: FamilyPages.familyPersonalInfoEdit.name,
           redirect: (context, state) {
@@ -543,16 +523,6 @@ class FamilyAppRoutes {
           name: FamilyPages.registrationUS.name,
           builder: (context, state) {
             final email = state.uri.queryParameters['email'] ?? '';
-
-            final createStripe = bool.parse(
-              state.uri.queryParameters['createStripe'] ?? 'false',
-            );
-
-            if (createStripe) {
-              context
-                  .read<RegistrationBloc>()
-                  .add(const RegistrationStripeInit());
-            }
 
             return UsSignUpPage(
               email: email,

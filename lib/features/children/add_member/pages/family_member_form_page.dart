@@ -8,27 +8,26 @@ import 'package:givt_app/features/children/add_member/widgets/add_member_loading
 import 'package:givt_app/features/children/add_member/widgets/child_or_parent_selector.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_member_form.dart';
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
-import 'package:givt_app/features/children/add_member/widgets/vpc_page.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/utils.dart';
 
 class FamilyMemberFormPage extends StatefulWidget {
   const FamilyMemberFormPage({
     required this.index,
     required this.totalCount,
     required this.membersToCombine,
+    this.showTopUp = false,
     super.key,
   });
 
   final int index;
   final int totalCount;
   final List<Member> membersToCombine;
+  final bool showTopUp;
 
   @override
   State<FamilyMemberFormPage> createState() => _FamilyMemberFormPageState();
@@ -40,10 +39,11 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
   final _emailController = TextEditingController();
   final _ageController = TextEditingController();
   List<bool> selections = [true, false];
-  int _amount = 5;
+  late int _amount;
 
   @override
   void initState() {
+    _amount = widget.showTopUp ? 5 : 0;
     super.initState();
   }
 
@@ -81,24 +81,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
         ...widget.membersToCombine,
         member,
       ];
-      if (members.any((member) => member.isChild)) {
-        showModalBottomSheet<void>(
-          context: context,
-          showDragHandle: true,
-          isScrollControlled: true,
-          useSafeArea: true,
-          builder: (_) => VPCPage(
-            onReadyClicked: () {
-              AnalyticsHelper.logEvent(
-                eventName: AmplitudeEvents.vpcAccepted,
-              );
-              submitMembersAndNavigate(members: members);
-            },
-          ),
-        );
-      } else {
-        submitMembersAndNavigate(members: members);
-      }
+      submitMembersAndNavigate(members: members);
     }
   }
 
@@ -147,6 +130,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   emailController: _emailController,
                   ageController: _ageController,
                   allowanceAmount: _amount,
+                  showTopUp: widget.showTopUp,
                   onAmountChanged: (amount) {
                     setState(() {
                       _amount = amount;
@@ -198,6 +182,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                 ...widget.membersToCombine,
                 member,
               ],
+              showTopUp: widget.showTopUp,
             ).toRoute(context),
           );
         }

@@ -5,12 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/navigation_bar_home_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
-import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -20,18 +18,17 @@ import 'package:go_router/go_router.dart';
 class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
     this.shrink = false,
-    this.navigate = true,
     super.key,
   });
+
   final bool shrink;
-  final bool navigate;
+
   @override
   State<CreditCardDetails> createState() => _CreditCardDetailsState();
 
   static void show(
     BuildContext context, {
     bool shrink = true,
-    bool navigate = false,
     VoidCallback? onClose,
   }) {
     showModalBottomSheet<void>(
@@ -43,7 +40,6 @@ class CreditCardDetails extends StatefulWidget {
       backgroundColor: Colors.white,
       builder: (context) => CreditCardDetails(
         shrink: shrink,
-        navigate: navigate,
       ),
     ).then((value) {
       onClose?.call();
@@ -65,7 +61,7 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
   Widget build(BuildContext context) {
     return BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
-          if (state.status == RegistrationStatus.success && !widget.navigate) {
+          if (state.status == RegistrationStatus.success) {
             context.pop();
           }
         },
@@ -142,16 +138,5 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
 
   void _handleStripeRegistrationSuccess(BuildContext context) {
     context.read<RegistrationBloc>().add(const RegistrationStripeSuccess());
-    if (widget.navigate) {
-      context.pushReplacementNamed(
-        FamilyPages.permitUSBiometric.name,
-        extra: PermitBiometricRequest.registration(
-          redirect: (context) {
-            context
-                .pushReplacementNamed(FamilyPages.registrationSuccessUs.name);
-          },
-        ),
-      );
-    }
   }
 }
