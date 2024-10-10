@@ -282,6 +282,7 @@ enum AmplitudeEvents {
   modalCloseButtonClicked('modal_close_button_clicked'),
   continueChooseChurchClicked('continue_choose_church_clicked'),
   dontGoToChurchClicked('dont_go_to_church_clicked'),
+  preferredChurchConfirmClicked('preferred_church_clicked'),
   preferredChurchSelected('preferred_church_selected'),
 
   // Topup flow
