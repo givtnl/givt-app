@@ -30,8 +30,8 @@ class CreditCardDetails extends StatefulWidget {
 
   static void show(
     BuildContext context, {
-    bool shrink = false,
-    bool navigate = true,
+    bool shrink = true,
+    bool navigate = false,
     VoidCallback? onClose,
   }) {
     showModalBottomSheet<void>(
