@@ -25,7 +25,8 @@ class EnterDetailsBottomSheet extends StatelessWidget {
       primaryButton: FunButton(
         text: 'Enter payment details',
         analyticsEvent: AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
-        onTap: () => CreditCardDetails.show(context, shrink: true),
+        onTap: () =>
+            CreditCardDetails.show(context, shrink: true, navigate: false),
       ),
       closeAction: () {
         Navigator.of(context).pop();

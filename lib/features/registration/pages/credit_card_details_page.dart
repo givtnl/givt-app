@@ -64,8 +64,51 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
             context.pop();
           }
         },
-        child: BlocBuilder<StripeCubit, StripeState>(
+        child: BlocConsumer<StripeCubit, StripeState>(
             bloc: getIt<StripeCubit>(),
+            listener: (context, state) {
+              if (state.stripeStatus == StripeObjectStatus.display) {
+                StripeHelper(context).showPaymentSheet().then((value) {
+                  _handleStripeRegistrationSuccess(context);
+                  final user = context.read<AuthCubit>().state.user;
+                  AnalyticsHelper.setUserProperties(
+                    userId: user.guid,
+                  );
+                  unawaited(
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents.registrationStripeSheetFilled,
+                      eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
+                        user,
+                      ),
+                    ),
+                  );
+                }).onError((e, stackTrace) {
+                  context.pop();
+                  final user = context.read<AuthCubit>().state.user;
+
+                  unawaited(
+                    AnalyticsHelper.logEvent(
+                      eventName: AmplitudeEvents
+                          .registrationStripeSheetIncompleteClosed,
+                      eventProperties: {
+                        'id': user.guid,
+                        'profile_country': user.country,
+                      },
+                    ),
+                  );
+                  getIt<NavigationBarHomeCubit>().refreshData();
+
+                  /* Logged as info as stripe is giving exception
+                   when for example people close the bottomsheet.
+                   So it's not a real error :)
+                */
+                  LoggingInfo.instance.info(
+                    e.toString(),
+                    methodName: stackTrace.toString(),
+                  );
+                });
+              }
+            },
             builder: (_, state) {
               if (state.stripeStatus == StripeObjectStatus.failure) {
                 return SizedBox(
@@ -77,45 +120,6 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
                 );
               }
 
-              StripeHelper(context).showPaymentSheet().then((value) {
-                _handleStripeRegistrationSuccess(context);
-                final user = context.read<AuthCubit>().state.user;
-                AnalyticsHelper.setUserProperties(
-                  userId: user.guid,
-                );
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName: AmplitudeEvents.registrationStripeSheetFilled,
-                    eventProperties: AnalyticsHelper.getUserPropertiesFromExt(
-                      user,
-                    ),
-                  ),
-                );
-              }).onError((e, stackTrace) {
-                context.pop();
-                final user = context.read<AuthCubit>().state.user;
-
-                unawaited(
-                  AnalyticsHelper.logEvent(
-                    eventName:
-                        AmplitudeEvents.registrationStripeSheetIncompleteClosed,
-                    eventProperties: {
-                      'id': user.guid,
-                      'profile_country': user.country,
-                    },
-                  ),
-                );
-                getIt<NavigationBarHomeCubit>().refreshData();
-
-                /* Logged as info as stripe is giving exception
-                   when for example people close the bottomsheet.
-                   So it's not a real error :)
-                */
-                LoggingInfo.instance.info(
-                  e.toString(),
-                  methodName: stackTrace.toString(),
-                );
-              });
               return widget.shrink
                   ? SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
