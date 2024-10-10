@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/children/add_member/repository/add_member_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/preferred_church_usecase.dart';
@@ -21,11 +22,13 @@ class NavigationBarHomeCubit
     this._profilesRepository,
     this._authRepository,
     this._impactGroupsRepository,
+    this._addMemberRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
+  final AddMemberRepository _addMemberRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
@@ -34,6 +37,12 @@ class NavigationBarHomeCubit
 
   Future<void> init() async {
     await _initHasSession();
+    _addMemberRepository.onMemberAdded().listen((_) {
+      if (_profiles.length <= 1) {
+        emitLoading();
+        refreshData();
+      }
+    });
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
