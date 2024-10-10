@@ -7,28 +7,11 @@ sealed class NavigationBarHomeCustom {
   const factory NavigationBarHomeCustom.showPreferredChurchDialog() =
       PreferredChurchDialog;
 
-  const factory NavigationBarHomeCustom.userNeedsRegistration() =
-      UserNeedsRegistration;
-
   const factory NavigationBarHomeCustom.familyNotSetup() = FamilyNotSetup;
-
-  const factory NavigationBarHomeCustom.showCachedMembersDialog(
-    List<Member> cachedMembers,
-  ) = ShowCachedMembersDialog;
 }
 
 class PreferredChurchDialog extends NavigationBarHomeCustom {
   const PreferredChurchDialog();
-}
-
-class UserNeedsRegistration extends NavigationBarHomeCustom {
-  const UserNeedsRegistration();
-}
-
-class ShowCachedMembersDialog extends NavigationBarHomeCustom {
-  const ShowCachedMembersDialog(this.cachedMembers);
-
-  final List<Member> cachedMembers;
 }
 
 class FamilyNotSetup extends NavigationBarHomeCustom {

@@ -6,12 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
@@ -71,8 +73,12 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
       listener: (context, state) {
         if (state.status == RegistrationStatus.createStripeAccount) {
           context.pushReplacementNamed(
-            FamilyPages.creditCardDetails.name,
-            extra: context.read<RegistrationBloc>(),
+            FamilyPages.permitUSBiometric.name,
+            extra: PermitBiometricRequest.registration(
+              redirect: (context) {
+                AddMemberUtil.addMemberPushPages(context);
+              },
+            ),
           );
         }
       },
@@ -204,9 +210,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         FunButton(
           isDisabled: !_isEnabled,
           onTap: _isEnabled ? _register : null,
-          text: locals.enterPaymentDetails,
+          text: 'Continue',
           analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.registrationEnterPaymentDetailsClicked,
+            AmplitudeEvents.registrationContinueAfterPersonalInfoClicked,
           ),
         ),
       ],
@@ -238,6 +244,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
           ),
           const SizedBox(height: 16),
@@ -260,6 +267,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             textCapitalization: TextCapitalization.sentences,
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
           ),
           const SizedBox(height: 16),
@@ -320,6 +328,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             },
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
             obscureText: _obscureText,
             hintText: AppLocalizations.of(context).password,

@@ -123,7 +123,7 @@ class _PreferredChurchSelectionPageState
         text: 'Confirm',
         onTap: () => _onTapConfirm(context),
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.preferredChurchSelected,
+          AmplitudeEvents.preferredChurchConfirmClicked,
         ),
       ),
     );
@@ -134,19 +134,17 @@ class _PreferredChurchSelectionPageState
       setState(() {
         isLoading = true;
       });
-      final churchId =
+      final churchNamespace =
           bloc.state.filteredOrganisations[selectedIndex].nameSpace;
       unawaited(AnalyticsHelper.logEvent(
         eventName: AmplitudeEvents.preferredChurchSelected,
         eventProperties: {
-          'namespace':
-              bloc.state.filteredOrganisations[selectedIndex].nameSpace,
+          'namespace': churchNamespace,
           'orgname': bloc.state.filteredOrganisations[selectedIndex].orgName,
-          'churchId': churchId,
         },
       ));
 
-      final success = await widget.setPreferredChurch(churchId);
+      final success = await widget.setPreferredChurch(churchNamespace);
 
       if (success) {
         await showPreferredChurchSuccessDialog(

@@ -11,6 +11,17 @@ class TopupWalletBottomSheet extends StatefulWidget {
 
   @override
   State<TopupWalletBottomSheet> createState() => _TopupWalletBottomSheetState();
+  static void show(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      backgroundColor: Colors.white,
+      builder: (context) => const TopupWalletBottomSheet(),
+    );
+  }
 }
 
 class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {

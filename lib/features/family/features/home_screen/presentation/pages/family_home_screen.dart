@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
@@ -56,9 +57,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onData: (context, uiModel) {
+      onCustom: (context, uiModel) {
         createOverlay(uiModel);
-
+        setState(() {
+          overlayVisible = true;
+        });
+        Overlay.of(context).insert(overlayEntry!);
+      },
+      onData: (context, uiModel) {
         return FunScaffold(
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(title: null),
@@ -111,13 +117,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                     ),
                     const SizedBox(height: 24),
                     GiveButton(
-                      onPressed: () {
-                        setState(() {
-                          overlayVisible = true;
-                        });
-
-                        Overlay.of(context).insert(overlayEntry!);
-                      },
+                      onPressed: _cubit.onGiveButtonPressed,
                     ),
                   ],
                 ),
@@ -130,8 +130,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   }
 
   void createOverlay(FamilyHomeScreenUIModel uiModel) {
-    if (overlayEntry != null) return;
-
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,
@@ -165,6 +163,10 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
     );
 
     if (profile.profileType == ProfileType.Parent) {
+      if (profile.id != context.read<AuthCubit>().state.user.guid) {
+        return;
+      }
+
       await FamilyAuthUtils.authenticateUser(
         context,
         checkAuthRequest: CheckAuthRequest(

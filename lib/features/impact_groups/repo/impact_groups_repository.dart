@@ -19,7 +19,7 @@ mixin ImpactGroupsRepository {
     required String groupId,
   });
 
-  Future<List<ImpactGroup>> getImpactGroups();
+  Future<List<ImpactGroup>> getImpactGroups({bool fetchWhenEmpty = false});
 
   // this method should only be called externally when the screen itself
   // has a refresh mechanism for the user

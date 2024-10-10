@@ -19,8 +19,10 @@ class FamilyMemberForm extends StatelessWidget {
     required this.isChildSelected,
     required this.allowanceAmount,
     required this.onAmountChanged,
+    this.showTopUp = false,
     super.key,
   });
+
   final GlobalKey<FormState> formKey;
   final TextEditingController nameController;
   final TextEditingController emailController;
@@ -28,6 +30,7 @@ class FamilyMemberForm extends StatelessWidget {
   final int allowanceAmount;
   final void Function(int amount) onAmountChanged;
   final bool isChildSelected;
+  final bool showTopUp;
 
   @override
   Widget build(BuildContext context) {
@@ -89,22 +92,24 @@ class FamilyMemberForm extends StatelessWidget {
           textInputAction: TextInputAction.done,
         ),
         const SizedBox(height: 24),
-        const BodySmallText(
-          "Start your child's giving journey by adding funds to their Wallet",
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 12),
-        FunCounter(
-          currency: r'$',
-          initialAmount: allowanceAmount,
-          canAmountBeZero: true,
-          onAmountChanged: onAmountChanged,
-        ),
-        const SizedBox(height: 12),
-        AdminFeeText(
-          amount: allowanceAmount.toDouble(),
-          textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,
-        ),
+        if (showTopUp) ...[
+          const BodySmallText(
+            "Start your child's giving journey by adding funds to their Wallet",
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 12),
+          FunCounter(
+            currency: r'$',
+            initialAmount: allowanceAmount,
+            canAmountBeZero: true,
+            onAmountChanged: onAmountChanged,
+          ),
+          const SizedBox(height: 12),
+          AdminFeeText(
+            amount: allowanceAmount.toDouble(),
+            textStyle: const FamilyAppTheme().toThemeData().textTheme.bodySmall,
+          ),
+        ]
       ],
     );
   }

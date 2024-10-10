@@ -9,7 +9,7 @@ import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class FamilyHomeScreenCubit
-    extends CommonCubit<FamilyHomeScreenUIModel, dynamic> {
+    extends CommonCubit<FamilyHomeScreenUIModel, FamilyHomeScreenUIModel> {
   FamilyHomeScreenCubit(
     this._profilesRepository,
     this._impactGroupsRepository,
@@ -25,43 +25,47 @@ class FamilyHomeScreenCubit
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen(_onGroupsChanged);
 
-    profiles = await _profilesRepository.getProfiles();
-
-    _familyGroup =
-        (await _impactGroupsRepository.getImpactGroups()).firstWhereOrNull(
-      (element) => element.isFamilyGroup,
+    _onProfilesChanged(await _profilesRepository.getProfiles());
+    _onGroupsChanged(
+      await _impactGroupsRepository.getImpactGroups(fetchWhenEmpty: true),
     );
-
-    _updateUiModel();
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
-    _updateUiModel();
+    this.profiles = profiles;
+    _emitData();
   }
 
-  void _onGroupsChanged(List<ImpactGroup> profiles) {
-    _familyGroup = profiles.firstWhereOrNull(
+  void _onGroupsChanged(List<ImpactGroup> groups) {
+    _familyGroup = groups.firstWhereOrNull(
       (element) => element.isFamilyGroup,
     );
 
-    _updateUiModel();
+    _emitData();
   }
 
-  void _updateUiModel() {
-    profiles.sort((a, b) => a.isChild ? -1 : 1);
+  void onGiveButtonPressed() {
+    emitCustom(_createUIModel());
+  }
 
+  void _emitData() {
     emitData(
-      FamilyHomeScreenUIModel(
-        avatars: profiles
-            .map(
-              (e) => GratefulAvatarUIModel(
-                avatarUrl: e.pictureURL,
-                text: e.firstName,
-              ),
-            )
-            .toList(),
-        familyGroupName: _familyGroup?.name,
-      ),
+      _createUIModel(),
+    );
+  }
+
+  FamilyHomeScreenUIModel _createUIModel() {
+    profiles.sort((a, b) => a.isChild ? -1 : 1);
+    return FamilyHomeScreenUIModel(
+      avatars: profiles
+          .map(
+            (e) => GratefulAvatarUIModel(
+              avatarUrl: e.pictureURL,
+              text: e.firstName,
+            ),
+          )
+          .toList(),
+      familyGroupName: _familyGroup?.name,
     );
   }
 }

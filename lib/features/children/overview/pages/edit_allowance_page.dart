@@ -19,7 +19,7 @@ class EditAllowancePage extends StatefulWidget {
     this.initialAllowance,
     this.extraHeader,
     this.isMultipleChildren = false,
-    this.childName = 'your child',
+    this.childName = "your child's",
     super.key,
   });
 
@@ -85,7 +85,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "What monthly amount should be added to $child's wallet?",
+                      'What monthly amount should be added to $child wallet?',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium!.copyWith(
                         color: AppTheme.primary20,

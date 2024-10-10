@@ -61,7 +61,6 @@ class CustomNavigationDrawer extends StatelessWidget {
                               : Pages.registration.name,
                           queryParameters: {
                             'email': auth.user.email,
-                            'createStripe': createStripe.toString(),
                           },
                         )
                         ..pop();

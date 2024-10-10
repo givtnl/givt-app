@@ -23,16 +23,11 @@ enum FamilyPages {
     name: 'FAMILY-PERSONAL-INFO-EDIT',
   ),
   registrationUS(path: 'registration-us', name: 'REGISTRATION-US'),
-  registrationSuccessUs(
-    path: 'registration-success-us',
-    name: 'REGISTRATION-SUCCESS-US',
-  ),
   permitUSBiometric(
     path: 'permit-biometric-us',
     name: 'US-PERMIT-BIOMETRIC-US',
   ),
   giveByListFamily(path: 'give-by-list-family', name: 'GIVE-BY-LIST-FAMILY'),
-  creditCardDetails(path: 'credit-card-details', name: 'CREDIT-CARD-DETAILS'),
   test(path: 'test', name: 'TEST'),
   scanNFC(path: 'scan-nfc', name: 'SCAN_NFC'),
   history(path: 'history', name: 'HISTORY'),
