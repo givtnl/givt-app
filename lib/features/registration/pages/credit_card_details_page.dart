@@ -49,6 +49,8 @@ class CreditCardDetails extends StatefulWidget {
 }
 
 class _CreditCardDetailsState extends State<CreditCardDetails> {
+  bool showPaymentSheet = false;
+
   @override
   void initState() {
     super.initState();
@@ -67,7 +69,11 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
         child: BlocConsumer<StripeCubit, StripeState>(
             bloc: getIt<StripeCubit>(),
             listener: (context, state) {
-              if (state.stripeStatus == StripeObjectStatus.display) {
+              if (state.stripeStatus == StripeObjectStatus.display &&
+                  !showPaymentSheet) {
+                setState(() {
+                  showPaymentSheet = true;
+                });
                 StripeHelper(context).showPaymentSheet().then((value) {
                   _handleStripeRegistrationSuccess(context);
                   final user = context.read<AuthCubit>().state.user;
