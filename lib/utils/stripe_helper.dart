@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/shared/models/models.dart';
 
@@ -12,7 +12,7 @@ class StripeHelper {
   Future<PaymentSheetPaymentOption?> showPaymentSheet({
     StripeResponse? stripe,
   }) async {
-    stripe ??= context.read<StripeCubit>().state.stripeObject;
+    stripe ??= getIt<StripeCubit>().state.stripeObject;
     await Stripe.instance.initPaymentSheet(
       paymentSheetParameters: SetupPaymentSheetParameters(
         merchantDisplayName: 'Givt',

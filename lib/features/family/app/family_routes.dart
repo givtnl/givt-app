@@ -94,11 +94,7 @@ class FamilyAppRoutes {
                 authRepository: getIt(),
               ),
             ),
-            BlocProvider(
-              create: (context) => StripeCubit(
-                authRepository: getIt(),
-              ),
-            ),
+
             // manage family
             BlocProvider(
               create: (_) => FamilyOverviewCubit(getIt())
@@ -528,17 +524,8 @@ class FamilyAppRoutes {
           builder: (context, state) {
             final email = state.uri.queryParameters['email'] ?? '';
 
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (_) => StripeCubit(
-                    authRepository: getIt(),
-                  ),
-                ),
-              ],
-              child: UsSignUpPage(
-                email: email,
-              ),
+            return UsSignUpPage(
+              email: email,
             );
           },
         ),

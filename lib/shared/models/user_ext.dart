@@ -119,6 +119,8 @@ class UserExt extends Equatable {
         profilePicture = '';
 
   bool get isUsUser => Country.fromCode(country).isUS;
+  bool get isMissingcardDetails =>
+      personalInfoRegistered && accountNumber.isEmpty;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'Email': email,
