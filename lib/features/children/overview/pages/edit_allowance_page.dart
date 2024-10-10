@@ -9,7 +9,6 @@ import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
 
@@ -20,7 +19,7 @@ class EditAllowancePage extends StatefulWidget {
     this.initialAllowance,
     this.extraHeader,
     this.isMultipleChildren = false,
-    this.childName = 'your child',
+    this.childName = "your child's",
     super.key,
   });
 
@@ -86,7 +85,7 @@ class _EditAllowancePageState extends State<EditAllowancePage> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'What monthly amount should be added to ${child.possessiveName()} wallet?',
+                      'What monthly amount should be added to $child wallet?',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium!.copyWith(
                         color: AppTheme.primary20,
