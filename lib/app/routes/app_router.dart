@@ -276,16 +276,6 @@ class AppRouter {
             builder: (context, state) {
               final email = state.uri.queryParameters['email'] ?? '';
 
-              final createStripe = bool.parse(
-                state.uri.queryParameters['createStripe'] ?? 'false',
-              );
-
-              if (createStripe) {
-                context
-                    .read<RegistrationBloc>()
-                    .add(const RegistrationStripeInit());
-              }
-
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
@@ -692,7 +682,6 @@ class AppRouter {
             FamilyPages.registrationUS.name,
             queryParameters: {
               'email': state.user.email,
-              'createStripe': state.user.personalInfoRegistered.toString(),
             },
           );
         } else {

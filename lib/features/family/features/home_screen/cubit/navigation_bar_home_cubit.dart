@@ -33,14 +33,24 @@ class NavigationBarHomeCubit
   bool _hasSession = false;
 
   Future<void> init() async {
-    _authRepository.hasSessionStream().listen((hasSession) {
-      _hasSession = hasSession;
-    });
+    await _initHasSession();
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
     });
     await refreshData();
+  }
+
+  Future<void> _initHasSession() async {
+    try {
+      final session = await _authRepository.getStoredSession();
+      _hasSession = session.isLoggedIn;
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+    }
+    _authRepository.hasSessionStream().listen((hasSession) {
+      _hasSession = hasSession;
+    });
   }
 
   Future<void> refreshData() async {
@@ -67,7 +77,9 @@ class NavigationBarHomeCubit
     if (!_hasSession) return;
     if (_familyInviteGroup != null) {
       return;
-    } else if (!await userNeedsRegistration() && _profiles.length <= 1) {
+    } else if (await userNeedsRegistration()) {
+      return;
+    } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowPreferredChurchModal()) {
       await setPreferredChurchModalShown();
