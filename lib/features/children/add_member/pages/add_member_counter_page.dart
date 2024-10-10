@@ -11,10 +11,10 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class AddMemberCounterPage extends StatefulWidget {
-  const AddMemberCounterPage({this.initialAmount, this.showTopUp = false, this.initialRegistration = true, super.key});
+  const AddMemberCounterPage({this.initialAmount, this.showTopUp = false, this.canPop = true, super.key});
   final int? initialAmount;
   final bool showTopUp;
-  final bool initialRegistration;
+  final bool canPop;
   @override
   State<AddMemberCounterPage> createState() => _AddMemberCounterPageState();
 }
@@ -31,10 +31,10 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      canPop: !widget.initialRegistration,
+      canPop: widget.canPop,
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
-        leading: !widget.initialRegistration ? const GivtBackButtonFlat() : null,
+        leading: widget.canPop ? const GivtBackButtonFlat() : null,
       ),
       body: Column(
         children: [
