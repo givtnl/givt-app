@@ -83,6 +83,7 @@ class MobileNumberFormFieldUs extends StatelessWidget {
             hintText: hintText,
             errorStyle: const TextStyle(
               height: 0,
+              fontSize: 0,
             ),
           ),
         ),
