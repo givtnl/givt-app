@@ -126,14 +126,14 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
                 );
               }
 
-              return widget.shrink
-                  ? SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: const FullScreenLoadingWidget(
-                        text: 'Hold on, we are saving your card details...',
-                      ),
-                    )
-                  : const FullScreenLoadingWidget();
+              return SizedBox(
+                height: widget.shrink
+                    ? MediaQuery.of(context).size.height * 0.5
+                    : null,
+                child: const FullScreenLoadingWidget(
+                  text: 'Hold on, we are saving your card details...',
+                ),
+              );
             }));
   }
 
