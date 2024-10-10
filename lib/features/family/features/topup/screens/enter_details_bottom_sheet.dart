@@ -28,7 +28,6 @@ class EnterDetailsBottomSheet extends StatelessWidget {
         onTap: () => CreditCardDetails.show(
           context,
           shrink: true,
-          navigate: false,
         ),
       ),
       closeAction: () {

@@ -11,7 +11,7 @@ mixin class RegistrationUseCase {
       final (userExt, session, amountPresets) =
           await _authRepository.isAuthenticated() ?? (null, null, null);
       userExternal = userExt;
-      return userExternal?.needRegistration ?? false;
+      return userExternal?.personalInfoRegistered == false;
     } catch (e, s) {
       return false;
     }

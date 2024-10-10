@@ -270,16 +270,6 @@ class AppRouter {
             builder: (context, state) {
               final email = state.uri.queryParameters['email'] ?? '';
 
-              final createStripe = bool.parse(
-                state.uri.queryParameters['createStripe'] ?? 'false',
-              );
-
-              if (createStripe) {
-                context
-                    .read<RegistrationBloc>()
-                    .add(const RegistrationStripeInit());
-              }
-
               return SignUpPage(
                 email: email,
               );
@@ -670,14 +660,13 @@ class AppRouter {
       }
 
       if (state.user.isUsUser) {
-        if (state.user.needRegistration) {
+        if (!state.user.personalInfoRegistered) {
           // Prevent that users will see the profileselection page first when
           // registration is not finished (yet)
           context.pushReplacementNamed(
             FamilyPages.registrationUS.name,
             queryParameters: {
               'email': state.user.email,
-              'createStripe': state.user.personalInfoRegistered.toString(),
             },
           );
         } else {

@@ -286,7 +286,6 @@ class _HomePageState extends State<HomePage> {
                         : Pages.registration.name,
                     queryParameters: {
                       'email': user.email,
-                      'createStripe': createStripe.toString(),
                     },
                   )
                   ..pop();
