@@ -32,6 +32,7 @@ class CreditCardDetails extends StatefulWidget {
     BuildContext context, {
     bool shrink = false,
     bool navigate = true,
+    VoidCallback? onClose,
   }) {
     showModalBottomSheet<void>(
       context: context,
@@ -44,7 +45,9 @@ class CreditCardDetails extends StatefulWidget {
         shrink: shrink,
         navigate: navigate,
       ),
-    );
+    ).then((value) {
+      onClose?.call();
+    });
   }
 }
 

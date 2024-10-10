@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
+import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/registration/pages/credit_card_details.dart';
@@ -23,14 +24,20 @@ class EnterDetailsBottomSheet extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       primaryButton: FunButton(
-        text: 'Enter payment details',
-        analyticsEvent: AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
-        onTap: () => CreditCardDetails.show(
-          context,
-          shrink: true,
-          navigate: false,
-        ),
-      ),
+          text: 'Enter payment details',
+          analyticsEvent:
+              AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
+          onTap: () async {
+            CreditCardDetails.show(
+              context,
+              shrink: true,
+              navigate: false,
+              onClose: () async {
+                Navigator.of(context).pop();
+                TopupWalletBottomSheet.show(context);
+              },
+            );
+          }),
       closeAction: () {
         Navigator.of(context).pop();
       },
