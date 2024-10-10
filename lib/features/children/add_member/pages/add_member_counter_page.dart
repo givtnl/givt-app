@@ -30,9 +30,10 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: widget.showTopUp,
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
-        leading: const GivtBackButtonFlat(),
+        leading: widget.showTopUp ? const GivtBackButtonFlat() : null,
       ),
       body: Column(
         children: [
