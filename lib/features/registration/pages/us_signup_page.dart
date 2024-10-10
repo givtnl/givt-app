@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/children/utils/add_member_util.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
@@ -75,7 +76,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             FamilyPages.permitUSBiometric.name,
             extra: PermitBiometricRequest.registration(
               redirect: (context) {
-                context.pushReplacementNamed(FamilyPages.profileSelection.name);
+                AddMemberUtil.addMemberPushPages(context);
               },
             ),
           );
