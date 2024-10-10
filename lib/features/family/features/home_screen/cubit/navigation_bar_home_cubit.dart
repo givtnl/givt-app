@@ -6,6 +6,7 @@ import 'package:givt_app/features/auth/repositories/auth_repository.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/usecases/preferred_church_usecase.dart';
+import 'package:givt_app/features/family/features/home_screen/usecases/registration_usecase.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
@@ -15,7 +16,7 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class NavigationBarHomeCubit
     extends CommonCubit<NavigationBarHomeScreenUIModel, NavigationBarHomeCustom>
-    with PreferredChurchUseCase {
+    with PreferredChurchUseCase, RegistrationUseCase {
   NavigationBarHomeCubit(
     this._profilesRepository,
     this._authRepository,
@@ -48,8 +49,8 @@ class NavigationBarHomeCubit
   Future<void> _onImpactGroupsChanged() async {
     _profiles = await _profilesRepository.getProfiles();
     _familyInviteGroup = await _impactGroupsRepository.isInvitedToGroup();
-    _emitData();
     await doInitialChecks();
+    _emitData();
   }
 
   Future<void> _onProfilesChanged(List<Profile> profiles) async {
@@ -61,7 +62,7 @@ class NavigationBarHomeCubit
   Future<void> doInitialChecks() async {
     if (_familyInviteGroup != null) {
       return;
-    } else if (_profiles.length <= 1) {
+    } else if (!await userNeedsRegistration() && _profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
     } else if (await shouldShowPreferredChurchModal()) {
       await setPreferredChurchModalShown();

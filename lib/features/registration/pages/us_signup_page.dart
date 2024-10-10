@@ -75,6 +75,11 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             FamilyPages.permitUSBiometric.name,
             extra: PermitBiometricRequest.registration(
               redirect: (context) {
+                context.read<RegistrationBloc>().add(
+                      const RegistrationStripeSuccess(
+                        emitAuthenticated: false,
+                      ),
+                    );
                 context.pushReplacementNamed(FamilyPages.profileSelection.name);
               },
             ),
