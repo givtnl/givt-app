@@ -57,9 +57,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onData: (context, uiModel) {
+      onCustom: (context, uiModel) {
         createOverlay(uiModel);
-
+        setState(() {
+          overlayVisible = true;
+        });
+        Overlay.of(context).insert(overlayEntry!);
+      },
+      onData: (context, uiModel) {
         return FunScaffold(
           minimumPadding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
           appBar: const FunTopAppBar(title: null),
@@ -112,13 +117,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                     ),
                     const SizedBox(height: 24),
                     GiveButton(
-                      onPressed: () {
-                        setState(() {
-                          overlayVisible = true;
-                        });
-
-                        Overlay.of(context).insert(overlayEntry!);
-                      },
+                      onPressed: _cubit.onGiveButtonPressed,
                     ),
                   ],
                 ),
@@ -131,8 +130,6 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
   }
 
   void createOverlay(FamilyHomeScreenUIModel uiModel) {
-    if (overlayEntry != null) return;
-
     overlayEntry = OverlayEntry(
       builder: (context) => FamilyHomeOverlay(
         uiModel: uiModel,

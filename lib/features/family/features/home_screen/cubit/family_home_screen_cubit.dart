@@ -9,7 +9,7 @@ import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class FamilyHomeScreenCubit
-    extends CommonCubit<FamilyHomeScreenUIModel, dynamic> {
+    extends CommonCubit<FamilyHomeScreenUIModel, FamilyHomeScreenUIModel> {
   FamilyHomeScreenCubit(
     this._profilesRepository,
     this._impactGroupsRepository,
@@ -32,11 +32,11 @@ class FamilyHomeScreenCubit
       (element) => element.isFamilyGroup,
     );
 
-    _updateUiModel();
+    _emitData();
   }
 
   void _onProfilesChanged(List<Profile> profiles) {
-    _updateUiModel();
+    _emitData();
   }
 
   void _onGroupsChanged(List<ImpactGroup> profiles) {
@@ -44,24 +44,31 @@ class FamilyHomeScreenCubit
       (element) => element.isFamilyGroup,
     );
 
-    _updateUiModel();
+    _emitData();
   }
 
-  void _updateUiModel() {
-    profiles.sort((a, b) => a.isChild ? -1 : 1);
+  void onGiveButtonPressed() {
+    emitCustom(_createUIModel());
+  }
 
+  void _emitData() {
     emitData(
-      FamilyHomeScreenUIModel(
-        avatars: profiles
-            .map(
-              (e) => GratefulAvatarUIModel(
-                avatarUrl: e.pictureURL,
-                text: e.firstName,
-              ),
-            )
-            .toList(),
-        familyGroupName: _familyGroup?.name,
-      ),
+      _createUIModel(),
+    );
+  }
+
+  FamilyHomeScreenUIModel _createUIModel() {
+    profiles.sort((a, b) => a.isChild ? -1 : 1);
+    return FamilyHomeScreenUIModel(
+      avatars: profiles
+          .map(
+            (e) => GratefulAvatarUIModel(
+              avatarUrl: e.pictureURL,
+              text: e.firstName,
+            ),
+          )
+          .toList(),
+      familyGroupName: _familyGroup?.name,
     );
   }
 }
