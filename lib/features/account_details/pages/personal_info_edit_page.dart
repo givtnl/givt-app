@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
@@ -229,7 +230,7 @@ class PersonalInfoEditPage extends StatelessWidget {
                   );
 
                   if (!context.mounted) return;
-                  await context.read<StripeCubit>().fetchSetupIntent();
+                  await getIt<StripeCubit>().fetchSetupIntent();
 
                   if (!context.mounted) return;
 

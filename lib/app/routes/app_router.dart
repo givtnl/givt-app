@@ -38,7 +38,6 @@ import 'package:givt_app/features/personal_summary/yearly_overview/pages/yearly_
 import 'package:givt_app/features/recurring_donations/overview/cubit/recurring_donations_cubit.dart';
 import 'package:givt_app/features/recurring_donations/overview/pages/recurring_donations_overview_page.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/pages.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
@@ -249,11 +248,6 @@ class AppRouter {
                       authRepository: getIt(),
                     ),
                   ),
-                  BlocProvider(
-                    create: (context) => StripeCubit(
-                      authRepository: getIt(),
-                    ),
-                  ),
                 ],
                 child: const PersonalInfoEditPage(),
               );
@@ -286,17 +280,8 @@ class AppRouter {
                     .add(const RegistrationStripeInit());
               }
 
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (_) => StripeCubit(
-                      authRepository: getIt(),
-                    ),
-                  ),
-                ],
-                child: SignUpPage(
-                  email: email,
-                ),
+              return SignUpPage(
+                email: email,
               );
             },
             routes: [

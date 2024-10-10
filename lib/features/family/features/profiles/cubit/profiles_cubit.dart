@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
-import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
