@@ -27,10 +27,10 @@ class EnterDetailsBottomSheet extends StatelessWidget {
           text: 'Enter payment details',
           analyticsEvent:
               AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
-          onTap: () async {
+          onTap: () {
             CreditCardDetails.show(
               context,
-              onClose: () async {
+              onClose: () {
                 Navigator.of(context).pop();
                 TopupWalletBottomSheet.show(context);
               },
