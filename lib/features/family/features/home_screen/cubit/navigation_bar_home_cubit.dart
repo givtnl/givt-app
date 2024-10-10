@@ -30,8 +30,12 @@ class NavigationBarHomeCubit
   String? profilePictureUrl;
   List<Profile> _profiles = [];
   ImpactGroup? _familyInviteGroup;
+  bool _hasSession = false;
 
   Future<void> init() async {
+    _authRepository.hasSessionStream().listen((hasSession) {
+      _hasSession = hasSession;
+    });
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
@@ -60,6 +64,7 @@ class NavigationBarHomeCubit
   }
 
   Future<void> doInitialChecks() async {
+    if (!_hasSession) return;
     if (_familyInviteGroup != null) {
       return;
     } else if (!await userNeedsRegistration() && _profiles.length <= 1) {
