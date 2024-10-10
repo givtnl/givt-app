@@ -675,7 +675,7 @@ class AppRouter {
       }
 
       if (state.user.isUsUser) {
-        if (state.user.needRegistration) {
+        if (!state.user.personalInfoRegistered) {
           // Prevent that users will see the profileselection page first when
           // registration is not finished (yet)
           context.pushReplacementNamed(
