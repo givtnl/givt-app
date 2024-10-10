@@ -130,6 +130,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
                   emailController: _emailController,
                   ageController: _ageController,
                   allowanceAmount: _amount,
+                  showTopUp: widget.showTopUp,
                   onAmountChanged: (amount) {
                     setState(() {
                       _amount = amount;
