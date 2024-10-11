@@ -55,7 +55,7 @@ class FamilyHomeScreenCubit
   }
 
   FamilyHomeScreenUIModel _createUIModel() {
-    profiles.sort((a, b) => a.isChild ? -1 : 1);
+    _sortProfiles();
     return FamilyHomeScreenUIModel(
       avatars: profiles
           .map(
@@ -66,6 +66,16 @@ class FamilyHomeScreenCubit
           )
           .toList(),
       familyGroupName: _familyGroup?.name,
+    );
+  }
+
+  void _sortProfiles() {
+    profiles.sort(
+      (a, b) => a.isChild
+          ? -1
+          : b.isChild
+              ? 1
+              : 0,
     );
   }
 }
