@@ -15,7 +15,9 @@ class ReflectAndShareRepository {
   int completedLoops = 0;
   int totalQuestionsAsked = 0;
   int _generousDeeds = 0;
-  int totalTimeSpent = 0;
+  int totalTimeSpentInSeconds = 0;
+  DateTime? _startTime;
+  DateTime? _endTime;
 
   List<GameProfile>? _allProfiles;
   List<GameProfile> _selectedProfiles = [];
@@ -31,7 +33,9 @@ class ReflectAndShareRepository {
 
   void saveSummaryStats() {
     try {
-      _familyApiService.saveGratitudeStats(totalTimeSpent);
+      _endTime = DateTime.now();
+      totalTimeSpentInSeconds = _endTime!.difference(_startTime!).inSeconds;
+      _familyApiService.saveGratitudeStats(totalTimeSpentInSeconds);
     } catch (e, s) {
       LoggingInfo.instance.error(
         e.toString(),
@@ -81,8 +85,9 @@ class ReflectAndShareRepository {
     // Rest game state
     completedLoops = 0;
     totalQuestionsAsked = 0;
-    totalTimeSpent = 0;
     _generousDeeds = 0;
+    totalTimeSpentInSeconds = 0;
+    _startTime = DateTime.now();
 
     _selectedProfiles = selectedProfiles;
   }
