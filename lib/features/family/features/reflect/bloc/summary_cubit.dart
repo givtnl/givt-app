@@ -11,9 +11,8 @@ class SummaryCubit extends CommonCubit<SummaryDetails, dynamic> {
 
   void init() {
     final totalMinutesPlayed =
-        (_reflectAndShareRepository.totalTimeSpent / 60).round();
-    final generousDeeds =
-        _reflectAndShareRepository.getAmountOfGenerousDeeds();
+        (_reflectAndShareRepository.totalTimeSpentInSeconds / 60).ceil();
+    final generousDeeds = _reflectAndShareRepository.getAmountOfGenerousDeeds();
 
     emitData(
       SummaryDetails(
