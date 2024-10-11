@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
+import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/enums/type_of_terms.dart';
@@ -63,6 +64,28 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     super.initState();
     setEmail();
     setDefaultCountry();
+
+    _checkAuthentication();
+  }
+
+  Future<void> _checkAuthentication() async {
+    final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
+
+    if (!hasAuthenticated) {
+      // When not authenticated do nothing
+      return;
+    }
+
+    // When authenticated we go to the home route
+    if (!context.mounted) {
+      return;
+    }
+    await context.read<AuthCubit>().authenticate();
+    if (!context.mounted) {
+      return;
+    }
+
+    context.goNamed(Pages.home.name);
   }
 
   Future<void> setEmail() async {
@@ -155,133 +178,136 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
           }
         },
         child: LayoutBuilder(
-    builder: (context, constraint) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: constraint.maxHeight,
-              ),
-              child: IntrinsicHeight(
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TitleLargeText(
-                        locals.welcomeContinue,
-                      ),
-                      const SizedBox(height: 4),
-                      BodyMediumText(
-                        locals.toGiveWeNeedYourEmailAddress,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 4),
-                      BodySmallText.primary40(locals.weWontSendAnySpam),
-                      const Spacer(),
-                      OutlinedTextFormField(
-                        controller: _emailController,
-                        hintText: locals.email,
-                        onChanged: (value) {
-                          setState(() {
-                            _formKey.currentState!.validate();
-                          });
-                        },
-                        validator: (value) {
-                          final isUnknownStatus =
-                              context.read<AuthCubit>().state.status ==
-                                  AuthStatus.unknown;
-                
-                          if (!isUnknownStatus &&
-                              (value == null ||
-                                  value.isEmpty ||
-                                  !Util.emailRegEx.hasMatch(value))) {
-                            return context.l10n.invalidEmail;
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                        autofillHints: const [
-                          AutofillHints.username,
-                          AutofillHints.email,
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      CountryDropDown(
-                        selectedCountry: selectedCountry,
-                        onChanged: (Country? newValue) {
-                          setState(() {
-                            selectedCountry = newValue!;
-                          });
-                        },
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: GestureDetector(
-                          onTap: () => showModalBottomSheet<void>(
-                            context: context,
-                            useSafeArea: true,
-                            scrollControlDisabledMaxHeightRatio: 1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            builder: (BuildContext context) =>
-                                const TermsAndConditionsDialog(
-                              typeOfTerms: TypeOfTerms.termsAndConditions,
-                            ),
-                          ),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(
-                                FontAwesomeIcons.circleInfo,
-                                size: 20,
-                                color: FamilyAppTheme.primary20,
+          builder: (context, constraint) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraint.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        TitleLargeText(
+                          locals.welcomeContinue,
+                        ),
+                        const SizedBox(height: 4),
+                        BodyMediumText(
+                          locals.toGiveWeNeedYourEmailAddress,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 4),
+                        BodySmallText.primary40(locals.weWontSendAnySpam),
+                        const Spacer(),
+                        OutlinedTextFormField(
+                          controller: _emailController,
+                          hintText: locals.email,
+                          onChanged: (value) {
+                            setState(() {
+                              _formKey.currentState!.validate();
+                            });
+                          },
+                          validator: (value) {
+                            final isUnknownStatus =
+                                context.read<AuthCubit>().state.status ==
+                                    AuthStatus.unknown;
+
+                            if (!isUnknownStatus &&
+                                (value == null ||
+                                    value.isEmpty ||
+                                    !Util.emailRegEx.hasMatch(value))) {
+                              return context.l10n.invalidEmail;
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          autofillHints: const [
+                            AutofillHints.username,
+                            AutofillHints.email,
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        CountryDropDown(
+                          selectedCountry: selectedCountry,
+                          onChanged: (Country? newValue) {
+                            setState(() {
+                              selectedCountry = newValue!;
+                            });
+                          },
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: GestureDetector(
+                            onTap: () => showModalBottomSheet<void>(
+                              context: context,
+                              useSafeArea: true,
+                              scrollControlDisabledMaxHeightRatio: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                              const SizedBox(width: 8),
-                              Flexible(
-                                child: BodySmallText.primary40(
-                                  locals.acceptTerms,
+                              builder: (BuildContext context) =>
+                                  const TermsAndConditionsDialog(
+                                typeOfTerms: TypeOfTerms.termsAndConditions,
+                              ),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.circleInfo,
+                                  size: 20,
+                                  color: FamilyAppTheme.primary20,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(width: 8),
+                                Flexible(
+                                  child: BodySmallText.primary40(
+                                    locals.acceptTerms,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      if (_isLoading)
-                        const Center(child: CircularProgressIndicator())
-                      else
-                        FunButton(
-                          isDisabled: !isEnabled,
-                          onTap: isEnabled
-                              ? () async {
-                                  toggleLoading();
-                                  if (_formKey.currentState!.validate()) {
-                                    // Update country
-                                    _updateCountry();
-                
-                                    await context.read<AuthCubit>().register(
-                                          country: selectedCountry,
-                                          email: _emailController.value.text.trim(),
-                                          locale: Localizations.localeOf(context)
-                                              .languageCode,
-                                        );
+                        const SizedBox(height: 12),
+                        if (_isLoading)
+                          const Center(child: CircularProgressIndicator())
+                        else
+                          FunButton(
+                            isDisabled: !isEnabled,
+                            onTap: isEnabled
+                                ? () async {
+                                    toggleLoading();
+                                    if (_formKey.currentState!.validate()) {
+                                      // Update country
+                                      _updateCountry();
+
+                                      await context.read<AuthCubit>().register(
+                                            country: selectedCountry,
+                                            email: _emailController.value.text
+                                                .trim(),
+                                            locale:
+                                                Localizations.localeOf(context)
+                                                    .languageCode,
+                                          );
+                                    }
+                                    toggleLoading();
                                   }
-                                  toggleLoading();
-                                }
-                              : null,
-                          text: locals.continueKey,
-                          rightIcon: FontAwesomeIcons.arrowRight,
-                          analyticsEvent: AnalyticsEvent(
-                            AmplitudeEvents.emailSignupContinueClicked,
+                                : null,
+                            text: locals.continueKey,
+                            rightIcon: FontAwesomeIcons.arrowRight,
+                            analyticsEvent: AnalyticsEvent(
+                              AmplitudeEvents.emailSignupContinueClicked,
+                            ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          );},
+            );
+          },
         ),
       ),
     );

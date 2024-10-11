@@ -10,9 +10,9 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/personal_info_edit_page.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/auth/pages/email_signup_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/family_routes.dart';
-import 'package:givt_app/features/first_use/pages/welcome_page.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/pages/bt_scan_page.dart';
 import 'package:givt_app/features/give/pages/giving_page.dart';
@@ -556,9 +556,7 @@ class AppRouter {
         builder: (_, routerState) => BlocListener<AuthCubit, AuthState>(
           listener: (context, state) =>
               _checkAndRedirectAuth(state, context, routerState),
-          child: WelcomePage(
-            prefs: getIt(),
-          ),
+          child: const EmailSignupPage(),
         ),
       ),
       // Family features
