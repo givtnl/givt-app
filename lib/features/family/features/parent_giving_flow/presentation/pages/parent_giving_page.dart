@@ -28,6 +28,7 @@ class ParentGivingPage extends StatefulWidget {
 class _ParentGivingPageState extends State<ParentGivingPage> {
   late CustomInAppBrowser _customInAppBrowser;
   bool browserIsOpened = false;
+  bool browserClosing = false;
   final give = getIt<GiveBloc>();
 
   @override
@@ -44,40 +45,49 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
         LoggingInfo.instance.info(
           'Closing browser and navigating to home page from $url',
         );
+        setState(() {
+          browserClosing = true;
+        });
         await _closeBrowser();
       },
     );
   }
 
   Future<void> _closeBrowser() async {
-    if (_customInAppBrowser.isOpened()) {
-      LoggingInfo.instance.info(
-        'Browser is opened, closing browser and navigating to home page',
-      );
-      await _customInAppBrowser.close();
-    }
-    if (!mounted) {
-      return;
-    }
-
-    give.add(const GiveReset());
-
-    unawaited(
-      context.read<ImpactGroupsCubit>().fetchImpactGroups(),
-    );
-
-    final afterGivingRedirection = give.state.afterGivingRedirection;
-    context.pop(true);
-
-    if (afterGivingRedirection.isNotEmpty) {
-      final url = Uri.parse(afterGivingRedirection);
-      LoggingInfo.instance.info(
-        'Redirecting after external link donation. Attempting to launch $url',
-      );
-      if (!await launchUrl(url)) {
-        LoggingInfo.instance.error('Could not launch $url');
-        throw Exception('Could not launch $url');
+    try {
+      if (_customInAppBrowser.isOpened()) {
+        LoggingInfo.instance.info(
+          'Browser is opened, closing browser and navigating to home page',
+        );
+        await _customInAppBrowser.close();
       }
+      if (!mounted) {
+        return;
+      }
+
+      give.add(const GiveReset());
+
+      unawaited(
+        context.read<ImpactGroupsCubit>().fetchImpactGroups(),
+      );
+
+      final afterGivingRedirection = give.state.afterGivingRedirection;
+      context.pop(true);
+
+      if (afterGivingRedirection.isNotEmpty) {
+        final url = Uri.parse(afterGivingRedirection);
+        LoggingInfo.instance.info(
+          'Redirecting after external link donation. Attempting to launch $url',
+        );
+        if (!await launchUrl(url)) {
+          LoggingInfo.instance.error('Could not launch $url');
+          throw Exception('Could not launch $url');
+        }
+      }
+    } catch (e) {
+      setState(() {
+        browserClosing = false;
+      });
     }
   }
 
@@ -160,11 +170,14 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
           return Center(
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: ElevatedButton(
-                child: const Text('Go Back Home'),
-                onPressed: () {
-                  context.pop();
-                },
+              child: Visibility(
+                visible: !browserClosing,
+                child: ElevatedButton(
+                  child: const Text('Go Back Home'),
+                  onPressed: () {
+                    context.pop();
+                  },
+                ),
               ),
             ),
           );
