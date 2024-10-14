@@ -111,7 +111,8 @@ class _GratefulScreenState extends State<GratefulScreen> {
                   child: RecommendationsWidget(
                     uiModel: uiModel.recommendationsUIModel,
                     onRecommendationChosen: (int i) {
-                      _cubit.onRecommendationChosen(i, false);
+                      _cubit.onRecommendationChosen(
+                          i, uiModel.recommendationsUIModel.showActsOfService);
                       context.pop();
                     },
                     onSelectionChanged: _cubit.onSelectionChanged,
@@ -137,6 +138,13 @@ class _GratefulScreenState extends State<GratefulScreen> {
         _navigateToParentGivingScreen(
           context,
           data.organisation,
+        );
+      case final GratefulOpenActOfServiceSuccess data:
+        // TODO KIDS-1507
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('You have successfully completed an act of service'),
+          ),
         );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);

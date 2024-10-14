@@ -31,7 +31,10 @@ class RecommendationsListWidget extends StatelessWidget {
           ),
         ),
         FunTabs(
-          selections: uiModel.selections,
+          selections: [
+            uiModel.showActsOfService,
+            !uiModel.showActsOfService,
+          ],
           onPressed: (i) => onSelectionChanged?.call(i),
           firstOption: 'Acts of Service',
           secondOption: 'Give',
@@ -39,7 +42,7 @@ class RecommendationsListWidget extends StatelessWidget {
             AmplitudeEvents.recommendationTypeSelectorClicked,
             parameters: {
               'currentSelection':
-                  uiModel.selections[0] ? 'Acts of Service' : 'Give',
+                  uiModel.showActsOfService ? 'Acts of Service' : 'Give',
             },
           ),
         ),
@@ -48,6 +51,7 @@ class RecommendationsListWidget extends StatelessWidget {
           (index) {
             final recommendation = uiModel.organisations[index];
             return OrganisationItem(
+              isActOfService: uiModel.showActsOfService,
               organisation: recommendation,
               onDonateClicked: () => onRecommendationChosen?.call(index),
             );

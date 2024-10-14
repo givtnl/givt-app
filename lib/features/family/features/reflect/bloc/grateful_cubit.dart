@@ -110,7 +110,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
-            selections: [showActsOfService, !showActsOfService],
+            showActsOfService: showActsOfService,
             isLoading: _isLoadingRecommendations,
             hasError: _hasRecommendationsError,
             organisations: showActsOfService
@@ -158,7 +158,13 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     final organisation = isActOfService
         ? _currentActsOfService[index]
         : _currentOrganisations[index];
-    if (isCurrentProfileChild()) {
+    if (isActOfService) {
+      emitCustom(
+        GratefulCustom.openActOfServiceSuccess(
+          organisation: organisation,
+        ),
+      );
+    } else if (isCurrentProfileChild()) {
       emitCustom(
         GratefulCustom.openKidDonationFlow(
           profile: _getCurrentProfile(),

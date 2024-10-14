@@ -17,11 +17,13 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
   const OrganisationDetailBottomSheet({
     required this.organisation,
     this.onDonateClicked,
+    this.isActOfService = false,
     super.key,
   });
 
   final double height = 100;
   final Organisation organisation;
+  final bool isActOfService;
   final void Function()? onDonateClicked;
 
   @override
@@ -96,14 +98,16 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
             child: FunButton(
-              text: 'Donate',
-              onTap: onDonateClicked ?? () {
-                if (!isDonateButtonActive) {
-                  EmptyWalletBottomSheet.show(context);
-                  return;
-                }
-                context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
-              },
+              text: isActOfService ? "I'm going to do this" : 'Donate',
+              onTap: onDonateClicked ??
+                  () {
+                    if (!isDonateButtonActive) {
+                      EmptyWalletBottomSheet.show(context);
+                      return;
+                    }
+                    context
+                        .pushNamed(FamilyPages.familyChooseAmountSlider.name);
+                  },
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.donateToRecommendedCharityPressed,
                 parameters: {

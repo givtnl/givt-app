@@ -17,9 +17,11 @@ class OrganisationItem extends StatelessWidget {
   const OrganisationItem({
     required this.organisation,
     this.onDonateClicked,
+    this.isActOfService = false,
     super.key,
   });
 
+  final bool isActOfService;
   final Organisation organisation;
   final void Function()? onDonateClicked;
 
@@ -44,6 +46,7 @@ class OrganisationItem extends StatelessWidget {
           builder: (context) => OrganisationDetailBottomSheet(
             organisation: organisation,
             onDonateClicked: onDonateClicked,
+            isActOfService: isActOfService,
           ),
         );
       },
