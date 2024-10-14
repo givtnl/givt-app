@@ -27,7 +27,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
-  List<Organisation> _currentRecommendations = [];
+  List<Organisation> _currentOrganisations = [];
+  List<Organisation> _currentActsOfService = [];
+  bool showActsOfService = false;
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
   Session? _session;
@@ -108,9 +110,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
+            selections: [showActsOfService, !showActsOfService],
             isLoading: _isLoadingRecommendations,
             hasError: _hasRecommendationsError,
-            organisations: _currentRecommendations,
+            organisations: showActsOfService
+                ? _currentActsOfService
+                : _currentOrganisations,
             name: _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ??
                 '',
             category: _profiles.elementAt(_currentProfileIndex).gratitude),
@@ -127,8 +132,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     try {
       _isLoadingRecommendations = true;
       _emitData();
-      _currentRecommendations = await _gratefulRecommendationsRepository
+      _currentOrganisations = await _gratefulRecommendationsRepository
           .getOrganisationsRecommendations(_getCurrentProfile());
+      _currentActsOfService = await _gratefulRecommendationsRepository
+          .getActsRecommendations(_getCurrentProfile());
       _hasRecommendationsError = false;
     } catch (e, s) {
       _hasRecommendationsError = true;
@@ -142,8 +149,15 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
-  void onRecommendationChosen(int index) {
-    final organisation = _currentRecommendations[index];
+  void onSelectionChanged(int index) {
+    showActsOfService = index == 0;
+    _emitData();
+  }
+
+  void onRecommendationChosen(int index, bool isActOfService) {
+    final organisation = isActOfService
+        ? _currentActsOfService[index]
+        : _currentOrganisations[index];
     if (isCurrentProfileChild()) {
       emitCustom(
         GratefulCustom.openKidDonationFlow(

@@ -106,13 +106,15 @@ class _GratefulScreenState extends State<GratefulScreen> {
                   uiModel: uiModel.avatarBarUIModel,
                   onAvatarTapped: _cubit.onAvatarTapped,
                 ),
+                const SizedBox(height: 24),
                 Flexible(
                   child: RecommendationsWidget(
                     uiModel: uiModel.recommendationsUIModel,
                     onRecommendationChosen: (int i) {
-                      _cubit.onRecommendationChosen(i);
+                      _cubit.onRecommendationChosen(i, false);
                       context.pop();
                     },
+                    onSelectionChanged: _cubit.onSelectionChanged,
                     onTapRetry: _cubit.onRetry,
                   ),
                 ),
