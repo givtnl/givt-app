@@ -16,7 +16,7 @@ import 'package:go_router/go_router.dart';
 class OrganisationDetailBottomSheet extends StatelessWidget {
   const OrganisationDetailBottomSheet({
     required this.organisation,
-    this.onDonateClicked,
+    this.onClick,
     this.isActOfService = false,
     super.key,
   });
@@ -24,7 +24,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
   final double height = 100;
   final Organisation organisation;
   final bool isActOfService;
-  final void Function()? onDonateClicked;
+  final void Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
             child: FunButton(
               text: isActOfService ? "I'm going to do this" : 'Donate',
-              onTap: onDonateClicked ??
+              onTap: onClick ??
                   () {
                     if (!isDonateButtonActive) {
                       EmptyWalletBottomSheet.show(context);

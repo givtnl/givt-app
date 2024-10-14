@@ -45,7 +45,7 @@ class OrganisationItem extends StatelessWidget {
           backgroundColor: Colors.transparent,
           builder: (context) => OrganisationDetailBottomSheet(
             organisation: organisation,
-            onDonateClicked: onDonateClicked,
+            onClick: onDonateClicked,
             isActOfService: isActOfService,
           ),
         );
