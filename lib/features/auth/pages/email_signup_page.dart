@@ -6,6 +6,7 @@ import 'package:device_region/device_region.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart' as get_it;
 import 'package:givt_app/app/routes/routes.dart';
@@ -50,8 +51,17 @@ class EmailSignupPage extends StatefulWidget {
 class _EmailSignupPageState extends State<EmailSignupPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  final FocusNode _countryFocusNode = FocusNode();
   Country selectedCountry = Country.nl;
   bool _isLoading = false;
+  bool _isCountryDropdownFocused = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _countryFocusNode.dispose();
+    super.dispose();
+  }
 
   void toggleLoading() {
     setState(() {
@@ -66,6 +76,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     setDefaultCountry();
 
     _checkAuthentication();
+
+    _countryFocusNode.addListener(() {
+      setState(() {
+        _isCountryDropdownFocused = _countryFocusNode.hasFocus;
+      });
+    });
   }
 
   Future<void> _checkAuthentication() async {
@@ -136,7 +152,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunScaffold(
-      appBar: FunTopAppBar.white(title: ''),
       body: BlocListener<AuthCubit, AuthState>(
         listenWhen: (previous, current) => previous != current,
         listener: (context, state) {
@@ -177,135 +192,150 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
             );
           }
         },
-        child: LayoutBuilder(
-          builder: (context, constraint) {
-            return SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraint.maxHeight,
-                ),
-                child: IntrinsicHeight(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TitleLargeText(
-                          locals.welcomeContinue,
-                        ),
-                        const SizedBox(height: 4),
-                        BodyMediumText(
-                          locals.toGiveWeNeedYourEmailAddress,
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: 4),
-                        BodySmallText.primary40(locals.weWontSendAnySpam),
-                        const Spacer(),
-                        OutlinedTextFormField(
-                          controller: _emailController,
-                          hintText: locals.email,
-                          onChanged: (value) {
-                            setState(() {
-                              _formKey.currentState!.validate();
-                            });
-                          },
-                          validator: (value) {
-                            final isUnknownStatus =
-                                context.read<AuthCubit>().state.status ==
-                                    AuthStatus.unknown;
+        child: KeyboardVisibilityBuilder(
+          builder: (context, isKeyboardVisible) {
+            return LayoutBuilder(
+              builder: (context, constraint) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraint.maxHeight,
+                    ),
+                    child: IntrinsicHeight(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            if (!isKeyboardVisible ||
+                                !_isCountryDropdownFocused) ...[
+                              const SizedBox(
+                                height: 24,
+                              ),
+                              TitleLargeText(
+                                locals.welcomeContinue,
+                              ),
+                              const SizedBox(height: 4),
+                              BodyMediumText(
+                                locals.toGiveWeNeedYourEmailAddress,
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 4),
+                              BodySmallText.primary40(locals.weWontSendAnySpam),
+                              const Spacer(),
+                            ],
+                            OutlinedTextFormField(
+                              controller: _emailController,
+                              hintText: locals.email,
+                              onChanged: (value) {
+                                setState(() {
+                                  _formKey.currentState!.validate();
+                                });
+                              },
+                              validator: (value) {
+                                final isUnknownStatus =
+                                    context.read<AuthCubit>().state.status ==
+                                        AuthStatus.unknown;
 
-                            if (!isUnknownStatus &&
-                                (value == null ||
-                                    value.isEmpty ||
-                                    !Util.emailRegEx.hasMatch(value))) {
-                              return context.l10n.invalidEmail;
-                            }
-                            return null;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          autofillHints: const [
-                            AutofillHints.username,
-                            AutofillHints.email,
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        CountryDropDown(
-                          selectedCountry: selectedCountry,
-                          onChanged: (Country? newValue) {
-                            setState(() {
-                              selectedCountry = newValue!;
-                            });
-                          },
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          child: GestureDetector(
-                            onTap: () => showModalBottomSheet<void>(
-                              context: context,
-                              useSafeArea: true,
-                              scrollControlDisabledMaxHeightRatio: 1,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              builder: (BuildContext context) =>
-                                  const TermsAndConditionsDialog(
-                                typeOfTerms: TypeOfTerms.termsAndConditions,
-                              ),
-                            ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  FontAwesomeIcons.circleInfo,
-                                  size: 20,
-                                  color: FamilyAppTheme.primary20,
-                                ),
-                                const SizedBox(width: 8),
-                                Flexible(
-                                  child: BodySmallText.primary40(
-                                    locals.acceptTerms,
-                                  ),
-                                ),
+                                if (!isUnknownStatus &&
+                                    (value == null ||
+                                        value.isEmpty ||
+                                        !Util.emailRegEx.hasMatch(value))) {
+                                  return context.l10n.invalidEmail;
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              autofillHints: const [
+                                AutofillHints.username,
+                                AutofillHints.email,
                               ],
                             ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        if (_isLoading)
-                          const Center(child: CircularProgressIndicator())
-                        else
-                          FunButton(
-                            isDisabled: !isEnabled,
-                            onTap: isEnabled
-                                ? () async {
-                                    toggleLoading();
-                                    if (_formKey.currentState!.validate()) {
-                                      // Update country
-                                      _updateCountry();
-
-                                      await context.read<AuthCubit>().register(
-                                            country: selectedCountry,
-                                            email: _emailController.value.text
-                                                .trim(),
-                                            locale:
-                                                Localizations.localeOf(context)
-                                                    .languageCode,
-                                          );
-                                    }
-                                    toggleLoading();
-                                  }
-                                : null,
-                            text: locals.continueKey,
-                            rightIcon: FontAwesomeIcons.arrowRight,
-                            analyticsEvent: AnalyticsEvent(
-                              AmplitudeEvents.emailSignupContinueClicked,
+                            const SizedBox(height: 12),
+                            CountryDropDown(
+                              focusNode: _countryFocusNode,
+                              selectedCountry: selectedCountry,
+                              onChanged: (Country? newValue) {
+                                setState(() {
+                                  selectedCountry = newValue!;
+                                });
+                              },
                             ),
-                          ),
-                      ],
+                            const Spacer(),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: GestureDetector(
+                                onTap: () => showModalBottomSheet<void>(
+                                  context: context,
+                                  useSafeArea: true,
+                                  scrollControlDisabledMaxHeightRatio: 1,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  builder: (BuildContext context) =>
+                                      const TermsAndConditionsDialog(
+                                    typeOfTerms: TypeOfTerms.termsAndConditions,
+                                  ),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      FontAwesomeIcons.circleInfo,
+                                      size: 20,
+                                      color: FamilyAppTheme.primary20,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Flexible(
+                                      child: BodySmallText.primary40(
+                                        locals.acceptTerms,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            if (_isLoading)
+                              const Center(child: CircularProgressIndicator())
+                            else
+                              FunButton(
+                                isDisabled: !isEnabled,
+                                onTap: isEnabled
+                                    ? () async {
+                                        toggleLoading();
+                                        if (_formKey.currentState!.validate()) {
+                                          // Update country
+                                          _updateCountry();
+
+                                          await context
+                                              .read<AuthCubit>()
+                                              .register(
+                                                country: selectedCountry,
+                                                email: _emailController
+                                                    .value.text
+                                                    .trim(),
+                                                locale: Localizations.localeOf(
+                                                        context)
+                                                    .languageCode,
+                                              );
+                                        }
+                                        toggleLoading();
+                                      }
+                                    : null,
+                                text: locals.continueKey,
+                                rightIcon: FontAwesomeIcons.arrowRight,
+                                analyticsEvent: AnalyticsEvent(
+                                  AmplitudeEvents.emailSignupContinueClicked,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           },
         ),

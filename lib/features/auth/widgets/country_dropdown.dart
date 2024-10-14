@@ -10,11 +10,13 @@ class CountryDropDown extends StatelessWidget {
   const CountryDropDown({
     required this.selectedCountry,
     required this.onChanged,
+    this.focusNode,
     super.key,
   });
 
   final Country selectedCountry;
   final ValueChanged<Country?>? onChanged;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +40,7 @@ class CountryDropDown extends StatelessWidget {
           enabledBorder: selectedInputBorder,
           border: enabledInputBorder,
         ),
+        focusNode: focusNode,
         textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
               color: FamilyAppTheme.primary40,
             ),
@@ -74,6 +77,7 @@ class CountryDropDown extends StatelessWidget {
         onSelected: (Country? country) {
           if (country != null) {
             onChanged?.call(country);
+            focusNode?.unfocus();
           }
         },
         leadingIcon: Container(
