@@ -1,4 +1,5 @@
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -16,6 +17,7 @@ class GuessSecretWordCubit
     'Oh, so close',
     'Not quite, keep going',
   ];
+  final List<int> _pressedOptions = [];
   final String _successText = 'You did it, great job!';
   int _attempts = 0;
   bool _hasSuccess = false;
@@ -30,6 +32,7 @@ class GuessSecretWordCubit
 
   void onClickOption(int index) {
     _attempts++;
+    _pressedOptions.add(index);
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
       _hasSuccess = true;
       _reflectAndShareRepository.completeLoop();
@@ -43,6 +46,18 @@ class GuessSecretWordCubit
       GuessTheWordUIModel(
         text: _hasSuccess ? _successText : _texts[_attempts],
         areContinuationButtonsEnabled: _hasSuccess,
+        guessOptions: List.generate(
+          _guessOptions.length,
+          (index) => GuessOptionUIModel(
+            text: _guessOptions[index],
+            state: _pressedOptions.contains(index)
+                ? _guessOptions[index].toLowerCase() ==
+                        _secretWord.toLowerCase()
+                    ? GuessOptionState.correct
+                    : GuessOptionState.wrong
+                : GuessOptionState.initial,
+          ),
+        ),
       ),
     );
   }

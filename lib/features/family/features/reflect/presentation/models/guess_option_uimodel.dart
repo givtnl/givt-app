@@ -1,11 +1,11 @@
 class GuessOptionUIModel {
   GuessOptionUIModel({
     required this.text,
-    this.state = GuessButtonState.initial,
+    this.state = GuessOptionState.initial,
   });
 
-  final GuessButtonState state;
+  final GuessOptionState state;
   final String text;
 }
 
-enum GuessButtonState { correct, wrong, initial }
+enum GuessOptionState { correct, wrong, initial }
