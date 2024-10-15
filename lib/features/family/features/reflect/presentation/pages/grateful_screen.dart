@@ -112,8 +112,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                   child: RecommendationsWidget(
                     uiModel: uiModel.recommendationsUIModel,
                     onRecommendationChosen: (int i) {
-                      _cubit.onRecommendationChosen(
-                          i, uiModel.recommendationsUIModel.showActsOfService);
+                      _cubit.onRecommendationChosen(i);
                       context.pop();
                     },
                     onSelectionChanged: _cubit.onSelectionChanged,

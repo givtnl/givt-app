@@ -29,7 +29,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   int _currentProfileIndex = 0;
   List<Organisation> _currentOrganisations = [];
   List<Organisation> _currentActsOfService = [];
-  bool showActsOfService = false;
+  bool showActsOfService = true;
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
   Session? _session;
@@ -168,11 +168,11 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
-  void onRecommendationChosen(int index, bool isActOfService) {
-    final organisation = isActOfService
+  void onRecommendationChosen(int index) {
+    final organisation = showActsOfService
         ? _currentActsOfService[index]
         : _currentOrganisations[index];
-    if (isActOfService) {
+    if (showActsOfService) {
       emitCustom(
         GratefulCustom.openActOfServiceSuccess(
           organisation: organisation,
