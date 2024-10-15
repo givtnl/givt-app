@@ -40,6 +40,8 @@ class GratitudeSelectionCubit
       GratitudeSelectionUimodel(
         gratitudeList: gratitudeCategories,
         selectedGratitude: getSelectedCategory(),
+        superheroName:
+            _reflectAndShareRepository.getCurrentSuperhero().firstName,
       ),
     );
   }

@@ -30,20 +30,22 @@ class RecommendationsListWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         ),
-        FunTabs(
-          selections: [
-            uiModel.showActsOfService,
-            !uiModel.showActsOfService,
-          ],
-          onPressed: (i) => onSelectionChanged?.call(i),
-          firstOption: 'Acts of Service',
-          secondOption: 'Give',
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.recommendationTypeSelectorClicked,
-            parameters: {
-              'currentSelection':
-                  uiModel.showActsOfService ? 'Acts of Service' : 'Give',
-            },
+        Center(
+          child: FunTabs(
+            selections: [
+              uiModel.showActsOfService,
+              !uiModel.showActsOfService,
+            ],
+            onPressed: (i) => onSelectionChanged?.call(i),
+            firstOption: 'Acts of Service',
+            secondOption: 'Give',
+            analyticsEvent: AnalyticsEvent(
+              AmplitudeEvents.recommendationTypeSelectorClicked,
+              parameters: {
+                'currentSelection':
+                    uiModel.showActsOfService ? 'Acts of Service' : 'Give',
+              },
+            ),
           ),
         ),
         ...List.generate(

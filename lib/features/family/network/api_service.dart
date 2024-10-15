@@ -255,6 +255,15 @@ class FamilyAPIService {
     return response.statusCode == 200;
   }
 
+  Future<bool> savePledge(
+    Map<String, dynamic> body,
+  ) async {
+    return _postRequest(
+      '/givtservice/v1/game/aos',
+      body,
+    );
+  }
+
   Future<bool> createTransaction({required Transaction transaction}) async {
     return _postRequest(
       '/givtservice/v1/transaction',

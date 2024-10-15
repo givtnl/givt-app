@@ -54,8 +54,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             viewportBuilder: (context, offset) => ListView(
               children: [
                 OrganisationHeader(
-                  organisation: organisation,
-                ),
+                    organisation: organisation, isActOfService: isActOfService),
                 Container(
                   height: 168,
                   width: double.maxFinite,

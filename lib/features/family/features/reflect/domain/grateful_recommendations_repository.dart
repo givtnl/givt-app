@@ -13,4 +13,9 @@ abstract class GratefulRecommendationsRepository {
   Future<List<Organisation>> getActsRecommendations(
     GameProfile profile,
   );
+
+  Future<void> savePledge(
+    GameProfile profile,
+    Organisation organisation,
+  );
 }

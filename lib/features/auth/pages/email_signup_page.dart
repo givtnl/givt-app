@@ -53,6 +53,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Country selectedCountry = Country.nl;
   bool _isLoading = false;
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
   void toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
@@ -69,6 +75,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   Future<void> _checkAuthentication() async {
+    // Without biometrics we use the regular route to login
+    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+      return;
+    }
+
     final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
 
     if (!hasAuthenticated) {
@@ -77,9 +88,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     }
 
     // When authenticated we go to the home route
-    if (!context.mounted) {
-      return;
-    }
     await context.read<AuthCubit>().authenticate();
     if (!context.mounted) {
       return;
@@ -136,7 +144,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunScaffold(
-      appBar: FunTopAppBar.white(title: ''),
       body: BlocListener<AuthCubit, AuthState>(
         listenWhen: (previous, current) => previous != current,
         listener: (context, state) {
@@ -189,6 +196,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        const SizedBox(
+                          height: 24,
+                        ),
                         TitleLargeText(
                           locals.welcomeContinue,
                         ),
