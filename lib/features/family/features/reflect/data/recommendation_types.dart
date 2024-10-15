@@ -1,7 +1,7 @@
 enum RecommendationTypes {
   organisation('collectgroup'),
   church('church'),
-  actOfService('actsofservice');
+  actOfService('actofservice');
 
   const RecommendationTypes(this.value);
 
