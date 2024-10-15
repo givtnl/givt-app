@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/reflect/bloc/grateful_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/heart_success_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
@@ -139,11 +140,10 @@ class _GratefulScreenState extends State<GratefulScreen> {
           data.organisation,
         );
       case final GratefulOpenActOfServiceSuccess data:
-        // TODO KIDS-1507
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('You have successfully completed an act of service'),
-          ),
+        _navigateToSuccessHeartScreen(
+          context,
+          data.profile,
+          data.organisation,
         );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);
@@ -166,10 +166,27 @@ class _GratefulScreenState extends State<GratefulScreen> {
             CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
-            _cubit.onDonated(profile);
+            _cubit.onDeed(profile);
             context.pop();
           },
         ),
+      ).toRoute(context),
+    );
+  }
+
+  Future<void> _navigateToSuccessHeartScreen(
+    BuildContext context,
+    GameProfile profile,
+    Organisation org,
+  ) async {
+    _cubit.saveActOfService(org);
+    await Navigator.push(
+      context,
+      HeartSuccessScreen(
+        onCustomSuccess: () {
+          _cubit.onDeed(profile);
+          Navigator.pop(context);
+        },
       ).toRoute(context),
     );
   }

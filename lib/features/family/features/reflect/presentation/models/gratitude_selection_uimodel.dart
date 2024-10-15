@@ -4,8 +4,10 @@ class GratitudeSelectionUimodel {
   const GratitudeSelectionUimodel({
     required this.gratitudeList,
     this.selectedGratitude,
+    this.superheroName,
   });
 
   final List<GratitudeCategory> gratitudeList;
   final GratitudeCategory? selectedGratitude;
+  final String? superheroName;
 }

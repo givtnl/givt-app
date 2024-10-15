@@ -63,6 +63,7 @@ class OrganisationItem extends StatelessWidget {
           children: [
             OrganisationHeader(
               organisation: organisation,
+              isActOfService: isActOfService,
             ),
             Container(
               height: 168,

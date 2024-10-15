@@ -16,6 +16,7 @@ sealed class GratefulCustom {
 
   const factory GratefulCustom.openActOfServiceSuccess({
     required Organisation organisation,
+    required GameProfile profile,
   }) = GratefulOpenActOfServiceSuccess;
 
   const factory GratefulCustom.goToGameSummary() = GratefulGoToGameSummary;
@@ -43,9 +44,10 @@ class GratefulOpenParentDonationFlow extends GratefulCustom {
 
 class GratefulOpenActOfServiceSuccess extends GratefulCustom {
   const GratefulOpenActOfServiceSuccess({
+    required this.profile,
     required this.organisation,
   });
-
+  final GameProfile profile;
   final Organisation organisation;
 }
 
