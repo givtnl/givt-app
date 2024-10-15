@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/fun_button.dart';
@@ -36,8 +35,6 @@ class _SuccessScreenState extends State<HeartSuccessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final organisation =
-        context.read<CollectGroupDetailsCubit>().state.collectgroup;
     final profilesState = context.read<ProfilesCubit>().state;
 
     return Scaffold(
@@ -64,14 +61,14 @@ class _SuccessScreenState extends State<HeartSuccessScreen> {
             Container(
               padding: const EdgeInsets.all(40),
               width: double.infinity,
-              child: Column(
+              child: const Column(
                 children: [
                   TitleLargeText(
-                    organisation.thankYou ?? 'Awesome!',
+                    'Awesome!',
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    'Thank you for your donation \n to ${widget.orgName ?? organisation.name}',
+                    'Good luck in completing your act of service',
                     textAlign: TextAlign.center,
                   ),
                 ],
