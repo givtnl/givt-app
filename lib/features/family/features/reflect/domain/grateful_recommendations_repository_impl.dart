@@ -1,5 +1,6 @@
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
+import 'package:givt_app/features/family/features/reflect/data/recommendation_types.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
@@ -140,9 +141,14 @@ class GratefulRecommendationsRepositoryImpl
     GameProfile profile,
     Organisation organisation,
   ) async {
-    await _familyApiService.savePledge({
-      "user": profile.userId,
-      "actsofservice": organisation.guid,
-    });
+    organisation.type == RecommendationTypes.organisation
+        ? await _familyApiService.savePledge({
+            "user": profile.userId,
+            "collectgroup": organisation.guid,
+          })
+        : await _familyApiService.savePledge({
+            "user": profile.userId,
+            "actsofservice": organisation.guid,
+          });
   }
 }
