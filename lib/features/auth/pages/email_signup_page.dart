@@ -69,6 +69,11 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   }
 
   Future<void> _checkAuthentication() async {
+    // Without biometrics we use the regular route to login
+    if (!await LocalAuthInfo.instance.canCheckBiometrics) {
+      return;
+    }
+
     final hasAuthenticated = await LocalAuthInfo.instance.authenticate();
 
     if (!hasAuthenticated) {
@@ -77,9 +82,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
     }
 
     // When authenticated we go to the home route
-    if (!context.mounted) {
-      return;
-    }
     await context.read<AuthCubit>().authenticate();
     if (!context.mounted) {
       return;
