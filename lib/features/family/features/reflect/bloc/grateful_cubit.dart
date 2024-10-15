@@ -155,12 +155,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void saveActOfService(Organisation organisation) {
-    _reflectAndShareRepository.incrementGenerousDeeds();
-    final profile = _getCurrentProfile();
-    _profilesThatDonated.add(profile);
     try {
       _gratefulRecommendationsRepository.savePledge(
-        profile,
+        _getCurrentProfile(),
         organisation,
       );
     } catch (e, s) {
@@ -176,6 +173,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       emitCustom(
         GratefulCustom.openActOfServiceSuccess(
           organisation: organisation,
+          profile: _getCurrentProfile(),
         ),
       );
     } else if (isCurrentProfileChild()) {
@@ -201,10 +199,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       orElse: () =>
           throw Exception('Parent profile not found for userId: $userId'),
     );
-    await onDonated(parent);
+    await onDeed(parent);
   }
 
-  Future<void> onDonated(GameProfile profile) async {
+  Future<void> onDeed(GameProfile profile) async {
     _reflectAndShareRepository.incrementGenerousDeeds();
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {
