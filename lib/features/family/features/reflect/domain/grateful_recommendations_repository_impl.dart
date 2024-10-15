@@ -143,12 +143,12 @@ class GratefulRecommendationsRepositoryImpl
   ) async {
     organisation.type == RecommendationTypes.organisation
         ? await _familyApiService.savePledge({
-            "user": profile.userId,
-            "collectgroup": organisation.guid,
+            "userId": profile.userId,
+            "collectGroupId": organisation.guid,
           })
         : await _familyApiService.savePledge({
-            "user": profile.userId,
-            "actsofservice": organisation.guid,
+            "userId": profile.userId,
+            "actOfServiceId": organisation.guid,
           });
   }
 }
