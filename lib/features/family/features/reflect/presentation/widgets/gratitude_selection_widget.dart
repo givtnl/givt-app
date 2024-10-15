@@ -85,6 +85,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.gratefulTileSubmitted,
               parameters: {
+                'superhero': uimodel.superheroName,
                 'gratefulFor': uimodel.selectedGratitude?.displayText,
               },
             ),
