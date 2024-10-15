@@ -5,10 +5,12 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/grateful_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -53,6 +55,12 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
       ),
       body: BaseStateConsumer(
         cubit: _cubit,
+        onCustom: (context, custom) {
+          switch (custom) {
+            case ShowConfetti():
+              ConfettiDialog.show(context);
+          }
+        },
         onData: (context, uiModel) {
           return Column(
             children: [

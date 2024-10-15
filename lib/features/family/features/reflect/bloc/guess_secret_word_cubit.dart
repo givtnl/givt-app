@@ -1,9 +1,11 @@
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class GuessSecretWordCubit extends CommonCubit<GuessTheWordUIModel, dynamic> {
+class GuessSecretWordCubit
+    extends CommonCubit<GuessTheWordUIModel, GuessTheWordCustom> {
   GuessSecretWordCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
@@ -31,7 +33,7 @@ class GuessSecretWordCubit extends CommonCubit<GuessTheWordUIModel, dynamic> {
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
       _hasSuccess = true;
       _reflectAndShareRepository.completeLoop();
-      //emitcustom confetti
+      emitCustom(const GuessTheWordCustom.showConfetti());
     }
     _emitData();
   }
