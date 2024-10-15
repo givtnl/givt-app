@@ -154,9 +154,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     _emitData();
   }
 
-  void saveActOfService(Organisation organisation) {
+  Future<void> saveActOfService(Organisation organisation) async {
     try {
-      _gratefulRecommendationsRepository.savePledge(
+      await _gratefulRecommendationsRepository.savePledge(
         _getCurrentProfile(),
         organisation,
       );
