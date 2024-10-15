@@ -76,6 +76,8 @@ dependencies:
   vibration: ^2.0.0
   wakelock_plus: ^1.2.8
   collection: ^1.18.0
+  flutter_keyboard_visibility: ^6.0.0
+  dropdown_button2: ^2.3.9
 
 # Override needed because inappwebview >=6.1.0 requires this version
 # firebase_messaging_web is using an older version (and we can't upgrade to a more recent message version because of MLKIT)

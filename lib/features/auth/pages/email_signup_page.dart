@@ -53,6 +53,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Country selectedCountry = Country.nl;
   bool _isLoading = false;
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
   void toggleLoading() {
     setState(() {
       _isLoading = !_isLoading;
@@ -136,7 +142,6 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return FunScaffold(
-      appBar: FunTopAppBar.white(title: ''),
       body: BlocListener<AuthCubit, AuthState>(
         listenWhen: (previous, current) => previous != current,
         listener: (context, state) {
@@ -189,6 +194,9 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                     key: _formKey,
                     child: Column(
                       children: [
+                        const SizedBox(
+                          height: 24,
+                        ),
                         TitleLargeText(
                           locals.welcomeContinue,
                         ),
