@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
+import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
@@ -141,10 +142,9 @@ class _GratefulScreenState extends State<GratefulScreen> {
         );
       case final GratefulOpenActOfServiceSuccess data:
         // TODO KIDS-1507
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('You have successfully completed an act of service'),
-          ),
+        _navigateToSuccessHeartScreen(
+          context,
+          data.organisation,
         );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);
@@ -171,6 +171,19 @@ class _GratefulScreenState extends State<GratefulScreen> {
             context.pop();
           },
         ),
+      ).toRoute(context),
+    );
+  }
+
+  Future<void> _navigateToSuccessHeartScreen(
+    BuildContext context,
+    Organisation org,
+  ) async {
+    _cubit.saveActOfService(org);
+    await Navigator.push(
+      context,
+      SuccessScreen(
+        onCustomSuccess: () => Navigator.pop(context),
       ).toRoute(context),
     );
   }

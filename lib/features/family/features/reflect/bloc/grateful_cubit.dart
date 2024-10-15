@@ -154,6 +154,20 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     _emitData();
   }
 
+  void saveActOfService(Organisation organisation) {
+    _reflectAndShareRepository.incrementGenerousDeeds();
+    final profile = _getCurrentProfile();
+    _profilesThatDonated.add(profile);
+    try {
+      _gratefulRecommendationsRepository.savePledge(
+        profile,
+        organisation,
+      );
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+    }
+  }
+
   void onRecommendationChosen(int index, bool isActOfService) {
     final organisation = isActOfService
         ? _currentActsOfService[index]

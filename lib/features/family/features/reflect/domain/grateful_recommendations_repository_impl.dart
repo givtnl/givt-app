@@ -134,4 +134,15 @@ class GratefulRecommendationsRepositoryImpl
       _getActsForProfile,
     );
   }
+
+  @override
+  Future<void> savePledge(
+    GameProfile profile,
+    Organisation organisation,
+  ) async {
+    await _familyApiService.savePledge({
+      "user": profile.userId,
+      "actsofservice": organisation.guid,
+    });
+  }
 }
