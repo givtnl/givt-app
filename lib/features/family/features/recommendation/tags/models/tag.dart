@@ -13,9 +13,9 @@ class Tag extends Equatable {
   factory Tag.fromMap(Map<String, dynamic> map) {
     return Tag(
       key: map['key'] as String,
-      area: Areas.fromMap(map),
-      displayText: map['displayText'] as String,
-      pictureUrl: map['pictureUrl'] as String,
+      area: map['area'] != null ? Areas.fromMap(map) : Areas.primary,
+      displayText: (map['displayText'] ?? '') as String,
+      pictureUrl: (map['pictureUrl'] ?? '') as String,
       type: TagType.values.firstWhere(
         (element) => element.name == map['type'],
         orElse: () => TagType.INTERESTS,

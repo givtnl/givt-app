@@ -8,9 +8,11 @@ class RecommendationsUIModel {
     this.isLoading = false,
     this.hasError = false,
     this.organisations = const [],
+    this.showActsOfService = false,
   });
 
   final List<Organisation> organisations;
+  final bool showActsOfService;
   final String? name;
   final GratitudeCategory? category;
   final bool isLoading;

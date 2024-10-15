@@ -106,6 +106,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                   uiModel: uiModel.avatarBarUIModel,
                   onAvatarTapped: _cubit.onAvatarTapped,
                 ),
+                const SizedBox(height: 24),
                 Flexible(
                   child: RecommendationsWidget(
                     uiModel: uiModel.recommendationsUIModel,
@@ -113,6 +114,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       _cubit.onRecommendationChosen(i);
                       context.pop();
                     },
+                    onSelectionChanged: _cubit.onSelectionChanged,
                     onTapRetry: _cubit.onRetry,
                   ),
                 ),
@@ -135,6 +137,13 @@ class _GratefulScreenState extends State<GratefulScreen> {
         _navigateToParentGivingScreen(
           context,
           data.organisation,
+        );
+      case final GratefulOpenActOfServiceSuccess data:
+        // TODO KIDS-1507
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('You have successfully completed an act of service'),
+          ),
         );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);

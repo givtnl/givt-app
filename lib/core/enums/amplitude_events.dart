@@ -108,65 +108,11 @@ enum AmplitudeEvents {
   ),
   inviteToImpactGroupAccepted('invite_to_impact_group_accepted'),
 
-  // generosity challenge
-  openedGenerosityChallengeNotification(
-    'opened_generosity_challenge_notification',
-  ),
-  giveWithCoinInChallengeClicked('give_with_coin_in_challenge_clicked'),
-  generosityChallengeDayClicked('generosity_challenge_day_clicked'),
-  generosityChallengeDayCompleted('generosity_challenge_day_completed'),
-  generosityChallengeDayUndoCompleting(
-    'generosity_challenge_day_undo_completing',
-  ),
-  startAssignmentFromGenerosityChallenge(
-    'start_assignment_from_generosity_challenge',
-  ),
-  daySevenFamilyValuesSeenContinueClicked(
-    'day_7_family_values_seen_continue_clicked',
-  ),
-  generosityChallengeDonationSuccess('generosity_challenge_donation_success'),
-  familyValuesSelected('family_values_selected'),
-  acceptedGenerosityChallengeClicked('accepted_generosity_challenge_clicked'),
-  generosityChallengeDay8MaybeLaterClicked(
-    'generosity_challenge_day_8_maybe_later_clicked',
-  ),
-  generosityChallengeVPCAccepted('generosity_challenge_vpc_accepted'),
-  generosityChallengeAllowanceSet('generosity_challenge_allowance_set'),
-  generosityChallengeNavigatedToFamilyOverview(
-    'generosity_challenge_navigated_to_family_overview',
-  ),
-  generosityChallengeNavigatedToWelcome(
-    'generosity_challenge_navigated_to_welcome',
-  ),
   organisationCardClicked('organisation_card_clicked'),
   organisationDetailsContinueClicked('organisation_details_continue_clicked'),
   sliderAmountChanged('slider_amount_changed'),
   chooseAmountDonateClicked('choose_amount_donate_clicked'),
   redirectCoinToNoAppFlow('redirect_coin_to_noapp_flow'),
-  generosityChallengeChatUserAction('generosity_challenge_chat_user_action'),
-  generosityChallengeRegistrationSucceeded(
-    'generosity_challenge_registration_succeeded',
-  ),
-  generosityChallengeUploadPictureClicked(
-    'generosity_challenge_upload_picture_clicked',
-  ),
-  generosityChallengeTakePictureClicked(
-    'generosity_challenge_take_picture_clicked',
-  ),
-  generosityChallengeDay4TimerStarted(
-    'generosity_challenge_day_4_timer_started',
-  ),
-  generosityChallengeDay4TimerEnded('generosity_challenge_day_4_timer_ended'),
-  generosityChallengeDay4SaveClicked('generosity_challenge_day_4_save_clicked'),
-  generosityChallengechatBarButtonClicked(
-    'generosity_challenge_chat_bar_button_clicked',
-  ),
-  generosityChallengeGoToChatClicked('generosity_challenge_go_to_chat_clicked'),
-  generosityChallengeSendClicked('generosity_challenge_send_clicked'),
-  generosityChallengeFamilyValueClicked(
-    'generosity_challenge_family_value_clicked',
-  ),
-
   // Registration flow
   continueByEmailSignUpNewUserCliked(
     'continue_by_email_sign_up_new_user_clicked',
@@ -348,13 +294,13 @@ enum AmplitudeEvents {
   familyReflectSummaryGenerousDeedsClicked(
     'family_reflect_summary_generous_deeds_clicked',
   ),
+  recommendationTypeSelectorClicked('recommendation_type_selector_clicked'),
 
   // Family Home Screen
   FamilyHomeScreenGratitudeGameButtonClicked(
     'family_home_screen_gratitude_game_button_clicked',
   ),
   FamilyHomeScreenGiveButtonClicked('family_home_screen_give_button_clicked'),
-
 
   // Fun Counter
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
