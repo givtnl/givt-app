@@ -93,6 +93,9 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                                 : Colors.red,
                         analyticsEvent: AnalyticsEvent(
                           AmplitudeEvents.reflectAndShareGuessOptionClicked,
+                          parameters: {
+                            'option': guessOption.text,
+                          },
                         ),
                         borderColor:
                             guessOption.state == GuessOptionState.initial
