@@ -110,8 +110,4 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, InterviewCustom> {
       ),
     );
   }
-
-  void increaseTimeSpent() {
-    _reflectAndShareRepository.totalTimeSpent++;
-  }
 }

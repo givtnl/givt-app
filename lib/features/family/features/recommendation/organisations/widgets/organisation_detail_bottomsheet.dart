@@ -16,13 +16,15 @@ import 'package:go_router/go_router.dart';
 class OrganisationDetailBottomSheet extends StatelessWidget {
   const OrganisationDetailBottomSheet({
     required this.organisation,
-    this.onDonateClicked,
+    this.onClick,
+    this.isActOfService = false,
     super.key,
   });
 
   final double height = 100;
   final Organisation organisation;
-  final void Function()? onDonateClicked;
+  final bool isActOfService;
+  final void Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +54,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
             viewportBuilder: (context, offset) => ListView(
               children: [
                 OrganisationHeader(
-                  organisation: organisation,
-                ),
+                    organisation: organisation, isActOfService: isActOfService),
                 Container(
                   height: 168,
                   width: double.maxFinite,
@@ -96,14 +97,16 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
           floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 12, left: 24, right: 24),
             child: FunButton(
-              text: 'Donate',
-              onTap: onDonateClicked ?? () {
-                if (!isDonateButtonActive) {
-                  EmptyWalletBottomSheet.show(context);
-                  return;
-                }
-                context.pushNamed(FamilyPages.familyChooseAmountSlider.name);
-              },
+              text: isActOfService ? "I'm going to do this" : 'Donate',
+              onTap: onClick ??
+                  () {
+                    if (!isDonateButtonActive) {
+                      EmptyWalletBottomSheet.show(context);
+                      return;
+                    }
+                    context
+                        .pushNamed(FamilyPages.familyChooseAmountSlider.name);
+                  },
               analyticsEvent: AnalyticsEvent(
                 AmplitudeEvents.donateToRecommendedCharityPressed,
                 parameters: {

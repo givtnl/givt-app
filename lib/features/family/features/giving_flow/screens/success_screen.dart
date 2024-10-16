@@ -18,8 +18,10 @@ import 'package:lottie/lottie.dart';
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({
     super.key,
+    this.isActOfService = false,
     this.onCustomSuccess,
   });
+  final bool isActOfService;
   final void Function()? onCustomSuccess;
   @override
   State<SuccessScreen> createState() => _SuccessScreenState();
@@ -76,6 +78,15 @@ class _SuccessScreenState extends State<SuccessScreen> {
                 width: double.infinity,
               ),
             ),
+            if (widget.isActOfService)
+              Positioned.fill(
+                child: Lottie.asset(
+                  'assets/family/lotties/success_heart.json',
+                  fit: BoxFit.fill,
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                ),
+              ),
             Container(
               padding: const EdgeInsets.all(40),
               width: double.infinity,
@@ -86,7 +97,9 @@ class _SuccessScreenState extends State<SuccessScreen> {
                     textAlign: TextAlign.center,
                   ),
                   Text(
-                    'Thank you for your donation \n to ${organisation.name}',
+                    widget.isActOfService
+                        ? 'Good luck in completing your act of service'
+                        : 'Thank you for your donation \n to ${organisation.name}',
                     textAlign: TextAlign.center,
                   ),
                 ],

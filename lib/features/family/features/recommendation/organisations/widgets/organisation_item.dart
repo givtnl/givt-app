@@ -17,9 +17,11 @@ class OrganisationItem extends StatelessWidget {
   const OrganisationItem({
     required this.organisation,
     this.onDonateClicked,
+    this.isActOfService = false,
     super.key,
   });
 
+  final bool isActOfService;
   final Organisation organisation;
   final void Function()? onDonateClicked;
 
@@ -43,7 +45,8 @@ class OrganisationItem extends StatelessWidget {
           backgroundColor: Colors.transparent,
           builder: (context) => OrganisationDetailBottomSheet(
             organisation: organisation,
-            onDonateClicked: onDonateClicked,
+            onClick: onDonateClicked,
+            isActOfService: isActOfService,
           ),
         );
       },
@@ -60,6 +63,7 @@ class OrganisationItem extends StatelessWidget {
           children: [
             OrganisationHeader(
               organisation: organisation,
+              isActOfService: isActOfService,
             ),
             Container(
               height: 168,

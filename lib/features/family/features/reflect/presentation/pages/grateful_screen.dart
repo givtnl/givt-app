@@ -9,6 +9,7 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
+import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
@@ -106,6 +107,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                   uiModel: uiModel.avatarBarUIModel,
                   onAvatarTapped: _cubit.onAvatarTapped,
                 ),
+                const SizedBox(height: 24),
                 Flexible(
                   child: RecommendationsWidget(
                     uiModel: uiModel.recommendationsUIModel,
@@ -113,6 +115,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
                       _cubit.onRecommendationChosen(i);
                       context.pop();
                     },
+                    onSelectionChanged: _cubit.onSelectionChanged,
                     onTapRetry: _cubit.onRetry,
                   ),
                 ),
@@ -136,6 +139,12 @@ class _GratefulScreenState extends State<GratefulScreen> {
           context,
           data.organisation,
         );
+      case final GratefulOpenActOfServiceSuccess data:
+        _navigateToSuccess(
+          context,
+          data.profile,
+          data.organisation,
+        );
       case GratefulGoToGameSummary():
         _navigateToSummary(context);
     }
@@ -157,10 +166,28 @@ class _GratefulScreenState extends State<GratefulScreen> {
             CreateTransactionCubit(context.read<ProfilesCubit>(), getIt()),
         child: ChooseAmountSliderScreen(
           onCustomSuccess: () {
-            _cubit.onDonated(profile);
+            _cubit.onDeed(profile);
             context.pop();
           },
         ),
+      ).toRoute(context),
+    );
+  }
+
+  Future<void> _navigateToSuccess(
+    BuildContext context,
+    GameProfile profile,
+    Organisation org,
+  ) async {
+    _cubit.saveActOfService(org);
+    await Navigator.push(
+      context,
+      SuccessScreen(
+        isActOfService: true,
+        onCustomSuccess: () {
+          _cubit.onDeed(profile);
+          Navigator.pop(context);
+        },
       ).toRoute(context),
     );
   }

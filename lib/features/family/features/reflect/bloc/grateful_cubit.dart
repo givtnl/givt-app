@@ -27,7 +27,9 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   List<GameProfile> _profiles = [];
   final List<GameProfile> _profilesThatDonated = [];
   int _currentProfileIndex = 0;
-  List<Organisation> _currentRecommendations = [];
+  List<Organisation> _currentOrganisations = [];
+  List<Organisation> _currentActsOfService = [];
+  bool showActsOfService = true;
   bool _hasRecommendationsError = false;
   bool _isLoadingRecommendations = false;
   Session? _session;
@@ -108,9 +110,12 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
+            showActsOfService: showActsOfService,
             isLoading: _isLoadingRecommendations,
             hasError: _hasRecommendationsError,
-            organisations: _currentRecommendations,
+            organisations: showActsOfService
+                ? _currentActsOfService
+                : _currentOrganisations,
             name: _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ??
                 '',
             category: _profiles.elementAt(_currentProfileIndex).gratitude),
@@ -127,8 +132,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     try {
       _isLoadingRecommendations = true;
       _emitData();
-      _currentRecommendations = await _gratefulRecommendationsRepository
+      _currentOrganisations = await _gratefulRecommendationsRepository
           .getOrganisationsRecommendations(_getCurrentProfile());
+      _currentActsOfService = await _gratefulRecommendationsRepository
+          .getActsRecommendations(_getCurrentProfile());
       _hasRecommendationsError = false;
     } catch (e, s) {
       _hasRecommendationsError = true;
@@ -142,9 +149,34 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     }
   }
 
+  void onSelectionChanged(int index) {
+    showActsOfService = index == 0;
+    _emitData();
+  }
+
+  Future<void> saveActOfService(Organisation organisation) async {
+    try {
+      await _gratefulRecommendationsRepository.savePledge(
+        _getCurrentProfile(),
+        organisation,
+      );
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+    }
+  }
+
   void onRecommendationChosen(int index) {
-    final organisation = _currentRecommendations[index];
-    if (isCurrentProfileChild()) {
+    final organisation = showActsOfService
+        ? _currentActsOfService[index]
+        : _currentOrganisations[index];
+    if (showActsOfService) {
+      emitCustom(
+        GratefulCustom.openActOfServiceSuccess(
+          organisation: organisation,
+          profile: _getCurrentProfile(),
+        ),
+      );
+    } else if (isCurrentProfileChild()) {
       emitCustom(
         GratefulCustom.openKidDonationFlow(
           profile: _getCurrentProfile(),
@@ -167,10 +199,10 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
       orElse: () =>
           throw Exception('Parent profile not found for userId: $userId'),
     );
-    await onDonated(parent);
+    await onDeed(parent);
   }
 
-  Future<void> onDonated(GameProfile profile) async {
+  Future<void> onDeed(GameProfile profile) async {
     _reflectAndShareRepository.incrementGenerousDeeds();
     _profilesThatDonated.add(profile);
     if (_profilesThatDonated.length == _profiles.length) {

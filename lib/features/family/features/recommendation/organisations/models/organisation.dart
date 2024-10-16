@@ -31,10 +31,12 @@ class Organisation extends Equatable {
       namespace: (map['namespace'] ?? '') as String,
       qrCodeURL: (map['qrCodeURL'] ?? '') as String,
       type: RecommendationTypes.fromString((map['type'] ?? '') as String),
-      tags: List<Tag>.from(
-        (map['tags'] as List<dynamic>)
-            .map((e) => Tag.fromMap(e as Map<String, dynamic>)),
-      ),
+      tags: map['tags'] != null
+          ? List<Tag>.from(
+              (map['tags'] as List<dynamic>)
+                  .map((e) => Tag.fromMap(e as Map<String, dynamic>)),
+            )
+          : [],
     );
   }
 

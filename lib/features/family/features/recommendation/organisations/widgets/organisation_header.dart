@@ -4,11 +4,12 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 class OrganisationHeader extends StatelessWidget {
   const OrganisationHeader({
     required this.organisation,
+    this.isActOfService = false,
     super.key,
   });
 
   final Organisation organisation;
-
+  final bool isActOfService;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,19 +54,20 @@ class OrganisationHeader extends StatelessWidget {
                   .toList(),
             ),
           ),
-          Expanded(
-            child: Container(
-              alignment: Alignment.centerRight,
-              constraints: BoxConstraints(
-                maxHeight: organisation.tags.length * 25.0,
-              ),
-              child: Image.network(
-                organisation.organisationLogoURL,
-                fit: BoxFit.contain,
+          if (!isActOfService)
+            Expanded(
+              child: Container(
                 alignment: Alignment.centerRight,
+                constraints: BoxConstraints(
+                  maxHeight: organisation.tags.length * 25.0,
+                ),
+                child: Image.network(
+                  organisation.organisationLogoURL,
+                  fit: BoxFit.contain,
+                  alignment: Alignment.centerRight,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
