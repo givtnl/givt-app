@@ -15,6 +15,8 @@ class FunTile extends StatelessWidget {
     this.onTap,
     this.isDisabled = false,
     this.isSelected = false,
+    this.isPressedDown = false,
+    this.hasIcon = true,
     this.shrink = false,
     this.titleBig,
     this.titleSmall,
@@ -108,6 +110,7 @@ class FunTile extends StatelessWidget {
   final String iconPath;
   final bool isDisabled;
   final bool isSelected;
+  final bool isPressedDown;
   final bool shrink;
   final String? titleBig;
   final String? titleSmall;
@@ -115,6 +118,7 @@ class FunTile extends StatelessWidget {
   final double? assetSize;
   final IconData? iconData;
   final Color? iconColor;
+  final bool hasIcon;
   final MainAxisAlignment? mainAxisAlignment;
   final AnalyticsEvent analyticsEvent;
 
@@ -133,6 +137,7 @@ class FunTile extends StatelessWidget {
     return ActionContainer(
       isDisabled: isDisabled,
       isSelected: isSelected,
+      isPressedDown: isPressedDown,
       borderColor: newBorderColor,
       analyticsEvent: analyticsEvent,
       onTap: isDisabled ? () {} : onTap,
@@ -144,8 +149,8 @@ class FunTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
-                SizedBox(height: iconData != null && !shrink ? 24 : 10),
-                Opacity(
+                if(hasIcon) SizedBox(height: iconData != null && !shrink ? 24 : 10),
+                if(hasIcon) Opacity(
                   opacity: isDisabled ? 0.5 : 1,
                   child: iconData == null
                       ? isOnlineIcon
@@ -167,7 +172,7 @@ class FunTile extends StatelessWidget {
                         ),
                 ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16),
+                  padding: hasIcon ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16) : EdgeInsets.zero,
                   child: Column(
                     children: [
                       if (titleBig != null)

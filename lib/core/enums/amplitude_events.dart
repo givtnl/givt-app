@@ -267,7 +267,7 @@ enum AmplitudeEvents {
   reflectAndShareStartInterviewClicked(
     'reflect_and_share_start_interview_clicked',
   ),
-  reflectAndShareDoneClicked('reflect_and_share_done_clicked'),
+  reflectAndShareGuessOptionClicked('reflect_and_share_guess_option_clicked'),
   reflectAndShareFinishReflectingClicked(
     'reflect_and_share_finish_reflecting_clicked',
   ),
