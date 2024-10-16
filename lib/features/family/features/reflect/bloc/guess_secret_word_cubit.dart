@@ -1,9 +1,11 @@
+import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
+import 'package:givt_app/utils/analytics_helper.dart';
 
 class GuessSecretWordCubit
     extends CommonCubit<GuessTheWordUIModel, GuessTheWordCustom> {
@@ -27,6 +29,7 @@ class GuessSecretWordCubit
   void init() {
     _secretWord = _reflectAndShareRepository.getCurrentSecretWord();
     _guessOptions = _reflectAndShareRepository.getGuessOptions();
+    _reflectAndShareRepository.completeLoop();
     _emitData();
   }
 
@@ -34,8 +37,16 @@ class GuessSecretWordCubit
     _attempts++;
     _pressedOptions.add(index);
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
+      if (_hasSuccess) {
+        AnalyticsHelper.logEvent(
+          eventName:
+              AmplitudeEvents.reflectAndShareGuessTotalAttemptsUntilCorrect,
+          eventProperties: {
+            'total': _attempts,
+          },
+        );
+      }
       _hasSuccess = true;
-      _reflectAndShareRepository.completeLoop();
       emitCustom(const GuessTheWordCustom.showConfetti());
     }
     _emitData();
@@ -44,6 +55,7 @@ class GuessSecretWordCubit
   void _emitData() {
     emitData(
       GuessTheWordUIModel(
+        isGameFinished: _reflectAndShareRepository.isGameFinished(),
         text: _hasSuccess ? _successText : _texts[_attempts],
         areContinuationButtonsEnabled: _hasSuccess,
         guessOptions: List.generate(

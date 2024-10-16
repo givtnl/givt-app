@@ -35,7 +35,7 @@ class ReflectIntroScreen extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(StageScreen(
                 buttonText: 'Start',
-                onClickButton: () {
+                onClickButton: (context) {
                   Navigator.of(context)
                       .push(const FamilySelectionScreen().toRoute(context));
                 },

@@ -125,10 +125,10 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                       const FamilyRolesScreen().toRoute(context),
                     );
                   },
-                  text: 'Next round',
+                  text: 'Shuffle roles',
                   rightIcon: FontAwesomeIcons.arrowRight,
                   analyticsEvent: AnalyticsEvent(
-                    AmplitudeEvents.reflectAndShareResultNextRoundClicked,
+                    AmplitudeEvents.reflectAndShareResultShuffleRolesClicked,
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -140,9 +140,9 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                   Navigator.of(context)
                       .push(const GratefulScreen().toRoute(context));
                 },
-                text: 'Finish reflecting',
+                text: uiModel.isGameFinished ? 'Done' : 'Quit',
                 analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.reflectAndShareFinishReflectingClicked,
+                  AmplitudeEvents.reflectAndShareQuitClicked,
                 ),
               ),
             ],

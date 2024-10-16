@@ -14,7 +14,7 @@ class StageScreen extends StatelessWidget {
   });
 
   final String buttonText;
-  final void Function() onClickButton;
+  final void Function(BuildContext context) onClickButton;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class StageScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FunButton(
-          onTap: onClickButton,
+          onTap: () => onClickButton(context),
           text: buttonText,
           analyticsEvent:
               AnalyticsEvent(AmplitudeEvents.reflectAndShareStartClicked)),

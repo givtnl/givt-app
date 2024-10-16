@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/gra
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/stage_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
@@ -19,7 +20,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class RuleScreen extends StatelessWidget {
@@ -43,13 +43,14 @@ class RuleScreen extends StatelessWidget {
       ),
       iconData: FontAwesomeIcons.mask,
       bodyText:
-          'Answer questions about your day. Sneak the secret word into 1 answer.',
+          "I'm the superhero! I'll answer questions about my day and sneak a secret word into one of my answers.",
       onTap: (context) => Navigator.of(context).pushReplacement(
         const RevealSecretWordScreen().toRoute(context),
       ),
       buttonText: 'Reveal secret word',
     );
   }
+
   factory RuleScreen.toSidekick(GameProfile sidekick) {
     return RuleScreen(
       user: sidekick,
@@ -60,7 +61,7 @@ class RuleScreen extends StatelessWidget {
       ),
       iconData: FontAwesomeIcons.solidHandshake,
       bodyText:
-          "Listen to the superhero. Pick what they're grateful for. Guess the secret word",
+          "I'm the sidekick! I'll listen to the superhero's answers and try to guess their secret word at the end.",
       onTap: (context) {
         final reporters = getIt<InterviewCubit>().getReporters();
         Navigator.of(context).pushReplacement(
@@ -70,6 +71,7 @@ class RuleScreen extends StatelessWidget {
       buttonText: 'Next',
     );
   }
+
   factory RuleScreen.toReporters(List<GameProfile> reporters) {
     final cubit = getIt<InterviewCubit>();
 
@@ -82,20 +84,33 @@ class RuleScreen extends StatelessWidget {
       onTap: (context) {
         Navigator.pushReplacement(
           context,
-          BaseStateConsumer(
-            cubit: cubit..init(),
-            onInitial: (context) => const SizedBox.shrink(),
-            onCustom: handleCustom,
-            onData: (context, uiModel) {
-              return RecordAnswerScreen(
-                uiModel: uiModel,
-              );
+          StageScreen(
+            buttonText: "It's showtime!",
+            onClickButton: (context) {
+              _goToRecordAnswerScreen(context, cubit);
             },
           ).toRoute(context),
         );
       },
     );
   }
+
+  static void _goToRecordAnswerScreen(
+      BuildContext context, InterviewCubit cubit) {
+    Navigator.of(context).pushReplacement(
+      BaseStateConsumer(
+        cubit: cubit..init(),
+        onInitial: (context) => const SizedBox.shrink(),
+        onCustom: handleCustom,
+        onData: (context, uiModel) {
+          return RecordAnswerScreen(
+            uiModel: uiModel,
+          );
+        },
+      ).toRoute(context),
+    );
+  }
+
   static void handleCustom(BuildContext context, InterviewCustom custom) {
     switch (custom) {
       case final PassThePhoneToSidekick data:
@@ -112,9 +127,9 @@ class RuleScreen extends StatelessWidget {
 
   static String getReportersText(int reportersCount) {
     if (reportersCount == 1) {
-      return 'As the reporter you will ask the superhero 3 questions about their day';
+      return 'I am the reporter! At the start of the game, I will ask the superhero 4 questions about their day.';
     } else {
-      return 'The reporters will ask the superhero 3 questions about their day';
+      return "We're the reporters! At the start of the game, we'll ask the superhero 4 questions about their day.";
     }
   }
 
@@ -129,9 +144,9 @@ class RuleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar(
-        title: user.role!.name.capitalize(),
-        actions: const [
+      appBar: const FunTopAppBar(
+        title: 'Game rules',
+        actions: [
           LeaveGameButton(),
         ],
       ),
