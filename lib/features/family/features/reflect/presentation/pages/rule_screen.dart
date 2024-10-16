@@ -20,7 +20,6 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
-import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class RuleScreen extends StatelessWidget {
@@ -145,9 +144,9 @@ class RuleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return FunScaffold(
       canPop: false,
-      appBar: FunTopAppBar(
-        title: user.role!.name.capitalize(),
-        actions: const [
+      appBar: const FunTopAppBar(
+        title: 'Game rules',
+        actions: [
           LeaveGameButton(),
         ],
       ),
