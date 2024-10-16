@@ -11,10 +11,11 @@ class ConfettiDialog extends StatefulWidget {
   final Duration duration;
 
   static Future<void> show(
-      BuildContext context, {
-        Duration duration = _defaultDuration,
-      }) async {
+    BuildContext context, {
+    Duration duration = _defaultDuration,
+  }) async {
     await showDialog<void>(
+      useSafeArea: false,
       context: context,
       barrierDismissible: false,
       barrierColor: Colors.transparent,
@@ -40,12 +41,20 @@ class _ConfettiDialogState extends State<ConfettiDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Lottie.asset(
-        'assets/lotties/confetti.json',
-        fit: BoxFit.fitWidth,
-        width: double.infinity,
-      ),
+    return Column(
+      children: [
+        Expanded(child: Align(alignment: Alignment.topCenter, child: _confettiAsset())),
+        Expanded(child: Align(child: _confettiAsset())),
+        Expanded(child: Align(alignment: Alignment.bottomCenter, child: _confettiAsset())),
+      ],
+    );
+  }
+
+  LottieBuilder _confettiAsset() {
+    return Lottie.asset(
+      'assets/lotties/confetti.json',
+      fit: BoxFit.fitWidth,
+      width: double.infinity,
     );
   }
 }
