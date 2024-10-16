@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/gra
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/stage_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
@@ -50,6 +51,7 @@ class RuleScreen extends StatelessWidget {
       buttonText: 'Reveal secret word',
     );
   }
+
   factory RuleScreen.toSidekick(GameProfile sidekick) {
     return RuleScreen(
       user: sidekick,
@@ -70,6 +72,7 @@ class RuleScreen extends StatelessWidget {
       buttonText: 'Next',
     );
   }
+
   factory RuleScreen.toReporters(List<GameProfile> reporters) {
     final cubit = getIt<InterviewCubit>();
 
@@ -82,20 +85,33 @@ class RuleScreen extends StatelessWidget {
       onTap: (context) {
         Navigator.pushReplacement(
           context,
-          BaseStateConsumer(
-            cubit: cubit..init(),
-            onInitial: (context) => const SizedBox.shrink(),
-            onCustom: handleCustom,
-            onData: (context, uiModel) {
-              return RecordAnswerScreen(
-                uiModel: uiModel,
-              );
+          StageScreen(
+            buttonText: "It's showtime!",
+            onClickButton: (context) {
+              _goToRecordAnswerScreen(context, cubit);
             },
           ).toRoute(context),
         );
       },
     );
   }
+
+  static void _goToRecordAnswerScreen(
+      BuildContext context, InterviewCubit cubit) {
+    Navigator.of(context).pushReplacement(
+      BaseStateConsumer(
+        cubit: cubit..init(),
+        onInitial: (context) => const SizedBox.shrink(),
+        onCustom: handleCustom,
+        onData: (context, uiModel) {
+          return RecordAnswerScreen(
+            uiModel: uiModel,
+          );
+        },
+      ).toRoute(context),
+    );
+  }
+
   static void handleCustom(BuildContext context, InterviewCustom custom) {
     switch (custom) {
       case final PassThePhoneToSidekick data:
