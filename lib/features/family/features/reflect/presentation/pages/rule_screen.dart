@@ -44,7 +44,7 @@ class RuleScreen extends StatelessWidget {
       ),
       iconData: FontAwesomeIcons.mask,
       bodyText:
-          'Answer questions about your day. Sneak the secret word into 1 answer.',
+          "I'm the superhero! I'll answer questions about my day and sneak a secret word into one of my answers.",
       onTap: (context) => Navigator.of(context).pushReplacement(
         const RevealSecretWordScreen().toRoute(context),
       ),
@@ -62,7 +62,7 @@ class RuleScreen extends StatelessWidget {
       ),
       iconData: FontAwesomeIcons.solidHandshake,
       bodyText:
-          "Listen to the superhero. Pick what they're grateful for. Guess the secret word",
+          "I'm the sidekick! I'll listen to the superhero's answers and try to guess their secret word at the end.",
       onTap: (context) {
         final reporters = getIt<InterviewCubit>().getReporters();
         Navigator.of(context).pushReplacement(
@@ -128,9 +128,9 @@ class RuleScreen extends StatelessWidget {
 
   static String getReportersText(int reportersCount) {
     if (reportersCount == 1) {
-      return 'As the reporter you will ask the superhero 3 questions about their day';
+      return 'I am the reporter! At the start of the game, I will ask the superhero 4 questions about their day.';
     } else {
-      return 'The reporters will ask the superhero 3 questions about their day';
+      return "We're the reporters! At the start of the game, we'll ask the superhero 4 questions about their day.";
     }
   }
 
