@@ -149,30 +149,34 @@ class FunTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
-                if(hasIcon) SizedBox(height: iconData != null && !shrink ? 24 : 10),
-                if(hasIcon) Opacity(
-                  opacity: isDisabled ? 0.5 : 1,
-                  child: iconData == null
-                      ? isOnlineIcon
-                          ? SvgPicture.network(
-                              iconPath,
-                              height: assetSize ?? 140,
-                              width: assetSize ?? 140,
-                            )
-                          : SvgPicture.asset(
-                              iconPath,
-                              height: assetSize ?? 140,
-                              width: assetSize ?? 140,
-                              color: iconColor,
-                            )
-                      : FaIcon(
-                          iconData,
-                          size: assetSize ?? 140,
-                          color: iconColor ?? textColor.withOpacity(0.6),
-                        ),
-                ),
+                if (hasIcon)
+                  SizedBox(height: iconData != null && !shrink ? 24 : 10),
+                if (hasIcon)
+                  Opacity(
+                    opacity: isDisabled ? 0.5 : 1,
+                    child: iconData == null
+                        ? isOnlineIcon
+                            ? SvgPicture.network(
+                                iconPath,
+                                height: assetSize ?? 140,
+                                width: assetSize ?? 140,
+                              )
+                            : SvgPicture.asset(
+                                iconPath,
+                                height: assetSize ?? 140,
+                                width: assetSize ?? 140,
+                                color: iconColor,
+                              )
+                        : FaIcon(
+                            iconData,
+                            size: assetSize ?? 140,
+                            color: iconColor ?? textColor.withOpacity(0.6),
+                          ),
+                  ),
                 Padding(
-                  padding: hasIcon ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16) : EdgeInsets.zero,
+                  padding: hasIcon
+                      ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
+                      : EdgeInsets.zero,
                   child: Column(
                     children: [
                       if (titleBig != null)
@@ -201,7 +205,7 @@ class FunTile extends StatelessWidget {
                         )
                       else
                         const SizedBox(),
-                      const SizedBox(height: 8),
+                      if (hasIcon) const SizedBox(height: 8),
                       if (subtitle != null)
                         Text(
                           subtitle!,
