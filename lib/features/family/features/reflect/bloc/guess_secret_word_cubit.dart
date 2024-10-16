@@ -29,6 +29,7 @@ class GuessSecretWordCubit
   void init() {
     _secretWord = _reflectAndShareRepository.getCurrentSecretWord();
     _guessOptions = _reflectAndShareRepository.getGuessOptions();
+    _reflectAndShareRepository.completeLoop();
     _emitData();
   }
 
@@ -46,7 +47,6 @@ class GuessSecretWordCubit
         );
       }
       _hasSuccess = true;
-      _reflectAndShareRepository.completeLoop();
       emitCustom(const GuessTheWordCustom.showConfetti());
     }
     _emitData();
@@ -55,6 +55,7 @@ class GuessSecretWordCubit
   void _emitData() {
     emitData(
       GuessTheWordUIModel(
+        isGameFinished: _reflectAndShareRepository.isGameFinished(),
         text: _hasSuccess ? _successText : _texts[_attempts],
         areContinuationButtonsEnabled: _hasSuccess,
         guessOptions: List.generate(

@@ -140,7 +140,7 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                   Navigator.of(context)
                       .push(const GratefulScreen().toRoute(context));
                 },
-                text: 'Quit',
+                text: uiModel.isGameFinished ? 'Done' : 'Quit',
                 analyticsEvent: AnalyticsEvent(
                   AmplitudeEvents.reflectAndShareQuitClicked,
                 ),
