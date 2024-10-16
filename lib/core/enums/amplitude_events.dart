@@ -257,7 +257,7 @@ enum AmplitudeEvents {
   reflectAndShareClicked('reflect_and_share_clicked'),
   reflectAndShareLetsGoClicked('reflect_and_share_lets_go_clicked'),
   reflectAndShareStartClicked('reflect_and_share_start_clicked'),
-  reflectAndShareSeeRolesClicked('reflect_and_share_see_roles_clicked'),
+  reflectAndShareSeeTheRulesClicked('reflect_and_share_see_the_rules_clicked'),
   reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
   reflectAndShareMemberAdded('reflect_and_share_member_added'),
   reflectAndSharePassThePhoneClicked(
