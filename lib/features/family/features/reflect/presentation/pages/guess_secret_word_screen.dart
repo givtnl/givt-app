@@ -11,11 +11,10 @@ import 'package:givt_app/features/family/features/reflect/presentation/pages/fam
 import 'package:givt_app/features/family/features/reflect/presentation/pages/grateful_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/label_large_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/dialogs/confetti_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/widgets/action_container.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
@@ -57,34 +56,64 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
         onData: (context, uiModel) {
           return Column(
             children: [
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1,
-                ),
-                itemCount: uiModel.guessOptions.length,
-                itemBuilder: (context, index) {
-                  final guessOption = uiModel.guessOptions[index];
-                  return ActionContainer(
-                    onTap: () {
-                      _cubit.onClickOption(index);
-                    },
-                    child: LabelLargeText(
-                      guessOption.text,
-                      color: guessOption.state == GuessOptionState.initial
-                          ? Colors.black
-                          : guessOption.state == GuessOptionState.correct
-                              ? Colors.green
-                              : Colors.red,
+              const Spacer(),
+              Column(
+                children: [
+                  TitleMediumText(
+                    uiModel.text,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 24),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 2.5,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
                     ),
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.reflectAndShareGuessOptionClicked,
-                    ), borderColor: FamilyAppTheme.error80,
-                  );
-                },
+                    itemCount: uiModel.guessOptions.length,
+                    itemBuilder: (context, index) {
+                      final guessOption = uiModel.guessOptions[index];
+                      return FunTile(
+                        shrink: true,
+                        onTap: () {
+                          _cubit.onClickOption(index);
+                        },
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        isPressedDown:
+                            guessOption.state == GuessOptionState.wrong,
+                        titleBig: guessOption.text,
+                        textColor: guessOption.state == GuessOptionState.initial
+                            ? FamilyAppTheme.tertiary40
+                            : guessOption.state == GuessOptionState.correct
+                                ? Colors.green
+                                : Colors.red,
+                        analyticsEvent: AnalyticsEvent(
+                          AmplitudeEvents.reflectAndShareGuessOptionClicked,
+                        ),
+                        borderColor:
+                            guessOption.state == GuessOptionState.initial
+                                ? FamilyAppTheme.tertiary80
+                                : guessOption.state == GuessOptionState.correct
+                                    ? FamilyAppTheme.primary80
+                                    : FamilyAppTheme.error80,
+                        backgroundColor:
+                            guessOption.state == GuessOptionState.initial
+                                ? FamilyAppTheme.tertiary98
+                                : guessOption.state == GuessOptionState.correct
+                                    ? FamilyAppTheme.primary98
+                                    : FamilyAppTheme.error98,
+                        iconPath: '',
+                        hasIcon: false,
+                      );
+                    },
+                  ),
+                ],
               ),
+              const Spacer(),
               if (!uiModel.isGameFinished) ...[
                 FunButton(
                   isDisabled: !uiModel.areContinuationButtonsEnabled,
