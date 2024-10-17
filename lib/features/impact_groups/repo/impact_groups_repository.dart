@@ -29,7 +29,7 @@ mixin ImpactGroupsRepository {
 
   Future<bool> setPreferredChurch(String churchId);
 
-  Organisation? getPreferredChurch();
+  Future<Organisation?> getPreferredChurch();
 
   Future<void> setPreferredChurchModalShown();
 
@@ -184,8 +184,11 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Organisation? getPreferredChurch() {
+  Future<Organisation?> getPreferredChurch() async {
     try {
+      if(_impactGroups == null || _impactGroups!.isEmpty) {
+        await getImpactGroups(fetchWhenEmpty: true);
+      }
       return _impactGroups
           ?.firstWhere((element) => element.type == ImpactGroupType.family)
           .preferredChurch;
