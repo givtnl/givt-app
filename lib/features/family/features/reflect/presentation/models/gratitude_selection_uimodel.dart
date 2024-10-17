@@ -5,6 +5,7 @@ class GratitudeSelectionUimodel {
   const GratitudeSelectionUimodel({
     required this.gratitudeList,
     required this.sideKick,
+    required this.reporter,
     this.selectedGratitude,
     this.superheroName,
   });
@@ -13,4 +14,5 @@ class GratitudeSelectionUimodel {
   final GratitudeCategory? selectedGratitude;
   final String? superheroName;
   final GameProfile sideKick;
+  final GameProfile reporter;
 }

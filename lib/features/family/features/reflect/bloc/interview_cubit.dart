@@ -80,8 +80,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
 
   void finishInterview() {
     emitCustom(
-      const InterviewCustom.goToGratitudeSelection(),
-    );
+        InterviewCustom.goToGratitudeSelection(reporter: getCurrentReporter()));
   }
 
   void timeForQuestionRanOut() {

@@ -55,9 +55,9 @@ class _InterviewScreenState extends State<InterviewScreen> {
           context,
           PassThePhone.toSidekick(data.profile).toRoute(context),
         );
-      case GratitudeSelection():
+      case final GratitudeSelection data:
         Navigator.of(context).pushReplacement(
-          const GratitudeSelectionScreen().toRoute(context),
+          GratitudeSelectionScreen(reporter: data.reporter).toRoute(context),
         );
     }
   }

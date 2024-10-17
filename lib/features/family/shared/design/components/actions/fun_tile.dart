@@ -19,6 +19,7 @@ class FunTile extends StatelessWidget {
     this.hasIcon = true,
     this.shrink = false,
     this.titleBig,
+    this.titleMedium,
     this.titleSmall,
     this.subtitle,
     this.assetSize,
@@ -113,6 +114,7 @@ class FunTile extends StatelessWidget {
   final bool isPressedDown;
   final bool shrink;
   final String? titleBig;
+  final String? titleMedium;
   final String? titleSmall;
   final String? subtitle;
   final double? assetSize;
@@ -185,6 +187,19 @@ class FunTile extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: isDisabled
+                                        ? FamilyAppTheme.disabledTileBorder
+                                        : textColor,
+                                  ),
+                        )
+                      else
+                        const SizedBox(),
+                      if (titleMedium != null)
+                        Text(
+                          titleMedium!,
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     color: isDisabled
                                         ? FamilyAppTheme.disabledTileBorder
                                         : textColor,
