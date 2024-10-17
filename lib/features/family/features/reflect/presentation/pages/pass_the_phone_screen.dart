@@ -16,10 +16,8 @@ class PassThePhone extends StatelessWidget {
     required this.user,
     required this.onTap,
     this.customHeader,
-    super.key,
+    super.key, this.customBtnText,
   });
-
-  final Widget? customHeader;
 
   factory PassThePhone.toSuperhero(GameProfile superhero) {
     return PassThePhone(
@@ -55,6 +53,9 @@ class PassThePhone extends StatelessWidget {
       ),
     );
   }
+
+  final String? customBtnText;
+  final Widget? customHeader;
 
   final GameProfile user;
   final void Function(BuildContext context) onTap;
@@ -101,7 +102,7 @@ class PassThePhone extends StatelessWidget {
                     padding: const EdgeInsets.all(24),
                     child: FunButton.secondary(
                       onTap: () => onTap.call(context),
-                      text: 'Continue',
+                      text: customBtnText ?? 'Continue',
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.reflectAndSharePassThePhoneClicked,
                       ),

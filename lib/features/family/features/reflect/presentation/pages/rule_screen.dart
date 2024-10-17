@@ -5,10 +5,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/interview_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/record_answer_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reveal_secret_word.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/stage_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
@@ -19,7 +17,6 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class RuleScreen extends StatelessWidget {
@@ -73,8 +70,6 @@ class RuleScreen extends StatelessWidget {
   }
 
   factory RuleScreen.toReporters(List<GameProfile> reporters) {
-    final cubit = getIt<InterviewCubit>();
-
     return RuleScreen(
       user: reporters.first,
       header: ReportersWidget(reporters: reporters),
@@ -87,42 +82,14 @@ class RuleScreen extends StatelessWidget {
           StageScreen(
             buttonText: "It's showtime!",
             onClickButton: (context) {
-              _goToRecordAnswerScreen(context, cubit);
+              Navigator.of(context).pushReplacement(
+                const InterviewScreen().toRoute(context),
+              );
             },
           ).toRoute(context),
         );
       },
     );
-  }
-
-  static void _goToRecordAnswerScreen(
-      BuildContext context, InterviewCubit cubit) {
-    Navigator.of(context).pushReplacement(
-      BaseStateConsumer(
-        cubit: cubit..init(),
-        onInitial: (context) => const SizedBox.shrink(),
-        onCustom: handleCustom,
-        onData: (context, uiModel) {
-          return RecordAnswerScreen(
-            uiModel: uiModel,
-          );
-        },
-      ).toRoute(context),
-    );
-  }
-
-  static void handleCustom(BuildContext context, InterviewCustom custom) {
-    switch (custom) {
-      case final PassThePhoneToSidekick data:
-        Navigator.pushReplacement(
-          context,
-          PassThePhone.toSidekick(data.profile).toRoute(context),
-        );
-      case GratitudeSelection():
-        Navigator.of(context).pushReplacement(
-          const GratitudeSelectionScreen().toRoute(context),
-        );
-    }
   }
 
   static String getReportersText(int reportersCount) {

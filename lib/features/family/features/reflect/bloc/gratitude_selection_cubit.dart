@@ -38,6 +38,7 @@ class GratitudeSelectionCubit
   void _emitData() {
     emitData(
       GratitudeSelectionUimodel(
+        sideKick: _reflectAndShareRepository.getCurrentSidekick(),
         gratitudeList: gratitudeCategories,
         selectedGratitude: getSelectedCategory(),
         superheroName:
