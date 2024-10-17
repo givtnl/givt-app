@@ -61,9 +61,15 @@ class RuleScreen extends StatelessWidget {
           "I'm the sidekick! I'll listen to the superhero's answers and try to guess their secret word at the end.",
       onTap: (context) {
         final reporters = getIt<InterviewCubit>().getReporters();
-        Navigator.of(context).pushReplacement(
-          PassThePhone.toReporters(reporters).toRoute(context),
-        );
+        if (sidekick.roles.length > 1) {
+          Navigator.of(context).pushReplacement(
+            RuleScreen.toReporters(reporters).toRoute(context),
+          );
+        } else {
+          Navigator.of(context).pushReplacement(
+            PassThePhone.toReporters(reporters).toRoute(context),
+          );
+        }
       },
       buttonText: 'Next',
     );
@@ -96,7 +102,7 @@ class RuleScreen extends StatelessWidget {
     if (reportersCount == 1) {
       return 'I am the reporter! At the start of the game, I will ask the superhero 4 questions about their day.';
     } else {
-      return "We're the reporters! At the start of the game, we'll ask the superhero ${reportersCount>3?reportersCount+1:4} questions about their day.";
+      return "We're the reporters! At the start of the game, we'll ask the superhero ${reportersCount > 3 ? reportersCount + 1 : 4} questions about their day.";
     }
   }
 
