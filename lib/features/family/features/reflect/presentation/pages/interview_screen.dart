@@ -17,18 +17,18 @@ class InterviewScreen extends StatefulWidget {
 }
 
 class _InterviewScreenState extends State<InterviewScreen> {
-  final InterviewCubit cubit = getIt<InterviewCubit>();
+  final InterviewCubit _cubit = getIt<InterviewCubit>();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    cubit.init();
+    _cubit.init();
   }
 
   @override
   Widget build(BuildContext context) {
     return BaseStateConsumer(
-      cubit: cubit..init(),
+      cubit: _cubit,
       onInitial: (context) => const SizedBox.shrink(),
       onCustom: handleCustom,
       onData: (context, uiModel) {
@@ -37,7 +37,7 @@ class _InterviewScreenState extends State<InterviewScreen> {
             return PassThePhone(
               user: uiModel.reporter,
               customBtnText: 'Show question',
-              onTap: (BuildContext context) => cubit.onShowQuestionClicked(),
+              onTap: (BuildContext context) => _cubit.onShowQuestionClicked(),
             );
           case RecordAnswerUIModel():
             return RecordAnswerScreen(
