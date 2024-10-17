@@ -36,6 +36,7 @@ class RegistrationPersonalInfoSubmitted extends RegistrationEvent {
     required this.sortCode,
     required this.phoneNumber,
     required this.appLanguage,
+    this.profilePicture = '',
   });
 
   final String address;
@@ -48,6 +49,7 @@ class RegistrationPersonalInfoSubmitted extends RegistrationEvent {
   final String sortCode;
   final String phoneNumber;
   final String appLanguage;
+  final String profilePicture;
 
   @override
   List<Object> get props => [
@@ -61,6 +63,7 @@ class RegistrationPersonalInfoSubmitted extends RegistrationEvent {
         sortCode,
         phoneNumber,
         appLanguage,
+        profilePicture,
       ];
 }
 
@@ -110,7 +113,6 @@ class RegistrationInit extends RegistrationEvent {
 class RegistrationReset extends RegistrationEvent {
   const RegistrationReset();
 }
-
 
 class RegistrationGiftAidChanged extends RegistrationEvent {
   const RegistrationGiftAidChanged({

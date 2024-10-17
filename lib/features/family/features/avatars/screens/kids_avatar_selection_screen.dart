@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
@@ -14,10 +15,22 @@ import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:givt_app/utils/snack_bar_helper.dart';
 import 'package:go_router/go_router.dart';
 
-class KidsAvatarSelectionScreen extends StatelessWidget {
+class KidsAvatarSelectionScreen extends StatefulWidget {
   const KidsAvatarSelectionScreen({
     super.key,
   });
+
+  @override
+  State<KidsAvatarSelectionScreen> createState() =>
+      _KidsAvatarSelectionScreenState();
+}
+
+class _KidsAvatarSelectionScreenState extends State<KidsAvatarSelectionScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getIt<AvatarsCubit>().fetchAvatars();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +59,7 @@ class KidsAvatarSelectionScreen extends StatelessWidget {
       },
       builder: (BuildContext context, EditChildProfileState editProfileState) =>
           BlocConsumer<AvatarsCubit, AvatarsState>(
+        bloc: getIt<AvatarsCubit>(),
         listener: (BuildContext context, AvatarsState state) {
           if (state.status == AvatarsStatus.error) {
             SnackBarHelper.showMessage(
