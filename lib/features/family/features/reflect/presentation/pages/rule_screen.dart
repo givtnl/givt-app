@@ -96,7 +96,7 @@ class RuleScreen extends StatelessWidget {
     if (reportersCount == 1) {
       return 'I am the reporter! At the start of the game, I will ask the superhero 4 questions about their day.';
     } else {
-      return "We're the reporters! At the start of the game, we'll ask the superhero 4 questions about their day.";
+      return "We're the reporters! At the start of the game, we'll ask the superhero ${reportersCount>3?reportersCount+1:4} questions about their day.";
     }
   }
 
