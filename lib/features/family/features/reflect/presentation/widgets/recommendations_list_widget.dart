@@ -26,7 +26,7 @@ class RecommendationsListWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(24),
           child: TitleMediumText(
-            '${uiModel.name} you were grateful for ${uiModel.category!.displayText}, here are some ways to help',
+            '${uiModel.name} you were grateful for ${uiModel.category!.displayText.toLowerCase()}, here are some ways to help',
             textAlign: TextAlign.center,
           ),
         ),
