@@ -67,7 +67,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       finishInterview();
       return;
     } else {
-      _showPassThePhoneScreen = true;
+      if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
       if (_currentReporterIndex < _reporters.length - 1) {
         _currentReporterIndex++;
       } else {
@@ -90,8 +90,10 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   // Get button text for current state
   String getButtonText() {
     if (_nextQuestionIsLast()) return 'Last question';
-    return _reporters.length == 1 ? 'Next Question' : 'Next Reporter';
+    return _hasOnlyOneReporter() ? 'Next Question' : 'Next Reporter';
   }
+
+  bool _hasOnlyOneReporter() => _reporters.length == 1;
 
   void _emitData() {
     if (_showPassThePhoneScreen) {
