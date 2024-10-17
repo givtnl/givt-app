@@ -58,7 +58,7 @@ class AvatarsCubit extends Cubit<AvatarsState> {
   }
 
   Avatar getRandomAvatar() {
-    final index = Random().nextInt(state.avatars.length - 1);
+    final index = Random().nextInt(state.avatars.length);
     return state.avatars[index];
   }
 }

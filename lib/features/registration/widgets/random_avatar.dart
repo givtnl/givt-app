@@ -32,6 +32,11 @@ class _RandomAvatarState extends State<RandomAvatar> {
       bloc: getIt<AvatarsCubit>(),
       builder: (context, state) {
         if (state.status != AvatarsStatus.loaded) {
+          if (state.status == AvatarsStatus.error) {
+            return Center(
+              child: Text('Failed to load avatar.'),
+            );
+          }
           return const Center(
             child: CustomCircularProgressIndicator(),
           );
