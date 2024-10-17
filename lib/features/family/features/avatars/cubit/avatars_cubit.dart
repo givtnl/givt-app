@@ -24,6 +24,26 @@ class AvatarsCubit extends Cubit<AvatarsState> {
     }
   }
 
+  void selectAvatar(String key, Avatar avatar) {
+    final existingAssignmentIndex =
+        state.assignedAvatars.indexWhere((element) => element.containsKey(key));
+
+    if (existingAssignmentIndex != -1) {
+      final updatedAvatars =
+          List<Map<String, Avatar>>.from(state.assignedAvatars);
+      updatedAvatars[existingAssignmentIndex] = {key: avatar};
+
+      emit(state.copyWith(assignedAvatars: updatedAvatars));
+    } else {
+      emit(state.copyWith(
+        assignedAvatars: [
+          ...state.assignedAvatars,
+          {key: avatar}
+        ],
+      ));
+    }
+  }
+
   Future<void> assignRandomAvatarUrl(String key) async {
     if (state.avatars.isEmpty) {
       await fetchAvatars();
@@ -48,13 +68,6 @@ class AvatarsCubit extends Cubit<AvatarsState> {
         ],
       ));
     }
-  }
-
-  Avatar getAvatarByKey(String key) {
-    final assignment = state.assignedAvatars
-        .firstWhere((element) => element.containsKey(key), orElse: () => {});
-
-    return assignment[key] ?? const Avatar.empty();
   }
 
   Avatar getRandomAvatar() {
