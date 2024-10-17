@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/rule_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
@@ -16,7 +16,8 @@ class PassThePhone extends StatelessWidget {
     required this.user,
     required this.onTap,
     this.customHeader,
-    super.key, this.customBtnText,
+    super.key,
+    this.customBtnText,
   });
 
   factory PassThePhone.toSuperhero(GameProfile superhero) {
@@ -35,7 +36,7 @@ class PassThePhone extends StatelessWidget {
       onTap: (context) => Navigator.of(context).pushReplacement(
         toRules
             ? RuleScreen.toSidekick(sidekick).toRoute(context)
-            : const GratitudeSelectionScreen().toRoute(context),
+            : const GuessSecretWordScreen().toRoute(context),
       ),
     );
   }

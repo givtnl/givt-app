@@ -106,7 +106,7 @@ class GratitudeTagsData {
   static final gratitudeCategories = [
     const GratitudeCategory(
       colorCombo: ColorCombo.highlight,
-      displayText: 'People',
+      displayText: 'The people in your life',
       iconData: FontAwesomeIcons.peopleGroup,
       tags: [
         Tag(
@@ -129,7 +129,7 @@ class GratitudeTagsData {
     ),
     const GratitudeCategory(
       colorCombo: ColorCombo.primary,
-      displayText: 'Nature',
+      displayText: 'The beauty of nature',
       iconData: FontAwesomeIcons.tree,
       tags: [
         Tag(
@@ -160,7 +160,7 @@ class GratitudeTagsData {
     ),
     const GratitudeCategory(
       colorCombo: ColorCombo.secondary,
-      displayText: 'Learning',
+      displayText: 'Something you learned',
       iconData: FontAwesomeIcons.graduationCap,
       tags: [
         Tag(
@@ -183,7 +183,7 @@ class GratitudeTagsData {
     ),
     const GratitudeCategory(
       colorCombo: ColorCombo.highlight,
-      displayText: 'Healthy',
+      displayText: 'Feeling healthy and strong',
       iconData: FontAwesomeIcons.heartPulse,
       tags: [
         Tag(
@@ -206,7 +206,7 @@ class GratitudeTagsData {
     ),
     const GratitudeCategory(
       colorCombo: ColorCombo.tertiary,
-      displayText: 'Home',
+      displayText: 'The home where you live',
       iconData: FontAwesomeIcons.house,
       tags: [
         Tag(
@@ -229,7 +229,7 @@ class GratitudeTagsData {
     ),
     const GratitudeCategory(
       colorCombo: ColorCombo.secondary,
-      displayText: 'Help',
+      displayText: 'Someone helping you',
       iconData: FontAwesomeIcons.handshakeAngle,
       tags: [
         Tag(
