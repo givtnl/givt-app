@@ -78,6 +78,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         postalCode: event.postalCode,
         accountNumber: event.accountNumber,
         sortCode: event.sortCode,
+        profilePicture: event.profilePicture,
       );
 
       await authRepositoy.registerUser(

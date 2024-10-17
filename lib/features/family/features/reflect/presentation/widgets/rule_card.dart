@@ -38,6 +38,7 @@ class RuleCard extends StatelessWidget {
         ),
       ),
       Container(
+        height: 366,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
@@ -47,15 +48,17 @@ class RuleCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 24),
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              const Spacer(),
               header,
               const SizedBox(height: 16),
               content,
               const SizedBox(height: 16),
               button,
+              const Spacer(),
             ],
           ),
         ),
@@ -63,7 +66,7 @@ class RuleCard extends StatelessWidget {
       Positioned(top: 0, child: icon),
       Positioned(
         top: icon.circleSize,
-        child: TitleMediumText('Read out loud'),
+        child: const TitleMediumText('Read out loud'),
       ),
     ]);
   }

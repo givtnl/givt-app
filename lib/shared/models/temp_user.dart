@@ -18,6 +18,7 @@ class TempUser extends Equatable {
     required this.timeZoneId,
     required this.accountNumber,
     required this.sortCode,
+    this.profilePicture = '',
     this.guid,
   });
 
@@ -37,6 +38,7 @@ class TempUser extends Equatable {
         timeZoneId: '',
         accountNumber: '',
         sortCode: '',
+        profilePicture: '',
       );
 
   factory TempUser.prefilled({
@@ -54,6 +56,7 @@ class TempUser extends Equatable {
     String timeZoneId = Util.defaultTimeZoneId,
     String accountNumber = '',
     String sortCode = '',
+    String avatar = '',
     int amountLimit = 499,
   }) =>
       TempUser(
@@ -72,6 +75,7 @@ class TempUser extends Equatable {
         timeZoneId: timeZoneId,
         accountNumber: accountNumber,
         sortCode: sortCode,
+        profilePicture: avatar,
       );
 
   factory TempUser.fromJson(Map<String, dynamic> json) => TempUser(
@@ -87,6 +91,9 @@ class TempUser extends Equatable {
         country: json['Country'] as String,
         password: json['Password'] as String,
         amountLimit: json['AmountLimit'] as int,
+        profilePicture: json.containsKey('profilePicture')
+            ? json['profilePicture'] as String
+            : '',
         appLanguage:
             json['AppLanguage'] != null ? json['AppLanguage'] as String : '',
         timeZoneId: json['TimeZoneId'] as String,
@@ -113,6 +120,7 @@ class TempUser extends Equatable {
   final String timeZoneId;
   final String accountNumber;
   final String sortCode;
+  final String profilePicture;
 
   TempUser copyWith({
     String? guid,
@@ -131,6 +139,7 @@ class TempUser extends Equatable {
     String? timeZoneId,
     String? accountNumber,
     String? sortCode,
+    String? avatar,
   }) =>
       TempUser(
         guid: guid ?? this.guid,
@@ -149,6 +158,7 @@ class TempUser extends Equatable {
         amountLimit: amountLimit ?? this.amountLimit,
         appLanguage: appLanguage ?? this.appLanguage,
         timeZoneId: timeZoneId ?? this.timeZoneId,
+        profilePicture: avatar ?? this.profilePicture,
       );
 
   Map<String, dynamic> toJson() {
@@ -165,6 +175,7 @@ class TempUser extends Equatable {
       'AmountLimit': amountLimit,
       'AppLanguage': appLanguage,
       'TimeZoneId': timeZoneId,
+      'profilePicture': profilePicture,
     };
     if (guid != null) {
       json['GUID'] = guid;
@@ -197,6 +208,7 @@ class TempUser extends Equatable {
         sortCode,
         accountNumber,
         timeZoneId,
+        profilePicture,
       ];
 
   static const String defaultPassword = r'R4nd0mP@s$w0rd123';

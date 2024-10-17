@@ -17,7 +17,6 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
@@ -56,8 +55,6 @@ import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart'
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
-import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
-import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
@@ -367,11 +364,6 @@ class FamilyAppRoutes {
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) => AvatarsCubit(
-                    getIt(),
-                  )..fetchAvatars(),
-                ),
-                BlocProvider(
                   create: (context) => EditProfileCubit(
                     editProfileRepository: getIt(),
                     currentProfilePicture: user.profilePicture,
@@ -390,11 +382,6 @@ class FamilyAppRoutes {
                 context.read<ProfilesCubit>().state.activeProfile;
             return MultiBlocProvider(
               providers: [
-                BlocProvider(
-                  create: (context) => AvatarsCubit(
-                    getIt(),
-                  )..fetchAvatars(),
-                ),
                 BlocProvider(
                   create: (context) => EditChildProfileCubit(
                     childGUID: activeProfile.id,

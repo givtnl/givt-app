@@ -12,6 +12,9 @@ class Avatar extends Equatable {
       pictureURL: (map['pictureURL'] ?? '').toString(),
     );
   }
+  const Avatar.empty()
+      : fileName = '',
+        pictureURL = '';
 
   final String fileName;
   final String pictureURL;
