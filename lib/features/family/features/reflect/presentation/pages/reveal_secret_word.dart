@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
+import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/secret_word_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
@@ -33,6 +34,7 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
   String wordNotVisibleText = 'Scratch to reveal\nyour secret word';
   String wordVisibleText = 'Sneak your secret word\ninto ONE of your answers!';
   late String text;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -107,13 +109,24 @@ class _RevealSecretWordScreenState extends State<RevealSecretWordScreen> {
             FunButton(
               isDisabled: !_isSecretWordVisible,
               onTap: () {
-                final sidekick = _cubit.getSidekick();
-                Navigator.of(context).pushReplacement(
-                  PassThePhone.toSidekick(
-                    sidekick,
-                    toRules: true,
-                  ).toRoute(context),
-                );
+                final isFirstRound = _cubit.isFirstRound();
+                if (isFirstRound) {
+                  final sidekick = _cubit.getSidekick();
+                  Navigator.of(context).pushReplacement(
+                    PassThePhone.toSidekick(
+                      sidekick,
+                      toRules: true,
+                    ).toRoute(context),
+                  );
+                } else {
+                  final reporters = getIt<InterviewCubit>().getReporters();
+                  Navigator.of(context).pushReplacement(
+                    PassThePhone.toReporters(
+                      reporters,
+                      skipRules: true,
+                    ).toRoute(context),
+                  );
+                }
               },
               text: 'Next',
               analyticsEvent: AnalyticsEvent(

@@ -44,15 +44,9 @@ class _FamilyRolesScreenState extends State<FamilyRolesScreen> {
       body: BaseStateConsumer<List<GameProfile>, GameProfile>(
         cubit: _cubit,
         onCustom: (context, superhero) {
-          if (_cubit.isFirstRound()) {
-            Navigator.of(context).push(
-              PassThePhone.toSuperhero(superhero).toRoute(context),
-            );
-            return;
-          }
-
           Navigator.of(context).pushReplacement(
-            PassThePhone.toSuperhero(superhero).toRoute(context),
+            PassThePhone.toSuperhero(superhero, skipRules: true)
+                .toRoute(context),
           );
         },
         onLoading: (context) =>
