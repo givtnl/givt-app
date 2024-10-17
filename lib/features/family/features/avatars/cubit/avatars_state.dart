@@ -18,6 +18,13 @@ class AvatarsState extends Equatable {
   @override
   List<Object> get props => [status, avatars, assignedAvatars, error];
 
+  Avatar getAvatarByKey(String key) {
+    final assignment = assignedAvatars
+        .firstWhere((element) => element.containsKey(key), orElse: () => {});
+
+    return assignment[key] ?? const Avatar.empty();
+  }
+
   AvatarsState copyWith({
     AvatarsStatus? status,
     List<Avatar>? avatars,
