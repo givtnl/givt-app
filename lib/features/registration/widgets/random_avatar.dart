@@ -51,7 +51,7 @@ class _RandomAvatarState extends State<RandomAvatar> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: SvgPicture.network(
-                  _avatarsCubit.getAvatarByKey(widget.id).pictureURL,
+                  _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL,
                   width: size.width * 0.25,
                   height: size.width * 0.25,
                   placeholderBuilder: (context) =>

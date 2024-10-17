@@ -17,6 +17,7 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
+import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
 import 'package:givt_app/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
@@ -121,7 +122,8 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
                           RandomAvatar(
                             id: context.read<AuthCubit>().state.user.guid,
                             onClick: () {
-                              // TODO KIDS-1549 Build option to change avatar
+                              AvatarSelectionBottomsheet.show(context,
+                                  context.read<AuthCubit>().state.user.guid);
                             },
                           ),
                           const SizedBox(height: 16),
@@ -151,9 +153,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         },
       ),
     );
-    final avatar = getIt<AvatarsCubit>().getAvatarByKey(
-      context.read<AuthCubit>().state.user.guid,
-    );
+    final avatar = getIt<AvatarsCubit>().state.getAvatarByKey(
+          context.read<AuthCubit>().state.user.guid,
+        );
     context.read<RegistrationBloc>()
       ..add(
         RegistrationPasswordSubmitted(
