@@ -19,7 +19,7 @@ class GuessSecretWordCubit
     'Oh, so close',
     'Not quite, keep going',
   ];
-  final List<int> _pressedOptions = [];
+  List<int> _pressedOptions = [];
   final String _successText = 'You did it, great job!';
   int _attempts = 0;
   bool _hasSuccess = false;
@@ -37,7 +37,8 @@ class GuessSecretWordCubit
     _attempts++;
     _pressedOptions.add(index);
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
-      if (_hasSuccess) {
+      // just to make sure we fire the analytics events once
+      if (!_hasSuccess) {
         AnalyticsHelper.logEvent(
           eventName:
               AmplitudeEvents.reflectAndShareGuessTotalAttemptsUntilCorrect,
@@ -47,6 +48,12 @@ class GuessSecretWordCubit
         );
       }
       _hasSuccess = true;
+      _pressedOptions = [
+        0,
+        1,
+        2,
+        3
+      ]; // make sure people can't press wrong answers after pressing the correct answer
       emitCustom(const GuessTheWordCustom.showConfetti());
     }
     _emitData();
