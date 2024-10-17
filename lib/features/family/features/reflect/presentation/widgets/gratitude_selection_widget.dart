@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/gratitude_selection_uimodel.dart';
@@ -17,6 +18,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
     required this.onNext,
     super.key,
   });
+
   final GratitudeSelectionUimodel uimodel;
   final void Function(GratitudeCategory? gratitude) onClickTile;
   final VoidCallback onNext;
@@ -26,7 +28,15 @@ class GratitudeSelectionWidget extends StatelessWidget {
     return FunScaffold(
       canPop: false,
       appBar: FunTopAppBar.primary99(
-        title: 'Gratitude',
+        title: uimodel.reporter.firstName!,
+        leading: Padding(
+          padding: const EdgeInsets.all(8),
+          child: SvgPicture.network(
+            uimodel.reporter.pictureURL!,
+            width: 36,
+            height: 36,
+          ),
+        ),
         actions: const [
           LeaveGameButton(),
         ],
@@ -54,7 +64,7 @@ class GratitudeSelectionWidget extends StatelessWidget {
               for (int i = 0; i < uimodel.gratitudeList.length; i++)
                 FunTile(
                   shrink: true,
-                  titleBig: uimodel.gratitudeList[i].displayText,
+                  titleMedium: uimodel.gratitudeList[i].displayText,
                   assetSize: 27,
                   iconPath: '',
                   iconData: uimodel.gratitudeList[i].iconData,

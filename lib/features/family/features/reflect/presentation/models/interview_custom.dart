@@ -6,7 +6,8 @@ sealed class InterviewCustom {
   const factory InterviewCustom.goToPassThePhoneToSidekick(
       {required GameProfile profile}) = PassThePhoneToSidekick;
 
-  const factory InterviewCustom.goToGratitudeSelection() = GratitudeSelection;
+  const factory InterviewCustom.goToGratitudeSelection(
+      {required GameProfile reporter}) = GratitudeSelection;
 }
 
 class PassThePhoneToSidekick extends InterviewCustom {
@@ -18,5 +19,9 @@ class PassThePhoneToSidekick extends InterviewCustom {
 }
 
 class GratitudeSelection extends InterviewCustom {
-  const GratitudeSelection();
+  const GratitudeSelection({
+    required this.reporter,
+  });
+
+  final GameProfile reporter;
 }

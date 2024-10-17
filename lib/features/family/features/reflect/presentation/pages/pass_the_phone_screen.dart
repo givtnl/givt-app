@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/gratitude_selection_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/guess_secret_word_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/rule_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/game_profile_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/reporters_widget.dart';
@@ -17,9 +17,8 @@ class PassThePhone extends StatelessWidget {
     required this.onTap,
     this.customHeader,
     super.key,
+    this.customBtnText,
   });
-
-  final Widget? customHeader;
 
   factory PassThePhone.toSuperhero(GameProfile superhero) {
     return PassThePhone(
@@ -37,7 +36,7 @@ class PassThePhone extends StatelessWidget {
       onTap: (context) => Navigator.of(context).pushReplacement(
         toRules
             ? RuleScreen.toSidekick(sidekick).toRoute(context)
-            : const GratitudeSelectionScreen().toRoute(context),
+            : const GuessSecretWordScreen().toRoute(context),
       ),
     );
   }
@@ -55,6 +54,9 @@ class PassThePhone extends StatelessWidget {
       ),
     );
   }
+
+  final String? customBtnText;
+  final Widget? customHeader;
 
   final GameProfile user;
   final void Function(BuildContext context) onTap;
@@ -101,7 +103,7 @@ class PassThePhone extends StatelessWidget {
                     padding: const EdgeInsets.all(24),
                     child: FunButton.secondary(
                       onTap: () => onTap.call(context),
-                      text: 'Continue',
+                      text: customBtnText ?? 'Continue',
                       analyticsEvent: AnalyticsEvent(
                         AmplitudeEvents.reflectAndSharePassThePhoneClicked,
                       ),

@@ -1,11 +1,11 @@
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class InterviewCubit extends CommonCubit<RecordAnswerUIModel, InterviewCustom> {
+class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
   InterviewCubit(this._reflectAndShareRepository)
       : super(const BaseState.initial());
 
@@ -15,14 +15,13 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, InterviewCustom> {
   int _currentReporterIndex = 0;
   int _currentQuestionIndex = 0;
   int _nrOfQuestionsAsked = 0;
-  bool hasCountDownStarted = false;
+  bool _showPassThePhoneScreen = false;
 
   void init() {
     _reporters = getReporters();
     _currentReporterIndex = 0;
     _currentQuestionIndex = 0;
     _nrOfQuestionsAsked = 0;
-    hasCountDownStarted = false;
 
     _emitData();
   }
@@ -65,49 +64,53 @@ class InterviewCubit extends CommonCubit<RecordAnswerUIModel, InterviewCustom> {
     _reflectAndShareRepository.totalQuestionsAsked++;
     _nrOfQuestionsAsked++;
     if (_isLastQuestion()) {
-      interviewFinished();
+      finishInterview();
       return;
-    } else if (_currentReporterIndex < _reporters.length - 1) {
-      _currentReporterIndex++;
     } else {
-      _currentReporterIndex = 0;
-      _currentQuestionIndex++;
-    }
-    _emitData();
-  }
-
-  void interviewFinished() {
-    final sidekick = getSidekick();
-    if (sidekick.roles.length > 1) {
-      emitCustom(
-        const InterviewCustom.goToGratitudeSelection(),
-      );
-    } else {
-      emitCustom(
-        InterviewCustom.goToPassThePhoneToSidekick(profile: sidekick),
-      );
+      if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
+      if (_currentReporterIndex < _reporters.length - 1) {
+        _currentReporterIndex++;
+      } else {
+        _currentReporterIndex = 0;
+        _currentQuestionIndex++;
+      }
+      _emitData();
     }
   }
 
-  void onCountdownStarted() {
-    hasCountDownStarted = true;
-    _emitData();
+  void finishInterview() {
+    emitCustom(
+        InterviewCustom.goToGratitudeSelection(reporter: getCurrentReporter()));
+  }
+
+  void timeForQuestionRanOut() {
+    advanceToNext();
   }
 
   // Get button text for current state
   String getButtonText() {
-    if (!hasCountDownStarted) return 'Start Interview';
-    if (_nextQuestionIsLast()) return 'Finish';
-    return _reporters.length == 1 ? 'Next Question' : 'Next Reporter';
+    if (_nextQuestionIsLast()) return 'Last question';
+    return _hasOnlyOneReporter() ? 'Next Question' : 'Next Reporter';
   }
 
+  bool _hasOnlyOneReporter() => _reporters.length == 1;
+
   void _emitData() {
-    emitData(
-      RecordAnswerUIModel(
-        reporter: getCurrentReporter(),
-        question: getCurrentQuestion(),
-        buttonText: getButtonText(),
-      ),
-    );
+    if (_showPassThePhoneScreen) {
+      emitData(InterviewUIModel.passThePhone(reporter: getCurrentReporter()));
+    } else {
+      emitData(
+        InterviewUIModel.recordAnswer(
+          reporter: getCurrentReporter(),
+          question: getCurrentQuestion(),
+          buttonText: getButtonText(),
+        ),
+      );
+    }
+  }
+
+  void onShowQuestionClicked() {
+    _showPassThePhoneScreen = false;
+    _emitData();
   }
 }
