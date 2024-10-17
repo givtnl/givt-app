@@ -66,7 +66,7 @@ class AvatarSelectionBottomsheet extends StatelessWidget {
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.avatarSaved,
               parameters: {
-                'filename': 'todo',
+                'filename': cubit.state.getAvatarByKey(id).fileName,
               },
             ),
           ),
