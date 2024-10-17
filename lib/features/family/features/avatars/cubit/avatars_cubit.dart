@@ -74,4 +74,8 @@ class AvatarsCubit extends Cubit<AvatarsState> {
     final index = Random().nextInt(state.avatars.length);
     return state.avatars[index];
   }
+
+  void clear() {
+    emit(state.copyWith(assignedAvatars: []));
+  }
 }

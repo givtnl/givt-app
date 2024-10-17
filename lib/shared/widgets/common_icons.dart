@@ -56,6 +56,11 @@ Widget smilePurpleIcon({double? width, double? height}) => SvgPicture.asset(
       width: width,
       height: height,
     );
+Widget defaultHero({double? width, double? height}) => SvgPicture.asset(
+      'assets/images/default_hero.svg',
+      width: width,
+      height: height,
+    );
 
 Widget smileGreyIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/family/images/smiley_grey.svg',
