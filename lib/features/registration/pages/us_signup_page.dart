@@ -68,6 +68,12 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   }
 
   @override
+  void dispose() {
+    getIt<AvatarsCubit>().clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);

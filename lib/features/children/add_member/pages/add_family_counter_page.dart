@@ -5,49 +5,40 @@ import 'package:givt_app/features/children/add_member/pages/family_member_form_p
 import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
-class AddMemberCounterPage extends StatefulWidget {
-  const AddMemberCounterPage(
-      {this.initialAmount,
-      this.showTopUp = false,
-      this.canPop = false,
-      super.key});
-  final int? initialAmount;
-  final bool showTopUp;
-  final bool canPop;
+class AddFamilyCounterPage extends StatefulWidget {
+  const AddFamilyCounterPage({super.key});
   @override
-  State<AddMemberCounterPage> createState() => _AddMemberCounterPageState();
+  State<AddFamilyCounterPage> createState() => _AddFamilyCounterPageState();
 }
 
-class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
+class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
   late int _amount;
 
   @override
   void initState() {
     super.initState();
-    _amount = 1;
+    _amount = 2;
   }
 
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
-      canPop: widget.canPop,
+      canPop: false,
       appBar: FunTopAppBar.primary99(
         title: 'Set up Family',
-        leading: widget.canPop ? const GivtBackButtonFlat() : null,
       ),
       body: Column(
         children: [
-          const BodyMediumText(
-            'How many family members do you want to add?',
+          const TitleMediumText(
+            'How many people are in your family?',
             textAlign: TextAlign.center,
           ),
           const Spacer(),
-          SmileyCounter(totalCount: _amount, displayFamily: false),
+          SmileyCounter(totalCount: _amount - 1),
           const SizedBox(height: 24),
           FunCounter(
             currency: '',
@@ -56,19 +47,20 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
               _amount = amount;
             }),
             maxAmount: 6,
+            minAmount: 2,
           ),
           const SizedBox(height: 40),
           const Spacer(),
           FunButton(
-            isDisabled: _amount < 1,
+            isDisabled: _amount < 2,
             onTap: () async {
               await Navigator.push(
                 context,
                 FamilyMemberFormPage(
                   index: 1,
-                  totalCount: _amount,
+                  totalCount: _amount -
+                      1, // -1 because the first member is already added
                   membersToCombine: const [],
-                  showTopUp: widget.showTopUp,
                 ).toRoute(context),
               );
             },
@@ -76,7 +68,7 @@ class _AddMemberCounterPageState extends State<AddMemberCounterPage> {
             rightIcon: FontAwesomeIcons.arrowRight,
             analyticsEvent: AnalyticsEvent(
               AmplitudeEvents.addMemberContinueClicked,
-              parameters: {'amount': _amount},
+              parameters: {'nrOfAddedMembers': _amount - 1},
             ),
           ),
         ],
