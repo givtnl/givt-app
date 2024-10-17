@@ -25,7 +25,7 @@ mixin class PreferredChurchUseCase {
   Future<bool> shouldShowPreferredChurchModal() async {
     try {
       return (!await _impactGroupsRepository.wasPreferredChurchModalShown()) &&
-          _impactGroupsRepository.getPreferredChurch() == null;
+          await _impactGroupsRepository.getPreferredChurch() == null;
     } catch (e, s) {
       return false;
     }
