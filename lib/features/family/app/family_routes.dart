@@ -17,7 +17,6 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
-import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';

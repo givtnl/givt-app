@@ -19,17 +19,20 @@ class RandomAvatar extends StatefulWidget {
 }
 
 class _RandomAvatarState extends State<RandomAvatar> {
+  late final AvatarsCubit _avatarsCubit;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    getIt<AvatarsCubit>().assignRandomAvatarUrl(widget.id);
+    _avatarsCubit = getIt<AvatarsCubit>();
+    _avatarsCubit.assignRandomAvatarUrl(widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
     return BlocBuilder<AvatarsCubit, AvatarsState>(
-      bloc: getIt<AvatarsCubit>(),
+      bloc: _avatarsCubit,
       builder: (context, state) {
         if (state.status != AvatarsStatus.loaded) {
           if (state.status == AvatarsStatus.error) {
@@ -48,9 +51,11 @@ class _RandomAvatarState extends State<RandomAvatar> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: SvgPicture.network(
-                  getIt<AvatarsCubit>().getAvatarByKey(widget.id).pictureURL,
+                  _avatarsCubit.getAvatarByKey(widget.id).pictureURL,
                   width: size.width * 0.25,
                   height: size.width * 0.25,
+                  placeholderBuilder: (context) =>
+                      const CircularProgressIndicator(),
                 ),
               ),
               const Positioned(
