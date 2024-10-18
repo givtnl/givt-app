@@ -117,6 +117,7 @@ class _AppState extends State<App> {
             create: (context) => RegistrationBloc(
               authCubit: context.read<AuthCubit>(),
               authRepositoy: getIt(),
+              registrationRepository: getIt(),
             ),
           ),
         ],

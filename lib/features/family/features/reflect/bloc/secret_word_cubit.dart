@@ -24,4 +24,8 @@ class SecretWordCubit extends CommonCubit<String, dynamic> {
   void rolesClicked(List<GameProfile> profiles) {
     _reflectAndShareRepository.selectProfiles(profiles);
   }
+
+  bool isFirstRound() {
+    return _reflectAndShareRepository.isFirstRound();
+  }
 }

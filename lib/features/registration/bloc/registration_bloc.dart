@@ -9,6 +9,7 @@ import 'package:givt_app/core/failures/failures.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/repositories/auth_repository.dart';
+import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/utils/utils.dart';
 
@@ -16,7 +17,10 @@ part 'registration_event.dart';
 part 'registration_state.dart';
 
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
-  RegistrationBloc({required this.authRepositoy, required this.authCubit})
+  RegistrationBloc(
+      {required this.authRepositoy,
+      required this.authCubit,
+      required this.registrationRepository})
       : super(const RegistrationState()) {
     on<RegistrationPasswordSubmitted>(_onRegistrationPasswordSubmitted);
 
@@ -37,6 +41,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   final AuthRepository authRepositoy;
   final AuthCubit authCubit;
+  final RegistrationRepository registrationRepository;
 
   FutureOr<void> _onRegistrationPasswordSubmitted(
     RegistrationPasswordSubmitted event,
@@ -78,6 +83,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         postalCode: event.postalCode,
         accountNumber: event.accountNumber,
         sortCode: event.sortCode,
+        profilePicture: event.profilePicture,
       );
 
       await authRepositoy.registerUser(
@@ -285,7 +291,12 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
     }
   }
 
-  FutureOr<void> _onReset(RegistrationReset event, Emitter<RegistrationState> emit) {
+  FutureOr<void> _onReset(
+      RegistrationReset event, Emitter<RegistrationState> emit) {
     emit(const RegistrationState());
+  }
+
+  void finishedRegistrationFlow() {
+    registrationRepository.userHasFinishedRegistrationFlow();
   }
 }

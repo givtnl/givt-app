@@ -16,7 +16,10 @@ class GratitudeSelectionCubit
   List<GratitudeCategory> gratitudeCategories =
       GratitudeTagsData.gratitudeCategories;
 
-  void init() {
+  late GameProfile reporter;
+
+  void init(GameProfile reporter) {
+    this.reporter = reporter;
     _emitData();
   }
 
@@ -38,10 +41,12 @@ class GratitudeSelectionCubit
   void _emitData() {
     emitData(
       GratitudeSelectionUimodel(
+        reporter: reporter,
+        sideKick: _reflectAndShareRepository.getCurrentSidekick(),
         gratitudeList: gratitudeCategories,
         selectedGratitude: getSelectedCategory(),
         superheroName:
-            _reflectAndShareRepository.getCurrentSuperhero().firstName,
+        _reflectAndShareRepository.getCurrentSuperhero().firstName,
       ),
     );
   }

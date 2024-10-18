@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
+import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
@@ -15,6 +17,8 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/registration/bloc/registration_bloc.dart';
 import 'package:givt_app/features/registration/widgets/accept_policy_row_us.dart';
+import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
+import 'package:givt_app/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -64,10 +68,15 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   }
 
   @override
+  void dispose() {
+    getIt<AvatarsCubit>().clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locals = AppLocalizations.of(context);
     final size = MediaQuery.sizeOf(context);
-
     return BlocConsumer<RegistrationBloc, RegistrationState>(
       listener: (context, state) {
         if (state.status == RegistrationStatus.createStripeAccount) {
@@ -76,6 +85,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             extra: PermitBiometricRequest.registration(
               redirect: (context) {
                 context.goNamed(FamilyPages.profileSelection.name);
+                context.read<RegistrationBloc>().finishedRegistrationFlow();
               },
             ),
           );
@@ -116,6 +126,14 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
                       hasScrollBody: false,
                       child: Column(
                         children: [
+                          RandomAvatar(
+                            id: context.read<AuthCubit>().state.user.guid,
+                            onClick: () {
+                              AvatarSelectionBottomsheet.show(context,
+                                  context.read<AuthCubit>().state.user.guid);
+                            },
+                          ),
+                          const SizedBox(height: 16),
                           _buildSignUpForm(locals, size),
                           const Spacer(),
                           _buildBottomWidgetGroup(locals, size),
@@ -142,6 +160,9 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
         },
       ),
     );
+    final avatar = getIt<AvatarsCubit>().state.getAvatarByKey(
+          context.read<AuthCubit>().state.user.guid,
+        );
     context.read<RegistrationBloc>()
       ..add(
         RegistrationPasswordSubmitted(
@@ -163,6 +184,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           accountNumber: Util.empty,
           appLanguage: Localizations.localeOf(context).languageCode,
           countryCode: _selectedCountry.countryCode,
+          profilePicture: avatar.fileName,
         ),
       );
   }

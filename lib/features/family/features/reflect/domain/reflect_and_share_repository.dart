@@ -349,4 +349,18 @@ class ReflectAndShareRepository {
   bool isFirstRound() => completedLoops == 0;
 
   bool isGameFinished() => completedLoops >= _selectedProfiles.length;
+
+  List<String> getGuessOptions() {
+    final options = <String>[];
+    options.add(_currentSecretWord!);
+    final rng = Random();
+    while (options.length < 4) {
+      final word = _secretWords[rng.nextInt(_secretWords.length)];
+      if (!options.contains(word)) {
+        options.add(word);
+      }
+    }
+    options.shuffle();
+    return options;
+  }
 }

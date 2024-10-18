@@ -15,8 +15,11 @@ class FunTile extends StatelessWidget {
     this.onTap,
     this.isDisabled = false,
     this.isSelected = false,
+    this.isPressedDown = false,
+    this.hasIcon = true,
     this.shrink = false,
     this.titleBig,
+    this.titleMedium,
     this.titleSmall,
     this.subtitle,
     this.assetSize,
@@ -108,13 +111,16 @@ class FunTile extends StatelessWidget {
   final String iconPath;
   final bool isDisabled;
   final bool isSelected;
+  final bool isPressedDown;
   final bool shrink;
   final String? titleBig;
+  final String? titleMedium;
   final String? titleSmall;
   final String? subtitle;
   final double? assetSize;
   final IconData? iconData;
   final Color? iconColor;
+  final bool hasIcon;
   final MainAxisAlignment? mainAxisAlignment;
   final AnalyticsEvent analyticsEvent;
 
@@ -133,6 +139,7 @@ class FunTile extends StatelessWidget {
     return ActionContainer(
       isDisabled: isDisabled,
       isSelected: isSelected,
+      isPressedDown: isPressedDown,
       borderColor: newBorderColor,
       analyticsEvent: analyticsEvent,
       onTap: isDisabled ? () {} : onTap,
@@ -144,30 +151,34 @@ class FunTile extends StatelessWidget {
             child: Column(
               mainAxisAlignment: mainAxisAlignment ?? MainAxisAlignment.start,
               children: [
-                SizedBox(height: iconData != null && !shrink ? 24 : 10),
-                Opacity(
-                  opacity: isDisabled ? 0.5 : 1,
-                  child: iconData == null
-                      ? isOnlineIcon
-                          ? SvgPicture.network(
-                              iconPath,
-                              height: assetSize ?? 140,
-                              width: assetSize ?? 140,
-                            )
-                          : SvgPicture.asset(
-                              iconPath,
-                              height: assetSize ?? 140,
-                              width: assetSize ?? 140,
-                              color: iconColor,
-                            )
-                      : FaIcon(
-                          iconData,
-                          size: assetSize ?? 140,
-                          color: iconColor ?? textColor.withOpacity(0.6),
-                        ),
-                ),
+                if (hasIcon)
+                  SizedBox(height: iconData != null && !shrink ? 24 : 10),
+                if (hasIcon)
+                  Opacity(
+                    opacity: isDisabled ? 0.5 : 1,
+                    child: iconData == null
+                        ? isOnlineIcon
+                            ? SvgPicture.network(
+                                iconPath,
+                                height: assetSize ?? 140,
+                                width: assetSize ?? 140,
+                              )
+                            : SvgPicture.asset(
+                                iconPath,
+                                height: assetSize ?? 140,
+                                width: assetSize ?? 140,
+                                color: iconColor,
+                              )
+                        : FaIcon(
+                            iconData,
+                            size: assetSize ?? 140,
+                            color: iconColor ?? textColor.withOpacity(0.6),
+                          ),
+                  ),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16),
+                  padding: hasIcon
+                      ? EdgeInsets.fromLTRB(10, 8, 10, shrink ? 0 : 16)
+                      : EdgeInsets.zero,
                   child: Column(
                     children: [
                       if (titleBig != null)
@@ -176,6 +187,19 @@ class FunTile extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style:
                               Theme.of(context).textTheme.labelLarge?.copyWith(
+                                    color: isDisabled
+                                        ? FamilyAppTheme.disabledTileBorder
+                                        : textColor,
+                                  ),
+                        )
+                      else
+                        const SizedBox(),
+                      if (titleMedium != null)
+                        Text(
+                          titleMedium!,
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.labelMedium?.copyWith(
                                     color: isDisabled
                                         ? FamilyAppTheme.disabledTileBorder
                                         : textColor,
@@ -196,7 +220,7 @@ class FunTile extends StatelessWidget {
                         )
                       else
                         const SizedBox(),
-                      const SizedBox(height: 8),
+                      if (hasIcon) const SizedBox(height: 8),
                       if (subtitle != null)
                         Text(
                           subtitle!,

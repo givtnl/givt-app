@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/giving_flow/create_transaction
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
 
 mixin ProfilesRepository {
@@ -42,6 +43,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._createTransactionRepository,
     this._editChildProfileRepository,
     this._editParentProfileRepository,
+      this._registrationRepository,
   ) {
     _init();
   }
@@ -56,6 +58,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final CreateTransactionRepository _createTransactionRepository;
   final EditProfileRepository _editChildProfileRepository;
   final EditParentProfileRepository _editParentProfileRepository;
+  final RegistrationRepository _registrationRepository;
 
   final StreamController<List<Profile>> _profilesStreamController =
       StreamController<List<Profile>>.broadcast();
@@ -105,6 +108,10 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     _editParentProfileRepository
         .onProfileChanged()
         .listen((_) => refreshProfiles());
+
+    _registrationRepository.onRegistrationFlowFinished().listen((_) {
+      refreshProfiles();
+    });
   }
 
   void _clearData({bool updateListeners = true}) {

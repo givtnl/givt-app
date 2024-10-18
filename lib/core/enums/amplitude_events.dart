@@ -165,6 +165,7 @@ enum AmplitudeEvents {
   showCharitiesPressed('show_charities_pressed'),
   charitiesShown('charities_shown'),
   donateToRecommendedCharityPressed('donate_to_recommended_charity_pressed'),
+  pledgeActOfServiceClicked('pledge_act_of_service_clicked'),
   charityCardPressed('charity_card_pressed'),
   accountLocked('account_locked_for_wrong_password'),
   walletTracker('wallet_tracker'),
@@ -257,7 +258,7 @@ enum AmplitudeEvents {
   reflectAndShareClicked('reflect_and_share_clicked'),
   reflectAndShareLetsGoClicked('reflect_and_share_lets_go_clicked'),
   reflectAndShareStartClicked('reflect_and_share_start_clicked'),
-  reflectAndShareSeeRolesClicked('reflect_and_share_see_roles_clicked'),
+  reflectAndShareSeeTheRulesClicked('reflect_and_share_see_the_rules_clicked'),
   reflectAndShareRulesNextClicked('reflect_and_share_next_clicked'),
   reflectAndShareMemberAdded('reflect_and_share_member_added'),
   reflectAndSharePassThePhoneClicked(
@@ -267,9 +268,11 @@ enum AmplitudeEvents {
   reflectAndShareStartInterviewClicked(
     'reflect_and_share_start_interview_clicked',
   ),
-  reflectAndShareDoneClicked('reflect_and_share_done_clicked'),
-  reflectAndShareFinishReflectingClicked(
-    'reflect_and_share_finish_reflecting_clicked',
+  reflectAndShareGuessOptionClicked('reflect_and_share_guess_option_clicked'),
+  reflectAndShareGuessTotalAttemptsUntilCorrect(
+      'reflect_and_share_guess_total_attempts_until_correct'),
+  reflectAndShareQuitClicked(
+    'reflect_and_share_quit_clicked',
   ),
   reflectAndShareNextJournalistClicked(
     'reflect_and_share_next_journalist_clicked',
@@ -277,8 +280,8 @@ enum AmplitudeEvents {
   reflectAndShareChangeWordClicked('reflect_and_share_change_word_clicked'),
   reflectAndShareConfirmExitClicked('reflect_and_share_confirm_exit_clicked'),
   reflectAndShareKeepPlayingClicked('reflect_and_share_keep_playing_clicked'),
-  reflectAndShareResultNextRoundClicked(
-    'reflect_and_share_result_next_round_clicked',
+  reflectAndShareResultShuffleRolesClicked(
+    'reflect_and_share_result_shuffle_roles_clicked',
   ),
   familyReflectSummaryBackToHome('family_reflect_summary_back_to_home'),
   gratefulTileSubmitted('grateful_tile_submitted'),

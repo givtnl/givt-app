@@ -7,7 +7,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/domain/models/record_answer_uimodel.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
@@ -20,6 +20,7 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 
 class RecordAnswerScreen extends StatefulWidget {
   const RecordAnswerScreen({required this.uiModel, super.key});
+
   final RecordAnswerUIModel uiModel;
 
   @override
@@ -27,19 +28,23 @@ class RecordAnswerScreen extends StatefulWidget {
 }
 
 class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
-  _RecordAnswerScreenState({int startSeconds = 60 * 2})
+  _RecordAnswerScreenState({int startSeconds = 60})
       : _remainingSeconds = startSeconds;
   Timer? _timer;
   int _remainingSeconds;
   InterviewCubit cubit = getIt<InterviewCubit>();
   AppConfig config = getIt<AppConfig>();
-  bool isTestBtnVisible = false;
 
   @override
   void initState() {
     super.initState();
     WakelockPlus.enable();
-    isTestBtnVisible = config.isTestApp;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _startCountdown();
   }
 
   String _displayMinutes() => (_remainingSeconds ~/ 60).toString();
@@ -59,7 +64,6 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
   bool _isLastSecond() => _remainingSeconds % 60 <= 1 && _remainingSeconds <= 1;
 
   void _startCountdown() {
-    cubit.onCountdownStarted();
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_remainingSeconds <= 0) {
         timer.cancel();
@@ -79,7 +83,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
       Vibrator.tryVibrate();
     } else if (_isLastSecond()) {
       Vibrator.tryVibratePattern();
-      cubit.interviewFinished();
+      cubit.timeForQuestionRanOut();
     }
   }
 
@@ -104,7 +108,7 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
             height: 36,
           ),
         ),
-        actions: [
+        actions: const [
           LeaveGameButton(),
         ],
       ),
@@ -141,45 +145,11 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
                   child: FunButton(
                     rightIcon: FontAwesomeIcons.arrowRight,
                     onTap: () {
-                      if (_remainingSeconds == 60 * 2) {
-                        _startCountdown();
-                        setState(() {
-                          isTestBtnVisible = false;
-                        });
-                        return;
-                      }
                       cubit.advanceToNext();
                     },
                     text: widget.uiModel.buttonText,
                     analyticsEvent: AnalyticsEvent(
                       AmplitudeEvents.reflectAndShareNextJournalistClicked,
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: isTestBtnVisible,
-                  child: const SizedBox(height: 8),
-                ),
-                Visibility(
-                  visible: isTestBtnVisible,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: FunButton(
-                      onTap: () {
-                        if (_remainingSeconds == 60 * 2) {
-                          _startCountdown();
-                          setState(() {
-                            _remainingSeconds = 20;
-                            isTestBtnVisible = false;
-                          });
-                          return;
-                        }
-                        cubit.advanceToNext();
-                      },
-                      text: 'Start test 20 seconds',
-                      analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.debugButtonClicked,
-                      ),
                     ),
                   ),
                 ),

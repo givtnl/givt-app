@@ -5,7 +5,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/family_selection_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/pages/pass_the_phone_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/animated_arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/arc.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
@@ -54,8 +54,20 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
           LeaveGameButton(),
         ],
       ),
-      body: BaseStateConsumer<List<GameProfile>, dynamic>(
+      body: BaseStateConsumer(
         cubit: cubit,
+        onCustom: (context, superhero) {
+          if (cubit.isFirstRound()) {
+            Navigator.of(context).push(
+              PassThePhone.toSuperhero(superhero).toRoute(context),
+            );
+            return;
+          }
+
+          Navigator.of(context).pushReplacement(
+            PassThePhone.toSuperhero(superhero).toRoute(context),
+          );
+        },
         onLoading: (context) =>
             const Center(child: CircularProgressIndicator()),
         onData: (context, profiles) => Stack(
@@ -94,13 +106,11 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
         child: FunButton(
           onTap: () {
             cubit.rolesClicked(selectedProfiles);
-            Navigator.of(context)
-                .push(const FamilyRolesScreen().toRoute(context));
           },
           isDisabled: selectedProfiles.length < 2,
-          text: 'See roles',
+          text: 'See the rules',
           analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.reflectAndShareSeeRolesClicked,
+            AmplitudeEvents.reflectAndShareSeeTheRulesClicked,
           ),
         ),
       ),

@@ -5,7 +5,7 @@ import 'package:givt_app/shared/models/user_ext.dart';
 mixin class RegistrationUseCase {
   final AuthRepository _authRepository = getIt<AuthRepository>();
 
-  Future<bool> userNeedsRegistration() async {
+  Future<bool> userNeedsToFillInPersonalDetails() async {
     try {
       UserExt? userExternal;
       final (userExt, session, amountPresets) =

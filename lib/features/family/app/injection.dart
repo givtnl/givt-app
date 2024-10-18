@@ -2,6 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/family/features/admin_fee/application/admin_fee_cubit.dart';
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
+import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
@@ -87,6 +88,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(
@@ -97,6 +99,11 @@ void initCubits() {
     ..registerLazySingleton<FamilyHomeScreenCubit>(
       () => FamilyHomeScreenCubit(
         getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<AvatarsCubit>(
+      () => AvatarsCubit(
         getIt(),
       ),
     );
@@ -111,6 +118,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
+        getIt(),
         getIt(),
         getIt(),
         getIt(),

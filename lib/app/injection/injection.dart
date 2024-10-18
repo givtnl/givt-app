@@ -24,6 +24,7 @@ import 'package:givt_app/features/recurring_donations/create/repositories/create
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
+import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';
 import 'package:givt_app/utils/media_picker_service.dart';
@@ -122,6 +123,9 @@ void initRepositories() {
         getIt(),
         getIt(),
       ),
+    )
+    ..registerLazySingleton<RegistrationRepository>(
+      RegistrationRepository.new,
     )
     ..registerLazySingleton<CollectGroupRepository>(
       () => CollectGroupRepositoryImpl(
