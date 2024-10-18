@@ -246,11 +246,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
             height: 32,
             width: 32,
             pictureURL,
-            placeholderBuilder: (context) => const SizedBox(
-              height: 32,
-              width: 32,
-              child: CustomCircularProgressIndicator(),
-            ),
+            placeholderBuilder: (context) => const CircularProgressIndicator(),
           ),
           LabelMediumText(name),
         ],
