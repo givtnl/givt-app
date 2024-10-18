@@ -82,7 +82,7 @@ class _MemberCounterState extends State<MemberCounter> {
 
   @override
   void initState() {
-    context.read<ProfilesCubit>().refresh();
     super.initState();
+    context.read<ProfilesCubit>().refresh();
   }
 }
