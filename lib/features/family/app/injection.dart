@@ -88,6 +88,7 @@ void initCubits() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerFactory<FamilySelectionCubit>(
@@ -117,6 +118,7 @@ void initRepositories() {
     )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
+        getIt(),
         getIt(),
         getIt(),
         getIt(),

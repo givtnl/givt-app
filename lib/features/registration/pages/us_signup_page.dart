@@ -85,6 +85,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
             extra: PermitBiometricRequest.registration(
               redirect: (context) {
                 context.goNamed(FamilyPages.profileSelection.name);
+                context.read<RegistrationBloc>().finishedRegistrationFlow();
               },
             ),
           );
