@@ -41,6 +41,7 @@ class MemberCounter extends StatelessWidget {
         if (state.profiles.isEmpty) {
           return const SizedBox();
         }
+        familyMembersIcons.clear();
         for (final profile in state.profiles) {
           familyMembersIcons.add(
             Padding(
