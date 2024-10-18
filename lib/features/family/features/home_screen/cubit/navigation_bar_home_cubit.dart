@@ -12,6 +12,7 @@ import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
+import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -23,12 +24,14 @@ class NavigationBarHomeCubit
     this._authRepository,
     this._impactGroupsRepository,
     this._addMemberRepository,
+    this._registrationRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final AddMemberRepository _addMemberRepository;
+  final RegistrationRepository _registrationRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
@@ -46,6 +49,10 @@ class NavigationBarHomeCubit
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
+    });
+    _registrationRepository.onRegistrationFlowFinished().listen((_) {
+      emitLoading();
+      refreshData();
     });
     await refreshData();
   }
@@ -86,7 +93,7 @@ class NavigationBarHomeCubit
     if (!_hasSession) return;
     if (_familyInviteGroup != null) {
       return;
-    } else if (await userNeedsRegistration()) {
+    } else if (await userNeedsToFillInPersonalDetails()) {
       return;
     } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
