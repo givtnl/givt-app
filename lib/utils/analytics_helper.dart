@@ -7,12 +7,14 @@ import 'package:givt_app/shared/models/models.dart';
 class AnalyticsHelper {
   static const String amountKey = 'amount';
   static const String goalKey = 'goal_name';
+  static const String firstNameKey = 'first_name';
   static const String walletAmountKey = 'wallet_amount';
   static const String mediumIdKey = 'medium_id';
   static const String locationKey = 'location';
   static const String interestKey = 'all_selected_interests';
   static const String recommendedCharitiesKey = 'recommended_charities';
   static const String charityNameKey = 'charity_name';
+  static const String actOfServiceNameKey = 'act_of_service_name';
   static const String avatarImageKey = 'avatar_image_selected';
   static const String rewardKey = 'reward';
   static const String cityKey = 'city';

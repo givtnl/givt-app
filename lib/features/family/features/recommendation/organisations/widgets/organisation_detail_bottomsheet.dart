@@ -18,6 +18,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
     required this.organisation,
     this.onClick,
     this.isActOfService = false,
+    this.userName,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
   final Organisation organisation;
   final bool isActOfService;
   final void Function()? onClick;
+  final String? userName;
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +110,14 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                         .pushNamed(FamilyPages.familyChooseAmountSlider.name);
                   },
               analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.donateToRecommendedCharityPressed,
+                isActOfService
+                    ? AmplitudeEvents.donateToRecommendedCharityPressed
+                    : AmplitudeEvents.pledgeActOfServiceClicked,
                 parameters: {
-                  AnalyticsHelper.charityNameKey: organisation.name,
+                  isActOfService
+                      ? AnalyticsHelper.actOfServiceNameKey
+                      : AnalyticsHelper.charityNameKey: organisation.name,
+                  AnalyticsHelper.firstNameKey: userName,
                 },
               ),
             ),

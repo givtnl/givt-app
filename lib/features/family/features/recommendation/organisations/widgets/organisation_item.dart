@@ -18,12 +18,14 @@ class OrganisationItem extends StatelessWidget {
     required this.organisation,
     this.onDonateClicked,
     this.isActOfService = false,
+    this.userName,
     super.key,
   });
 
   final bool isActOfService;
   final Organisation organisation;
   final void Function()? onDonateClicked;
+  final String? userName;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class OrganisationItem extends StatelessWidget {
             organisation: organisation,
             onClick: onDonateClicked,
             isActOfService: isActOfService,
+            userName: userName,
           ),
         );
       },

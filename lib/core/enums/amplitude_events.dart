@@ -165,6 +165,7 @@ enum AmplitudeEvents {
   showCharitiesPressed('show_charities_pressed'),
   charitiesShown('charities_shown'),
   donateToRecommendedCharityPressed('donate_to_recommended_charity_pressed'),
+  pledgeActOfServiceClicked('pledge_act_of_service_clicked'),
   charityCardPressed('charity_card_pressed'),
   accountLocked('account_locked_for_wrong_password'),
   walletTracker('wallet_tracker'),
@@ -268,7 +269,8 @@ enum AmplitudeEvents {
     'reflect_and_share_start_interview_clicked',
   ),
   reflectAndShareGuessOptionClicked('reflect_and_share_guess_option_clicked'),
-  reflectAndShareGuessTotalAttemptsUntilCorrect('reflect_and_share_guess_total_attempts_until_correct'),
+  reflectAndShareGuessTotalAttemptsUntilCorrect(
+      'reflect_and_share_guess_total_attempts_until_correct'),
   reflectAndShareQuitClicked(
     'reflect_and_share_quit_clicked',
   ),
