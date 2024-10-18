@@ -55,7 +55,7 @@ class _RandomAvatarState extends State<RandomAvatar> {
                   width: size.width * 0.25,
                   height: size.width * 0.25,
                   placeholderBuilder: (context) =>
-                      const CircularProgressIndicator(),
+                      const CustomCircularProgressIndicator(),
                 ),
               ),
               const Positioned(

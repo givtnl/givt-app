@@ -45,9 +45,14 @@ class _FunCounterState extends State<FunCounter> {
   @override
   void initState() {
     super.initState();
-    minAmount = widget.minAmount ?? (widget.canAmountBeZero ? 0 : 1);
     maxAmount = widget.maxAmount ?? maxAmount;
     _currentAmount = widget.initialAmount ?? 15;
+
+    minAmount = widget.minAmount ?? (widget.canAmountBeZero == true ? 0 : 1);
+    // If the min amount is less than 1 and the amount can't be zero, set it to 1
+    if (!widget.canAmountBeZero && minAmount < 1) {
+      minAmount = 1;
+    }
   }
 
   @override

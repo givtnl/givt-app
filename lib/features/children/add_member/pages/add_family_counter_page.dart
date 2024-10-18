@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/children/add_member/pages/family_member_form_page.dart';
-import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
+import 'package:givt_app/features/children/add_member/widgets/member_counter.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -38,7 +38,7 @@ class _AddFamilyCounterPageState extends State<AddFamilyCounterPage> {
             textAlign: TextAlign.center,
           ),
           const Spacer(),
-          SmileyCounter(totalCount: _amount - 1),
+          MemberCounter(totalCount: _amount - 1),
           const SizedBox(height: 24),
           FunCounter(
             currency: '',

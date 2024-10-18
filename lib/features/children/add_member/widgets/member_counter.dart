@@ -5,8 +5,8 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
-class SmileyCounter extends StatelessWidget {
-  const SmileyCounter({
+class MemberCounter extends StatelessWidget {
+  const MemberCounter({
     required this.totalCount,
     this.displayFamily = true,
     this.otherMembersIcons = const [],
@@ -27,14 +27,14 @@ class SmileyCounter extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (displayFamily) _buildFamilytIcons(context),
+        if (displayFamily) _buildFamilyIcons(context),
         ...otherMembersIcons,
         ...List.generate(placeholdercount, (_) => _buildSmileyIcon()),
       ],
     );
   }
 
-  Widget _buildFamilytIcons(BuildContext context) {
+  Widget _buildFamilyIcons(BuildContext context) {
     final familyMembersIcons = <Widget>[];
     return BlocBuilder<ProfilesCubit, ProfilesState>(
       builder: (context, state) {

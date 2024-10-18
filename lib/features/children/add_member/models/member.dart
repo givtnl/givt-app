@@ -8,8 +8,8 @@ class Member extends Equatable {
     this.age,
     this.dateOfBirth,
     this.allowance,
-    this.pictureURL,
-    this.pictureName,
+    this.profilePictureURL,
+    this.profilePictureName,
     this.key,
     this.type,
     this.email,
@@ -21,8 +21,8 @@ class Member extends Equatable {
         age = null,
         dateOfBirth = null,
         allowance = null,
-        pictureURL = null,
-        pictureName = null,
+        profilePictureURL = null,
+        profilePictureName = null,
         key = null,
         type = null,
         email = null;
@@ -35,8 +35,8 @@ class Member extends Equatable {
         allowance: (json['givingAllowance'] ?? 0) as int,
         type: ProfileType.getByTypeName((json['type'] ?? '') as String),
         email: (json['email'] ?? '').toString(),
-        pictureName: json['profilePicture'] as String?,
-        pictureURL: json['profilePictureUrl'] as String?,
+        profilePictureName: json['profilePicture'] as String?,
+        profilePictureURL: json['profilePictureUrl'] as String?,
       );
 
   final String? firstName;
@@ -44,8 +44,8 @@ class Member extends Equatable {
   final int? age;
   final DateTime? dateOfBirth;
   final int? allowance;
-  final String? pictureName;
-  final String? pictureURL;
+  final String? profilePictureName;
+  final String? profilePictureURL;
   final String? key;
   final ProfileType? type;
   final String? email;
@@ -59,7 +59,7 @@ class Member extends Equatable {
       'givingAllowance': allowance,
       'type': type?.name,
       'email': email,
-      'profilePicture': pictureName,
+      'profilePicture': profilePictureName,
     };
   }
 
@@ -75,7 +75,7 @@ class Member extends Equatable {
         allowance,
         type,
         email,
-        pictureURL,
-        pictureName,
+        profilePictureURL,
+        profilePictureName,
       ];
 }

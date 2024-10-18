@@ -9,12 +9,13 @@ import 'package:givt_app/features/children/add_member/models/member.dart';
 import 'package:givt_app/features/children/add_member/widgets/add_member_loading_page.dart';
 import 'package:givt_app/features/children/add_member/widgets/child_or_parent_selector.dart';
 import 'package:givt_app/features/children/add_member/widgets/family_member_form.dart';
-import 'package:givt_app/features/children/add_member/widgets/smiley_counter.dart';
+import 'package:givt_app/features/children/add_member/widgets/member_counter.dart';
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
 import 'package:givt_app/features/registration/widgets/random_avatar.dart';
@@ -66,15 +67,15 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
               age: int.parse(_ageController.text),
               dateOfBirth: dateOfBirth(),
               allowance: _amount,
-              pictureURL: avatar.pictureURL,
-              pictureName: avatar.fileName,
+              profilePictureURL: avatar.pictureURL,
+              profilePictureName: avatar.fileName,
               type: ProfileType.Child,
             )
           : Member(
               firstName: _nameController.text,
               email: _emailController.text,
-              pictureURL: avatar.pictureURL,
-              pictureName: avatar.fileName,
+              profilePictureURL: avatar.pictureURL,
+              profilePictureName: avatar.fileName,
               type: ProfileType.Parent,
             );
       return newMember;
@@ -124,13 +125,13 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                SmileyCounter(
+                MemberCounter(
                   totalCount: widget.totalCount,
                   index: widget.index,
                   otherMembersIcons: [
                     ...widget.membersToCombine.map(
                       (member) => _memberIcon(
-                        member.pictureURL ?? '',
+                        member.profilePictureURL ?? '',
                         member.firstName ?? '',
                       ),
                     ),
@@ -223,6 +224,8 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
             height: 32,
             width: 32,
             pictureURL,
+            placeholderBuilder: (context) =>
+                const CustomCircularProgressIndicator(),
           ),
           LabelMediumText(name),
         ],
