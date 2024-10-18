@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
-class MemberCounter extends StatelessWidget {
+class MemberCounter extends StatefulWidget {
   const MemberCounter({
     required this.totalCount,
     this.displayFamily = true,
@@ -20,15 +20,20 @@ class MemberCounter extends StatelessWidget {
   final int? index;
 
   @override
+  State<MemberCounter> createState() => _MemberCounterState();
+}
+
+class _MemberCounterState extends State<MemberCounter> {
+  @override
   Widget build(BuildContext context) {
-    final avatarsCount = index != null ? index! : 0;
-    final placeholdercount = totalCount - avatarsCount;
+    final avatarsCount = widget.index != null ? widget.index! : 0;
+    final placeholdercount = widget.totalCount - avatarsCount;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (displayFamily) _buildFamilyIcons(context),
-        ...otherMembersIcons,
+        if (widget.displayFamily) _buildFamilyIcons(context),
+        ...widget.otherMembersIcons,
         ...List.generate(placeholdercount, (_) => _buildSmileyIcon()),
       ],
     );
@@ -73,5 +78,11 @@ class MemberCounter extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: defaultHero(width: 32, height: 32),
     );
+  }
+
+  @override
+  void initState() {
+    context.read<ProfilesCubit>().refresh();
+    super.initState();
   }
 }

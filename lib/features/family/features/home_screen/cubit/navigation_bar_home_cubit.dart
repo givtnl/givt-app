@@ -97,7 +97,6 @@ class NavigationBarHomeCubit
       return;
     } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
-      unawaited(_profilesRepository.refreshProfiles());
     } else if (await shouldShowPreferredChurchModal()) {
       await setPreferredChurchModalShown();
       emitCustom(const NavigationBarHomeCustom.showPreferredChurchDialog());
