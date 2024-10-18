@@ -59,7 +59,10 @@ class Member extends Equatable {
       'givingAllowance': allowance,
       'type': type?.name,
       'email': email,
-      'profilePicture': profilePictureName,
+      'profilePicture':
+          (profilePictureName == null || profilePictureName!.isEmpty)
+              ? null
+              : profilePictureName,
     };
   }
 
