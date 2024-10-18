@@ -56,6 +56,7 @@ class RecommendationsListWidget extends StatelessWidget {
               isActOfService: uiModel.showActsOfService,
               organisation: recommendation,
               onDonateClicked: () => onRecommendationChosen?.call(index),
+              userName: uiModel.name,
             );
           },
         ),
