@@ -204,7 +204,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
       // do nothing, screen is already showing
     } else {
       _isShowingSetupFamily = true;
-      await AddMemberUtil.addMemberPushPages(context);
+      await AddMemberUtil.addFamilyPushPages(context);
       _isShowingSetupFamily = false;
     }
   }

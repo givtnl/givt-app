@@ -14,6 +14,7 @@ class FunCounter extends StatefulWidget {
     this.initialAmount,
     this.onAmountChanged,
     this.maxAmount,
+    this.minAmount,
     this.canAmountBeZero = false,
     super.key,
   });
@@ -21,6 +22,7 @@ class FunCounter extends StatefulWidget {
   final String? currency;
   final int? initialAmount;
   final int? maxAmount;
+  final int? minAmount;
   final void Function(int amount)? onAmountChanged;
   final bool canAmountBeZero;
 
@@ -34,7 +36,7 @@ class _FunCounterState extends State<FunCounter> {
   static const int holdDownDuration2 = 2000;
   static const int amountIncrement = 5;
   static const int amountIncrement2 = 10;
-  static late int minAmount;
+  int minAmount = 0;
   int maxAmount = 999;
   late int _currentAmount;
   Timer? _timer;
@@ -43,9 +45,14 @@ class _FunCounterState extends State<FunCounter> {
   @override
   void initState() {
     super.initState();
-    minAmount = widget.canAmountBeZero ? 0 : 1;
     maxAmount = widget.maxAmount ?? maxAmount;
     _currentAmount = widget.initialAmount ?? 15;
+
+    minAmount = widget.minAmount ?? (widget.canAmountBeZero == true ? 0 : 1);
+    // If the min amount is less than 1 and the amount can't be zero, set it to 1
+    if (!widget.canAmountBeZero && minAmount < 1) {
+      minAmount = 1;
+    }
   }
 
   @override
