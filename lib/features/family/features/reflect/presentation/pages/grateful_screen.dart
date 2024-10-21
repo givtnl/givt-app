@@ -20,7 +20,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
@@ -102,7 +102,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
             ),
             body: Column(
               children: [
-                GratefulAvatarBar(
+                AvatarBar(
                   backgroundColor: FamilyAppTheme.primary99,
                   uiModel: uiModel.avatarBarUIModel,
                   onAvatarTapped: _cubit.onAvatarTapped,
@@ -157,9 +157,18 @@ class _GratefulScreenState extends State<GratefulScreen> {
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
-      EmptyWalletBottomSheet.show(context);
+      EmptyWalletBottomSheet.show(context, () {
+        _pushChooseAmountSliderScreen(context, profile);
+      });
       return;
     }
+    await _pushChooseAmountSliderScreen(context, profile);
+  }
+
+  Future<void> _pushChooseAmountSliderScreen(
+    BuildContext context,
+    GameProfile profile,
+  ) async {
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) =>

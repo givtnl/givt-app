@@ -44,12 +44,12 @@ class GratitudeSelectionWidget extends StatelessWidget {
       body: Column(
         children: [
           const TitleMediumText(
-            'What was the superhero grateful for?',
+            'What were you grateful for today?',
             color: FamilyAppTheme.primary30,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
-          const BodyMediumText('Choose one that fits the best'),
+          const BodyMediumText('Pick one'),
           const SizedBox(height: 24),
           LayoutGrid(
             columnSizes: [1.fr, 1.fr],

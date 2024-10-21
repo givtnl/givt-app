@@ -103,7 +103,11 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
               onTap: onClick ??
                   () {
                     if (!isDonateButtonActive) {
-                      EmptyWalletBottomSheet.show(context);
+                      EmptyWalletBottomSheet.show(
+                        context,
+                        () => context.pushNamed(
+                            FamilyPages.familyChooseAmountSlider.name),
+                      );
                       return;
                     }
                     context

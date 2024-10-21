@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_top_app_bar.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/title_large_text.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
@@ -58,10 +58,10 @@ class FamilyHomeOverlay extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                GratefulAvatarBar(
+                AvatarBar(
                   circleSize: 58,
                   textColor: Colors.white,
-                  uiModel: GratefulAvatarBarUIModel(
+                  uiModel: AvatarBarUIModel(
                     avatarUIModels: uiModel.avatars,
                   ),
                   onAvatarTapped: onAvatarTapped,

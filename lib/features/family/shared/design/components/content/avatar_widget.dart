@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 
-class GratefulAvatar extends StatelessWidget {
-  const GratefulAvatar(
+class AvatarWidget extends StatelessWidget {
+  const AvatarWidget(
       {required this.uiModel,
       required this.onTap,
       this.circleSize = 64,
       this.textColor,
       super.key});
 
-  final GratefulAvatarUIModel uiModel;
+  final AvatarUIModel uiModel;
   final void Function() onTap;
   final double circleSize;
   final Color? textColor;

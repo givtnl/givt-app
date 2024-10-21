@@ -1,7 +1,7 @@
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 
 class GameProfile {
   GameProfile({
@@ -32,11 +32,11 @@ class GameProfile {
 
   Reporter? get reporterRole => roles.whereType<Reporter>().firstOrNull;
 
-  GratefulAvatarUIModel toGratefulAvatarUIModel({
+  AvatarUIModel toAvatarUIModel({
     bool isSelected = false,
     bool hasDonated = false,
   }) {
-    return GratefulAvatarUIModel(
+    return AvatarUIModel(
       hasDonated: hasDonated,
       isSelected: isSelected,
       avatarUrl: pictureURL!,
