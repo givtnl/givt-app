@@ -1,18 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/config/app_config.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/interview_cubit.dart';
+import 'package:givt_app/features/family/features/reflect/presentation/models/interview_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/interview_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/record_timer.dart';
 import 'package:givt_app/features/family/helpers/vibrator.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
+import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';
@@ -28,8 +31,10 @@ class RecordAnswerScreen extends StatefulWidget {
 }
 
 class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
-  _RecordAnswerScreenState({int startSeconds = 60})
-      : _remainingSeconds = startSeconds;
+  _RecordAnswerScreenState() : _remainingSeconds = startSeconds;
+
+  static const int startSeconds = 60;
+
   Timer? _timer;
   int _remainingSeconds;
   InterviewCubit cubit = getIt<InterviewCubit>();
@@ -94,71 +99,83 @@ class _RecordAnswerScreenState extends State<RecordAnswerScreen> {
     super.dispose();
   }
 
+  void _resetTimer() {
+    _remainingSeconds = startSeconds;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FunScaffold(
-      canPop: false,
-      appBar: FunTopAppBar.primary99(
-        title: widget.uiModel.reporter.firstName!,
-        leading: Padding(
-          padding: const EdgeInsets.all(8),
-          child: SvgPicture.network(
-            widget.uiModel.reporter.pictureURL!,
-            width: 36,
-            height: 36,
+    return BlocListener(
+      bloc: cubit,
+      listener: (BuildContext context, state) {
+        if (state is CustomState && state.custom is ResetTimer) {
+          _resetTimer();
+        }
+      },
+      child: FunScaffold(
+        canPop: false,
+        appBar: FunTopAppBar.primary99(
+          title: widget.uiModel.reporter.firstName!,
+          leading: Padding(
+            padding: const EdgeInsets.all(8),
+            child: SvgPicture.network(
+              widget.uiModel.reporter.pictureURL!,
+              width: 36,
+              height: 36,
+            ),
           ),
+          actions: const [
+            LeaveGameButton(),
+          ],
         ),
-        actions: const [
-          LeaveGameButton(),
-        ],
-      ),
-      body: Column(
-        children: [
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: TitleMediumText(
-              widget.uiModel.question,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          const Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppTheme.generosityChallangeCardBorder,
-                width: 2,
+        body: Column(
+          children: [
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: TitleMediumText(
+                widget.uiModel.question,
+                textAlign: TextAlign.center,
               ),
-              borderRadius: BorderRadius.circular(20),
-              color: AppTheme.generosityChallangeCardBackground,
             ),
-            child: Column(
-              children: [
-                const SizedBox(height: 16),
-                RecordTimerWidget(
-                  seconds: _displaySeconds(),
-                  minutes: _displayMinutes(),
-                  showRedVersion: _isLastTenSeconds(),
+            const Spacer(),
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: AppTheme.generosityChallangeCardBorder,
+                  width: 2,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: FunButton(
-                    rightIcon: FontAwesomeIcons.arrowRight,
-                    onTap: () {
-                      cubit.advanceToNext();
-                    },
-                    text: widget.uiModel.buttonText,
-                    analyticsEvent: AnalyticsEvent(
-                      AmplitudeEvents.reflectAndShareNextJournalistClicked,
+                borderRadius: BorderRadius.circular(20),
+                color: AppTheme.generosityChallangeCardBackground,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 16),
+                  RecordTimerWidget(
+                    seconds: _displaySeconds(),
+                    minutes: _displayMinutes(),
+                    showRedVersion: _isLastTenSeconds(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: FunButton(
+                      rightIcon: FontAwesomeIcons.arrowRight,
+                      onTap: () {
+                        cubit.advanceToNext();
+                      },
+                      text: widget.uiModel.buttonText,
+                      analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.reflectAndShareNextJournalistClicked,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-              ],
+                  const SizedBox(height: 24),
+                ],
+              ),
             ),
-          ),
-          const Spacer(),
-        ],
+            const Spacer(),
+          ],
+        ),
       ),
     );
   }

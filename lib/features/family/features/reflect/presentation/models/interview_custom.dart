@@ -8,6 +8,12 @@ sealed class InterviewCustom {
 
   const factory InterviewCustom.goToGratitudeSelection(
       {required GameProfile reporter}) = GratitudeSelection;
+
+  const factory InterviewCustom.resetTimer() = ResetTimer;
+}
+
+class ResetTimer extends InterviewCustom {
+  const ResetTimer();
 }
 
 class PassThePhoneToSidekick extends InterviewCustom {

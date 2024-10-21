@@ -59,6 +59,8 @@ class _InterviewScreenState extends State<InterviewScreen> {
         Navigator.of(context).pushReplacement(
           GratitudeSelectionScreen(reporter: data.reporter).toRoute(context),
         );
+      case ResetTimer():
+      //do nothing here
     }
   }
 }
