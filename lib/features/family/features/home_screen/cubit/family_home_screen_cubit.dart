@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -59,7 +59,7 @@ class FamilyHomeScreenCubit
     return FamilyHomeScreenUIModel(
       avatars: profiles
           .map(
-            (e) => GratefulAvatarUIModel(
+            (e) => AvatarUIModel(
               avatarUrl: e.pictureURL,
               text: e.firstName,
             ),

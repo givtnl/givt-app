@@ -20,7 +20,7 @@ import 'package:givt_app/features/family/features/reflect/domain/models/game_pro
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/summary_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/finish_reflection_dialog.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar_bar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_loading.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/leave_game_button.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/widgets/recommendations_widget.dart';
@@ -102,7 +102,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
             ),
             body: Column(
               children: [
-                GratefulAvatarBar(
+                AvatarBar(
                   backgroundColor: FamilyAppTheme.primary99,
                   uiModel: uiModel.avatarBarUIModel,
                   onAvatarTapped: _cubit.onAvatarTapped,

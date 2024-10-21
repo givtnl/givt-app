@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/widgets/grateful_avatar.dart';
+import 'package:givt_app/features/family/shared/design/components/content/avatar_widget.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 
-class GratefulAvatarBar extends StatelessWidget {
-  const GratefulAvatarBar({
+class AvatarBar extends StatelessWidget {
+  const AvatarBar({
     required this.uiModel,
     required this.onAvatarTapped,
     this.backgroundColor = Colors.transparent,
@@ -12,7 +12,7 @@ class GratefulAvatarBar extends StatelessWidget {
     super.key,
   });
 
-  final GratefulAvatarBarUIModel uiModel;
+  final AvatarBarUIModel uiModel;
   final void Function(int index) onAvatarTapped;
   final Color backgroundColor;
   final double circleSize;
@@ -32,7 +32,7 @@ class GratefulAvatarBar extends StatelessWidget {
             final avatarUIModel = uiModel.avatarUIModels[index];
             return Padding(
               padding: const EdgeInsets.only(right: 24),
-              child: GratefulAvatar(
+              child: AvatarWidget(
                 uiModel: avatarUIModel,
                 onTap: () => onAvatarTapped(index),
                 circleSize: circleSize,
