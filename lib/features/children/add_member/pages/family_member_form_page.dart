@@ -207,9 +207,31 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
             color: AppTheme.primary80,
           );
         }
-        return _memberIcon(
-          state.getAvatarByKey(widget.index.toString()).pictureURL,
-          _nameController.text,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppTheme.primary80,
+                    width: 4,
+                  ),
+                ),
+                child: SvgPicture.network(
+                  height: 28,
+                  width: 28,
+                  state.getAvatarByKey(widget.index.toString()).pictureURL,
+                  placeholderBuilder: (context) => const SizedBox(
+                    height: 32,
+                    width: 32,
+                    child: CustomCircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -224,8 +246,7 @@ class _FamilyMemberFormPageState extends State<FamilyMemberFormPage> {
             height: 32,
             width: 32,
             pictureURL,
-            placeholderBuilder: (context) =>
-                const CustomCircularProgressIndicator(),
+            placeholderBuilder: (context) => const CircularProgressIndicator(),
           ),
           LabelMediumText(name),
         ],
