@@ -6,7 +6,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
@@ -95,14 +95,14 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   void _emitData() {
     emitData(
       GratefulUIModel(
-        avatarBarUIModel: GratefulAvatarBarUIModel(
+        avatarBarUIModel: AvatarBarUIModel(
           avatarUIModels: _profiles
               .mapIndexed(
                 (
                   index,
                   profile,
                 ) =>
-                    profile.toGratefulAvatarUIModel(
+                    profile.toAvatarUIModel(
                   isSelected: index == _currentProfileIndex,
                   hasDonated: _profilesThatDonated.contains(profile),
                 ),

@@ -1,5 +1,5 @@
-class GratefulAvatarUIModel {
-  GratefulAvatarUIModel({
+class AvatarUIModel {
+  AvatarUIModel({
     required this.avatarUrl,
     required this.text,
     this.isSelected = false,
