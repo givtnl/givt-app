@@ -61,68 +61,71 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GiveBloc, GiveState>(
-      bloc: _give,
-      listener: (context, state) {
-        final userGUID = context.read<AuthCubit>().state.user.guid;
-        if (state.status == GiveStatus.success) {
-          _give.add(
-            GiveOrganisationSelected(
-              nameSpace: _medium.state.mediumId,
-              userGUID: userGUID,
-            ),
-          );
-        }
-        if (state.status == GiveStatus.readyToGive) {
-          // we assume the parent confirms on browser
-          _handleParentBrowser(userGUID);
-        }
-        if (state.status == GiveStatus.error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(context.l10n.somethingWentWrong),
-            ),
-          );
-        }
-      },
-      child: BaseStateConsumer(
-        cubit: _cubit,
-        onCustom: _handleCustom,
-        onLoading: (context) => const GratefulLoading(),
-        onData: (context, uiModel) {
-          return FunScaffold(
-            withSafeArea: false,
-            appBar: FunTopAppBar(
-              title: 'Share your gratitude',
-              actions: [
-                LeaveGameButton(
-                  onPressed: () => const FinishReflectionDialog().show(context),
-                ),
-              ],
-            ),
-            body: Column(
-              children: [
-                AvatarBar(
-                  backgroundColor: FamilyAppTheme.primary99,
-                  uiModel: uiModel.avatarBarUIModel,
-                  onAvatarTapped: _cubit.onAvatarTapped,
-                ),
-                const SizedBox(height: 24),
-                Flexible(
-                  child: RecommendationsWidget(
-                    uiModel: uiModel.recommendationsUIModel,
-                    onRecommendationChosen: (int i) {
-                      _cubit.onRecommendationChosen(i);
-                      context.pop();
-                    },
-                    onSelectionChanged: _cubit.onSelectionChanged,
-                    onTapRetry: _cubit.onRetry,
-                  ),
-                ),
-              ],
-            ),
-          );
+    return PopScope(
+      canPop: false,
+      child: BlocListener<GiveBloc, GiveState>(
+        bloc: _give,
+        listener: (context, state) {
+          final userGUID = context.read<AuthCubit>().state.user.guid;
+          if (state.status == GiveStatus.success) {
+            _give.add(
+              GiveOrganisationSelected(
+                nameSpace: _medium.state.mediumId,
+                userGUID: userGUID,
+              ),
+            );
+          }
+          if (state.status == GiveStatus.readyToGive) {
+            // we assume the parent confirms on browser
+            _handleParentBrowser(userGUID);
+          }
+          if (state.status == GiveStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(context.l10n.somethingWentWrong),
+              ),
+            );
+          }
         },
+        child: BaseStateConsumer(
+          cubit: _cubit,
+          onCustom: _handleCustom,
+          onLoading: (context) => const GratefulLoading(),
+          onData: (context, uiModel) {
+            return FunScaffold(
+              withSafeArea: false,
+              appBar: FunTopAppBar(
+                title: 'Share your gratitude',
+                actions: [
+                  LeaveGameButton(
+                    onPressed: () => const FinishReflectionDialog().show(context),
+                  ),
+                ],
+              ),
+              body: Column(
+                children: [
+                  AvatarBar(
+                    backgroundColor: FamilyAppTheme.primary99,
+                    uiModel: uiModel.avatarBarUIModel,
+                    onAvatarTapped: _cubit.onAvatarTapped,
+                  ),
+                  const SizedBox(height: 24),
+                  Flexible(
+                    child: RecommendationsWidget(
+                      uiModel: uiModel.recommendationsUIModel,
+                      onRecommendationChosen: (int i) {
+                        _cubit.onRecommendationChosen(i);
+                        context.pop();
+                      },
+                      onSelectionChanged: _cubit.onSelectionChanged,
+                      onTapRetry: _cubit.onRetry,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
