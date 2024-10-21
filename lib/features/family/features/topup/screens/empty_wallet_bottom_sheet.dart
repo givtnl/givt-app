@@ -15,8 +15,8 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
 class EmptyWalletBottomSheet extends StatelessWidget {
-  const EmptyWalletBottomSheet({super.key});
-
+  const EmptyWalletBottomSheet({required this.afterSuccessAction, super.key});
+  final VoidCallback afterSuccessAction;
   @override
   Widget build(BuildContext context) {
     return FunBottomSheet(
@@ -44,7 +44,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
                 EnterDetailsBottomSheet.show(context);
                 return;
               }
-              TopupWalletBottomSheet.show(context);
+              TopupWalletBottomSheet.show(context, afterSuccessAction);
             }),
           );
         },
@@ -64,7 +64,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context) {
+  static void show(BuildContext context, VoidCallback afterSuccessAction) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -72,7 +72,9 @@ class EmptyWalletBottomSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => const EmptyWalletBottomSheet(),
+      builder: (context) => EmptyWalletBottomSheet(
+        afterSuccessAction: afterSuccessAction,
+      ),
     );
   }
 }

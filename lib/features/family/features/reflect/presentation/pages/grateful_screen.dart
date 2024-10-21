@@ -157,9 +157,18 @@ class _GratefulScreenState extends State<GratefulScreen> {
     final profiles = context.read<ProfilesCubit>();
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
-      EmptyWalletBottomSheet.show(context);
+      EmptyWalletBottomSheet.show(context, () {
+        _pushChooseAmountSliderScreen(context, profile);
+      });
       return;
     }
+    await _pushChooseAmountSliderScreen(context, profile);
+  }
+
+  Future<void> _pushChooseAmountSliderScreen(
+    BuildContext context,
+    GameProfile profile,
+  ) async {
     await Navigator.of(context).push(
       BlocProvider(
         create: (BuildContext context) =>

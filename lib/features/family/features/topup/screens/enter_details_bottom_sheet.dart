@@ -32,7 +32,9 @@ class EnterDetailsBottomSheet extends StatelessWidget {
               context,
               onClose: () {
                 Navigator.of(context).pop();
-                TopupWalletBottomSheet.show(context);
+                TopupWalletBottomSheet.show(context, () {
+                  //TODO: KIDS-1577
+                });
               },
             );
           }),

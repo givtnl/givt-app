@@ -33,6 +33,22 @@ class CreateTransactionCubit extends Cubit<CreateTransactionState> {
     );
   }
 
+  Future<void> fetchActiveProfileBalance() async {
+    emit(
+      const CreateTransactionUploadingState(
+        amount: 0,
+        maxAmount: 0,
+      ),
+    );
+    await _profilesCubit.fetchAllProfiles();
+    emit(
+      CreateTransactionChooseAmountState(
+        amount: state.amount,
+        maxAmount: _profilesCubit.state.activeProfile.wallet.balance,
+      ),
+    );
+  }
+
   Future<void> createTransaction({required Transaction transaction}) async {
     emit(
       CreateTransactionUploadingState(
