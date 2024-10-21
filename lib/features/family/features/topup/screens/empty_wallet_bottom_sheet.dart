@@ -41,7 +41,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
               final isMissingCardDetails =
                   context.read<AuthCubit>().state.user.isMissingcardDetails;
               if (isMissingCardDetails) {
-                EnterDetailsBottomSheet.show(context);
+                EnterDetailsBottomSheet.show(context, afterSuccessAction);
                 return;
               }
               TopupWalletBottomSheet.show(context, afterSuccessAction);

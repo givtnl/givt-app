@@ -10,8 +10,8 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class EnterDetailsBottomSheet extends StatelessWidget {
-  const EnterDetailsBottomSheet({super.key});
-
+  const EnterDetailsBottomSheet({required this.onSuccess, super.key});
+  final VoidCallback onSuccess;
   @override
   Widget build(BuildContext context) {
     final name =
@@ -32,9 +32,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
               context,
               onClose: () {
                 Navigator.of(context).pop();
-                TopupWalletBottomSheet.show(context, () {
-                  //TODO: KIDS-1577
-                });
+                TopupWalletBottomSheet.show(context, onSuccess);
               },
             );
           }),
@@ -44,7 +42,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context) {
+  static void show(BuildContext context, VoidCallback onSuccess) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -52,7 +50,9 @@ class EnterDetailsBottomSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => const EnterDetailsBottomSheet(),
+      builder: (context) => EnterDetailsBottomSheet(
+        onSuccess: onSuccess,
+      ),
     );
   }
 }
