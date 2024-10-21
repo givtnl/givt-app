@@ -50,12 +50,7 @@ class CreateTransactionCubit extends Cubit<CreateTransactionState> {
   }
 
   Future<void> createTransaction({required Transaction transaction}) async {
-    emit(
-      CreateTransactionUploadingState(
-        amount: state.amount,
-        maxAmount: state.maxAmount,
-      ),
-    );
+    emit(const CreateTransactionLoadingState());
 
     try {
       await _createTransactionRepository.createTransaction(
