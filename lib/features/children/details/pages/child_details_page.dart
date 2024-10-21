@@ -174,7 +174,7 @@ class ChildDetailsPage extends StatelessWidget {
                                   .isMissingcardDetails) {
                                 CreditCardDetails.show(
                                   context,
-                                  onClose: () {
+                                  onSuccess: () {
                                     _navigateToEditAllowanceScreen(
                                       context,
                                       state.profileDetails.wallet
@@ -212,7 +212,7 @@ class ChildDetailsPage extends StatelessWidget {
                                   .isMissingcardDetails) {
                                 CreditCardDetails.show(
                                   context,
-                                  onClose: () =>
+                                  onSuccess: () =>
                                       _navigateToTopUpScreen(context),
                                 );
                                 return;

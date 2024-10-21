@@ -30,7 +30,7 @@ class EnterDetailsBottomSheet extends StatelessWidget {
           onTap: () {
             CreditCardDetails.show(
               context,
-              onClose: () {
+              onSuccess: () {
                 Navigator.of(context).pop();
                 TopupWalletBottomSheet.show(context, onSuccess);
               },

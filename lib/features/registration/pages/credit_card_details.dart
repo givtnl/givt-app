@@ -18,17 +18,19 @@ import 'package:go_router/go_router.dart';
 class CreditCardDetails extends StatefulWidget {
   const CreditCardDetails({
     this.shrink = false,
+    required this.onSuccess,
     super.key,
   });
 
   final bool shrink;
+  final VoidCallback onSuccess;
 
   @override
   State<CreditCardDetails> createState() => _CreditCardDetailsState();
 
   static void show(
     BuildContext context, {
-    required VoidCallback onClose,
+    required VoidCallback onSuccess,
     bool shrink = true,
   }) {
     showModalBottomSheet<void>(
@@ -40,10 +42,9 @@ class CreditCardDetails extends StatefulWidget {
       backgroundColor: Colors.white,
       builder: (context) => CreditCardDetails(
         shrink: shrink,
+        onSuccess: onSuccess,
       ),
-    ).then((value) {
-      onClose.call();
-    });
+    );
   }
 }
 
@@ -63,6 +64,7 @@ class _CreditCardDetailsState extends State<CreditCardDetails> {
         listener: (context, state) {
           if (state.status == RegistrationStatus.success) {
             context.pop();
+            widget.onSuccess();
           }
         },
         child: BlocConsumer<StripeCubit, StripeState>(

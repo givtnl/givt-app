@@ -115,7 +115,7 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
     if (context.read<AuthCubit>().state.user.isMissingcardDetails) {
       CreditCardDetails.show(
         context,
-        onClose: () => Navigator.of(context).pop(_amount),
+        onSuccess: () => Navigator.of(context).pop(_amount),
       );
       return;
     }
