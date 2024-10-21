@@ -105,8 +105,9 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                     if (!isDonateButtonActive) {
                       EmptyWalletBottomSheet.show(
                         context,
-                        () => context.pushNamed(
-                            FamilyPages.familyChooseAmountSlider.name),
+                        () {
+                          _refreshUserAndNavigate(context);
+                        },
                       );
                       return;
                     }
@@ -129,5 +130,15 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _refreshUserAndNavigate(BuildContext context) async {
+    await context.read<ProfilesCubit>().fetchAllProfiles();
+    if (!context.mounted) {
+      throw Exception('Context not mounted');
+    }
+    context
+      ..pop()
+      ..pushNamed(FamilyPages.familyChooseAmountSlider.name);
   }
 }
