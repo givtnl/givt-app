@@ -18,29 +18,27 @@ class StageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
+    return FunScaffold(
       canPop: false,
-      child: FunScaffold(
-        withSafeArea: false,
-        appBar: const FunTopAppBar(
-          title: '',
-          actions: [LeaveGameButton()],
-        ),
-        body: Container(
-          decoration: const BoxDecoration(
-            color: FamilyAppTheme.primary99,
-            image: DecorationImage(
-              image: AssetImage('assets/family/images/stage_background.png'),
-              fit: BoxFit.fitWidth,
-            ),
+      withSafeArea: false,
+      appBar: const FunTopAppBar(
+        title: '',
+        actions: [LeaveGameButton()],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          color: FamilyAppTheme.primary99,
+          image: DecorationImage(
+            image: AssetImage('assets/family/images/stage_background.png'),
+            fit: BoxFit.fitWidth,
           ),
         ),
-        floatingActionButton: FunButton(
-            onTap: () => onClickButton(context),
-            text: buttonText,
-            analyticsEvent:
-                AnalyticsEvent(AmplitudeEvents.reflectAndShareStartClicked)),
       ),
+      floatingActionButton: FunButton(
+          onTap: () => onClickButton(context),
+          text: buttonText,
+          analyticsEvent:
+              AnalyticsEvent(AmplitudeEvents.reflectAndShareStartClicked)),
     );
   }
 }
