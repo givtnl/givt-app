@@ -5,11 +5,12 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
-class SliderWidget extends StatelessWidget {
+class SliderWidget extends StatefulWidget {
   const SliderWidget(
     this.currentAmount,
     this.maxAmount, {
@@ -19,21 +20,57 @@ class SliderWidget extends StatelessWidget {
   final double maxAmount;
 
   @override
+  State<SliderWidget> createState() => _SliderWidgetState();
+}
+
+class _SliderWidgetState extends State<SliderWidget> {
+  int autoRetry = 0;
+  bool isRetrying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    autoRetry = 0;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (widget.maxAmount == 0 && !isRetrying && autoRetry < 1) {
+      _retry();
+    }
+  }
+
+  Future<void> _retry() async {
+    setState(() {
+      isRetrying = true;
+    });
+    await context.read<CreateTransactionCubit>().fetchActiveProfileBalance();
+    setState(() {
+      isRetrying = false;
+      autoRetry++;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (maxAmount == 0) {
+    if (widget.maxAmount == 0) {
+      if (isRetrying) {
+        return const CustomCircularProgressIndicator();
+      }
       return RetryErrorWidget(
-          errorText:
-              'Oops, we could not fetch the balance. Please try again in a few seconds.',
-          onTapPrimaryButton: () {
-            context.read<CreateTransactionCubit>().fetchActiveProfileBalance();
-          });
+        errorText:
+            'Oops, we could not fetch the balance. Please try again in a few seconds.',
+        onTapPrimaryButton: _retry,
+      );
     }
     return Column(
       children: [
         Container(
           alignment: Alignment.center,
           child: HeadlineLargeText(
-            '\$${currentAmount.round()}',
+            '\$${widget.currentAmount.round()}',
           ),
         ),
         SliderTheme(
@@ -51,9 +88,9 @@ class SliderWidget extends StatelessWidget {
             disabledThumbColor: FamilyAppTheme.secondary30,
           ),
           child: Slider(
-            value: currentAmount,
-            max: maxAmount,
-            divisions: maxAmount.round(),
+            value: widget.currentAmount,
+            max: widget.maxAmount,
+            divisions: widget.maxAmount.round(),
             onChanged: (value) {
               HapticFeedback.lightImpact();
               context.read<ScanNfcCubit>().stopScanningSession();
@@ -79,7 +116,7 @@ class SliderWidget extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '\$${maxAmount.round()}',
+                '\$${widget.maxAmount.round()}',
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             ],
