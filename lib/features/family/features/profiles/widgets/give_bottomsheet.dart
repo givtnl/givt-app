@@ -55,22 +55,13 @@ class GiveBottomSheet extends StatelessWidget {
                         ),
                         onTap: () {
                           if (profile.wallet.balance == 0) {
-                            showEmptyWalletBottomSheet(context);
+                            showEmptyWalletBottomSheet(context, () {
+                              context.pop();
+                              _familyGoalTapped(context, state);
+                            });
                             return;
                           }
-
-                          context.pop();
-                          context.read<FlowsCubit>().startFamilyGoalFlow();
-                          final generatedMediumId = base64
-                              .encode(state.familyGoal.mediumId.codeUnits);
-                          context
-                              .read<CollectGroupDetailsCubit>()
-                              .getOrganisationDetails(generatedMediumId);
-                          final group = state.getGoalGroup(state.familyGoal);
-                          context.pushNamed(
-                            FamilyPages.chooseAmountSliderGoal.name,
-                            extra: group,
-                          );
+                          _familyGoalTapped(context, state);
                         },
                       ),
                     ),
@@ -98,14 +89,13 @@ class GiveBottomSheet extends StatelessWidget {
                         ),
                         onTap: () {
                           if (profile.wallet.balance == 0) {
-                            showEmptyWalletBottomSheet(context);
+                            showEmptyWalletBottomSheet(context, () {
+                              context.pop();
+                              _coinTapped(context);
+                            });
                             return;
                           }
-
-                          context
-                            ..pop()
-                            ..pushNamed(FamilyPages.scanNFC.name);
-                          context.read<FlowsCubit>().startInAppCoinFlow();
+                          _coinTapped(context);
                         },
                       ),
                     ),
@@ -123,12 +113,13 @@ class GiveBottomSheet extends StatelessWidget {
                       ),
                       onTap: () {
                         if (profile.wallet.balance == 0) {
-                          showEmptyWalletBottomSheet(context);
+                          showEmptyWalletBottomSheet(context, () {
+                            context.pop();
+                            _qrCodeTapped(context);
+                          });
                           return;
                         }
-
-                        context.pushNamed(FamilyPages.camera.name);
-                        context.read<FlowsCubit>().startInAppQRCodeFlow();
+                        _qrCodeTapped(context);
                       },
                     ),
                   ),
@@ -170,8 +161,35 @@ class GiveBottomSheet extends StatelessWidget {
     );
   }
 
-  void showEmptyWalletBottomSheet(BuildContext context) {
+  void _familyGoalTapped(BuildContext context, ImpactGroupsState state) {
     context.pop();
-    EmptyWalletBottomSheet.show(context);
+    context.read<FlowsCubit>().startFamilyGoalFlow();
+    final generatedMediumId =
+        base64.encode(state.familyGoal.mediumId.codeUnits);
+    context
+        .read<CollectGroupDetailsCubit>()
+        .getOrganisationDetails(generatedMediumId);
+    final group = state.getGoalGroup(state.familyGoal);
+    context.pushNamed(
+      FamilyPages.chooseAmountSliderGoal.name,
+      extra: group,
+    );
+  }
+
+  void _coinTapped(BuildContext context) {
+    context
+      ..pop()
+      ..pushNamed(FamilyPages.scanNFC.name);
+    context.read<FlowsCubit>().startInAppCoinFlow();
+  }
+
+  void _qrCodeTapped(BuildContext context) {
+    context.pushNamed(FamilyPages.camera.name);
+    context.read<FlowsCubit>().startInAppQRCodeFlow();
+  }
+
+  void showEmptyWalletBottomSheet(
+      BuildContext context, VoidCallback afterPopAction) {
+    EmptyWalletBottomSheet.show(context, afterPopAction);
   }
 }

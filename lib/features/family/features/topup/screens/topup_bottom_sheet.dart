@@ -7,11 +7,11 @@ import 'package:givt_app/features/family/features/topup/screens/topup_loading_bo
 import 'package:givt_app/features/family/features/topup/screens/topup_success_bottom_sheet.dart';
 
 class TopupWalletBottomSheet extends StatefulWidget {
-  const TopupWalletBottomSheet({super.key});
-
+  const TopupWalletBottomSheet({required this.onTopupSuccess, super.key});
+  final VoidCallback onTopupSuccess;
   @override
   State<TopupWalletBottomSheet> createState() => _TopupWalletBottomSheetState();
-  static void show(BuildContext context) {
+  static void show(BuildContext context, VoidCallback onTopupSuccess) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -19,7 +19,9 @@ class TopupWalletBottomSheet extends StatefulWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => const TopupWalletBottomSheet(),
+      builder: (context) => TopupWalletBottomSheet(
+        onTopupSuccess: onTopupSuccess,
+      ),
     );
   }
 }
@@ -37,7 +39,7 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
           SuccessState() => TopupSuccessBottomSheet(
               topupAmount: state.amount,
               recurring: state.recurring,
-            ),
+              onSuccess: widget.onTopupSuccess),
           ErrorState() => const TopupErrorBottomSheet(),
         };
       },

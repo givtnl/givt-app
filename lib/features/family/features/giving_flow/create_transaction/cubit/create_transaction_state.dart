@@ -24,6 +24,13 @@ class CreateTransactionUploadingState extends CreateTransactionState {
   });
 }
 
+class CreateTransactionLoadingState extends CreateTransactionState {
+  const CreateTransactionLoadingState({
+    super.amount = 0,
+    super.maxAmount = 0,
+  });
+}
+
 class CreateTransactionSuccessState extends CreateTransactionState {
   const CreateTransactionSuccessState({
     required super.amount,
