@@ -19,6 +19,7 @@ class StageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       withSafeArea: false,
       appBar: const FunTopAppBar(
         title: '',

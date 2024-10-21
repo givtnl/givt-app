@@ -31,6 +31,7 @@ class _SummaryScreenState extends State<SummaryScreen> {
   @override
   Widget build(BuildContext context) {
     return FunScaffold(
+      canPop: false,
       appBar: const FunTopAppBar(
         title: 'Awesome work heroes!',
       ),
