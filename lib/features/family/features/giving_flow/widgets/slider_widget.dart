@@ -28,9 +28,15 @@ class _SliderWidgetState extends State<SliderWidget> {
   bool isRetrying = false;
 
   @override
+  void initState() {
+    super.initState();
+    autoRetry = 0;
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    autoRetry = 0;
+
     if (widget.maxAmount == 0 && !isRetrying && autoRetry < 1) {
       _retry();
     }
