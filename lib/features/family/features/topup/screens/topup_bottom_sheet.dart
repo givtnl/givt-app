@@ -10,14 +10,14 @@ import 'package:givt_app/features/family/features/topup/screens/topup_success_bo
 class TopupWalletBottomSheet extends StatefulWidget {
   const TopupWalletBottomSheet(
       {required this.onTopupSuccess,
-      this.awaitActiveProfieBalance = false,
+      this.awaitActiveProfileBalance = false,
       super.key});
   final VoidCallback onTopupSuccess;
-  final bool awaitActiveProfieBalance;
+  final bool awaitActiveProfileBalance;
   @override
   State<TopupWalletBottomSheet> createState() => _TopupWalletBottomSheetState();
   static void show(BuildContext context, VoidCallback onTopupSuccess,
-      bool? awaitActiveProfieBalance) {
+      bool? awaitActiveProfileBalance) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -27,7 +27,7 @@ class TopupWalletBottomSheet extends StatefulWidget {
       backgroundColor: Colors.white,
       builder: (context) => TopupWalletBottomSheet(
         onTopupSuccess: onTopupSuccess,
-        awaitActiveProfieBalance: awaitActiveProfieBalance ?? false,
+        awaitActiveProfileBalance: awaitActiveProfileBalance ?? false,
       ),
     );
   }
@@ -44,7 +44,7 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
           InitialState() => const TopupInitialBottomSheet(),
           LoadingState() => const TopupLoadingBottomSheet(),
           SuccessState() =>
-            _buildSuccessState(state, widget.awaitActiveProfieBalance),
+            _buildSuccessState(state, widget.awaitActiveProfileBalance),
           ErrorState() => const TopupErrorBottomSheet(),
         };
       },
@@ -52,8 +52,8 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
   }
 
   Widget _buildSuccessState(
-      SuccessState success, bool awaitActiveProfieBalance) {
-    if (awaitActiveProfieBalance) {
+      SuccessState success, bool awaitActiveProfileBalance) {
+    if (awaitActiveProfileBalance) {
       return BlocBuilder<ProfilesCubit, ProfilesState>(
         builder: (context, state) {
           if (state.activeProfile.wallet.balance == 0) {
