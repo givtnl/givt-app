@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -15,12 +16,14 @@ class SliderWidget extends StatelessWidget {
     this.maxAmount, {
     super.key,
   });
+
   final double currentAmount;
   final double maxAmount;
 
   @override
   Widget build(BuildContext context) {
     if (maxAmount == 0) {
+      _refreshProfilesAfterDelay(context);
       return const CustomCircularProgressIndicator();
     }
     return Column(
@@ -83,12 +86,22 @@ class SliderWidget extends StatelessWidget {
       ],
     );
   }
+
+  void _refreshProfilesAfterDelay(BuildContext context) {
+    Future.delayed(const Duration(seconds: 10), () {
+      if (maxAmount == 0 && context.mounted) {
+        context.read<ProfilesCubit>().refresh();
+        _refreshProfilesAfterDelay(context);
+      }
+    });
+  }
 }
 
 class SliderWidgetThumb extends SliderComponentShape {
   const SliderWidgetThumb({
     required this.thumbRadius,
   });
+
   final double thumbRadius;
 
   @override
