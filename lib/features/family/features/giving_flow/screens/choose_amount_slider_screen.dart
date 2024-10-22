@@ -31,7 +31,9 @@ class ChooseAmountSliderScreen extends StatelessWidget {
     super.key,
     this.onCustomSuccess,
   });
+
   final void Function()? onCustomSuccess;
+
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
@@ -75,6 +77,7 @@ class ChooseAmountSliderScreen extends StatelessWidget {
           body: BlocBuilder<ProfilesCubit, ProfilesState>(
             builder: (context, profiles) {
               if (profiles.activeProfile.wallet.balance == 0) {
+                _refreshProfilesAfterDelay(context);
                 return const FullScreenLoadingWidget();
               }
               return Column(
@@ -126,6 +129,17 @@ class ChooseAmountSliderScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _refreshProfilesAfterDelay(BuildContext context) {
+    Future.delayed(const Duration(seconds: 10), () {
+      if (!context.mounted) return;
+      if (context.read<ProfilesCubit>().state.activeProfile.wallet.balance ==
+          0) {
+        context.read<ProfilesCubit>().refresh();
+        _refreshProfilesAfterDelay(context);
+      }
+    });
   }
 
   Widget actionIcon(
