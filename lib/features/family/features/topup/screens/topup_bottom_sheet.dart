@@ -6,6 +6,7 @@ import 'package:givt_app/features/family/features/topup/screens/topup_error_bott
 import 'package:givt_app/features/family/features/topup/screens/topup_initial_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_loading_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_success_bottom_sheet.dart';
+import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 
 class TopupWalletBottomSheet extends StatefulWidget {
   const TopupWalletBottomSheet(
@@ -57,7 +58,18 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
       return BlocBuilder<ProfilesCubit, ProfilesState>(
         builder: (context, state) {
           if (state.activeProfile.wallet.balance == 0) {
-            return const TopupLoadingBottomSheet();
+            return FutureBuilder(
+              future: Future.delayed(const Duration(seconds: 30)),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const TopupLoadingBottomSheet();
+                } else {
+                  return RetryErrorWidget(onTapPrimaryButton: () {
+                    context.read<ProfilesCubit>().refresh();
+                  });
+                }
+              },
+            );
           }
           return TopupSuccessBottomSheet(
             topupAmount: success.amount,
