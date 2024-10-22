@@ -72,7 +72,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     _profiles
       ..sort((a, b) => a.isChild ? -1 : 1)
       ..removeWhere(
-        (element) => element.gratitude == null || _isNonLoggedInParent(element),
+        (element) => element.gratitude == null,
       );
 
     if (_profiles.isEmpty) {
@@ -110,15 +110,15 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
               .toList(),
         ),
         recommendationsUIModel: RecommendationsUIModel(
-            showActsOfService: showActsOfService,
-            isLoading: _isLoadingRecommendations,
-            hasError: _hasRecommendationsError,
-            organisations: showActsOfService
-                ? _currentActsOfService
-                : _currentOrganisations,
-            name: _profiles.elementAtOrNull(_currentProfileIndex)?.firstName ??
-                '',
-            category: _profiles.elementAt(_currentProfileIndex).gratitude),
+          showActsOfService: showActsOfService,
+          isLoading: _isLoadingRecommendations,
+          hasError: _hasRecommendationsError,
+          organisations:
+              showActsOfService ? _currentActsOfService : _currentOrganisations,
+          isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
+          name: _getCurrentProfile().firstName,
+          category: _getCurrentProfile().gratitude,
+        ),
       ),
     );
   }
@@ -132,10 +132,15 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
     try {
       _isLoadingRecommendations = true;
       _emitData();
-      _currentOrganisations = await _gratefulRecommendationsRepository
-          .getOrganisationsRecommendations(_getCurrentProfile());
+      final profile = _getCurrentProfile();
       _currentActsOfService = await _gratefulRecommendationsRepository
-          .getActsRecommendations(_getCurrentProfile());
+          .getActsRecommendations(profile);
+      if (_isNonLoggedInParent(profile)) {
+        _currentOrganisations = [];
+      } else {
+        _currentOrganisations = await _gratefulRecommendationsRepository
+            .getOrganisationsRecommendations(profile);
+      }
       _hasRecommendationsError = false;
     } catch (e, s) {
       _hasRecommendationsError = true;
