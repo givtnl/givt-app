@@ -45,7 +45,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
     );
   }
 
-  // Fetches the current profiles. 
+  // Fetches the current profiles.
   // Does NOT refresh them, however if a refreshed is triggered by another source it will await this refresh.
   Future<void> fetchAllProfiles() async {
     _emitLoadingState();
