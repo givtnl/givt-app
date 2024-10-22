@@ -6,7 +6,7 @@ class RecommendationsUIModel {
     this.name,
     this.category,
     this.isLoading = false,
-    this.isNotLoggedInparent = false,
+    this.isNotLoggedInParent = false,
     this.hasError = false,
     this.organisations = const [],
     this.showActsOfService = false,
@@ -16,7 +16,7 @@ class RecommendationsUIModel {
   final bool showActsOfService;
   final String? name;
   final GratitudeCategory? category;
-  final bool isNotLoggedInparent;
+  final bool isNotLoggedInParent;
   final bool isLoading;
   final bool hasError;
 }

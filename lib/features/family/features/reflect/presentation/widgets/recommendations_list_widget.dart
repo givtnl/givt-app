@@ -49,7 +49,7 @@ class RecommendationsListWidget extends StatelessWidget {
             ),
           ),
         ),
-        if (uiModel.isNotLoggedInparent && !uiModel.showActsOfService)
+        if (uiModel.isNotLoggedInParent && !uiModel.showActsOfService)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
             child: TitleSmallText(
