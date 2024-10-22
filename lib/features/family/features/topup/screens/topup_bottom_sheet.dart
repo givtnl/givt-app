@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_error_bottom_sheet.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_initial_bottom_sheet.dart';
@@ -7,11 +8,16 @@ import 'package:givt_app/features/family/features/topup/screens/topup_loading_bo
 import 'package:givt_app/features/family/features/topup/screens/topup_success_bottom_sheet.dart';
 
 class TopupWalletBottomSheet extends StatefulWidget {
-  const TopupWalletBottomSheet({required this.onTopupSuccess, super.key});
+  const TopupWalletBottomSheet(
+      {required this.onTopupSuccess,
+      this.awaitActiveProfieBalance = false,
+      super.key});
   final VoidCallback onTopupSuccess;
+  final bool awaitActiveProfieBalance;
   @override
   State<TopupWalletBottomSheet> createState() => _TopupWalletBottomSheetState();
-  static void show(BuildContext context, VoidCallback onTopupSuccess) {
+  static void show(BuildContext context, VoidCallback onTopupSuccess,
+      bool? awaitActiveProfieBalance) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -21,6 +27,7 @@ class TopupWalletBottomSheet extends StatefulWidget {
       backgroundColor: Colors.white,
       builder: (context) => TopupWalletBottomSheet(
         onTopupSuccess: onTopupSuccess,
+        awaitActiveProfieBalance: awaitActiveProfieBalance ?? false,
       ),
     );
   }
@@ -36,13 +43,34 @@ class _TopupWalletBottomSheetState extends State<TopupWalletBottomSheet> {
         return switch (state) {
           InitialState() => const TopupInitialBottomSheet(),
           LoadingState() => const TopupLoadingBottomSheet(),
-          SuccessState() => TopupSuccessBottomSheet(
-              topupAmount: state.amount,
-              recurring: state.recurring,
-              onSuccess: widget.onTopupSuccess),
+          SuccessState() =>
+            _buildSuccessState(state, widget.awaitActiveProfieBalance),
           ErrorState() => const TopupErrorBottomSheet(),
         };
       },
+    );
+  }
+
+  Widget _buildSuccessState(
+      SuccessState success, bool awaitActiveProfieBalance) {
+    if (awaitActiveProfieBalance) {
+      return BlocBuilder<ProfilesCubit, ProfilesState>(
+        builder: (context, state) {
+          if (state.activeProfile.wallet.balance == 0) {
+            return const TopupLoadingBottomSheet();
+          }
+          return TopupSuccessBottomSheet(
+            topupAmount: success.amount,
+            recurring: success.recurring,
+            onSuccess: widget.onTopupSuccess,
+          );
+        },
+      );
+    }
+    return TopupSuccessBottomSheet(
+      topupAmount: success.amount,
+      recurring: success.recurring,
+      onSuccess: widget.onTopupSuccess,
     );
   }
 }
