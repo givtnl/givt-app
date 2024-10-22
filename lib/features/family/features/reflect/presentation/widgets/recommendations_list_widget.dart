@@ -4,7 +4,6 @@ import 'package:givt_app/features/family/features/recommendation/organisations/w
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_tabs.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class RecommendationsListWidget extends StatelessWidget {
@@ -53,7 +52,7 @@ class RecommendationsListWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
             child: TitleSmallText(
-              "\"We're still working on a way for invited parents to make donations here. Stay tuned—it's coming soon!\"",
+              "Right now, only the logged in parent can donate using their account. We're working on a way to allow all parents to be able to do this in the game. Stay tuned!",
               color: Colors.black.withOpacity(0.25),
             ),
           ),

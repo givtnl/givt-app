@@ -115,7 +115,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
           hasError: _hasRecommendationsError,
           organisations:
               showActsOfService ? _currentActsOfService : _currentOrganisations,
-          isNotLoggedInparent: _isNonLoggedInParent(_getCurrentProfile()),
+          isNotLoggedInParent: _isNonLoggedInParent(_getCurrentProfile()),
           name: _getCurrentProfile().firstName,
           category: _getCurrentProfile().gratitude,
         ),
