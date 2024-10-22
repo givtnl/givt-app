@@ -159,6 +159,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
     await profiles.setActiveProfile(profile.userId);
     if (mounted && profiles.state.activeProfile.wallet.balance == 0) {
       EmptyWalletBottomSheet.show(context, () {
+        context.pop();
         _pushChooseAmountSliderScreen(context, profile);
       });
       return;
