@@ -78,7 +78,14 @@ class ChooseAmountSliderScreen extends StatelessWidget {
               const SizedBox(height: 8),
               topIcon(state, collectgroup),
               const SizedBox(height: 32),
-              SliderWidget(state.amount, state.maxAmount),
+              BlocBuilder<ProfilesCubit, ProfilesState>(
+                builder: (context, profiles) {
+                  return SliderWidget(
+                    state.amount,
+                    profiles.activeProfile.wallet.balance,
+                  );
+                },
+              ),
               const Spacer(),
               FunButton(
                 isDisabled: state.amount == 0,
