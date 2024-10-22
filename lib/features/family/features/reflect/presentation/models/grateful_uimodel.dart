@@ -1,4 +1,4 @@
-import 'package:givt_app/features/family/features/reflect/presentation/models/grateful_avatar_bar_uimodel.dart';
+import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 
 class GratefulUIModel {
@@ -7,6 +7,6 @@ class GratefulUIModel {
     required this.recommendationsUIModel,
   });
 
-  final GratefulAvatarBarUIModel avatarBarUIModel;
+  final AvatarBarUIModel avatarBarUIModel;
   final RecommendationsUIModel recommendationsUIModel;
 }

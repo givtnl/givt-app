@@ -23,7 +23,7 @@ class ConfettiDialog extends StatefulWidget {
     );
   }
 
-  static const Duration _defaultDuration = Duration(milliseconds: 2000);
+  static const Duration _defaultDuration = Duration(milliseconds: 1500);
 
   @override
   State<ConfettiDialog> createState() => _ConfettiDialogState();

@@ -175,7 +175,7 @@ class TempUser extends Equatable {
       'AmountLimit': amountLimit,
       'AppLanguage': appLanguage,
       'TimeZoneId': timeZoneId,
-      'profilePicture': profilePicture,
+      'profilePicture': profilePicture.isEmpty ? null : profilePicture,
     };
     if (guid != null) {
       json['GUID'] = guid;

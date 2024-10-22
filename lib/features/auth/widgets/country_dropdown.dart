@@ -65,7 +65,7 @@ class _CountryDropDownState extends State<CountryDropDown> {
             border: Border.all(
               color: _isOpen
                   ? FamilyAppTheme.primary70
-                  : FamilyAppTheme.neutralVariant80,
+                  : FamilyAppTheme.primary40,
               width: 2,
             ),
           ),
@@ -121,6 +121,7 @@ class _CountryDropDownState extends State<CountryDropDown> {
           country,
           locals,
           hideDivider: isSelected || i == countries.length - 1,
+          isSelected: isSelected,
         ),
       );
     }
@@ -129,7 +130,7 @@ class _CountryDropDownState extends State<CountryDropDown> {
 
   DropdownMenuItem<Country> _dropdownMenuItem(
       Country country, AppLocalizations locals,
-      {bool hideDivider = false}) {
+      {bool hideDivider = false, bool isSelected = false}) {
     return DropdownMenuItem<Country>(
       value: country,
       child: Column(
@@ -148,6 +149,7 @@ class _CountryDropDownState extends State<CountryDropDown> {
                 Expanded(
                   child: LabelLargeText(
                     Country.getCountry(country.countryCode, locals),
+                    color: isSelected ? FamilyAppTheme.primary40 : null,
                   ),
                 ),
               ],

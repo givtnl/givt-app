@@ -11,11 +11,13 @@ class TopupSuccessBottomSheet extends StatelessWidget {
   const TopupSuccessBottomSheet({
     required this.topupAmount,
     required this.recurring,
+    required this.onSuccess,
     super.key,
   });
 
   final int topupAmount;
   final bool recurring;
+  final VoidCallback onSuccess;
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +46,7 @@ class TopupSuccessBottomSheet extends StatelessWidget {
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.topupDoneButtonClicked,
         ),
-        onTap: () {
-          context.pop();
-        },
+        onTap: onSuccess,
       ),
       closeAction: () {
         context.pop();

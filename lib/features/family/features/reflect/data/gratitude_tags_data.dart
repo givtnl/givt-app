@@ -128,6 +128,29 @@ class GratitudeTagsData {
       ],
     ),
     const GratitudeCategory(
+      colorCombo: ColorCombo.secondary,
+      displayText: 'Something you learned',
+      iconData: FontAwesomeIcons.graduationCap,
+      tags: [
+        Tag(
+          key: 'GOTOSCHOOL',
+          area: Areas.education,
+          displayText: 'Go to school',
+          pictureUrl:
+          'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/school.svg',
+          type: TagType.INTERESTS,
+        ),
+        Tag(
+          key: 'LEARNTOREAD',
+          area: Areas.education,
+          displayText: 'Learn to read',
+          pictureUrl:
+          'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/learn.svg',
+          type: TagType.INTERESTS,
+        ),
+      ],
+    ),
+    const GratitudeCategory(
       colorCombo: ColorCombo.primary,
       displayText: 'The beauty of nature',
       iconData: FontAwesomeIcons.tree,
@@ -159,29 +182,6 @@ class GratitudeTagsData {
       ],
     ),
     const GratitudeCategory(
-      colorCombo: ColorCombo.secondary,
-      displayText: 'Something you learned',
-      iconData: FontAwesomeIcons.graduationCap,
-      tags: [
-        Tag(
-          key: 'GOTOSCHOOL',
-          area: Areas.education,
-          displayText: 'Go to school',
-          pictureUrl:
-              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/school.svg',
-          type: TagType.INTERESTS,
-        ),
-        Tag(
-          key: 'LEARNTOREAD',
-          area: Areas.education,
-          displayText: 'Learn to read',
-          pictureUrl:
-              'https://givtstoragedebug.blob.core.windows.net/public/cdn/tag-logos/learn.svg',
-          type: TagType.INTERESTS,
-        ),
-      ],
-    ),
-    const GratitudeCategory(
       colorCombo: ColorCombo.highlight,
       displayText: 'Feeling healthy and strong',
       iconData: FontAwesomeIcons.heartPulse,
@@ -205,7 +205,7 @@ class GratitudeTagsData {
       ],
     ),
     const GratitudeCategory(
-      colorCombo: ColorCombo.tertiary,
+      colorCombo: ColorCombo.highlight,
       displayText: 'The home where you live',
       iconData: FontAwesomeIcons.house,
       tags: [

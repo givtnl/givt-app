@@ -68,6 +68,7 @@ class InterviewCubit extends CommonCubit<InterviewUIModel, InterviewCustom> {
       return;
     } else {
       if (!_hasOnlyOneReporter()) _showPassThePhoneScreen = true;
+      if (_hasOnlyOneReporter()) emitCustom(const InterviewCustom.resetTimer());
       if (_currentReporterIndex < _reporters.length - 1) {
         _currentReporterIndex++;
       } else {

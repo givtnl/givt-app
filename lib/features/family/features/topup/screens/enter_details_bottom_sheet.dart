@@ -10,7 +10,12 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class EnterDetailsBottomSheet extends StatelessWidget {
-  const EnterDetailsBottomSheet({super.key});
+  const EnterDetailsBottomSheet(
+      {required this.onSuccess,
+      this.awaitActiveProfileBalance = false,
+      super.key});
+  final VoidCallback onSuccess;
+  final bool awaitActiveProfileBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +35,13 @@ class EnterDetailsBottomSheet extends StatelessWidget {
           onTap: () {
             CreditCardDetails.show(
               context,
-              onClose: () {
+              onSuccess: () {
                 Navigator.of(context).pop();
-                TopupWalletBottomSheet.show(context);
+                TopupWalletBottomSheet.show(
+                  context,
+                  onSuccess,
+                  awaitActiveProfileBalance,
+                );
               },
             );
           }),
@@ -42,7 +51,8 @@ class EnterDetailsBottomSheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context) {
+  static void show(BuildContext context, VoidCallback onSuccess,
+      bool? awaitActiveProfileBalance) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -50,7 +60,10 @@ class EnterDetailsBottomSheet extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       backgroundColor: Colors.white,
-      builder: (context) => const EnterDetailsBottomSheet(),
+      builder: (context) => EnterDetailsBottomSheet(
+        onSuccess: onSuccess,
+        awaitActiveProfileBalance: awaitActiveProfileBalance ?? false,
+      ),
     );
   }
 }

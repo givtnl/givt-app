@@ -18,6 +18,7 @@ import 'package:givt_app/features/family/shared/design/components/components.dar
 import 'package:givt_app/features/family/shared/design/illustrations/fun_give.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -30,7 +31,9 @@ class ChooseAmountSliderScreen extends StatelessWidget {
     super.key,
     this.onCustomSuccess,
   });
+
   final void Function()? onCustomSuccess;
+
   @override
   Widget build(BuildContext context) {
     final flow = context.read<FlowsCubit>().state;
@@ -71,50 +74,72 @@ class ChooseAmountSliderScreen extends StatelessWidget {
               actionIcon(collectgroup),
             ],
           ),
-          body: Column(
-            children: [
-              const Spacer(),
-              titleText(state, collectgroup),
-              const SizedBox(height: 8),
-              topIcon(state, collectgroup),
-              const SizedBox(height: 32),
-              SliderWidget(state.amount, state.maxAmount),
-              const Spacer(),
-              FunButton(
-                isDisabled: state.amount == 0,
-                text: 'Give',
-                isLoading: state is CreateTransactionUploadingState,
-                onTap: state.amount == 0
-                    ? null
-                    : () async {
-                        if (state is CreateTransactionUploadingState) {
-                          return;
-                        }
-                        final transaction = Transaction(
-                          userId: profilesCubit.state.activeProfile.id,
-                          mediumId: mediumId,
-                          amount: state.amount,
-                        );
+          body: BlocBuilder<ProfilesCubit, ProfilesState>(
+            builder: (context, profiles) {
+              if (profiles.activeProfile.wallet.balance == 0) {
+                _refreshProfilesAfterDelay(context);
+                return const FullScreenLoadingWidget();
+              }
+              return Column(
+                children: [
+                  const Spacer(),
+                  titleText(state, collectgroup),
+                  const SizedBox(height: 8),
+                  topIcon(state, collectgroup),
+                  const SizedBox(height: 32),
+                  SliderWidget(
+                    state.amount,
+                    profiles.activeProfile.wallet.balance,
+                  ),
+                  const Spacer(),
+                  FunButton(
+                    isDisabled: state.amount == 0,
+                    text: 'Give',
+                    isLoading: state is CreateTransactionUploadingState,
+                    onTap: state.amount == 0
+                        ? null
+                        : () async {
+                            if (state is CreateTransactionUploadingState) {
+                              return;
+                            }
+                            final transaction = Transaction(
+                              userId: profilesCubit.state.activeProfile.id,
+                              mediumId: mediumId,
+                              amount: state.amount,
+                            );
 
-                        await context
-                            .read<CreateTransactionCubit>()
-                            .createTransaction(transaction: transaction);
+                            await context
+                                .read<CreateTransactionCubit>()
+                                .createTransaction(transaction: transaction);
+                          },
+                    analyticsEvent: AnalyticsEvent(
+                      AmplitudeEvents.giveToThisGoalPressed,
+                      parameters: {
+                        AnalyticsHelper.goalKey: collectgroup.name,
+                        AnalyticsHelper.amountKey: state.amount,
+                        AnalyticsHelper.walletAmountKey:
+                            profilesCubit.state.activeProfile.wallet.balance,
                       },
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.giveToThisGoalPressed,
-                  parameters: {
-                    AnalyticsHelper.goalKey: collectgroup.name,
-                    AnalyticsHelper.amountKey: state.amount,
-                    AnalyticsHelper.walletAmountKey:
-                        profilesCubit.state.activeProfile.wallet.balance,
-                  },
-                ),
-              ),
-            ],
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         );
       },
     );
+  }
+
+  void _refreshProfilesAfterDelay(BuildContext context) {
+    Future.delayed(const Duration(seconds: 10), () {
+      if (!context.mounted) return;
+      if (context.read<ProfilesCubit>().state.activeProfile.wallet.balance ==
+          0) {
+        context.read<ProfilesCubit>().refresh();
+        _refreshProfilesAfterDelay(context);
+      }
+    });
   }
 
   Widget actionIcon(

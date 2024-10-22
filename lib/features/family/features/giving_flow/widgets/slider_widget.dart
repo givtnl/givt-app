@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
@@ -19,6 +20,9 @@ class SliderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (maxAmount == 0) {
+      return const CustomCircularProgressIndicator();
+    }
     return Column(
       children: [
         Container(
