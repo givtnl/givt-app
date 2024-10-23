@@ -10,11 +10,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/app/routes/routes.dart';
-import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
-import 'package:givt_app/utils/analytics_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -296,7 +294,6 @@ class NotificationService implements INotificationService {
     required tz.TZDateTime scheduledDate,
     int? id,
   }) async {
-
     id ??= Random().nextInt(9999 - 1000) + 1000;
 
     await setupFlutterNotifications();
