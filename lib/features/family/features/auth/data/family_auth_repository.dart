@@ -55,18 +55,18 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   final StreamController<UserExt?> _authenticatedUserStream =
       StreamController<UserExt?>.broadcast();
 
-  final StreamController<UserExt?> _userStreamController =
-      StreamController<UserExt?>.broadcast();
-
   //emits a userExt object when we have an authenticated user, else null
   @override
-  Stream<UserExt?> authenticatedUserStream() => _authenticatedUserStream.stream;
+  Stream<UserExt?> authenticatedUserStream() =>
+      _authenticatedUserStream.stream.distinct();
 
   @override
   Future<Session> refreshToken() async {
     final session = getStoredSession();
     if (session == const Session.empty()) {
-      return session;
+      _authenticatedUserStream.add(null);
+      throw Exception(
+          'Cannot refresh token, no current session found to refresh.');
     }
     final response = await _apiService.refreshToken(
       {
@@ -141,7 +141,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       final userExt = UserExt.fromJson(response);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
-      _userStreamController.add(userExt);
+      _authenticatedUserStream.add(userExt);
       return userExt;
     } catch (e, s) {
       LoggingInfo.instance.error(
