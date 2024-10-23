@@ -4,12 +4,12 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:givt_app/core/network/network_info.dart';
 
-part 'connection_state.dart';
+part 'internet_connection_state.dart';
 
-class ConnectionCubit extends Cubit<ConnectionState> {
-  ConnectionCubit(
+class InternetConnectionCubit extends Cubit<InternetConnectionState> {
+  InternetConnectionCubit(
     this._networkInfo,
-  ) : super(ConnectionInitial()) {
+  ) : super(InternetConnectionInitial()) {
     _init();
   }
   final NetworkInfo _networkInfo;
@@ -20,9 +20,9 @@ class ConnectionCubit extends Cubit<ConnectionState> {
         _networkInfo.hasInternetConnectionStream().listen(
       (hasConnection) {
         if (hasConnection) {
-          emit(ConnectionLive());
+          emit(InternetConnectionLive());
         } else {
-          emit(ConnectionLost());
+          emit(InternetConnectionLost());
         }
       },
     );

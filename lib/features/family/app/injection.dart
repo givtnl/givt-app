@@ -29,6 +29,7 @@ import 'package:givt_app/features/family/features/reflect/domain/reflect_and_sha
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
 import 'package:givt_app/features/family/network/api_service.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
+import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 
 final getIt = GetIt.instance;
 
@@ -49,6 +50,7 @@ Future<void> initAPIService() async {
 
 void initCubits() {
   getIt
+    ..registerSingleton(InternetConnectionCubit(getIt()))
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
