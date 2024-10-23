@@ -137,12 +137,20 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   Future<UserExt> _fetchUserExtension(String guid) async {
-    final response = await _apiService.getUserExtension(guid);
-    final userExt = UserExt.fromJson(response);
-    await _storeUserExt(userExt);
-    await _setUserPropsForExternalServices(userExt);
-    _userStreamController.add(userExt);
-    return userExt;
+    try {
+      final response = await _apiService.getUserExtension(guid);
+      final userExt = UserExt.fromJson(response);
+      await _storeUserExt(userExt);
+      await _setUserPropsForExternalServices(userExt);
+      _userStreamController.add(userExt);
+      return userExt;
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      rethrow;
+    }
   }
 
   Future<void> _storeUserExt(UserExt userExt) async {
