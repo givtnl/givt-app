@@ -15,7 +15,7 @@ import 'package:givt_app/features/account_details/pages/change_phone_number_bott
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
+import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
