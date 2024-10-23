@@ -50,7 +50,8 @@ Future<void> initAPIService() async {
 
 void initCubits() {
   getIt
-    ..registerSingleton(InternetConnectionCubit(getIt()))
+    ..registerLazySingleton<InternetConnectionCubit>(
+        () => InternetConnectionCubit(getIt()))
     ..registerFactory(() => AdminFeeCubit(getIt()))
     ..registerFactory(() => GratefulCubit(getIt(), getIt(), getIt()))
     ..registerLazySingleton<InterviewCubit>(
