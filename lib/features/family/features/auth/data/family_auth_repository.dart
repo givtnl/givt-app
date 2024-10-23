@@ -166,10 +166,18 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     if (sessionString == null) {
       return const Session.empty();
     }
-    final session = Session.fromJson(
-      jsonDecode(sessionString) as Map<String, dynamic>,
-    );
-    return session;
+    try {
+      final session = Session.fromJson(
+        jsonDecode(sessionString) as Map<String, dynamic>,
+      );
+      return session;
+    } catch (e, s) {
+      LoggingInfo.instance.error(
+        e.toString(),
+        methodName: s.toString(),
+      );
+      return const Session.empty();
+    }
   }
 
   @override
