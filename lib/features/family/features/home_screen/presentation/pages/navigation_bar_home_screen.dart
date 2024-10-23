@@ -48,6 +48,7 @@ class NavigationBarHomeScreen extends StatefulWidget {
 
 class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _cubit = getIt<NavigationBarHomeCubit>();
+  final _connectionCubit = getIt<InternetConnectionCubit>();
 
   int _currentIndex = 0;
   static bool _isShowingPreferredChurch = false;
@@ -77,7 +78,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<InternetConnectionCubit, InternetConnectionState>(
-      bloc: getIt<InternetConnectionCubit>(),
+      bloc: _connectionCubit,
       listener: (context, state) {
         if (state is InternetConnectionLost) {
           InternetConnectionLostDialog.show(context);
