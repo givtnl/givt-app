@@ -167,7 +167,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           primaryButton: FunButton(
             text: 'Ok',
             analyticsEvent:
-                AnalyticsEvent(AmplitudeEvents.topupErrorOkButtonClicked),
+                AnalyticsEvent(AmplitudeEvents.okClicked),
             onTap: () {
               Navigator.of(context).pop();
             },
