@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/reset_password/repositories/re
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class ResetPasswordCubit extends CommonCubit<dynamic, dynamic> {
+class ResetPasswordCubit extends CommonCubit<bool, dynamic> {
   ResetPasswordCubit(
     this._resetPasswordRepository,
   ) : super(const BaseState.initial());
