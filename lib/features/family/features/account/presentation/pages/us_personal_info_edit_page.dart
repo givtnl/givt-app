@@ -16,7 +16,7 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
@@ -185,7 +185,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
                 value: locals.changePassword,
                 onTap: () =>
-                    ResetPasswordScreen(initialEmail: user.email).show(context),
+                    ResetPasswordSheet(initialEmail: user.email).show(context),
               ),
               FutureBuilder(
                 initialData: false,

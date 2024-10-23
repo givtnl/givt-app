@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/features/login/presentation/pages/family_login_page.dart';
+import 'package:givt_app/features/family/features/login/presentation/pages/family_login_sheet.dart';
 
 class FamilyAuthUtils {
   // A method to authenticate the user with biometrics or email/pass
@@ -82,7 +82,7 @@ class FamilyAuthUtils {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => FamilyLoginPage(
+      builder: (_) => FamilyLoginSheet(
         email: context.read<AuthCubit>().state.user.email,
         navigate: checkAuthRequest.navigate,
       ),
