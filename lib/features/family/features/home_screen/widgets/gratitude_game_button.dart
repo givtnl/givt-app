@@ -39,7 +39,7 @@ class GratitudeGameButton extends StatelessWidget {
               Row(
                 children: [
                   SizedBox(
-                    width: 180,
+                    width: 170,
                     child: Image.asset(
                       'assets/family/images/home_screen/super_show.png',
                     ),
