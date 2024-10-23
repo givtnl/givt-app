@@ -149,15 +149,22 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
         listenWhen: (previous, current) => previous != current,
         listener: (context, state) {
           if (state.status == AuthStatus.loginRedirect) {
+            if (selectedCountry.isUS) {
+              FamilyAuthUtils.authenticateUser(
+                context,
+                checkAuthRequest: FamilyCheckAuthRequest(
+                  email: state.email.trim(),
+                  navigate: (context) async =>
+                      context.goNamed(FamilyPages.profileSelection.name),
+                ),
+              );
+              return;
+            }
+
             AuthUtils.checkToken(
               context,
               checkAuthRequest: CheckAuthRequest(
-                navigate: (context, isUSUser) async => context.goNamed(
-                  isUSUser
-                      ? FamilyPages.profileSelection.name
-                      : Pages.home.name,
-                ),
-                isUSUser: selectedCountry.isUS,
+                navigate: (context) async => context.goNamed(Pages.home.name),
                 email: state.email.trim(),
                 forceLogin: true,
               ),

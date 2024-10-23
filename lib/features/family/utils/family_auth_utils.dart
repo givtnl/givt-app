@@ -83,7 +83,9 @@ class FamilyAuthUtils {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => FamilyLoginSheet(
-        email: context.read<AuthCubit>().state.user.email,
+        email: checkAuthRequest.email != null
+            ? checkAuthRequest.email!
+            : context.read<AuthCubit>().state.user.email,
         navigate: checkAuthRequest.navigate,
       ),
     );
@@ -100,8 +102,10 @@ class FamilyCheckAuthRequest {
   FamilyCheckAuthRequest({
     required this.navigate,
     this.forceLogin = false,
+    this.email,
   });
 
   final Future<void> Function(BuildContext context) navigate;
   final bool forceLogin;
+  final String? email;
 }

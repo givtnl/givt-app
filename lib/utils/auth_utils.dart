@@ -13,13 +13,11 @@ class CheckAuthRequest {
   CheckAuthRequest({
     required this.navigate,
     this.email = '',
-    this.isUSUser = false,
     this.forceLogin = false,
   });
 
-  final Future<void> Function(BuildContext context, bool isUSUser) navigate;
+  final Future<void> Function(BuildContext context) navigate;
   final String email;
-  final bool isUSUser;
   final bool forceLogin;
 }
 
@@ -43,7 +41,7 @@ class AuthUtils {
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      await checkAuthRequest.navigate(context, checkAuthRequest.isUSUser);
+      await checkAuthRequest.navigate(context);
       return;
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
@@ -70,7 +68,6 @@ class AuthUtils {
       }
       await checkAuthRequest.navigate(
         context,
-        auth.state.user.isUsUser,
       );
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
@@ -109,22 +106,13 @@ class AuthUtils {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) {
-        if (checkAuthRequest.isUSUser) {
-          return FamilyLoginSheet(
-            email: checkAuthRequest.email.isNotEmpty
-                ? checkAuthRequest.email
-                : context.read<AuthCubit>().state.user.email,
-            navigate: (context) => checkAuthRequest.navigate(context, true),
-          );
-        } else {
-          return LoginPage(
-            email: checkAuthRequest.email.isNotEmpty
-                ? checkAuthRequest.email
-                : context.read<AuthCubit>().state.user.email,
-            isEmailEditable: checkAuthRequest.email.isNotEmpty,
-            navigate: checkAuthRequest.navigate,
-          );
-        }
+        return LoginPage(
+          email: checkAuthRequest.email.isNotEmpty
+              ? checkAuthRequest.email
+              : context.read<AuthCubit>().state.user.email,
+          isEmailEditable: checkAuthRequest.email.isNotEmpty,
+          navigate: checkAuthRequest.navigate,
+        );
       },
     );
   }
