@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/warning_dialog.dart';
@@ -11,6 +12,7 @@ class InternetConnectionLostDialog {
       context: context,
       builder: (_) =>
           BlocListener<InternetConnectionCubit, InternetConnectionState>(
+        bloc: getIt<InternetConnectionCubit>(),
         listener: (context, state) {
           if (state is InternetConnectionLive) {
             context.pop();
