@@ -34,5 +34,5 @@ class NetworkInfoImpl implements NetworkInfo {
 
   @override
   Stream<bool> hasInternetConnectionStream() =>
-      _hasInternetConnectionStream.stream;
+      _hasInternetConnectionStream.stream.distinct();
 }
