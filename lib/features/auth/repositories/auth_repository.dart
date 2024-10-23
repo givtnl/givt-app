@@ -271,45 +271,7 @@ class AuthRepositoyImpl with AuthRepository {
       return null;
     }
 
-    if (!_prefs.containsKey(AmountPresets.tag)) {
-      return (userExt, session, const UserPresets.empty());
-    }
-
-    /// if the amount presets are not present in the cache set it to empty
-    if (!_prefs.containsKey(AmountPresets.tag)) {
-      await _prefs.setString(
-        AmountPresets.tag,
-        jsonEncode(
-          const AmountPresets.empty().toJson(),
-        ),
-      );
-    }
-
-    final amountPresetsString = _prefs.getString(AmountPresets.tag);
-
-    final amountPresets = AmountPresets.fromJson(
-      jsonDecode(
-        amountPresetsString!,
-      ) as Map<String, dynamic>,
-    );
-
-    if (amountPresets.presets.isEmpty) {
-      return (userExt, session, const UserPresets.empty());
-    }
-    final userPreset = amountPresets.presets.firstWhere(
-      (element) => element.guid == userExt.guid,
-      orElse: () => const UserPresets.empty(),
-    );
-
-    if (userPreset.guid.isEmpty) {
-      return (userExt, session, userPreset.copyWith(guid: userExt.guid));
-    }
-
-    // if (DateTime.parse(session.expires).isBefore(DateTime.now())) {
-    //   return false;
-    // }
-
-    return (userExt, session, userPreset);
+    return (userExt, session, const UserPresets.empty());
   }
 
   @override
