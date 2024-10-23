@@ -56,6 +56,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
@@ -166,8 +172,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ),
           primaryButton: FunButton(
             text: 'Ok',
-            analyticsEvent:
-                AnalyticsEvent(AmplitudeEvents.okClicked),
+            analyticsEvent: AnalyticsEvent(AmplitudeEvents.okClicked),
             onTap: () {
               Navigator.of(context).pop();
             },
