@@ -41,10 +41,6 @@ class FamilyAuthUtils {
         return;
       }
 
-      await context.read<AuthCubit>().refreshSession();
-      if (!context.mounted) {
-        return;
-      }
       await checkAuthRequest.navigate(context);
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
