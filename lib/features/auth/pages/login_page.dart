@@ -18,7 +18,7 @@ class LoginPage extends StatefulWidget {
 
   final String email;
   final bool isEmailEditable;
-  final Future<void> Function(BuildContext context, {bool? isUSUser})? navigate;
+  final Future<void> Function(BuildContext context, bool isUSUser)? navigate;
 
   @override
   State<LoginPage> createState() => _LoginPageState();

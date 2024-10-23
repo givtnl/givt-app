@@ -229,7 +229,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                           onTap: () async => AuthUtils.checkToken(
                             context,
                             checkAuthRequest: CheckAuthRequest(
-                              navigate: (context, {isUSUser}) =>
+                              navigate: (context, isUSUser) =>
                                   showModalBottomSheet<void>(
                                 context: context,
                                 isScrollControlled: true,
@@ -261,7 +261,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 onTap: () async => AuthUtils.checkToken(
                   context,
                   checkAuthRequest: CheckAuthRequest(
-                    navigate: (context, {isUSUser}) async => context.pushNamed(
+                    navigate: (context, isUSUser) async => context.pushNamed(
                       FamilyPages.unregisterUS.name,
                     ),
                   ),

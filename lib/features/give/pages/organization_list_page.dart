@@ -380,7 +380,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
               onPressed: () async => AuthUtils.checkToken(
                 context,
                 checkAuthRequest: CheckAuthRequest(
-                  navigate: (context, {isUSUser}) =>
+                  navigate: (context, isUSUser) =>
                       _showCreateRecurringDonationBottomSheet(
                     context,
                     recipient: recipient,
@@ -428,7 +428,7 @@ class _OrganizationListPageState extends State<OrganizationListPage> {
             onTap: () async => AuthUtils.checkToken(
               context,
               checkAuthRequest: CheckAuthRequest(
-                navigate: (context, {isUSUser}) =>
+                navigate: (context, isUSUser) =>
                     _showCreateRecurringDonationBottomSheet(
                   context,
                   recipient: recipient,

@@ -21,6 +21,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
@@ -151,12 +152,12 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
             AuthUtils.checkToken(
               context,
               checkAuthRequest: CheckAuthRequest(
-                navigate: (context, {isUSUser}) async => context.goNamed(
-                  true == isUSUser
+                navigate: (context, isUSUser) async => context.goNamed(
+                  isUSUser
                       ? FamilyPages.profileSelection.name
                       : Pages.home.name,
                 ),
-                isUSUser: selectedCountry == Country.us,
+                isUSUser: selectedCountry.isUS,
                 email: state.email.trim(),
                 forceLogin: true,
               ),

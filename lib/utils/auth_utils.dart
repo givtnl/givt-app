@@ -17,7 +17,7 @@ class CheckAuthRequest {
     this.forceLogin = false,
   });
 
-  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
+  final Future<void> Function(BuildContext context, bool isUSUser) navigate;
   final String email;
   final bool isUSUser;
   final bool forceLogin;
@@ -43,7 +43,7 @@ class AuthUtils {
     final auth = context.read<AuthCubit>();
     final isExpired = auth.state.session.isExpired;
     if (!isExpired) {
-      await checkAuthRequest.navigate(context);
+      await checkAuthRequest.navigate(context, checkAuthRequest.isUSUser);
       return;
     }
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
@@ -70,7 +70,7 @@ class AuthUtils {
       }
       await checkAuthRequest.navigate(
         context,
-        isUSUser: auth.state.user.isUsUser,
+        auth.state.user.isUsUser,
       );
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
@@ -114,7 +114,7 @@ class AuthUtils {
             email: checkAuthRequest.email.isNotEmpty
                 ? checkAuthRequest.email
                 : context.read<AuthCubit>().state.user.email,
-            navigate: checkAuthRequest.navigate,
+            navigate: (context) => checkAuthRequest.navigate(context, true),
           );
         } else {
           return LoginPage(

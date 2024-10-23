@@ -20,12 +20,12 @@ import 'package:go_router/go_router.dart';
 class FamilyLoginSheet extends StatefulWidget {
   const FamilyLoginSheet({
     required this.email,
-    this.navigate,
+    required this.navigate,
     super.key,
   });
 
   final String email;
-  final Future<void> Function(BuildContext context, {bool? isUSUser})? navigate;
+  final Future<void> Function(BuildContext context) navigate;
 
   @override
   State<FamilyLoginSheet> createState() => _FamilyLoginSheetState();
@@ -200,7 +200,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
     );
   }
 
-  showCustomDialog(BuildContext context, FamilyLoginSheetCustom state) {
+  void showCustomDialog(BuildContext context, FamilyLoginSheetCustom state) {
     if (state == const FailureDialog()) {
       showDialog<void>(
         context: context,

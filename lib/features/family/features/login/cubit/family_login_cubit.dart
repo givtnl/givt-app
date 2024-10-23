@@ -22,6 +22,8 @@ class FamilyLoginCubit extends CommonCubit<bool, FamilyLoginSheetCustom> {
       await _authRepository.login(email, password);
       return true;
     } catch (e, stackTrace) {
+      emitInitial();
+      
       if (e.toString().contains('invalid_grant')) {
         LoggingInfo.instance.warning(
           e.toString(),

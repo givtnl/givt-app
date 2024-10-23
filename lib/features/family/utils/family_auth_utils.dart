@@ -14,7 +14,7 @@ class FamilyAuthUtils {
   // to authenticate the user before navigating to the Manage Family section
   static Future<void> authenticateUser(
     BuildContext context, {
-    required CheckAuthRequest checkAuthRequest,
+    required FamilyCheckAuthRequest checkAuthRequest,
   }) async {
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
@@ -76,7 +76,7 @@ class FamilyAuthUtils {
   /// If the user cancels the login, nothing happens.
   static Future<void> _displayLoginBottomSheet(
     BuildContext context, {
-    required CheckAuthRequest checkAuthRequest,
+    required FamilyCheckAuthRequest checkAuthRequest,
   }) async {
     final loggedIn = await showModalBottomSheet<bool>(
       context: context,
@@ -96,12 +96,12 @@ class FamilyAuthUtils {
   }
 }
 
-class CheckAuthRequest {
-  CheckAuthRequest({
+class FamilyCheckAuthRequest {
+  FamilyCheckAuthRequest({
     required this.navigate,
     this.forceLogin = false,
   });
 
-  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
+  final Future<void> Function(BuildContext context) navigate;
   final bool forceLogin;
 }
