@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
@@ -10,9 +12,10 @@ class FamilyAuthCubit extends Cubit<FamilyAuthState> {
   }
 
   final FamilyAuthRepository _authRepository;
+  StreamSubscription<UserExt?>? _authSubscription;
 
   Future<void> _init() async {
-    _authRepository
+    _authSubscription = _authRepository
         .authenticatedUserStream()
         .listen(_handleAuthenticationUpdate);
   }
@@ -23,5 +26,11 @@ class FamilyAuthCubit extends Cubit<FamilyAuthState> {
     } else {
       emit(const FamilyAuthState.unauthenticated());
     }
+  }
+
+  @override
+  Future<void> close() async {
+    await _authSubscription?.cancel();
+    await super.close();
   }
 }
