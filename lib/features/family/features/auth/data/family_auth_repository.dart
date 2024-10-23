@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/api_service.dart';
-import 'package:givt_app/features/amount_presets/models/amount_presets.dart';
 import 'package:givt_app/features/amount_presets/models/user_presets.dart';
 import 'package:givt_app/features/auth/models/session.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
@@ -216,45 +215,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       return null;
     }
 
-    if (!_prefs.containsKey(AmountPresets.tag)) {
-      return (userExt, session, const UserPresets.empty());
-    }
-
-    /// if the amount presets are not present in the cache set it to empty
-    if (!_prefs.containsKey(AmountPresets.tag)) {
-      await _prefs.setString(
-        AmountPresets.tag,
-        jsonEncode(
-          const AmountPresets.empty().toJson(),
-        ),
-      );
-    }
-
-    final amountPresetsString = _prefs.getString(AmountPresets.tag);
-
-    final amountPresets = AmountPresets.fromJson(
-      jsonDecode(
-        amountPresetsString!,
-      ) as Map<String, dynamic>,
-    );
-
-    if (amountPresets.presets.isEmpty) {
-      return (userExt, session, const UserPresets.empty());
-    }
-    final userPreset = amountPresets.presets.firstWhere(
-      (element) => element.guid == userExt.guid,
-      orElse: () => const UserPresets.empty(),
-    );
-
-    if (userPreset.guid.isEmpty) {
-      return (userExt, session, userPreset.copyWith(guid: userExt.guid));
-    }
-
-    // if (DateTime.parse(session.expires).isBefore(DateTime.now())) {
-    //   return false;
-    // }
-
-    return (userExt, session, userPreset);
+    return (userExt, session, const UserPresets.empty());
   }
 
   @override
