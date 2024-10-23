@@ -172,6 +172,9 @@ enum AmplitudeEvents {
   parentProfileIconClicked('parent_profile_icon_clicked'),
   mySettingsClicked('my_settings_clicked'),
 
+  // Change Password
+  changePasswordClicked('change_password_clicked'),
+
   // NFC Coin flow
   startScanningCoin('in_app_start_scanning_coin'),
   inAppCoinScannedSuccessfully('in_app_coin_scanned_successfully'),

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/admin_fee/domain/models/admin_fee.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class AdminFeeRepository {
   AdminFeeRepository(this._familyAPIService) {

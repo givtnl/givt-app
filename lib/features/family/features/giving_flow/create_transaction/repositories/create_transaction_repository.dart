@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin CreateTransactionRepository {
   Future<void> createTransaction({required Transaction transaction});

@@ -1,5 +1,5 @@
 import 'package:givt_app/features/family/features/avatars/models/avatar.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin AvatarsRepository {
   Future<List<Avatar>> fetchAvatars();

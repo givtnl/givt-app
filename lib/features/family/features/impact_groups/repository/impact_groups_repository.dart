@@ -1,5 +1,5 @@
 import 'package:givt_app/features/family/features/impact_groups/model/impact_group.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin ImpactGroupsRepository {
   Future<List<ImpactGroup>> fetchImpactGroups(String guid);

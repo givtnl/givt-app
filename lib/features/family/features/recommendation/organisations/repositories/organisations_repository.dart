@@ -1,6 +1,6 @@
 import 'package:givt_app/features/family/features/recommendation/organisations/models/organisation.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/models/tag.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin OrganisationsRepository {
   Future<List<Organisation>> getRecommendedOrganisations({
