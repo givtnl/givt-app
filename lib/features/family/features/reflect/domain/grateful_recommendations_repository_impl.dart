@@ -3,7 +3,7 @@ import 'package:givt_app/features/family/features/recommendation/organisations/m
 import 'package:givt_app/features/family/features/reflect/data/recommendation_types.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class GratefulRecommendationsRepositoryImpl
     implements GratefulRecommendationsRepository {

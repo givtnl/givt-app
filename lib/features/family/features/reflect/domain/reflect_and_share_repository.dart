@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/features/profiles/repository/profiles_r
 import 'package:givt_app/features/family/features/reflect/data/gratitude_category.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/game_profile.dart';
 import 'package:givt_app/features/family/features/reflect/domain/models/roles.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 class ReflectAndShareRepository {
   ReflectAndShareRepository(this._profilesRepository, this._familyApiService);

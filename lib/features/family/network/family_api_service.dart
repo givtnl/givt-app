@@ -285,6 +285,22 @@ class FamilyAPIService {
     });
   }
 
+  Future<bool> resetPassword(String email) async {
+    final url =
+        Uri.https(_apiURL, '/api/v2/users/forgotpassword', {'email': email});
+    final response = await client.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    );
+
+    if (response.statusCode >= 400) {
+      throw Exception(response.statusCode);
+    }
+    return response.statusCode == 200;
+  }
+
   Future<bool> _postRequest(String endpoint, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, endpoint);
     final response = await client.post(

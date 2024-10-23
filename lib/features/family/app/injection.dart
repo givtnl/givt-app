@@ -26,8 +26,10 @@ import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dar
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository.dart';
 import 'package:givt_app/features/family/features/reflect/domain/grateful_recommendations_repository_impl.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
+import 'package:givt_app/features/family/features/reset_password/cubit/reset_password_cubit.dart';
+import 'package:givt_app/features/family/features/reset_password/repositories/reset_password_repository.dart';
 import 'package:givt_app/features/family/helpers/svg_manager.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 
 final getIt = GetIt.instance;
@@ -106,6 +108,11 @@ void initCubits() {
       () => AvatarsCubit(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<ResetPasswordCubit>(
+      () => ResetPasswordCubit(
+        getIt(),
+      ),
     );
 }
 
@@ -182,6 +189,11 @@ void initRepositories() {
     ..registerLazySingleton<ReflectAndShareRepository>(
       () => ReflectAndShareRepository(
         getIt(),
+        getIt(),
+      ),
+    )
+    ..registerLazySingleton<ResetPasswordRepository>(
+      () => ResetPasswordRepositoryImpl(
         getIt(),
       ),
     );
