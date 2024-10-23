@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
