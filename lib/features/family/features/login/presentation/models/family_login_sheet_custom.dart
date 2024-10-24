@@ -7,11 +7,11 @@ sealed class FamilyLoginSheetCustom {
   const factory FamilyLoginSheetCustom.showOneAttemptLeftDialog() =
       OneAttemptLeftDialog;
 
-  const factory FamilyLoginSheetCustom.showFailureDialog() =
-      FailureDialog;
+  const factory FamilyLoginSheetCustom.showFailureDialog() = FailureDialog;
 
-  const factory FamilyLoginSheetCustom.showLockedOutDialog() =
-      LockedOutDialog;
+  const factory FamilyLoginSheetCustom.showLockedOutDialog() = LockedOutDialog;
+
+  const factory FamilyLoginSheetCustom.successRedirect() = LoginSuccess;
 }
 
 class TwoAttemptsLeftDialog extends FamilyLoginSheetCustom {
@@ -28,4 +28,8 @@ class FailureDialog extends FamilyLoginSheetCustom {
 
 class LockedOutDialog extends FamilyLoginSheetCustom {
   const LockedOutDialog();
+}
+
+class LoginSuccess extends FamilyLoginSheetCustom {
+  const LoginSuccess();
 }

@@ -32,12 +32,13 @@ class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
     );
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     emitLoading();
 
     try {
       await _authRepository.login(email, password);
-      return true;
+
+      emitCustom(const FamilyLoginSheetCustom.successRedirect());
     } catch (e, stackTrace) {
       emitInitial();
 
@@ -48,20 +49,16 @@ class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
         );
         if (e.toString().contains('TwoAttemptsLeft')) {
           emitCustom(const FamilyLoginSheetCustom.showTwoAttemptsLeftDialog());
-          return false;
         }
         if (e.toString().contains('OneAttemptLeft')) {
           emitCustom(const FamilyLoginSheetCustom.showOneAttemptLeftDialog());
-          return false;
         }
         if (e.toString().contains('LockedOut')) {
           emitCustom(const FamilyLoginSheetCustom.showLockedOutDialog());
-          return false;
         }
       }
 
       emitCustom(const FamilyLoginSheetCustom.showFailureDialog());
-      return false;
     }
   }
 }

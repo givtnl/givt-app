@@ -56,18 +56,10 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   Future<void> onLogin(BuildContext context) async {
     if (!formKey.currentState!.validate()) return;
 
-    final loginResult = await _cubit.login(
+    await _cubit.login(
       emailController.text,
       passwordController.text,
     );
-
-    if (loginResult) {
-      if (!context.mounted) return;
-      await widget.navigate!(context);
-
-      if (!context.mounted) return;
-      context.pop();
-    }
   }
 
   bool get isEnabled {
@@ -81,7 +73,7 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   Widget build(BuildContext context) {
     return BaseStateConsumer(
       cubit: _cubit,
-      onCustom: showCustomDialog,
+      onCustom: onCustom,
       onData: (context, data) => showLoginForm(data),
       onLoading: (context) {
         return FunBottomSheet(
@@ -205,46 +197,51 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
     );
   }
 
-  void showCustomDialog(BuildContext context, FamilyLoginSheetCustom state) {
-    if (state == const FailureDialog()) {
-      showDialog<void>(
-        context: context,
-        builder: (context) => WarningDialog(
-          title: context.l10n.loginFailure,
-          content: context.l10n.wrongCredentials,
-          onConfirm: () => context.pop(),
-        ),
-      );
-    }
-    if (state == const TwoAttemptsLeftDialog()) {
-      showDialog<void>(
-        context: context,
-        builder: (context) => WarningDialog(
-          title: context.l10n.loginFailure,
-          content: context.l10n.wrongCredentials,
-          onConfirm: () => context.pop(),
-        ),
-      );
-    }
-    if (state == const OneAttemptLeftDialog()) {
-      showDialog<void>(
-        context: context,
-        builder: (context) => WarningDialog(
-          title: context.l10n.loginFailure,
-          content: context.l10n.wrongCredentials,
-          onConfirm: () => context.pop(),
-        ),
-      );
-    }
-    if (state == const LockedOutDialog()) {
-      showDialog<void>(
-        context: context,
-        builder: (context) => WarningDialog(
-          title: context.l10n.loginFailure,
-          content: context.l10n.wrongPasswordLockedOut,
-          onConfirm: () => context.pop(),
-        ),
-      );
+  Future<void> onCustom(
+      BuildContext context, FamilyLoginSheetCustom state) async {
+    switch (state) {
+      case LoginSuccess():
+        if (!context.mounted) return;
+        await widget.navigate!(context);
+
+        if (!context.mounted) return;
+        context.pop();
+      case TwoAttemptsLeftDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongCredentials,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case OneAttemptLeftDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongCredentials,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case LockedOutDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongPasswordLockedOut,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case FailureDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongCredentials,
+            onConfirm: () => context.pop(),
+          ),
+        );
     }
   }
 }
