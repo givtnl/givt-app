@@ -92,8 +92,8 @@ class _ParentAmountPageState extends State<ParentAmountPage> {
               ? () async {
                   await FamilyAuthUtils.authenticateUser(
                     context,
-                    checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                    checkAuthRequest: FamilyCheckAuthRequest(
+                      navigate: (context) async {
                         _checkCardDetailsAndNavigate(context);
                       },
                     ),

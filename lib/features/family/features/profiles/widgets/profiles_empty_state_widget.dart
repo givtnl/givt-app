@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
-import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
+import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/widgets/errors/retry_error_widget.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 

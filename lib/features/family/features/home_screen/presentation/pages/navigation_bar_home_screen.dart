@@ -169,8 +169,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     } else {
       await FamilyAuthUtils.authenticateUser(
         context,
-        checkAuthRequest: CheckAuthRequest(
-          navigate: (context, {isUSUser}) async {
+        checkAuthRequest: FamilyCheckAuthRequest(
+          navigate: (context) async {
             _setIndex(index);
           },
         ),

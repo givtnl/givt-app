@@ -13,12 +13,12 @@ import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.d
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
-import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
-import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
+import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -185,7 +185,7 @@ class USPersonalInfoEditPage extends StatelessWidget {
                 ),
                 value: locals.changePassword,
                 onTap: () =>
-                    ResetPasswordScreen(initialEmail: user.email).show(context),
+                    ResetPasswordSheet(initialEmail: user.email).show(context),
               ),
               FutureBuilder(
                 initialData: false,
@@ -226,11 +226,10 @@ class USPersonalInfoEditPage extends StatelessWidget {
                                   width: 24,
                                 )
                               : const Icon(Icons.fingerprint),
-                          onTap: () async => AuthUtils.checkToken(
+                          onTap: () async => FamilyAuthUtils.authenticateUser(
                             context,
-                            checkAuthRequest: CheckAuthRequest(
-                              navigate: (context, {isUSUser}) =>
-                                  showModalBottomSheet<void>(
+                            checkAuthRequest: FamilyCheckAuthRequest(
+                              navigate: (context) => showModalBottomSheet<void>(
                                 context: context,
                                 isScrollControlled: true,
                                 useSafeArea: true,
@@ -258,10 +257,10 @@ class USPersonalInfoEditPage extends StatelessWidget {
                   FontAwesomeIcons.userXmark,
                 ),
                 value: locals.unregister,
-                onTap: () async => AuthUtils.checkToken(
+                onTap: () async => FamilyAuthUtils.authenticateUser(
                   context,
-                  checkAuthRequest: CheckAuthRequest(
-                    navigate: (context, {isUSUser}) async => context.pushNamed(
+                  checkAuthRequest: FamilyCheckAuthRequest(
+                    navigate: (context) async => context.pushNamed(
                       FamilyPages.unregisterUS.name,
                     ),
                   ),

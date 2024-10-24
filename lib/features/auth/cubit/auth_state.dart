@@ -35,10 +35,11 @@ class AuthState extends Equatable {
   final String email;
   final String message;
   final AuthStatus status;
-  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
+  final Future<void> Function(BuildContext context) navigate;
 
-  static Future<void> _emptyNavigate(BuildContext context,
-      {bool? isUSUser,}) async {}
+  static Future<void> _emptyNavigate(
+    BuildContext context,
+  ) async {}
 
   bool get hasNavigation {
     return navigate != _emptyNavigate;
@@ -51,7 +52,7 @@ class AuthState extends Equatable {
     UserPresets? presets,
     String? email,
     String? message,
-    Future<void> Function(BuildContext context, {bool? isUSUser})? navigate,
+    Future<void> Function(BuildContext context)? navigate,
   }) {
     if (status == AuthStatus.authenticated) {
       email = '';

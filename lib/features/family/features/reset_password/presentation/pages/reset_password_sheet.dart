@@ -13,8 +13,8 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({
+class ResetPasswordSheet extends StatefulWidget {
+  const ResetPasswordSheet({
     this.initialEmail = '',
     super.key,
   });
@@ -22,7 +22,7 @@ class ResetPasswordScreen extends StatefulWidget {
   final String initialEmail;
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ResetPasswordSheet> createState() => _ResetPasswordSheetState();
 
   Future<void> show(
     BuildContext context,
@@ -36,7 +36,7 @@ class ResetPasswordScreen extends StatefulWidget {
   }
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ResetPasswordSheetState extends State<ResetPasswordSheet> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
 
