@@ -135,6 +135,12 @@ void initRepositories() {
         getIt(),
       ),
     )
+    ..registerLazySingleton<FamilyAuthRepository>(
+      () => FamilyAuthRepositoryImpl(
+        getIt(),
+        getIt(),
+      ),
+    )
     ..registerLazySingleton<ProfilesRepository>(
       () => ProfilesRepositoryImpl(
         getIt(),
@@ -206,12 +212,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<ResetPasswordRepository>(
       () => ResetPasswordRepositoryImpl(
-        getIt(),
-      ),
-    )
-    ..registerLazySingleton<FamilyAuthRepository>(
-      () => FamilyAuthRepositoryImpl(
-        getIt(),
         getIt(),
       ),
     );

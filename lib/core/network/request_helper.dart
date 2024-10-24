@@ -9,6 +9,8 @@ import 'package:givt_app/core/failures/certificate_exception.dart';
 import 'package:givt_app/core/failures/failure.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/core/network/certificate_check_interceptor.dart';
+import 'package:givt_app/core/network/expired_token_retry_policy.dart';
+import 'package:givt_app/core/network/family_expired_token_retry_policy.dart';
 import 'package:givt_app/core/network/network.dart';
 import 'package:givt_app/shared/models/certificate_response.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -80,8 +82,8 @@ class RequestHelper {
       final allowedUSFingerprints = await usFuture;
       _secureEuClient = _getSecureClient(allowedEUFingerprints);
       _secureUsClient = _getSecureClient(allowedUSFingerprints);
-      euClient = createClient(client: _secureEuClient);
-      usClient = createClient(client: _secureUsClient);
+      euClient = createEUClient(client: _secureEuClient);
+      usClient = createUSClient(client: _secureUsClient);
     } catch (e, s) {
       if (_networkInfo.isConnected) {
         LoggingInfo.instance.info(
@@ -90,8 +92,8 @@ Error while setting up secure http clients (while having an internet connection)
         );
         await _createClients();
       } else {
-        euClient = createClient();
-        usClient = createClient();
+        euClient = createEUClient();
+        usClient = createUSClient();
         _internetSubscription =
             _networkInfo.hasInternetConnectionStream().listen(
           (hasConnection) async {
@@ -139,7 +141,7 @@ Error while setting up secure http clients (while having an internet connection)
     return Country.nl.countryCode;
   }
 
-  Client createClient({Client? client}) {
+  Client createEUClient({Client? client}) {
     return InterceptedClient.build(
       client: client,
       requestTimeout: const Duration(seconds: 30),
@@ -148,6 +150,18 @@ Error while setting up secure http clients (while having an internet connection)
         TokenInterceptor(),
       ],
       retryPolicy: ExpiredTokenRetryPolicy(),
+    );
+  }
+
+  Client createUSClient({Client? client}) {
+    return InterceptedClient.build(
+      client: client,
+      requestTimeout: const Duration(seconds: 30),
+      interceptors: [
+        if (client == null) CertificateCheckInterceptor(),
+        TokenInterceptor(),
+      ],
+      retryPolicy: FamilyExpiredTokenRetryPolicy(),
     );
   }
 
