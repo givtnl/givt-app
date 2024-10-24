@@ -37,27 +37,38 @@ class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
 
     try {
       await _authRepository.login(email, password);
-
       emitCustom(const FamilyLoginSheetCustom.successRedirect());
+      return;
     } catch (e, stackTrace) {
-      emitInitial();
+      emitData(email);
+
+      final errorDialogs = {
+        'TwoAttemptsLeft':
+            const FamilyLoginSheetCustom.showTwoAttemptsLeftDialog(),
+        'OneAttemptLeft':
+            const FamilyLoginSheetCustom.showOneAttemptLeftDialog(),
+        'LockedOut': const FamilyLoginSheetCustom.showLockedOutDialog(),
+      };
+
+      for (final keyword in errorDialogs.keys) {
+        if (e.toString().contains(keyword)) {
+          emitCustom(errorDialogs[keyword]!);
+          return;
+        }
+      }
 
       if (e.toString().contains('invalid_grant')) {
         LoggingInfo.instance.warning(
           e.toString(),
           methodName: stackTrace.toString(),
         );
-        if (e.toString().contains('TwoAttemptsLeft')) {
-          emitCustom(const FamilyLoginSheetCustom.showTwoAttemptsLeftDialog());
-        }
-        if (e.toString().contains('OneAttemptLeft')) {
-          emitCustom(const FamilyLoginSheetCustom.showOneAttemptLeftDialog());
-        }
-        if (e.toString().contains('LockedOut')) {
-          emitCustom(const FamilyLoginSheetCustom.showLockedOutDialog());
-        }
+        return;
       }
 
+      LoggingInfo.instance.error(
+        'Unknown error: $e',
+        methodName: 'FamilyLoginCubit.login',
+      );
       emitCustom(const FamilyLoginSheetCustom.showFailureDialog());
     }
   }
