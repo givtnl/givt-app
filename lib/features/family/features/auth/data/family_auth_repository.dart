@@ -108,6 +108,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
 
     await _storeSession(session);
+    await _fetchUserExtension(session.userGUID);
   }
 
   Future<bool> _storeSession(Session session) async {

@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/features/login/presentation/pages/family_login_sheet.dart';
 
 class FamilyAuthUtils {
@@ -79,9 +77,7 @@ class FamilyAuthUtils {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => FamilyLoginSheet(
-        email: checkAuthRequest.email != null
-            ? checkAuthRequest.email!
-            : context.read<AuthCubit>().state.user.email,
+        email: checkAuthRequest.email,
         navigate: checkAuthRequest.navigate,
       ),
     );

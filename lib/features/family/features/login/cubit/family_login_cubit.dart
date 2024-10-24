@@ -4,15 +4,32 @@ import 'package:givt_app/features/family/features/login/presentation/models/fami
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
-class FamilyLoginCubit extends CommonCubit<bool, FamilyLoginSheetCustom> {
+class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
   FamilyLoginCubit(
     this._authRepository,
   ) : super(const BaseState.initial());
 
   final FamilyAuthRepository _authRepository;
 
-  void init() {
+  void init(String? email) {
     emitInitial();
+
+    if (email != null) {
+      emitData(email);
+      return;
+    }
+
+    final user = _authRepository.getCurrentUser();
+    if (user != null) {
+      emitData(user.email);
+      return;
+    }
+
+    // Should never happen, but just in case
+    LoggingInfo.instance.error(
+      'No email provided for login',
+      methodName: 'FamilyLoginCubit.init',
+    );
   }
 
   Future<bool> login(String email, String password) async {
@@ -23,7 +40,7 @@ class FamilyLoginCubit extends CommonCubit<bool, FamilyLoginSheetCustom> {
       return true;
     } catch (e, stackTrace) {
       emitInitial();
-      
+
       if (e.toString().contains('invalid_grant')) {
         LoggingInfo.instance.warning(
           e.toString(),

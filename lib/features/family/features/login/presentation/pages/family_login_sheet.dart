@@ -19,12 +19,12 @@ import 'package:go_router/go_router.dart';
 
 class FamilyLoginSheet extends StatefulWidget {
   const FamilyLoginSheet({
-    required this.email,
     required this.navigate,
+    this.email,
     super.key,
   });
 
-  final String email;
+  final String? email;
   final Future<void> Function(BuildContext context) navigate;
 
   @override
@@ -42,13 +42,14 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _cubit.init();
+
+    _cubit.init(widget.email);
   }
 
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController(text: widget.email);
+    emailController = TextEditingController();
     passwordController = TextEditingController();
   }
 
@@ -78,125 +79,129 @@ class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final locals = context.l10n;
-
     return BaseStateConsumer(
       cubit: _cubit,
       onCustom: showCustomDialog,
-      onInitial: (context) => FunBottomSheet(
-        title: locals.login,
-        closeAction: () => context.pop(),
-        content: BlocListener<AuthCubit, AuthState>(
-          listener: (context, state) {},
-          child: Form(
-            key: formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 24),
-                BodyMediumText(
-                  locals.loginText,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 24),
-                OutlinedTextFormField(
-                  controller: emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  readOnly: true,
-                  autofillHints: const [
-                    AutofillHints.username,
-                    AutofillHints.email,
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        !Util.emailRegEx.hasMatch(value)) {
-                      return locals.invalidEmail;
-                    }
-                    return null;
-                  },
-                  hintText: locals.email,
-                ),
-                const SizedBox(height: 16),
-                OutlinedTextFormField(
-                  controller: passwordController,
-                  autofillHints: const [AutofillHints.password],
-                  keyboardType: TextInputType.visiblePassword,
-                  onChanged: (value) {
-                    setState(() {
-                      formKey.currentState!.validate();
-                    });
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return locals.passwordRule;
-                    }
-                    if (value.length < 7) {
-                      return locals.passwordRule;
-                    }
-                    if (value.contains(RegExp('[0-9]')) == false) {
-                      return locals.passwordRule;
-                    }
-                    if (value.contains(RegExp('[A-Z]')) == false) {
-                      return locals.passwordRule;
-                    }
-
-                    return null;
-                  },
-                  obscureText: obscureText,
-                  textInputAction: TextInputAction.done,
-                  hintText: locals.password,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      obscureText ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 16),
-                  child: Align(
-                    child: TextButton(
-                      onPressed: () => ResetPasswordSheet(
-                        initialEmail: emailController.text,
-                      ).show(context),
-                      child: TitleSmallText(
-                        locals.forgotPassword,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        primaryButton: FunButton(
-          isDisabled: !isEnabled,
-          onTap: isEnabled ? () => onLogin(context) : null,
-          text: locals.login,
-          analyticsEvent: AnalyticsEvent(
-            AmplitudeEvents.loginClicked,
-          ),
-        ),
-      ),
+      onData: (context, data) => showLoginForm(data),
       onLoading: (context) {
         return FunBottomSheet(
-          title: locals.login,
+          title: context.l10n.login,
           icon: const CustomCircularProgressIndicator(),
           content: const BodyMediumText(
             "We're logging you in",
           ),
         );
       },
+    );
+  }
+
+  Widget showLoginForm(String email) {
+    emailController.text = email;
+
+    return FunBottomSheet(
+      title: context.l10n.login,
+      closeAction: () => context.pop(),
+      content: BlocListener<AuthCubit, AuthState>(
+        listener: (context, state) {},
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 24),
+              BodyMediumText(
+                context.l10n.loginText,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              OutlinedTextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                readOnly: true,
+                autofillHints: const [
+                  AutofillHints.username,
+                  AutofillHints.email,
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    formKey.currentState!.validate();
+                  });
+                },
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      !Util.emailRegEx.hasMatch(value)) {
+                    return context.l10n.invalidEmail;
+                  }
+                  return null;
+                },
+                hintText: context.l10n.email,
+              ),
+              const SizedBox(height: 16),
+              OutlinedTextFormField(
+                controller: passwordController,
+                autofillHints: const [AutofillHints.password],
+                keyboardType: TextInputType.visiblePassword,
+                onChanged: (value) {
+                  setState(() {
+                    formKey.currentState!.validate();
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return context.l10n.passwordRule;
+                  }
+                  if (value.length < 7) {
+                    return context.l10n.passwordRule;
+                  }
+                  if (value.contains(RegExp('[0-9]')) == false) {
+                    return context.l10n.passwordRule;
+                  }
+                  if (value.contains(RegExp('[A-Z]')) == false) {
+                    return context.l10n.passwordRule;
+                  }
+
+                  return null;
+                },
+                obscureText: obscureText,
+                textInputAction: TextInputAction.done,
+                hintText: context.l10n.password,
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    obscureText ? Icons.visibility : Icons.visibility_off,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      obscureText = !obscureText;
+                    });
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Align(
+                  child: TextButton(
+                    onPressed: () => ResetPasswordSheet(
+                      initialEmail: emailController.text,
+                    ).show(context),
+                    child: TitleSmallText(
+                      context.l10n.forgotPassword,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      primaryButton: FunButton(
+        isDisabled: !isEnabled,
+        onTap: isEnabled ? () => onLogin(context) : null,
+        text: context.l10n.login,
+        analyticsEvent: AnalyticsEvent(
+          AmplitudeEvents.loginClicked,
+        ),
+      ),
     );
   }
 
