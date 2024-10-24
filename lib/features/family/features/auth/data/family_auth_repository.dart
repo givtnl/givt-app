@@ -39,6 +39,8 @@ abstract class FamilyAuthRepository {
   Stream<UserExt?> authenticatedUserStream();
 
   Session getStoredSession();
+
+  UserExt? getCurentUser();
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -141,7 +143,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       final userExt = UserExt.fromJson(response);
       await _storeUserExt(userExt);
       await _setUserPropsForExternalServices(userExt);
-      _authenticatedUserStream.add(userExt);
+      _updateAuthenticatedUserStream(userExt);
       return userExt;
     } catch (e, s) {
       LoggingInfo.instance.error(
@@ -157,6 +159,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       UserExt.tag,
       jsonEncode(userExt.toJson()),
     );
+    _updateAuthenticatedUserStream(userExt);
   }
 
   @override
@@ -223,7 +226,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     // _prefs.clear();
     final sessionString = _prefs.getString(Session.tag);
 
-    updateAuthenticatedUserStream(null);
+    _updateAuthenticatedUserStream(null);
 
     // If the data is already gone, just continue :)
     if (sessionString == null) {
@@ -317,7 +320,11 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     );
   }
 
-  void updateAuthenticatedUserStream(UserExt? userExt) {
+  void _updateAuthenticatedUserStream(UserExt? userExt) {
+    _userExt = userExt;
     _authenticatedUserStream.add(userExt);
   }
+
+  @override
+  UserExt? getCurentUser() => _userExt;
 }
