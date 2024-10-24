@@ -40,7 +40,7 @@ abstract class FamilyAuthRepository {
 
   Session getStoredSession();
 
-  UserExt? getCurentUser();
+  UserExt? getCurrentUser();
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -326,5 +326,5 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  UserExt? getCurentUser() => _userExt;
+  UserExt? getCurrentUser() => _userExt;
 }
