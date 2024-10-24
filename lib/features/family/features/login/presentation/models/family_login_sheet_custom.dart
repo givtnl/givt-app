@@ -1,3 +1,16 @@
+/// Represents different dialog states during family login process.
+///
+/// This sealed class hierarchy ensures type-safe handling of various
+/// login attempt scenarios:
+/// - Two attempts remaining
+/// - One attempt remaining
+/// - General failure
+/// - Account locked out
+///
+/// Usage:
+/// ```dart
+/// EmitCustom(FamilyLoginSheetCustom.showTwoAttemptsLeftDialog());
+/// ```
 sealed class FamilyLoginSheetCustom {
   const FamilyLoginSheetCustom();
 
