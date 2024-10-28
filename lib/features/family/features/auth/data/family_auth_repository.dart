@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class FamilyAuthRepository {
   Future<Session> refreshToken();
 
-  Future<Session> login(String email, String password);
+  Future<void> login(String email, String password);
 
   Future<(UserExt, Session, UserPresets)?> isAuthenticated();
 
@@ -93,7 +93,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   }
 
   @override
-  Future<Session> login(String email, String password) async {
+  Future<void> login(String email, String password) async {
     final newSession = await _apiService.login(
       {
         'username': email,
@@ -106,8 +106,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     session = session.copyWith(
       isLoggedIn: true,
     );
+
     await _storeSession(session);
-    return session;
+    await _fetchUserExtension(session.userGUID);
   }
 
   Future<bool> _storeSession(Session session) async {

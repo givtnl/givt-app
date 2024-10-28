@@ -657,7 +657,7 @@ class AppRouter {
       if (state.hasNavigation) {
         context.read<AuthCubit>().clearNavigation();
         if (!context.mounted) return;
-        await state.navigate(context, isUSUser: state.user.isUsUser);
+        await state.navigate(context);
         return;
       }
 

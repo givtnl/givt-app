@@ -90,7 +90,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                      navigate: (context) async {
                         context.goNamed(Pages.personalSummary.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
@@ -116,7 +116,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                      navigate: (context) async {
                         context.goNamed(FamilyPages.childrenOverview.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
@@ -139,8 +139,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     await AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async =>
-                            context.goNamed(
+                        navigate: (context) async => context.goNamed(
                           Pages.overview.name,
                         ),
                       ),
@@ -154,7 +153,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async {
+                      navigate: (context) async {
                         context.goNamed(Pages.recurringDonations.name);
                         unawaited(
                           AnalyticsHelper.logEvent(
@@ -177,8 +176,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) =>
-                          showModalBottomSheet<void>(
+                      navigate: (context) => showModalBottomSheet<void>(
                         context: context,
                         isScrollControlled: true,
                         useSafeArea: true,
@@ -201,7 +199,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                   onTap: () async => AuthUtils.checkToken(
                     context,
                     checkAuthRequest: CheckAuthRequest(
-                      navigate: (context, {isUSUser}) async => context.goNamed(
+                      navigate: (context) async => context.goNamed(
                         Pages.personalInfoEdit.name,
                       ),
                     ),
@@ -271,8 +269,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                       onTap: () async => AuthUtils.checkToken(
                         context,
                         checkAuthRequest: CheckAuthRequest(
-                          navigate: (context, {isUSUser}) =>
-                              showModalBottomSheet<void>(
+                          navigate: (context) => showModalBottomSheet<void>(
                             context: context,
                             isScrollControlled: true,
                             useSafeArea: true,
@@ -324,8 +321,7 @@ class CustomNavigationDrawer extends StatelessWidget {
                     await AuthUtils.checkToken(
                       context,
                       checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async =>
-                            context.goNamed(
+                        navigate: (context) async => context.goNamed(
                           Pages.unregister.name,
                         ),
                       ),
