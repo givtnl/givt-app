@@ -11,6 +11,12 @@ class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
 
   final FamilyAuthRepository _authRepository;
 
+  final errorDialogs = {
+    'TwoAttemptsLeft': const FamilyLoginSheetCustom.showTwoAttemptsLeftDialog(),
+    'OneAttemptLeft': const FamilyLoginSheetCustom.showOneAttemptLeftDialog(),
+    'LockedOut': const FamilyLoginSheetCustom.showLockedOutDialog(),
+  };
+
   void init(String? email) {
     emitInitial();
 
@@ -41,14 +47,6 @@ class FamilyLoginCubit extends CommonCubit<String, FamilyLoginSheetCustom> {
       return;
     } catch (e, stackTrace) {
       emitData(email);
-
-      final errorDialogs = {
-        'TwoAttemptsLeft':
-            const FamilyLoginSheetCustom.showTwoAttemptsLeftDialog(),
-        'OneAttemptLeft':
-            const FamilyLoginSheetCustom.showOneAttemptLeftDialog(),
-        'LockedOut': const FamilyLoginSheetCustom.showLockedOutDialog(),
-      };
 
       for (final keyword in errorDialogs.keys) {
         if (e.toString().contains(keyword)) {

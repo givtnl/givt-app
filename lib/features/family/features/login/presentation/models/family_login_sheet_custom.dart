@@ -6,10 +6,11 @@
 /// - One attempt remaining
 /// - General failure
 /// - Account locked out
+/// - Successful login
 ///
 /// Usage:
 /// ```dart
-/// EmitCustom(FamilyLoginSheetCustom.showTwoAttemptsLeftDialog());
+/// emitCustom(FamilyLoginSheetCustom.showTwoAttemptsLeftDialog());
 /// ```
 sealed class FamilyLoginSheetCustom {
   const FamilyLoginSheetCustom();
