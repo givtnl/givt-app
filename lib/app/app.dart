@@ -10,6 +10,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/app/routes/app_router.dart';
 import 'package:givt_app/core/notification/notification.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/flows/cubit/flows_cubit.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/cubit/collectgroup_details_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart'
@@ -77,6 +78,10 @@ class _AppState extends State<App> {
             create: (_) => AuthCubit(
               getIt(),
             )..checkAuth(isAppStartupCheck: true),
+            lazy: false,
+          ),
+          BlocProvider(
+            create: (_) => getIt<FamilyAuthCubit>()..checkAuthOnAppStartup(),
             lazy: false,
           ),
           BlocProvider(

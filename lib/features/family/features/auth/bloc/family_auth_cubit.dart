@@ -46,4 +46,8 @@ class FamilyAuthCubit extends Cubit<FamilyAuthState> {
   Future<void> refreshSession() async {
     //TODO we probably don't need this anymore
   }
+
+  void checkAuthOnAppStartup() {
+    _authRepository.initAuth();
+  }
 }
