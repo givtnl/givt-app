@@ -12,13 +12,17 @@ import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
+import 'package:givt_app/features/family/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/features/auth/presentation/models/family_auth_state.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
+import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
@@ -194,7 +198,7 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                       FontAwesomeIcons.lock,
                     ),
                     value: locals.changePassword,
-                    onTap: () => ResetPasswordScreen(initialEmail: user.email)
+                    onTap: () => ResetPasswordSheet(initialEmail: user.email)
                         .show(context),
                   ),
                   FutureBuilder(
@@ -220,109 +224,106 @@ class _USPersonalInfoEditPageState extends State<USPersonalInfoEditPage> {
                       final shouldShow =
                           isFingerprintAvailable || isFaceIdAvailable;
 
-                      return Column(
-                        children: [
-                          if (shouldShow)
-                            _buildInfoRow(
-                              context,
-                              value: isFingerprintAvailable
-                                  ? Platform.isAndroid
-                                      ? locals.fingerprintTitle
-                                      : locals.touchId
-                                  : locals.faceId,
-                              icon: Platform.isIOS && isFaceIdAvailable
-                                  ? SvgPicture.asset(
-                                      'assets/images/face_id_image.svg',
-                                      width: 24,
-                                    )
-                                  : const Icon(Icons.fingerprint),
-                              onTap: () async => AuthUtils.checkToken(
-                                context,
-                                checkAuthRequest: CheckAuthRequest(
-                                  navigate: (context, {isUSUser}) =>
-                                      showModalBottomSheet<void>(
-                                    context: context,
-                                    isScrollControlled: true,
-                                    useSafeArea: true,
-                                    builder: (_) => FingerprintBottomSheet(
-                                      isFingerprint: isFingerprintAvailable,
-                                    ),
-                                  ),
+                  return Column(
+                    children: [
+                      if (shouldShow)
+                        _buildInfoRow(
+                          context,
+                          value: isFingerprintAvailable
+                              ? Platform.isAndroid
+                                  ? locals.fingerprintTitle
+                                  : locals.touchId
+                              : locals.faceId,
+                          icon: Platform.isIOS && isFaceIdAvailable
+                              ? SvgPicture.asset(
+                                  'assets/images/face_id_image.svg',
+                                  width: 24,
+                                )
+                              : const Icon(Icons.fingerprint),
+                          onTap: () async => FamilyAuthUtils.authenticateUser(
+                            context,
+                            checkAuthRequest: FamilyCheckAuthRequest(
+                              navigate: (context) => showModalBottomSheet<void>(
+                                context: context,
+                                isScrollControlled: true,
+                                useSafeArea: true,
+                                builder: (_) => FingerprintBottomSheet(
+                                  isFingerprint: isFingerprintAvailable,
                                 ),
                               ),
                             ),
-                          if (shouldShow)
-                            const Divider(
-                              height: 0,
-                            ),
-                        ],
-                      );
-                    },
-                  ),
-                  const Divider(
-                    height: 0,
-                  ),
-                  _buildInfoRow(
-                    context,
-                    icon: const Icon(
-                      FontAwesomeIcons.userXmark,
-                    ),
-                    value: locals.unregister,
-                    onTap: () async => AuthUtils.checkToken(
-                      context,
-                      checkAuthRequest: CheckAuthRequest(
-                        navigate: (context, {isUSUser}) async =>
-                            context.pushNamed(
-                          FamilyPages.unregisterUS.name,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                  ),
-                  _buildInfoRow(
-                    context,
-                    icon: const Icon(
-                      FontAwesomeIcons.circleInfo,
-                    ),
-                    value: locals.titleAboutGivt,
-                    onTap: () => showModalBottomSheet<void>(
-                      context: context,
-                      isScrollControlled: true,
-                      useSafeArea: true,
-                      builder: (_) => Theme(
-                        data: const FamilyAppTheme().toThemeData(),
-                        child: const AboutGivtBottomSheet(),
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                  ),
-                  _buildInfoRow(
-                    context,
-                    style: Theme.of(context).textTheme.labelMedium,
-                    icon: const Icon(
-                      FontAwesomeIcons.rightFromBracket,
-                    ),
-                    value: 'Logout',
-                    onTap: () => logout(context, fromLogoutBtn: true),
-                  ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 70, right: 70, top: 20),
-                    child: Text(
-                      'Would you like to change your name? Send an e-mail to support@givt.app',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: FamilyAppTheme.downloadAppBackground),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+                      if (shouldShow)
+                        const Divider(
+                          height: 0,
+                        ),
+                    ],
+                  );
+                },
               ),
-            );
-          },
+              const Divider(
+                height: 0,
+              ),
+              _buildInfoRow(
+                context,
+                icon: const Icon(
+                  FontAwesomeIcons.userXmark,
+                ),
+                value: locals.unregister,
+                onTap: () async => FamilyAuthUtils.authenticateUser(
+                  context,
+                  checkAuthRequest: FamilyCheckAuthRequest(
+                    navigate: (context) async => context.pushNamed(
+                      FamilyPages.unregisterUS.name,
+                    ),
+                  ),
+                ),
+              ),
+              const Divider(
+                height: 0,
+              ),
+              _buildInfoRow(
+                context,
+                icon: const Icon(
+                  FontAwesomeIcons.circleInfo,
+                ),
+                value: locals.titleAboutGivt,
+                onTap: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  builder: (_) => Theme(
+                    data: const FamilyAppTheme().toThemeData(),
+                    child: const AboutGivtBottomSheet(),
+                  ),
+                ),
+              ),
+              const Divider(
+                height: 0,
+              ),
+              _buildInfoRow(
+                context,
+                style: Theme.of(context).textTheme.labelMedium,
+                icon: const Icon(
+                  FontAwesomeIcons.rightFromBracket,
+                ),
+                value: 'Logout',
+                onTap: () => logout(context, fromLogoutBtn: true),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 70, right: 70, top: 20),
+                child: Text(
+                  'Would you like to change your name? Send an e-mail to support@givt.app',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.copyWith(color: FamilyAppTheme.downloadAppBackground),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

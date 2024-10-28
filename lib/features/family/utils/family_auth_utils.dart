@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
-import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
+import 'package:givt_app/features/family/features/login/presentation/pages/family_login_sheet.dart';
 
 class FamilyAuthUtils {
   // A method to authenticate the user with biometrics or email/pass
@@ -14,7 +13,7 @@ class FamilyAuthUtils {
   // to authenticate the user before navigating to the Manage Family section
   static Future<void> authenticateUser(
     BuildContext context, {
-    required CheckAuthRequest checkAuthRequest,
+    required FamilyCheckAuthRequest checkAuthRequest,
   }) async {
     if (!await LocalAuthInfo.instance.canCheckBiometrics) {
       if (!context.mounted) {
@@ -41,10 +40,6 @@ class FamilyAuthUtils {
         return;
       }
 
-      await context.read<FamilyAuthCubit>().refreshSession();
-      if (!context.mounted) {
-        return;
-      }
       await checkAuthRequest.navigate(context);
     } on PlatformException catch (e) {
       LoggingInfo.instance.info(
@@ -76,14 +71,14 @@ class FamilyAuthUtils {
   /// If the user cancels the login, nothing happens.
   static Future<void> _displayLoginBottomSheet(
     BuildContext context, {
-    required CheckAuthRequest checkAuthRequest,
+    required FamilyCheckAuthRequest checkAuthRequest,
   }) async {
     final loggedIn = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => FamilyLoginPage(
-        email: context.read<FamilyAuthCubit>().user?.email ?? '',
+      builder: (_) => FamilyLoginSheet(
+        email: checkAuthRequest.email,
         navigate: checkAuthRequest.navigate,
       ),
     );
@@ -96,12 +91,14 @@ class FamilyAuthUtils {
   }
 }
 
-class CheckAuthRequest {
-  CheckAuthRequest({
+class FamilyCheckAuthRequest {
+  FamilyCheckAuthRequest({
     required this.navigate,
     this.forceLogin = false,
+    this.email,
   });
 
-  final Future<void> Function(BuildContext context, {bool? isUSUser}) navigate;
+  final Future<void> Function(BuildContext context) navigate;
   final bool forceLogin;
+  final String? email;
 }

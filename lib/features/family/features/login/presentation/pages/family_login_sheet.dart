@@ -2,72 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/login/cubit/family_login_cubit.dart';
+import 'package:givt_app/features/family/features/login/presentation/models/family_login_sheet_custom.dart';
+import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
+import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
-class FamilyLoginPage extends StatefulWidget {
-  const FamilyLoginPage({
-    required this.email,
-    this.navigate,
+class FamilyLoginSheet extends StatefulWidget {
+  const FamilyLoginSheet({
+    required this.navigate,
+    this.email,
     super.key,
   });
 
-  final String email;
-  final Future<void> Function(BuildContext context, {bool? isUSUser})? navigate;
+  final String? email;
+  final Future<void> Function(BuildContext context) navigate;
 
   @override
-  State<FamilyLoginPage> createState() => _FamilyLoginPageState();
+  State<FamilyLoginSheet> createState() => _FamilyLoginSheetState();
 }
 
-class _FamilyLoginPageState extends State<FamilyLoginPage> {
+class _FamilyLoginSheetState extends State<FamilyLoginSheet> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailController;
   late TextEditingController passwordController;
   bool obscureText = true;
 
+  final _cubit = getIt<FamilyLoginCubit>();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _cubit.init(widget.email);
+  }
+
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController(text: widget.email);
+    emailController = TextEditingController();
     passwordController = TextEditingController();
   }
 
   Future<void> onLogin(BuildContext context) async {
-    if (formKey.currentState!.validate()) {
-      try {
-        await context
-            .read<AuthCubit>()
-            .login(
-              email: emailController.text,
-              password: passwordController.text,
-              navigate: widget.navigate,
-            )
-            .whenComplete(() {
-          if (!context.mounted) return;
-          final authState = context.read<AuthCubit>().state;
+    if (!formKey.currentState!.validate()) return;
 
-          if (authState.status == AuthStatus.authenticated ||
-              authState.status == AuthStatus.biometricCheck) {
-            context.pop(true);
-          }
-        });
-      } catch (e) {
-        if (!context.mounted) return;
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(e.toString()),
-          ),
-        );
-      }
-    }
+    await _cubit.login(
+      emailController.text,
+      passwordController.text,
+    );
   }
 
   bool get isEnabled {
@@ -79,64 +71,30 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final locals = context.l10n;
+    return BaseStateConsumer(
+      cubit: _cubit,
+      onCustom: onCustom,
+      onData: (context, data) => showLoginForm(data),
+      onLoading: (context) {
+        return FunBottomSheet(
+          title: context.l10n.login,
+          icon: const CustomCircularProgressIndicator(),
+          content: const BodyMediumText(
+            "We're logging you in",
+          ),
+        );
+      },
+    );
+  }
+
+  Widget showLoginForm(String email) {
+    emailController.text = email;
 
     return FunBottomSheet(
-      title: locals.login,
+      title: context.l10n.login,
       closeAction: () => context.pop(),
       content: BlocListener<AuthCubit, AuthState>(
-        listener: (context, state) {
-          if (state.status == AuthStatus.failure) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => WarningDialog(
-                title: locals.loginFailure,
-                content: locals.wrongCredentials,
-                onConfirm: () => context.pop(),
-              ),
-            );
-          }
-          if (state.status == AuthStatus.noInternet) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => WarningDialog(
-                title: locals.noInternetConnectionTitle,
-                content: locals.noInternet,
-                onConfirm: () => context.pop(),
-              ),
-            );
-          }
-          if (state.status == AuthStatus.twoAttemptsLeft) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => WarningDialog(
-                title: locals.loginFailure,
-                content: locals.wrongCredentials,
-                onConfirm: () => context.pop(),
-              ),
-            );
-          }
-          if (state.status == AuthStatus.oneAttemptLeft) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => WarningDialog(
-                title: locals.loginFailure,
-                content: locals.wrongCredentials,
-                onConfirm: () => context.pop(),
-              ),
-            );
-          }
-          if (state.status == AuthStatus.lockedOut) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => WarningDialog(
-                title: locals.loginFailure,
-                content: locals.wrongPasswordLockedOut,
-                onConfirm: () => context.pop(),
-              ),
-            );
-          }
-        },
+        listener: (context, state) {},
         child: Form(
           key: formKey,
           child: Column(
@@ -144,7 +102,7 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
             children: [
               const SizedBox(height: 24),
               BodyMediumText(
-                locals.loginText,
+                context.l10n.loginText,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
@@ -165,11 +123,11 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                   if (value == null ||
                       value.isEmpty ||
                       !Util.emailRegEx.hasMatch(value)) {
-                    return locals.invalidEmail;
+                    return context.l10n.invalidEmail;
                   }
                   return null;
                 },
-                hintText: locals.email,
+                hintText: context.l10n.email,
               ),
               const SizedBox(height: 16),
               OutlinedTextFormField(
@@ -183,23 +141,23 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return locals.passwordRule;
+                    return context.l10n.passwordRule;
                   }
                   if (value.length < 7) {
-                    return locals.passwordRule;
+                    return context.l10n.passwordRule;
                   }
                   if (value.contains(RegExp('[0-9]')) == false) {
-                    return locals.passwordRule;
+                    return context.l10n.passwordRule;
                   }
                   if (value.contains(RegExp('[A-Z]')) == false) {
-                    return locals.passwordRule;
+                    return context.l10n.passwordRule;
                   }
 
                   return null;
                 },
                 obscureText: obscureText,
                 textInputAction: TextInputAction.done,
-                hintText: locals.password,
+                hintText: context.l10n.password,
                 suffixIcon: IconButton(
                   icon: Icon(
                     obscureText ? Icons.visibility : Icons.visibility_off,
@@ -215,11 +173,11 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
                 padding: const EdgeInsets.only(top: 16),
                 child: Align(
                   child: TextButton(
-                    onPressed: () => ResetPasswordScreen(
+                    onPressed: () => ResetPasswordSheet(
                       initialEmail: emailController.text,
                     ).show(context),
                     child: TitleSmallText(
-                      locals.forgotPassword,
+                      context.l10n.forgotPassword,
                     ),
                   ),
                 ),
@@ -229,18 +187,61 @@ class _FamilyLoginPageState extends State<FamilyLoginPage> {
         ),
       ),
       primaryButton: FunButton(
-        onTap: context.watch<AuthCubit>().state.status == AuthStatus.loading
-            ? null
-            : isEnabled
-                ? () => onLogin(context)
-                : null,
-        text: locals.login,
-        isLoading:
-            context.watch<AuthCubit>().state.status == AuthStatus.loading,
+        isDisabled: !isEnabled,
+        onTap: isEnabled ? () => onLogin(context) : null,
+        text: context.l10n.login,
         analyticsEvent: AnalyticsEvent(
           AmplitudeEvents.loginClicked,
         ),
       ),
     );
+  }
+
+  Future<void> onCustom(
+      BuildContext context, FamilyLoginSheetCustom state) async {
+    switch (state) {
+      case LoginSuccess():
+        if (!context.mounted) return;
+        await widget.navigate!(context);
+
+        if (!context.mounted) return;
+        context.pop();
+      case TwoAttemptsLeftDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongCredentials,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case OneAttemptLeftDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongCredentials,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case LockedOutDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongPasswordLockedOut,
+            onConfirm: () => context.pop(),
+          ),
+        );
+      case FailureDialog():
+        await showDialog<void>(
+          context: context,
+          builder: (context) => WarningDialog(
+            title: context.l10n.loginFailure,
+            content: context.l10n.wrongCredentials,
+            onConfirm: () => context.pop(),
+          ),
+        );
+    }
   }
 }

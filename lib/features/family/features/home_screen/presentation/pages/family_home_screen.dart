@@ -172,8 +172,8 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
 
       await FamilyAuthUtils.authenticateUser(
         context,
-        checkAuthRequest: CheckAuthRequest(
-          navigate: (context, {isUSUser}) async {
+        checkAuthRequest: FamilyCheckAuthRequest(
+          navigate: (context) async {
             await context.pushNamed(
               FamilyPages.parentHome.name,
               extra: profile,

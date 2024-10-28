@@ -41,8 +41,7 @@ class EmptyWalletBottomSheet extends StatelessWidget {
           context.read<TopupCubit>().init(user.activeProfile.id);
           await FamilyAuthUtils.authenticateUser(
             context,
-            checkAuthRequest:
-                CheckAuthRequest(navigate: (context, {isUSUser}) async {
+            checkAuthRequest: FamilyCheckAuthRequest(navigate: (context) async {
               context.pop();
               final isMissingCardDetails = true ==
                   context.read<FamilyAuthCubit>().user?.isMissingcardDetails;
