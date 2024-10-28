@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/enums.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/children/edit_profile/cubit/edit_profile_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/widgets/avatar_item.dart';
@@ -41,7 +41,7 @@ class _ParentAvatarSelectionScreenState
           SnackBarHelper.showMessage(context, text: state.error, isError: true);
         } else if (state.status == EditProfileStatus.edited) {
           context.read<ProfilesCubit>().fetchAllProfiles();
-          context.read<AuthCubit>().refreshUser();
+          context.read<FamilyAuthCubit>().refreshUser();
           context.pop();
         }
       },

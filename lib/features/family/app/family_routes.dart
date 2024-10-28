@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/children/details/cubit/child_details_cubit.dart';
 import 'package:givt_app/features/children/details/pages/child_details_page.dart';
 import 'package:givt_app/features/children/edit_child/cubit/edit_child_cubit.dart';
@@ -17,6 +16,7 @@ import 'package:givt_app/features/children/family_history/family_history_cubit/f
 import 'package:givt_app/features/children/overview/cubit/family_overview_cubit.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/screens/kids_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/avatars/screens/parent_avatar_selection_screen.dart';
 import 'package:givt_app/features/family/features/coin_flow/cubit/search_coin_cubit.dart';
@@ -87,7 +87,7 @@ class FamilyAppRoutes {
             ),
             BlocProvider(
               create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
+                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
                 authRepository: getIt(),
               ),
             ),
@@ -106,7 +106,7 @@ class FamilyAppRoutes {
             // us personal info edit page
             BlocProvider(
               create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<AuthCubit>().state.user,
+                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
                 authRepository: getIt(),
               ),
             ),
@@ -131,7 +131,7 @@ class FamilyAppRoutes {
           path: FamilyPages.giveByListFamily.path,
           name: FamilyPages.giveByListFamily.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
+            final user = context.read<FamilyAuthCubit>().user!;
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
@@ -360,7 +360,7 @@ class FamilyAppRoutes {
           path: FamilyPages.parentAvatarSelection.path,
           name: FamilyPages.parentAvatarSelection.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
+            final user = context.read<FamilyAuthCubit>().user!;
             return MultiBlocProvider(
               providers: [
                 BlocProvider(
@@ -415,7 +415,7 @@ class FamilyAppRoutes {
           path: FamilyPages.createFamilyGoal.path,
           name: FamilyPages.createFamilyGoal.name,
           builder: (context, state) {
-            final user = context.read<AuthCubit>().state.user;
+            final user = context.read<FamilyAuthCubit>().user!;
             return MultiBlocProvider(
               providers: [
                 BlocProvider.value(

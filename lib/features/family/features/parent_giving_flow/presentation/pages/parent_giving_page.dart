@@ -7,7 +7,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/core/network/request_helper.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/features/give/models/models.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -94,7 +94,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
   Map<String, dynamic> _buildGivt(
     BuildContext context,
   ) {
-    final user = context.read<AuthCubit>().state.user;
+    final user = context.read<FamilyAuthCubit>().user;
     final format = NumberFormat.simpleCurrency(
       name: give.state.organisation.currency,
     );
@@ -106,7 +106,7 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
     return WebViewInput(
       currency: format.currencySymbol,
       apiUrl: Uri.https(getIt<RequestHelper>().apiURL).toString(),
-      guid: user.guid,
+      guid: user!.guid,
       organisation: orgName,
       givtObj: GivtTransaction.toJsonList(give.state.givtTransactions),
       confirmBtn: context.l10n.next,

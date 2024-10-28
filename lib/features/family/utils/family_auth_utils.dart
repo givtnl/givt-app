@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/auth/local_auth_info.dart';
 import 'package:givt_app/core/logging/logging.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/auth/pages/family_login_page.dart';
 
 class FamilyAuthUtils {
@@ -41,7 +41,7 @@ class FamilyAuthUtils {
         return;
       }
 
-      await context.read<AuthCubit>().refreshSession();
+      await context.read<FamilyAuthCubit>().refreshSession();
       if (!context.mounted) {
         return;
       }
@@ -83,7 +83,7 @@ class FamilyAuthUtils {
       isScrollControlled: true,
       useSafeArea: true,
       builder: (_) => FamilyLoginPage(
-        email: context.read<AuthCubit>().state.user.email,
+        email: context.read<FamilyAuthCubit>().user?.email ?? '',
         navigate: checkAuthRequest.navigate,
       ),
     );

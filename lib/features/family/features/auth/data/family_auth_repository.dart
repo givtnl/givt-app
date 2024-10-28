@@ -107,6 +107,7 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
       isLoggedIn: true,
     );
     await _storeSession(session);
+    await _fetchUserExtension(session.userGUID);
     return session;
   }
 
