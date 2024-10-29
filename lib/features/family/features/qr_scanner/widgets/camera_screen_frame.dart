@@ -29,7 +29,7 @@ class CameraScreenFrame extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.onPrimary,
         automaticallyImplyLeading: false,
         leading: GivtBackButtonFlat(
-          onPressedExt: () {
+          onPressedExt: () async {
             context.read<FlowsCubit>().resetFlow();
           },
         ),

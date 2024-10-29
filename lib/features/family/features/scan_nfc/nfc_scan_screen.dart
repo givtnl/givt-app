@@ -124,9 +124,9 @@ class _NFCScanPageState extends State<NFCScanPage> {
         return FunScaffold(
           appBar: FunTopAppBar.white(
             leading: GivtBackButtonFlat(
-              onPressedExt: () {
+              onPressedExt: () async {
                 context.read<FlowsCubit>().resetFlow();
-                context.read<ScanNfcCubit>().cancelScanning();
+                await context.read<ScanNfcCubit>().cancelScanning();
               },
             ),
             title: '',
