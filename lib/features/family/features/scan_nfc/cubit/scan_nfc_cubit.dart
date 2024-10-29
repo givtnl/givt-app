@@ -26,14 +26,14 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
   static const debuggingSuccessDelay = Duration(milliseconds: 1000);
 
   Future<void> cancelScanning() async {
-    await NfcManager.instance.stopSession(errorMessage: 'cancelScanning');
+    await NfcManager.instance.stopSession();
     emit(state.copyWith(scanNFCStatus: ScanNFCStatus.ready));
   }
 
   void stopScanningSession() {
     // for android we try to close session
     if (!Platform.isIOS) {
-      NfcManager.instance.stopSession(errorMessage: "stopScanningSession");
+      NfcManager.instance.stopSession();
     }
   }
 
@@ -132,7 +132,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
                 // on Android we intentionally keep session open
                 // until user triggers stop scanning on another screen
                 if (Platform.isIOS) {
-                  await NfcManager.instance.stopSession(alertMessage: ' ', errorMessage: 'onDiscovered');
+                  await NfcManager.instance.stopSession(alertMessage: ' ',);
                 }
 
                 if (mediumId.isEmpty) {
@@ -175,7 +175,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
         scanNFCStatus: ScanNFCStatus.error,
       ),
     );
-    NfcManager.instance.stopSession(errorMessage: 'handleException');
+    NfcManager.instance.stopSession();
     AnalyticsHelper.logEvent(eventName: AmplitudeEvents.coinScannedError);
   }
 }
