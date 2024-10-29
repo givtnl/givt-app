@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:givt_app/features/family/features/edit_profile/models/edit_profile.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin EditProfileRepository {
   Future<void> editProfile({

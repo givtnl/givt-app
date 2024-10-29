@@ -1,5 +1,5 @@
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/models/collectgroup_details.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 
 mixin OrganisationDetailsRepository {
   Future<CollectGroupDetails> fetchOrganisationDetails(String mediumId);

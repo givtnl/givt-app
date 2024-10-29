@@ -3,7 +3,7 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/recommendation/organisations/widgets/organisation_item.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/recommendations_ui_model.dart';
 import 'package:givt_app/features/family/shared/design/components/navigation/fun_tabs.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/title_medium_text.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 
 class RecommendationsListWidget extends StatelessWidget {
@@ -48,6 +48,14 @@ class RecommendationsListWidget extends StatelessWidget {
             ),
           ),
         ),
+        if (uiModel.isNotLoggedInParent && !uiModel.showActsOfService)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+            child: TitleSmallText(
+              "Right now, only the logged in parent can donate using their account. We're working on a way to allow all parents to be able to do this in the game. Stay tuned!",
+              color: Colors.black.withOpacity(0.25),
+            ),
+          ),
         ...List.generate(
           uiModel.organisations.length,
           (index) {

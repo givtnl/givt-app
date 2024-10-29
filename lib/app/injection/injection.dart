@@ -195,11 +195,6 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<AvatarsRepository>(
-      () => AvatarsRepositoryImpl(
-        getIt(),
-      ),
-    )
     ..registerLazySingleton<EditParentProfileRepository>(
       () => EditParentProfileRepositoryImpl(
         getIt(),

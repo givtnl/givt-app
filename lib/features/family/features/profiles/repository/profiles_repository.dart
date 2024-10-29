@@ -10,7 +10,7 @@ import 'package:givt_app/features/children/parental_approval/repositories/parent
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
-import 'package:givt_app/features/family/network/api_service.dart';
+import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/repositories/givt_repository.dart';
