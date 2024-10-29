@@ -14,14 +14,14 @@ class CharityFinderAppBar extends StatelessWidget
   });
 
   final bool showWallet;
-  final void Function()? onPressedExt;
+  final Future<void> Function()? onPressedExt;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: GivtBackButtonFlat(
         onPressedExt:
-            onPressedExt ?? () => context.read<FlowsCubit>().resetFlow(),
+            onPressedExt ?? () async => context.read<FlowsCubit>().resetFlow(),
         color: Theme.of(context).colorScheme.onPrimaryContainer,
       ),
       backgroundColor: Theme.of(context).colorScheme.onPrimary,

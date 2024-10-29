@@ -25,8 +25,8 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
   static const animationDuration = Duration(milliseconds: 1000);
   static const debuggingSuccessDelay = Duration(milliseconds: 1000);
 
-  void cancelScanning() {
-    NfcManager.instance.stopSession();
+  Future<void> cancelScanning() async {
+    await NfcManager.instance.stopSession();
     emit(state.copyWith(scanNFCStatus: ScanNFCStatus.ready));
   }
 
@@ -97,7 +97,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
         NfcManager.instance.startSession(
           alertMessage: 'Place your coin on the back of your phone near the camera',
           onError: (error) async {
-            log('coin read error: ${error.message}');
+            log('onError - coin read error: ${error.message}');
             if (error.type != NfcErrorType.systemIsBusy) {
               cancelScanning();
             }
@@ -132,7 +132,7 @@ class ScanNfcCubit extends Cubit<ScanNfcState> {
                 // on Android we intentionally keep session open
                 // until user triggers stop scanning on another screen
                 if (Platform.isIOS) {
-                  await NfcManager.instance.stopSession(alertMessage: ' ');
+                  await NfcManager.instance.stopSession(alertMessage: ' ',);
                 }
 
                 if (mediumId.isEmpty) {
