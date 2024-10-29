@@ -33,4 +33,23 @@ class FamilyAuthCubit extends Cubit<FamilyAuthState> {
     await _authSubscription?.cancel();
     await super.close();
   }
+
+  // Do not use this method for any new features
+  // this is purely for the refactor to support old classes
+  UserExt? get user => switch (state) {
+    Authenticated(:final user) => user,
+    Unauthenticated() => null,
+  };
+
+  Future<void> refreshUser() async {
+    //TODO we probably don't need this anymore
+  }
+
+  Future<void> refreshSession() async {
+    //TODO we probably don't need this anymore
+  }
+
+  void checkAuthOnAppStartup() {
+    _authRepository.initAuth();
+  }
 }

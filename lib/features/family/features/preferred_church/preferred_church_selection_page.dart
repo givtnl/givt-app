@@ -6,7 +6,7 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
-import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
+import 'package:givt_app/features/family/features/auth/bloc/family_auth_cubit.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
@@ -45,7 +45,7 @@ class _PreferredChurchSelectionPageState
     super.initState();
     getIt<OrganisationBloc>().add(
       OrganisationFetch(
-        Country.fromCode(context.read<AuthCubit>().state.user.country),
+        Country.fromCode(context.read<FamilyAuthCubit>().user!.country),
         type: CollectGroupType.church.index,
       ),
     );

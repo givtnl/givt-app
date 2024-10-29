@@ -41,6 +41,8 @@ abstract class FamilyAuthRepository {
   Session getStoredSession();
 
   UserExt? getCurrentUser();
+
+  void initAuth();
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -328,4 +330,9 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
 
   @override
   UserExt? getCurrentUser() => _userExt;
+
+  @override
+  void initAuth() {
+    refreshToken();
+  }
 }
