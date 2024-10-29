@@ -181,13 +181,13 @@ void initRepositories() {
         getIt(),
       ),
     )
-    ..registerLazySingleton<SvgAssetLoaderManager>(
-      SvgAssetLoaderManager.new,
-    )
-    ..registerLazySingleton<AvatarsRepository>(
-      () => AvatarsRepositoryImpl(
+    ..registerSingleton<AvatarsRepository>(
+      AvatarsRepositoryImpl(
         getIt(),
       ),
+    )
+    ..registerLazySingleton<SvgAssetLoaderManager>(
+      SvgAssetLoaderManager.new,
     )
     ..registerLazySingleton<EditProfileRepository>(
       () => EditProfileRepositoryImpl(

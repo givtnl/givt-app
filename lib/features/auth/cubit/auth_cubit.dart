@@ -535,12 +535,6 @@ class AuthCubit extends Cubit<AuthState> {
         e.toString(),
         methodName: stackTrace.toString(),
       );
-      emit(
-        state.copyWith(
-          message: e.toString(),
-          status: AuthStatus.failure,
-        ),
-      );
       return currentNotificationId;
     }
   }

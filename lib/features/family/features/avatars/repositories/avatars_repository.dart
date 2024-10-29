@@ -1,3 +1,4 @@
+import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/avatars/models/avatar.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 
@@ -8,12 +9,27 @@ mixin AvatarsRepository {
 class AvatarsRepositoryImpl with AvatarsRepository {
   AvatarsRepositoryImpl(
     this._apiService,
-  );
+  ) {
+    _init();
+  }
 
   final FamilyAPIService _apiService;
 
+  List<Avatar>? _avatars;
+
+  Future<void> _init() async {
+    try {
+      _avatars = await fetchAvatars();
+    } catch (e, s) {
+      LoggingInfo.instance.logExceptionForDebug(e, stacktrace: s);
+    }
+  }
+
   @override
   Future<List<Avatar>> fetchAvatars() async {
+    if (true == _avatars?.isNotEmpty) {
+      return _avatars!;
+    }
     final response = await _apiService.fetchAvatars();
 
     final result = <Avatar>[];
