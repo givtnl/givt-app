@@ -85,13 +85,6 @@ class FamilyAppRoutes {
                 getIt(),
               )..add(const RemoteDataSourceSyncRequested()),
             ),
-            BlocProvider(
-              create: (context) => PersonalInfoEditBloc(
-                loggedInUserExt: context.read<FamilyAuthCubit>().user!,
-                authRepository: getIt(),
-              ),
-            ),
-
             // manage family
             BlocProvider(
               create: (_) => FamilyOverviewCubit(getIt())
