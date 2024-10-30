@@ -16,9 +16,10 @@ part 'family_registration_state.dart';
 
 class FamilyRegistrationBloc
     extends Bloc<FamilyRegistrationEvent, FamilyRegistrationState> {
-  FamilyRegistrationBloc(
-      {required this.authRepository, required this.registrationRepository})
-      : super(const FamilyRegistrationState()) {
+  FamilyRegistrationBloc({
+    required this.authRepository,
+    required this.registrationRepository,
+  }) : super(const FamilyRegistrationState()) {
     on<FamilyPersonalInfoSubmitted>(_onRegistrationPersonalInfoSubmitted);
 
     on<FamilyRegistrationInit>(_onInit);
@@ -85,7 +86,9 @@ class FamilyRegistrationBloc
   }
 
   FutureOr<void> _onReset(
-      FamilyRegistrationReset event, Emitter<FamilyRegistrationState> emit) {
+    FamilyRegistrationReset event,
+    Emitter<FamilyRegistrationState> emit,
+  ) {
     emit(const FamilyRegistrationState());
   }
 
