@@ -16,7 +16,6 @@ import 'package:givt_app/features/children/family_goal/repositories/create_famil
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
-import 'package:givt_app/features/family/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -122,9 +121,6 @@ void initRepositories() {
         getIt(),
         getIt(),
       ),
-    )
-    ..registerLazySingleton<FamilyRegistrationRepository>(
-      FamilyRegistrationRepository.new,
     )
     ..registerLazySingleton<CollectGroupRepository>(
       () => CollectGroupRepositoryImpl(

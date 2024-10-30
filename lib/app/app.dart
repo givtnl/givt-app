@@ -16,7 +16,6 @@ import 'package:givt_app/features/family/features/giving_flow/collectgroup_detai
 import 'package:givt_app/features/family/features/impact_groups/cubit/impact_groups_cubit.dart'
     as FamilyImpactGroupsCubit;
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/registration/bloc/family_registration_bloc.dart';
 import 'package:givt_app/features/family/features/scan_nfc/cubit/scan_nfc_cubit.dart';
 import 'package:givt_app/features/family/features/topup/cubit/topup_cubit.dart';
 import 'package:givt_app/features/impact_groups/cubit/impact_groups_cubit.dart';
@@ -123,12 +122,6 @@ class _AppState extends State<App> {
             create: (context) => RegistrationBloc(
               authCubit: context.read<AuthCubit>(),
               authRepositoy: getIt(),
-            ),
-          ),
-          BlocProvider(
-            create: (context) => FamilyRegistrationBloc(
-              authRepository: getIt(),
-              registrationRepository: getIt(),
             ),
           ),
         ],

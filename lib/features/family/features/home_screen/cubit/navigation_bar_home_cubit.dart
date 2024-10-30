@@ -10,7 +10,6 @@ import 'package:givt_app/features/family/features/home_screen/usecases/preferred
 import 'package:givt_app/features/family/features/home_screen/usecases/registration_usecase.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
-import 'package:givt_app/features/family/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
@@ -24,14 +23,12 @@ class NavigationBarHomeCubit
     this._authRepository,
     this._impactGroupsRepository,
     this._addMemberRepository,
-    this._registrationRepository,
   ) : super(const BaseState.loading());
 
   final ProfilesRepository _profilesRepository;
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final AddMemberRepository _addMemberRepository;
-  final FamilyRegistrationRepository _registrationRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
@@ -49,10 +46,6 @@ class NavigationBarHomeCubit
     _profilesRepository.onProfilesChanged().listen(_onProfilesChanged);
     _impactGroupsRepository.onImpactGroupsChanged().listen((_) {
       _onImpactGroupsChanged();
-    });
-    _registrationRepository.onRegistrationFlowFinished().listen((_) {
-      emitLoading();
-      refreshData();
     });
     await refreshData();
   }
