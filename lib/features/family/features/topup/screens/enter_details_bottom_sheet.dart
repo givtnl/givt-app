@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/creditcard_setup/pages/credit_card_details.dart';
 import 'package:givt_app/features/family/features/profiles/cubit/profiles_cubit.dart';
-import 'package:givt_app/features/family/features/registration/pages/pages.dart';
 import 'package:givt_app/features/family/features/topup/screens/topup_bottom_sheet.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -10,10 +10,11 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 
 class EnterDetailsBottomSheet extends StatelessWidget {
-  const EnterDetailsBottomSheet(
-      {required this.onSuccess,
-      this.awaitActiveProfileBalance = false,
-      super.key});
+  const EnterDetailsBottomSheet({
+    required this.onSuccess,
+    this.awaitActiveProfileBalance = false,
+    super.key,
+  });
   final VoidCallback onSuccess;
   final bool awaitActiveProfileBalance;
 
@@ -29,30 +30,33 @@ class EnterDetailsBottomSheet extends StatelessWidget {
         textAlign: TextAlign.center,
       ),
       primaryButton: FunButton(
-          text: 'Enter payment details',
-          analyticsEvent:
-              AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
-          onTap: () {
-            CreditCardDetails.show(
-              context,
-              onSuccess: () {
-                Navigator.of(context).pop();
-                TopupWalletBottomSheet.show(
-                  context,
-                  onSuccess,
-                  awaitActiveProfileBalance,
-                );
-              },
-            );
-          }),
+        text: 'Enter payment details',
+        analyticsEvent: AnalyticsEvent(AmplitudeEvents.enterCardDetailsClicked),
+        onTap: () {
+          CreditCardDetails.show(
+            context,
+            onSuccess: () {
+              Navigator.of(context).pop();
+              TopupWalletBottomSheet.show(
+                context,
+                onSuccess,
+                awaitActiveProfileBalance,
+              );
+            },
+          );
+        },
+      ),
       closeAction: () {
         Navigator.of(context).pop();
       },
     );
   }
 
-  static void show(BuildContext context, VoidCallback onSuccess,
-      bool? awaitActiveProfileBalance) {
+  static void show(
+    BuildContext context,
+    VoidCallback onSuccess,
+    bool? awaitActiveProfileBalance,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
