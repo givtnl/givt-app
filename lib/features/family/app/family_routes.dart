@@ -51,11 +51,11 @@ import 'package:givt_app/features/family/features/recommendation/start_recommend
 import 'package:givt_app/features/family/features/recommendation/tags/cubit/tags_cubit.dart';
 import 'package:givt_app/features/family/features/recommendation/tags/screens/location_selection_screen.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/reflect_intro_screen.dart';
+import 'package:givt_app/features/family/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/family/features/scan_nfc/nfc_scan_screen.dart';
 import 'package:givt_app/features/permit_biometric/cubit/permit_biometric_cubit.dart';
 import 'package:givt_app/features/permit_biometric/models/permit_biometric_request.dart';
 import 'package:givt_app/features/permit_biometric/pages/permit_biometric_page.dart';
-import 'package:givt_app/features/registration/pages/us_signup_page.dart';
 import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart';
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/l10n/l10n.dart';

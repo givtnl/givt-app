@@ -13,12 +13,12 @@ import 'package:givt_app/features/children/add_member/widgets/member_counter.dar
 import 'package:givt_app/features/children/shared/profile_type.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
+import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/label_medium_text.dart';
 import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsheet.dart';
-import 'package:givt_app/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/app_theme.dart';

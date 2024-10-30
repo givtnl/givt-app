@@ -15,7 +15,7 @@ import 'package:givt_app/features/children/edit_profile/repositories/edit_parent
 import 'package:givt_app/features/children/family_goal/repositories/create_family_goal_repository.dart';
 import 'package:givt_app/features/children/family_history/repository/family_history_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
-import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
+import 'package:givt_app/features/family/features/creditcard_setup/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/give/repositories/beacon_repository.dart';
 import 'package:givt_app/features/give/repositories/campaign_repository.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -23,7 +23,6 @@ import 'package:givt_app/features/recurring_donations/cancel/repositories/cancel
 import 'package:givt_app/features/recurring_donations/create/repositories/create_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/detail/repository/detail_recurring_donation_repository.dart';
 import 'package:givt_app/features/recurring_donations/overview/repositories/recurring_donations_repository.dart';
-import 'package:givt_app/features/registration/cubit/stripe_cubit.dart';
 import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/shared/repositories/repositories.dart';

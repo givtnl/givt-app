@@ -18,9 +18,9 @@ import 'package:givt_app/features/children/overview/pages/models/edit_allowance_
 import 'package:givt_app/features/children/overview/pages/models/top_up_success_uimodel.dart';
 import 'package:givt_app/features/children/overview/pages/top_up_success_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/registration/pages/pages.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/registration/pages/credit_card_details.dart';
 import 'package:givt_app/shared/widgets/extensions/route_extensions.dart';
 import 'package:givt_app/utils/utils.dart';
 import 'package:go_router/go_router.dart';
