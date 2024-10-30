@@ -7,7 +7,7 @@ import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/core/logging/logging.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
-import 'package:givt_app/features/registration/domain/registration_repository.dart';
+import 'package:givt_app/features/family/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/utils/util.dart';
 
@@ -27,7 +27,7 @@ class FamilyRegistrationBloc
   }
 
   final FamilyAuthRepository authRepository;
-  final RegistrationRepository registrationRepository;
+  final FamilyRegistrationRepository registrationRepository;
 
   FutureOr<void> _onRegistrationPersonalInfoSubmitted(
     FamilyPersonalInfoSubmitted event,

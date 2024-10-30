@@ -321,7 +321,6 @@ class AppRouter {
                       create: (context) => RegistrationBloc(
                         authCubit: context.read<AuthCubit>(),
                         authRepositoy: getIt(),
-                        registrationRepository: getIt(),
                       )..add(const RegistrationInit()),
                       child: const GiftAidRequestPage(),
                     ),
@@ -331,7 +330,6 @@ class AppRouter {
                   create: (context) => RegistrationBloc(
                     authCubit: context.read<AuthCubit>(),
                     authRepositoy: getIt(),
-                    registrationRepository: getIt(),
                   )..add(const RegistrationInit()),
                   child: const BacsExplanationPage(),
                 ),
@@ -341,7 +339,6 @@ class AppRouter {
               create: (context) => RegistrationBloc(
                 authCubit: context.read<AuthCubit>(),
                 authRepositoy: getIt(),
-                registrationRepository: getIt(),
               )..add(const RegistrationInit()),
               child: const MandateExplanationPage(),
             ),

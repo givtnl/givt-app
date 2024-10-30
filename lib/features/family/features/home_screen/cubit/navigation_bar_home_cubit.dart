@@ -10,9 +10,9 @@ import 'package:givt_app/features/family/features/home_screen/usecases/preferred
 import 'package:givt_app/features/family/features/home_screen/usecases/registration_usecase.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/features/profiles/repository/profiles_repository.dart';
+import 'package:givt_app/features/family/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/features/impact_groups/models/impact_group.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
-import 'package:givt_app/features/registration/domain/registration_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 
@@ -31,7 +31,7 @@ class NavigationBarHomeCubit
   final AuthRepository _authRepository;
   final ImpactGroupsRepository _impactGroupsRepository;
   final AddMemberRepository _addMemberRepository;
-  final RegistrationRepository _registrationRepository;
+  final FamilyRegistrationRepository _registrationRepository;
 
   String? profilePictureUrl;
   List<Profile> _profiles = [];
