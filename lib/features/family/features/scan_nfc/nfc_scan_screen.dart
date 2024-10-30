@@ -126,7 +126,6 @@ class _NFCScanPageState extends State<NFCScanPage> {
             leading: GivtBackButtonFlat(
               onPressedExt: () async {
                 context.read<FlowsCubit>().resetFlow();
-                await context.read<ScanNfcCubit>().cancelScanning();
               },
             ),
             title: '',
