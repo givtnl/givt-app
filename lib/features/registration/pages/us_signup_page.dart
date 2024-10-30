@@ -96,7 +96,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           canPop: false,
           appBar: FunTopAppBar.primary99(
             leading: GivtBackButtonFlat(
-              onPressedExt: () {
+              onPressedExt: () async {
                 logout(context, fromLogoutBtn: true);
               },
             ),
