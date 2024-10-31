@@ -49,7 +49,7 @@ class FamilyRegistrationCubit
         timeZoneId: await FlutterTimezone.getLocalTimezone(),
         amountLimit:
             country.toUpperCase() == Country.us.countryCode ? 4999 : 499,
-        address: Util.defaultAdress,
+        address: Util.defaultAddress,
         city: Util.defaultCity,
         postalCode: Util.defaultPostCode,
         firstName: firstName,
