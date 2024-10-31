@@ -2,9 +2,9 @@ sealed class FamilyRegistrationCustom {
   const FamilyRegistrationCustom();
 
   const factory FamilyRegistrationCustom.succes() =
-      FamilyRegistrationCustomSucces;
+      FamilyRegistrationCustomSuccess;
 }
 
-class FamilyRegistrationCustomSucces extends FamilyRegistrationCustom {
-  const FamilyRegistrationCustomSucces();
+class FamilyRegistrationCustomSuccess extends FamilyRegistrationCustom {
+  const FamilyRegistrationCustomSuccess();
 }

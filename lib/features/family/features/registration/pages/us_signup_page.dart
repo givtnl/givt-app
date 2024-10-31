@@ -149,7 +149,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
 
   void handleCustom(BuildContext context, FamilyRegistrationCustom custom) {
     switch (custom) {
-      case FamilyRegistrationCustomSucces():
+      case FamilyRegistrationCustomSuccess():
         context.pushReplacementNamed(FamilyPages.profileSelection.name);
     }
   }

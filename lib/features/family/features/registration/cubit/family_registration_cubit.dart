@@ -61,7 +61,7 @@ class FamilyRegistrationCubit
         isNewUser: false,
       );
 
-      emitCustom(const FamilyRegistrationCustomSucces());
+      emitCustom(const FamilyRegistrationCustomSuccess());
     } catch (e, s) {
       emitError(null);
     }
