@@ -75,7 +75,7 @@ class Profile extends Equatable {
   ProfileType get profileType => ProfileType.getByTypeName(type);
 
   String get possessiveName =>
-      firstName.endsWith('s') ? "$firstName'" : "$firstName's'";
+      firstName.endsWith('s') ? "$firstName'" : "$firstName's";
 
   bool get isAdult => profileType == ProfileType.Parent;
 
