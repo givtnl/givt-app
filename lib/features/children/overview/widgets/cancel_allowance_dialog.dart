@@ -47,7 +47,7 @@ class CancelAllowanceDialog extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FunButton(
+                  FunButton.destructive(
                     onTap: () => {
                       onCancel.call(),
                       context
@@ -56,8 +56,6 @@ class CancelAllowanceDialog extends StatelessWidget {
                     },
                     text: 'Yes, cancel',
                     leftIcon: FontAwesomeIcons.xmark,
-                    backgroundColor: AppTheme.error80,
-                    borderColor: AppTheme.error30,
                     analyticsEvent: AnalyticsEvent(
                       AmplitudeEvents.cancelRGAYesClicked,
                     ),
