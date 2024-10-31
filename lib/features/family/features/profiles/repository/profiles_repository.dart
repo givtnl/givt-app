@@ -8,6 +8,7 @@ import 'package:givt_app/features/children/edit_child/repositories/edit_child_re
 import 'package:givt_app/features/children/edit_profile/repositories/edit_parent_profile_repository.dart';
 import 'package:givt_app/features/children/parental_approval/repositories/parental_approval_repository.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
 import 'package:givt_app/features/family/features/profiles/models/profile.dart';
 import 'package:givt_app/features/family/network/family_api_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
@@ -39,9 +40,10 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._givtRepository,
     this._authRepository,
     this._parentalApprovalRepository,
+    this._createTransactionRepository,
     this._editChildProfileRepository,
     this._editParentProfileRepository,
-    this._registrationRepository,
+      this._registrationRepository,
   ) {
     _init();
   }
@@ -53,6 +55,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
   final GivtRepository _givtRepository;
   final AuthRepository _authRepository;
   final ParentalApprovalRepository _parentalApprovalRepository;
+  final CreateTransactionRepository _createTransactionRepository;
   final EditProfileRepository _editChildProfileRepository;
   final EditParentProfileRepository _editParentProfileRepository;
   final RegistrationRepository _registrationRepository;
@@ -97,6 +100,10 @@ class ProfilesRepositoryImpl with ProfilesRepository {
         }
       },
     );
+
+    _createTransactionRepository
+        .onTransaction()
+        .listen((_) => refreshProfiles());
 
     _editParentProfileRepository
         .onProfileChanged()

@@ -138,6 +138,7 @@ void initRepositories() {
         getIt(),
         getIt(),
         getIt(),
+        getIt(),
       ),
     )
     ..registerLazySingleton<OrganisationDetailsRepository>(
@@ -152,7 +153,6 @@ void initRepositories() {
     )
     ..registerLazySingleton<CreateTransactionRepository>(
       () => CreateTransactionRepositoryImpl(
-        getIt(),
         getIt(),
       ),
     )
