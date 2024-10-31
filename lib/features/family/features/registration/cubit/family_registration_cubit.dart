@@ -20,7 +20,13 @@ class FamilyRegistrationCubit
   Future<void> init() async {
     await _authRepository.refreshToken();
     final user = _authRepository.getCurrentUser();
-    emitData(user!);
+
+    if (user == null) {
+      emitError(null);
+      return;
+    }
+
+    emitData(user);
   }
 
   Future<void> savePersonalInfo(
