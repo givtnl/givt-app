@@ -4,11 +4,11 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/admin_fee/presentation/widgets/admin_fee_text.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
+import 'package:givt_app/features/family/shared/widgets/texts/body_medium_text.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
-import 'package:givt_app/utils/app_theme.dart';
 
 class AddTopUpPage extends StatefulWidget {
   const AddTopUpPage({
@@ -64,14 +64,9 @@ class _AddTopUpPageState extends State<AddTopUpPage> {
                       }),
                     ),
                     const SizedBox(height: 12),
-                    Text(
+                    BodyMediumText(
                       context.l10n.topUpScreenInfo,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: AppTheme.primary20,
-                            fontWeight: FontWeight.w400,
-                            height: 1.2,
-                          ),
                     ),
                   ],
                 ),
