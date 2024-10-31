@@ -55,9 +55,8 @@ class GuessSecretWordCubit
         1,
         2,
         3,
-      ];
-
-      // make sure people can't press wrong answers after pressing the correct answer
+        3,
+      ]; // make sure people can't press wrong answers after pressing the correct answer
       emitCustom(const GuessTheWordCustom.showConfetti());
 
       // Check if it's the last game and delay for 2 seconds before continuing
