@@ -33,7 +33,7 @@ mixin ProfilesRepository {
 
 class ProfilesRepositoryImpl with ProfilesRepository {
   ProfilesRepositoryImpl(
-      this._apiService,
+    this._apiService,
     this._editChildRepository,
     this._addMemberRepository,
     this._impactGroupsRepository,
