@@ -125,5 +125,6 @@ class FunTextStyles {
     height: 1.4,
     fontWeight: FontWeight.w500,
     fontFamily: 'Rouna',
+    letterSpacing: 0,
   );
 }
