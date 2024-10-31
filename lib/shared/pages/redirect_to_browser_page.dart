@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:givt_app/app/routes/pages.dart';
-import 'package:givt_app/shared/pages/loading_page.dart';
+import 'package:givt_app/features/splash/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,6 +14,6 @@ class RedirectToBrowserPage extends StatelessWidget {
     launchUrl(Uri.parse(uri)).then((value) {
       context.goNamed(Pages.splash.name);
     });
-    return const LoadingPage();
+    return const SplashPage();
   }
 }

@@ -1,16 +1,16 @@
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
-import 'package:givt_app/features/family/features/registration/cubit/family_registration_custom.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_custom.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/temp_user.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
 import 'package:givt_app/utils/util.dart';
 
-class FamilyRegistrationCubit
-    extends CommonCubit<UserExt, FamilyRegistrationCustom> {
-  FamilyRegistrationCubit(
+class UsSignupCubit
+    extends CommonCubit<UserExt, UsSignupCustom> {
+  UsSignupCubit(
     FamilyAuthRepository authRepository,
   )   : _authRepository = authRepository,
         super(const BaseState.loading());
@@ -68,7 +68,7 @@ class FamilyRegistrationCubit
         isNewUser: false,
       );
 
-      emitCustom(const FamilyRegistrationCustomSuccess());
+      emitCustom(const UsSignupCustomSuccess());
     } catch (e, s) {
       emitError(null);
     }

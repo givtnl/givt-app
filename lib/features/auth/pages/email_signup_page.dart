@@ -301,14 +301,22 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
                                       // Update country
                                       _updateCountry();
 
-                                      await context.read<AuthCubit>().register(
-                                            country: selectedCountry,
-                                            email: _emailController.value.text
-                                                .trim(),
-                                            locale:
-                                                Localizations.localeOf(context)
-                                                    .languageCode,
-                                          );
+                                      if (selectedCountry.isUS) {
+                                        
+                                        
+                                      } else {
+                                        // EU
+                                        await context
+                                            .read<AuthCubit>()
+                                            .register(
+                                              country: selectedCountry,
+                                              email: _emailController.value.text
+                                                  .trim(),
+                                              locale: Localizations.localeOf(
+                                                      context)
+                                                  .languageCode,
+                                            );
+                                      }
                                     }
                                     toggleLoading();
                                   }

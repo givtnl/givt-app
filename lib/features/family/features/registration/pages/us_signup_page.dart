@@ -7,8 +7,8 @@ import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
-import 'package:givt_app/features/family/features/registration/cubit/family_registration_cubit.dart';
-import 'package:givt_app/features/family/features/registration/cubit/family_registration_custom.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_cubit.dart';
+import 'package:givt_app/features/family/features/registration/cubit/us_signup_custom.dart';
 import 'package:givt_app/features/family/features/registration/widgets/accept_policy_row_us.dart';
 import 'package:givt_app/features/family/features/registration/widgets/avatar_selection_bottomsheet.dart';
 import 'package:givt_app/features/family/features/registration/widgets/random_avatar.dart';
@@ -54,7 +54,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   bool _obscureText = true;
   Country _selectedCountry = Country.us;
 
-  final _cubit = getIt<FamilyRegistrationCubit>();
+  final _cubit = getIt<UsSignupCubit>();
 
   @override
   void didChangeDependencies() {
@@ -148,10 +148,10 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
     );
   }
 
-  void handleCustom(BuildContext context, FamilyRegistrationCustom custom) {
+  void handleCustom(BuildContext context, UsSignupCustom custom) {
     switch (custom) {
-      case FamilyRegistrationCustomSuccess():
-        context.pushReplacementNamed(FamilyPages.profileSelection.name);
+      case UsSignupCustomSuccess():
+        context.pushReplacementNamed(FamilyPages.addMember.name);
     }
   }
 
