@@ -43,6 +43,8 @@ abstract class FamilyAuthRepository {
   UserExt? getCurrentUser();
 
   void initAuth();
+
+  Future<void> refreshUser() async {}
 }
 
 class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
@@ -292,14 +294,28 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   Future<bool> updateUser({
     required String guid,
     required Map<String, dynamic> newUserExt,
-  }) async =>
-      _apiService.updateUser(guid, newUserExt);
+  }) async {
+    try {
+      final result = await _apiService.updateUser(guid, newUserExt);
+      await _fetchUserExtension(guid);
+      return result;
+    } catch (e, s) {
+      return false;
+    }
+  }
 
   @override
   Future<bool> updateUserExt(
     Map<String, dynamic> newUserExt,
-  ) async =>
-      _apiService.updateUserExt(newUserExt);
+  ) async {
+    try {
+      final result = _apiService.updateUserExt(newUserExt);
+      await refreshUser();
+      return result;
+    } catch (e, s) {
+      return false;
+    }
+  }
 
   @override
   Future<bool> updateNotificationId({
@@ -334,5 +350,10 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
   @override
   void initAuth() {
     refreshToken();
+  }
+
+  @override
+  Future<void> refreshUser() async {
+    await _fetchUserExtension(_userExt!.guid);
   }
 }
