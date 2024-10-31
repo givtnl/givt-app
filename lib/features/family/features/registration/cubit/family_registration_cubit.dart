@@ -29,16 +29,17 @@ class FamilyRegistrationCubit
     emitData(user);
   }
 
-  Future<void> savePersonalInfo(
-      {required String email,
-      required String password,
-      required String firstName,
-      required String lastName,
-      required String country,
-      required String phoneNumber,
-      required String appLanguage,
-      required String countryCode,
-      required String profilePicture}) async {
+  Future<void> savePersonalInfo({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+    required String country,
+    required String phoneNumber,
+    required String appLanguage,
+    required String countryCode,
+    required String profilePicture,
+  }) async {
     emitLoading();
 
     try {
