@@ -39,7 +39,7 @@ class _TopupInitialBottomSheetState extends State<TopupInitialBottomSheet> {
     ).currencySymbol;
 
     return FunBottomSheet(
-      title: 'Top up ${user.possessiveName} wallet',
+      title: 'Top up ${currentProfile.possessiveName} wallet',
       icon: primaryCircleWithIcon(
         circleSize: 140,
         iconData: FontAwesomeIcons.plus,

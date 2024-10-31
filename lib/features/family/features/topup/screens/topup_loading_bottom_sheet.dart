@@ -10,10 +10,10 @@ class TopupLoadingBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.read<AuthCubit>().state.user;
+    final currentProfile = context.read<ProfilesCubit>().state.activeProfile;
 
     return FunBottomSheet(
-      title: 'Top up ${user.possessiveName} wallet',
+      title: 'Top up ${currentProfile.possessiveName} wallet',
       icon: const CustomCircularProgressIndicator(),
       content: const Column(
         children: [
