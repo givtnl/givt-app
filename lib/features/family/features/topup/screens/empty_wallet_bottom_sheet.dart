@@ -15,12 +15,8 @@ import 'package:givt_app/shared/widgets/common_icons.dart';
 import 'package:go_router/go_router.dart';
 
 class EmptyWalletBottomSheet extends StatelessWidget {
-  const EmptyWalletBottomSheet(
-      {required this.afterSuccessAction,
-      this.awaitActiveProfileBalance = false,
-      super.key});
+  const EmptyWalletBottomSheet({required this.afterSuccessAction, super.key});
   final VoidCallback afterSuccessAction;
-  final bool awaitActiveProfileBalance;
   @override
   Widget build(BuildContext context) {
     return FunBottomSheet(
@@ -45,17 +41,12 @@ class EmptyWalletBottomSheet extends StatelessWidget {
               final isMissingCardDetails =
                   context.read<AuthCubit>().state.user.isMissingcardDetails;
               if (isMissingCardDetails) {
-                EnterDetailsBottomSheet.show(
-                  context,
-                  afterSuccessAction,
-                  awaitActiveProfileBalance,
-                );
+                EnterDetailsBottomSheet.show(context, afterSuccessAction);
                 return;
               }
               TopupWalletBottomSheet.show(
                 context,
                 afterSuccessAction,
-                awaitActiveProfileBalance,
               );
             }),
           );
@@ -76,8 +67,10 @@ class EmptyWalletBottomSheet extends StatelessWidget {
     );
   }
 
-  static void show(BuildContext context, VoidCallback afterSuccessAction,
-      {bool? awaitActiveProfileBalance}) {
+  static void show(
+    BuildContext context,
+    VoidCallback afterSuccessAction,
+  ) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -87,7 +80,6 @@ class EmptyWalletBottomSheet extends StatelessWidget {
       backgroundColor: Colors.white,
       builder: (context) => EmptyWalletBottomSheet(
         afterSuccessAction: afterSuccessAction,
-        awaitActiveProfileBalance: awaitActiveProfileBalance ?? false,
       ),
     );
   }
