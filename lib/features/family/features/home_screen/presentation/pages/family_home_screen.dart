@@ -95,13 +95,14 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      AvatarBar(
-                        circleSize: 58,
-                        uiModel: AvatarBarUIModel(
-                          avatarUIModels: uiModel.avatars,
+                      if (!overlayVisible)
+                        AvatarBar(
+                          circleSize: 58,
+                          uiModel: AvatarBarUIModel(
+                            avatarUIModels: uiModel.avatars,
+                          ),
+                          onAvatarTapped: onAvatarTapped,
                         ),
-                        onAvatarTapped: onAvatarTapped,
-                      ),
                     ],
                   ),
                 ],
