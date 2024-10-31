@@ -12,8 +12,10 @@ class RandomAvatar extends StatefulWidget {
     required this.onClick,
     super.key,
   });
+
   final String id;
   final void Function() onClick;
+
   @override
   State<RandomAvatar> createState() => _RandomAvatarState();
 }
@@ -54,8 +56,11 @@ class _RandomAvatarState extends State<RandomAvatar> {
                   _avatarsCubit.state.getAvatarByKey(widget.id).pictureURL,
                   width: size.width * 0.25,
                   height: size.width * 0.25,
-                  placeholderBuilder: (context) =>
-                      const CustomCircularProgressIndicator(),
+                  placeholderBuilder: (context) => SizedBox(
+                    width: size.width * 0.25,
+                    height: size.width * 0.25,
+                    child: const CustomCircularProgressIndicator(),
+                  ),
                 ),
               ),
               const Positioned(
