@@ -33,7 +33,7 @@ mixin ProfilesRepository {
 
 class ProfilesRepositoryImpl with ProfilesRepository {
   ProfilesRepositoryImpl(
-    this._apiService,
+      this._apiService,
     this._editChildRepository,
     this._addMemberRepository,
     this._impactGroupsRepository,
@@ -43,7 +43,7 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     this._createTransactionRepository,
     this._editChildProfileRepository,
     this._editParentProfileRepository,
-      this._registrationRepository,
+    this._registrationRepository,
   ) {
     _init();
   }
@@ -182,6 +182,11 @@ class ProfilesRepositoryImpl with ProfilesRepository {
     final profile = Profile.fromMap(response);
     _childDetailsStreamController.add(profile);
     _profileMap[childGuid] = profile;
+    final index = _profiles?.indexWhere((element) => element.id == childGuid);
+    if (index != null && index != -1) {
+      _profiles?[index] = profile;
+      _profilesStreamController.add(_profiles!);
+    }
     return profile;
   }
 
