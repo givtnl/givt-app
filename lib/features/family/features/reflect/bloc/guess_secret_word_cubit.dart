@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/features/reflect/domain/reflect_and_share_repository.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
@@ -14,7 +16,7 @@ class GuessSecretWordCubit
 
   final ReflectAndShareRepository _reflectAndShareRepository;
   final List<String> _texts = [
-    'Which one do you think it is?',
+    'What word do you think you heard?',
     'Oops, try again',
     'Oh, so close',
     'Not quite, keep going',
@@ -52,9 +54,18 @@ class GuessSecretWordCubit
         0,
         1,
         2,
-        3
+        3,
+        3,
       ]; // make sure people can't press wrong answers after pressing the correct answer
       emitCustom(const GuessTheWordCustom.showConfetti());
+
+      // Check if it's the last game and delay for 2 seconds before continuing
+      if (_reflectAndShareRepository.isGameFinished()) {
+        Timer(const Duration(seconds: 2), () {
+          emitCustom(const GuessTheWordCustom.redirectToSummary());
+        });
+        return;
+      }
     }
     _emitData();
   }
