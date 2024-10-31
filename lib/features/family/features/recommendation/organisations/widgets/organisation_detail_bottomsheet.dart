@@ -107,7 +107,6 @@ class OrganisationDetailBottomSheet extends StatelessWidget {
                         () {
                           _refreshUserAndNavigate(context);
                         },
-                        awaitActiveProfileBalance: true,
                       );
                       return;
                     }
