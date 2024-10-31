@@ -76,6 +76,7 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
   @override
   void dispose() {
     getIt<AvatarsCubit>().clear();
+    _cubit.close();
     super.dispose();
   }
 
