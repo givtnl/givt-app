@@ -27,6 +27,7 @@ class RuleScreen extends StatelessWidget {
     required this.bodyText,
     required this.header,
     required this.iconData,
+    this.backgroundColor,
     super.key,
   });
 
@@ -50,8 +51,10 @@ class RuleScreen extends StatelessWidget {
 
   factory RuleScreen.toSidekick(GameProfile sidekick) {
     return RuleScreen(
+      backgroundColor: sidekick.sidekickRole!.color.backgroundColor,
       user: sidekick,
       header: GameProfileItem(
+        accentColor: sidekick.sidekickRole!.color.accentColor,
         profile: sidekick,
         displayRole: false,
         size: 100,
@@ -112,6 +115,7 @@ class RuleScreen extends StatelessWidget {
   final String bodyText;
   final Widget header;
   final IconData iconData;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +131,10 @@ class RuleScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 56),
           child: RuleCard(
-            color: user.role!.color.backgroundColor,
+            color: backgroundColor ?? user.role!.color.backgroundColor,
             icon: FunIcon(
               iconData: iconData,
-              circleColor: user.role!.color.backgroundColor,
+              circleColor: backgroundColor ?? user.role!.color.backgroundColor,
               circleSize: 64,
               iconSize: 32,
             ),
