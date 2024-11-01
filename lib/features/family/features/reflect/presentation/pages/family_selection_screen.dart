@@ -45,7 +45,7 @@ class _FamilySelectionScreenState extends State<FamilySelectionScreen> {
       appBar: FunTopAppBar(
         title: 'Who is playing?',
         leading: GivtBackButtonFlat(
-          onPressedExt: () {
+          onPressedExt: () async {
             Navigator.of(context).pop();
           },
         ),

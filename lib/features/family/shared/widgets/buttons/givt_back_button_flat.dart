@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,7 +15,7 @@ class GivtBackButtonFlat extends StatelessWidget {
     this.color,
   });
 
-  final void Function()? onPressedExt;
+  final Future<void> Function()? onPressedExt;
   final Color? color;
 
   @override
@@ -23,14 +25,16 @@ class GivtBackButtonFlat extends StatelessWidget {
         FontAwesomeIcons.arrowLeft,
         color: color ?? FamilyAppTheme.primary20,
       ),
-      onPressed: () {
-        AnalyticsHelper.logEvent(
+      onPressed: () async {
+        unawaited(AnalyticsHelper.logEvent(
           eventName: AmplitudeEvents.backButtonPressed,
-        );
+        ));
 
-        SystemSound.play(SystemSoundType.click);
-        onPressedExt?.call();
-        context.pop();
+        unawaited(SystemSound.play(SystemSoundType.click));
+        await onPressedExt?.call();
+        if(context.mounted) {
+          context.pop();
+        }
       },
     );
   }

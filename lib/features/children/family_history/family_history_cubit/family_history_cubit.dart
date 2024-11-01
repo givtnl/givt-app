@@ -61,7 +61,8 @@ class FamilyHistoryCubit extends Cubit<FamilyHistoryState> {
       final newPageHistory =
           await historyRepo.getHistory(pageNumber: state.pageNr);
 
-      resultHistory.addAll(newPageHistory);
+      resultHistory.addAll(newPageHistory.where((item) => !resultHistory
+          .any((existing) => existing.type == item.type && existing == item)));
 
       emit(
         state.copyWith(

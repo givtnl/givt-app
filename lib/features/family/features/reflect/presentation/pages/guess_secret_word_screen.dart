@@ -4,7 +4,6 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/reflect/bloc/guess_secret_word_cubit.dart';
-import 'package:givt_app/features/family/features/reflect/bloc/summary_cubit.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_option_uimodel.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/models/guess_the_word_custom.dart';
 import 'package:givt_app/features/family/features/reflect/presentation/pages/family_roles_screen.dart';
@@ -51,6 +50,10 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
           switch (custom) {
             case ShowConfetti():
               ConfettiDialog.show(context);
+            case RedirectToSummary():
+              Navigator.of(context).pushReplacement(
+                const GratefulScreen().toRoute(context),
+              );
           }
         },
         onData: (context, uiModel) {
@@ -133,18 +136,6 @@ class _GuessSecretWordScreenState extends State<GuessSecretWordScreen> {
                 ),
                 const SizedBox(height: 16),
               ],
-              FunButton.secondary(
-                isDisabled: !uiModel.areContinuationButtonsEnabled,
-                onTap: () {
-                  getIt<SummaryCubit>().saveSummary();
-                  Navigator.of(context)
-                      .push(const GratefulScreen().toRoute(context));
-                },
-                text: uiModel.isGameFinished ? 'Done' : 'Quit',
-                analyticsEvent: AnalyticsEvent(
-                  AmplitudeEvents.reflectAndShareQuitClicked,
-                ),
-              ),
             ],
           );
         },

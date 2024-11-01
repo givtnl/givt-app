@@ -21,12 +21,10 @@ import 'package:givt_app/features/registration/widgets/avatar_selection_bottomsh
 import 'package:givt_app/features/registration/widgets/random_avatar.dart';
 import 'package:givt_app/features/registration/widgets/us_mobile_number_form_field.dart';
 import 'package:givt_app/l10n/l10n.dart';
-import 'package:givt_app/shared/dialogs/dialogs.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/shared/widgets/outlined_text_form_field.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
-import 'package:givt_app/utils/app_theme.dart';
 import 'package:givt_app/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
@@ -96,27 +94,11 @@ class _UsSignUpPageState extends State<UsSignUpPage> {
           canPop: false,
           appBar: FunTopAppBar.primary99(
             leading: GivtBackButtonFlat(
-              onPressedExt: () {
+              onPressedExt: () async {
                 logout(context, fromLogoutBtn: true);
               },
             ),
             title: 'Enter your details',
-            actions: [
-              IconButton(
-                onPressed: () => showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  useSafeArea: true,
-                  backgroundColor: AppTheme.givtBlue,
-                  builder: (_) => const FAQBottomSheet(),
-                ),
-                icon: const Icon(
-                  FontAwesomeIcons.question,
-                  size: 26,
-                  color: AppTheme.primary30,
-                ),
-              ),
-            ],
           ),
           body: isLoading
               ? _buildLoadingState()

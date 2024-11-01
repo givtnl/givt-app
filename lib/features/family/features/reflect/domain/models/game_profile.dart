@@ -32,6 +32,8 @@ class GameProfile {
 
   Reporter? get reporterRole => roles.whereType<Reporter>().firstOrNull;
 
+  Sidekick? get sidekickRole => roles.whereType<Sidekick>().firstOrNull;
+
   AvatarUIModel toAvatarUIModel({
     bool isSelected = false,
     bool hasDonated = false,
