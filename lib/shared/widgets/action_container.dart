@@ -76,6 +76,18 @@ class _ActionContainerState extends State<ActionContainer> {
     return widget.isDisabled
         ? _buildContainer(widget.child)
         : GestureDetector(
+            onLongPress: () {
+              print('Long press');
+            },
+            onLongPressDown: (details) {
+              print('Long press down');
+            },
+      onLongPressCancel: () {
+              print('Long press cancel');
+            },
+      onLongPressEnd: (details) {
+              print('Long press end');
+            },
             onTap: () async {
               unawaited(
                 AnalyticsHelper.logEvent(
@@ -86,7 +98,7 @@ class _ActionContainerState extends State<ActionContainer> {
               widget.onTap?.call();
               await _actionDelay();
             },
-            onTapDown: (details) {
+      onTapDown: (details) {
               widget.onTapDown?.call();
               if (!widget.isMuted) {
                 SystemSound.play(SystemSoundType.click);

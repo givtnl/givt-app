@@ -24,6 +24,9 @@ class FunButton extends StatelessWidget {
     this.textColor = FamilyAppTheme.primary30,
     this.fullBorder = false,
     this.isDebugOnly = false,
+    this.onTapCancel,
+    this.onTapUp,
+    this.onTapDown,
   });
 
   factory FunButton.secondary({
@@ -102,6 +105,9 @@ class FunButton extends StatelessWidget {
   }
 
   final void Function()? onTap;
+  final VoidCallback? onTapCancel;
+  final VoidCallback? onTapUp;
+  final VoidCallback? onTapDown;
   final bool isDisabled;
   final String text;
   final bool isLoading;
@@ -128,6 +134,9 @@ class FunButton extends StatelessWidget {
     return ActionContainer(
       analyticsEvent: analyticsEvent,
       onTap: onTap,
+      onTapCancel: onTapCancel,
+      onTapDown: onTapDown,
+      onTapUp: onTapUp,
       borderColor: borderColor,
       isDisabled: isDisabled,
       borderSize: fullBorder ? 2 : 0.01,
