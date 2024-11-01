@@ -134,21 +134,17 @@ class NotificationService implements INotificationService {
 
   Future<void> navigateFirebaseNotification(RemoteMessage message) async {
     LoggingInfo.instance.info('Firebase notification received');
-    print('Firebase notification received');
-
-    switch (message.data['Type']) {
-      case 'DonationApproval':
-        LoggingInfo.instance.info('Navigating to family overview screen');
-        AppRouter.router.goNamed(FamilyPages.childrenOverview.name);
-      case 'HabitReminder':
-        LoggingInfo.instance
-            .info('Navigating to profiles screen from sunday notification');
-        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
-      default:
-        LoggingInfo.instance.info(
-          'Navigating to profiles screen screen, from firebase notification',
-        );
-        AppRouter.router.goNamed(FamilyPages.profileSelection.name);
+    final pathName = message.data['Path'];
+    if (pathName != null && pathName.toString().isNotEmpty) {
+      LoggingInfo.instance.info(
+        'Navigating to ${message.data['Path']}, from firebase notification type ${message.data['Type']}',
+      );
+      AppRouter.router.goNamed(pathName.toString());
+    } else {
+      LoggingInfo.instance.info(
+        'Navigating to home screen, from firebase notification type ${message.data['Type']}, no path found.',
+      );
+      AppRouter.router.goNamed(FamilyPages.profileSelection.name);
     }
   }
 
