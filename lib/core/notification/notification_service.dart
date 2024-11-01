@@ -137,7 +137,10 @@ class NotificationService implements INotificationService {
     LoggingInfo.instance.info('Firebase notification received');
     final pathName = message.data['Path'].toString();
     if (pathName.isNotNullAndNotEmpty()) {
-      final validValues = FamilyPages.values.map((e) => e.name).toList();
+      final validValues = [
+        ...FamilyPages.values.map((e) => e.name).toList(),
+        ...Pages.values.map((e) => e.name).toList(),
+      ];
       if (validValues.contains(pathName)) {
         AppRouter.router.goNamed(pathName);
       } else {
