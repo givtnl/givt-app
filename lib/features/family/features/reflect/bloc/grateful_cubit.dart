@@ -226,6 +226,7 @@ class GratefulCubit extends CommonCubit<GratefulUIModel, GratefulCustom> {
   }
 
   void _onEveryoneDonated() {
+    _reflectAndShareRepository.saveSummaryStats();
     emitCustom(const GratefulCustom.goToGameSummary());
   }
 
