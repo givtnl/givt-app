@@ -451,27 +451,6 @@ class APIService {
     return response.statusCode == 200;
   }
 
-  Future<bool> createChild(Map<String, dynamic> body) async {
-    final url =
-        Uri.https(_apiURL, 'givtservice/v1/childprofile/setup-child-profile');
-
-    final response = await client.post(
-      url,
-      body: jsonEncode(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
-
-    if (response.statusCode >= 300) {
-      throw GivtServerFailure(
-        statusCode: response.statusCode,
-        body: jsonDecode(response.body) as Map<String, dynamic>,
-      );
-    }
-    return response.statusCode == 200;
-  }
-
   Future<bool> editChild(String childGUID, Map<String, dynamic> body) async {
     final url = Uri.https(_apiURL, '/givtservice/v1/ChildProfile/$childGUID');
 
