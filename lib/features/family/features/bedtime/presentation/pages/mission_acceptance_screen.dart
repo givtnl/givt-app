@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
 import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
-import 'package:lottie/lottie.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MissionAcceptanceScreen extends StatefulWidget {
   const MissionAcceptanceScreen({super.key});
@@ -18,8 +21,18 @@ class MissionAcceptanceScreen extends StatefulWidget {
 
 class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     with TickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
+  late final AnimationController _avatarsAnimationController =
+      AnimationController(
     duration: const Duration(seconds: 2),
+    vsync: this,
+  );
+  late final AnimationController _textAnimationController = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  );
+  late final AnimationController _fadeAnimationController = AnimationController(
+    value: 1,
+    duration: const Duration(seconds: 1),
     vsync: this,
   );
 
@@ -30,7 +43,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
   @override
   void initState() {
     super.initState();
-    _controller.addStatusListener((status) {
+    _avatarsAnimationController.addStatusListener((status) {
       /*final isAnimating = _controller.isAnimating;
       if (_isAnimating != isAnimating) {
         setState(() {
@@ -40,10 +53,26 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
       if (status == AnimationStatus.completed) {
         setState(() {
           firstAnimationIsCompleted = true;
-          _controller.reverse();
         });
+
+        _navigateToHome();
       }
     });
+  }
+
+  void _navigateToHome() {
+    Navigator.pushReplacement(
+        context,
+        PageTransition<dynamic>(
+            isIos: Platform.isIOS,
+            type: PageTransitionType.bottomToTop,
+            child: const NavigationBarHomeScreen()));
+  }
+
+  void _reverseAnimation() {
+    _avatarsAnimationController.reverse();
+    _textAnimationController.reverse();
+    _fadeAnimationController.forward(from: 0);
   }
 
   @override
@@ -61,24 +90,38 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
         ),*/
         PositionedTransition(
           rect: RelativeRectTween(
-            begin: RelativeRect.fromLTRB(0.5, MediaQuery.sizeOf(context).height * 0.4, 0, 0),
-            end: RelativeRect.fromLTRB(0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
+            begin: RelativeRect.fromLTRB(
+                0.5, MediaQuery.sizeOf(context).height * 0.4, 0, 0),
+            end: RelativeRect.fromLTRB(
+                0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
           ).animate(
-            CurvedAnimation(parent: _controller, curve: Curves.elasticOut, reverseCurve: Curves.elasticIn),
+            CurvedAnimation(
+                parent: _textAnimationController,
+                curve: Curves.linear,
+                reverseCurve: Curves.elasticIn),
           ),
-          child: const TitleLargeText(
-            'Is the Stokes Family ready to accept this mission of gratitude?',
-            color: Colors.white,
+          child: FadeTransition(
+            opacity: _fadeAnimationController,
+            child: const TitleLargeText(
+              'Is the Stokes Family ready to accept this mission of gratitude?',
+              color: Colors.white,
+            ),
           ),
         ),
         PositionedTransition(
           rect: RelativeRectTween(
-            begin: RelativeRect.fromLTRB(0.5, MediaQuery.sizeOf(context).height * 0.5, 0, 0),
-            end: RelativeRect.fromLTRB(0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
+            begin: RelativeRect.fromLTRB(
+                0.5, MediaQuery.sizeOf(context).height * 0.5, 0, 0),
+            end: RelativeRect.fromLTRB(
+                0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
           ).animate(
-            CurvedAnimation(parent: _controller, curve: Curves.elasticOut, reverseCurve: Curves.elasticIn),
+            CurvedAnimation(
+                parent: _avatarsAnimationController,
+                curve: Curves.linear,
+                reverseCurve: Curves.elasticIn),
           ),
           child: AvatarBar(
+            textColor: Colors.white,
             uiModel: AvatarBarUIModel(avatarUIModels: [
               AvatarUIModel(
                 avatarUrl:
@@ -95,11 +138,9 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
           alignment: Alignment.bottomCenter,
           child: FunButton(
             text: 'Hold to accept',
-            onTap: () {
-              _controller.forward();
-            },
+            onTap: () {},
             onTapDown: () {
-              //_controller.forward();
+              _playAnimation();
             },
             onTapCancel: handleButtonReleased,
             onTapUp: handleButtonReleased,
@@ -111,10 +152,16 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     );
   }
 
+  void _playAnimation() {
+    _avatarsAnimationController.forward();
+    _textAnimationController.forward();
+    _fadeAnimationController.reverse(from: 1);
+  }
+
   void handleButtonReleased() {
     if (firstAnimationIsCompleted) {
     } else {
-      //_controller.reverse();
+      //TODO _reverseAnimation();
     }
   }
 }
