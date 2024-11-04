@@ -2,13 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:givt_app/core/enums/amplitude_events.dart';
+import 'package:givt_app/features/family/app/injection.dart';
+import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/navigation_bar_home_screen.dart';
 import 'package:givt_app/features/family/shared/design/components/actions/actions.dart';
 import 'package:givt_app/features/family/shared/design/components/content/avatar_bar.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_bar_uimodel.dart';
-import 'package:givt_app/features/family/shared/design/components/content/models/avatar_uimodel.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
+import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:page_transition/page_transition.dart';
 
 class MissionAcceptanceScreen extends StatefulWidget {
@@ -21,6 +22,7 @@ class MissionAcceptanceScreen extends StatefulWidget {
 
 class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     with TickerProviderStateMixin {
+  final _cubit = getIt<MissionAcceptanceCubit>();
   late final AnimationController _avatarsAnimationController =
       AnimationController(
     duration: const Duration(seconds: 2),
@@ -41,8 +43,18 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
   bool _isAnimating = false;
 
   @override
+  void dispose() {
+    _avatarsAnimationController.dispose();
+    _textAnimationController.dispose();
+    _fadeAnimationController.dispose();
+    _cubit.close();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
+    _cubit.init();
     _avatarsAnimationController.addStatusListener((status) {
       /*final isAnimating = _controller.isAnimating;
       if (_isAnimating != isAnimating) {
@@ -77,78 +89,78 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        /*Positioned.fill(
-          child: Lottie.asset(
-            repeat: false,
-            'assets/lotties/hero_background_lottie.json',
-            fit: BoxFit.fitWidth,
-            // repeat: false,
-            width: double.infinity,
-          ),
-        ),*/
-        PositionedTransition(
-          rect: RelativeRectTween(
-            begin: RelativeRect.fromLTRB(
-                0.5, MediaQuery.sizeOf(context).height * 0.4, 0, 0),
-            end: RelativeRect.fromLTRB(
-                0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
-          ).animate(
-            CurvedAnimation(
-                parent: _textAnimationController,
-                curve: Curves.linear,
-                reverseCurve: Curves.elasticIn),
-          ),
-          child: FadeTransition(
-            opacity: _fadeAnimationController,
-            child: const TitleLargeText(
-              'Is the Stokes Family ready to accept this mission of gratitude?',
-              color: Colors.white,
-            ),
-          ),
-        ),
-        PositionedTransition(
-          rect: RelativeRectTween(
-            begin: RelativeRect.fromLTRB(
-                0.5, MediaQuery.sizeOf(context).height * 0.5, 0, 0),
-            end: RelativeRect.fromLTRB(
-                0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
-          ).animate(
-            CurvedAnimation(
-                parent: _avatarsAnimationController,
-                curve: Curves.linear,
-                reverseCurve: Curves.elasticIn),
-          ),
-          child: AvatarBar(
-            textColor: Colors.white,
-            uiModel: AvatarBarUIModel(avatarUIModels: [
-              AvatarUIModel(
-                avatarUrl:
-                    'https://givtstoragedebug.blob.core.windows.net/public/cdn/avatars/Hero4.svg',
-                text: 'Test',
+    return SafeArea(
+      child: BaseStateConsumer(
+        cubit: _cubit,
+        onInitial: (context) => Container(color: Colors.black),
+        onData: (context, uiModel) {
+          return Stack(
+            children: [
+              PositionedTransition(
+                rect: RelativeRectTween(
+                  begin: RelativeRect.fromLTRB(
+                      0.5, MediaQuery.sizeOf(context).height * 0.3, 0, 0),
+                  end: RelativeRect.fromLTRB(
+                      0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
+                ).animate(
+                  CurvedAnimation(
+                      parent: _textAnimationController,
+                      curve: Curves.linear,
+                      reverseCurve: Curves.elasticIn),
+                ),
+                child: FadeTransition(
+                  opacity: _fadeAnimationController,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: TitleLargeText(
+                      'Is the ${uiModel.familyName} Family ready to accept this mission of gratitude?',
+                      color: Colors.white,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
               ),
-            ]),
-            onAvatarTapped: (int index) {
-              //nothing
-            },
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: FunButton(
-            text: 'Hold to accept',
-            onTap: () {},
-            onTapDown: () {
-              _playAnimation();
-            },
-            onTapCancel: handleButtonReleased,
-            onTapUp: handleButtonReleased,
-            analyticsEvent: AnalyticsEvent(
-                AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked),
-          ),
-        ),
-      ],
+              PositionedTransition(
+                rect: RelativeRectTween(
+                  begin: RelativeRect.fromLTRB(
+                      0.5, MediaQuery.sizeOf(context).height * 0.1, 0, 0),
+                  end: RelativeRect.fromLTRB(
+                      0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
+                ).animate(
+                  CurvedAnimation(
+                      parent: _avatarsAnimationController,
+                      curve: Curves.linear,
+                      reverseCurve: Curves.elasticIn),
+                ),
+                child: AvatarBar(
+                  textColor: Colors.white,
+                  uiModel: uiModel.avatarBarUIModel,
+                  onAvatarTapped: (int index) {
+                    //nothing
+                  },
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: FunButton(
+                    text: 'Hold to accept',
+                    onTap: () {},
+                    onTapDown: () {
+                      _playAnimation();
+                    },
+                    onTapCancel: handleButtonReleased,
+                    onTapUp: handleButtonReleased,
+                    analyticsEvent: AnalyticsEvent(
+                        AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
