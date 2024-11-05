@@ -162,7 +162,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
       return true;
     } catch (e) {
       LoggingInfo.instance.error(
-        'Error while setting preferred church: $e',
+        'Error setting box origin: $e',
       );
       return false;
     }

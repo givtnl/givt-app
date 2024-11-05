@@ -16,6 +16,12 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
       builder: (context, state) {
         final types = state.organisations.map((e) => e.type).toSet().toList();
         types.removeWhere((item) => removedTypes.contains(item.name));
+        if (state.status == OrganisationStatus.loading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (types.isEmpty) {
+          return const SizedBox.shrink();
+        }
         return SizedBox(
           height: 116,
           child: ListView(

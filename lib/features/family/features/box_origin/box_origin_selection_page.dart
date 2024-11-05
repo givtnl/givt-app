@@ -27,16 +27,9 @@ class BoxOriginSelectionPage extends StatefulWidget {
 }
 
 class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
-  final TextEditingController controller = TextEditingController();
   final bloc = getIt<OrganisationBloc>();
   int selectedIndex = -1;
   bool isLoading = false;
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
