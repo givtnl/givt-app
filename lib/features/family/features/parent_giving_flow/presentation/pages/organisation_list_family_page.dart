@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
+import 'package:givt_app/core/enums/country.dart';
+import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -15,9 +18,15 @@ import 'package:givt_app/shared/models/collect_group.dart';
 class OrganisationListFamilyPage extends StatefulWidget {
   const OrganisationListFamilyPage({
     required this.onTap,
+    this.title = 'Give',
+    this.removedCollectGroupTypes = const [],
+    this.fab,
     super.key,
   });
   final void Function(CollectGroup) onTap;
+  final String title;
+  final List<CollectGroupType> removedCollectGroupTypes;
+  final FunButton? fab;
   @override
   State<OrganisationListFamilyPage> createState() =>
       _OrganisationListFamilyPageState();
@@ -26,6 +35,16 @@ class OrganisationListFamilyPage extends StatefulWidget {
 class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    getIt<OrganisationBloc>().add(
+      OrganisationFetchForSelection(
+        Country.fromCode(context.read<AuthCubit>().state.user.country),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     controller.dispose();
@@ -36,11 +55,12 @@ class _OrganisationListFamilyPageState
   Widget build(BuildContext context) {
     final locals = context.l10n;
     return Scaffold(
-      appBar: const FunTopAppBar(
-        leading: GivtBackButtonFlat(),
-        title: 'Give',
+      appBar: FunTopAppBar(
+        leading: const GivtBackButtonFlat(),
+        title: widget.title,
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
+        bloc: getIt<OrganisationBloc>(),
         listener: (context, state) {
           if (state.status == OrganisationStatus.error) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -56,7 +76,11 @@ class _OrganisationListFamilyPageState
               const SizedBox(
                 height: 16,
               ),
-              const FunOrganisationFilterTilesBar(),
+              FunOrganisationFilterTilesBar(
+                removedTypes: [
+                  ...widget.removedCollectGroupTypes.map((e) => e.name)
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -97,6 +121,7 @@ class _OrganisationListFamilyPageState
           );
         },
       ),
+      floatingActionButton: widget.fab,
     );
   }
 
