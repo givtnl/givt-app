@@ -14,19 +14,19 @@ import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
-class BoxOrignSelectionPage extends StatefulWidget {
-  const BoxOrignSelectionPage({
-    required this.setBoxOrign,
+class BoxOriginSelectionPage extends StatefulWidget {
+  const BoxOriginSelectionPage({
+    required this.setBoxOrigin,
     super.key,
   });
 
-  final Future<bool> Function(String id) setBoxOrign;
+  final Future<bool> Function(String id) setBoxOrigin;
 
   @override
-  State<BoxOrignSelectionPage> createState() => _BoxOrignSelectionPageState();
+  State<BoxOriginSelectionPage> createState() => _BoxOriginSelectionPageState();
 }
 
-class _BoxOrignSelectionPageState extends State<BoxOrignSelectionPage> {
+class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
   final TextEditingController controller = TextEditingController();
   final bloc = getIt<OrganisationBloc>();
   int selectedIndex = -1;
@@ -58,7 +58,7 @@ class _BoxOrignSelectionPageState extends State<BoxOrignSelectionPage> {
         text: 'Confirm',
         onTap: () => _onTapConfirm(context),
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.boxOrignConfirmClicked,
+          AmplitudeEvents.boxOriginConfirmClicked,
         ),
       ),
     );
@@ -72,17 +72,17 @@ class _BoxOrignSelectionPageState extends State<BoxOrignSelectionPage> {
       final orgNamespace =
           bloc.state.filteredOrganisations[selectedIndex].nameSpace;
       unawaited(AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.boxOrignSelected,
+        eventName: AmplitudeEvents.boxOriginSelected,
         eventProperties: {
           'namespace': orgNamespace,
           'orgname': bloc.state.filteredOrganisations[selectedIndex].orgName,
         },
       ));
 
-      final success = await widget.setBoxOrign(orgNamespace);
+      final success = await widget.setBoxOrigin(orgNamespace);
 
       if (success) {
-        await showBoxOrignSuccessDialog(
+        await showBoxOriginSuccessDialog(
           context,
           bloc.state.filteredOrganisations[selectedIndex].orgName,
           onTap: () {
@@ -93,7 +93,7 @@ class _BoxOrignSelectionPageState extends State<BoxOrignSelectionPage> {
           },
         );
       } else {
-        await showBoxOrignErrorDialog(
+        await showBoxOriginErrorDialog(
           context,
           onTap: () {
             Navigator.of(context).pop();

@@ -2,13 +2,13 @@ import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/logging/logging_service.dart';
 import 'package:givt_app/features/impact_groups/repo/impact_groups_repository.dart';
 
-mixin class BoxOrignUseCase {
+mixin class BoxOriginUseCase {
   final ImpactGroupsRepository _impactGroupsRepository =
       getIt<ImpactGroupsRepository>();
 
-  Future<bool> setBoxOrign(String churchId) async {
+  Future<bool> setBoxOrigin(String churchId) async {
     try {
-      return await _impactGroupsRepository.setBoxOrign(churchId);
+      return await _impactGroupsRepository.setBoxOrigin(churchId);
     } catch (e, s) {
       LoggingInfo.instance.error(
         'Error while setting organisation origin: $e',
@@ -18,14 +18,14 @@ mixin class BoxOrignUseCase {
     }
   }
 
-  Future<void> setBoxOrignModalShown() async {
-    await _impactGroupsRepository.setBoxOrignModalShown();
+  Future<void> setBoxOriginModalShown() async {
+    await _impactGroupsRepository.setBoxOriginModalShown();
   }
 
-  Future<bool> shouldShowBoxOrignModal() async {
+  Future<bool> shouldShowBoxOriginModal() async {
     try {
-      return (!await _impactGroupsRepository.wasBoxOrignModalShown()) &&
-          await _impactGroupsRepository.getBoxOrign() == null;
+      return (!await _impactGroupsRepository.wasBoxOriginModalShown()) &&
+          await _impactGroupsRepository.getBoxOrigin() == null;
     } catch (e) {
       return false;
     }

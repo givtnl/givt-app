@@ -1,13 +1,13 @@
 sealed class NavigationBarHomeCustom {
   const NavigationBarHomeCustom();
 
-  const factory NavigationBarHomeCustom.showBoxOrignDialog() = BoxOrignDialog;
+  const factory NavigationBarHomeCustom.showBoxOriginDialog() = BoxOriginDialog;
 
   const factory NavigationBarHomeCustom.familyNotSetup() = FamilyNotSetup;
 }
 
-class BoxOrignDialog extends NavigationBarHomeCustom {
-  const BoxOrignDialog();
+class BoxOriginDialog extends NavigationBarHomeCustom {
+  const BoxOriginDialog();
 }
 
 class FamilyNotSetup extends NavigationBarHomeCustom {

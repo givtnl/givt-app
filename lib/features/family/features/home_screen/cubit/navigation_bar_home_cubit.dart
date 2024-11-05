@@ -18,7 +18,7 @@ import 'package:givt_app/shared/bloc/common_cubit.dart';
 
 class NavigationBarHomeCubit
     extends CommonCubit<NavigationBarHomeScreenUIModel, NavigationBarHomeCustom>
-    with BoxOrignUseCase, RegistrationUseCase {
+    with BoxOriginUseCase, RegistrationUseCase {
   NavigationBarHomeCubit(
     this._profilesRepository,
     this._authRepository,
@@ -97,9 +97,9 @@ class NavigationBarHomeCubit
       return;
     } else if (_profiles.length <= 1) {
       emitCustom(const NavigationBarHomeCustom.familyNotSetup());
-    } else if (await shouldShowBoxOrignModal()) {
-      await setBoxOrignModalShown();
-      emitCustom(const NavigationBarHomeCustom.showBoxOrignDialog());
+    } else if (await shouldShowBoxOriginModal()) {
+      await setBoxOriginModalShown();
+      emitCustom(const NavigationBarHomeCustom.showBoxOriginDialog());
     }
   }
 

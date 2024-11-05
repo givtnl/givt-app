@@ -232,8 +232,8 @@ enum AmplitudeEvents {
   modalCloseButtonClicked('modal_close_button_clicked'),
   continueChooseChurchClicked('continue_choose_church_clicked'),
   dontHaveABoxClicked('dont_have_a_box_clicked'),
-  boxOrignConfirmClicked('box_orign_clicked'),
-  boxOrignSelected('box_orign_selected'),
+  boxOriginConfirmClicked('box_orign_clicked'),
+  boxOriginSelected('box_orign_selected'),
 
   // Topup flow
   topupErrorOkButtonClicked('topup_error_ok_button_clicked'),
@@ -312,7 +312,7 @@ enum AmplitudeEvents {
   funCounterDecrementClicked('fun_counter_decrement_clicked'),
   funCounterIncrementClicked('fun_counter_increment_clicked'),
 
-  boxOrignSuccessDialogDone('box_orign_success_dialog_done'),
+  boxOriginSuccessDialogDone('box_orign_success_dialog_done'),
 
   // DEBUG ONLY
   debugButtonClicked('debug_button_clicked'),

@@ -1005,7 +1005,7 @@ class APIService {
     return itemMap;
   }
 
-  Future<bool> setBoxOrign(
+  Future<bool> setBoxOrigin(
       {required String orgId, required String groupId}) async {
     final url =
         Uri.https(_apiURL, '/givtservice/v1/groups/$groupId/box-origin');

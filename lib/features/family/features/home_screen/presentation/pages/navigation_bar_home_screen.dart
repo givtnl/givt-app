@@ -51,7 +51,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _connectionCubit = getIt<InternetConnectionCubit>();
 
   int _currentIndex = 0;
-  static bool _isShowingBoxOrign = false;
+  static bool _isShowingBoxOrigin = false;
   static bool _isShowingSetupFamily = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
@@ -204,8 +204,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     NavigationBarHomeCustom custom,
   ) async {
     switch (custom) {
-      case BoxOrignDialog():
-        await _showBoxOrignModal(context);
+      case BoxOriginDialog():
+        await _showBoxOriginModal(context);
       case FamilyNotSetup():
         await _showSetupFamily(context);
     }
@@ -221,11 +221,11 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     }
   }
 
-  Future<void> _showBoxOrignModal(BuildContext context) async {
-    if (_isShowingBoxOrign) {
+  Future<void> _showBoxOriginModal(BuildContext context) async {
+    if (_isShowingBoxOrigin) {
       // do nothing, dialog is already showing
     } else {
-      _isShowingBoxOrign = true;
+      _isShowingBoxOrigin = true;
       await FunModal(
         title: 'Did you get a generosity mission box?',
         icon: const FunIcon(
@@ -238,7 +238,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
               context.pop(); // close modal
               await Navigator.push(
                 context,
-                BoxOrignSelectionPage(setBoxOrign: _cubit.setBoxOrign)
+                BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
                     .toRoute(context),
               );
             },
@@ -255,7 +255,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
           ),
         ],
       ).show(context);
-      _isShowingBoxOrign = false;
+      _isShowingBoxOrigin = false;
     }
   }
 }

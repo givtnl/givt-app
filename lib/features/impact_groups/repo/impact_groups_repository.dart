@@ -27,15 +27,15 @@ mixin ImpactGroupsRepository {
 
   Future<ImpactGroup?> isInvitedToGroup();
 
-  Future<bool> setBoxOrign(String churchId);
+  Future<bool> setBoxOrigin(String churchId);
 
-  Future<Organisation?> getBoxOrign();
+  Future<Organisation?> getBoxOrigin();
 
-  Future<void> setBoxOrignModalShown();
+  Future<void> setBoxOriginModalShown();
 
-  Future<bool> wasBoxOrignModalShown();
+  Future<bool> wasBoxOriginModalShown();
 
-  void clearBoxOrignModalShown();
+  void clearBoxOriginModalShown();
 
   Stream<List<ImpactGroup>> onImpactGroupsChanged();
 }
@@ -61,7 +61,7 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   final CreateTransactionRepository _createTransactionRepository;
   final SharedPreferences _prefs;
 
-  final String boxOrignModalShownKey = 'boxOrignModalShown';
+  final String boxOriginModalShownKey = 'boxOriginModalShown';
 
   final StreamController<List<ImpactGroup>> _impactGroupsStreamController =
       StreamController.broadcast();
@@ -146,10 +146,10 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Future<bool> setBoxOrign(String churchMediumId) async {
+  Future<bool> setBoxOrigin(String churchMediumId) async {
     try {
       await getImpactGroups(fetchWhenEmpty: true);
-      await _apiService.setBoxOrign(
+      await _apiService.setBoxOrigin(
         orgId: churchMediumId,
         groupId: _impactGroups!.firstWhere(
           (element) => element.type == ImpactGroupType.family,
@@ -169,22 +169,22 @@ class ImpactGroupsRepositoryImpl with ImpactGroupsRepository {
   }
 
   @override
-  Future<void> setBoxOrignModalShown() async {
-    await _prefs.setBool(boxOrignModalShownKey, true);
+  Future<void> setBoxOriginModalShown() async {
+    await _prefs.setBool(boxOriginModalShownKey, true);
   }
 
   @override
-  Future<bool> wasBoxOrignModalShown() async {
-    return _prefs.getBool(boxOrignModalShownKey) ?? false;
+  Future<bool> wasBoxOriginModalShown() async {
+    return _prefs.getBool(boxOriginModalShownKey) ?? false;
   }
 
   @override
-  void clearBoxOrignModalShown() {
-    _prefs.remove(boxOrignModalShownKey);
+  void clearBoxOriginModalShown() {
+    _prefs.remove(boxOriginModalShownKey);
   }
 
   @override
-  Future<Organisation?> getBoxOrign() async {
+  Future<Organisation?> getBoxOrigin() async {
     try {
       if (_impactGroups == null || _impactGroups!.isEmpty) {
         await getImpactGroups(fetchWhenEmpty: true);

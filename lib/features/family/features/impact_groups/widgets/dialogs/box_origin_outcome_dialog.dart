@@ -5,7 +5,7 @@ import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.da
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:go_router/go_router.dart';
 
-Future<void> showBoxOrignSuccessDialog(BuildContext context, String orgName,
+Future<void> showBoxOriginSuccessDialog(BuildContext context, String orgName,
     {void Function()? onTap}) async {
   await FunModal(
     title: orgName,
@@ -16,13 +16,13 @@ Future<void> showBoxOrignSuccessDialog(BuildContext context, String orgName,
         text: 'Done',
         onTap: onTap ?? () => Navigator.of(context).pop(),
         analyticsEvent:
-            AnalyticsEvent(AmplitudeEvents.boxOrignSuccessDialogDone),
+            AnalyticsEvent(AmplitudeEvents.boxOriginSuccessDialogDone),
       ),
     ],
   ).show(context);
 }
 
-Future<void> showBoxOrignErrorDialog(BuildContext context,
+Future<void> showBoxOriginErrorDialog(BuildContext context,
     {void Function()? onTap}) async {
   await FunModal(
     title: 'Oops, something went wrong...',
