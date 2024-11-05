@@ -25,16 +25,21 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
   final _cubit = getIt<MissionAcceptanceCubit>();
   late final AnimationController _avatarsAnimationController =
       AnimationController(
-    duration: const Duration(seconds: 2),
+    duration: const Duration(milliseconds: 2000),
     vsync: this,
   );
   late final AnimationController _textAnimationController = AnimationController(
-    duration: const Duration(seconds: 2),
+    duration: const Duration(milliseconds: 2000),
     vsync: this,
   );
   late final AnimationController _fadeAnimationController = AnimationController(
     value: 1,
-    duration: const Duration(seconds: 1),
+    duration: const Duration(milliseconds: 1500),
+    vsync: this,
+  );
+  late final AnimationController _secondAnimationController =
+      AnimationController(
+    duration: const Duration(milliseconds: 2000),
     vsync: this,
   );
 
@@ -67,7 +72,8 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
           firstAnimationIsCompleted = true;
         });
 
-        _navigateToHome();
+        //_reverseAnimation();
+        // _navigateToHome();
       }
     });
   }
@@ -96,64 +102,92 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
         onData: (context, uiModel) {
           return Stack(
             children: [
-              PositionedTransition(
-                rect: RelativeRectTween(
-                  begin: RelativeRect.fromLTRB(
-                      0.5, MediaQuery.sizeOf(context).height * 0.3, 0, 0),
-                  end: RelativeRect.fromLTRB(
-                      0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
-                ).animate(
-                  CurvedAnimation(
-                      parent: _textAnimationController,
-                      curve: Curves.linear,
-                      reverseCurve: Curves.elasticIn),
+              if (firstAnimationIsCompleted)
+                const Align(
+                  child: TitleLargeText(
+                    'Release the button!',
+                    color: Colors.white,
+                  ),
                 ),
-                child: FadeTransition(
-                  opacity: _fadeAnimationController,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: TitleLargeText(
-                      'Is the ${uiModel.familyName} Family ready to accept this mission of gratitude?',
-                      color: Colors.white,
-                      textAlign: TextAlign.center,
+              if (!firstAnimationIsCompleted)
+                PositionedTransition(
+                  rect: RelativeRectTween(
+                    begin: RelativeRect.fromLTRB(
+                        0.5, MediaQuery.sizeOf(context).height * 0.3, 0, 0),
+                    end: RelativeRect.fromLTRB(
+                        0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
+                  ).animate(
+                    CurvedAnimation(
+                        parent: _textAnimationController,
+                        curve: Curves.elasticIn,
+                        reverseCurve: Curves.elasticIn),
+                  ),
+                  child: FadeTransition(
+                    opacity: _fadeAnimationController,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: TitleLargeText(
+                        'Is the ${uiModel.familyName} Family ready to accept this mission of gratitude?',
+                        color: Colors.white,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              PositionedTransition(
-                rect: RelativeRectTween(
-                  begin: RelativeRect.fromLTRB(
-                      0.5, MediaQuery.sizeOf(context).height * 0.1, 0, 0),
-                  end: RelativeRect.fromLTRB(
-                      0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
-                ).animate(
-                  CurvedAnimation(
-                      parent: _avatarsAnimationController,
-                      curve: Curves.linear,
-                      reverseCurve: Curves.elasticIn),
+              if (!firstAnimationIsCompleted)
+                PositionedTransition(
+                  rect: RelativeRectTween(
+                    begin: RelativeRect.fromLTRB(
+                        0.5, MediaQuery.sizeOf(context).height * 0.1, 0, 0),
+                    end: RelativeRect.fromLTRB(
+                        0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
+                  ).animate(
+                    CurvedAnimation(
+                        parent: _avatarsAnimationController,
+                        curve: Curves.elasticIn,
+                        reverseCurve: Curves.elasticIn),
+                  ),
+                  child: AvatarBar(
+                    textColor: Colors.white,
+                    uiModel: uiModel.avatarBarUIModel,
+                    onAvatarTapped: (int index) {
+                      //nothing
+                    },
+                  ),
                 ),
-                child: AvatarBar(
-                  textColor: Colors.white,
-                  uiModel: uiModel.avatarBarUIModel,
-                  onAvatarTapped: (int index) {
-                    //nothing
-                  },
+              if (firstAnimationIsCompleted)
+                PositionedTransition(
+                  rect: RelativeRectTween(
+                    begin: RelativeRect.fromLTRB(
+                        0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
+                    end: RelativeRect.fromLTRB(
+                        0.5, MediaQuery.sizeOf(context).height * -1, 0, 0),
+                  ).animate(
+                    CurvedAnimation(
+                        parent: _secondAnimationController,
+                        curve: Curves.elasticIn,
+                        reverseCurve: Curves.elasticIn),
+                  ),
+                  child: AvatarBar(
+                    textColor: Colors.white,
+                    uiModel: uiModel.avatarBarUIModel,
+                    onAvatarTapped: (int index) {
+                      //nothing
+                    },
+                  ),
                 ),
-              ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(24),
                   child: FunButton(
                     text: 'Hold to accept',
+                    onlyLongPress: true,
+                    onLongPress: _playAnimation,
+                    onLongPressUp: handleButtonReleased,
+                    analyticsEvent: AnalyticsEvent(AmplitudeEvents
+                        .coinMediumIdNotRecognizedGoBackHomeClicked),
                     onTap: () {},
-                    onTapDown: () {
-                      _playAnimation();
-                    },
-                    onTapCancel: handleButtonReleased,
-                    onTapUp: handleButtonReleased,
-                    analyticsEvent: AnalyticsEvent(
-                        AmplitudeEvents.coinMediumIdNotRecognizedGoBackHomeClicked),
                   ),
                 ),
               ),
@@ -172,8 +206,10 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
 
   void handleButtonReleased() {
     if (firstAnimationIsCompleted) {
+      _secondAnimationController.forward();
+      _navigateToHome();
     } else {
-      //TODO _reverseAnimation();
+      _reverseAnimation();
     }
   }
 }

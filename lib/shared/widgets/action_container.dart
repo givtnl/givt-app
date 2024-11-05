@@ -11,6 +11,7 @@ class ActionContainer extends StatefulWidget {
     required this.onTap,
     required this.child,
     required this.analyticsEvent,
+    this.onlyLongPress = false,
     this.isDisabled = false,
     this.isSelected = false,
     this.isPressedDown = false,
@@ -23,12 +24,17 @@ class ActionContainer extends StatefulWidget {
     this.onTapDown,
     this.onTapUp,
     super.key,
+    this.onLongPress,
+    this.onLongPressUp,
   });
 
   final VoidCallback? onTap;
   final VoidCallback? onTapCancel;
   final VoidCallback? onTapUp;
   final VoidCallback? onTapDown;
+  final VoidCallback? onLongPress;
+  final VoidCallback? onLongPressUp;
+  final bool onlyLongPress;
   final bool isDisabled;
   final bool isSelected;
   final bool isPressedDown;
@@ -78,47 +84,61 @@ class _ActionContainerState extends State<ActionContainer> {
         : GestureDetector(
             onLongPress: () {
               print('Long press');
+              widget.onLongPress?.call();
+              _setManualPressed(true);
             },
             onLongPressDown: (details) {
               print('Long press down');
             },
-      onLongPressCancel: () {
+            onLongPressCancel: () {
               print('Long press cancel');
             },
-      onLongPressEnd: (details) {
+            onLongPressEnd: (details) {
               print('Long press end');
+              widget.onLongPressUp?.call();
+              _unpress(immediately: true);
             },
-            onTap: () async {
-              unawaited(
-                AnalyticsHelper.logEvent(
-                  eventName: widget.analyticsEvent.name,
-                  eventProperties: widget.analyticsEvent.parameters,
-                ),
-              );
-              widget.onTap?.call();
-              await _actionDelay();
-            },
-      onTapDown: (details) {
-              widget.onTapDown?.call();
-              if (!widget.isMuted) {
-                SystemSound.play(SystemSoundType.click);
-              }
-              _setManualPressed(true);
-            },
-            onTapCancel: () {
-              widget.onTapCancel?.call();
-              _unpress();
-            },
-            onTapUp: (details) {
-              widget.onTapUp?.call();
-              _unpress();
-            },
+            onTap: widget.onlyLongPress
+                ? null
+                : () async {
+                    unawaited(
+                      AnalyticsHelper.logEvent(
+                        eventName: widget.analyticsEvent.name,
+                        eventProperties: widget.analyticsEvent.parameters,
+                      ),
+                    );
+                    widget.onTap?.call();
+                    await _actionDelay();
+                  },
+            onTapDown: widget.onlyLongPress
+                ? null
+                : (details) {
+                    widget.onTapDown?.call();
+                    if (!widget.isMuted) {
+                      SystemSound.play(SystemSoundType.click);
+                    }
+                    _setManualPressed(true);
+                  },
+            onTapCancel: widget.onlyLongPress
+                ? null
+                : () {
+                    widget.onTapCancel?.call();
+                    _unpress();
+                  },
+            onTapUp: widget.onlyLongPress
+                ? null
+                : (details) {
+                    widget.onTapUp?.call();
+                    _unpress();
+                  },
             child: _buildContainer(widget.child),
           );
   }
 
-  Future<void> _unpress() async {
-    await _actionDelay();
+  Future<void> _unpress({bool immediately = false}) async {
+    if (!immediately) {
+      await _actionDelay();
+    }
     if (!widget.isMuted) {
       await HapticFeedback.lightImpact();
     }
