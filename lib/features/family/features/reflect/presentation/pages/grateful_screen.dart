@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,10 @@ import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/cubit/create_transaction_cubit.dart';
+import 'package:givt_app/features/family/features/giving_flow/create_transaction/models/transaction.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/choose_amount_slider_screen.dart';
 import 'package:givt_app/features/family/features/giving_flow/screens/success_screen.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/give_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_amount_page.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/parent_giving_page.dart';
@@ -28,7 +31,6 @@ import 'package:givt_app/features/family/features/topup/screens/empty_wallet_bot
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/full_screen_loading_widget.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
-import 'package:givt_app/features/give/bloc/give/give_bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
@@ -44,7 +46,7 @@ class GratefulScreen extends StatefulWidget {
 
 class _GratefulScreenState extends State<GratefulScreen> {
   final _cubit = getIt<GratefulCubit>();
-  final _give = getIt<GiveBloc>();
+  final _give = getIt<GiveCubit>();
   final _medium = getIt<MediumCubit>();
 
   @override
@@ -61,23 +63,15 @@ class _GratefulScreenState extends State<GratefulScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GiveBloc, GiveState>(
+    return BlocListener<GiveCubit, GiveState>(
       bloc: _give,
       listener: (context, state) {
         final userGUID = context.read<AuthCubit>().state.user.guid;
-        if (state.status == GiveStatus.success) {
-          _give.add(
-            GiveOrganisationSelected(
-              nameSpace: _medium.state.mediumId,
-              userGUID: userGUID,
-            ),
-          );
-        }
-        if (state.status == GiveStatus.readyToGive) {
+        if (state is GiveFromBrowser) {
           // we assume the parent confirms on browser
           _handleParentBrowser(userGUID);
         }
-        if (state.status == GiveStatus.error) {
+        if (state is GiveError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(context.l10n.somethingWentWrong),
@@ -180,6 +174,7 @@ class _GratefulScreenState extends State<GratefulScreen> {
             _cubit.onDeed(profile);
             context.pop();
           },
+          isActOfService: true,
         ),
       ).toRoute(context),
     );
@@ -238,13 +233,17 @@ class _GratefulScreenState extends State<GratefulScreen> {
           },
         ),
       );
-      _give.add(
-        GiveAmountChanged(
-          firstCollectionAmount: result.toDouble(),
-          secondCollectionAmount: 0,
-          thirdCollectionAmount: 0,
+      await _give.createTransaction(
+        transaction: Transaction(
+          userId: context.read<AuthCubit>().state.user.guid,
+          mediumId: base64Encode(utf8.encode(org.namespace)),
+          amount: result.toDouble(),
+          isActOfService: true,
         ),
+        orgName: org.name,
+        mediumId: org.namespace,
       );
+
       await Navigator.push(
         context,
         const FullScreenLoadingWidget(

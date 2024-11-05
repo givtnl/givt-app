@@ -4,12 +4,14 @@ class Transaction {
     required this.mediumId,
     required this.amount,
     this.goalId,
+    this.isActOfService = false,
   });
 
   final String userId;
   final String mediumId;
   final double amount;
   final String? goalId;
+  final bool isActOfService;
 
   Map<String, dynamic> toJson() {
     return {
@@ -17,6 +19,7 @@ class Transaction {
       'mediumId': mediumId,
       'amount': amount,
       'goalId': goalId,
+      'isActOfService': isActOfService,
     };
   }
 }
