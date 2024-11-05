@@ -1030,4 +1030,9 @@ class APIService {
       );
     }
   }
+
+  Future<bool> editChildBedtime(String childGUID, DateTime bedtime, int winddownMinutes) async {
+    //TODO
+    return true;
+  }
 }

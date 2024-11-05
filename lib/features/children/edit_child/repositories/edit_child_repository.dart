@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:givt_app/core/network/api_service.dart';
 
 mixin EditChildRepository {
+  Future<bool> editChildBedtime(
+      String childGUID, DateTime bedtime, int winddownMinutes);
+
   Future<bool> editChildName(String childGUID, String name);
 
   Future<bool> editChildAllowance(String childGUID, int allowance);
@@ -65,4 +68,13 @@ class EditChildRepositoryImpl with EditChildRepository {
 
   @override
   Stream<String> childChangedStream() => _childGUIDController.stream;
+
+  @override
+  Future<bool> editChildBedtime(
+      String childGUID, DateTime bedtime, int winddownMinutes) async {
+    final response =
+        await apiService.editChildBedtime(childGUID, bedtime, winddownMinutes);
+    _addChildGuidEventAfterOneSecond(childGUID);
+    return response;
+  }
 }

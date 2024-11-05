@@ -34,7 +34,7 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
   );
   late final AnimationController _fadeAnimationController = AnimationController(
     value: 1,
-    duration: const Duration(milliseconds: 1500),
+    duration: const Duration(milliseconds: 1000),
     vsync: this,
   );
   late final AnimationController _secondAnimationController =
@@ -45,13 +45,13 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
 
   String buttonText = 'Hold to accept';
   bool firstAnimationIsCompleted = false;
-  bool _isAnimating = false;
 
   @override
   void dispose() {
     _avatarsAnimationController.dispose();
     _textAnimationController.dispose();
     _fadeAnimationController.dispose();
+    _secondAnimationController.dispose();
     _cubit.close();
     super.dispose();
   }
@@ -61,19 +61,10 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
     super.initState();
     _cubit.init();
     _avatarsAnimationController.addStatusListener((status) {
-      /*final isAnimating = _controller.isAnimating;
-      if (_isAnimating != isAnimating) {
-        setState(() {
-          _isAnimating = isAnimating;
-        });
-      }*/
       if (status == AnimationStatus.completed) {
         setState(() {
           firstAnimationIsCompleted = true;
         });
-
-        //_reverseAnimation();
-        // _navigateToHome();
       }
     });
   }
@@ -118,9 +109,10 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                         0.5, MediaQuery.sizeOf(context).height * 0.9, 0, 0),
                   ).animate(
                     CurvedAnimation(
-                        parent: _textAnimationController,
-                        curve: Curves.elasticIn,
-                        reverseCurve: Curves.elasticIn),
+                      parent: _textAnimationController,
+                      curve: Curves.easeInOutQuint,
+                      reverseCurve: Curves.easeInOutQuint,
+                    ),
                   ),
                   child: FadeTransition(
                     opacity: _fadeAnimationController,
@@ -143,9 +135,10 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                         0.5, MediaQuery.sizeOf(context).height * 0.55, 0, 0),
                   ).animate(
                     CurvedAnimation(
-                        parent: _avatarsAnimationController,
-                        curve: Curves.elasticIn,
-                        reverseCurve: Curves.elasticIn),
+                      parent: _avatarsAnimationController,
+                      curve: Curves.easeInOutQuint,
+                      reverseCurve: Curves.easeInOutQuint,
+                    ),
                   ),
                   child: AvatarBar(
                     textColor: Colors.white,
@@ -165,8 +158,8 @@ class _MissionAcceptanceScreenState extends State<MissionAcceptanceScreen>
                   ).animate(
                     CurvedAnimation(
                         parent: _secondAnimationController,
-                        curve: Curves.elasticIn,
-                        reverseCurve: Curves.elasticIn),
+                        curve: Curves.linear,
+                        reverseCurve: Curves.linear),
                   ),
                   child: AvatarBar(
                     textColor: Colors.white,
