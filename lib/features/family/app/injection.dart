@@ -4,6 +4,7 @@ import 'package:givt_app/features/family/features/admin_fee/application/admin_fe
 import 'package:givt_app/features/family/features/admin_fee/data/repositories/admin_fee_repository.dart';
 import 'package:givt_app/features/family/features/avatars/cubit/avatars_cubit.dart';
 import 'package:givt_app/features/family/features/avatars/repositories/avatars_repository.dart';
+import 'package:givt_app/features/family/features/bedtime/blocs/mission_acceptance_cubit.dart';
 import 'package:givt_app/features/family/features/edit_profile/repositories/edit_profile_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/collectgroup_details/repositories/organisation_details_repository.dart';
 import 'package:givt_app/features/family/features/giving_flow/create_transaction/repositories/create_transaction_repository.dart';
@@ -112,6 +113,7 @@ void initCubits() {
         getIt(),
       ),
     )
+    ..registerFactory(MissionAcceptanceCubit.new)
     ..registerLazySingleton<ResetPasswordCubit>(
       () => ResetPasswordCubit(
         getIt(),
