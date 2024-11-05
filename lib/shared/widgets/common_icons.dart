@@ -5,6 +5,18 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/utils/utils.dart';
 
+Widget ellipseArc({double? width, double? height}) => SvgPicture.asset(
+  'assets/family/images/ellipse_arc.svg',
+  width: width,
+  height: height,
+);
+
+Widget sunEllipse({double? width, double? height}) => SvgPicture.asset(
+  'assets/family/images/sun_ellipse.svg',
+  width: width,
+  height: height,
+);
+
 Widget microphoneIcon({double? width, double? height}) => SvgPicture.asset(
       'assets/images/microphone.svg',
       width: width,

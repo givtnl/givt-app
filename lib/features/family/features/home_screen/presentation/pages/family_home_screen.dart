@@ -10,6 +10,7 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/bedtime/presentation/pages/mission_acceptance_screen.dart';
+import 'package:givt_app/features/family/features/bedtime/presentation/pages/setup_bedtime_screen.dart';
 import 'package:givt_app/features/family/features/home_screen/cubit/family_home_screen_cubit.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/family_home_screen.uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_overlay.dart';
@@ -118,7 +119,7 @@ class _FamilyHomeScreenState extends State<FamilyHomeScreen> {
                         FamilyPages.reflectIntro.name,
                       ),*/
                       onPressed: () => Navigator.of(context)
-                          .push(const MissionAcceptanceScreen().toRoute(context)),
+                          .push(const SetupBedtimeScreen().toRoute(context)),
                     ),
                     const SizedBox(height: 24),
                     GiveButton(
