@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
-import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
@@ -36,7 +35,6 @@ class _OrganisationListFamilyPageState
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    final bloc = context.read<OrganisationBloc>();
     return Scaffold(
       appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
@@ -58,7 +56,7 @@ class _OrganisationListFamilyPageState
               const SizedBox(
                 height: 16,
               ),
-              _buildFilterType(bloc, locals),
+              const FunOrganisationFilterTilesBar(),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 24,
@@ -122,31 +120,4 @@ class _OrganisationListFamilyPageState
         ),
         title: LabelMediumText(title),
       );
-
-  Widget _buildFilterType(OrganisationBloc bloc, AppLocalizations locals) {
-    final types = bloc.state.organisations.map((e) => e.type).toSet().toList();
-    return SizedBox(
-      height: 116,
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          const SizedBox(
-            width: 24,
-          ),
-          ...types.map(
-            (e) => FilterTile(
-              type: e,
-              edgeInsets: const EdgeInsets.only(right: 8),
-              isSelected: bloc.state.selectedType == e.index,
-              onClick: (context) => bloc.add(
-                OrganisationTypeChanged(
-                  e.index,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

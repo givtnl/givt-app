@@ -1,14 +1,13 @@
 sealed class NavigationBarHomeCustom {
   const NavigationBarHomeCustom();
 
-  const factory NavigationBarHomeCustom.showPreferredChurchDialog() =
-      PreferredChurchDialog;
+  const factory NavigationBarHomeCustom.showBoxOrignDialog() = BoxOrignDialog;
 
   const factory NavigationBarHomeCustom.familyNotSetup() = FamilyNotSetup;
 }
 
-class PreferredChurchDialog extends NavigationBarHomeCustom {
-  const PreferredChurchDialog();
+class BoxOrignDialog extends NavigationBarHomeCustom {
+  const BoxOrignDialog();
 }
 
 class FamilyNotSetup extends NavigationBarHomeCustom {

@@ -12,7 +12,7 @@ mixin class RegistrationUseCase {
           await _authRepository.isAuthenticated() ?? (null, null, null);
       userExternal = userExt;
       return userExternal?.personalInfoRegistered == false;
-    } catch (e, s) {
+    } catch (e) {
       return false;
     }
   }

@@ -139,7 +139,7 @@ class ProfilesCubit extends Cubit<ProfilesState> {
 
   void logout() {
     clearProfiles();
-    _impactGroupsRepository.clearPreferredChurchModalShown();
+    _impactGroupsRepository.clearBoxOrignModalShown();
   }
 
   void clearProfiles({bool clearIndex = true}) {

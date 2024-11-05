@@ -7,7 +7,8 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/preferred_church_outcome_dialog.dart';
+import 'package:givt_app/features/family/app/family_pages.dart';
+import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/box_origin_outcome_dialog.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/givt_back_button_flat.dart';
 import 'package:givt_app/features/family/shared/widgets/inputs/family_search_field.dart';
@@ -20,21 +21,19 @@ import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
 
-class PreferredChurchSelectionPage extends StatefulWidget {
-  const PreferredChurchSelectionPage({
-    required this.setPreferredChurch,
+class BoxOrignSelectionPage extends StatefulWidget {
+  const BoxOrignSelectionPage({
+    required this.setBoxOrign,
     super.key,
   });
 
-  final Future<bool> Function(String id) setPreferredChurch;
+  final Future<bool> Function(String id) setBoxOrign;
 
   @override
-  State<PreferredChurchSelectionPage> createState() =>
-      _PreferredChurchSelectionPageState();
+  State<BoxOrignSelectionPage> createState() => _BoxOrignSelectionPageState();
 }
 
-class _PreferredChurchSelectionPageState
-    extends State<PreferredChurchSelectionPage> {
+class _BoxOrignSelectionPageState extends State<BoxOrignSelectionPage> {
   final TextEditingController controller = TextEditingController();
   final bloc = getIt<OrganisationBloc>();
   int selectedIndex = -1;
@@ -44,9 +43,8 @@ class _PreferredChurchSelectionPageState
   void initState() {
     super.initState();
     getIt<OrganisationBloc>().add(
-      OrganisationFetch(
+      OrganisationFetchForSelection(
         Country.fromCode(context.read<AuthCubit>().state.user.country),
-        type: CollectGroupType.church.index,
       ),
     );
   }
@@ -63,7 +61,7 @@ class _PreferredChurchSelectionPageState
     return FunScaffold(
       appBar: const FunTopAppBar(
         leading: GivtBackButtonFlat(),
-        title: 'Choose your church',
+        title: 'Where did you get it?',
       ),
       body: BlocConsumer<OrganisationBloc, OrganisationState>(
         bloc: bloc,
@@ -79,6 +77,14 @@ class _PreferredChurchSelectionPageState
         builder: (context, state) {
           return Column(
             children: [
+              FunOrganisationFilterTilesBar(
+                stratPadding: 0,
+                removedTypes: [
+                  CollectGroupType.campaign.name,
+                  CollectGroupType.artists.name
+                ],
+              ),
+              const SizedBox(height: 16),
               FamilySearchField(
                 autocorrect: false,
                 controller: controller,
@@ -123,7 +129,7 @@ class _PreferredChurchSelectionPageState
         text: 'Confirm',
         onTap: () => _onTapConfirm(context),
         analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.preferredChurchConfirmClicked,
+          AmplitudeEvents.boxOrignConfirmClicked,
         ),
       ),
     );
@@ -134,28 +140,31 @@ class _PreferredChurchSelectionPageState
       setState(() {
         isLoading = true;
       });
-      final churchNamespace =
+      final orgNamespace =
           bloc.state.filteredOrganisations[selectedIndex].nameSpace;
       unawaited(AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.preferredChurchSelected,
+        eventName: AmplitudeEvents.boxOrignSelected,
         eventProperties: {
-          'namespace': churchNamespace,
+          'namespace': orgNamespace,
           'orgname': bloc.state.filteredOrganisations[selectedIndex].orgName,
         },
       ));
 
-      final success = await widget.setPreferredChurch(churchNamespace);
+      final success = await widget.setBoxOrign(orgNamespace);
 
       if (success) {
-        await showPreferredChurchSuccessDialog(
+        await showBoxOrignSuccessDialog(
           context,
           bloc.state.filteredOrganisations[selectedIndex].orgName,
-          onTap: () => Navigator.of(context)
-            ..pop()
-            ..pop(),
+          onTap: () {
+            Navigator.of(context)
+              ..pop()
+              ..pop()
+              ..pushNamed(FamilyPages.reflectIntro.name);
+          },
         );
       } else {
-        await showPreferredChurchErrorDialog(
+        await showBoxOrignErrorDialog(
           context,
           onTap: () {
             Navigator.of(context).pop();
