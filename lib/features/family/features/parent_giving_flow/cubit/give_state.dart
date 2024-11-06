@@ -31,16 +31,6 @@ final class GiveFromBrowser extends GiveState {
       [givtTransactionObject, transaction, orgName, mediumId];
 }
 
-final class GiveSuccess extends GiveState {
-  const GiveSuccess(this.amount, this.isActOfService);
-
-  final double amount;
-  final bool isActOfService;
-
-  @override
-  List<Object> get props => [amount, isActOfService];
-}
-
 final class GiveError extends GiveState {
   const GiveError(this.error);
 

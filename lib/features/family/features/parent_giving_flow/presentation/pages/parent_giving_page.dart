@@ -81,6 +81,13 @@ class _ParentGivingPageState extends State<ParentGivingPage> {
     BuildContext context,
   ) {
     final user = context.read<AuthCubit>().state.user;
+    if (give.state is! GiveFromBrowser) {
+      LoggingInfo.instance.error(
+        'Invalid state type in parent giving flow. Expected GiveFromBrowser, got ${give.state.runtimeType}',
+      );
+      throw StateError('Invalid giving state');
+    }
+
     final state = give.state as GiveFromBrowser;
 
     final orgName = state.orgName;

@@ -255,6 +255,7 @@ enum AmplitudeEvents {
   parentGiveWithAmountClicked('parent_give_with_amount_clicked'),
   parentGiveClicked('parent_give_clicked'),
   parentGiveFilterTileClicked('parent_give_filter_tile_clicked'),
+  parentGaveSuccessfully('parent_gave_successfully'),
 
   // Reflect and Share
   reflectandShareAssignRolesClicked('reflect_and_share_assign_roles_clicked'),
