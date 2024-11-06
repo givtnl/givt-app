@@ -39,14 +39,12 @@ class GuessSecretWordCubit
     _attempts++;
     _pressedOptions.add(index);
     if (_guessOptions[index].toLowerCase() == _secretWord.toLowerCase()) {
-      // make sure people can't press wrong answers after pressing the correct answer
       _pressedOptions = [
         0,
         1,
         2,
         3,
-      ];
-
+      ]; // make sure people can't press wrong answers after pressing the correct answer
       emitCustom(const GuessTheWordCustom.showConfetti());
       // just to make sure we fire the analytics events once and save the stats once
       if (!_hasSuccess) {
