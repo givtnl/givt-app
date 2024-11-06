@@ -13,7 +13,6 @@ import 'package:givt_app/features/account_details/bloc/personal_info_edit_bloc.d
 import 'package:givt_app/features/account_details/pages/change_email_address_bottom_sheet.dart';
 import 'package:givt_app/features/account_details/pages/change_phone_number_bottom_sheet.dart';
 import 'package:givt_app/features/auth/cubit/auth_cubit.dart';
-import 'package:givt_app/features/auth/pages/change_password_page.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/auth/helpers/logout_helper.dart';
 import 'package:givt_app/features/family/features/reset_password/presentation/pages/reset_password_screen.dart';

@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/core/enums/enums.dart';
 import 'package:givt_app/features/children/overview/pages/family_overview_page.dart';
 import 'package:givt_app/features/children/utils/add_member_util.dart';
-import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/extensions/extensions.dart';
 import 'package:givt_app/features/family/features/account/presentation/pages/us_personal_info_edit_page.dart';
@@ -16,13 +15,14 @@ import 'package:givt_app/features/family/features/home_screen/cubit/navigation_b
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_custom.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/models/navigation_bar_home_screen_uimodel.dart';
 import 'package:givt_app/features/family/features/home_screen/presentation/pages/family_home_screen.dart';
-import 'package:givt_app/features/family/features/preferred_church/preferred_church_selection_page.dart';
+import 'package:givt_app/features/family/features/box_origin/box_origin_selection_page.dart';
 import 'package:givt_app/features/family/features/profiles/widgets/profiles_empty_state_widget.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
 import 'package:givt_app/features/family/shared/design/illustrations/fun_icon.dart';
 import 'package:givt_app/features/family/shared/widgets/loading/custom_progress_indicator.dart';
 import 'package:givt_app/features/family/utils/family_auth_utils.dart';
 import 'package:givt_app/features/impact_groups/widgets/impact_group_recieve_invite_sheet.dart';
+import 'package:givt_app/features/internet_connection/internet_connection_cubit.dart';
 import 'package:givt_app/shared/dialogs/internet_connection_lost_dialog.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
@@ -51,7 +51,7 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
   final _connectionCubit = getIt<InternetConnectionCubit>();
 
   int _currentIndex = 0;
-  static bool _isShowingPreferredChurch = false;
+  static bool _isShowingBoxOrigin = false;
   static bool _isShowingSetupFamily = false;
 
   final List<AnalyticsEvent> _analyticsEvents = [
@@ -204,8 +204,8 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     NavigationBarHomeCustom custom,
   ) async {
     switch (custom) {
-      case PreferredChurchDialog():
-        await _showPreferredChurchModal(context);
+      case BoxOriginDialog():
+        await _showBoxOriginModal(context);
       case FamilyNotSetup():
         await _showSetupFamily(context);
     }
@@ -221,26 +221,24 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
     }
   }
 
-  Future<void> _showPreferredChurchModal(BuildContext context) async {
-    if (_isShowingPreferredChurch) {
+  Future<void> _showBoxOriginModal(BuildContext context) async {
+    if (_isShowingBoxOrigin) {
       // do nothing, dialog is already showing
     } else {
-      _isShowingPreferredChurch = true;
+      _isShowingBoxOrigin = true;
       await FunModal(
-        title: 'Choose your church',
+        title: 'Did you get a generosity mission box?',
         icon: const FunIcon(
-          iconData: FontAwesomeIcons.church,
+          iconData: FontAwesomeIcons.gift,
         ),
-        subtitle: "Let's link your church to make giving easier",
         buttons: [
           FunButton(
-            text: 'Continue',
+            text: 'Yes',
             onTap: () async {
               context.pop(); // close modal
               await Navigator.push(
                 context,
-                PreferredChurchSelectionPage(
-                        setPreferredChurch: _cubit.setPreferredChurch)
+                BoxOriginSelectionPage(setBoxOrigin: _cubit.setBoxOrigin)
                     .toRoute(context),
               );
             },
@@ -249,15 +247,15 @@ class _NavigationBarHomeScreenState extends State<NavigationBarHomeScreen> {
             ),
           ),
           FunButton.secondary(
-            text: "I don't go to church",
+            text: 'No',
             onTap: () => context.pop(),
             analyticsEvent: AnalyticsEvent(
-              AmplitudeEvents.dontGoToChurchClicked,
+              AmplitudeEvents.dontHaveABoxClicked,
             ),
           ),
         ],
       ).show(context);
-      _isShowingPreferredChurch = false;
+      _isShowingBoxOrigin = false;
     }
   }
 }
