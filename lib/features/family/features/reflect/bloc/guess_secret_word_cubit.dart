@@ -52,12 +52,10 @@ class GuessSecretWordCubit
       if (!_hasSuccess) {
         // Check if it's the last game and delay for 2 seconds before continuing
         if (_reflectAndShareRepository.isGameFinished()) {
-          _emitData();
           _reflectAndShareRepository.saveSummaryStats();
           Timer(const Duration(seconds: 2), () {
             emitCustom(const GuessTheWordCustom.redirectToSummary());
           });
-          return;
         }
         AnalyticsHelper.logEvent(
           eventName:
