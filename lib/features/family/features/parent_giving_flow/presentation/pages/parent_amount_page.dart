@@ -32,7 +32,7 @@ class ParentAmountPage extends StatefulWidget {
 }
 
 class _ParentAmountPageState extends State<ParentAmountPage> {
-  final initialamount = 5;
+  final initialamount = 25;
   late int _amount;
   @override
   void initState() {
