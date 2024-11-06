@@ -34,18 +34,13 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return OrganisationListFamilyPage(
-      onTap: (collectgroup) {
-        final index = bloc.state.filteredOrganisations.indexOf(collectgroup);
-        setState(() {
-          selectedIndex = index;
-        });
-      },
+      onTap: (collectgroup) {},
       title: 'Where did you get it?',
       removedCollectGroupTypes: const [
         CollectGroupType.campaign,
         CollectGroupType.artists,
       ],
-      fab: FunButton(
+      button: FunButton(
         isDisabled: selectedIndex == -1,
         isLoading: isLoading,
         text: 'Confirm',
