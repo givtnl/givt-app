@@ -30,7 +30,9 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return OrganisationListFamilyPage(
-      onTapListItem: (collectgroup) {},
+      onTapListItem: (collectgroup) {
+        getIt<MediumCubit>().setMediumId(collectgroup.nameSpace);
+      },
       title: 'Where did you get it?',
       removedCollectGroupTypes: const [
         CollectGroupType.campaign,
