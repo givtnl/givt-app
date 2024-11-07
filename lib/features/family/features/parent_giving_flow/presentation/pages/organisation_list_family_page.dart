@@ -23,7 +23,7 @@ class OrganisationListFamilyPage extends StatefulWidget {
     this.button,
     super.key,
   });
-  final void Function(CollectGroup) onTap;
+  final void Function(CollectGroup)? onTap;
   final String title;
   final List<CollectGroupType> removedCollectGroupTypes;
   final FunButton? button;
@@ -109,7 +109,8 @@ class _OrganisationListFamilyPageState
                         title: state.filteredOrganisations[index].orgName,
                         isSelected: selectedIndex == index,
                         onTap: () {
-                          widget.onTap(state.filteredOrganisations[index]);
+                          widget.onTap
+                              ?.call(state.filteredOrganisations[index]);
                           setState(() {
                             selectedIndex = index;
                           });

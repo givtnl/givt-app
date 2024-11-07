@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_tile.dart';
 import 'package:givt_app/shared/bloc/organisation/organisation_bloc.dart';
@@ -37,7 +38,9 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
                   isSelected: state.selectedType == e.index,
                   onClick: (context) => getIt<OrganisationBloc>().add(
                     OrganisationTypeChanged(
-                      e.index,
+                      state.selectedType == e.index
+                          ? CollectGroupType.none.index
+                          : e.index,
                     ),
                   ),
                 ),

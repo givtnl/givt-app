@@ -8,8 +8,6 @@ import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/box_origin_outcome_dialog.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
 import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
@@ -91,24 +89,4 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
       }
     }
   }
-
-  Widget _buildListTile({
-    required VoidCallback onTap,
-    required String title,
-    required CollectGroupType type,
-    required bool isSelected,
-  }) =>
-      ListTile(
-        key: UniqueKey(),
-        selected: isSelected,
-        onTap: () => onTap.call(),
-        splashColor: FamilyAppTheme.highlight99,
-        selectedTileColor:
-            CollectGroupType.getColorComboByType(type).backgroundColor,
-        leading: Icon(
-          CollectGroupType.getIconByTypeUS(type),
-          color: FamilyAppTheme.primary20,
-        ),
-        title: LabelMediumText(title),
-      );
 }
