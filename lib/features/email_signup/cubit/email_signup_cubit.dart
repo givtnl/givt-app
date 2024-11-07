@@ -8,6 +8,7 @@ import 'package:givt_app/core/enums/country.dart';
 import 'package:givt_app/core/network/request_helper.dart';
 import 'package:givt_app/features/email_signup/cubit/email_signup_custom.dart';
 import 'package:givt_app/features/email_signup/presentation/models/email_signup_uimodel.dart';
+import 'package:givt_app/features/family/features/auth/data/family_auth_repository.dart';
 import 'package:givt_app/shared/bloc/base_state.dart';
 import 'package:givt_app/shared/bloc/common_cubit.dart';
 import 'package:givt_app/shared/models/user_ext.dart';
@@ -16,22 +17,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class EmailSignupCubit
     extends CommonCubit<EmailSignupUiModel, EmailSignupCustom> {
-  EmailSignupCubit() : super(const BaseState.loading());
+  EmailSignupCubit(this._authRepository) : super(const BaseState.loading());
 
-  Country currentCountry = Country.nl;
-  String currentEmail = '';
+  final FamilyAuthRepository _authRepository;
+
+  Country _currentCountry = Country.nl;
+  String _currentEmail = '';
 
   Future<void> init() async {
     emitLoading();
 
-    currentCountry = await getCountry();
-    currentEmail = await getEmail();
+    _currentCountry = await getCountry();
+    _currentEmail = await getEmail();
 
     emitData(
       EmailSignupUiModel(
-        email: currentEmail,
-        country: currentCountry,
-        continueButtonEnabled: false,
+        email: _currentEmail,
+        country: _currentCountry,
+        continueButtonEnabled: validateEmail(_currentEmail),
       ),
     );
   }
@@ -75,17 +78,17 @@ class EmailSignupCubit
       }
     } catch (_) {
       // On error use default country
-      return currentCountry;
+      return _currentCountry;
     }
 
     // If no sim card country is found, use default country
-    return currentCountry;
+    return _currentCountry;
   }
 
   /// Some logic to set the current API urls based on the country
   /// The method also updates the country iso in shared preferences
   Future<void> updateCountry(Country country) async {
-    currentCountry = country;
+    _currentCountry = country;
 
     var baseUrl = const String.fromEnvironment('API_URL_EU');
     var baseUrlAWS = const String.fromEnvironment('API_URL_AWS_EU');
@@ -105,20 +108,20 @@ class EmailSignupCubit
 
     emitData(
       EmailSignupUiModel(
-        email: currentEmail,
-        country: currentCountry,
-        continueButtonEnabled: validateEmail(currentEmail),
+        email: _currentEmail,
+        country: _currentCountry,
+        continueButtonEnabled: validateEmail(_currentEmail),
       ),
     );
   }
 
   Future<void> updateEmail(String email) async {
-    currentEmail = email;
+    _currentEmail = email;
 
     emitData(
       EmailSignupUiModel(
         email: email,
-        country: currentCountry,
+        country: _currentCountry,
         continueButtonEnabled: validateEmail(email),
       ),
     );
@@ -131,18 +134,30 @@ class EmailSignupCubit
     return result;
   }
 
-  void login() {
-    if (!validateEmail(currentEmail)) {
+  Future<void> login() async {
+    if (!validateEmail(_currentEmail)) {
       // It shouldn't be possible to get here
       emitError('Invalid email address');
       return;
     }
 
-    if (!currentCountry.isUS) {
+    if (!_currentCountry.isUS) {
       // It shouldn't be possible to get here
-      emitError('EU is making use of family login');
+      emitError("EU shouldn't make use of family login");
     }
 
-    emitCustom(EmailSignupCustom.loginFamily(currentEmail));
+    // Check if this is a different login or someone who logged in before
+    await _authRepository.checkUserExt(email: _currentEmail);
+
+    // Get information about emailadres
+    final result = await _authRepository.checkEmail(email: _currentEmail);
+
+    // When this is a registered user, we show the login page
+    if (result.contains('true')) {
+      emitCustom(EmailSignupCustom.loginFamily(_currentEmail));
+      return;
+    }
+
+    emitCustom(EmailSignupCustom.registerFamily(_currentEmail));
   }
 }

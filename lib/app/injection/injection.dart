@@ -223,6 +223,6 @@ void initRepositories() {
       ),
     )
     ..registerFactory<EmailSignupCubit>(
-      () => EmailSignupCubit(),
+      () => EmailSignupCubit(getIt()),
     );
 }

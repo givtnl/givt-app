@@ -44,7 +44,6 @@ import 'package:givt_app/features/unregister_account/cubit/unregister_cubit.dart
 import 'package:givt_app/features/unregister_account/unregister_page.dart';
 import 'package:givt_app/shared/bloc/remote_data_source_sync/remote_data_source_sync_bloc.dart';
 import 'package:givt_app/shared/pages/loading_page.dart';
-import 'package:givt_app/shared/pages/pages.dart';
 import 'package:givt_app/shared/pages/redirect_to_browser_page.dart';
 import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/utils/utils.dart';

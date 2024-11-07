@@ -31,6 +31,10 @@ abstract class FamilyAuthRepository {
     required String email,
   });
 
+  Future<String> checkEmail({
+    required String email,
+  });
+
   Future<bool> updateNotificationId({
     required String guid,
     required String notificationId,
@@ -144,6 +148,10 @@ class FamilyAuthRepositoryImpl implements FamilyAuthRepository {
     }
     await _prefs.clear();
   }
+
+  @override
+  Future<String> checkEmail({required String email}) async =>
+      _apiService.checkEmail(email);
 
   Future<UserExt> _fetchUserExtension(String guid) async {
     try {
