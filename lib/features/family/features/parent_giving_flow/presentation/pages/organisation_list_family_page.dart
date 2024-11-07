@@ -12,21 +12,27 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
 import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class OrganisationListFamilyPage extends StatefulWidget {
   const OrganisationListFamilyPage({
-    required this.onTap,
+    this.onTapListItem,
+    this.onTapFunButton,
     this.title = 'Give',
     this.removedCollectGroupTypes = const [],
-    this.button,
+    this.buttonText,
+    this.analyticsEvent,
     super.key,
   });
-  final void Function(CollectGroup)? onTap;
+  final void Function(CollectGroup)? onTapListItem;
+  final void Function()? onTapFunButton;
   final String title;
   final List<CollectGroupType> removedCollectGroupTypes;
-  final FunButton? button;
+  final String? buttonText;
+  final AnalyticsEvent? analyticsEvent;
   @override
   State<OrganisationListFamilyPage> createState() =>
       _OrganisationListFamilyPageState();
@@ -35,7 +41,7 @@ class OrganisationListFamilyPage extends StatefulWidget {
 class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
-  int selectedIndex = -1;
+  CollectGroup selectedCollectgroup = const CollectGroup.empty();
   @override
   void initState() {
     super.initState();
@@ -79,6 +85,13 @@ class _OrganisationListFamilyPageState
                 height: 16,
               ),
               FunOrganisationFilterTilesBar(
+                onFilterChanged: (type) {
+                  if (selectedCollectgroup.type != type) {
+                    setState(() {
+                      selectedCollectgroup = const CollectGroup.empty();
+                    });
+                  }
+                },
                 stratPadding: 0,
                 removedTypes: [
                   ...widget.removedCollectGroupTypes.map((e) => e.name)
@@ -104,15 +117,21 @@ class _OrganisationListFamilyPageState
                     shrinkWrap: true,
                     itemCount: state.filteredOrganisations.length,
                     itemBuilder: (context, index) {
+                      if (widget.removedCollectGroupTypes
+                          .contains(state.filteredOrganisations[index].type)) {
+                        return const SizedBox.shrink();
+                      }
                       return _buildListTile(
                         type: state.filteredOrganisations[index].type,
                         title: state.filteredOrganisations[index].orgName,
-                        isSelected: selectedIndex == index,
+                        isSelected: selectedCollectgroup ==
+                            state.filteredOrganisations[index],
                         onTap: () {
-                          widget.onTap
+                          widget.onTapListItem
                               ?.call(state.filteredOrganisations[index]);
                           setState(() {
-                            selectedIndex = index;
+                            selectedCollectgroup =
+                                state.filteredOrganisations[index];
                           });
                         },
                       );
@@ -124,7 +143,16 @@ class _OrganisationListFamilyPageState
                   child: CustomCircularProgressIndicator(),
                 ),
               const SizedBox(height: 16),
-              widget.button ?? const SizedBox.shrink(),
+              if (widget.buttonText.isNotNullAndNotEmpty() &&
+                  widget.analyticsEvent != null &&
+                  widget.onTapFunButton != null)
+                FunButton(
+                  isDisabled:
+                      selectedCollectgroup == const CollectGroup.empty(),
+                  onTap: widget.onTapFunButton,
+                  text: widget.buttonText!,
+                  analyticsEvent: widget.analyticsEvent!,
+                )
             ],
           );
         },

@@ -6,10 +6,15 @@ import 'package:givt_app/features/family/shared/widgets/buttons/tiles/filter_til
 import 'package:givt_app/shared/bloc/organisation/organisation_bloc.dart';
 
 class FunOrganisationFilterTilesBar extends StatelessWidget {
-  const FunOrganisationFilterTilesBar(
-      {this.stratPadding = 24, this.removedTypes = const [], super.key});
+  const FunOrganisationFilterTilesBar({
+    this.onFilterChanged,
+    this.stratPadding = 24,
+    this.removedTypes = const [],
+    super.key,
+  });
   final double stratPadding;
   final List<String> removedTypes;
+  final void Function(CollectGroupType)? onFilterChanged;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OrganisationBloc, OrganisationState>(
@@ -33,17 +38,18 @@ class FunOrganisationFilterTilesBar extends StatelessWidget {
               ),
               ...types.map(
                 (e) => FilterTile(
-                  type: e,
-                  edgeInsets: const EdgeInsets.only(right: 8),
-                  isSelected: state.selectedType == e.index,
-                  onClick: (context) => getIt<OrganisationBloc>().add(
-                    OrganisationTypeChanged(
-                      state.selectedType == e.index
+                    type: e,
+                    edgeInsets: const EdgeInsets.only(right: 8),
+                    isSelected: state.selectedType == e.index,
+                    onClick: (context) {
+                      final typeIndex = state.selectedType == e.index
                           ? CollectGroupType.none.index
-                          : e.index,
-                    ),
-                  ),
-                ),
+                          : e.index;
+                      onFilterChanged?.call(CollectGroupType.values[typeIndex]);
+                      getIt<OrganisationBloc>().add(
+                        OrganisationTypeChanged(typeIndex),
+                      );
+                    }),
               ),
             ],
           ),

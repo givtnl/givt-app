@@ -55,7 +55,7 @@ class GiveFromListPage extends StatelessWidget {
               giveState.status == GiveStatus.success
           ? const Scaffold(body: CustomCircularProgressIndicator())
           : OrganisationListFamilyPage(
-              onTap: (CollectGroup collectGroup) {
+              onTapListItem: (CollectGroup collectGroup) {
                 _navigateToGivingScreen(context, collectGroup);
               },
             ),
