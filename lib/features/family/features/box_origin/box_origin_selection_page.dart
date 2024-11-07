@@ -6,13 +6,12 @@ import 'package:givt_app/core/enums/amplitude_events.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/features/family/app/family_pages.dart';
 import 'package:givt_app/features/family/features/impact_groups/widgets/dialogs/box_origin_outcome_dialog.dart';
+import 'package:givt_app/features/family/features/parent_giving_flow/cubit/medium_cubit.dart';
 import 'package:givt_app/features/family/features/parent_giving_flow/presentation/pages/organisation_list_family_page.dart';
-import 'package:givt_app/features/family/shared/design/components/components.dart';
-import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart';
-import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:go_router/go_router.dart';
 
 class BoxOriginSelectionPage extends StatefulWidget {
   const BoxOriginSelectionPage({
@@ -28,92 +27,59 @@ class BoxOriginSelectionPage extends StatefulWidget {
 
 class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
   final bloc = getIt<OrganisationBloc>();
-  int selectedIndex = -1;
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return OrganisationListFamilyPage(
-      onTap: (collectgroup) {
-        final index = bloc.state.filteredOrganisations.indexOf(collectgroup);
-        setState(() {
-          selectedIndex = index;
-        });
+      onTapListItem: (collectgroup) {
+        getIt<MediumCubit>().setMediumId(collectgroup.nameSpace);
       },
       title: 'Where did you get it?',
       removedCollectGroupTypes: const [
         CollectGroupType.campaign,
         CollectGroupType.artists,
       ],
-      fab: FunButton(
-        isDisabled: selectedIndex == -1,
-        isLoading: isLoading,
-        text: 'Confirm',
-        onTap: () => _onTapConfirm(context),
-        analyticsEvent: AnalyticsEvent(
-          AmplitudeEvents.boxOriginConfirmClicked,
-        ),
+      buttonText: 'Confirm',
+      onTapFunButton: () => _onTapConfirm(context),
+      analyticsEvent: AnalyticsEvent(
+        AmplitudeEvents.boxOriginConfirmClicked,
       ),
     );
   }
 
   Future<void> _onTapConfirm(BuildContext context) async {
-    if (selectedIndex != -1) {
-      setState(() {
-        isLoading = true;
-      });
-      final orgNamespace =
-          bloc.state.filteredOrganisations[selectedIndex].nameSpace;
-      unawaited(AnalyticsHelper.logEvent(
-        eventName: AmplitudeEvents.boxOriginSelected,
-        eventProperties: {
-          'namespace': orgNamespace,
-          'orgname': bloc.state.filteredOrganisations[selectedIndex].orgName,
+    final selectedNamespace = getIt<MediumCubit>().state.mediumId;
+    final selectedOrg = bloc.state.filteredOrganisations
+        .firstWhere((element) => element.nameSpace == selectedNamespace);
+    unawaited(AnalyticsHelper.logEvent(
+      eventName: AmplitudeEvents.boxOriginSelected,
+      eventProperties: {
+        'namespace': selectedNamespace,
+        'orgname': selectedOrg.orgName,
+      },
+    ));
+
+    final success = await widget.setBoxOrigin(selectedNamespace);
+
+    if (success) {
+      await showBoxOriginSuccessDialog(
+        context,
+        selectedOrg.orgName,
+        onTap: () {
+          Navigator.of(context)
+            ..pop()
+            ..pop();
+          context.pushNamed(FamilyPages.reflectIntro.name);
         },
-      ));
-
-      final success = await widget.setBoxOrigin(orgNamespace);
-
-      if (success) {
-        await showBoxOriginSuccessDialog(
-          context,
-          bloc.state.filteredOrganisations[selectedIndex].orgName,
-          onTap: () {
-            Navigator.of(context)
-              ..pop()
-              ..pop()
-              ..pushNamed(FamilyPages.reflectIntro.name);
-          },
-        );
-      } else {
-        await showBoxOriginErrorDialog(
-          context,
-          onTap: () {
-            Navigator.of(context).pop();
-            _onTapConfirm(context);
-          },
-        );
-      }
+      );
+    } else {
+      await showBoxOriginErrorDialog(
+        context,
+        onTap: () {
+          Navigator.of(context).pop();
+          _onTapConfirm(context);
+        },
+      );
     }
   }
-
-  Widget _buildListTile({
-    required VoidCallback onTap,
-    required String title,
-    required CollectGroupType type,
-    required bool isSelected,
-  }) =>
-      ListTile(
-        key: UniqueKey(),
-        selected: isSelected,
-        onTap: () => onTap.call(),
-        splashColor: FamilyAppTheme.highlight99,
-        selectedTileColor:
-            CollectGroupType.getColorComboByType(type).backgroundColor,
-        leading: Icon(
-          CollectGroupType.getIconByTypeUS(type),
-          color: FamilyAppTheme.primary20,
-        ),
-        title: LabelMediumText(title),
-      );
 }

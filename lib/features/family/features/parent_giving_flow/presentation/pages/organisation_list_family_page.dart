@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:givt_app/app/injection/injection.dart';
 import 'package:givt_app/core/enums/collect_group_type.dart';
 import 'package:givt_app/core/enums/country.dart';
@@ -13,20 +12,27 @@ import 'package:givt_app/features/family/shared/widgets/texts/shared_texts.dart'
 import 'package:givt_app/features/family/utils/family_app_theme.dart';
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/l10n/l10n.dart';
+import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/shared/models/collect_group.dart';
+import 'package:givt_app/shared/widgets/extensions/string_extensions.dart';
+import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class OrganisationListFamilyPage extends StatefulWidget {
   const OrganisationListFamilyPage({
-    required this.onTap,
+    this.onTapListItem,
+    this.onTapFunButton,
     this.title = 'Give',
     this.removedCollectGroupTypes = const [],
-    this.fab,
+    this.buttonText,
+    this.analyticsEvent,
     super.key,
   });
-  final void Function(CollectGroup) onTap;
+  final void Function(CollectGroup)? onTapListItem;
+  final void Function()? onTapFunButton;
   final String title;
   final List<CollectGroupType> removedCollectGroupTypes;
-  final FunButton? fab;
+  final String? buttonText;
+  final AnalyticsEvent? analyticsEvent;
   @override
   State<OrganisationListFamilyPage> createState() =>
       _OrganisationListFamilyPageState();
@@ -35,12 +41,14 @@ class OrganisationListFamilyPage extends StatefulWidget {
 class _OrganisationListFamilyPageState
     extends State<OrganisationListFamilyPage> {
   final TextEditingController controller = TextEditingController();
+  CollectGroup selectedCollectgroup = const CollectGroup.empty();
   @override
   void initState() {
     super.initState();
     getIt<OrganisationBloc>().add(
-      OrganisationFetchForSelection(
+      OrganisationFetch(
         Country.fromCode(context.read<AuthCubit>().state.user.country),
+        type: CollectGroupType.none.index,
       ),
     );
   }
@@ -54,7 +62,7 @@ class _OrganisationListFamilyPageState
   @override
   Widget build(BuildContext context) {
     final locals = context.l10n;
-    return Scaffold(
+    return FunScaffold(
       appBar: FunTopAppBar(
         leading: const GivtBackButtonFlat(),
         title: widget.title,
@@ -77,20 +85,26 @@ class _OrganisationListFamilyPageState
                 height: 16,
               ),
               FunOrganisationFilterTilesBar(
+                onFilterChanged: (type) {
+                  if (selectedCollectgroup.type != type) {
+                    setState(() {
+                      selectedCollectgroup = const CollectGroup.empty();
+                    });
+                  }
+                },
+                stratPadding: 0,
                 removedTypes: [
                   ...widget.removedCollectGroupTypes.map((e) => e.name)
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
                   vertical: 16,
                 ),
                 child: FamilySearchField(
                   autocorrect: false,
                   controller: controller,
-                  onChanged: (value) => context
-                      .read<OrganisationBloc>()
+                  onChanged: (value) => getIt<OrganisationBloc>()
                       .add(OrganisationFilterQueryChanged(value)),
                 ),
               ),
@@ -103,11 +117,22 @@ class _OrganisationListFamilyPageState
                     shrinkWrap: true,
                     itemCount: state.filteredOrganisations.length,
                     itemBuilder: (context, index) {
+                      if (widget.removedCollectGroupTypes
+                          .contains(state.filteredOrganisations[index].type)) {
+                        return const SizedBox.shrink();
+                      }
                       return _buildListTile(
                         type: state.filteredOrganisations[index].type,
                         title: state.filteredOrganisations[index].orgName,
+                        isSelected: selectedCollectgroup ==
+                            state.filteredOrganisations[index],
                         onTap: () {
-                          widget.onTap(state.filteredOrganisations[index]);
+                          widget.onTapListItem
+                              ?.call(state.filteredOrganisations[index]);
+                          setState(() {
+                            selectedCollectgroup =
+                                state.filteredOrganisations[index];
+                          });
                         },
                       );
                     },
@@ -117,11 +142,21 @@ class _OrganisationListFamilyPageState
                 const Center(
                   child: CustomCircularProgressIndicator(),
                 ),
+              const SizedBox(height: 16),
+              if (widget.buttonText.isNotNullAndNotEmpty() &&
+                  widget.analyticsEvent != null &&
+                  widget.onTapFunButton != null)
+                FunButton(
+                  isDisabled:
+                      selectedCollectgroup == const CollectGroup.empty(),
+                  onTap: widget.onTapFunButton,
+                  text: widget.buttonText!,
+                  analyticsEvent: widget.analyticsEvent!,
+                )
             ],
           );
         },
       ),
-      floatingActionButton: widget.fab,
     );
   }
 
@@ -129,16 +164,15 @@ class _OrganisationListFamilyPageState
     required VoidCallback onTap,
     required String title,
     required CollectGroupType type,
+    required bool isSelected,
   }) =>
       ListTile(
         key: UniqueKey(),
         onTap: () => onTap.call(),
         splashColor: FamilyAppTheme.highlight99,
-        selectedTileColor: CollectGroupType.getHighlightColor(type),
-        trailing: FaIcon(
-          FontAwesomeIcons.chevronRight,
-          color: FamilyAppTheme.primary50.withOpacity(0.5),
-        ),
+        selected: isSelected,
+        selectedTileColor:
+            CollectGroupType.getColorComboByType(type).backgroundColor,
         leading: Icon(
           CollectGroupType.getIconByTypeUS(type),
           color: FamilyAppTheme.givtBlue,
