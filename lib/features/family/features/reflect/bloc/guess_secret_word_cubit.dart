@@ -54,7 +54,6 @@ class GuessSecretWordCubit
           Timer(const Duration(seconds: 2), () {
             emitCustom(const GuessTheWordCustom.redirectToSummary());
           });
-          return;
         }
         AnalyticsHelper.logEvent(
           eventName:
