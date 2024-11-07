@@ -1,21 +1,18 @@
-import 'package:givt_app/core/enums/country.dart';
-
 sealed class EmailSignupCustom {
   const EmailSignupCustom();
 
-  const factory EmailSignupCustom.success(String email, Country country) =
-      EmailSignupSuccess;
+  const factory EmailSignupCustom.registerFamily(String email) =
+      EmailSignupShowFamilyRegistration;
   const factory EmailSignupCustom.loginFamily(String email) =
       EmailSignupShowFamilyLogin;
   const factory EmailSignupCustom.noInternet() = EmailSignupNoInternet;
   const factory EmailSignupCustom.certExpired() = EmailSignupCertExpired;
 }
 
-class EmailSignupSuccess extends EmailSignupCustom {
-  const EmailSignupSuccess(this.email, this.country);
+class EmailSignupShowFamilyRegistration extends EmailSignupCustom {
+  const EmailSignupShowFamilyRegistration(this.email);
 
   final String email;
-  final Country country;
 }
 
 class EmailSignupShowFamilyLogin extends EmailSignupCustom {

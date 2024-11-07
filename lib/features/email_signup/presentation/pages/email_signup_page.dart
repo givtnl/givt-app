@@ -233,7 +233,7 @@ class _EmailSignupPageState extends State<EmailSignupPage> {
   Future<void> handleCustom(
       BuildContext context, EmailSignupCustom custom) async {
     switch (custom) {
-      case EmailSignupSuccess():
+      case EmailSignupShowFamilyRegistration():
         break;
       case EmailSignupShowFamilyLogin():
         await FamilyAuthUtils.authenticateUser(
