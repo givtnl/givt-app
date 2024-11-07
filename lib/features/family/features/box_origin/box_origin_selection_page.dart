@@ -11,6 +11,7 @@ import 'package:givt_app/features/family/features/parent_giving_flow/presentatio
 import 'package:givt_app/features/give/bloc/bloc.dart';
 import 'package:givt_app/shared/models/analytics_event.dart';
 import 'package:givt_app/utils/analytics_helper.dart';
+import 'package:go_router/go_router.dart';
 
 class BoxOriginSelectionPage extends StatefulWidget {
   const BoxOriginSelectionPage({
@@ -67,8 +68,8 @@ class _BoxOriginSelectionPageState extends State<BoxOriginSelectionPage> {
         onTap: () {
           Navigator.of(context)
             ..pop()
-            ..pop()
-            ..pushNamed(FamilyPages.reflectIntro.name);
+            ..pop();
+          context.pushNamed(FamilyPages.reflectIntro.name);
         },
       );
     } else {
