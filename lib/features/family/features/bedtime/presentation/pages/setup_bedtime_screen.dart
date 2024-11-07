@@ -3,7 +3,6 @@ import 'package:givt_app/features/family/app/injection.dart';
 import 'package:givt_app/features/family/features/bedtime/blocs/setup_bedtime_cubit.dart';
 import 'package:givt_app/shared/widgets/base/base_state_consumer.dart';
 import 'package:givt_app/shared/widgets/common_icons.dart';
-import 'package:givt_app/shared/widgets/fun_scaffold.dart';
 
 class SetupBedtimeScreen extends StatefulWidget {
   const SetupBedtimeScreen({super.key});
